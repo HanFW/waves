@@ -15,21 +15,21 @@ public class Staff implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Long staffId;
     private String staffName;
 
     public Long getId() {
-        return id;
+        return staffId;
     }
 
     public void setId(Long id) {
-        this.id = id;
+        this.staffId = id;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (staffId != null ? staffId.hashCode() : 0);
         return hash;
     }
 
@@ -40,7 +40,7 @@ public class Staff implements Serializable {
             return false;
         }
         Staff other = (Staff) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.staffId == null && other.staffId != null) || (this.staffId != null && !this.staffId.equals(other.staffId))) {
             return false;
         }
         return true;
@@ -48,7 +48,7 @@ public class Staff implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.Staff[ id=" + id + " ]";
+        return "entity.Staff[ id=" + staffId + " ]";
     }
 
     /**
@@ -63,6 +63,20 @@ public class Staff implements Serializable {
      */
     public void setStaffName(String staffName) {
         this.staffName = staffName;
+    }
+
+    /**
+     * @return the staffId
+     */
+    public Long getStaffId() {
+        return staffId;
+    }
+
+    /**
+     * @param staffId the staffId to set
+     */
+    public void setStaffId(Long staffId) {
+        this.staffId = staffId;
     }
     
 }
