@@ -20,6 +20,7 @@ public class BankAccount implements Serializable {
     private String bankAccountNum;
     private String bankAccountPwd;
     private String bankAccountType;
+    private String test;
     
     @OneToMany(cascade={CascadeType.ALL},fetch=FetchType.EAGER,mappedBy="bankAccount")
     private List<AccTransaction> accTransaction;
