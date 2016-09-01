@@ -17,7 +17,7 @@ public class AccTransaction implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long transactionId;
-    private Timestamp transactionDate;
+    private String transactionDate;
     private String transactionCode;
     private String transactionRef;
     private String accountDebit;
@@ -33,12 +33,12 @@ public class AccTransaction implements Serializable {
     public void setTransactionId(Long transactionId) {
         this.transactionId = transactionId;
     }
-    
-    public Timestamp transactionDate() {
+
+    public String getTransactionDate() {
         return transactionDate;
     }
-    
-    public void setTransactionDate(Timestamp transactionDate) {
+
+    public void setTransactionDate(String transactionDate) {
         this.transactionDate = transactionDate;
     }
     
