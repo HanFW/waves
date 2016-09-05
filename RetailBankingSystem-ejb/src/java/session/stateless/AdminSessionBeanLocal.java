@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ejb.session.stateless;
+package session.stateless;
 
 import javax.ejb.Local;
 
@@ -12,6 +12,8 @@ import javax.ejb.Local;
  * @author hanfengwei
  */
 @Local
-public interface StaffSessionBeanLocal {
-    
+public interface AdminSessionBeanLocal {
+    public String createOnlineBankingAccount(Long customerId);
+
+    public String login(String customerAccount, String password);
 }
