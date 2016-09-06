@@ -17,12 +17,11 @@ public class AccTransaction implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long transactionId;
-    private Timestamp transactionDate;
+    private String transactionDate;
     private String transactionCode;
     private String transactionRef;
     private String accountDebit;
     private String accountCredit;
-    private String balance;
     
     @ManyToOne(cascade={CascadeType.ALL},fetch=FetchType.EAGER)
     private BankAccount bankAccount;
@@ -34,59 +33,51 @@ public class AccTransaction implements Serializable {
     public void setTransactionId(Long transactionId) {
         this.transactionId = transactionId;
     }
-    
-    public Timestamp transactionDate() {
+
+    public String getTransactionDate() {
         return transactionDate;
     }
-    
-    public void setTransactionDate(Timestamp transactionDate) {
+
+    public void setTransactionDate(String transactionDate) {
         this.transactionDate = transactionDate;
     }
-    
+
     public String getTransactionCode() {
         return transactionCode;
     }
-    
+
     public void setTransactionCode(String transactionCode) {
         this.transactionCode = transactionCode;
     }
-    
+
     public String getTransactionRef() {
         return transactionRef;
     }
-    
+
     public void setTransactionRef(String transactionRef) {
         this.transactionRef = transactionRef;
     }
-    
+
     public String getAccountDebit() {
         return accountDebit;
     }
-    
+
     public void setAccountDebit(String accountDebit) {
         this.accountDebit = accountDebit;
     }
-    
+
     public String getAccountCredit() {
         return accountCredit;
     }
-    
+
     public void setAccountCredit(String accountCredit) {
         this.accountCredit = accountCredit;
     }
-    
-    public String getBalance() {
-        return balance;
-    }
-    
-    public void setBalance(String balance) {
-        this.balance = balance;
-    }
-    
+
     public BankAccount getBankAccount() {
         return bankAccount;
     }
-    
+
     public void setBankAccount(BankAccount bankAccount) {
         this.bankAccount = bankAccount;
     }

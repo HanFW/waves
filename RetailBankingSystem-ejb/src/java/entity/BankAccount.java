@@ -10,6 +10,7 @@ import javax.persistence.FetchType;
 import java.util.List;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 @Entity
 public class BankAccount implements Serializable {
@@ -20,12 +21,17 @@ public class BankAccount implements Serializable {
     private String bankAccountNum;
     private String bankAccountPwd;
     private String bankAccountType;
+    private String bankAccountBalance;
+    private String transferDailyLimit;
     
     @OneToMany(cascade={CascadeType.ALL},fetch=FetchType.EAGER,mappedBy="bankAccount")
     private List<AccTransaction> accTransaction;
     
     @ManyToOne(cascade={CascadeType.ALL},fetch=FetchType.EAGER)
     private CustomerBasic customerBasic;
+    
+    @OneToOne(cascade={CascadeType.ALL},fetch=FetchType.EAGER)
+    private Interest interest;
     
     public Long getBankAccountId() {
         return bankAccountId;
@@ -73,6 +79,30 @@ public class BankAccount implements Serializable {
 
     public void setCustomerBasic(CustomerBasic customerBasic) {
         this.customerBasic = customerBasic;
+    }
+
+    public String getBankAccountBalance() {
+        return bankAccountBalance;
+    }
+
+    public void setBankAccountBalance(String bankAccountBalance) {
+        this.bankAccountBalance = bankAccountBalance;
+    }
+
+    public Interest getInterest() {
+        return interest;
+    }
+
+    public void setInterest(Interest interest) {
+        this.interest = interest;
+    }
+
+    public String getTransferDailyLimit() {
+        return transferDailyLimit;
+    }
+
+    public void setTransferDailyLimit(String transferDailyLimit) {
+        this.transferDailyLimit = transferDailyLimit;
     }
     
     @Override
