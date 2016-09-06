@@ -35,9 +35,13 @@ public class CustomerBasic implements Serializable {
     private String customerOnlineBankingPassword;
     private String customerIdentificationNum;
     private String customerIdentificationType;
+    private String customerStatus;
     
     @OneToMany(cascade={CascadeType.ALL},fetch=FetchType.EAGER,mappedBy="customerBasic")
     private List<BankAccount> bankAccount;
+    
+    @OneToMany(cascade={CascadeType.ALL},fetch=FetchType.EAGER,mappedBy="customerBasic")
+    private List<Payee> payee;
 
     public Long getCustomerBasicId() {
         return customerBasicId;
@@ -197,6 +201,22 @@ public class CustomerBasic implements Serializable {
 
     public void setBankAccount(List<BankAccount> bankAccount) {
         this.bankAccount = bankAccount;
+    }
+
+    public List<Payee> getPayee() {
+        return payee;
+    }
+
+    public void setPayee(List<Payee> payee) {
+        this.payee = payee;
+    }
+
+    public String getCustomerStatus() {
+        return customerStatus;
+    }
+
+    public void setCustomerStatus(String customerStatus) {
+        this.customerStatus = customerStatus;
     }
 
     @Override

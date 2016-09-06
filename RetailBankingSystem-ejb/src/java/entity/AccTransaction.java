@@ -41,43 +41,43 @@ public class AccTransaction implements Serializable {
     public void setTransactionDate(String transactionDate) {
         this.transactionDate = transactionDate;
     }
-    
+
     public String getTransactionCode() {
         return transactionCode;
     }
-    
+
     public void setTransactionCode(String transactionCode) {
         this.transactionCode = transactionCode;
     }
-    
+
     public String getTransactionRef() {
         return transactionRef;
     }
-    
+
     public void setTransactionRef(String transactionRef) {
         this.transactionRef = transactionRef;
     }
-    
+
     public String getAccountDebit() {
         return accountDebit;
     }
-    
+
     public void setAccountDebit(String accountDebit) {
         this.accountDebit = accountDebit;
     }
-    
+
     public String getAccountCredit() {
         return accountCredit;
     }
-    
+
     public void setAccountCredit(String accountCredit) {
         this.accountCredit = accountCredit;
     }
-    
+
     public BankAccount getBankAccount() {
         return bankAccount;
     }
-    
+
     public void setBankAccount(BankAccount bankAccount) {
         this.bankAccount = bankAccount;
     }
