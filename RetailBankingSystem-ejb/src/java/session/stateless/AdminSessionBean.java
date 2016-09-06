@@ -37,20 +37,23 @@ public class AdminSessionBean implements AdminSessionBeanLocal {
         if (isNewCustomer(customer)) {
             //generate online banking account number
             account = generateAccountNumber(customer);
-            System.out.println("*** adminSessionBean: online banking account number generated" + account);
+            System.out.println("*** adminSessionBean: generateAccountNumber(): online banking account number generated");
+            
             //generate random password
             password = generatePassword();
-            System.out.println("*** adminSessionBean: online banking account password generated" + password);
+            System.out.println("*** adminSessionBean: generatePassword(): online banking account password generated");
+            
             //create customer account
-            customer.setCustomerOnlineBankingAccountNum(account);
-            String hashedPassword = password;
             try {
+                customer.setCustomerOnlineBankingAccountNum(account);
+                String hashedPassword = password;
                 hashedPassword = md5Hashing(password + customer.getCustomerIdentificationNum().substring(0, 3));
+                customer.setCustomerOnlineBankingPassword(hashedPassword);
+                em.flush();
             } catch (NoSuchAlgorithmException ex) {
                 Logger.getLogger(AdminSessionBean.class.getName()).log(Level.SEVERE, null, ex);
             }
-            customer.setCustomerOnlineBankingPassword(hashedPassword);
-            em.flush();
+            
             //generate email
             emailSessionBeanLocal.sendEmail(customer, "openAccount", true, password);
             System.out.println("*** adminSessionBean: email sent to customer (online banking account created)");
@@ -110,6 +113,13 @@ public class AdminSessionBean implements AdminSessionBeanLocal {
             System.out.println("!!! adminSessionBean: failed to hash password");
             return "";
         }
+    }
+    
+    @Override
+    public CustomerBasic getCustomerByOnlineBankingAccount(String customerAccount){
+        Query query = em.createQuery("SELECT c FROM CustomerBasic c WHERE c.customerOnlineBankingAccountNum = :accountNum");
+        query.setParameter("accountNum", customerAccount);
+        return (CustomerBasic) query.getSingleResult();
     }
 
     private String md5Hashing(String stringToHash) throws NoSuchAlgorithmException {

@@ -5,6 +5,7 @@
  */
 package session.stateless;
 
+import entity.CustomerBasic;
 import javax.ejb.Local;
 
 /**
@@ -16,4 +17,6 @@ public interface AdminSessionBeanLocal {
     public String createOnlineBankingAccount(Long customerId);
 
     public String login(String customerAccount, String password);
+    
+    public CustomerBasic getCustomerByOnlineBankingAccount(String customerAccount);
 }

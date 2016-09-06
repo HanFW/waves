@@ -45,7 +45,6 @@ public class LoginBean implements Serializable {
      * @param event
      */
     public void doLogin(ActionEvent event) {
-//        adminSessionBeanLocal.createOnlineBankingAccount(Long.valueOf(5));
 
         FacesMessage message = null;
         FacesContext context = FacesContext.getCurrentInstance();
@@ -54,7 +53,6 @@ public class LoginBean implements Serializable {
         String status = adminSessionBeanLocal.login(customerAccount, customerPassword);   
         switch (status) {
             case "loggedIn":
-//                message = new FacesMessage(FacesMessage.SEVERITY_INFO, status, "Welcome back!");
                 System.out.println("*** loginBean: loggedIn");
                 customer = adminSessionBeanLocal.getCustomerByOnlineBankingAccount(customerAccount);
                 context.getExternalContext().getSessionMap().put("customer", customer);
@@ -63,8 +61,6 @@ public class LoginBean implements Serializable {
                 } catch (IOException ex) {
                     Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                System.out.println("******************* test sessionMap");
-                System.out.println(context.getExternalContext().getSessionMap().get("customer"));
                 break;
             case "invalidPassword":
                 message = new FacesMessage(FacesMessage.SEVERITY_INFO, status, "Invalid customerPassword/account.");
