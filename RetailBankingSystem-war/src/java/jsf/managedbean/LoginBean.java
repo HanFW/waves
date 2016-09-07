@@ -16,7 +16,6 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
-import org.primefaces.context.RequestContext;
 import session.stateless.AdminSessionBeanLocal;
 
 /**
@@ -45,6 +44,7 @@ public class LoginBean implements Serializable {
      * @param event
      */
     public void doLogin(ActionEvent event) {
+//        adminSessionBeanLocal.createOnlineBankingAccount(Long.valueOf(1));
 
         FacesMessage message = null;
         FacesContext context = FacesContext.getCurrentInstance();
@@ -53,9 +53,9 @@ public class LoginBean implements Serializable {
         String status = adminSessionBeanLocal.login(customerAccount, customerPassword);   
         switch (status) {
             case "loggedIn":
+//                message = new FacesMessage(FacesMessage.SEVERITY_INFO, status, "Welcome back!");
                 System.out.println("*** loginBean: loggedIn");
-                customer = adminSessionBeanLocal.getCustomerByOnlineBankingAccount(customerAccount);
-                context.getExternalContext().getSessionMap().put("customer", customer);
+                context.getExternalContext().getSessionMap().put("customer", getCustomer());
                 try {
                     context.getExternalContext().redirect("home.xhtml");
                 } catch (IOException ex) {
@@ -107,7 +107,7 @@ public class LoginBean implements Serializable {
      * @return the customer
      */
     public CustomerBasic getCustomer() {
-        return customer;
+        return adminSessionBeanLocal.getCustomerByOnlineBankingAccount(customerAccount);
     }
 
     /**

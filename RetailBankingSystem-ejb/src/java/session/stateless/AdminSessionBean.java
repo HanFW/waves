@@ -99,6 +99,7 @@ public class AdminSessionBean implements AdminSessionBeanLocal {
         try {
             CustomerBasic thisCustomer = (CustomerBasic) query.getSingleResult();
             password = md5Hashing(password + thisCustomer.getCustomerIdentificationNum().substring(0, 3));
+            System.out.println("?????????"+password);
             if (thisCustomer.getCustomerOnlineBankingPassword().equals(password)) {
                 System.out.println("*** adminSessionBean: login(): valid account and password" + ": account " + thisCustomer.getCustomerOnlineBankingAccountNum());
                 return "loggedIn";
@@ -117,6 +118,7 @@ public class AdminSessionBean implements AdminSessionBeanLocal {
     
     @Override
     public CustomerBasic getCustomerByOnlineBankingAccount(String customerAccount){
+        System.out.println("adminSessionBean: getCustomerByOnlineBankingAccount(): start");
         Query query = em.createQuery("SELECT c FROM CustomerBasic c WHERE c.customerOnlineBankingAccountNum = :accountNum");
         query.setParameter("accountNum", customerAccount);
         return (CustomerBasic) query.getSingleResult();

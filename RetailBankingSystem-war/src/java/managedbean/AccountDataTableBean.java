@@ -1,6 +1,7 @@
 package managedbean;
 
 import entity.BankAccount;
+import entity.CustomerBasic;
 import java.io.IOException;
 import javax.ejb.EJB;
 import java.util.List;
@@ -50,8 +51,13 @@ public class AccountDataTableBean {
     
     public List<BankAccount> getBankAccount() throws IOException
     {
+        System.out.println("*** accountDatabTableBean start: ");
         ec = FacesContext.getCurrentInstance().getExternalContext();
-        List<BankAccount> bankAccount = bankAccountSessionLocal.retrieveBankAccountByCusIC(customerIdentificationNum.toUpperCase());
+//        List<BankAccount> bankAccount = bankAccountSessionLocal.retrieveBankAccountByCusIC(customerIdentificationNum.toUpperCase());
+        CustomerBasic customer = (CustomerBasic) ec.getSessionMap().get("customer");
+        String customerID = customer.getCustomerIdentificationNum();
+        System.out.println("***accountDataTableBean: ID = " + customerID);
+        List<BankAccount> bankAccount = bankAccountSessionLocal.retrieveBankAccountByCusIC(customerID);
         
         if(bankAccount.isEmpty()) {
             customerIdentificationNum="";
