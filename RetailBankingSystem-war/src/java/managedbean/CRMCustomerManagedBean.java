@@ -9,6 +9,8 @@ import entity.CustomerBasic;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import session.stateless.CRMCustomerSessionBean;
 import javax.faces.event.ActionEvent;
 
@@ -52,6 +54,8 @@ public class CRMCustomerManagedBean {
 
     private String customerOnlineBankingNewPassword;
     private String customerOnlineBankingNewPasswordConfirm;
+    
+    private CustomerBasic cb = new CustomerBasic();
 
     public String getCustomerPayeeNum() {
         return customerPayeeNum;
@@ -305,8 +309,6 @@ public class CRMCustomerManagedBean {
         this.replacedCustomerEmail = replacedCustomerEmail;
     }
 
-    private CustomerBasic cb = new CustomerBasic();
-
     public CRMCustomerSessionBean getCustomerSessionBean() {
         return customerSessionBean;
     }
@@ -343,8 +345,10 @@ public class CRMCustomerManagedBean {
     }
 
     public CustomerBasic getCustomerBasicInfo() {
- 
-        cb = customerSessionBean.getAllCustomerBasicProfile().get(0);
+        
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        cb = (CustomerBasic) ec.getSessionMap().get("customer");
+//        cb = customerSessionBean.getAllCustomerBasicProfile().get(0);
         if (customerName == null) {
             customerName = cb.getCustomerName();
             customerOnlineBankingAccountNum = cb.getCustomerOnlineBankingAccountNum();

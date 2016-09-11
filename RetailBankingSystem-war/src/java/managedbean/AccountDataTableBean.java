@@ -1,7 +1,6 @@
 package managedbean;
 
 import entity.BankAccount;
-import entity.CustomerBasic;
 import java.io.IOException;
 import javax.ejb.EJB;
 import java.util.List;
@@ -13,7 +12,6 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import session.stateless.BankAccountSessionLocal;
 
-//@ManagedBean
 @Named(value = "accountDataTableBean")
 @RequestScoped
 
@@ -51,13 +49,8 @@ public class AccountDataTableBean {
     
     public List<BankAccount> getBankAccount() throws IOException
     {
-        System.out.println("*** accountDatabTableBean start: ");
         ec = FacesContext.getCurrentInstance().getExternalContext();
-//        List<BankAccount> bankAccount = bankAccountSessionLocal.retrieveBankAccountByCusIC(customerIdentificationNum.toUpperCase());
-        CustomerBasic customer = (CustomerBasic) ec.getSessionMap().get("customer");
-        String customerID = customer.getCustomerIdentificationNum();
-        System.out.println("***accountDataTableBean: ID = " + customerID);
-        List<BankAccount> bankAccount = bankAccountSessionLocal.retrieveBankAccountByCusIC(customerID);
+        List<BankAccount> bankAccount = bankAccountSessionLocal.retrieveBankAccountByCusIC(customerIdentificationNum.toUpperCase());
         
         if(bankAccount.isEmpty()) {
             customerIdentificationNum="";

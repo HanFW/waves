@@ -6,37 +6,38 @@ import session.stateless.CRMCustomerSessionBean;
 import entity.BankAccount;
 import java.io.IOException;
 import java.io.Serializable;
-import java.math.BigInteger;
-import java.security.SecureRandom;
+import java.util.Date;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.FlowEvent;
-import session.stateless.AdminSessionBeanLocal;
+import org.primefaces.model.UploadedFile;
 import session.stateless.BankAccountSessionLocal;
 import session.stateless.InterestSessionLocal;
+import session.stateless.TransactionSessionLocal;
 
-//@ManagedBean
 @Named(value = "accountManagedBean")
 @ViewScoped
 
-public class AccountManagedBean implements Serializable{
+public class AccountManagedBean implements Serializable {
+
     @EJB
-    private AdminSessionBeanLocal adminSessionBeanLocal;
-    
+    private TransactionSessionLocal transactionSessionLocal;
+
     @EJB
     private InterestSessionLocal interestSessionLocal;
-    
+
     @EJB
     private CRMCustomerSessionBean customerSessionBean;
-    
+
     @EJB
     private BankAccountSessionLocal bankAccountSessionLocal;
-       
+
     private BankAccount bankAccount;
-    
+
     private Long bankAccountId;
     private String bankAccountNum;
     private String bankAccountPwd;
@@ -45,8 +46,10 @@ public class AccountManagedBean implements Serializable{
     private String bankAccountBalance;
     private Long newAccountId;
     private String transferDailyLimit;
+    private String bankAccountStatus;
+    private String transferBalance;
     private String statusMessage;
-    
+
     private String existingCustomer;
     private String onlyOneAccount;
     private Long customerBasicId;
@@ -57,7 +60,7 @@ public class AccountManagedBean implements Serializable{
     private String customerMobile;
     private String customerNationality;
     private String customerCountryOfResidence;
-    private String customerDateOfBirth;
+    private Date customerDateOfBirth;
     private String customerGender;
     private String customerRace;
     private String customerMaritalStatus;
@@ -66,266 +69,416 @@ public class AccountManagedBean implements Serializable{
     private String customerAddress;
     private String customerPostal;
     private String customerIdentificationNum;
-    private String customerIdentificationType;
     private Long newCustomerBasicId;
     private String customerOnlineBankingAccountNum;
     private String customerOnlineBankingPassword;
-    private String customerPayeeNum;
-    private String customerSignature;
-    
+    private String singaporePR;
+    private String payeeNum;
+    private String customerNRICSG;
+    private String customerNRIC;
+    private String customerPassport;
+
     private Long newInterestId;
     private Long interestId;
     private String dailyInterest;
     private String monthlyInterest;
-    private boolean isTransfer;
-    private boolean isWithdraw;
-    
-    private boolean visible=false;
+    private String isTransfer;
+    private String isWithdraw;
+
+    private String initialDepositAmt;
+    private String depositPeriod;
+    private String initialDepositModel;
+
+    private boolean agreement;
+    private boolean checkExist;
+
+    private boolean visible = false;
+    private boolean visible2 = false;
+    private boolean visible3 = false;
+    private boolean visible4 = false;
+    private boolean visible5 = false;
+    private boolean visible1 = false;
+
     private ExternalContext ec;
     private CustomerBasic customerBasic;
+
+    private UploadedFile file;
+    private String customerSignature;
+    private String dateOfBirth;
+
     //private ExternalContext ec;
     //ec = FacesContext.getCurrentInstance().getExternalContext();
-    
     public AccountManagedBean() {
     }
-    
+
+    public void show() {
+
+        if (customerSalutation.equals("Others")) {
+            visible = true;
+        } else {
+            visible = false;
+        }
+    }
+
+    public void hide() {
+        visible = false;
+    }
+
+    public void show2() {
+        if (customerNationality.equals("Singapore")) {
+            visible2 = true;
+        } else {
+            visible2 = false;
+        }
+    }
+
+    public void hide2() {
+        visible2 = false;
+    }
+
+    public void show3() {
+        if (!customerNationality.equals("Singapore")) {
+            visible3 = true;
+        } else {
+            visible3 = false;
+        }
+    }
+
+    public void hide3() {
+        visible3 = false;
+    }
+
+    public void show4() {
+
+        if (singaporePR.equals("Yes")) {
+            visible4 = true;
+        } else {
+            visible4 = false;
+        }
+    }
+
+    public void hide4() {
+        visible4 = false;
+    }
+
+    public void show5() {
+
+        if (singaporePR.equals("No")) {
+            visible5 = true;
+        } else {
+            visible5 = false;
+        }
+    }
+
+    public void hide5() {
+        visible5 = false;
+    }
+
+    public void show1() {
+
+        if (bankAccountType.equals("Fixed Deposit Account")) {
+            visible1 = true;
+        } else {
+            visible1 = false;
+        }
+    }
+
+    public void hide1() {
+        visible1 = false;
+    }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
+
+    public boolean isVisible2() {
+        return visible2;
+    }
+
+    public void setVisible2(boolean visible2) {
+        this.visible2 = visible2;
+    }
+
+    public boolean isVisible3() {
+        return visible3;
+    }
+
+    public void setVisible3(boolean visible3) {
+        this.visible3 = visible3;
+    }
+
+    public boolean isVisible4() {
+        return visible4;
+    }
+
+    public void setVisible4(boolean visible4) {
+        this.visible4 = visible4;
+    }
+
+    public boolean isVisible5() {
+        return visible5;
+    }
+
+    public void setVisible5(boolean visible5) {
+        this.visible5 = visible5;
+    }
+
+    public boolean isVisible1() {
+        return visible1;
+    }
+
+    public void setVisible1(boolean visible1) {
+        this.visible1 = visible1;
+    }
+
+    public UploadedFile getFile() {
+        return file;
+    }
+
+    public void setFile(UploadedFile file) {
+        this.file = file;
+    }
+
+    public boolean isAgreement() {
+        return agreement;
+    }
+
+    public void setAgreement(boolean agreement) {
+        this.agreement = agreement;
+    }
+
     public CustomerBasic getCustomerBasic() {
         return customerBasic;
     }
-    
+
     public void setCustomerBasic(CustomerBasic customerBasic) {
         this.customerBasic = customerBasic;
     }
-    
-    public String getBankAccountNum()
-    {
+
+    public String getBankAccountNum() {
         return bankAccountNum;
     }
-    
+
     public void setBankAccountNum(String bankAccountNum) {
         this.bankAccountNum = bankAccountNum;
     }
-    
+
     public String getBankAccountPwd() {
         return bankAccountPwd;
     }
-    
+
     public void setBankAccountPwd(String bankAccountPwd) {
         this.bankAccountPwd = bankAccountPwd;
     }
-    
+
     public String getBankAccountType() {
         return bankAccountType;
     }
-    
+
     public void setBankAccountType(String bankAccountType) {
         this.bankAccountType = bankAccountType;
     }
-    
+
     public Long getNewAccountId() {
         return newAccountId;
     }
-    
+
     public void setNewAccountId(Long newAccountId) {
         this.newAccountId = newAccountId;
     }
-    
+
     public String getStatusMessage() {
         return statusMessage;
     }
-    
+
     public void setStatusMessage(String statusMessage) {
         this.statusMessage = statusMessage;
     }
-    
+
     public String getCustomerIdentificationNum() {
         return customerIdentificationNum;
     }
-    
+
     public void setCustomerIdentificationNum(String customerIdentificationNum) {
         this.customerIdentificationNum = customerIdentificationNum;
     }
-    
+
     public Long getNewCustomerBasicId() {
         return newCustomerBasicId;
     }
-    
+
     public void setNewCustomerBasicId(Long newCustomerBasicId) {
         this.newCustomerBasicId = newCustomerBasicId;
     }
-    
+
     public String getCustomerSalutation() {
         return customerSalutation;
     }
-    
+
     public void setCustomerSalutation(String customerSalutation) {
         this.customerSalutation = customerSalutation;
     }
-    
+
     public String getCustomerName() {
         return customerName;
     }
-    
+
     public void setCustomerName(String customerName) {
         this.customerName = customerName;
     }
-    
+
     public String getCustomerEmail() {
         return customerEmail;
     }
-    
+
     public void setCustomerEmail(String customerEmail) {
         this.customerEmail = customerEmail;
     }
-    
+
     public String getCustomerMobile() {
         return customerMobile;
     }
-    
+
     public void setCustomerMobile(String customerMobile) {
         this.customerMobile = customerMobile;
     }
-    
+
     public String getCustomerNationality() {
         return customerNationality;
     }
-    
+
     public void setCustomerNationality(String customerNationality) {
         this.customerNationality = customerNationality;
     }
-    
+
     public String getCustomerCountryOfResidence() {
         return customerCountryOfResidence;
     }
-    
+
     public void setCustomerCountryOfResidence(String customerCountryOfResidence) {
         this.customerCountryOfResidence = customerCountryOfResidence;
     }
-    
-    public String getCustomerDateOfBirth() {
+
+    public Date getCustomerDateOfBirth() {
         return customerDateOfBirth;
     }
-    
-    public void setCustomerDateOfBirth(String customerDateOfBirth) {
+
+    public void setCustomerDateOfBirth(Date customerDateOfBirth) {
         this.customerDateOfBirth = customerDateOfBirth;
     }
-    
+
     public String getCustomerGender() {
         return customerGender;
     }
-    
+
     public void setCustomerGender(String customerGender) {
         this.customerGender = customerGender;
     }
-    
+
     public String getCustomerRace() {
         return customerRace;
     }
-    
+
     public void setCustomerRace(String customerRace) {
         this.customerRace = customerRace;
     }
-    
+
     public String getCustomerMaritalStatus() {
         return customerMaritalStatus;
     }
-    
+
     public void setCustomerMaritalStatus(String customerMaritalStatus) {
         this.customerMaritalStatus = customerMaritalStatus;
     }
-    
+
     public String getCustomerOccupation() {
         return customerOccupation;
     }
-    
+
     public void setCustomerOccupation(String customerOccupation) {
         this.customerOccupation = customerOccupation;
     }
-    
+
     public String getCustomerCompany() {
         return customerCompany;
     }
-    
+
     public void setCustomerCompany(String customerCompany) {
         this.customerCompany = customerCompany;
     }
-    
+
     public String getCustomerAddress() {
         return customerAddress;
     }
-    
+
     public void setCustomerAddress(String customerAddress) {
         this.customerAddress = customerAddress;
     }
-    
+
     public String getCustomerPostal() {
         return customerPostal;
     }
-    
+
     public void setCustomerPostal(String customerPostal) {
         this.customerPostal = customerPostal;
     }
-    
-    public String getCustomerIdentificationType() {
-        return customerIdentificationType;
-    }
-    
-    public void setCustomerIdentificationType(String customerIdentificationType) {
-        this.customerIdentificationType = customerIdentificationType;
-    }
-    
+
     public String getCustomerOnlineBankingAccountNum() {
         return customerOnlineBankingAccountNum;
     }
-    
+
     public void setCustomerOnlineBankingAccountNum(String customerOnlineBankingAccountNum) {
         this.customerOnlineBankingAccountNum = customerOnlineBankingAccountNum;
     }
-    
+
     public String getCustomerOnlineBankingPassword() {
         return customerOnlineBankingPassword;
     }
-    
+
     public void setCustomerOnlineBankingPassword(String customerOnlineBankingPassword) {
         this.customerOnlineBankingPassword = customerOnlineBankingPassword;
     }
-    
+
     public String getBankAccountBalance() {
         return bankAccountBalance;
     }
-    
+
     public void setBankAccountBalance(String bankAccountBalance) {
         this.bankAccountBalance = bankAccountBalance;
     }
-    
+
     public String getConfirmBankAccountPwd() {
         return confirmBankAccountPwd;
     }
-    
+
     public void setConfirmBankAccountPwd(String confirmBankAccountPwd) {
         this.confirmBankAccountPwd = confirmBankAccountPwd;
     }
-    
+
     public Long getCustomerBasicId() {
         return customerBasicId;
     }
-    
+
     public void setCustomerBasicId(Long customerBasicId) {
         this.customerBasicId = customerBasicId;
     }
-    
+
     public String getExistingCustomer() {
         return existingCustomer;
     }
-    
+
     public void setExistingCustomer(String existingCustomer) {
         this.existingCustomer = existingCustomer;
     }
-    
+
     public String getOnlyOneAccount() {
         return onlyOneAccount;
     }
-    
+
     public void setOnlyOneAccount(String onlyOneAccount) {
         this.onlyOneAccount = onlyOneAccount;
     }
@@ -370,70 +523,128 @@ public class AccountManagedBean implements Serializable{
         this.monthlyInterest = monthlyInterest;
     }
 
-    public boolean isIsTransfer() {
+    public String getIsTransfer() {
         return isTransfer;
     }
 
-    public void setIsTransfer(boolean isTransfer) {
+    public void setIsTransfer(String isTransfer) {
         this.isTransfer = isTransfer;
     }
 
-    public boolean isIsWithdraw() {
+    public String getIsWithdraw() {
         return isWithdraw;
     }
 
-    public void setIsWithdraw(boolean isWithdraw) {
+    public void setIsWithdraw(String isWithdraw) {
         this.isWithdraw = isWithdraw;
     }
-    
-    public void show() {
-        
-        if(customerSalutation.equals("Others")) {
-            visible=true;
-        }
-        else {
-            visible=false;
-        }
-    }
-    
-    public void hide() {
-        visible=false;
-    }
-    
-    public boolean isVisible() {
-        return visible;
-    }
-    
-    public void setVisible(boolean visible) {
-        this.visible = visible;
-    }
-    
+
     public Long getBankAccountId() {
         return bankAccountId;
     }
-    
+
     public void setBankAccountId(Long bankAccountId) {
         this.bankAccountId = bankAccountId;
     }
-    
+
     public String getCustomerSalutationOthers() {
         return customerSalutationOthers;
     }
-    
+
     public void setCustomerSalutationOthers(String customerSalutationOthers) {
         this.customerSalutationOthers = customerSalutationOthers;
     }
-    
+
     public String onFlowProcess(FlowEvent event) {
         return event.getNewStep();
     }
 
-    public String getCustomerPayeeNum() {
-        return customerPayeeNum;
+    public String getBankAccountStatus() {
+        return bankAccountStatus;
     }
 
-    public void setCustomerPayeeNum(String customerPayeeNum) {
-        this.customerPayeeNum = customerPayeeNum;
+    public void setBankAccountStatus(String bankAccountStatus) {
+        this.bankAccountStatus = bankAccountStatus;
+    }
+    
+    public String getInitialDepositAmt() {
+        return initialDepositAmt;
+    }
+
+    public void setInitialDepositAmt(String initialDepositAmt) {
+        this.initialDepositAmt = initialDepositAmt;
+    }
+
+    public String getDepositPeriod() {
+        return depositPeriod;
+    }
+
+    public void setDepositPeriod(String depositPeriod) {
+        this.depositPeriod = depositPeriod;
+    }
+
+    public String getSingaporePR() {
+        return singaporePR;
+    }
+
+    public void setSingaporePR(String singaporePR) {
+        this.singaporePR = singaporePR;
+    }
+
+    public boolean isCheckExist() {
+        return checkExist;
+    }
+
+    public void setCheckExist(boolean checkExist) {
+        this.checkExist = checkExist;
+    }
+
+    public String getPayeeNum() {
+        return payeeNum;
+    }
+
+    public void setPayeeNum(String payeeNum) {
+        this.payeeNum = payeeNum;
+    }
+
+    public String getTransferBalance() {
+        return transferBalance;
+    }
+
+    public void setTransferBalance(String transferBalance) {
+        this.transferBalance = transferBalance;
+    }
+
+    public String getCustomerNRIC() {
+        return customerNRIC;
+    }
+
+    public void setCustomerNRIC(String customerNRIC) {
+        this.customerNRIC = customerNRIC;
+    }
+
+    public String getCustomerPassport() {
+        return customerPassport;
+    }
+
+    public void setCustomerPassport(String customerPassport) {
+        this.customerPassport = customerPassport;
+    }
+
+    public String getCustomerNRICSG() {
+        return customerNRICSG;
+    }
+
+    public void setCustomerNRICSG(String customerNRICSG) {
+        this.customerNRICSG = customerNRICSG;
+    }
+
+    public String getInitialDepositModel() {
+        return initialDepositModel;
+    }
+
+    public void setInitialDepositModel(String initialDepositModel) {
+        this.initialDepositModel = initialDepositModel;
     }
 
     public String getCustomerSignature() {
@@ -443,110 +654,172 @@ public class AccountManagedBean implements Serializable{
     public void setCustomerSignature(String customerSignature) {
         this.customerSignature = customerSignature;
     }
-    
-    public void saveAccount() {
-        
-        SecureRandom random = new SecureRandom();
-        if(customerIdentificationType.equals("Passport")) {
-            bankAccountNum=new BigInteger(13,random).setBit(12).toString(10)+customerIdentificationNum.hashCode();
-        }
-        else if(customerIdentificationType.equals("NRIC")) {
-            bankAccountNum=new BigInteger(13,random).setBit(12).toString(10)+"-"+customerIdentificationNum.hashCode();
-        }
-//        String bankAccountNum=new BigInteger (23, 90, random).toString(10);
-//        UID unique = new UID();
-//        bankAccountNum=accountNum+unique.hashCode();
-//        UUID account = UUID.randomUUID();
-//        bankAccountNum = String.valueOf(account.hashCode());
-        if(existingCustomer.equals("Yes"))
-        {
-            dailyInterest="0";
-            monthlyInterest="0";
-            isTransfer=false;
-            isWithdraw=false;
-            
-            customerBasicId = customerSessionBean.retrieveCustomerBasicByIC(customerIdentificationNum.toUpperCase()).getCustomerBasicId();
-            newInterestId = interestSessionLocal.addNewInterest(dailyInterest,monthlyInterest,isTransfer, isWithdraw);
-            
-            bankAccountBalance="0";
-            transferDailyLimit = "2000";
-            newAccountId = bankAccountSessionLocal.addNewAccount(bankAccountNum,bankAccountPwd,bankAccountType,bankAccountBalance,transferDailyLimit,customerBasicId,interestId);
-            
-            bankAccountSessionLocal.retrieveBankAccountByCusIC(customerIdentificationNum).add(bankAccount);
-            
-            interestSessionLocal.calculateInterest(bankAccountNum);
-//            customerBasic=customerSessionBean.retrieveCustomerBasicByIC(customerIdentificationNum.toUpperCase());
-//            customerSessionBean.updateCustomerBasic(customerName, customerSalutation, customerIdentificationType,
-//                    customerIdentificationNum, customerGender, customerEmail, customerMobile, customerDateOfBirth,
-//                    customerNationality, customerCountryOfResidence, customerRace, customerMaritalStatus,
-//                    customerOccupation, customerName, statusMessage, customerName,customerBasic);
-            adminSessionBeanLocal.createOnlineBankingAccount(customerBasicId);
-        }
-        else if(existingCustomer.equals("No"))
-        {
-            customerPayeeNum="0";
-            newCustomerBasicId = customerSessionBean.addNewCustomerBasic(customerName,
-                    customerSalutation,customerIdentificationNum.toUpperCase(),
-                    customerGender, customerEmail, customerMobile, customerDateOfBirth,
-                    customerNationality, customerCountryOfResidence,customerRace,
-                    customerMaritalStatus, customerOccupation, customerCompany,
-                    customerAddress, customerPostal, customerOnlineBankingAccountNum,
-                    customerOnlineBankingPassword,customerPayeeNum,customerSignature.getBytes());
-            
-            dailyInterest="0";
-            monthlyInterest="0";
-            isTransfer=false;
-            isWithdraw=false;
-            newInterestId = interestSessionLocal.addNewInterest(dailyInterest,monthlyInterest,isTransfer, isWithdraw);
-            
-            bankAccountBalance="0";
-            transferDailyLimit = "2000";
-            newAccountId = bankAccountSessionLocal.addNewAccount(bankAccountNum,bankAccountPwd,bankAccountType,bankAccountBalance,transferDailyLimit,newCustomerBasicId,newInterestId);
-            adminSessionBeanLocal.createOnlineBankingAccount(newAccountId);
-        }
-        
-        statusMessage = "New Account Saved Successfully.";
+
+    public String getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
     
-    public void deleteAccount() throws IOException
-    {
+    public void saveAccount() throws IOException {
         ec = FacesContext.getCurrentInstance().getExternalContext();
+
+        checkIdentificationType();
+        checkSalutation();
+
+        bankAccountNum = bankAccountSessionLocal.generateBankAccount(customerIdentificationNum);
+        checkExist = bankAccountSessionLocal.checkExistence(customerIdentificationNum);
+        dateOfBirth=bankAccountSessionLocal.changeDateFormat(customerDateOfBirth);
         
-        bankAccount = bankAccountSessionLocal.retrieveBankAccountByNum(bankAccountNum);
-        bankAccountType = bankAccount.getBankAccountType();
-        
-        if(onlyOneAccount.equals("Yes")) {
-            if(!bankAccount.getBankAccountBalance().equals("0")) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Please withdraw all your money.","Failed!"));
-            }
-            else {
-                bankAccountSessionLocal.deleteAccount(bankAccountNum);
-                statusMessage="Account has been successfully deleted.";
-                
-                ec.getFlash().put("statusMessage", statusMessage);
-                ec.getFlash().put("bankAccountNum", bankAccountNum);
-                ec.getFlash().put("bankAccountType", bankAccountType);
-                
-                ec.redirect("deleteAccount.xhtml?faces-redirect=true");
-            }
+        if (existingCustomer.equals("Yes") && checkExist && agreement) {
+            dailyInterest = "0";
+            monthlyInterest = "0";
+            isTransfer = "0";
+            isWithdraw = "0";
+
+            customerBasicId = customerSessionBean.retrieveCustomerBasicByIC(customerIdentificationNum.toUpperCase()).getCustomerBasicId();
+
+            newInterestId = interestSessionLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw);
+
+            bankAccountBalance = "0";
+            transferDailyLimit = "2000";
+            transferBalance = "2000";
             
-        }
-        else if (onlyOneAccount.equals("No")) {
-            if(!bankAccount.getBankAccountBalance().equals("0")) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Please withdraw all your money.","Failed!"));
+            if(bankAccountType.equals("Monthly Savings Account")){
+                bankAccountStatus="Activated";
             }
             else{
+                bankAccountStatus="Inactivated";
+            }
+
+            newAccountId = bankAccountSessionLocal.addNewAccount(bankAccountNum, bankAccountPwd, bankAccountType,
+                    bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus,customerBasicId, interestId);
+
+            bankAccountSessionLocal.retrieveBankAccountByCusIC(customerIdentificationNum).add(bankAccount);
+
+//            transactionSessionLocal.initialDeposit(newAccountId, initialDepositAmt);
+
+            statusMessage = "New Account Saved Successfully.";
+
+            ec.getFlash().put("statusMessage", statusMessage);
+            ec.getFlash().put("newAccountId", newAccountId);
+            ec.getFlash().put("newCustomerBasicId", newCustomerBasicId);
+            ec.getFlash().put("bankAccountNum", bankAccountNum);
+            ec.getFlash().put("bankAccountType", bankAccountType);
+            ec.getFlash().put("initialDepositAmt", initialDepositAmt);
+
+            ec.redirect("saveAccount.xhtml?faces-redirect=true");
+
+        } else if (existingCustomer.equals("Yes") && !checkExist) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! You don't have Merlion bank account yet.", "Failed!"));
+        } else if (existingCustomer.equals("No") && !checkExist && agreement) {
+            payeeNum = "0";
+            newCustomerBasicId = customerSessionBean.addNewCustomerBasic(customerName,
+                    customerSalutation, customerIdentificationNum.toUpperCase(),
+                    customerGender, customerEmail, customerMobile, dateOfBirth,
+                    customerNationality, customerCountryOfResidence, customerRace,
+                    customerMaritalStatus, customerOccupation, customerCompany,
+                    customerAddress, customerPostal, customerOnlineBankingAccountNum,
+                    customerOnlineBankingPassword, payeeNum, customerSignature.getBytes());
+
+            dailyInterest = "0";
+            monthlyInterest = "0";
+            isTransfer = "0";
+            isWithdraw = "0";
+            newInterestId = interestSessionLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw);
+
+            bankAccountBalance = "0";
+            transferDailyLimit = "2000";
+            transferBalance = "2000";
+            
+            if(bankAccountType.equals("Monthly Savings Account")){
+                bankAccountStatus="Activated";
+            }
+            else{
+                bankAccountStatus="Inactivated";
+            }
+
+            newAccountId = bankAccountSessionLocal.addNewAccount(bankAccountNum, bankAccountPwd, bankAccountType,
+                    bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus,newCustomerBasicId, newInterestId);
+
+//            transactionSessionLocal.initialDeposit(newAccountId, initialDepositAmt);
+
+            statusMessage = "New Account Saved Successfully.";
+
+            ec.getFlash().put("statusMessage", statusMessage);
+            ec.getFlash().put("newAccountId", newAccountId);
+            ec.getFlash().put("newCustomerBasicId", newCustomerBasicId);
+            ec.getFlash().put("bankAccountNum", bankAccountNum);
+            ec.getFlash().put("bankAccountType", bankAccountType);
+            ec.getFlash().put("initialDepositAmt", initialDepositAmt);
+
+            ec.redirect("saveAccount.xhtml?faces-redirect=true");
+
+        } else if (existingCustomer.equals("No") && checkExist) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! You have Merlion bank account already. Please check.", "Failed!"));
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Please agree to terms.", "Failed!"));
+        }
+    }
+
+    public void deleteAccount() throws IOException {
+        ec = FacesContext.getCurrentInstance().getExternalContext();
+
+        bankAccount = bankAccountSessionLocal.retrieveBankAccountByNum(bankAccountNum);
+        bankAccountType = bankAccount.getBankAccountType();
+
+        if (onlyOneAccount.equals("Yes")) {
+            if (!bankAccount.getBankAccountBalance().equals("0")) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Please withdraw all your money.", "Failed!"));
+            } else {
                 bankAccountSessionLocal.deleteAccount(bankAccountNum);
-                customerSessionBean.deleteCustomerBasic(customerIdentificationNum);
-                statusMessage="Account has been successfully deleted.";
-                
+                statusMessage = "Account has been successfully deleted.";
+
                 ec.getFlash().put("statusMessage", statusMessage);
                 ec.getFlash().put("bankAccountNum", bankAccountNum);
                 ec.getFlash().put("bankAccountType", bankAccountType);
-                
+
+                ec.redirect("deleteAccount.xhtml?faces-redirect=true");
+            }
+
+        } else if (onlyOneAccount.equals("No")) {
+            if (!bankAccount.getBankAccountBalance().equals("0")) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Please withdraw all your money.", "Failed!"));
+            } else {
+                bankAccountSessionLocal.deleteAccount(bankAccountNum);
+                customerSessionBean.deleteCustomerBasic(customerIdentificationNum);
+                statusMessage = "Account has been successfully deleted.";
+
+                ec.getFlash().put("statusMessage", statusMessage);
+                ec.getFlash().put("bankAccountNum", bankAccountNum);
+                ec.getFlash().put("bankAccountType", bankAccountType);
+
                 ec.redirect("deleteAccount.xhtml?faces-redirect=true");
             }
         }
     }
-    
+
+    public void checkIdentificationType() {
+        if (customerNationality.equals("Singapore")) {
+            customerIdentificationNum = customerNRICSG;
+        } else {
+            if (singaporePR.equals("Yes")) {
+                customerIdentificationNum = customerNRIC;
+            } else {
+                customerIdentificationNum = customerPassport;
+            }
+        }
+    }
+
+    public void checkSalutation() {
+        if (customerSalutation.equals("Others")) {
+            customerSalutation = customerSalutationOthers;
+        }
+    }
+
+    public void upload(FileUploadEvent event) {
+        
+    }
 }

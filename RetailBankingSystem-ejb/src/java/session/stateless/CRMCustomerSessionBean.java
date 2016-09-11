@@ -15,6 +15,8 @@ import javax.persistence.Query;
 @LocalBean
 
 public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal{
+    @EJB
+    private BankAccountSessionLocal bankAccountSessionLocal;
     
     @PersistenceContext
     private EntityManager entityManager;
@@ -157,4 +159,20 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal{
         
         return customerBasic;
     }
+    
+    @Override
+    public boolean updatePayeeNum(Long customerBasicId) {
+        CustomerBasic customerBasic = bankAccountSessionLocal.retrieveCustomerBasicById(customerBasicId);
+
+        Double currentPayeeNum = Double.valueOf(customerBasic.getCustomerPayeeNum());
+        if (currentPayeeNum >= 2) {
+            return false;
+        } 
+        else {
+            Double payeeNum = currentPayeeNum + 1;
+            customerBasic.setCustomerPayeeNum(payeeNum.toString());
+            return true;
+        }
+    }
 }
+

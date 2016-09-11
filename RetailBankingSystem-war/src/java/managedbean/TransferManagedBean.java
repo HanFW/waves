@@ -83,12 +83,26 @@ public class TransferManagedBean {
     
     public void toMyAccount() throws IOException {
         BankAccount bankAccountFrom = bankAccountSessionLocal.retrieveBankAccountByNum(fromAccount);
+        BankAccount bankAccountTo = bankAccountSessionLocal.retrieveBankAccountByNum(toAccount);
         ec = FacesContext.getCurrentInstance().getExternalContext();
         
         if(fromAccount.equals(toAccount)) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Fund transfer cannot be done within the same accounts.","Failed!"));
         }
         else{
+            
+            if(bankAccountFrom.getBankAccountStatus().equals("Activated")){
+                
+            }
+            else if(bankAccountFrom.getBankAccountStatus().equals("Inactivated")){
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Your account has not been activated.","Failed!"));
+            }
+            if(bankAccountTo.getBankAccountStatus().equals("Activated")) {
+                
+            }
+            else if(bankAccountTo.getBankAccountStatus().equals("Inactivated")) {
+                
+            }
             Double diffAmt = Double.valueOf(bankAccountFrom.getBankAccountBalance())-Double.valueOf(transferAmt);
            
             if(diffAmt>=0) {
@@ -110,10 +124,15 @@ public class TransferManagedBean {
     }
     
     public void toOthersAccount() throws IOException {
+        BankAccount bankAccountFrom = bankAccountSessionLocal.retrieveBankAccountByNum(fromAccount);
         
         ec = FacesContext.getCurrentInstance().getExternalContext();
         transactionSessionLocal.fundTransfer(fromAccount,toAccount,transferAmt);
         statusMessage = "Fund Transfer Successfully!";
+        
+        if(bankAccountFrom.getBankAccountStatus().equals("Inactivated")) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!Your account has not been activated.","Failed"));
+        }
         
         ec.getFlash().put("statusMessage", statusMessage);
         ec.getFlash().put("fromAccount", fromAccount);
@@ -124,10 +143,15 @@ public class TransferManagedBean {
     }
     
     public void oneTimeTransfer() throws IOException {
+        BankAccount bankAccountFrom = bankAccountSessionLocal.retrieveBankAccountByNum(fromAccount);
         
         ec = FacesContext.getCurrentInstance().getExternalContext();
         transactionSessionLocal.fundTransfer(fromAccount,toAccount,transferAmt);
         statusMessage = "Fund Transfer Successfully!";
+        
+        if(bankAccountFrom.getBankAccountStatus().equals("Inactivated")) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!Your account has not been activated.","Failed"));
+        }
         
         ec.getFlash().put("statusMessage", statusMessage);
         ec.getFlash().put("fromAccount", fromAccount);

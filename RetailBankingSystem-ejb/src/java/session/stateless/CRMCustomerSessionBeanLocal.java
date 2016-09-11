@@ -30,4 +30,6 @@ public interface CRMCustomerSessionBeanLocal {
     public String deleteCustomerBasic(String customerIdentificationNum);
 
     public CustomerBasic retrieveCustomerBasicByIC(String customerIdentificationNum);
+    
+    public boolean updatePayeeNum(Long customerBasicId);
 }
