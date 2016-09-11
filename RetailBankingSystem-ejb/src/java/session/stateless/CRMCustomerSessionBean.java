@@ -10,6 +10,8 @@ import javax.ejb.EJB;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.Query;
+import java.time.LocalDate;
+import java.time.Period;
 
 @Stateless
 @LocalBean
@@ -51,6 +53,7 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal{
         customerBasic.setCustomerOnlineBankingPassword(null);
         customerBasic.setCustomerSignature(customerSignature);
         customerBasic.setCustomerPayeeNum(customerPayeeNum);
+        customerBasic.setCustomerAge(getAge(customerDateOfBirth));
         
         entityManager.persist(customerBasic);
         entityManager.flush();
@@ -79,6 +82,39 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal{
         CustomerBasic customer = entityManager.find(CustomerBasic.class, onlineBankingAccountNum);
         return customer;
     }
+    
+    private String getAge(String customerDateOfBirth) {
+        String daystr = customerDateOfBirth.substring(0,2);
+        String monthstr = customerDateOfBirth.substring(3,6);
+        String yearstr = customerDateOfBirth.substring(7);
+        int month = 0;
+        int day = Integer.parseInt(daystr);
+        int year = Integer.parseInt(yearstr);
+        String customerAge="";
+        
+            
+            switch (monthstr) {
+            case "Jan":  month = 1; break;
+            case "Feb":  month = 2; break;
+            case "Mar":  month = 3; break;
+            case "Apr":  month = 4; break;
+            case "May":  month = 5; break;
+            case "Jun":  month = 6; break;
+            case "Jul":  month = 7; break;
+            case "Aug":  month = 8; break;
+            case "Sep":  month = 9; break;
+            case "Oct": month = 10; break;
+            case "Nov": month = 11; break;
+            case "Dec": month = 12; break;
+            }
+            
+            LocalDate localBirth = LocalDate.of(year, month, day);
+            LocalDate now = LocalDate.now();
+            Period p = Period.between(localBirth, now);
+            customerAge = String.valueOf(p.getYears());
+        
+        return customerAge;
+}
 
     @Override
     public List<CustomerBasic> getMyCustomerBasicProfile(String onlineBankingAccountNum) {

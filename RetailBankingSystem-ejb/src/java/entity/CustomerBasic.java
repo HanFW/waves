@@ -36,6 +36,15 @@ public class CustomerBasic implements Serializable {
     private String customerIdentificationNum;
     private String customerStatus;
     private String customerPayeeNum;
+    private String customerAge;
+
+    public String getCustomerAge() {
+        return customerAge;
+    }
+
+    public void setCustomerAge(String customerAge) {
+        this.customerAge = customerAge;
+    }
     private byte[] customerSignature;
     
     @OneToMany(cascade={CascadeType.ALL},fetch=FetchType.EAGER,mappedBy="customerBasic")

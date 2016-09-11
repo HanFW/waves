@@ -44,6 +44,9 @@ public class CRMCustomerManagedBean {
     private String customerPayeeNum;
     private byte[] customerSignature;
     private Long newCustomerBasicId;
+    private String customerAge;
+
+    
 
     private String customerEmploymentDetails;
     private String customerFamilyInfo;
@@ -65,6 +68,14 @@ public class CRMCustomerManagedBean {
         this.customerPayeeNum = customerPayeeNum;
     }
 
+    public String getCustomerAge() {
+        return customerAge;
+    }
+
+    public void setCustomerAge(String customerAge) {
+        this.customerAge = customerAge;
+    }
+    
     public byte[] getCustomerSignature() {
         return customerSignature;
     }

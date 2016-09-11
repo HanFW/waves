@@ -14,3 +14,9 @@ hs_err_pid*
 /RetailBankingSystemRemoteInterface/nbproject/private/
 /RetailBankingSystemRemoteInterface/build/
 /RetailBankingSystemRemoteInterface/dist/
+/RetailBankingSystem-ejb/build/
+/build/
+/RetailBankingSystem-war/build/
+/RetailBankingSystem-ejb/dist/
+/dist/
+/RetailBankingSystem-war/dist/
