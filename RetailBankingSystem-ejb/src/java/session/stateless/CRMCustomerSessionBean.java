@@ -31,17 +31,12 @@ public class CRMCustomerSessionBean {
         return customer;
     }
 
-    public List<CustomerBasic> getMyCustomerBasicProfile(String onlineBankingAccountNum) {
-        CustomerBasic customer = getCustomer(onlineBankingAccountNum);
-        Query query = entityManager.createQuery("SELECT cb FROM CustomerBasic cb WHERE cb.customerBasicId = :inCustomer");
-        query.setParameter("inCustomer", customer);
-        return query.getResultList();
-    }
-
-    public List<CustomerBasic> getAllCustomerBasicProfile() {
+    public List<CustomerBasic> getMyCustomerBasicProfile() {
         Query query = entityManager.createQuery("SELECT cb FROM CustomerBasic cb");   
         return query.getResultList();
     }
+
+
 
     public String updateCustomerOnlineBankingAccountPIN(String customerOnlineBankingAccountNum, String inputPassowrd, String newPassword) {
         Query query = entityManager.createQuery("SELECT cb FROM CustomerBasic cb WHERE cb.customerOnlineBankingAccountNum = :customerOnlineBankingAccountNum AND cb.customerOnlineBankingPassword = :inputPassword");
@@ -53,7 +48,6 @@ public class CRMCustomerSessionBean {
         } else {
             CustomerBasic cb = (CustomerBasic) resultList.get(0);
             cb.setCustomerOnlineBankingPassword(newPassword);
-            entityManager.persist(cb);
             entityManager.flush();
             return "Successfully Updated";
         }
@@ -76,7 +70,6 @@ public class CRMCustomerSessionBean {
             cb.setCustomerEmail(customerEmail);
             cb.setCustomerAddress(customerAddress);
             cb.setCustomerPostal(customerPostal);
-            entityManager.persist(cb);
             entityManager.flush();
 
             return "Successfully Updated";

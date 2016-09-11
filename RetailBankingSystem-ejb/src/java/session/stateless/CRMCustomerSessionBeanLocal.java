@@ -9,7 +9,6 @@ import entity.CustomerBasic;
 import java.util.List;
 import javax.ejb.Local;
 
-
 /**
  *
  * @author Nicole
