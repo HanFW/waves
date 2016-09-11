@@ -34,8 +34,8 @@ public class CustomerBasic implements Serializable {
     private String customerOnlineBankingAccountNum;
     private String customerOnlineBankingPassword;
     private String customerIdentificationNum;
-    private String customerIdentificationType;
-    private String customerStatus;
+    private String customerPayeeNum;
+    private byte[] customerSignature;
     
     @OneToMany(cascade={CascadeType.ALL},fetch=FetchType.EAGER,mappedBy="customerBasic")
     private List<BankAccount> bankAccount;
@@ -187,14 +187,6 @@ public class CustomerBasic implements Serializable {
         this.customerIdentificationNum = customerIdentificationNum;
     }
 
-    public String getCustomerIdentificationType() {
-        return customerIdentificationType;
-    }
-
-    public void setCustomerIdentificationType(String customerIdentificationType) {
-        this.customerIdentificationType = customerIdentificationType;
-    }
-
     public List<BankAccount> getBankAccount() {
         return bankAccount;
     }
@@ -211,12 +203,20 @@ public class CustomerBasic implements Serializable {
         this.payee = payee;
     }
 
-    public String getCustomerStatus() {
-        return customerStatus;
+    public String getCustomerPayeeNum() {
+        return customerPayeeNum;
     }
 
-    public void setCustomerStatus(String customerStatus) {
-        this.customerStatus = customerStatus;
+    public void setCustomerPayeeNum(String customerPayeeNum) {
+        this.customerPayeeNum = customerPayeeNum;
+    }
+
+    public byte[] getCustomerSignature() {
+        return customerSignature;
+    }
+
+    public void setCustomerSignature(byte[] customerSignature) {
+        this.customerSignature = customerSignature;
     }
 
     @Override
