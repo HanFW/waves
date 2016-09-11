@@ -220,20 +220,12 @@ public class CustomerBasic implements Serializable {
         this.payee = payee;
     }
 
-    public String getCustomerPayeeNum() {
-        return customerPayeeNum;
+    public String getCustomerStatus() {
+        return customerStatus;
     }
 
-    public void setCustomerPayeeNum(String customerPayeeNum) {
-        this.customerPayeeNum = customerPayeeNum;
-    }
-
-    public byte[] getCustomerSignature() {
-        return customerSignature;
-    }
-
-    public void setCustomerSignature(byte[] customerSignature) {
-        this.customerSignature = customerSignature;
+    public void setCustomerStatus(String customerStatus) {
+        this.customerStatus = customerStatus;
     }
 
     @Override

@@ -150,18 +150,12 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal{
                 System.out.println("else");
                 customerBasic = (CustomerBasic) query.getResultList().get(0);
             }
-            else {
-                customerBasic = (CustomerBasic)query.getResultList().get(0);
-            }
         }
         catch(EntityNotFoundException enfe) {
             System.out.println("\nEntity not found error: "+enfe.getMessage());
             return new CustomerBasic();
         } catch (NonUniqueResultException nure) {
             System.out.println("\nNon unique result error: " + nure.getMessage());
-        }
-        catch(NonUniqueResultException nure) {
-            System.out.println("\nNon unique result error: "+nure.getMessage());
         }
         
         return customerBasic;
