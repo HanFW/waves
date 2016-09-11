@@ -6,7 +6,6 @@
 package managedbean;
 
 import entity.CustomerBasic;
-import java.util.List;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
@@ -24,35 +23,260 @@ public class CRMCustomerManagedBean {
     @EJB
     private CRMCustomerSessionBean customerSessionBean;
     private String customerName;
-    private String salutation;
-    private String identificationType;
-    private String identificationNum;
-    private String gender;
-    private String email;
-    private String mobile;
-    private String dateOfBirth;
-    private String nationality;
-    private String countryOfResidence;
-    private String Race;
-    private String maritalStatus;
-    private String occupation;
-    private String company;
-    private String address;
-    private String postal;
-    private String onlineBankingAccountNum;
-    private String onlineBankingPassword;
+    private String customerSalutation;
+    private String customerIdentificationNum;
+    private String customerGender;
+    private String customerEmail;
+    private String customerMobile;
+    private String customerDateOfBirth;
+    private String customerNationality;
+    private String customerCountryOfResidence;
+    private String customerRace;
+    private String customerMaritalStatus;
+    private String customerOccupation;
+    private String customerCompany;
+    private String customerAddress;
+    private String customerPostal;
+    private String customerOnlineBankingAccountNum;
+    private String customerOnlineBankingPassword;
+    private String customerPayeeNum;
+    private byte[] customerSignature;
     private Long newCustomerBasicId;
 
-    private String employmentDetails;
-    private String familyInfo;
-    private String creditReport;
-    private String financialRiskRating;
-    private String finanacialGoals;
-    private String finanacialAssets;
-    
-    private String onlineBankingNewPassword;
-    private String onlineBankingNewPasswordConfirm;
-    
+    private String customerEmploymentDetails;
+    private String customerFamilyInfo;
+    private String customerCreditReport;
+    private String customerFinancialRiskRating;
+    private String customerFinanacialGoals;
+    private String customerFinanacialAssets;
+
+    private String customerOnlineBankingNewPassword;
+    private String customerOnlineBankingNewPasswordConfirm;
+
+    public String getCustomerPayeeNum() {
+        return customerPayeeNum;
+    }
+
+    public void setCustomerPayeeNum(String customerPayeeNum) {
+        this.customerPayeeNum = customerPayeeNum;
+    }
+
+    public byte[] getCustomerSignature() {
+        return customerSignature;
+    }
+
+    public void setCustomerSignature(byte[] customerSignature) {
+        this.customerSignature = customerSignature;
+    }
+
+    public String getCustomerSalutation() {
+        return customerSalutation;
+    }
+
+    public void setCustomerSalutation(String customerSalutation) {
+        this.customerSalutation = customerSalutation;
+    }
+
+    public String getCustomerIdentificationNum() {
+        return customerIdentificationNum;
+    }
+
+    public void setCustomerIdentificationNum(String customerIdentificationNum) {
+        this.customerIdentificationNum = customerIdentificationNum;
+    }
+
+    public String getCustomerGender() {
+        return customerGender;
+    }
+
+    public void setCustomerGender(String customerGender) {
+        this.customerGender = customerGender;
+    }
+
+    public String getCustomerEmail() {
+        return customerEmail;
+    }
+
+    public void setCustomerEmail(String customerEmail) {
+        this.customerEmail = customerEmail;
+    }
+
+    public String getCustomerMobile() {
+        return customerMobile;
+    }
+
+    public void setCustomerMobile(String customerMobile) {
+        this.customerMobile = customerMobile;
+    }
+
+    public String getCustomerDateOfBirth() {
+        return customerDateOfBirth;
+    }
+
+    public void setCustomerDateOfBirth(String customerDateOfBirth) {
+        this.customerDateOfBirth = customerDateOfBirth;
+    }
+
+    public String getCustomerNationality() {
+        return customerNationality;
+    }
+
+    public void setCustomerNationality(String customerNationality) {
+        this.customerNationality = customerNationality;
+    }
+
+    public String getCustomerCountryOfResidence() {
+        return customerCountryOfResidence;
+    }
+
+    public void setCustomerCountryOfResidence(String customerCountryOfResidence) {
+        this.customerCountryOfResidence = customerCountryOfResidence;
+    }
+
+    public String getCustomerRace() {
+        return customerRace;
+    }
+
+    public void setCustomerRace(String customerRace) {
+        this.customerRace = customerRace;
+    }
+
+    public String getCustomerMaritalStatus() {
+        return customerMaritalStatus;
+    }
+
+    public void setCustomerMaritalStatus(String customerMaritalStatus) {
+        this.customerMaritalStatus = customerMaritalStatus;
+    }
+
+    public String getCustomerOccupation() {
+        return customerOccupation;
+    }
+
+    public void setCustomerOccupation(String customerOccupation) {
+        this.customerOccupation = customerOccupation;
+    }
+
+    public String getCustomerCompany() {
+        return customerCompany;
+    }
+
+    public void setCustomerCompany(String customerCompany) {
+        this.customerCompany = customerCompany;
+    }
+
+    public String getCustomerAddress() {
+        return customerAddress;
+    }
+
+    public void setCustomerAddress(String customerAddress) {
+        this.customerAddress = customerAddress;
+    }
+
+    public String getCustomerPostal() {
+        return customerPostal;
+    }
+
+    public void setCustomerPostal(String customerPostal) {
+        this.customerPostal = customerPostal;
+    }
+
+    public String getCustomerOnlineBankingAccountNum() {
+        return customerOnlineBankingAccountNum;
+    }
+
+    public void setCustomerOnlineBankingAccountNum(String customerOnlineBankingAccountNum) {
+        this.customerOnlineBankingAccountNum = customerOnlineBankingAccountNum;
+    }
+
+    public String getCustomerOnlineBankingPassword() {
+        return customerOnlineBankingPassword;
+    }
+
+    public void setCustomerOnlineBankingPassword(String customerOnlineBankingPassword) {
+        this.customerOnlineBankingPassword = customerOnlineBankingPassword;
+    }
+
+    public Long getNewCustomerBasicId() {
+        return newCustomerBasicId;
+    }
+
+    public void setNewCustomerBasicId(Long newCustomerBasicId) {
+        this.newCustomerBasicId = newCustomerBasicId;
+    }
+
+    public String getCustomerEmploymentDetails() {
+        return customerEmploymentDetails;
+    }
+
+    public void setCustomerEmploymentDetails(String customerEmploymentDetails) {
+        this.customerEmploymentDetails = customerEmploymentDetails;
+    }
+
+    public String getCustomerFamilyInfo() {
+        return customerFamilyInfo;
+    }
+
+    public void setCustomerFamilyInfo(String customerFamilyInfo) {
+        this.customerFamilyInfo = customerFamilyInfo;
+    }
+
+    public String getCustomerCreditReport() {
+        return customerCreditReport;
+    }
+
+    public void setCustomerCreditReport(String customerCreditReport) {
+        this.customerCreditReport = customerCreditReport;
+    }
+
+    public String getCustomerFinancialRiskRating() {
+        return customerFinancialRiskRating;
+    }
+
+    public void setCustomerFinancialRiskRating(String customerFinancialRiskRating) {
+        this.customerFinancialRiskRating = customerFinancialRiskRating;
+    }
+
+    public String getCustomerFinanacialGoals() {
+        return customerFinanacialGoals;
+    }
+
+    public void setCustomerFinanacialGoals(String customerFinanacialGoals) {
+        this.customerFinanacialGoals = customerFinanacialGoals;
+    }
+
+    public String getCustomerFinanacialAssets() {
+        return customerFinanacialAssets;
+    }
+
+    public void setCustomerFinanacialAssets(String customerFinanacialAssets) {
+        this.customerFinanacialAssets = customerFinanacialAssets;
+    }
+
+    public String getCustomerOnlineBankingNewPassword() {
+        return customerOnlineBankingNewPassword;
+    }
+
+    public void setCustomerOnlineBankingNewPassword(String customerOnlineBankingNewPassword) {
+        this.customerOnlineBankingNewPassword = customerOnlineBankingNewPassword;
+    }
+
+    public String getCustomerOnlineBankingNewPasswordConfirm() {
+        return customerOnlineBankingNewPasswordConfirm;
+    }
+
+    public void setCustomerOnlineBankingNewPasswordConfirm(String customerOnlineBankingNewPasswordConfirm) {
+        this.customerOnlineBankingNewPasswordConfirm = customerOnlineBankingNewPasswordConfirm;
+    }
+
+    public CustomerBasic getCb() {
+        return cb;
+    }
+
+    public void setCb(CustomerBasic cb) {
+        this.cb = cb;
+    }
+
     private String replacedCustomerAccountNum;
     private String replacedCustomerEmail;
     private String replacedCustomerMobile;
@@ -64,7 +288,6 @@ public class CRMCustomerManagedBean {
     public void setReplacedCustomerMobile(String replacedCustomerMobile) {
         this.replacedCustomerMobile = replacedCustomerMobile;
     }
-    
 
     public String getReplacedCustomerAccountNum() {
         return replacedCustomerAccountNum;
@@ -81,26 +304,8 @@ public class CRMCustomerManagedBean {
     public void setReplacedCustomerEmail(String replacedCustomerEmail) {
         this.replacedCustomerEmail = replacedCustomerEmail;
     }
-    
+
     private CustomerBasic cb = new CustomerBasic();
-    
-   
-
-    public String getOnlineBankingNewPassword() {
-        return onlineBankingNewPassword;
-    }
-
-    public void setOnlineBankingNewPassword(String onlineBankingNewPassword) {
-        this.onlineBankingNewPassword = onlineBankingNewPassword;
-    }
-
-    public String getOnlineBankingNewPasswordConfirm() {
-        return onlineBankingNewPasswordConfirm;
-    }
-
-    public void setOnlineBankingNewPasswordConfirm(String onlineBankingNewPasswordConfirm) {
-        this.onlineBankingNewPasswordConfirm = onlineBankingNewPasswordConfirm;
-    }
 
     public CRMCustomerSessionBean getCustomerSessionBean() {
         return customerSessionBean;
@@ -118,238 +323,52 @@ public class CRMCustomerManagedBean {
         this.customerName = customerName;
     }
 
-    public String getSalutation() {
-        return salutation;
-    }
-
-    public void setSalutation(String salutation) {
-        this.salutation = salutation;
-    }
-
-    public String getIdentificationType() {
-        return identificationType;
-    }
-
-    public void setIdentificationType(String identificationType) {
-        this.identificationType = identificationType;
-    }
-
-    public String getIdentificationNum() {
-        return identificationNum;
-    }
-
-    public void setIdentificationNum(String identificationNum) {
-        this.identificationNum = identificationNum;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getMobile() {
-        return mobile;
-    }
-
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
-    }
-
-    public String getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    public void setDateOfBirth(String dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
-
-    public String getNationality() {
-        return nationality;
-    }
-
-    public void setNationality(String nationality) {
-        this.nationality = nationality;
-    }
-
-    public String getCountryOfResidence() {
-        return countryOfResidence;
-    }
-
-    public void setCountryOfResidence(String countryOfResidence) {
-        this.countryOfResidence = countryOfResidence;
-    }
-
-    public String getRace() {
-        return Race;
-    }
-
-    public void setRace(String Race) {
-        this.Race = Race;
-    }
-
-    public String getMaritalStatus() {
-        return maritalStatus;
-    }
-
-    public void setMaritalStatus(String maritalStatus) {
-        this.maritalStatus = maritalStatus;
-    }
-
-    public String getOccupation() {
-        return occupation;
-    }
-
-    public void setOccupation(String occupation) {
-        this.occupation = occupation;
-    }
-
-    public String getCompany() {
-        return company;
-    }
-
-    public void setCompany(String company) {
-        this.company = company;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getPostal() {
-        return postal;
-    }
-
-    public void setPostal(String postal) {
-        this.postal = postal;
-    }
-
-    public String getOnlineBankingAccountNum() {
-        return onlineBankingAccountNum;
-    }
-
-    public void setOnlineBankingAccountNum(String onlineBankingAccountNum) {
-        this.onlineBankingAccountNum = onlineBankingAccountNum;
-    }
-
-    public String getOnlineBankingPassword() {
-        return onlineBankingPassword;
-    }
-
-    public void setOnlineBankingPassword(String onlineBankingPassword) {
-        this.onlineBankingPassword = onlineBankingPassword;
-    }
-
-    public String getEmploymentDetails() {
-        return employmentDetails;
-    }
-
-    public void setEmploymentDetails(String employmentDetails) {
-        this.employmentDetails = employmentDetails;
-    }
-
-    public String getFamilyInfo() {
-        return familyInfo;
-    }
-
-    public void setFamilyInfo(String familyInfo) {
-        this.familyInfo = familyInfo;
-    }
-
-    public String getCreditReport() {
-        return creditReport;
-    }
-
-    public void setCreditReport(String creditReport) {
-        this.creditReport = creditReport;
-    }
-
-    public String getFinancialRiskRating() {
-        return financialRiskRating;
-    }
-
-    public void setFinancialRiskRating(String financialRiskRating) {
-        this.financialRiskRating = financialRiskRating;
-    }
-
-    public String getFinanacialGoals() {
-        return finanacialGoals;
-    }
-
-    public void setFinanacialGoals(String finanacialGoals) {
-        this.finanacialGoals = finanacialGoals;
-    }
-
-    public String getFinanacialAssets() {
-        return finanacialAssets;
-    }
-
-    public void setFinanacialAssets(String finanacialAssets) {
-        this.finanacialAssets = finanacialAssets;
-    }
-
     public CRMCustomerManagedBean() {
     }
 
     public Long saveNewCustomerBasic(ActionEvent customerBasic) {
 
         try {
-            newCustomerBasicId = customerSessionBean.addNewCustomerBasic(customerName, salutation, identificationType, identificationNum, gender, email, mobile, dateOfBirth, nationality, countryOfResidence,Race, maritalStatus, occupation, company, address, postal, onlineBankingAccountNum, onlineBankingPassword);
+            newCustomerBasicId = customerSessionBean.addNewCustomerBasic(customerName, customerSalutation, customerIdentificationNum, customerGender, customerEmail, customerMobile, customerDateOfBirth, customerNationality, customerCountryOfResidence, customerRace, customerMaritalStatus, customerOccupation, customerCompany, customerAddress, customerPostal, customerOnlineBankingAccountNum, customerOnlineBankingPassword, customerPayeeNum, customerSignature);
             return newCustomerBasicId;
         } catch (Exception ex) {
             ex.printStackTrace();
             return -1L;
         }
     }
-    
+
     public String updateOnlineBankingAccountPIN(ActionEvent customerBasic) {
-        System.err.print("called");
-        return customerSessionBean.updateCustomerOnlineBankingAccountPIN(onlineBankingAccountNum, onlineBankingPassword, onlineBankingNewPassword);
+
+        return customerSessionBean.updateCustomerOnlineBankingAccountPIN(customerOnlineBankingAccountNum, customerOnlineBankingPassword, customerOnlineBankingNewPassword);
     }
-    
+
     public CustomerBasic getCustomerBasicInfo() {
-  
-          System.err.print("Get company:" + company);
-          
-          cb = customerSessionBean.getAllCustomerBasicProfile().get(0);
-          if(customerName == null){
-          customerName = cb.getCustomerName();
-          onlineBankingAccountNum = cb.getOnlineBankingAccountNum();
-          replacedCustomerAccountNum = customerAccountNumReplaceWithStar(onlineBankingAccountNum);
-          gender = cb.getGender();
-          dateOfBirth = cb.getDateOfBirth();
-          Race = cb.getRace();
-          nationality = cb.getNationality();
-          countryOfResidence = cb.getCountryOfResidence();
-          maritalStatus = cb.getMaritalStatus();
-          occupation = cb.getOccupation();
-          company = cb.getCompany();
-          mobile = cb.getMobile();
-          replacedCustomerMobile = customerMobileNumReplaceWithStar(mobile);
-          email = cb.getEmail();
-          replacedCustomerEmail = customerEmailReplaceWithStar(email);
-          address = cb.getAddress();
-          postal = cb.getPostal();
-          }
-          
-          return cb;
-        
+ 
+        cb = customerSessionBean.getAllCustomerBasicProfile().get(0);
+        if (customerName == null) {
+            customerName = cb.getCustomerName();
+            customerOnlineBankingAccountNum = cb.getCustomerOnlineBankingAccountNum();
+            replacedCustomerAccountNum = customerAccountNumReplaceWithStar(customerOnlineBankingAccountNum);
+            customerGender = cb.getCustomerGender();
+            customerDateOfBirth = cb.getCustomerDateOfBirth();
+            customerRace = cb.getCustomerRace();
+            customerNationality = cb.getCustomerNationality();
+            customerCountryOfResidence = cb.getCustomerCountryOfResidence();
+            customerMaritalStatus = cb.getCustomerMaritalStatus();
+            customerOccupation = cb.getCustomerOccupation();
+            customerCompany = cb.getCustomerCompany();
+            customerMobile = cb.getCustomerMobile();
+            replacedCustomerMobile = customerMobileNumReplaceWithStar(customerMobile);
+            customerEmail = cb.getCustomerEmail();
+            replacedCustomerEmail = customerEmailReplaceWithStar(customerEmail);
+            customerAddress = cb.getCustomerAddress();
+            customerPostal = cb.getCustomerPostal();
+        }
+
+        return cb;
+
     }
-    
+
     public String customerAccountNumReplaceWithStar(String inputCustomerAccountNumber) {
 
         String customerAccountNumAfterReplaced = "";
@@ -371,20 +390,19 @@ public class CRMCustomerManagedBean {
         customerEmailAfterReplaced = inputCustomerEmail.substring(0, 1) + "**" + inputCustomerEmail.substring(3);
         return customerEmailAfterReplaced;
     }
-    
+
     public String updateCustomerBasicProfile() {
-        
-        System.err.print("Update company:" + company);
-        
+
+      
         String updatedReplacedCustomerMobile = replacedCustomerMobile;
         String updatedReplacedCustomerEmail = replacedCustomerEmail;
-        
-        if(!replacedCustomerMobile.equals(customerMobileNumReplaceWithStar(mobile)) || !replacedCustomerEmail.equals(customerEmailReplaceWithStar(email))){
+
+        if (!replacedCustomerMobile.equals(customerMobileNumReplaceWithStar(customerMobile)) || !replacedCustomerEmail.equals(customerEmailReplaceWithStar(customerEmail))) {
             replacedCustomerMobile = customerMobileNumReplaceWithStar(updatedReplacedCustomerMobile);
             replacedCustomerEmail = customerEmailReplaceWithStar(updatedReplacedCustomerEmail);
-            return customerSessionBean.updateCustomerBasicProfile(onlineBankingAccountNum,nationality,countryOfResidence,maritalStatus,occupation, company, updatedReplacedCustomerEmail, updatedReplacedCustomerMobile,address, postal);
-        }else{
-            return customerSessionBean.updateCustomerBasicProfile(onlineBankingAccountNum,nationality,countryOfResidence,maritalStatus,occupation, company, email, mobile,address, postal);
-        }          
+            return customerSessionBean.updateCustomerBasicProfile(customerOnlineBankingAccountNum, customerNationality, customerCountryOfResidence, customerMaritalStatus, customerOccupation, customerCompany, updatedReplacedCustomerEmail, updatedReplacedCustomerMobile, customerAddress, customerPostal);
+        } else {
+            return customerSessionBean.updateCustomerBasicProfile(customerOnlineBankingAccountNum, customerNationality, customerCountryOfResidence, customerMaritalStatus, customerOccupation, customerCompany, customerEmail, customerMobile, customerAddress, customerPostal);
+        }
     }
 }

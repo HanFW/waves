@@ -14,15 +14,15 @@
             <h:panelGrid columns="2" id="matchGrid" cellpadding="5">
                 iBanking Account No.: XXX
                 <h:outputText value="&lt;br /&gt;" escape="false" />
-                 <p:inputText required="true" label="onlineBankingAccountNum"  id="onlineBankingAccountNum" value="#{cRMCustomerManagedBean.onlineBankingAccountNum}"/>
+                <p:inputText required="true" label="onlineBankingAccountNum"  id="onlineBankingAccountNum" value="#{cRMCustomerManagedBean.customerOnlineBankingAccountNum}"/>
                  <h:outputText value="&lt;br /&gt;" escape="false" />
                 <h:outputLabel for="currentPassword" value="Current Password: *" />
-                <p:password id="currentPassword" value="#{cRMCustomerManagedBean.onlineBankingPassword}" label="Current Password" required="true" />
+                <p:password id="currentPassword" value="#{cRMCustomerManagedBean.customerOnlineBankingPassword}" label="Current Password" required="true" />
                 <h:outputLabel for="newPassword" value="New Password: *" />
-                <p:password id="newPassword" value="#{cRMCustomerManagedBean.onlineBankingNewPassword}" match="newPasswordConfirm" label="New Password" required="true" />
+                <p:password id="newPassword" value="#{cRMCustomerManagedBean.customerOnlineBankingNewPassword}" match="newPasswordConfirm" label="New Password" required="true" />
 
                 <h:outputLabel for="newPasswordConfirm" value="Confirm New Password: *" />
-                <p:password id="newPasswordConfirm" value="#{cRMCustomerManagedBean.onlineBankingNewPasswordConfirm}" label="Confirm New Password" required="true" />
+                <p:password id="newPasswordConfirm" value="#{cRMCustomerManagedBean.customerOnlineBankingNewPasswordConfirm}" label="Confirm New Password" required="true" />
             </h:panelGrid>
 
             <p:commandButton update="matchGrid" value="Save" actionListener="#{cRMCustomerManagedBean.updateOnlineBankingAccountPIN}" ajax="true" />
