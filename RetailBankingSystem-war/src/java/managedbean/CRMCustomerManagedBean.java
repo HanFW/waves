@@ -281,7 +281,6 @@ public class CRMCustomerManagedBean {
         this.cb = cb;
     }
 
-    private String replacedCustomerAccountNum;
     private String replacedCustomerEmail;
     private String replacedCustomerMobile;
 
@@ -291,14 +290,6 @@ public class CRMCustomerManagedBean {
 
     public void setReplacedCustomerMobile(String replacedCustomerMobile) {
         this.replacedCustomerMobile = replacedCustomerMobile;
-    }
-
-    public String getReplacedCustomerAccountNum() {
-        return replacedCustomerAccountNum;
-    }
-
-    public void setReplacedCustomerAccountNum(String replacedCustomerAccountNum) {
-        this.replacedCustomerAccountNum = replacedCustomerAccountNum;
     }
 
     public String getReplacedCustomerEmail() {
@@ -352,7 +343,6 @@ public class CRMCustomerManagedBean {
         if (customerName == null) {
             customerName = cb.getCustomerName();
             customerOnlineBankingAccountNum = cb.getCustomerOnlineBankingAccountNum();
-            replacedCustomerAccountNum = customerAccountNumReplaceWithStar(customerOnlineBankingAccountNum);
             customerGender = cb.getCustomerGender();
             customerDateOfBirth = cb.getCustomerDateOfBirth();
             customerRace = cb.getCustomerRace();
@@ -373,15 +363,15 @@ public class CRMCustomerManagedBean {
 
     }
 
-    public String customerAccountNumReplaceWithStar(String inputCustomerAccountNumber) {
-
-        String customerAccountNumAfterReplaced = "";
-
-        if (inputCustomerAccountNumber != null) {
-            customerAccountNumAfterReplaced = inputCustomerAccountNumber.substring(0, 2) + "****" + inputCustomerAccountNumber.substring(6);
-        }
-        return customerAccountNumAfterReplaced;
-    }
+//    public String customerAccountNumReplaceWithStar(String inputCustomerAccountNumber) {
+//
+//        String customerAccountNumAfterReplaced = "";
+//
+//        if (inputCustomerAccountNumber != null) {
+//            customerAccountNumAfterReplaced = inputCustomerAccountNumber.substring(0, 2) + "****" + inputCustomerAccountNumber.substring(6);
+//        }
+//        return customerAccountNumAfterReplaced;
+//    }
 
     public String customerMobileNumReplaceWithStar(String inputCustomerMobileNum) {
         String customerMobileNumAfterReplaced = "";
@@ -394,6 +384,7 @@ public class CRMCustomerManagedBean {
         customerEmailAfterReplaced = inputCustomerEmail.substring(0, 1) + "**" + inputCustomerEmail.substring(3);
         return customerEmailAfterReplaced;
     }
+    
 
     public String updateCustomerBasicProfile() {
 
