@@ -28,13 +28,29 @@ public class Role implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long roleId;
     private String roleName;
-    private String description;
-    private String permission;
+    private String roleDescription;
+    private String rolePermission;
     @ManyToMany(cascade = {CascadeType.ALL}, mappedBy = "role")
     private Set<Employee> employee = new HashSet<Employee>();
 
     public Long getRoleId() {
         return roleId;
+    }
+
+    public String getRoleDescription() {
+        return roleDescription;
+    }
+
+    public void setRoleDescription(String roleDescription) {
+        this.roleDescription = roleDescription;
+    }
+
+    public String getRolePermission() {
+        return rolePermission;
+    }
+
+    public void setRolePermission(String rolePermission) {
+        this.rolePermission = rolePermission;
     }
 
     public void setRoleId(Long roleId) {
@@ -47,22 +63,6 @@ public class Role implements Serializable {
 
     public void setRoleName(String roleName) {
         this.roleName = roleName;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getPermission() {
-        return permission;
-    }
-
-    public void setPermission(String permission) {
-        this.permission = permission;
     }
 
     public Set<Employee> getEmployee() {
