@@ -14,6 +14,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import org.primefaces.event.FlowEvent;
+import session.stateless.AdminSessionBeanLocal;
 import session.stateless.BankAccountSessionLocal;
 import session.stateless.InterestSessionLocal;
 
@@ -23,6 +24,9 @@ import session.stateless.InterestSessionLocal;
 
 public class AccountManagedBean implements Serializable{
     @EJB
+    private AdminSessionBeanLocal adminSessionBeanLocal;
+    
+    @EJB
     private InterestSessionLocal interestSessionLocal;
     
     @EJB
@@ -30,7 +34,7 @@ public class AccountManagedBean implements Serializable{
     
     @EJB
     private BankAccountSessionLocal bankAccountSessionLocal;
-    
+       
     private BankAccount bankAccount;
     
     private Long bankAccountId;
@@ -458,6 +462,7 @@ public class AccountManagedBean implements Serializable{
 //                    customerIdentificationNum, customerGender, customerEmail, customerMobile, customerDateOfBirth,
 //                    customerNationality, customerCountryOfResidence, customerRace, customerMaritalStatus,
 //                    customerOccupation, customerName, statusMessage, customerName,customerBasic);
+            adminSessionBeanLocal.createOnlineBankingAccount(customerBasicId);
         }
         else if(existingCustomer.equals("No"))
         {
@@ -478,6 +483,7 @@ public class AccountManagedBean implements Serializable{
             bankAccountBalance="0";
             transferDailyLimit = "2000";
             newAccountId = bankAccountSessionLocal.addNewAccount(bankAccountNum,bankAccountPwd,bankAccountType,bankAccountBalance,transferDailyLimit,newCustomerBasicId,newInterestId);
+            adminSessionBeanLocal.createOnlineBankingAccount(newAccountId);
         }
         
         statusMessage = "New Account Saved Successfully.";
