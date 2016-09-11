@@ -1,5 +1,6 @@
 package managedbean;
 
+import entity.BankAccount;
 import entity.Payee;
 import java.io.IOException;
 import javax.ejb.EJB;
@@ -9,6 +10,8 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
+import session.stateless.BankAccountSessionLocal;
+import session.stateless.CRMCustomerSessionBeanLocal;
 import session.stateless.PayeeSessionLocal;
 
 @Named(value = "transactionManagedBean")
@@ -16,8 +19,14 @@ import session.stateless.PayeeSessionLocal;
 
 public class PayeeManagedBean {
     @EJB
-    private PayeeSessionLocal payeeSessionLocal;
+    private BankAccountSessionLocal bankAccountSessionLocal;
+
+    @EJB
+    private CRMCustomerSessionBeanLocal customerSessionBeanLocal;
     
+    @EJB
+    private PayeeSessionLocal payeeSessionLocal;
+
     private Long payeeId;
     private String payeeName;
     private String payeeAccountNum;
@@ -26,113 +35,124 @@ public class PayeeManagedBean {
     private String lastTransactionDate;
     private String statusMessage;
     private Long customerBasicId;
-    
+
     private ExternalContext ec;
-    
+
     public PayeeManagedBean() {
     }
-    
+
     public String getPayeeName() {
         return payeeName;
     }
-    
+
     public void setPayeeName(String payeeName) {
         this.payeeName = payeeName;
     }
-    
+
     public String getPayeeAccountNum() {
         return payeeAccountNum;
     }
-    
+
     public void setPayeeAccountNum(String payeeAccountNum) {
         this.payeeAccountNum = payeeAccountNum;
     }
-    
+
     public String getPayeeAccountType() {
         return payeeAccountType;
     }
-    
+
     public void setPayeeAccountType(String payeeAccountType) {
         this.payeeAccountType = payeeAccountType;
     }
-    
+
     public Long getNewPayeeId() {
         return newPayeeId;
     }
-    
+
     public void setNewPayeeId(Long newPayeeId) {
         this.newPayeeId = newPayeeId;
     }
-    
+
     public String getStatusMessage() {
         return statusMessage;
     }
-    
+
     public void setStatusMessage(String statusMessage) {
         this.statusMessage = statusMessage;
     }
-    
+
     public String getLastTransactionDate() {
         return lastTransactionDate;
     }
-    
+
     public void setLastTransactionDate(String lastTransactionDate) {
         this.lastTransactionDate = lastTransactionDate;
     }
-    
+
     public Long getPayeeId() {
         return payeeId;
     }
-    
+
     public void setPayeeId(Long payeeId) {
         this.payeeId = payeeId;
     }
-    
-    public void addPayee() throws IOException{
+
+    public void addPayee() throws IOException {
         ec = FacesContext.getCurrentInstance().getExternalContext();
         Payee payee = payeeSessionLocal.retrievePayeeByName(payeeName);
+        BankAccount bankAccount = bankAccountSessionLocal.retrieveBankAccountByNum(payeeAccountNum);
         
-        if(payee.getPayeeId()==null)
-        {
-            lastTransactionDate="";
-            customerBasicId=Long.valueOf(1);
-            newPayeeId=payeeSessionLocal.addNewPayee(payeeName,payeeAccountNum,payeeAccountType,lastTransactionDate,customerBasicId);
-            statusMessage = "New Recipient Added Successfully.";
-             
-            ec.getFlash().put("statusMessage", statusMessage);
-            ec.getFlash().put("newPayeeId", newPayeeId);
-            ec.getFlash().put("payeeName", payeeName);
-            ec.getFlash().put("payeeAccountNum", payeeAccountNum);
-            ec.getFlash().put("payeeAccountType", payeeAccountType);
-          
-            ec.redirect("addRecipientDone.xhtml?faces-redirect=true");
+        if(bankAccount.getBankAccountStatus().equals("Inactivated")) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!Your account has not been activated.","Failed"));
         }
-        else{
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Recipient has existed.","Failed!"));
+        
+        if (payee.getPayeeId() == null) {
+            lastTransactionDate = "";
+            customerBasicId = Long.valueOf(1);
+            boolean checkPayeeNum = customerSessionBeanLocal.updatePayeeNum(customerBasicId);
+            
+            if (checkPayeeNum == false) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! You already have 20 recipients.", "Failed!"));
+            } else {
+                newPayeeId = payeeSessionLocal.addNewPayee(payeeName, payeeAccountNum, payeeAccountType, lastTransactionDate, customerBasicId);
+                statusMessage = "New Recipient Added Successfully.";
+
+                ec.getFlash().put("statusMessage", statusMessage);
+                ec.getFlash().put("newPayeeId", newPayeeId);
+                ec.getFlash().put("payeeName", payeeName);
+                ec.getFlash().put("payeeAccountNum", payeeAccountNum);
+                ec.getFlash().put("payeeAccountType", payeeAccountType);
+
+                ec.redirect("addRecipientDone.xhtml?faces-redirect=true");
+            }
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Recipient has existed.", "Failed!"));
         }
     }
-    
-    public void deletePayee() throws IOException{
+
+    public void deletePayee() throws IOException {
         ec = FacesContext.getCurrentInstance().getExternalContext();
         Payee payee = payeeSessionLocal.retrievePayeeByName(payeeName);
+        BankAccount bankAccount = bankAccountSessionLocal.retrieveBankAccountByNum(payeeAccountNum);
         
-        if(payee.getPayeeId()==null)
-        {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Recipient does not exist.","Failed!"));
+        if(bankAccount.getBankAccountStatus().equals("Inactivated")) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!Your account has not been activated.","Failed"));
         }
-        else
-        {
-            payeeAccountNum=payee.getPayeeAccountNum();
-            payeeAccountType=payee.getPayeeAccountType();
-            
+        
+        if (payee.getPayeeId() == null) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Recipient does not exist.", "Failed!"));
+        } else {
+            payeeAccountNum = payee.getPayeeAccountNum();
+            payeeAccountType = payee.getPayeeAccountType();
+
             payeeSessionLocal.deletePayee(payeeName);
             statusMessage = "Recipient deleted Successfully.";
-            
+
             ec.getFlash().put("statusMessage", statusMessage);
             ec.getFlash().put("payeeName", payeeName);
             ec.getFlash().put("payeeAccountNum", payeeAccountNum);
             ec.getFlash().put("payeeAccountType", payeeAccountType);
-            
+
             ec.redirect("deleteRecipientDone.xhtml?faces-redirect=true");
         }
     }
