@@ -23,6 +23,8 @@ public class BankAccount implements Serializable {
     private String bankAccountType;
     private String bankAccountBalance;
     private String transferDailyLimit;
+    private String transferBalance;
+    private String bankAccountStatus;
     
     @OneToMany(cascade={CascadeType.ALL},fetch=FetchType.EAGER,mappedBy="bankAccount")
     private List<AccTransaction> accTransaction;
@@ -103,6 +105,22 @@ public class BankAccount implements Serializable {
 
     public void setTransferDailyLimit(String transferDailyLimit) {
         this.transferDailyLimit = transferDailyLimit;
+    }
+
+    public String getTransferBalance() {
+        return transferBalance;
+    }
+
+    public void setTransferBalance(String transferBalance) {
+        this.transferBalance = transferBalance;
+    }
+
+    public String getBankAccountStatus() {
+        return bankAccountStatus;
+    }
+
+    public void setBankAccountStatus(String bankAccountStatus) {
+        this.bankAccountStatus = bankAccountStatus;
     }
     
     @Override

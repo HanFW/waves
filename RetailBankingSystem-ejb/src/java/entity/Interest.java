@@ -17,8 +17,8 @@ public class Interest implements Serializable {
     private Long interestId;
     private String dailyInterest;
     private String monthlyInterest;
-    private boolean isTransfer;
-    private boolean isWithdraw;
+    private String isTransfer;
+    private String isWithdraw;
 
     @OneToOne(cascade={CascadeType.ALL},fetch=FetchType.EAGER,mappedBy="interest")
     private BankAccount bankAccount;
@@ -47,19 +47,19 @@ public class Interest implements Serializable {
         this.monthlyInterest = monthlyInterest;
     }
 
-    public boolean isIsTransfer() {
+    public String getIsTransfer() {
         return isTransfer;
     }
 
-    public void setIsTransfer(boolean isTransfer) {
+    public void setIsTransfer(String isTransfer) {
         this.isTransfer = isTransfer;
     }
 
-    public boolean isIsWithdraw() {
+    public String getIsWithdraw() {
         return isWithdraw;
     }
 
-    public void setIsWithdraw(boolean isWithdraw) {
+    public void setIsWithdraw(String isWithdraw) {
         this.isWithdraw = isWithdraw;
     }
 
