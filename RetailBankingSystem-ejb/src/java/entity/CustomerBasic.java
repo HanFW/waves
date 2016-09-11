@@ -34,6 +34,7 @@ public class CustomerBasic implements Serializable {
     private String customerOnlineBankingAccountNum;
     private String customerOnlineBankingPassword;
     private String customerIdentificationNum;
+    private String customerStatus;
     private String customerPayeeNum;
     private byte[] customerSignature;
     
@@ -51,6 +52,22 @@ public class CustomerBasic implements Serializable {
         this.customerBasicId = customerBasicId;
     }
 
+    public String getCustomerPayeeNum() {
+        return customerPayeeNum;
+    }
+
+    public void setCustomerPayeeNum(String customerPayeeNum) {
+        this.customerPayeeNum = customerPayeeNum;
+    }
+
+    public byte[] getCustomerSignature() {
+        return customerSignature;
+    }
+
+    public void setCustomerSignature(byte[] customerSignature) {
+        this.customerSignature = customerSignature;
+    }
+    
     public String getCustomerSalutation() {
         return customerSalutation;
     }
@@ -65,6 +82,14 @@ public class CustomerBasic implements Serializable {
 
     public void setCustomerName(String customerName) {
         this.customerName = customerName;
+    }
+    
+    public String getCustomerIdentificationNum() {
+        return customerIdentificationNum;
+    }
+
+    public void setCustomerIdentificationNum(String customerIdentificationNum) {
+        this.customerIdentificationNum = customerIdentificationNum;
     }
 
     public String getCustomerGender() {
@@ -177,14 +202,6 @@ public class CustomerBasic implements Serializable {
 
     public void setCustomerOnlineBankingPassword(String customerOnlineBankingPassword) {
         this.customerOnlineBankingPassword = customerOnlineBankingPassword;
-    }
-
-    public String getCustomerIdentificationNum() {
-        return customerIdentificationNum;
-    }
-
-    public void setCustomerIdentificationNum(String customerIdentificationNum) {
-        this.customerIdentificationNum = customerIdentificationNum;
     }
 
     public List<BankAccount> getBankAccount() {

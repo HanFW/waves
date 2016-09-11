@@ -21,13 +21,69 @@ public class CustomerAdvanced implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long customerAdvancedId;
-    private String employmentDetails;
-    private String familyInfo;
-    private String creditReport;
-    private String financialRiskRating;
-    private String finanacialGoals;
-    private String finanacialAssets;
-    private String onlineBankingAccountNum;
+    private String customerEmploymentDetails;
+    private String customerFamilyInfo;
+    private String customerCreditReport;
+    private String customerFinancialRiskRating;
+    private String customerFinanacialGoals;
+    private String customerFinanacialAssets;
+    private String customerOnlineBankingAccountNum;
+
+    public String getCustomerEmploymentDetails() {
+        return customerEmploymentDetails;
+    }
+
+    public void setCustomerEmploymentDetails(String customerEmploymentDetails) {
+        this.customerEmploymentDetails = customerEmploymentDetails;
+    }
+
+    public String getCustomerFamilyInfo() {
+        return customerFamilyInfo;
+    }
+
+    public void setCustomerFamilyInfo(String customerFamilyInfo) {
+        this.customerFamilyInfo = customerFamilyInfo;
+    }
+
+    public String getCustomerCreditReport() {
+        return customerCreditReport;
+    }
+
+    public void setCustomerCreditReport(String customerCreditReport) {
+        this.customerCreditReport = customerCreditReport;
+    }
+
+    public String getCustomerFinancialRiskRating() {
+        return customerFinancialRiskRating;
+    }
+
+    public void setCustomerFinancialRiskRating(String customerFinancialRiskRating) {
+        this.customerFinancialRiskRating = customerFinancialRiskRating;
+    }
+
+    public String getCustomerFinanacialGoals() {
+        return customerFinanacialGoals;
+    }
+
+    public void setCustomerFinanacialGoals(String customerFinanacialGoals) {
+        this.customerFinanacialGoals = customerFinanacialGoals;
+    }
+
+    public String getCustomerFinanacialAssets() {
+        return customerFinanacialAssets;
+    }
+
+    public void setCustomerFinanacialAssets(String customerFinanacialAssets) {
+        this.customerFinanacialAssets = customerFinanacialAssets;
+    }
+
+    public String getCustomerOnlineBankingAccountNum() {
+        return customerOnlineBankingAccountNum;
+    }
+
+    public void setCustomerOnlineBankingAccountNum(String customerOnlineBankingAccountNum) {
+        this.customerOnlineBankingAccountNum = customerOnlineBankingAccountNum;
+    }
 
 
     public Long getCustomerAdvancedId() {
@@ -36,62 +92,6 @@ public class CustomerAdvanced implements Serializable {
 
     public void setCustomerAdvancedId(Long customerAdvancedId) {
         this.customerAdvancedId = customerAdvancedId;
-    }
-
-    public String getEmploymentDetails() {
-        return employmentDetails;
-    }
-
-    public void setEmploymentDetails(String employmentDetails) {
-        this.employmentDetails = employmentDetails;
-    }
-
-    public String getFamilyInfo() {
-        return familyInfo;
-    }
-
-    public void setFamilyInfo(String familyInfo) {
-        this.familyInfo = familyInfo;
-    }
-
-    public String getCreditReport() {
-        return creditReport;
-    }
-
-    public void setCreditReport(String creditReport) {
-        this.creditReport = creditReport;
-    }
-
-    public String getFinancialRiskRating() {
-        return financialRiskRating;
-    }
-
-    public void setFinancialRiskRating(String financialRiskRating) {
-        this.financialRiskRating = financialRiskRating;
-    }
-
-    public String getFinanacialGoals() {
-        return finanacialGoals;
-    }
-
-    public void setFinanacialGoals(String finanacialGoals) {
-        this.finanacialGoals = finanacialGoals;
-    }
-
-    public String getFinanacialAssets() {
-        return finanacialAssets;
-    }
-
-    public void setFinanacialAssets(String finanacialAssets) {
-        this.finanacialAssets = finanacialAssets;
-    }
-
-    public String getOnlineBankingAccountNum() {
-        return onlineBankingAccountNum;
-    }
-
-    public void setOnlineBankingAccountNum(String onlineBankingAccountNum) {
-        this.onlineBankingAccountNum = onlineBankingAccountNum;
     }
 
     @Override

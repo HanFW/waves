@@ -28,6 +28,8 @@ import javax.persistence.NonUniqueResultException;
 @Stateless
 @LocalBean
 public class BankAccountSession implements BankAccountSessionLocal {
+    @EJB
+    private AdminSessionBeanLocal adminSessionBeanLocal;
 
     @EJB
     private TransactionSessionLocal transactionSessionLocal;
@@ -37,7 +39,7 @@ public class BankAccountSession implements BankAccountSessionLocal {
 
     @EJB
     private CRMCustomerSessionBean customerSessionBean;
-
+    
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -187,6 +189,8 @@ public class BankAccountSession implements BankAccountSessionLocal {
 
         entityManager.persist(bankAccount);
         entityManager.flush();
+        
+        String onlineAccount = adminSessionBeanLocal.createOnlineBankingAccount(customerBasicId);
 
         return bankAccount.getBankAccountId();
     }
