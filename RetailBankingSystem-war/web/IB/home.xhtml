@@ -8,7 +8,23 @@
     </h:head>
     <h:body>
         Hello from online banking home page
-        <p:button outcome="deposit/depositIndex" value="deposit"/>
+        <h:form>
+            <p:menubar>
+                <p:submenu label="Home">
+                    <p:menuitem value="Home" url="home.xhtml" />
+                </p:submenu>
+                
+                <p:submenu label="Deposit">
+                    <p:menuitem value="Deposit" url="deposit/depositIndex.xhtml" />
+                </p:submenu>
+                
+                <p:submenu label="My profile">
+                    <p:menuitem value="Change password" url="CRM/CRMCustomerChangePIN.xhtml" />
+                    <p:menuitem value="Update basic profile" url="CRM/CRMCustomerUpdateBasicProfile.xhtml" />
+                </p:submenu>
+                
+            </p:menubar>
+        </h:form>
     </h:body>
 </html>
 

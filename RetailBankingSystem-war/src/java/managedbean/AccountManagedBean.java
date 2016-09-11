@@ -70,6 +70,8 @@ public class AccountManagedBean implements Serializable{
     private Long newCustomerBasicId;
     private String customerOnlineBankingAccountNum;
     private String customerOnlineBankingPassword;
+    private String customerPayeeNum;
+    private String customerSignature;
     
     private Long newInterestId;
     private Long interestId;
@@ -425,6 +427,22 @@ public class AccountManagedBean implements Serializable{
     public String onFlowProcess(FlowEvent event) {
         return event.getNewStep();
     }
+
+    public String getCustomerPayeeNum() {
+        return customerPayeeNum;
+    }
+
+    public void setCustomerPayeeNum(String customerPayeeNum) {
+        this.customerPayeeNum = customerPayeeNum;
+    }
+
+    public String getCustomerSignature() {
+        return customerSignature;
+    }
+
+    public void setCustomerSignature(String customerSignature) {
+        this.customerSignature = customerSignature;
+    }
     
     public void saveAccount() {
         
@@ -466,13 +484,14 @@ public class AccountManagedBean implements Serializable{
         }
         else if(existingCustomer.equals("No"))
         {
+            customerPayeeNum="0";
             newCustomerBasicId = customerSessionBean.addNewCustomerBasic(customerName,
-                    customerSalutation, customerIdentificationType, customerIdentificationNum.toUpperCase(),
+                    customerSalutation,customerIdentificationNum.toUpperCase(),
                     customerGender, customerEmail, customerMobile, customerDateOfBirth,
                     customerNationality, customerCountryOfResidence,customerRace,
                     customerMaritalStatus, customerOccupation, customerCompany,
                     customerAddress, customerPostal, customerOnlineBankingAccountNum,
-                    customerOnlineBankingPassword);
+                    customerOnlineBankingPassword,customerPayeeNum,customerSignature.getBytes());
             
             dailyInterest="0";
             monthlyInterest="0";
