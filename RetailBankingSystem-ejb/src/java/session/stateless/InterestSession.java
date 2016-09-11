@@ -2,6 +2,8 @@ package session.stateless;
 
 import entity.BankAccount;
 import entity.Interest;
+import java.util.Calendar;
+import java.util.Date;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -17,16 +19,13 @@ import javax.persistence.Query;
 public class InterestSession implements InterestSessionLocal {
 
     @EJB
-    private EjbTimerSessionLocal ejbTimerSessionLocal;
-
-    @EJB
     private BankAccountSessionLocal bankAccountSessionLocal;
 
     @PersistenceContext
     private EntityManager entityManager;
-
+    
     @Override
-    public Long addNewInterest(String dailyInterest, String monthlyInterest, boolean isTransfer, boolean isWithdraw) {
+    public Long addNewInterest(String dailyInterest, String monthlyInterest, String isTransfer, String isWithdraw) {
 
         Interest interest = new Interest();
 
@@ -84,26 +83,5 @@ public class InterestSession implements InterestSessionLocal {
         }
 
         return interest;
-    }
-
-    @Override
-    public Double accuredInterest(String bankAccountNum) {
-        BankAccount bankAccount = bankAccountSessionLocal.retrieveBankAccountByNum(bankAccountNum);
-        Double currentInterest = Double.valueOf(bankAccount.getInterest().getDailyInterest());
-        Double currentBalance = Double.valueOf(bankAccount.getBankAccountBalance());
-       
-        Double accuredInterest = currentInterest + currentBalance*0.005;
-        
-        return accuredInterest;
-    }
-
-    @Override
-    public void creditedInterest(String bankAccountNum) {
-
-    }
-
-    @Override
-    public void calculateInterest(String bankAccountNum) {
-
     }
 }

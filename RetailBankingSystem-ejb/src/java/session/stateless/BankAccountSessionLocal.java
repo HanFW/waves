@@ -4,6 +4,7 @@ import javax.ejb.Local;
 import entity.BankAccount;
 import entity.CustomerBasic;
 import entity.AccTransaction;
+import java.util.Date;
 import java.util.List;
 
 @Local
@@ -17,6 +18,12 @@ public interface BankAccountSessionLocal {
     public List <BankAccount> getAllBankAccount();
     public Long addNewAccount(String bankAccountNum,String bankAccountPwd,
             String bankAccountType,String bankAccountBalance,String transferDailyLimit,
-            Long customerBasicId,Long interestId);
+            String transferBalance,String bankAccountStatus,Long customerBasicId,Long interestId);
     public String deleteAccount(String bankAccountNum);
+    public void activateAccounts(String bankAccountNum);
+    public void interestCrediting(String bankAccountNum);
+    public String checkAccountDuplication (String bankAccountNum);
+    public String generateBankAccount(String customerIdentificationNum);
+    public boolean checkExistence(String customerIdentificationNum);
+    public String changeDateFormat (Date customerDateOfBirth);
 }
