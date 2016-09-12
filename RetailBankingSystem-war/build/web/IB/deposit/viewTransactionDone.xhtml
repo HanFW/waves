@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>View Transaction History</title>
+        <style type="text/css">
+            .gritter-notice-wrapper {
+                left:200px;
+                top: 50px;
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <h:form id="formMain">
+            <h1>Welcome to Merlion Bank</h1>
+            <p:menubar>
+                <p:submenu label="Home">
+                    <p:menuitem value="Home" url="index.xhtml" />
+                </p:submenu>
+                    
+                <p:submenu label="My Account">
+                    <p:menuitem value="Open Account" url="openAccount.xhtml" />
+                    <p:menuitem value="Close Account" url="closeAccount.xhtml" />
+                    <p:menuitem value="View Account" url="viewAccount.xhtml" />
+                    <p:menuitem value="Cash Deposit" url="cashDeposit.xhtml" />
+                    <p:menuitem value="Cash Withdraw" url="cashWithdraw.xhtml" />
+                    <p:menuitem value="View Transaction" url="viewTransaction.xhtml" />
+                </p:submenu>
+                
+                <p:submenu label="Transfer" >
+                    <p:menuitem value="To My Account" url="toMyAccount.xhtml" />
+                    <p:menuitem value="To Other Merlion Accounts" url="toOthersAccount.xhtml" />
+                    <p:menuitem value="To Other Merlion Accuonts(One-time)" url="oneTimeTransfer.xhtml" />
+                    <p:menuitem value="Add Recipient" url="addRecipient.xhtml" />
+                    <p:menuitem value="Delete Recipient" url="deleteRecipient.xhtml" />
+                    <p:menuitem value="Change Daily Transfer Limit" url="dailyTransferLimit.xhtml" />
+                </p:submenu>
+            </p:menubar>
+            <br/>
+            <p:panel header="View Transaction History">
+                <p:dataTable var="accTransaction" value="#{transactionManagedBean.transaction}" 
+                             paginator="true" rows="10" emptyMessage="No Transaction Record">
+                    <p:column headerText="Transaction ID">
+                        <h:outputText value="#{accTransaction.transactionId}" /> 
+                    </p:column>
+                        
+                    <p:column headerText="Transaction Date">
+                        <h:outputText value="#{accTransaction.transactionDate}" /> 
+                    </p:column>
+                        
+                    <p:column headerText="Transaction Code"> 
+                        <h:outputText value="#{accTransaction.transactionCode}" />
+                    </p:column>
+                        
+                    <p:column headerText="Transaction Ref"> 
+                        <h:outputText value="#{accTransaction.transactionRef}" />
+                    </p:column>
+                    
+                    <p:column headerText="Account Debit"> 
+                        <h:outputText value="#{accTransaction.accountDebit}" />
+                    </p:column>
+                    
+                    <p:column headerText="Account Credit"> 
+                        <h:outputText value="#{accTransaction.accountCredit}" />
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+        </h:form>
+    </h:body>
+</html>

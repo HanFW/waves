@@ -1,0 +1,115 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Cash Deposit</title>
+        <style type="text/css">
+            .gritter-notice-wrapper {
+                left:200px;
+                top: 50px;
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <h:form id="formMain">
+            <h1>Welcome to Merlion Bank</h1>
+            <p:menubar>
+                <p:submenu label="Home">
+                    <p:menuitem value="Home" url="index.xhtml" />
+                </p:submenu>
+                    
+                <p:submenu label="My Account">
+                    <p:menuitem value="Open Account" url="openAccount.xhtml" />
+                    <p:menuitem value="Close Account" url="closeAccount.xhtml" />
+                    <p:menuitem value="View Account" url="viewAccount.xhtml" />
+                    <p:menuitem value="Cash Deposit" url="cashDeposit.xhtml" />
+                    <p:menuitem value="Cash Withdraw" url="cashWithdraw.xhtml" />
+                    <p:menuitem value="View Transaction" url="viewTransaction.xhtml" />
+                </p:submenu>
+                
+                <p:submenu label="Transfer" >
+                    <p:menuitem value="To My Account" url="toMyAccount.xhtml" />
+                    <p:menuitem value="To Other Merlion Accounts" url="toOthersAccount.xhtml" />
+                    <p:menuitem value="To Other Merlion Accuonts(One-time)" url="oneTimeTransfer.xhtml" />
+                    <p:menuitem value="Add Recipient" url="addRecipient.xhtml" />
+                    <p:menuitem value="Delete Recipient" url="deleteRecipient.xhtml" />
+                    <p:menuitem value="Change Daily Transfer Limit" url="dailyTransferLimit.xhtml" />
+                </p:submenu>
+            </p:menubar>
+            <br/>
+            <p:panel id="panel" header="Cash Deposit">
+                <p:messages />
+                
+                <p:panelGrid style="margin-bottom:10px">
+                                            
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="depositAmt" style="font-weight: bold" value="Deposit Amount(S$): " />
+                        </p:column>
+                        <p:column>
+                            <p:inputText required="true" label="Deposit Amount" requiredMessage="Deposit amount is required." id="depositAmt"
+                                         value="#{cashManagedBean.depositAmt}">
+                            </p:inputText>
+                        </p:column>
+                        <p:column>
+                            <p:message for="depositAmt" />
+                        </p:column>
+                    </p:row>
+                        
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="depositAccountNum" style="font-weight: bold" value="Account Number: " />
+                        </p:column>
+                        <p:column>
+                            <p:inputText required="true" label="Deposit Account Number" requiredMessage="Account number is required." id="depositAccountNum"
+                                         value="#{cashManagedBean.depositAccountNum}">
+                            </p:inputText>
+                        </p:column>
+                        <p:column>
+                            <p:message for="depositAccountNum" />
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="depositAccountPwd" style="font-weight: bold" value="Account Password: " />
+                        </p:column>
+                        <p:column>
+                            <p:password id="depositAccountPwd" value="#{cashManagedBean.depositAccountPwd}" match="confirmDepositAccountPwd"
+                                        required="true" requiredMessage="Account password is required."/>
+                        </p:column>
+                        <p:column>
+                            <p:message for="depositAccountPwd" />
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for ="confirmDepositAccountPwd" style="font-weight:bold" value="Confirm Password: " />
+                        </p:column>
+                        <p:column>
+                            <p:password id="confirmDepositAccountPwd" value="#{cashManagedBean.confirmDepositAccountPwd}" 
+                                        label="Confirm Password" required="true" />
+                        </p:column>
+                    </p:row>
+                        
+                </p:panelGrid>
+                <br/>
+                <p:commandButton id="cancelBtn" action="index.xhtml" value="Cancel" update="panel" immediate = "true">
+                    <p:confirm header="Cancel" message="Are you sure?" />
+                </p:commandButton>
+                
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" action="index.xhtml"/>
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" />
+                </p:confirmDialog>
+                
+                <p:commandButton id="depositBtn" value="Deposit" update="panel" 
+                                 actionListener="#{cashManagedBean.cashDeposit}" ajax="true" />
+            </p:panel>
+        </h:form>
+    </h:body>
+</html>

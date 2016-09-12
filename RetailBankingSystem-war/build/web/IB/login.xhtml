@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <f:view>
+        <h:head>
+            <title>MBS iBanking</title>
+        </h:head>
+        <h:body>        
+            <h:form>
+                <p:panel header="Login">
+                    <p:messages/>
+                    <p:panelGrid>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="customerAccount" value="Account number: "/>
+                            </p:column>
+                            <p:column>
+                                <p:inputText type="text" id="customerAccount" value="#{loginBean.customerAccount}" required="true" requiredMessage="Please enter your account number."/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="customerPassword" value="Password: "/>
+                            </p:column>
+                            <p:column>
+                                <p:inputText type="password" id= "customerPassword" value="#{loginBean.customerPassword}" required="true" requiredMessage="Please enter your password."/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="2">
+                                <p:commandButton value="submit" type="submit" actionListener="#{loginBean.doLogin}" update="@form"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </p:panel>
+            </h:form>
+        </h:body>
+    </f:view>
+</html>
+
