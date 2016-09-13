@@ -9,23 +9,22 @@
     </h:head>
     <h:body>
         <h:form>
-            <p:messages id="messages" showDetail="true" autoUpdate="true" />
+            <p:panel >
+                <p:messages />
 
-            <h:panelGrid columns="2" id="matchGrid" cellpadding="5">
-                iBanking Account No.: XXX
-                <h:outputText value="&lt;br /&gt;" escape="false" />
-                <p:inputText required="true" label="onlineBankingAccountNum"  id="onlineBankingAccountNum" value="#{cRMCustomerManagedBean.customerOnlineBankingAccountNum}"/>
-                 <h:outputText value="&lt;br /&gt;" escape="false" />
-                <h:outputLabel for="currentPassword" value="Current Password: *" />
-                <p:password id="currentPassword" value="#{cRMCustomerManagedBean.customerOnlineBankingPassword}" label="Current Password" required="true" />
-                <h:outputLabel for="newPassword" value="New Password: *" />
-                <p:password id="newPassword" value="#{cRMCustomerManagedBean.customerOnlineBankingNewPassword}" match="newPasswordConfirm" label="New Password" required="true" />
+                <h:panelGrid columns="2" id="matchGrid" cellpadding="5">
 
-                <h:outputLabel for="newPasswordConfirm" value="Confirm New Password: *" />
-                <p:password id="newPasswordConfirm" value="#{cRMCustomerManagedBean.customerOnlineBankingNewPasswordConfirm}" label="Confirm New Password" required="true" />
-            </h:panelGrid>
+                    <h:outputLabel for="currentPassword" value="Current Password: *" />
+                    <p:password id="currentPassword" value="#{cRMCustomerManagedBean.customerOnlineBankingPassword}" label="Current Password" required="true" />
+                    <h:outputLabel for="newPassword" value="New Password: *" />
+                    <p:password id="newPassword" value="#{cRMCustomerManagedBean.customerOnlineBankingNewPassword}" match="newPasswordConfirm" label="New Password" required="true" />
 
-            <p:commandButton update="matchGrid" value="Save" actionListener="#{cRMCustomerManagedBean.updateOnlineBankingAccountPIN}" ajax="true" />
+                    <h:outputLabel for="newPasswordConfirm" value="Confirm New Password: *" />
+                    <p:password id="newPasswordConfirm" value="#{cRMCustomerManagedBean.customerOnlineBankingNewPasswordConfirm}" label="Confirm New Password" required="true" />
+                </h:panelGrid>
+            </p:panel>
+            
+            <p:commandButton value="Save" actionListener="#{cRMCustomerManagedBean.updateOnlineBankingAccountPIN}" ajax="false" />
         </h:form>
     </h:body>
 </html>
