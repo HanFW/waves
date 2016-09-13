@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package jsf.managedbean;
+package managedbean;
 
 import entity.CustomerBasic;
 import java.io.IOException;
@@ -14,6 +14,7 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import session.stateless.AdminSessionBeanLocal;
@@ -43,7 +44,7 @@ public class LoginBean implements Serializable {
      *
      * @param event
      */
-    public void doLogin(ActionEvent event) {
+    public void doLogin(ActionEvent event) throws IOException {
 //        adminSessionBeanLocal.createOnlineBankingAccount(Long.valueOf(1));
 
         FacesMessage message = null;
@@ -56,11 +57,7 @@ public class LoginBean implements Serializable {
 //                message = new FacesMessage(FacesMessage.SEVERITY_INFO, status, "Welcome back!");
                 System.out.println("*** loginBean: loggedIn");
                 context.getExternalContext().getSessionMap().put("customer", getCustomer());
-                try {
-                    context.getExternalContext().redirect("home.xhtml");
-                } catch (IOException ex) {
-                    Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                context.getExternalContext().redirect("home.xhtml?faces-redirect=true");
                 break;
             case "invalidPassword":
                 message = new FacesMessage(FacesMessage.SEVERITY_INFO, status, "Invalid customerPassword/account.");
@@ -74,7 +71,26 @@ public class LoginBean implements Serializable {
                 break;
         }
     }
-
+    
+    public void doLogout(ActionEvent event) throws IOException{
+        System.out.println("*** loginBean: doLogout");
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        ec.invalidateSession();
+        
+        String serverName = FacesContext.getCurrentInstance().getExternalContext().getRequestServerName();
+        String serverPort = "8080";
+        ec.redirect("http://" + serverName + ":" + serverPort + ec.getRequestContextPath() + "/index.xhtml?faces-redirect=true");
+    }
+    
+    public void timeoutLogout() throws IOException{
+        System.out.println("*** loginBean: logout");
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        ec.invalidateSession();
+        String serverName = FacesContext.getCurrentInstance().getExternalContext().getRequestServerName();
+        String serverPort = "8080";
+        ec.redirect("http://" + serverName + ":" + serverPort + ec.getRequestContextPath() + "/timeout.xhtml?faces-redirect=true");
+    }
+    
     /**
      * @return the customerAccount
      */
