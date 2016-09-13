@@ -78,14 +78,9 @@ public class AdminSessionBean implements AdminSessionBeanLocal {
 
     //Generate initial account number for customer online banking account
     private String generateAccountNumber(CustomerBasic customer) {
-        String hash = customer.getCustomerIdentificationNum();
-        System.out.println(hash.concat(customer.getCustomerName().substring(0, 3)));
-        try {
-            return md5Hashing(hash);
-        } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(AdminSessionBean.class.getName()).log(Level.SEVERE, null, ex);
-            return Integer.toString(hash.hashCode());
-        }
+        String hash = customer.getCustomerIdentificationNum().concat(customer.getCustomerName().substring(0, 3));
+        hash = Integer.toString(hash.hashCode());
+        return hash;
     }
 
     //Do customer login
