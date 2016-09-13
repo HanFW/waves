@@ -6,13 +6,20 @@
 package managedbean;
 
 import entity.CustomerBasic;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import session.stateless.CRMCustomerSessionBean;
 import javax.faces.event.ActionEvent;
+import session.stateless.AdminSessionBean;
 
 /**
  *
@@ -20,6 +27,7 @@ import javax.faces.event.ActionEvent;
  */
 @Named(value = "cRMCustomerManagedBean")
 @RequestScoped
+
 public class CRMCustomerManagedBean {
 
     @EJB
@@ -46,8 +54,7 @@ public class CRMCustomerManagedBean {
     private Long newCustomerBasicId;
     private String customerAge;
 
-    
-
+//advanced profile
     private String customerEmploymentDetails;
     private String customerFamilyInfo;
     private String customerCreditReport;
@@ -57,8 +64,12 @@ public class CRMCustomerManagedBean {
 
     private String customerOnlineBankingNewPassword;
     private String customerOnlineBankingNewPasswordConfirm;
-    
+
     private CustomerBasic cb = new CustomerBasic();
+
+    private ExternalContext ec;
+    private String hashedPassword;
+    private String hashedNewPassword;
 
     public String getCustomerPayeeNum() {
         return customerPayeeNum;
@@ -75,7 +86,7 @@ public class CRMCustomerManagedBean {
     public void setCustomerAge(String customerAge) {
         this.customerAge = customerAge;
     }
-    
+
     public byte[] getCustomerSignature() {
         return customerSignature;
     }
@@ -341,13 +352,8 @@ public class CRMCustomerManagedBean {
         }
     }
 
-    public String updateOnlineBankingAccountPIN(ActionEvent customerBasic) {
-
-        return customerSessionBean.updateCustomerOnlineBankingAccountPIN(customerOnlineBankingAccountNum, customerOnlineBankingPassword, customerOnlineBankingNewPassword);
-    }
-
     public CustomerBasic getCustomerBasicInfo() {
-        
+
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         cb = (CustomerBasic) ec.getSessionMap().get("customer");
 //        cb = customerSessionBean.getAllCustomerBasicProfile().get(0);
@@ -383,7 +389,6 @@ public class CRMCustomerManagedBean {
 //        }
 //        return customerAccountNumAfterReplaced;
 //    }
-
     public String customerMobileNumReplaceWithStar(String inputCustomerMobileNum) {
         String customerMobileNumAfterReplaced = "";
         customerMobileNumAfterReplaced = "****" + inputCustomerMobileNum.substring(4);
@@ -395,20 +400,44 @@ public class CRMCustomerManagedBean {
         customerEmailAfterReplaced = inputCustomerEmail.substring(0, 1) + "**" + inputCustomerEmail.substring(3);
         return customerEmailAfterReplaced;
     }
-    
 
-    public String updateCustomerBasicProfile() {
+    public void updateCustomerBasicProfile() {
+//        ec = FacesContext.getCurrentInstance().getExternalContext();
 
-      
         String updatedReplacedCustomerMobile = replacedCustomerMobile;
         String updatedReplacedCustomerEmail = replacedCustomerEmail;
 
         if (!replacedCustomerMobile.equals(customerMobileNumReplaceWithStar(customerMobile)) || !replacedCustomerEmail.equals(customerEmailReplaceWithStar(customerEmail))) {
             replacedCustomerMobile = customerMobileNumReplaceWithStar(updatedReplacedCustomerMobile);
             replacedCustomerEmail = customerEmailReplaceWithStar(updatedReplacedCustomerEmail);
-            return customerSessionBean.updateCustomerBasicProfile(customerOnlineBankingAccountNum, customerNationality, customerCountryOfResidence, customerMaritalStatus, customerOccupation, customerCompany, updatedReplacedCustomerEmail, updatedReplacedCustomerMobile, customerAddress, customerPostal);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(customerSessionBean.updateCustomerBasicProfile(customerOnlineBankingAccountNum, customerNationality, customerCountryOfResidence, customerMaritalStatus, customerOccupation, customerCompany, updatedReplacedCustomerEmail, updatedReplacedCustomerMobile, customerAddress, customerPostal), " "));
         } else {
-            return customerSessionBean.updateCustomerBasicProfile(customerOnlineBankingAccountNum, customerNationality, customerCountryOfResidence, customerMaritalStatus, customerOccupation, customerCompany, customerEmail, customerMobile, customerAddress, customerPostal);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(customerSessionBean.updateCustomerBasicProfile(customerOnlineBankingAccountNum, customerNationality, customerCountryOfResidence, customerMaritalStatus, customerOccupation, customerCompany, updatedReplacedCustomerEmail, updatedReplacedCustomerMobile, customerAddress, customerPostal), " "));
         }
+    }
+
+    public void updateOnlineBankingAccountPIN() {
+
+        ec = FacesContext.getCurrentInstance().getExternalContext();
+        cb = (CustomerBasic) ec.getSessionMap().get("customer");
+        System.out.println(cb.getCustomerOnlineBankingAccountNum());
+
+        try {
+            hashedPassword = md5Hashing(customerOnlineBankingPassword + cb.getCustomerIdentificationNum().substring(0, 3));
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(AdminSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            hashedNewPassword = md5Hashing(customerOnlineBankingNewPassword + cb.getCustomerIdentificationNum().substring(0, 3));
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(AdminSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(customerSessionBean.updateCustomerOnlineBankingAccountPIN(cb.getCustomerOnlineBankingAccountNum(), hashedPassword, hashedNewPassword), " "));
+    }
+
+    private String md5Hashing(String stringToHash) throws NoSuchAlgorithmException {
+        MessageDigest md = MessageDigest.getInstance("MD5");
+        return Arrays.toString(md.digest(stringToHash.getBytes()));
     }
 }
