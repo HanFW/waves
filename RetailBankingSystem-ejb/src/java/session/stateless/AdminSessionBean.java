@@ -49,6 +49,7 @@ public class AdminSessionBean implements AdminSessionBeanLocal {
                 String hashedPassword = password;
                 hashedPassword = md5Hashing(password + customer.getCustomerIdentificationNum().substring(0, 3));
                 customer.setCustomerOnlineBankingPassword(hashedPassword);
+                customer.setCustomerStatus("new");
                 em.flush();
             } catch (NoSuchAlgorithmException ex) {
                 Logger.getLogger(AdminSessionBean.class.getName()).log(Level.SEVERE, null, ex);
@@ -108,10 +109,21 @@ public class AdminSessionBean implements AdminSessionBeanLocal {
     
     @Override
     public CustomerBasic getCustomerByOnlineBankingAccount(String customerAccount){
-        System.out.println("adminSessionBean: getCustomerByOnlineBankingAccount(): start");
+        System.out.println("*** adminSessionBean: getCustomerByOnlineBankingAccount(): start");
         Query query = em.createQuery("SELECT c FROM CustomerBasic c WHERE c.customerOnlineBankingAccountNum = :accountNum");
         query.setParameter("accountNum", customerAccount);
         return (CustomerBasic) query.getSingleResult();
+    }
+    
+    @Override
+    public String updateOnlineBankingAccount(String accountNum, String password, Long customerId){
+        System.out.println("*** adminSessionBean: updateOnlineBankingAccount(): start");
+        CustomerBasic customer = em.find(CustomerBasic.class, customerId);
+        customer.setCustomerOnlineBankingAccountNum(accountNum);
+        customer.setCustomerOnlineBankingPassword(password);
+        customer.setCustomerStatus("activated");
+        em.flush();
+        return "Your account has been successfully updated. Please remember your new online banking account number and password. ";
     }
 
     private String md5Hashing(String stringToHash) throws NoSuchAlgorithmException {
