@@ -98,8 +98,6 @@ public class AdminSessionBean implements AdminSessionBeanLocal {
 
         try {
             CustomerBasic thisCustomer = (CustomerBasic) query.getSingleResult();
-            password = md5Hashing(password + thisCustomer.getCustomerIdentificationNum().substring(0, 3));
-            System.out.println("?????????"+password);
             if (thisCustomer.getCustomerOnlineBankingPassword().equals(password)) {
                 System.out.println("*** adminSessionBean: login(): valid account and password" + ": account " + thisCustomer.getCustomerOnlineBankingAccountNum());
                 return "loggedIn";
@@ -110,10 +108,7 @@ public class AdminSessionBean implements AdminSessionBeanLocal {
         } catch (NoResultException ex) {
             System.out.println("*** adminSessionBean: login(): invalid account");
             return "invalidAccount";
-        } catch (NoSuchAlgorithmException ex) {
-            System.out.println("!!! adminSessionBean: failed to hash password");
-            return "";
-        }
+        } 
     }
     
     @Override

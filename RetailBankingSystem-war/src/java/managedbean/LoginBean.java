@@ -8,6 +8,9 @@ package managedbean;
 import entity.CustomerBasic;
 import java.io.IOException;
 import java.io.Serializable;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -44,17 +47,18 @@ public class LoginBean implements Serializable {
      *
      * @param event
      */
-    public void doLogin(ActionEvent event) throws IOException {
+    public void doLogin(ActionEvent event) throws IOException, NoSuchAlgorithmException {
 //        adminSessionBeanLocal.createOnlineBankingAccount(Long.valueOf(1));
 
         FacesMessage message = null;
         FacesContext context = FacesContext.getCurrentInstance();
+        customer = adminSessionBeanLocal.getCustomerByOnlineBankingAccount(customerAccount);
+        customerPassword = md5Hashing(customerPassword + customer.getCustomerIdentificationNum().substring(0, 3));;
         
         //encrypt the customerPassword first
         String status = adminSessionBeanLocal.login(customerAccount, customerPassword);   
         switch (status) {
             case "loggedIn":
-//                message = new FacesMessage(FacesMessage.SEVERITY_INFO, status, "Welcome back!");
                 System.out.println("*** loginBean: loggedIn");
                 context.getExternalContext().getSessionMap().put("customer", getCustomer());
                 context.getExternalContext().redirect("home.xhtml?faces-redirect=true");
@@ -131,5 +135,10 @@ public class LoginBean implements Serializable {
      */
     public void setCustomer(CustomerBasic customer) {
         this.customer = customer;
+    }
+    
+    private String md5Hashing(String stringToHash) throws NoSuchAlgorithmException {
+        MessageDigest md = MessageDigest.getInstance("MD5");
+        return Arrays.toString(md.digest(stringToHash.getBytes()));
     }
 }
