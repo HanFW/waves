@@ -142,12 +142,13 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal{
             CustomerBasic cb = (CustomerBasic) resultList.get(0);
             cb.setCustomerOnlineBankingPassword(newPassword);
             entityManager.flush();
-            return "Successfully Updated";
+            return "Update Successful";
         }
     }
 
     @Override
     public String updateCustomerBasicProfile(String customerOnlineBankingAccountNum, String customerNationality, String customerCountryOfResidence, String customerMaritalStatus, String customerOccupation, String customerCompany, String customerEmail, String customerMobile, String customerAddress, String customerPostal) {
+        
         Query query = entityManager.createQuery("SELECT cb FROM CustomerBasic cb WHERE cb.customerOnlineBankingAccountNum = :customerOnlineBankingAccountNum");
         query.setParameter("customerOnlineBankingAccountNum", customerOnlineBankingAccountNum);
         List resultList = query.getResultList();
@@ -166,7 +167,7 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal{
             cb.setCustomerPostal(customerPostal);
             entityManager.flush();
 
-            return "Successfully Updated";
+            return "Update Successful";
         }
     }
     

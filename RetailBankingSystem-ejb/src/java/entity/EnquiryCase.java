@@ -22,21 +22,22 @@ import javax.persistence.OneToMany;
  */
 @Entity
 public class EnquiryCase implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long caseId;
     private String caseType;
     private String caseDetail;
-    private String caseFollowUp;
+    private List<String> caseFollowUp;
     private String caseStatus;
-    
-    @OneToMany(cascade={CascadeType.ALL},fetch=FetchType.EAGER,mappedBy="enquiryCase")
+    private String onlineBankingAccountNum;
+
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "enquiryCase")
     private List<Issue> issue;
-    
-    @ManyToOne(cascade={CascadeType.ALL},fetch=FetchType.EAGER)
+
+    @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     private CustomerBasic customerBasic;
-    
 
     public Long getCaseId() {
         return caseId;
@@ -45,7 +46,7 @@ public class EnquiryCase implements Serializable {
     public void setCaseId(Long caseId) {
         this.caseId = caseId;
     }
-    
+
     public String getCaseType() {
         return caseType;
     }
@@ -62,11 +63,11 @@ public class EnquiryCase implements Serializable {
         this.caseDetail = caseDetail;
     }
 
-    public String getCaseFollowUp() {
+    public List<String> getCaseFollowUp() {
         return caseFollowUp;
     }
 
-    public void setCaseFollowUp(String caseFollowUp) {
+    public void setCaseFollowUp(List<String> caseFollowUp) {
         this.caseFollowUp = caseFollowUp;
     }
 
@@ -94,6 +95,14 @@ public class EnquiryCase implements Serializable {
         this.customerBasic = customerBasic;
     }
 
+    public String getOnlineBankingAccountNum() {
+        return onlineBankingAccountNum;
+    }
+
+    public void setOnlineBankingAccountNum(String onlineBankingAccountNum) {
+        this.onlineBankingAccountNum = onlineBankingAccountNum;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -118,5 +127,5 @@ public class EnquiryCase implements Serializable {
     public String toString() {
         return "entity.EnquiryCase[ id=" + caseId + " ]";
     }
-    
+
 }

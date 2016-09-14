@@ -12,8 +12,9 @@ import javax.persistence.OneToMany;
 
 @Entity
 public class CustomerBasic implements Serializable {
+
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long customerBasicId;
@@ -38,20 +39,16 @@ public class CustomerBasic implements Serializable {
     private String customerPayeeNum;
     private String customerAge;
 
-    public String getCustomerAge() {
-        return customerAge;
-    }
-
-    public void setCustomerAge(String customerAge) {
-        this.customerAge = customerAge;
-    }
     private byte[] customerSignature;
-    
-    @OneToMany(cascade={CascadeType.ALL},fetch=FetchType.EAGER,mappedBy="customerBasic")
+
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
     private List<BankAccount> bankAccount;
-    
-    @OneToMany(cascade={CascadeType.ALL},fetch=FetchType.EAGER,mappedBy="customerBasic")
+
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
     private List<Payee> payee;
+
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
+    private List<EnquiryCase> enquiryCase;
 
     public Long getCustomerBasicId() {
         return customerBasicId;
@@ -76,7 +73,7 @@ public class CustomerBasic implements Serializable {
     public void setCustomerSignature(byte[] customerSignature) {
         this.customerSignature = customerSignature;
     }
-    
+
     public String getCustomerSalutation() {
         return customerSalutation;
     }
@@ -92,7 +89,7 @@ public class CustomerBasic implements Serializable {
     public void setCustomerName(String customerName) {
         this.customerName = customerName;
     }
-    
+
     public String getCustomerIdentificationNum() {
         return customerIdentificationNum;
     }
@@ -237,6 +234,22 @@ public class CustomerBasic implements Serializable {
         this.customerStatus = customerStatus;
     }
 
+    public String getCustomerAge() {
+        return customerAge;
+    }
+
+    public void setCustomerAge(String customerAge) {
+        this.customerAge = customerAge;
+    }
+
+    public List<EnquiryCase> getEnquiryCase() {
+        return enquiryCase;
+    }
+
+    public void setEnquiryCase(List<EnquiryCase> enquiryCase) {
+        this.enquiryCase = enquiryCase;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -261,5 +274,5 @@ public class CustomerBasic implements Serializable {
     public String toString() {
         return "entity.CustomerBasic[ id=" + customerBasicId + " ]";
     }
-    
+
 }
