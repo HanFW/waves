@@ -38,7 +38,7 @@ public class AdminSessionBean implements AdminSessionBeanLocal {
 
         if (isNewCustomer(customer)) {
             //generate online banking account number
-            account = generateAccountNumber(customer);
+            account = generateAccountNumber();
             System.out.println("*** adminSessionBean: generateAccountNumber(): online banking account number generated");
 
             //generate random password
@@ -80,7 +80,7 @@ public class AdminSessionBean implements AdminSessionBeanLocal {
     }
 
     //Generate initial account number for customer online banking account
-    private String generateAccountNumber(CustomerBasic customer) {
+    private String generateAccountNumber() {
         SecureRandom random = new SecureRandom();
         String accountNumber = new BigInteger(25, random).toString();
         while(getCustomerByOnlineBankingAccount(accountNumber) != null){
