@@ -38,6 +38,7 @@ public class LoginBean implements Serializable {
     private String newCustomerAccount;
     private String newCustomerPassword;
     private CustomerBasic customer;
+    private int loginAttempts;
 
     /**
      * Creates a new instance of LoginBean
@@ -55,9 +56,9 @@ public class LoginBean implements Serializable {
         FacesMessage message = null;
         FacesContext context = FacesContext.getCurrentInstance();
         customer = adminSessionBeanLocal.getCustomerByOnlineBankingAccount(customerAccount);
+        //encrypt the customerPassword first
         customerPassword = md5Hashing(customerPassword + customer.getCustomerIdentificationNum().substring(0, 3));
         
-        //encrypt the customerPassword first
         String status = adminSessionBeanLocal.login(customerAccount, customerPassword);   
         switch (status) {
             case "loggedIn":
@@ -73,7 +74,8 @@ public class LoginBean implements Serializable {
                 customerPassword="";
                 message = new FacesMessage(FacesMessage.SEVERITY_INFO, status, "Invalid customerPassword/account.");
                 context.addMessage(null, message);
-                System.out.println("*** loginBean: invalid password");
+                loginAttempts ++;
+                System.out.println("*** loginBean: invalid password, attempts: " + loginAttempts);
                 break;
             default:
                 message = new FacesMessage(FacesMessage.SEVERITY_INFO, status, "Please check your account number.");
@@ -165,6 +167,14 @@ public class LoginBean implements Serializable {
      */
     public void setCustomer(CustomerBasic customer) {
         this.customer = customer;
+    }
+
+    public int getLoginAttempts() {
+        return loginAttempts;
+    }
+
+    public void setLoginAttempts(int loginAttempts) {
+        this.loginAttempts = loginAttempts;
     }
     
     private String md5Hashing(String stringToHash) throws NoSuchAlgorithmException {
