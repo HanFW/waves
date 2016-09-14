@@ -2,22 +2,26 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Facelet Title</title>
     </h:head>
     <h:body>
         Please activate your account by entering your new account number and password
-        <h:form>
+        <h:form id="activationForm">
             <p:panel header="Please activate your account">
-                <p:messages/>
+                <p:messages showDetail="true" id="activationMessage"/>
                 <p:panelGrid>
                     <p:row>
                         <p:column>
                             <p:outputLabel for="customerAccount" value="New account number: "/>
                         </p:column>
                         <p:column>
-                            <p:inputText type="text" id="customerAccount" value="#{loginBean.newCustomerAccount}" required="true" requiredMessage="Please create a new account number."/>
+                            <p:inputText type="text" id="customerAccount" value="#{loginBean.newCustomerAccount}" required="true" requiredMessage="Please create a new account number.">
+                                <f:validateLength minimum="8" maximum="8" />
+                            </p:inputText>
+                            <p:message for="customerAccount"/>
                         </p:column>
                     </p:row>
                     <p:row>
@@ -25,17 +29,22 @@
                             <p:outputLabel for="customerPassword" value="New password: "/>
                         </p:column>
                         <p:column>
-                            <p:inputText type="password" id= "customerPassword" value="#{loginBean.newCustomerPassword}" required="true" requiredMessage="Please create a new password."/>
+                            <p:inputText type="password" id= "customerPassword" value="#{loginBean.newCustomerPassword}" required="true" requiredMessage="Please create a new password.">
+                                <f:validateLength minimum="6" maximum="20" />
+                            </p:inputText>
+                            <p:message for="customerPassword"/>
                         </p:column>
                     </p:row>
                     <p:row>
                         <p:column colspan="2">
-                            <p:commandButton value="submit" type="submit" actionListener="#{loginBean.activateOnlineBankingAccount}" oncomplete="PF('activationDialog').show()"/>
+                            <p:commandButton value="submit" type="submit" actionListener="#{loginBean.activateOnlineBankingAccount}" update="activationConfirmation activationForm"/>
                         </p:column>
                     </p:row>
                 </p:panelGrid>
             </p:panel>
-            <p:confirmDialog message="Your account has been successfully updated. Please remember your new online banking account number and password. " header="Your account has been activated" severity="info" widgetVar="activationDialog">
+        </h:form>
+        <h:form id="activationConfirmation">
+            <p:confirmDialog visible="true" rendered="#{loginBean.customerStatus eq 'activated'}" message="Your account has been successfully updated. Please remember your new online banking account number and password. " header="Your account has been activated" severity="info">
                 <p:commandButton action="home" value="OK"/>
             </p:confirmDialog>
         </h:form>

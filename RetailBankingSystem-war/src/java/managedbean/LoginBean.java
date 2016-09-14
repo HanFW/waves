@@ -39,6 +39,7 @@ public class LoginBean implements Serializable {
     private String newCustomerPassword;
     private CustomerBasic customer;
     private int loginAttempts;
+    private String customerStatus;
 
     /**
      * Creates a new instance of LoginBean
@@ -56,7 +57,7 @@ public class LoginBean implements Serializable {
         FacesMessage message = null;
         FacesContext context = FacesContext.getCurrentInstance();
         customer = adminSessionBeanLocal.getCustomerByOnlineBankingAccount(customerAccount);
-        
+
         if (customer == null) {
             message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Invalid account number: ", "Please check your account number.");
             context.addMessage(null, message);
@@ -65,7 +66,7 @@ public class LoginBean implements Serializable {
             //encrypt the customerPassword first
             customerPassword = md5Hashing(customerPassword + customer.getCustomerIdentificationNum().substring(0, 3));
             String status = adminSessionBeanLocal.login(customerAccount, customerPassword);
-            
+
             switch (status) {
                 case "loggedIn":
                     System.out.println("*** loginBean: loggedIn");
@@ -114,8 +115,18 @@ public class LoginBean implements Serializable {
 
     public void activateOnlineBankingAccount(ActionEvent event) throws NoSuchAlgorithmException {
         System.out.println("*** loginBean: activateOnlineBankingAccount");
+        FacesContext context = FacesContext.getCurrentInstance();
         newCustomerPassword = md5Hashing(newCustomerPassword + customer.getCustomerIdentificationNum().substring(0, 3));
-        String activationStatus = adminSessionBeanLocal.updateOnlineBankingAccount(newCustomerAccount, newCustomerPassword, customer.getCustomerBasicId());
+        if (newCustomerAccount.equals(customerAccount)) {
+            context.addMessage("activationMessage", new FacesMessage(FacesMessage.SEVERITY_WARN, "Unsecured account number: ", "For your safety, please enter a new account number different from the initial account number."));
+            newCustomerAccount = "";
+            newCustomerPassword = "";
+        } else if (newCustomerPassword.equals(customerPassword)) {
+            context.addMessage("activationMessage", new FacesMessage(FacesMessage.SEVERITY_WARN, "Unsecured account password: ", "For your safety, please enter a new account password different from the initial password."));
+            newCustomerPassword = "";
+        } else {
+            customerStatus = adminSessionBeanLocal.updateOnlineBankingAccount(newCustomerAccount, newCustomerPassword, customer.getCustomerBasicId());
+        }
     }
 
     /**
@@ -183,6 +194,14 @@ public class LoginBean implements Serializable {
 
     public void setLoginAttempts(int loginAttempts) {
         this.loginAttempts = loginAttempts;
+    }
+
+    public String getCustomerStatus() {
+        return customerStatus;
+    }
+
+    public void setCustomerStatus(String customerStatus) {
+        this.customerStatus = customerStatus;
     }
 
     private String md5Hashing(String stringToHash) throws NoSuchAlgorithmException {

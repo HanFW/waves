@@ -6,6 +6,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -115,13 +116,12 @@ public class AdminSessionBean implements AdminSessionBeanLocal {
         System.out.println("*** adminSessionBean: getCustomerByOnlineBankingAccount(): start");
         Query query = em.createQuery("SELECT c FROM CustomerBasic c WHERE c.customerOnlineBankingAccountNum = :accountNum");
         query.setParameter("accountNum", customerAccount);
-        CustomerBasic customer = null;
-        try {
-            customer = (CustomerBasic) query.getSingleResult();
-        } catch (NoResultException ex) {
-            ex.printStackTrace();
+        List resultList = query.getResultList();
+        if(resultList.isEmpty()){
+            return null;
+        }else{
+            return (CustomerBasic) resultList.get(0);
         }
-        return customer;
     }
 
     @Override
@@ -132,7 +132,7 @@ public class AdminSessionBean implements AdminSessionBeanLocal {
         customer.setCustomerOnlineBankingPassword(password);
         customer.setCustomerStatus("activated");
         em.flush();
-        return "Your account has been successfully updated. Please remember your new online banking account number and password. ";
+        return "activated";
     }
 
     private String md5Hashing(String stringToHash) throws NoSuchAlgorithmException {
