@@ -21,12 +21,12 @@ import javax.persistence.Query;
  */
 @Stateless
 public class AdminSessionBean implements AdminSessionBeanLocal {
+
     @EJB
     private EmailSessionBeanLocal emailSessionBeanLocal;
 
     @PersistenceContext
     private EntityManager em;
-    
 
     @Override
     public String createOnlineBankingAccount(Long customerId) {
@@ -38,11 +38,11 @@ public class AdminSessionBean implements AdminSessionBeanLocal {
             //generate online banking account number
             account = generateAccountNumber(customer);
             System.out.println("*** adminSessionBean: generateAccountNumber(): online banking account number generated");
-            
+
             //generate random password
             password = generatePassword();
             System.out.println("*** adminSessionBean: generatePassword(): online banking account password generated");
-            
+
             //create customer account
             try {
                 customer.setCustomerOnlineBankingAccountNum(account);
@@ -54,7 +54,7 @@ public class AdminSessionBean implements AdminSessionBeanLocal {
             } catch (NoSuchAlgorithmException ex) {
                 Logger.getLogger(AdminSessionBean.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
             //generate email
             emailSessionBeanLocal.sendEmail(customer, "openAccount", true, password);
             System.out.println("*** adminSessionBean: email sent to customer (online banking account created)");
@@ -92,31 +92,40 @@ public class AdminSessionBean implements AdminSessionBeanLocal {
         Query query = em.createQuery("SELECT c FROM CustomerBasic c WHERE c.customerOnlineBankingAccountNum = :accountNum");
         query.setParameter("accountNum", customerAccount);
 
+        CustomerBasic thisCustomer;
+
         try {
-            CustomerBasic thisCustomer = (CustomerBasic) query.getSingleResult();
-            if (thisCustomer.getCustomerOnlineBankingPassword().equals(password)) {
-                System.out.println("*** adminSessionBean: login(): valid account and password" + ": account " + thisCustomer.getCustomerOnlineBankingAccountNum());
-                return "loggedIn";
-            } else {
-                System.out.println("*** adminSessionBean: login(): invalid password");
-                return "invalidPassword";
-            }
+            thisCustomer = (CustomerBasic) query.getSingleResult();
         } catch (NoResultException ex) {
             System.out.println("*** adminSessionBean: login(): invalid account");
             return "invalidAccount";
-        } 
+        }
+
+        if (thisCustomer.getCustomerOnlineBankingPassword().equals(password)) {
+            System.out.println("*** adminSessionBean: login(): valid account and password" + ": account " + thisCustomer.getCustomerOnlineBankingAccountNum());
+            return "loggedIn";
+        } else {
+            System.out.println("*** adminSessionBean: login(): invalid password");
+            return "invalidPassword";
+        }
     }
-    
+
     @Override
-    public CustomerBasic getCustomerByOnlineBankingAccount(String customerAccount){
+    public CustomerBasic getCustomerByOnlineBankingAccount(String customerAccount) {
         System.out.println("*** adminSessionBean: getCustomerByOnlineBankingAccount(): start");
         Query query = em.createQuery("SELECT c FROM CustomerBasic c WHERE c.customerOnlineBankingAccountNum = :accountNum");
         query.setParameter("accountNum", customerAccount);
-        return (CustomerBasic) query.getSingleResult();
+        CustomerBasic customer = null;
+        try {
+            customer = (CustomerBasic) query.getSingleResult();
+        } catch (NoResultException ex) {
+            ex.printStackTrace();
+        }
+        return customer;
     }
-    
+
     @Override
-    public String updateOnlineBankingAccount(String accountNum, String password, Long customerId){
+    public String updateOnlineBankingAccount(String accountNum, String password, Long customerId) {
         System.out.println("*** adminSessionBean: updateOnlineBankingAccount(): start");
         CustomerBasic customer = em.find(CustomerBasic.class, customerId);
         customer.setCustomerOnlineBankingAccountNum(accountNum);

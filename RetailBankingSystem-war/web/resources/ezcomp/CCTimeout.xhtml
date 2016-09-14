@@ -14,7 +14,7 @@
     <cc:implementation>
         <f:view>
             <h:form>
-                <p:idleMonitor timeout="5000">
+                <p:idleMonitor timeout="10000">
                     <p:ajax event="idle" listener="#{loginBean.timeoutLogout}"/>
                 </p:idleMonitor>
             </h:form>

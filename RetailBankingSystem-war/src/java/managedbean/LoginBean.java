@@ -56,46 +56,54 @@ public class LoginBean implements Serializable {
         FacesMessage message = null;
         FacesContext context = FacesContext.getCurrentInstance();
         customer = adminSessionBeanLocal.getCustomerByOnlineBankingAccount(customerAccount);
-        //encrypt the customerPassword first
-        customerPassword = md5Hashing(customerPassword + customer.getCustomerIdentificationNum().substring(0, 3));
         
-        String status = adminSessionBeanLocal.login(customerAccount, customerPassword);   
-        switch (status) {
-            case "loggedIn":
-                System.out.println("*** loginBean: loggedIn");
-                context.getExternalContext().getSessionMap().put("customer", getCustomer());
-                if(customer.getCustomerStatus().equals("new")){
-                    context.getExternalContext().redirect("accountActivation.xhtml?faces-redirect=true");
-                }else{
-                    context.getExternalContext().redirect("home.xhtml?faces-redirect=true");
-                }
-                break;
-            case "invalidPassword":
-                customerPassword="";
-                message = new FacesMessage(FacesMessage.SEVERITY_INFO, status, "Invalid customerPassword/account.");
-                context.addMessage(null, message);
-                loginAttempts ++;
-                System.out.println("*** loginBean: invalid password, attempts: " + loginAttempts);
-                break;
-            default:
-                message = new FacesMessage(FacesMessage.SEVERITY_INFO, status, "Please check your account number.");
-                context.addMessage(null, message);
-                System.out.println("*** loginBean: invalid account");
-                break;
+        if (customer == null) {
+            message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Invalid account number: ", "Please check your account number.");
+            context.addMessage(null, message);
+            System.out.println("*** loginBean: invalid account");
+        } else {
+            //encrypt the customerPassword first
+            customerPassword = md5Hashing(customerPassword + customer.getCustomerIdentificationNum().substring(0, 3));
+            String status = adminSessionBeanLocal.login(customerAccount, customerPassword);
+            
+            switch (status) {
+                case "loggedIn":
+                    System.out.println("*** loginBean: loggedIn");
+                    context.getExternalContext().getSessionMap().put("customer", getCustomer());
+                    if (customer.getCustomerStatus().equals("new")) {
+                        context.getExternalContext().redirect("accountActivation.xhtml?faces-redirect=true");
+                    } else {
+                        context.getExternalContext().redirect("home.xhtml?faces-redirect=true");
+                    }
+                    break;
+                case "invalidPassword":
+                    customerPassword = "";
+                    message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Invalid password: ", "Please enter your passsword again.");
+                    context.addMessage(null, message);
+                    loginAttempts++;
+                    System.out.println("*** loginBean: invalid password, attempts: " + loginAttempts);
+                    break;
+                default:
+                    message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Invalid account: ", "Please check your account number.");
+                    context.addMessage(null, message);
+                    System.out.println("*** loginBean: invalid account");
+                    break;
+            }
         }
+
     }
-    
-    public void doLogout(ActionEvent event) throws IOException{
+
+    public void doLogout(ActionEvent event) throws IOException {
         System.out.println("*** loginBean: doLogout");
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         ec.invalidateSession();
-        
+
         String serverName = FacesContext.getCurrentInstance().getExternalContext().getRequestServerName();
         String serverPort = "8080";
         ec.redirect("http://" + serverName + ":" + serverPort + ec.getRequestContextPath() + "/index.xhtml?faces-redirect=true");
     }
-    
-    public void timeoutLogout() throws IOException{
+
+    public void timeoutLogout() throws IOException {
         System.out.println("*** loginBean: logout");
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         ec.invalidateSession();
@@ -103,13 +111,13 @@ public class LoginBean implements Serializable {
         String serverPort = "8080";
         ec.redirect("http://" + serverName + ":" + serverPort + ec.getRequestContextPath() + "/timeout.xhtml?faces-redirect=true");
     }
-    
-    public void activateOnlineBankingAccount(ActionEvent event) throws NoSuchAlgorithmException{
+
+    public void activateOnlineBankingAccount(ActionEvent event) throws NoSuchAlgorithmException {
         System.out.println("*** loginBean: activateOnlineBankingAccount");
         newCustomerPassword = md5Hashing(newCustomerPassword + customer.getCustomerIdentificationNum().substring(0, 3));
         String activationStatus = adminSessionBeanLocal.updateOnlineBankingAccount(newCustomerAccount, newCustomerPassword, customer.getCustomerBasicId());
     }
-    
+
     /**
      * @return the customerAccount
      */
@@ -176,7 +184,7 @@ public class LoginBean implements Serializable {
     public void setLoginAttempts(int loginAttempts) {
         this.loginAttempts = loginAttempts;
     }
-    
+
     private String md5Hashing(String stringToHash) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("MD5");
         return Arrays.toString(md.digest(stringToHash.getBytes()));
