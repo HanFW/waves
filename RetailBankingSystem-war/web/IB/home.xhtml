@@ -10,8 +10,6 @@
     </h:head>
     <h:body>
         Hello from online banking home page
-        
-        <ez:CCLogout/>
        
         <h:form>
             <p:menubar>
@@ -31,10 +29,8 @@
                     <p:menuitem value="Logout" actionListener="#{loginBean.doLogout}"/>
                 </p:submenu>
             </p:menubar>
-
-            <p:idleMonitor timeout="5000">
-                <p:ajax event="idle" listener="#{loginBean.timeoutLogout}"/>
-            </p:idleMonitor>
+            
+            <ez:CCTimeout/>
         </h:form>
     </h:body>
 </html>

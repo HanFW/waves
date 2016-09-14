@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:cc="http://xmlns.jcp.org/jsf/composite"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
 
     <!-- INTERFACE -->
     <cc:interface>
@@ -13,7 +14,9 @@
     <cc:implementation>
         <f:view>
             <h:form>
-                Hello from logout component~
+                <p:idleMonitor timeout="5000">
+                    <p:ajax event="idle" listener="#{loginBean.timeoutLogout}"/>
+                </p:idleMonitor>
             </h:form>
         </f:view>
     </cc:implementation>
