@@ -7,6 +7,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -75,14 +76,17 @@ public class AdminSessionBean implements AdminSessionBeanLocal {
     //Generate initial password for customer online banking account
     private String generatePassword() {
         SecureRandom random = new SecureRandom();
-        return new BigInteger(40, random).toString(32);
+        return new BigInteger(50, random).toString(32);
     }
 
     //Generate initial account number for customer online banking account
     private String generateAccountNumber(CustomerBasic customer) {
-        String hash = customer.getCustomerIdentificationNum().concat(customer.getCustomerName().substring(0, 3));
-        hash = Integer.toString(hash.hashCode());
-        return hash;
+        SecureRandom random = new SecureRandom();
+        String accountNumber = new BigInteger(25, random).toString();
+        while(getCustomerByOnlineBankingAccount(accountNumber) != null){
+            accountNumber = new BigInteger(25, random).toString();
+        }
+        return accountNumber;
     }
 
     //Do customer login
