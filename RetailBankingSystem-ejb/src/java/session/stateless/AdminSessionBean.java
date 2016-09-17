@@ -107,12 +107,13 @@ public class AdminSessionBean implements AdminSessionBeanLocal {
 
         CustomerBasic thisCustomer;
 
-        try {
-            thisCustomer = (CustomerBasic) query.getSingleResult();
-            System.out.println("*** infrastructure/AdminSessionBean: login(): customer login account: " + thisCustomer.getCustomerOnlineBankingAccountNum());
-        } catch (NoResultException ex) {
+        List resultList = query.getResultList();
+        if (resultList.isEmpty()) {
             System.out.println("*** infrastructure/AdminSessionBean: login(): login failed: invalid account");
             return "invalidAccount";
+        } else {
+            thisCustomer = (CustomerBasic) resultList.get(0);
+            System.out.println("*** infrastructure/AdminSessionBean: login(): customer login account: " + thisCustomer.getCustomerOnlineBankingAccountNum());
         }
 
         if (thisCustomer.getCustomerOnlineBankingPassword().equals(password)) {
@@ -149,7 +150,7 @@ public class AdminSessionBean implements AdminSessionBeanLocal {
         em.flush();
         return "activated";
     }
-    
+
     @Override
     public CustomerBasic getCustomerByIdentificationNum(String identificationNum) {
         System.out.println("*** infrastructure/AdminSessionBean: getCustomerAccountById() ***");
