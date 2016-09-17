@@ -8,7 +8,7 @@
                 left:200px;
                 top: 50px; }
             </style>
-            
+
         </h:head>
         <h:body>
             <h:form id="formMain">
@@ -17,7 +17,7 @@
                 <p:submenu label="Home">
                     <p:menuitem value="Home" url="index.xhtml" />
                 </p:submenu>
-                
+
                 <p:submenu label="My Account">
                     <p:menuitem value="Open Account" url="openAccount.xhtml" />
                     <p:menuitem value="Close Account" url="closeAccount.xhtml" />
@@ -26,7 +26,7 @@
                     <p:menuitem value="Cash Withdraw" url="cashWithdraw.xhtml" />
                     <p:menuitem value="View Transaction" url="viewTransaction.xhtml" />
                 </p:submenu>
-                
+
                 <p:submenu label="Transfer" >
                     <p:menuitem value="To My Account" url="toMyAccount.xhtml" />
                     <p:menuitem value="To Other Merlion Accounts" url="toOthersAccount.xhtml" />
@@ -38,6 +38,8 @@
             </p:menubar>
             <br/>
             <p:panel id="panel" header="Delete Account"> 
+                <p:messages />
+
                 <p:panelGrid>
                     <h:form id="openAccountForm">
                         <h:outputText style="font-weight: bold" value="Status Message: " />

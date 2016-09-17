@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.CascadeType;
 import javax.persistence.FetchType;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -18,7 +19,10 @@ public class BankAccount implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long bankAccountId;
+    
+    @Column(unique=true)
     private String bankAccountNum;
+    
     private String bankAccountPwd;
     private String bankAccountType;
     private String bankAccountBalance;

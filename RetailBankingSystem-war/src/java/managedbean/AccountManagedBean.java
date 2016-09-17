@@ -4,28 +4,33 @@ import entity.CustomerBasic;
 import javax.ejb.EJB;
 import session.stateless.CRMCustomerSessionBean;
 import entity.BankAccount;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.FlowEvent;
 import org.primefaces.model.UploadedFile;
 import session.stateless.BankAccountSessionLocal;
 import session.stateless.InterestSessionLocal;
-import session.stateless.TransactionSessionLocal;
+import javax.faces.view.ViewScoped;
+import org.apache.commons.io.IOUtils;
+import org.primefaces.context.RequestContext;
 
 @Named(value = "accountManagedBean")
 @ViewScoped
 
 public class AccountManagedBean implements Serializable {
-
-    @EJB
-    private TransactionSessionLocal transactionSessionLocal;
 
     @EJB
     private InterestSessionLocal interestSessionLocal;
@@ -73,13 +78,11 @@ public class AccountManagedBean implements Serializable {
     private String customerOnlineBankingAccountNum;
     private String customerOnlineBankingPassword;
     private String singaporePR;
-    private String payeeNum;
     private String customerNRICSG;
     private String customerNRIC;
     private String customerPassport;
 
     private Long newInterestId;
-    private Long interestId;
     private String dailyInterest;
     private String monthlyInterest;
     private String isTransfer;
@@ -491,14 +494,6 @@ public class AccountManagedBean implements Serializable {
         this.newInterestId = newInterestId;
     }
 
-    public Long getInterestId() {
-        return interestId;
-    }
-
-    public void setInterestId(Long interestId) {
-        this.interestId = interestId;
-    }
-
     public String getTransferDailyLimit() {
         return transferDailyLimit;
     }
@@ -566,7 +561,7 @@ public class AccountManagedBean implements Serializable {
     public void setBankAccountStatus(String bankAccountStatus) {
         this.bankAccountStatus = bankAccountStatus;
     }
-    
+
     public String getInitialDepositAmt() {
         return initialDepositAmt;
     }
@@ -597,14 +592,6 @@ public class AccountManagedBean implements Serializable {
 
     public void setCheckExist(boolean checkExist) {
         this.checkExist = checkExist;
-    }
-
-    public String getPayeeNum() {
-        return payeeNum;
-    }
-
-    public void setPayeeNum(String payeeNum) {
-        this.payeeNum = payeeNum;
     }
 
     public String getTransferBalance() {
@@ -662,17 +649,19 @@ public class AccountManagedBean implements Serializable {
     public void setDateOfBirth(String dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
-    
+
     public void saveAccount() throws IOException {
         ec = FacesContext.getCurrentInstance().getExternalContext();
+
+        customerSignature = ec.getSessionMap().get("customerSignature").toString();
 
         checkIdentificationType();
         checkSalutation();
 
         bankAccountNum = bankAccountSessionLocal.generateBankAccount(customerIdentificationNum);
         checkExist = bankAccountSessionLocal.checkExistence(customerIdentificationNum);
-        dateOfBirth=bankAccountSessionLocal.changeDateFormat(customerDateOfBirth);
-        
+        dateOfBirth = bankAccountSessionLocal.changeDateFormat(customerDateOfBirth);
+
         if (existingCustomer.equals("Yes") && checkExist && agreement) {
             dailyInterest = "0";
             monthlyInterest = "0";
@@ -686,26 +675,24 @@ public class AccountManagedBean implements Serializable {
             bankAccountBalance = "0";
             transferDailyLimit = "2000";
             transferBalance = "2000";
-            
-            if(bankAccountType.equals("Monthly Savings Account")){
-                bankAccountStatus="Activated";
-            }
-            else{
-                bankAccountStatus="Inactivated";
+
+            if (bankAccountType.equals("Monthly Savings Account")) {
+                bankAccountStatus = "Activated";
+            } else {
+                bankAccountStatus = "Inactivated";
             }
 
             newAccountId = bankAccountSessionLocal.addNewAccount(bankAccountNum, bankAccountPwd, bankAccountType,
-                    bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus,customerBasicId, interestId);
+                    bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, customerBasicId, newInterestId);
 
             bankAccountSessionLocal.retrieveBankAccountByCusIC(customerIdentificationNum).add(bankAccount);
 
 //            transactionSessionLocal.initialDeposit(newAccountId, initialDepositAmt);
-
             statusMessage = "New Account Saved Successfully.";
 
             ec.getFlash().put("statusMessage", statusMessage);
             ec.getFlash().put("newAccountId", newAccountId);
-            ec.getFlash().put("newCustomerBasicId", newCustomerBasicId);
+            ec.getFlash().put("newCustomerBasicId", customerBasicId);
             ec.getFlash().put("bankAccountNum", bankAccountNum);
             ec.getFlash().put("bankAccountType", bankAccountType);
             ec.getFlash().put("initialDepositAmt", initialDepositAmt);
@@ -715,14 +702,14 @@ public class AccountManagedBean implements Serializable {
         } else if (existingCustomer.equals("Yes") && !checkExist) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! You don't have Merlion bank account yet.", "Failed!"));
         } else if (existingCustomer.equals("No") && !checkExist && agreement) {
-            payeeNum = "0";
+
             newCustomerBasicId = customerSessionBean.addNewCustomerBasic(customerName,
                     customerSalutation, customerIdentificationNum.toUpperCase(),
                     customerGender, customerEmail, customerMobile, dateOfBirth,
                     customerNationality, customerCountryOfResidence, customerRace,
                     customerMaritalStatus, customerOccupation, customerCompany,
                     customerAddress, customerPostal, customerOnlineBankingAccountNum,
-                    customerOnlineBankingPassword, payeeNum, customerSignature.getBytes());
+                    customerOnlineBankingPassword, customerSignature.getBytes());
 
             dailyInterest = "0";
             monthlyInterest = "0";
@@ -733,19 +720,17 @@ public class AccountManagedBean implements Serializable {
             bankAccountBalance = "0";
             transferDailyLimit = "2000";
             transferBalance = "2000";
-            
-            if(bankAccountType.equals("Monthly Savings Account")){
-                bankAccountStatus="Activated";
-            }
-            else{
-                bankAccountStatus="Inactivated";
+
+            if (bankAccountType.equals("Monthly Savings Account")) {
+                bankAccountStatus = "Activated";
+            } else {
+                bankAccountStatus = "Inactivated";
             }
 
             newAccountId = bankAccountSessionLocal.addNewAccount(bankAccountNum, bankAccountPwd, bankAccountType,
-                    bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus,newCustomerBasicId, newInterestId);
+                    bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, newCustomerBasicId, newInterestId);
 
 //            transactionSessionLocal.initialDeposit(newAccountId, initialDepositAmt);
-
             statusMessage = "New Account Saved Successfully.";
 
             ec.getFlash().put("statusMessage", statusMessage);
@@ -819,7 +804,27 @@ public class AccountManagedBean implements Serializable {
         }
     }
 
-    public void upload(FileUploadEvent event) {
-        
+    public void upload(FileUploadEvent event) throws IOException {
+
+        file = event.getFile();
+
+        if (file != null) {
+            String filename = customerName + "-" + customerIdentificationNum + ".png";
+            InputStream input = file.getInputstream();
+            OutputStream output = new FileOutputStream(new File("/Users/Yongxue/Desktop/JavaBean/DepositAccountManagement/DepositAccountManagement-war/web/resources/customerIdentification", filename));
+
+            try {
+                IOUtils.copy(input, output);
+            } finally {
+                IOUtils.closeQuietly(input);
+                IOUtils.closeQuietly(output);
+            }
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Succesful " + file.getFileName() + " is uploaded.", "");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        } else {
+
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cannot find the file, please upload again.", "");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        }
     }
 }

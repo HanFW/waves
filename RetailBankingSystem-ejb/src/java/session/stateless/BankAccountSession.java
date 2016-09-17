@@ -28,6 +28,7 @@ import javax.persistence.NonUniqueResultException;
 @Stateless
 @LocalBean
 public class BankAccountSession implements BankAccountSessionLocal {
+
     @EJB
     private AdminSessionBeanLocal adminSessionBeanLocal;
 
@@ -39,7 +40,7 @@ public class BankAccountSession implements BankAccountSessionLocal {
 
     @EJB
     private CRMCustomerSessionBean customerSessionBean;
-    
+
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -47,7 +48,6 @@ public class BankAccountSession implements BankAccountSessionLocal {
     public BankAccount retrieveBankAccountById(Long bankAccountId) {
         BankAccount bankAccount = new BankAccount();
 
-        System.out.println(bankAccountId);
         try {
             Query query = entityManager.createQuery("Select a From BankAccount a Where a.bankAccountId=:bankAccountId");
             query.setParameter("bankAccountId", bankAccountId);
@@ -89,7 +89,7 @@ public class BankAccountSession implements BankAccountSessionLocal {
     @Override
     public List<BankAccount> retrieveBankAccountByCusIC(String customerIdentificationNum) {
         CustomerBasic customerBasic = customerSessionBean.retrieveCustomerBasicByIC(customerIdentificationNum.toUpperCase());
-        
+
         if (customerBasic.getCustomerBasicId() == null) {
             return new ArrayList<BankAccount>();
         }
@@ -158,25 +158,19 @@ public class BankAccountSession implements BankAccountSessionLocal {
     }
 
     @Override
-    public List<BankAccount> getAllBankAccount() {
-        Query query = entityManager.createQuery("SELECT a FROM BankAccount a");
-        return query.getResultList();
-    }
-
-    @Override
     public Long addNewAccount(String bankAccountNum, String bankAccountPwd,
             String bankAccountType, String bankAccountBalance, String transferDailyLimit,
             String transferBalance, String bankAccountStatus, Long customerBasicId, Long interestId) {
 
         BankAccount bankAccount = new BankAccount();
-        String hashedPwd="";
+        String hashedPwd = "";
 
         try {
             hashedPwd = md5Hashing(bankAccountPwd);
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(BankAccountSession.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         bankAccount.setBankAccountNum(bankAccountNum);
         bankAccount.setBankAccountPwd(hashedPwd);
         bankAccount.setBankAccountTyep(bankAccountType);
@@ -189,8 +183,8 @@ public class BankAccountSession implements BankAccountSessionLocal {
 
         entityManager.persist(bankAccount);
         entityManager.flush();
-        
-        String onlineAccount = adminSessionBeanLocal.createOnlineBankingAccount(customerBasicId);
+
+        String onlineBankingAccount = adminSessionBeanLocal.createOnlineBankingAccount(customerBasicId);
 
         return bankAccount.getBankAccountId();
     }
@@ -212,56 +206,67 @@ public class BankAccountSession implements BankAccountSessionLocal {
     }
 
     @Override
-    public void activateAccounts(String bankAccountNum) {
+    public void activateAccounts() {
         DecimalFormat df = new DecimalFormat("#.00");
 
-        BankAccount bankAccount = retrieveBankAccountByNum(bankAccountNum);
+        System.out.println("activateAccounts");
+        Query query = entityManager.createQuery("SELECT a FROM BankAccount a WHERE a.bankAccountStatus = :bankAccountStatus");
+        query.setParameter("bankAccountStatus", "Activated");
+        List<BankAccount> activatedBankAccounts = query.getResultList();
+        System.out.println("List bankAccount");
+        System.out.println(activatedBankAccounts);
 
-        Double currentInterest = Double.valueOf(bankAccount.getInterest().getDailyInterest());
-        Double currentBalance = Double.valueOf(bankAccount.getBankAccountBalance());
+        for (BankAccount activatedBankAccount : activatedBankAccounts) {
+            System.out.println("for");
+            Double currentInterest = Double.valueOf(activatedBankAccount.getInterest().getDailyInterest());
+            Double currentBalance = Double.valueOf(activatedBankAccount.getBankAccountBalance());
 
-        Double totalInterest = currentInterest + currentBalance * 0.0005;
-        Double accuredInterest = Double.valueOf(df.format(totalInterest));
+            Double totalInterest = currentInterest + currentBalance * 0.0005;
+            Double accuredInterest = Double.valueOf(df.format(totalInterest));
 
-        Interest interest = bankAccount.getInterest();
-        interest.setDailyInterest(accuredInterest.toString());
+            Interest interest = activatedBankAccount.getInterest();
+            interest.setDailyInterest(accuredInterest.toString());
+        }
 
     }
 
     @Override
-    public void interestCrediting(String bankAccountNum) {
+    public void interestCrediting() {
         DecimalFormat df = new DecimalFormat("#.00");
 
-        BankAccount bankAccount = retrieveBankAccountByNum(bankAccountNum);
+        Query query = entityManager.createQuery("SELECT a FROM BankAccount a WHERE a.bankAccountStatus = :bankAccountStatus");
+        query.setParameter("bankAccountStatus", "Activated");
+        List<BankAccount> activatedBankAccounts = query.getResultList();
 
-        Interest interest = bankAccount.getInterest();
-        Double dailyInterest = Double.valueOf(interest.getDailyInterest());
+        for (BankAccount activatedBankAccount : activatedBankAccounts) {
 
-        if ((interest.getIsTransfer().equals("0")) && (interest.getIsWithdraw().equals("0"))) {
-            Double bonusInterest = Double.valueOf(bankAccount.getBankAccountBalance()) * 0.0035;
-            Double totalInterest = dailyInterest + bonusInterest;
-            Double creditedInterest = Double.valueOf(df.format(totalInterest));
+            Interest interest = activatedBankAccount.getInterest();
+            Double dailyInterest = Double.valueOf(interest.getDailyInterest());
 
-            Date date = new Date();
+            if ((interest.getIsTransfer().equals("0")) && (interest.getIsWithdraw().equals("0"))) {
+                Double bonusInterest = Double.valueOf(activatedBankAccount.getBankAccountBalance()) * 0.0035;
+                Double totalInterest = dailyInterest + bonusInterest;
+                Double creditedInterest = Double.valueOf(df.format(totalInterest));
 
-            String accountCredit = null;
-            String transactionCode = "DEFI";
-            String transactionRef = "Interest Crediting";
+                String accountCredit = null;
+                String transactionCode = "DEFI";
+                String transactionRef = "Interest Crediting";
 
-            Calendar cal = Calendar.getInstance();
-            int year = cal.get(Calendar.YEAR);
-            int month = cal.get(Calendar.MONTH);
-            int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
-            String transactionDate = dayOfMonth + "-" + (month + 1) + "-" + year;
+                Calendar cal = Calendar.getInstance();
+                int year = cal.get(Calendar.YEAR);
+                int month = cal.get(Calendar.MONTH);
+                int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
+                String transactionDate = dayOfMonth + "-" + (month + 1) + "-" + year;
 
-            interest.setMonthlyInterest(creditedInterest.toString());
+                interest.setMonthlyInterest(creditedInterest.toString());
 
-            Long newAccTransactionId = transactionSessionLocal.addNewTransaction(transactionDate, transactionCode, transactionRef,
-                    creditedInterest.toString(), accountCredit, bankAccount.getBankAccountId());
+                Long newAccTransactionId = transactionSessionLocal.addNewTransaction(transactionDate, transactionCode, transactionRef,
+                        creditedInterest.toString(), accountCredit, activatedBankAccount.getBankAccountId());
 
-            interest.setDailyInterest("0");
-            interest.setIsTransfer("0");
-            interest.setIsWithdraw("0");
+                interest.setDailyInterest("0");
+                interest.setIsTransfer("0");
+                interest.setIsWithdraw("0");
+            }
         }
     }
 
@@ -282,11 +287,11 @@ public class BankAccountSession implements BankAccountSessionLocal {
         String status;
         SecureRandom random = new SecureRandom();
 
-        bankAccountNum = new BigInteger(13, random).setBit(12).toString(10) + "-" + Math.abs(customerIdentificationNum.toUpperCase().hashCode());
+        bankAccountNum = new BigInteger(23, random).setBit(22).toString(10);
         status = checkAccountDuplication(bankAccountNum);
 
         while (status.equals("Duplicated")) {
-            bankAccountNum = new BigInteger(13, random).setBit(12).toString(10) + "-" + Math.abs(customerIdentificationNum.toUpperCase().hashCode());
+            bankAccountNum = new BigInteger(23, random).setBit(22).toString(10);
             status = checkAccountDuplication(bankAccountNum);
         }
 
@@ -312,7 +317,7 @@ public class BankAccountSession implements BankAccountSessionLocal {
 
         return changedDate;
     }
-    
+
     private String md5Hashing(String stringToHash) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("MD5");
         return Arrays.toString(md.digest(stringToHash.getBytes()));

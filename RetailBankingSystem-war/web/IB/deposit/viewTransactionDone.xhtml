@@ -41,8 +41,9 @@
             </p:menubar>
             <br/>
             <p:panel header="View Transaction History">
-                <p:dataTable var="accTransaction" value="#{transactionManagedBean.transaction}" 
-                             paginator="true" rows="10" emptyMessage="No Transaction Record">
+                <p:dataTable var="accTransaction" value="#{transactionManagedBean.accTransaction}" 
+                             paginator="true" rows="20" emptyMessage="No Transaction Record">
+                    
                     <p:column headerText="Transaction ID">
                         <h:outputText value="#{accTransaction.transactionId}" /> 
                     </p:column>
@@ -66,6 +67,7 @@
                     <p:column headerText="Account Credit"> 
                         <h:outputText value="#{accTransaction.accountCredit}" />
                     </p:column>
+                    
                 </p:dataTable>
             </p:panel>
         </h:form>

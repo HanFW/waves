@@ -5,7 +5,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>View My Account</title>
+        <title>View Account</title>
         <style type="text/css">
             .gritter-notice-wrapper {
                 left:200px;
@@ -20,7 +20,7 @@
                 <p:submenu label="Home">
                     <p:menuitem value="Home" url="index.xhtml" />
                 </p:submenu>
-                    
+
                 <p:submenu label="My Account">
                     <p:menuitem value="Open Account" url="openAccount.xhtml" />
                     <p:menuitem value="Close Account" url="closeAccount.xhtml" />
@@ -29,7 +29,7 @@
                     <p:menuitem value="Cash Withdraw" url="cashWithdraw.xhtml" />
                     <p:menuitem value="View Transaction" url="viewTransaction.xhtml" />
                 </p:submenu>
-                    
+
                 <p:submenu label="Transfer" >
                     <p:menuitem value="To My Account" url="toMyAccount.xhtml" />
                     <p:menuitem value="To Other Merlion Accounts" url="toOthersAccount.xhtml" />
@@ -40,38 +40,39 @@
                 </p:submenu>
             </p:menubar>
             <br/>
-            <p:panel id="panel" header="View My Account">
-                <p:panelGrid>
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel for="customerIdentificationNum" style="font-weight: bold" value="Customer Identification Number: " />
-                        </p:column>
-                        <p:column>
-                            <p:inputText required="true" label="Customer Identification Number" requiredMessage="Customer identification number is required." id="customerIdentificationNum"
-                                         value="#{accountDataTableBean.customerIdentificationNum}">
-                            </p:inputText>
-                        </p:column>
-                        <p:column>
-                            <p:message for="customerIdentificationNum" />
-                        </p:column>
-                    </p:row>
-                        
-                    <h:outputText style="font-weight: bold" value="Status Message: " />
-                    <h:outputText value="#{accountDataTableBean.statusMessage}" />
-                    <br/>
-                </p:panelGrid>
-                <br/>
-                <p:commandButton id="cancelBtn" action="index.xhtml" value="Cancel" update="panel" immediate = "true">
-                    <p:confirm header="Cancel" message="Are you sure?" />
-                </p:commandButton>
-                
-                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" action="index.xhtml"/>
-                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" />
-                </p:confirmDialog>
-                
-                <p:commandButton id="viewBtn" value="View Account" action="viewAccountDone.xhtml" update="panel" 
-                                 actionListener="#{accountDataTableBean.getBankAccount}" ajax="true"/>
+            <p:panel header="View My Account">
+                <p:dataTable var="bankAccount" value="#{accountDataTableBean.bankAccount}" 
+                             paginator="true" rows="10" emptyMessage="No Account">
+
+                    <p:column headerText="Bank Account Type"> 
+                        <h:outputText value="#{bankAccount.bankAccountType}" />
+                    </p:column>
+
+                    <p:column headerText="Bank Account Number" >
+                        <h:outputText value="#{bankAccount.bankAccountNum}" /> 
+                    </p:column>
+
+                    <p:column headerText="Balance"> 
+                        <h:outputText value="#{bankAccount.bankAccountBalance}" />
+                    </p:column>
+
+                    <p:column headerText="Transfer" style="width: 10%"> 
+                        <center>
+                            <p:commandButton process="@this" action="index.xhtml" icon="ui-icon-extlink">
+                                <f:setPropertyActionListener value="#{bankAccount.bankAccountNum}" target="#{transactionManagedBean.bankAccountNum}" />
+                            </p:commandButton>
+                        </center>
+                    </p:column>
+
+                    <p:column headerText="Statement" style="width: 10%"> 
+                        <center>
+                            <p:commandButton process="@this" action="index.xhtml" icon="ui-icon-document">
+                                <f:setPropertyActionListener value="#{bankAccount.bankAccountNum}" target="#{transactionManagedBean.bankAccountNum}" />
+                            </p:commandButton>
+                        </center>
+                    </p:column>
+
+                </p:dataTable>
             </p:panel>
         </h:form>
     </h:body>

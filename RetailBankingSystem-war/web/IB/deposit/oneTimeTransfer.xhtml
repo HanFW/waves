@@ -16,7 +16,7 @@
                 <p:submenu label="Home">
                     <p:menuitem value="Home" url="index.xhtml" />
                 </p:submenu>
-                    
+
                 <p:submenu label="My Account">
                     <p:menuitem value="Open Account" url="openAccount.xhtml" />
                     <p:menuitem value="Close Account" url="closeAccount.xhtml" />
@@ -25,7 +25,7 @@
                     <p:menuitem value="Cash Withdraw" url="cashWithdraw.xhtml" />
                     <p:menuitem value="View Transaction" url="viewTransaction.xhtml" />
                 </p:submenu>
-                    
+
                 <p:submenu label="Transfer" >
                     <p:menuitem value="To My Account" url="toMyAccount.xhtml" />
                     <p:menuitem value="To Other Merlion Accounts" url="toOthersAccount.xhtml" />
@@ -36,50 +36,28 @@
                 </p:submenu>
             </p:menubar>
             <br/>
-            <p:panel id="panel" header="Fund Transfer to Other Merlion Account"> 
+            <p:panel id="panel" header="Fund Transfer to Other Merlion Account (One-Time)"> 
                 <p:messages />
-                    
-                <p:panelGrid style="margin-bottom:10px">
-                    <p:outputLabel style="font-weight: bold" value="From" />
-                </p:panelGrid>
-                <br/>
-                <p:panelGrid style="margin-bottom: 10px">
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel for="transferFromAccount" style="font-weight: bold" value="Account: " />
-                        </p:column>
-                        <p:column>
-                            <p:inputText required="true" label="Account Number" requiredMessage="Account number is required." id="transferFromAccount"
-                                         value="#{transferManagedBean.fromAccount}">
-                            </p:inputText>
-                        </p:column>
-                        <p:column>
-                            <p:message for="transferFromAccount" />
-                        </p:column>
-                    </p:row>
-                        
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel for="transferFromCurrency" style="font-weight: bold" value="Currency: " />
-                        </p:column>
-                        <p:column>
-                            <p:selectOneMenu id="transferFromCurrency" value="#{transferManagedBean.fromCurrency}" 
-                                             style="width:125px" required="true">
-                                <f:selectItem itemLabel="Please Select" itemValue="" />
-                                <f:selectItem itemLabel="Singapore Dollar" itemValue="SGD - Singapore Dollar" />
-                            </p:selectOneMenu>
-                        </p:column>
-                        <p:column>
-                            <p:message for="transferFromCurrency" />
-                        </p:column>
-                    </p:row>
-                </p:panelGrid>
-                <br/>
+
                 <p:panelGrid style="margin-bottom:10px">
                     <p:outputLabel style="font-weight: bold" value="To" />
                 </p:panelGrid>
                 <br/>
                 <p:panelGrid style="margin-bottom: 10px">
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="transferToAccountName" style="font-weight: bold" value="Recipient's Name: " />
+                        </p:column>
+                        <p:column>
+                            <p:inputText required="true" label="Recipient Name" requiredMessage="Recipient's name is required." id="transferToAccountName"
+                                         value="#{transferManagedBean.payeeName}">
+                            </p:inputText>
+                        </p:column>
+                        <p:column>
+                            <p:message for="transferToAccountName" />
+                        </p:column>
+                    </p:row>
+
                     <p:row>
                         <p:column>
                             <p:outputLabel for="transferToAccount" style="font-weight: bold" value="Account: " />
@@ -93,7 +71,7 @@
                             <p:message for="transferToAccount" />
                         </p:column>
                     </p:row>
-                        
+
                     <p:row>
                         <p:column>
                             <p:outputLabel for="transferToCurrency" style="font-weight: bold" value="Currency: " />
@@ -109,7 +87,43 @@
                             <p:message for="transferToCurrency" />
                         </p:column>
                     </p:row>
-                        
+                </p:panelGrid>
+                <br/>
+                <p:panelGrid style="margin-bottom:10px">
+                    <p:outputLabel style="font-weight: bold" value="From" />
+                </p:panelGrid>
+                <br/>
+                <p:panelGrid style="margin-bottom: 10px">
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="transferFromAccount" style="font-weight: bold" value="Account: " />
+                        </p:column>
+                        <p:column>
+                            <p:selectOneMenu id="transferFromAccount" value="#{transferManagedBean.fromBankAccountNumWithType}" effect="fold" editable="true">
+                                <f:selectItems value="#{transferManagedBean.fromAccounts}" />
+                            </p:selectOneMenu>
+                        </p:column>
+                        <p:column>
+                            <p:message for="transferFromAccount" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="transferFromCurrency" style="font-weight: bold" value="Currency: " />
+                        </p:column>
+                        <p:column>
+                            <p:selectOneMenu id="transferFromCurrency" value="#{transferManagedBean.fromCurrency}" 
+                                             style="width:125px" required="true">
+                                <f:selectItem itemLabel="Please Select" itemValue="" />
+                                <f:selectItem itemLabel="Singapore Dollar" itemValue="SGD - Singapore Dollar" />
+                            </p:selectOneMenu>
+                        </p:column>
+                        <p:column>
+                            <p:message for="transferFromCurrency" />
+                        </p:column>
+                    </p:row>
+
                     <p:row>
                         <p:column>
                             <p:outputLabel for="transferAmt" style="font-weight: bold" value="Amount: " />
@@ -124,15 +138,16 @@
                         </p:column>
                     </p:row>
                 </p:panelGrid> 
+
                 <p:commandButton id="cancelBtn" action="index.xhtml" value="Cancel" update="panel" immediate = "true">
                     <p:confirm header="Cancel" message="Are you sure?" />
                 </p:commandButton>
-                    
+
                 <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
                     <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" action="index.xhtml"/>
                     <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" />
                 </p:confirmDialog>
-                    
+
                 <p:commandButton id="nextBtn" value="Next" update="panel" 
                                  actionListener="#{transferManagedBean.oneTimeTransfer}" ajax="true"/>
             </p:panel>

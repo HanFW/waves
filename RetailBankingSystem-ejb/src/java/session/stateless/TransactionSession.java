@@ -113,8 +113,6 @@ public class TransactionSession implements TransactionSessionLocal {
         if (bankAccountId == null) {
             return "Error! Bank account does not exist!";
         } else {
-            Date date = new Date();
-
             String accountCredit = null;
             String transactionCode = "ADP";
             String transactionRef = "Merlion Bank Branch";
@@ -152,8 +150,6 @@ public class TransactionSession implements TransactionSessionLocal {
         if (bankAccountId == null) {
             return "Error! Bank account does not exist!";
         } else {
-            Date date = new Date();
-
             String accountDebit = null;
             String transactionCode = "AWL";
             String transactionRef = "Merlion Bank Branch";
@@ -206,39 +202,37 @@ public class TransactionSession implements TransactionSessionLocal {
         BankAccount bankAccountFrom = bankAccountSessionLocal.retrieveBankAccountByNum(fromAccount);
         BankAccount bankAccountTo = bankAccountSessionLocal.retrieveBankAccountByNum(toAccount);
 
-        if (Double.valueOf(bankAccountFrom.getTransferBalance()) < Double.valueOf(transferAmt)) {
-            return "Transfer Limited.";
-        } else {
-            Double balanceAccountFrom = Double.valueOf(bankAccountFrom.getBankAccountBalance()) - Double.valueOf(transferAmt);
-            Double balanceAccountTo = Double.valueOf(bankAccountTo.getBankAccountBalance()) + Double.valueOf(transferAmt);
+//        if (Double.valueOf(bankAccountFrom.getTransferBalance()) < Double.valueOf(transferAmt)) {
+//            return "Transfer Limited.";
+//        } else {
+        Double balanceAccountFrom = Double.valueOf(bankAccountFrom.getBankAccountBalance()) - Double.valueOf(transferAmt);
+        Double balanceAccountTo = Double.valueOf(bankAccountTo.getBankAccountBalance()) + Double.valueOf(transferAmt);
 
-            Long bankAccountFromId = bankAccountFrom.getBankAccountId();
-            Long bankAccountToId = bankAccountTo.getBankAccountId();
+        Long bankAccountFromId = bankAccountFrom.getBankAccountId();
+        Long bankAccountToId = bankAccountTo.getBankAccountId();
 
-            Date date = new Date();
+        String transactionCode = "TRF";
+        String transactionRefFrom = toAccount;
+        String transactionRefTo = fromAccount;
 
-            String transactionCode = "TRF";
-            String transactionRefFrom = toAccount;
-            String transactionRefTo = fromAccount;
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
+        String transactionDate = dayOfMonth + "-" + (month + 1) + "-" + year;
 
-            Calendar cal = Calendar.getInstance();
-            int year = cal.get(Calendar.YEAR);
-            int month = cal.get(Calendar.MONTH);
-            int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
-            String transactionDate = dayOfMonth + "-" + (month + 1) + "-" + year;
+        Long fromTransactionId = addNewTransaction(transactionDate, transactionCode, transactionRefFrom,
+                null, transferAmt, bankAccountFromId);
+        Long toTransactionId = addNewTransaction(transactionDate, transactionCode, transactionRefTo,
+                transferAmt, null, bankAccountToId);
 
-            Long fromTransactionId = addNewTransaction(transactionDate, transactionCode, transactionRefFrom,
-                    null, transferAmt, bankAccountFromId);
-            Long toTransactionId = addNewTransaction(transactionDate, transactionCode, transactionRefTo,
-                    transferAmt, null, bankAccountToId);
+        bankAccountFrom.setBankAccountBalance(balanceAccountFrom.toString());
+        bankAccountTo.setBankAccountBalance(balanceAccountTo.toString());
+        bankAccountFrom.getInterest().setIsTransfer("1");
 
-            bankAccountFrom.setBankAccountBalance(balanceAccountFrom.toString());
-            bankAccountTo.setBankAccountBalance(balanceAccountTo.toString());
-            bankAccountFrom.getInterest().setIsTransfer("1");
-
-            Double transfer = Double.valueOf(bankAccountFrom.getTransferBalance()) - Double.valueOf(transferAmt);
-            bankAccountFrom.setTransferBalance(transfer.toString());
-        }
+        Double transfer = Double.valueOf(bankAccountFrom.getTransferBalance()) - Double.valueOf(transferAmt);
+        bankAccountFrom.setTransferBalance(transfer.toString());
+//        }
 
         return "Fund Transfer Sucessfully!";
     }
