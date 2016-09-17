@@ -8,40 +8,55 @@
                 left:200px;
                 top: 50px; }
             </style>
-            
+
         </h:head>
         <h:body>
             <h:form id="formMain">
             <h1>Welcome to Merlion Bank</h1>
             <p:menubar>
                 <p:submenu label="Home">
-                    <p:menuitem value="Home" url="depositIndex.xhtml" />
-                    <p:menuitem value="login" url="../IB/login.xhtml"/>
-                </p:submenu>
-                
-                <p:submenu label="My Account">
-                    <p:menuitem value="Open Account" url="openAccount.xhtml" />
+                    <p:menuitem value="Home" url="index.xhtml" />
                 </p:submenu>
 
+                <p:submenu label="My Account">
+                    <p:menuitem value="Open Account" url="openAccount.xhtml" />
+                    <p:menuitem value="Close Account" url="closeAccount.xhtml" />
+                    <p:menuitem value="View Account" url="viewAccount.xhtml" />
+                    <p:menuitem value="Cash Deposit" url="cashDeposit.xhtml" />
+                    <p:menuitem value="Cash Withdraw" url="cashWithdraw.xhtml" />
+                    <p:menuitem value="View Transaction" url="viewTransaction.xhtml" />
+                </p:submenu>
+
+                <p:submenu label="Transfer" >
+                    <p:menuitem value="To My Account" url="toMyAccount.xhtml" />
+                    <p:menuitem value="To Other Merlion Accounts" url="toOthersAccount.xhtml" />
+                    <p:menuitem value="To Other Merlion Accuonts(One-time)" url="oneTimeTransfer.xhtml" />
+                    <p:menuitem value="Add Recipient" url="addRecipient.xhtml" />
+                    <p:menuitem value="Delete Recipient" url="deleteRecipient.xhtml" />
+                    <p:menuitem value="Change Daily Transfer Limit" url="dailyTransferLimit.xhtml" />
+                </p:submenu>
             </p:menubar>
             <br/>
             <p:panel id="panel" header="Save Account"> 
                 <p:panelGrid>
                     <h:form id="formMain">
                         <h:outputText style="font-weight: bold" value="Status Message: " />
-                        <h:outputText value="#{accountManagedBean.statusMessage}" />
+                        <h:outputText value="#{saveAccountManagedBean.statusMessage}" />
                         <br/>
                         <h:outputText style="font-weight: bold" value="Bank Account Id: "/>
-                        <h:outputText value="#{accountManagedBean.newAccountId}"/>
+                        <h:outputText value="#{saveAccountManagedBean.bankAccountId}"/>
                         <br/>
                         <h:outputText style="font-weight: bold" value="Customer basic Id: "/>
-                        <h:outputText value="#{accountManagedBean.newCustomerBasicId}"/>
+                        <h:outputText value="#{saveAccountManagedBean.customerBasicId}"/>
                         <br/>
                         <h:outputText style="font-weight: bold" value="Bank Account Num: "/>
-                        <h:outputText value="#{accountManagedBean.bankAccountNum}"/>
+                        <h:outputText value="#{saveAccountManagedBean.bankAccountNum}"/>
                         <br/>
                         <h:outputText style="font-weight: bold" value="Bank Account Type: "/>
-                        <h:outputText value="#{accountManagedBean.bankAccountType}"/>
+                        <h:outputText value="#{saveAccountManagedBean.bankAccountType}"/>
+                        <br/>
+                        <h:outputText style="font-weight: bold" value="Initial Deposit Amount: "/>
+                        <h:outputText value="#{saveAccountManagedBean.initialDepositAmt}"/>
                     </h:form>
                 </p:panelGrid>
             </p:panel>
