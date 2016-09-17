@@ -8,12 +8,16 @@ package managedbean;
 import entity.CustomerBasic;
 import java.io.IOException;
 import java.io.Serializable;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import session.stateless.AdminSessionBeanLocal;
@@ -31,7 +35,11 @@ public class LoginBean implements Serializable {
 
     private String customerAccount;
     private String customerPassword;
+    private String newCustomerAccount;
+    private String newCustomerPassword;
     private CustomerBasic customer;
+    private int loginAttempts;
+    private String customerStatus;
 
     /**
      * Creates a new instance of LoginBean
@@ -43,35 +51,81 @@ public class LoginBean implements Serializable {
      *
      * @param event
      */
-    public void doLogin(ActionEvent event) {
+    public void doLogin(ActionEvent event) throws IOException, NoSuchAlgorithmException {
 //        adminSessionBeanLocal.createOnlineBankingAccount(Long.valueOf(1));
 
         FacesMessage message = null;
         FacesContext context = FacesContext.getCurrentInstance();
-        
-        //encrypt the customerPassword first
-        String status = adminSessionBeanLocal.login(customerAccount, customerPassword);   
-        switch (status) {
-            case "loggedIn":
-//                message = new FacesMessage(FacesMessage.SEVERITY_INFO, status, "Welcome back!");
-                System.out.println("*** loginBean: loggedIn");
-                context.getExternalContext().getSessionMap().put("customer", getCustomer());
-                try {
-                    context.getExternalContext().redirect("home.xhtml");
-                } catch (IOException ex) {
-                    Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                break;
-            case "invalidPassword":
-                message = new FacesMessage(FacesMessage.SEVERITY_INFO, status, "Invalid customerPassword/account.");
-                context.addMessage(null, message);
-                System.out.println("*** loginBean: invalid password");
-                break;
-            default:
-                message = new FacesMessage(FacesMessage.SEVERITY_INFO, status, "Please check your account number.");
-                context.addMessage(null, message);
-                System.out.println("*** loginBean: invalid account");
-                break;
+        customer = adminSessionBeanLocal.getCustomerByOnlineBankingAccount(customerAccount);
+
+        if (customer == null) {
+            message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Invalid account number: ", "Please check your account number.");
+            context.addMessage(null, message);
+            System.out.println("*** loginBean: invalid account");
+        } else {
+            //encrypt the customerPassword first
+            customerPassword = md5Hashing(customerPassword + customer.getCustomerIdentificationNum().substring(0, 3));
+            String status = adminSessionBeanLocal.login(customerAccount, customerPassword);
+
+            switch (status) {
+                case "loggedIn":
+                    System.out.println("*** loginBean: loggedIn");
+                    context.getExternalContext().getSessionMap().put("customer", getCustomer());
+                    if (customer.getCustomerStatus().equals("new")) {
+                        context.getExternalContext().redirect("accountActivation.xhtml?faces-redirect=true");
+                    } else {
+                        context.getExternalContext().redirect("home.xhtml?faces-redirect=true");
+                    }
+                    break;
+                case "invalidPassword":
+                    customerPassword = "";
+                    message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Invalid password: ", "Please enter your passsword again.");
+                    context.addMessage(null, message);
+                    loginAttempts++;
+                    System.out.println("*** loginBean: invalid password, attempts: " + loginAttempts);
+                    break;
+                default:
+                    message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Invalid account: ", "Please check your account number.");
+                    context.addMessage(null, message);
+                    System.out.println("*** loginBean: invalid account");
+                    break;
+            }
+        }
+
+    }
+
+    public void doLogout(ActionEvent event) throws IOException {
+        System.out.println("*** loginBean: doLogout");
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        ec.invalidateSession();
+
+        String serverName = FacesContext.getCurrentInstance().getExternalContext().getRequestServerName();
+        String serverPort = "8080";
+        ec.redirect("http://" + serverName + ":" + serverPort + ec.getRequestContextPath() + "/index.xhtml?faces-redirect=true");
+    }
+
+    public void timeoutLogout() throws IOException {
+        System.out.println("*** loginBean: logout");
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        ec.invalidateSession();
+        String serverName = FacesContext.getCurrentInstance().getExternalContext().getRequestServerName();
+        String serverPort = "8080";
+        ec.redirect("http://" + serverName + ":" + serverPort + ec.getRequestContextPath() + "/timeout.xhtml?faces-redirect=true");
+    }
+
+    public void activateOnlineBankingAccount(ActionEvent event) throws NoSuchAlgorithmException {
+        System.out.println("*** loginBean: activateOnlineBankingAccount");
+        FacesContext context = FacesContext.getCurrentInstance();
+        newCustomerPassword = md5Hashing(newCustomerPassword + customer.getCustomerIdentificationNum().substring(0, 3));
+        if (newCustomerAccount.equals(customerAccount)) {
+            context.addMessage("activationMessage", new FacesMessage(FacesMessage.SEVERITY_WARN, "Unsecured account number: ", "For your safety, please enter a new account number different from the initial account number."));
+            newCustomerAccount = "";
+            newCustomerPassword = "";
+        } else if (newCustomerPassword.equals(customerPassword)) {
+            context.addMessage("activationMessage", new FacesMessage(FacesMessage.SEVERITY_WARN, "Unsecured account password: ", "For your safety, please enter a new account password different from the initial password."));
+            newCustomerPassword = "";
+        } else {
+            customerStatus = adminSessionBeanLocal.updateOnlineBankingAccount(newCustomerAccount, newCustomerPassword, customer.getCustomerBasicId());
         }
     }
 
@@ -107,7 +161,24 @@ public class LoginBean implements Serializable {
      * @return the customer
      */
     public CustomerBasic getCustomer() {
-        return adminSessionBeanLocal.getCustomerByOnlineBankingAccount(customerAccount);
+        customer = adminSessionBeanLocal.getCustomerByOnlineBankingAccount(customerAccount);
+        return customer;
+    }
+
+    public String getNewCustomerAccount() {
+        return newCustomerAccount;
+    }
+
+    public void setNewCustomerAccount(String newCustomerAccount) {
+        this.newCustomerAccount = newCustomerAccount;
+    }
+
+    public String getNewCustomerPassword() {
+        return newCustomerPassword;
+    }
+
+    public void setNewCustomerPassword(String newCustomerPassword) {
+        this.newCustomerPassword = newCustomerPassword;
     }
 
     /**
@@ -115,5 +186,26 @@ public class LoginBean implements Serializable {
      */
     public void setCustomer(CustomerBasic customer) {
         this.customer = customer;
+    }
+
+    public int getLoginAttempts() {
+        return loginAttempts;
+    }
+
+    public void setLoginAttempts(int loginAttempts) {
+        this.loginAttempts = loginAttempts;
+    }
+
+    public String getCustomerStatus() {
+        return customerStatus;
+    }
+
+    public void setCustomerStatus(String customerStatus) {
+        this.customerStatus = customerStatus;
+    }
+
+    private String md5Hashing(String stringToHash) throws NoSuchAlgorithmException {
+        MessageDigest md = MessageDigest.getInstance("MD5");
+        return Arrays.toString(md.digest(stringToHash.getBytes()));
     }
 }

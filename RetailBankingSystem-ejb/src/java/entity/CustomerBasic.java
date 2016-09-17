@@ -12,8 +12,9 @@ import javax.persistence.OneToMany;
 
 @Entity
 public class CustomerBasic implements Serializable {
+
     private static final long serialVersionUID = 1L;
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long customerBasicId;
@@ -34,13 +35,16 @@ public class CustomerBasic implements Serializable {
     private String customerOnlineBankingAccountNum;
     private String customerOnlineBankingPassword;
     private String customerIdentificationNum;
-    private byte[] customerSignature;
     private String customerStatus;
-    
-    @OneToMany(cascade={CascadeType.ALL},fetch=FetchType.EAGER,mappedBy="customerBasic")
+    private String customerPayeeNum;
+    private String customerAge;
+
+    private byte[] customerSignature;
+
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
     private List<BankAccount> bankAccount;
-    
-    @OneToMany(cascade={CascadeType.ALL},fetch=FetchType.EAGER,mappedBy="customerBasic")
+
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
     private List<Payee> payee;
 
     public Long getCustomerBasicId() {
@@ -49,6 +53,22 @@ public class CustomerBasic implements Serializable {
 
     public void setCustomerBasicId(Long customerBasicId) {
         this.customerBasicId = customerBasicId;
+    }
+
+    public String getCustomerPayeeNum() {
+        return customerPayeeNum;
+    }
+
+    public void setCustomerPayeeNum(String customerPayeeNum) {
+        this.customerPayeeNum = customerPayeeNum;
+    }
+
+    public byte[] getCustomerSignature() {
+        return customerSignature;
+    }
+
+    public void setCustomerSignature(byte[] customerSignature) {
+        this.customerSignature = customerSignature;
     }
 
     public String getCustomerSalutation() {
@@ -65,6 +85,14 @@ public class CustomerBasic implements Serializable {
 
     public void setCustomerName(String customerName) {
         this.customerName = customerName;
+    }
+
+    public String getCustomerIdentificationNum() {
+        return customerIdentificationNum;
+    }
+
+    public void setCustomerIdentificationNum(String customerIdentificationNum) {
+        this.customerIdentificationNum = customerIdentificationNum;
     }
 
     public String getCustomerGender() {
@@ -179,14 +207,6 @@ public class CustomerBasic implements Serializable {
         this.customerOnlineBankingPassword = customerOnlineBankingPassword;
     }
 
-    public String getCustomerIdentificationNum() {
-        return customerIdentificationNum;
-    }
-
-    public void setCustomerIdentificationNum(String customerIdentificationNum) {
-        this.customerIdentificationNum = customerIdentificationNum;
-    }
-
     public List<BankAccount> getBankAccount() {
         return bankAccount;
     }
@@ -203,14 +223,6 @@ public class CustomerBasic implements Serializable {
         this.payee = payee;
     }
 
-    public byte[] getCustomerSignature() {
-        return customerSignature;
-    }
-
-    public void setCustomerSignature(byte[] customerSignature) {
-        this.customerSignature = customerSignature;
-    }
-
     public String getCustomerStatus() {
         return customerStatus;
     }
@@ -218,6 +230,15 @@ public class CustomerBasic implements Serializable {
     public void setCustomerStatus(String customerStatus) {
         this.customerStatus = customerStatus;
     }
+
+    public String getCustomerAge() {
+        return customerAge;
+    }
+
+    public void setCustomerAge(String customerAge) {
+        this.customerAge = customerAge;
+    }
+
 
     @Override
     public int hashCode() {
@@ -243,5 +264,5 @@ public class CustomerBasic implements Serializable {
     public String toString() {
         return "entity.CustomerBasic[ id=" + customerBasicId + " ]";
     }
-    
+
 }
