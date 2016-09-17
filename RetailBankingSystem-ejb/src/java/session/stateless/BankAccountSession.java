@@ -209,15 +209,11 @@ public class BankAccountSession implements BankAccountSessionLocal {
     public void activateAccounts() {
         DecimalFormat df = new DecimalFormat("#.00");
 
-        System.out.println("activateAccounts");
         Query query = entityManager.createQuery("SELECT a FROM BankAccount a WHERE a.bankAccountStatus = :bankAccountStatus");
         query.setParameter("bankAccountStatus", "Activated");
         List<BankAccount> activatedBankAccounts = query.getResultList();
-        System.out.println("List bankAccount");
-        System.out.println(activatedBankAccounts);
 
         for (BankAccount activatedBankAccount : activatedBankAccounts) {
-            System.out.println("for");
             Double currentInterest = Double.valueOf(activatedBankAccount.getInterest().getDailyInterest());
             Double currentBalance = Double.valueOf(activatedBankAccount.getBankAccountBalance());
 
@@ -244,6 +240,8 @@ public class BankAccountSession implements BankAccountSessionLocal {
             Double dailyInterest = Double.valueOf(interest.getDailyInterest());
 
             if ((interest.getIsTransfer().equals("0")) && (interest.getIsWithdraw().equals("0"))) {
+                interest.setDailyInterest("0");
+                
                 Double bonusInterest = Double.valueOf(activatedBankAccount.getBankAccountBalance()) * 0.0035;
                 Double totalInterest = dailyInterest + bonusInterest;
                 Double creditedInterest = Double.valueOf(df.format(totalInterest));
@@ -262,7 +260,7 @@ public class BankAccountSession implements BankAccountSessionLocal {
 
                 Long newAccTransactionId = transactionSessionLocal.addNewTransaction(transactionDate, transactionCode, transactionRef,
                         creditedInterest.toString(), accountCredit, activatedBankAccount.getBankAccountId());
-
+            } else {
                 interest.setDailyInterest("0");
                 interest.setIsTransfer("0");
                 interest.setIsWithdraw("0");
