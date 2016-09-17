@@ -5,8 +5,11 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,7 +28,7 @@ import javax.persistence.Query;
 public class AdminSessionBean implements AdminSessionBeanLocal {
 
     @EJB
-    private EmailSessionBeanLocal emailSessionBeanLocal;
+    private CustomerEmailSessionBeanLocal emailSessionBeanLocal;
 
     @PersistenceContext
     private EntityManager em;
@@ -56,13 +59,18 @@ public class AdminSessionBean implements AdminSessionBeanLocal {
             } catch (NoSuchAlgorithmException ex) {
                 Logger.getLogger(AdminSessionBean.class.getName()).log(Level.SEVERE, null, ex);
             }
-
+            
             //generate email
-            emailSessionBeanLocal.sendEmail(customer, "openAccount", true, password);
+            Map<String,String> emailActions = new HashMap<String,String>();
+            emailActions.put("onlineBanking", "yes");
+            emailActions.put("onlineBankingPassword", password);
+            emailSessionBeanLocal.sendEmail(customer, "openAccount", emailActions);
             System.out.println("*** adminSessionBean: email sent to customer (online banking account created)");
             return account + "," + password;
         } else {
-            emailSessionBeanLocal.sendEmail(customer, "openAccount", false, password);
+            Map<String,String> emailActions = new HashMap<String,String>();
+            emailActions.put("onlineBanking", "no");
+            emailSessionBeanLocal.sendEmail(customer, "openAccount", emailActions);
             System.out.println("*** adminSessionBean: email sent to customer (not a new customer)");
             return "not a new customer";
         }

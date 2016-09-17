@@ -22,7 +22,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import org.primefaces.event.FlowEvent;
 import session.stateless.AdminSessionBeanLocal;
-import session.stateless.EmailSessionBeanLocal;
+import session.stateless.CustomerEmailSessionBeanLocal;
 
 /**
  *
@@ -32,7 +32,7 @@ import session.stateless.EmailSessionBeanLocal;
 @SessionScoped
 public class LoginBean implements Serializable {
     @EJB
-    private EmailSessionBeanLocal emailSessionBeanLocal;
+    private CustomerEmailSessionBeanLocal emailSessionBeanLocal;
 
     @EJB
     private AdminSessionBeanLocal adminSessionBeanLocal;

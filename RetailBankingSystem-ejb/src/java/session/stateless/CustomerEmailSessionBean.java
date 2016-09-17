@@ -7,6 +7,7 @@ package session.stateless;
 
 import entity.CustomerBasic;
 import java.util.Date;
+import java.util.Map;
 import java.util.Properties;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
@@ -22,29 +23,29 @@ import util.SMTPAuthenticator;
  * @author hanfengwei
  */
 @Stateless
-public class EmailSessionBean implements EmailSessionBeanLocal {
+public class CustomerEmailSessionBean implements CustomerEmailSessionBeanLocal {
 
     @Override
-    public void sendEmail(CustomerBasic customer, String subject, Boolean createOnlineAccount, String password) {
+    public void sendEmail(CustomerBasic customer, String subject, Map<String,String> actions) {
         String emailServerName = "smtp.gmail.com";
         String emailFromAddress = "Han Fengwei Test Send<merlionbankes05@gmail.com>";
-        String toEmailAddress = "Han Fengwei Test Receive<"+customer.getCustomerEmail()+">";
+        String toEmailAddress = "Han Fengwei Test Receive<" + customer.getCustomerEmail() + ">";
         String mailer = "JavaMailer";
         String emailText = "Dear customer, \n";
-        
-        switch(subject){
-            case "openAccount": 
+
+        switch (subject) {
+            //deposit: open deposit account
+            case "openAccount":
                 emailText += "You have an deposit account opened. ";
-                break;
-            case "closeAccount":
+                if (actions.get("onlineBanking").equals("yes")) {
+                    emailText += "Your online banking account has been successfully created.\n";
+                    emailText += "Account number: " + customer.getCustomerOnlineBankingAccountNum() + "\n";
+                    emailText += "Initial password: " + actions.get("onlineBankingPassword") + "\n";
+                    emailText += "Please go to ??? and activate your online banking account. ";
+                }
                 break;
         }
-        if(createOnlineAccount){
-            emailText += "Your online banking account has been successfully created.\n";
-            emailText += "Account number: " + customer.getCustomerOnlineBankingAccountNum() + "\n";
-            emailText += "Initial password: " + password + "\n";
-            emailText += "Please go to ??? and activate your online banking account. ";
-        }
+        
         try {
             Properties props = new Properties();
             props.put("mail.transport.protocol", "smtp");
