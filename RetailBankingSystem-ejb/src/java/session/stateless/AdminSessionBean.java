@@ -141,6 +141,22 @@ public class AdminSessionBean implements AdminSessionBeanLocal {
         em.flush();
         return "activated";
     }
+    
+    @Override
+    public CustomerBasic getCustomerById(String identificationNum){
+        System.out.println("*** infrastructure/AdminSessionBean: getCustomerAccountById() ***");
+        Query query = em.createQuery("SELECT c FROM CustomerBasic c WHERE c.customerIdentificationNum = :idNum");
+        query.setParameter("idNum", identificationNum);
+        List resultList = query.getResultList();
+        if(resultList.isEmpty()){
+            System.out.println("*** infrastructure/AdminSessionBean: getCustomerAccountById(): no customer found");
+            return null;
+        }else{
+            CustomerBasic customer = (CustomerBasic) resultList.get(0);
+            System.out.println("*** infrastructure/AdminSessionBean: getCustomerAccountById(): get customer" + customer);
+            return customer;
+        }
+    }
 
     private String md5Hashing(String stringToHash) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("MD5");

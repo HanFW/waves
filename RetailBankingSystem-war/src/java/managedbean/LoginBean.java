@@ -20,7 +20,9 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import org.primefaces.event.FlowEvent;
 import session.stateless.AdminSessionBeanLocal;
+import session.stateless.EmailSessionBeanLocal;
 
 /**
  *
@@ -29,10 +31,12 @@ import session.stateless.AdminSessionBeanLocal;
 @Named(value = "loginBean")
 @SessionScoped
 public class LoginBean implements Serializable {
+    @EJB
+    private EmailSessionBeanLocal emailSessionBeanLocal;
 
     @EJB
     private AdminSessionBeanLocal adminSessionBeanLocal;
-
+    
     private String customerAccount;
     private String customerPassword;
     private String newCustomerAccount;
@@ -40,6 +44,8 @@ public class LoginBean implements Serializable {
     private CustomerBasic customer;
     private int loginAttempts;
     private String customerStatus;
+    private String customerNationality;
+    private String customerIdentification;
 
     /**
      * Creates a new instance of LoginBean
@@ -129,7 +135,25 @@ public class LoginBean implements Serializable {
             customerStatus = adminSessionBeanLocal.updateOnlineBankingAccount(newCustomerAccount, newCustomerPassword, customer.getCustomerBasicId());
         }
     }
-
+    
+    public void retrieveCustomerAccount(ActionEvent event) throws IOException{
+        System.out.println("=== infrastructure/LoginBean: retrieveCustomerAccount() ===");
+        CustomerBasic retrieveCustomer = adminSessionBeanLocal.getCustomerById(customerIdentification);
+        customerAccount = retrieveCustomer.getCustomerOnlineBankingAccountNum();
+        FacesContext context = FacesContext.getCurrentInstance();
+        if(customerAccount == null){
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Invalid identification number: ", "Please check your identification number."));
+        }else{
+            context.getExternalContext().redirect("customerRetrieveIBAccount.xhtml");
+        }
+    }
+    
+    public void resetCustomerPassword(ActionEvent event){
+        System.out.println("=== infrastructure/LoginBean: resetPassword() ===");
+//        CustomerBasic retrieveCustomer = adminSessionBeanLocal.getCustomerById(customerIdentification);
+//        emailSessionBeanLocal.sendEmail(retrieveCustomer, "", Boolean.FALSE, customerPassword);
+    }
+    
     /**
      * @return the customerAccount
      */
@@ -203,6 +227,22 @@ public class LoginBean implements Serializable {
 
     public void setCustomerStatus(String customerStatus) {
         this.customerStatus = customerStatus;
+    }
+
+    public String getCustomerNationality() {
+        return customerNationality;
+    }
+
+    public void setCustomerNationality(String customerNationality) {
+        this.customerNationality = customerNationality;
+    }
+
+    public String getCustomerIdentification() {
+        return customerIdentification;
+    }
+
+    public void setCustomerIdentification(String customerIdentification) {
+        this.customerIdentification = customerIdentification;
     }
 
     private String md5Hashing(String stringToHash) throws NoSuchAlgorithmException {
