@@ -137,9 +137,11 @@ public class LoginBean implements Serializable {
         CustomerBasic retrieveCustomer = adminSessionBeanLocal.getCustomerByIdentificationNum(customerIdentification);
         FacesContext context = FacesContext.getCurrentInstance();
         if (retrieveCustomer == null) {
+            System.out.println("=== infrastructure/LoginBean: retrieveCustomerAccount(): no customer found");
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Invalid identification number: ", "Please check your identification number."));
         } else {
             customerAccount = retrieveCustomer.getCustomerOnlineBankingAccountNum();
+            System.out.println("=== infrastructure/LoginBean: retrieveCustomerAccount(): customer online banking account number retrieved: " + customerAccount);
             context.getExternalContext().redirect("customerRetrieveIBAccount.xhtml");
         }
     }
