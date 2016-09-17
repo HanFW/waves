@@ -13,6 +13,7 @@ import javax.persistence.ManyToOne;
 @Entity
 public class Payee implements Serializable {
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long payeeId;
@@ -20,9 +21,8 @@ public class Payee implements Serializable {
     private String payeeAccountNum;
     private String payeeAccountType;
     private String lastTransactionDate;
-    private Long customerBasicId;
 
-    @ManyToOne(cascade={CascadeType.ALL},fetch=FetchType.EAGER)
+    @ManyToOne(cascade={CascadeType.PERSIST},fetch=FetchType.EAGER)
     private CustomerBasic customerBasic;
     
     public Long getPayeeId() {
@@ -71,14 +71,6 @@ public class Payee implements Serializable {
 
     public void setCustomerBasic(CustomerBasic customerBasic) {
         this.customerBasic = customerBasic;
-    }
-
-    public Long getCustomerBasicId() {
-        return customerBasicId;
-    }
-
-    public void setCustomerBasicId(Long customerBasicId) {
-        this.customerBasicId = customerBasicId;
     }
 
     @Override

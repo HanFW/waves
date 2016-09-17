@@ -1,5 +1,6 @@
 package session.stateless;
 
+import entity.BankAccount;
 import java.util.Collection;
 import javax.annotation.Resource;
 import javax.ejb.EJB;
@@ -15,10 +16,9 @@ import javax.persistence.PersistenceContext;
 @Stateless
 @LocalBean
 
-public class EjbTimerSession implements EjbTimerSessionLocal {
-
+public class EjbTimerSession implements EjbTimerSessionLocal{
     @EJB
-    private InterestSessionLocal interestSessionLocal;
+    private BankAccountSessionLocal bankAccountSessionLocal;
 
     @Resource
     private SessionContext ctx;
@@ -33,7 +33,11 @@ public class EjbTimerSession implements EjbTimerSessionLocal {
     public EjbTimerSession() {
 
     }
-
+    
+    public EjbTimerSession(String bankAccountNum) {
+        
+    }
+    
     @Override
     public void createTimer10000MS() {
         TimerService timerService = ctx.getTimerService();
@@ -66,13 +70,9 @@ public class EjbTimerSession implements EjbTimerSessionLocal {
 
         Timer timer300000ms = timerService.createTimer(TIMER_DURATION_300000MS,
                 TIMER_DURATION_300000MS, new String(TIMER_NAME_300000MS));
-        while(true) {
-            createTimer10000MS();
-            
-        }
         
-//        System.out.println("{***300000MS Timer created" + String.valueOf(timer300000ms.getTimeRemaining()) + ","
-//                + timer300000ms.getInfo().toString());
+        System.out.println("{***300000MS Timer created" + String.valueOf(timer300000ms.getTimeRemaining()) + ","
+                + timer300000ms.getInfo().toString());
     }
     
     @Override
@@ -109,10 +109,12 @@ public class EjbTimerSession implements EjbTimerSessionLocal {
     private void handleTimeout_10000ms() {
         System.out.println("*** 10000MS Timer timeout");
         
+        bankAccountSessionLocal.activateAccounts();
     }
     
     private void handleTimeout_300000ms() {
         System.out.println("*** 300000MS Timer timeout");
         
+        bankAccountSessionLocal.interestCrediting();
     }
 }

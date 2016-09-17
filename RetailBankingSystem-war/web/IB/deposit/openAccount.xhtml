@@ -12,25 +12,12 @@
             <h1>Welcome to Merlion Bank</h1>
             <p:menubar>
                 <p:submenu label="Home">
-                    <p:menuitem value="Home" url="index.xhtml" />
+                    <p:menuitem value="Home" url="depositIndex.xhtml" />
+                    <p:menuitem value="login" url="../IB/login.xhtml"/>
                 </p:submenu>
 
                 <p:submenu label="My Account">
                     <p:menuitem value="Open Account" url="openAccount.xhtml" />
-                    <p:menuitem value="Close Account" url="closeAccount.xhtml" />
-                    <p:menuitem value="View Account" url="viewAccount.xhtml" />
-                    <p:menuitem value="Cash Deposit" url="cashDeposit.xhtml" />
-                    <p:menuitem value="Cash Withdraw" url="cashWithdraw.xhtml" />
-                    <p:menuitem value="View Transaction" url="viewTransaction.xhtml" />
-                </p:submenu>
-
-                <p:submenu label="Transfer" >
-                    <p:menuitem value="To My Account" url="toMyAccount.xhtml" />
-                    <p:menuitem value="To Other Merlion Accounts" url="toOthersAccount.xhtml" />
-                    <p:menuitem value="To Other Merlion Accuonts(One-time)" url="oneTimeTransfer.xhtml" />
-                    <p:menuitem value="Add Recipient" url="addRecipient.xhtml" />
-                    <p:menuitem value="Delete Recipient" url="deleteRecipient.xhtml" />
-                    <p:menuitem value="Change Daily Transfer Limit" url="dailyTransferLimit.xhtml" />
                 </p:submenu>
             </p:menubar>
 
@@ -44,9 +31,6 @@
             </p:ajaxStatus>
 
             <p:growl id="growl" sticky="true" showDetail="true"/>
-<!--        </h:form>
-
-        <h:form>-->
 
             <p:wizard flowListener="#{accountManagedBean.onFlowProcess}">
                 <p:tab id="personal" title="Personal Information">
@@ -116,9 +100,8 @@
                                 </p:column>
                                 <p:column>
                                     <p:calendar id="customerDateOfBirth" value="#{accountManagedBean.customerDateOfBirth}" 
-                                                showOn="button" locale="de" navigator="true" pattern="dd/mm/yyyy" 
-                                                showHour="false" showMinute="false" showSecond="false" showMillisec="false"
-                                                showWeek="false"/>
+                                                showOn="button" locale="de" navigator="true" pattern="dd/MM/yyyy" 
+                                                yearRange="c-200:c+200"/>
                                 </p:column>
                                 <p:column>
                                     <p:message for="customerDateOfBirth" />
@@ -930,32 +913,35 @@
 
                 <p:tab id="identification" title="Support Document">
                     <p:panel header="Support Document"> 
-                        <p:messages />
+
+                        <p:messages id="messagesFileupload" />
 
                         <p:panel style="width:700px">
                             <p:outputLabel value="Please provide softcopy of your identification (Only gif,jpeg and png)" />
                             <br/>
-                            <p:fileUpload id="fileupload"
+                            <p:fileUpload id="fileupload" update="messagesFileupload"
                                           value="#{accountManagedBean.file}" mode="advanced" skinSimple="true"
-                                          sizeLimit="100000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" 
-                                          fileUploadListener="#{accountManagedBean.upload}"/>
+                                          sizeLimit="10000000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" 
+                                          fileUploadListener="#{accountManagedBean.upload}"
+                                          />
                         </p:panel>
                         <br/>
 
                         <p:outputLabel value="Please provide your signature" />
                         <br/>
-                        <p:signature style="width:400px;height:200px" widgetVar="sig" value="#{accountManagedBean.customerSignature}" 
-                                     guideline="true"/>
+                        <p:signature id="input" style="width:400px;height:200px" widgetVar="sig" value="#{signatureView.customerSignature}" 
+                                     guideline="true"
+                                     />
 
                         <div style="margin:20px 0">
-                            <p:commandButton value="Submit" icon="ui-icon-check" update="output"/>
-                            <p:commandButton value="Clear" icon="ui-icon-close" type="button" onclick="PF('sig').clear()"/>
+                            <p:commandButton process="@this input output" value="Submit" icon="ui-icon-check" update="output"/>
+                            <p:commandButton process="@this input output" value="Clear" icon="ui-icon-close" type="button" onclick="PF('sig').clear()"/>
                         </div>
 
                         <p:outputPanel id="output">
-                            <h:outputText rendered="#{not empty accountManagedBean.customerSignature}" style="font-size:20px;display:block" value="Your Signature" />
-                            <p:signature style="width:400px;height:200px;" value="#{accountManagedBean.customerSignature}" readonly="true"
-                                         rendered="#{not empty accountManagedBean.customerSignature}" backgroundColor="#eaeaea" color="#03a9f4"/>
+                            <h:outputText rendered="#{not empty signatureView.customerSignature}" style="font-size:20px;display:block" value="Your Signature" />
+                            <p:signature style="width:400px;height:200px;" value="#{signatureView.customerSignature}" readonly="true"
+                                         rendered="#{not empty signatureView.customerSignature}" backgroundColor="#eaeaea" color="#03a9f4"/>
                         </p:outputPanel>
                     </p:panel>
                 </p:tab>
@@ -988,7 +974,9 @@
                     <h:outputText value="#{accountManagedBean.customerCountryOfResidence}"/>
                     <br/>
                     <h:outputText value="Date of Birth: " />
-                    <h:outputText value="#{accountManagedBean.customerDateOfBirth}"/>
+                    <h:outputText value="#{accountManagedBean.customerDateOfBirth}">
+                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                    </h:outputText>
                     <br/>
                     <h:outputText value="Gender: "/>
                     <h:outputText value="#{accountManagedBean.customerGender}"/>
@@ -1019,7 +1007,7 @@
                     <br/>
                     <br/>
                     <br/>
-                    <h:outputLabel value="My Ddeposit" style="font-weight: bold; font-size: 24px" />
+                    <h:outputLabel value="My Deposit" style="font-weight: bold; font-size: 24px" />
                     <br/>
                     <br/>
                     <h:outputText value="Bank Account Type: "/>

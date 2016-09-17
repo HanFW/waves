@@ -149,7 +149,7 @@ public class CashManagedBean {
                 ec.redirect("depositDone.xhtml?faces-redirect=true");
             } else if (bankAccount.getBankAccountStatus().equals("Inactivated")) {
                 activationCheck = transactionSessionLocal.checkAccountActivation(depositAccountNum, depositAmt);
-                System.out.println(activationCheck);
+                
                 if (activationCheck.equals("Initial deposit amount is insufficient.")) {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!Initial deposit amount is insufficient.", "Failed"));
                 } else if (activationCheck.equals("Please contact us at 800 820 8820 or visit our branch.")) {

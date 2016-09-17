@@ -15,13 +15,12 @@ public interface BankAccountSessionLocal {
     public CustomerBasic retrieveCustomerBasicById(Long customerBasicId);
     public CustomerBasic retrieveCustomerBasicByIC(String customerIdentificationNum);
     public AccTransaction retrieveAccTransactionById(Long accTransactionId);
-    public List <BankAccount> getAllBankAccount();
     public Long addNewAccount(String bankAccountNum,String bankAccountPwd,
             String bankAccountType,String bankAccountBalance,String transferDailyLimit,
             String transferBalance,String bankAccountStatus,Long customerBasicId,Long interestId);
     public String deleteAccount(String bankAccountNum);
-    public void activateAccounts(String bankAccountNum);
-    public void interestCrediting(String bankAccountNum);
+    public void activateAccounts();
+    public void interestCrediting();
     public String checkAccountDuplication (String bankAccountNum);
     public String generateBankAccount(String customerIdentificationNum);
     public boolean checkExistence(String customerIdentificationNum);

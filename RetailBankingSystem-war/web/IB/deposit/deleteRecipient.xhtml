@@ -16,7 +16,7 @@
                 <p:submenu label="Home">
                     <p:menuitem value="Home" url="index.xhtml" />
                 </p:submenu>
-                
+
                 <p:submenu label="My Account">
                     <p:menuitem value="Open Account" url="openAccount.xhtml" />
                     <p:menuitem value="Close Account" url="closeAccount.xhtml" />
@@ -25,7 +25,7 @@
                     <p:menuitem value="Cash Withdraw" url="cashWithdraw.xhtml" />
                     <p:menuitem value="View Transaction" url="viewTransaction.xhtml" />
                 </p:submenu>
-                
+
                 <p:submenu label="Transfer" >
                     <p:menuitem value="To My Account" url="toMyAccount.xhtml" />
                     <p:menuitem value="To Other Merlion Accounts" url="toOthersAccount.xhtml" />
@@ -37,32 +37,36 @@
             </p:menubar>
             <br/>
             <p:panel id="panel" header="Delete Recipient"> 
-                <p:panelGrid style="margin-bottom:10px">
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel for="recipientName" style="font-weight: bold" value="Recipent's Name: " />
-                        </p:column>
-                        <p:column>
-                            <p:inputText required="true" label="Recipient Name" requiredMessage="Recipient's name is required." id="recipientName"
-                                         value="#{payeeManagedBean.payeeName}">
-                            </p:inputText>
-                        </p:column>
-                        <p:column>
-                            <p:message for="recipientName" />
-                        </p:column>
-                    </p:row>
-                </p:panelGrid>
-                <p:commandButton id="cancelBtn" action="index.xhtml" value="Cancel" update="panel" immediate = "true">
-                    <p:confirm header="Cancel" message="Are you sure?" />
-                </p:commandButton>
-                    
-                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" action="index.xhtml"/>
-                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" />
-                </p:confirmDialog>
-                    
-                <p:commandButton id="deleteBtn" value="Delete Recipient" update="panel" 
-                                 actionListener="#{payeeManagedBean.deletePayee}" ajax="true"/>
+                <p:messages />
+
+                <p:dataTable var="payee" value="#{payeeManagedBean.payee}" 
+                             paginator="true" rows="10" emptyMessage="No Recipient">
+
+                    <p:column headerText="Recipient's Name" >
+                        <h:outputText value="#{payee.payeeName}" /> 
+                    </p:column>
+
+                    <p:column headerText="Recipient's Bank Account Number"> 
+                        <h:outputText value="#{payee.payeeAccountNum}" />
+                    </p:column>
+
+                    <p:column headerText="Recipient's Bank Account Type"> 
+                        <h:outputText value="#{payee.payeeAccountType}" />
+                    </p:column>
+
+                    <p:column headerText="Last Transaction Date"> 
+                        <h:outputText value="#{payee.lastTransactionDate}" />
+                    </p:column>
+
+                    <p:column headerText="Action"> 
+                        <p:commandButton process="@this" action="#{deletePayeeManagedBean.deletePayee()}"
+                                         icon="ui-icon-trash" ajax="false">
+                            <f:setPropertyActionListener target="#{deletePayeeManagedBean.payeeAccountNum}" value="#{payee.payeeAccountNum}" />
+                        </p:commandButton>
+                    </p:column>
+
+                </p:dataTable>
+
             </p:panel>
         </h:form>
     </h:body>

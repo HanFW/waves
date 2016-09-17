@@ -19,3 +19,4 @@ hs_err_pid*
 /RetailBankingSystem-war/build/
 /dist/
 /RetailBankingSystem-war/dist/
+/RetailBankingSystem-ejb/build/
