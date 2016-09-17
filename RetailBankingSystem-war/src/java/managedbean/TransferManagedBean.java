@@ -196,6 +196,8 @@ public class TransferManagedBean {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!Initial deposit amount is insufficient.", "Failed"));
                 } else if (activationCheck.equals("Please contact us at 800 820 8820 or visit our branch.")) {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!Please contact us at 800 820 8820 or visit our branch.", "Failed"));
+                } else if (activationCheck.equals("Please declare your deposit period")) {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!Please declare your fixed deposit period first.", "Failed"));
                 } else if (activationCheck.equals("Activated successfully.")) {
                     Double diffAmt = Double.valueOf(bankAccountFrom.getBankAccountBalance()) - Double.valueOf(transferAmt);
 
@@ -259,6 +261,8 @@ public class TransferManagedBean {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!Initial deposit amount is insufficient.", "Failed"));
                 } else if (activationCheck.equals("Please contact us at 800 820 8820 or visit our branch.")) {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!Please contact us at 800 820 8820 or visit our branch.", "Failed"));
+                } else if (activationCheck.equals("Please declare your deposit period")) {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!Please declare your fixed deposit period first.", "Failed"));
                 } else if (activationCheck.equals("Activated successfully.")) {
                     Double diffAmt = Double.valueOf(bankAccountFrom.getBankAccountBalance()) - Double.valueOf(transferAmt);
 
@@ -324,6 +328,8 @@ public class TransferManagedBean {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!Initial deposit amount is insufficient.", "Failed"));
                 } else if (activationCheck.equals("Please contact us at 800 820 8820 or visit our branch.")) {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!Please contact us at 800 820 8820 or visit our branch.", "Failed"));
+                } else if (activationCheck.equals("Please declare your deposit period")) {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!Please declare your fixed deposit period first.", "Failed"));
                 } else if (activationCheck.equals("Activated successfully.")) {
 
                     Double diffAmt = Double.valueOf(bankAccountFrom.getBankAccountBalance()) - Double.valueOf(transferAmt);
