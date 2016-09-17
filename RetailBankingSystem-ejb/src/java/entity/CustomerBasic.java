@@ -47,6 +47,9 @@ public class CustomerBasic implements Serializable {
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
     private List<Payee> payee;
 
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
+    private List<EnquiryCase> enquiryCase;
+
     public Long getCustomerBasicId() {
         return customerBasicId;
     }
@@ -239,6 +242,13 @@ public class CustomerBasic implements Serializable {
         this.customerAge = customerAge;
     }
 
+    public List<EnquiryCase> getEnquiryCase() {
+        return enquiryCase;
+    }
+
+    public void setEnquiryCase(List<EnquiryCase> enquiryCase) {
+        this.enquiryCase = enquiryCase;
+    }
 
     @Override
     public int hashCode() {

@@ -28,6 +28,11 @@
                 <p:submenu label="Logout">
                     <p:menuitem value="Logout" actionListener="#{loginBean.doLogout}"/>
                 </p:submenu>
+                
+                <p:submenu label="Enquiry">
+                    <p:menuitem value="Write an enquiry" url="CRM/CRMCustomerEnquiry.xhtml" />
+                </p:submenu>
+                
             </p:menubar>
             
             <ez:CCTimeout/>

@@ -78,6 +78,14 @@ public class CRMCustomerManagedBean {
         this.customerAge = customerAge;
     }
 
+    public String getCustomerAge() {
+        return customerAge;
+    }
+
+    public void setCustomerAge(String customerAge) {
+        this.customerAge = customerAge;
+    }
+
     public byte[] getCustomerSignature() {
         return customerSignature;
     }

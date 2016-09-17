@@ -1,6 +1,7 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> <html xmlns="http://www.w3.org/1999/xhtml"
-                                                                                                                                xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:p="http://primefaces.org/ui">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"                                                                                                                     
+      xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>Customer Update Basic Profile</title>
         <style type="text/css">
@@ -12,45 +13,48 @@
         <h:body> 
             <h:form id="customerUpdateBasicProfile">
 
-                <p:dataList id="customerCurrentBasicProfile" value="#{cRMCustomerManagedBean.customerBasicInfo}" type="definition">
+            <p:dataList id="customerCurrentBasicProfile" value="#{cRMCustomerManagedBean.customerBasicInfo}" type="definition">
+                <p:panel >
+                    <p:messages />
 
-                <h:panelGrid id="BasicProfile" columns="2" cellpadding="5" >
+                    <h:panelGrid id="BasicProfile" columns="2" cellpadding="5" >
 
-                    <p:outputLabel for="customerNationality"  value="Nationality:" />
-                    <p:inputText id="customerNationality" value="#{cRMCustomerManagedBean.customerNationality}" required="true" />
+                        <p:outputLabel for="customerNationality"  value="Nationality:" />
+                        <p:inputText id="customerNationality" value="#{cRMCustomerManagedBean.customerNationality}" required="true" />
 
-                    <p:outputLabel for="customerCountryOfResidence"  value="Country of Residence:" />
-                    <p:inputText id="customerCountryOfResidence" value="#{cRMCustomerManagedBean.customerCountryOfResidence}" required="true"  />
+                        <p:outputLabel for="customerCountryOfResidence"  value="Country of Residence:" />
+                        <p:inputText id="customerCountryOfResidence" value="#{cRMCustomerManagedBean.customerCountryOfResidence}" required="true"  />
 
-                    <p:outputLabel for="customerMaritalStatus"  value="Marital Status:" />
-                    <p:inputText id="customerMaritalStatus" value="#{cRMCustomerManagedBean.customerMaritalStatus}" required="true"  />
+                        <p:outputLabel for="customerMaritalStatus"  value="Marital Status:" />
+                        <p:inputText id="customerMaritalStatus" value="#{cRMCustomerManagedBean.customerMaritalStatus}" required="true"  />
 
-                    <p:outputLabel for="customerOccupation"  value="Occupation:" />
-                    <p:inputText id="customerOccupation" value="#{cRMCustomerManagedBean.customerOccupation}" required="true"  />
+                        <p:outputLabel for="customerOccupation"  value="Occupation:" />
+                        <p:inputText id="customerOccupation" value="#{cRMCustomerManagedBean.customerOccupation}" required="true"  />
 
-                    <p:outputLabel for="customerCompany"  value="Company:" />
-                    
-                    <p:inputText id="customerCompany" value="#{cRMCustomerManagedBean.customerCompany}" required="true"  />
-                    
-                    <p:outputLabel for="customerMobileNumber"  value="Mobile Number:" />
-                    <p:inputText id="customerMobileNumber" value="#{cRMCustomerManagedBean.replacedCustomerMobile}" required="true"  />
+                        <p:outputLabel for="customerCompany"  value="Company:" />
 
-                    <p:outputLabel for="customerEmailAddress"  value="Email Address:" />
-                    <p:inputText id="customerEmailAddress" value="#{cRMCustomerManagedBean.replacedCustomerEmail}" required="true"  />
+                        <p:inputText id="customerCompany" value="#{cRMCustomerManagedBean.customerCompany}" required="true"  />
 
-                    <p:outputLabel for="customerAddress"  value="Address:" />
-                    <p:inputText id="customerAddress" value="#{cRMCustomerManagedBean.customerAddress}" required="true"  />
+                        <p:outputLabel for="customerMobileNumber"  value="Mobile Number:" />
+                        <p:inputText id="customerMobileNumber" value="#{cRMCustomerManagedBean.replacedCustomerMobile}" required="true"  />
 
-                    <p:outputLabel for="customerPostalCode"  value="Postal Code:" />
-                    <p:inputText id="customerPostalCode" value="#{cRMCustomerManagedBean.customerPostal}" required="true"  />
+                        <p:outputLabel for="customerEmailAddress"  value="Email Address:" />
+                        <p:inputText id="customerEmailAddress" value="#{cRMCustomerManagedBean.replacedCustomerEmail}" required="true"  />
 
-                </h:panelGrid>   
+                        <p:outputLabel for="customerAddress"  value="Address:" />
+                        <p:inputText id="customerAddress" value="#{cRMCustomerManagedBean.customerAddress}" required="true"  />
+
+                        <p:outputLabel for="customerPostalCode"  value="Postal Code:" />
+                        <p:inputText id="customerPostalCode" value="#{cRMCustomerManagedBean.customerPostal}" required="true"  />
+
+                    </h:panelGrid>   
+                </p:panel>
                 <p:commandButton value="Reset" type="reset" />
-                
-                    <p:commandButton update="BasicProfile" value="Update" actionListener="#{cRMCustomerManagedBean.updateCustomerBasicProfile}" ajax="false" />
+
+                <p:commandButton value="Update" actionListener="#{cRMCustomerManagedBean.updateCustomerBasicProfile}" ajax="false"/>
 
             </p:dataList>
         </h:form>
-        
+
     </h:body>
 </html>
