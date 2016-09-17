@@ -819,7 +819,6 @@
                                         <f:selectItem itemLabel="Bonus Savings Account" itemValue="Bonus Savings Account" />
                                         <f:selectItem itemLabel="Basic Savings Account" itemValue="Basic Savings Account" />
                                         <f:selectItem itemLabel="Fixed Deposit Account" itemValue="Fixed Deposit Account" />
-                                        <p:ajax event="change" update="panelCustomerDepositPeriod" listener="#{accountManagedBean.show1()}"/>
                                     </p:selectOneMenu>
                                 </p:column>
                                 <p:column>
@@ -891,23 +890,8 @@
                                     <p:message for="initialDepositAmt" />
                                 </p:column>
                             </p:row>
+                            
                         </p:panelGrid>
-
-                        <p:panel style="border: none;" id="panelCustomerDepositPeriod" visible="#{accountManagedBean.visible1}" >
-                            <p:row>
-                                <p:column>
-                                    <p:outputLabel for="depositPeriod" style="font-weight: bold" value="Deposit Period: " />
-                                </p:column>
-                                <p:column>
-                                    <p:inputText label="Deposit Period" id="depositPeriod" requiredMessage="Deposit period is required."
-                                                 value="#{accountManagedBean.depositPeriod}">
-                                    </p:inputText>
-                                </p:column>
-                                <p:column>
-                                    <p:message for="depositPeriod" />
-                                </p:column>
-                            </p:row>
-                        </p:panel>
                     </p:panel>
                 </p:tab>
 

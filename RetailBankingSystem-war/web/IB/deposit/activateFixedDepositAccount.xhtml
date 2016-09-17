@@ -1,0 +1,100 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"                                                                                                           
+      xmlns:h="http://xmlns.jcp.org/jsf/html" 
+      xmlns:f="http://xmlns.jcp.org/jsf/core" 
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Add Recipient</title>
+        <style type="text/css">
+            .gritter-notice-wrapper {
+                left:200px;
+                top: 50px; }
+            </style>   
+        </h:head>
+        <h:body>
+            <h:form id="formMain">
+            <h1>Welcome to Merlion Bank</h1>
+            <p:menubar>
+                <p:submenu label="Home">
+                    <p:menuitem value="Home" url="index.xhtml" />
+                </p:submenu>
+
+                <p:submenu label="My Account">
+                    <p:menuitem value="Open Account" url="openAccount.xhtml" />
+                    <p:menuitem value="Close Account" url="closeAccount.xhtml" />
+                    <p:menuitem value="View Account" url="viewAccount.xhtml" />
+                    <p:menuitem value="Cash Deposit" url="cashDeposit.xhtml" />
+                    <p:menuitem value="Cash Withdraw" url="cashWithdraw.xhtml" />
+                    <p:menuitem value="View Transaction" url="viewTransaction.xhtml" />
+                    <p:menuitem value="Activate Fixed Deposit Account" url="activateFixedDepositAccount.xhtml" />
+                </p:submenu>
+
+                <p:submenu label="Transfer" >
+                    <p:menuitem value="To My Account" url="toMyAccount.xhtml" />
+                    <p:menuitem value="To Other Merlion Accounts" url="toOthersAccount.xhtml" />
+                    <p:menuitem value="To Other Merlion Accuonts(One-time)" url="oneTimeTransfer.xhtml" />
+                    <p:menuitem value="Add Recipient" url="addRecipient.xhtml" />
+                    <p:menuitem value="Delete Recipient" url="deleteRecipient.xhtml" />    
+                    <p:menuitem value="Change Daily Transfer Limit" url="dailyTransferLimit.xhtml" />
+                </p:submenu>
+            </p:menubar>
+            <br/>
+            <p:panel id="panel" header="Activate Fixed Deposit Account"> 
+                <p:messages />
+
+                <p:panelGrid>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="fixedDepositAccountNum" style="font-weight: bold" value="Account: " />
+                        </p:column>
+                        <p:column>
+                            <p:selectOneMenu id="fixedDepositAccountNum" value="#{fixedDepositAccountManagedBean.fixedDepositAccountWithType}" 
+                                             effect="fold" editable="true">
+                                <f:selectItems value="#{fixedDepositAccountManagedBean.fixedDepositAccounts}" />
+                            </p:selectOneMenu>
+                        </p:column>
+                        <p:column>
+                            <p:message for="fixedDepositAccountNum" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="fixedDepositPeriod" style="font-weight: bold" value="Deposit Period: " />
+                        </p:column>
+                        <p:column>
+                            <p:selectOneMenu id="fixedDepositPeriod" value="#{fixedDepositAccountManagedBean.fixedDepositPeriod}" 
+                                             style="width:125px">
+                                <f:selectItem itemLabel="Please Select" itemValue=" " />
+                                <f:selectItem itemLabel="1 Month" itemValue="1 Month" />
+                                <f:selectItem itemLabel="2 Month" itemValue="2 Month" />
+                                <f:selectItem itemLabel="3 Month" itemValue="3 Month" />
+                                <f:selectItem itemLabel="4 Month" itemValue="4 Month" />
+                                <f:selectItem itemLabel="5 Month" itemValue="5 Month" />
+                                <f:selectItem itemLabel="6 Month" itemValue="6 Month" />
+                                <f:selectItem itemLabel="7 Month" itemValue="7 Month" />
+                                <f:selectItem itemLabel="8 Month" itemValue="8 Month" />
+                                <f:selectItem itemLabel="9 Month" itemValue="9 Month" />
+                                <f:selectItem itemLabel="10 Month" itemValue="10 Month" />
+                                <f:selectItem itemLabel="11 Month" itemValue="11 Month" />
+                                <f:selectItem itemLabel="12 Month" itemValue="12 Month" />
+                                <f:selectItem itemLabel="18 Month" itemValue="18 Month" />
+                                <f:selectItem itemLabel="24 Month" itemValue="24 Month" />
+                                <f:selectItem itemLabel="36 Month" itemValue="36 Month" />
+                            </p:selectOneMenu>
+                        </p:column>
+                        <p:column>
+                            <p:message for="fixedDepositPeriod" />
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+
+                <p:commandButton id="confirmBtn" value="Confirm" update="growl"
+                                 actionListener="#{fixedDepositAccountManagedBean.confirm}" ajax="true"/>
+
+            </p:panel>
+        </h:form>
+    </h:body>
+</html>
+

@@ -161,7 +161,7 @@ public class BankAccountSession implements BankAccountSessionLocal {
     public Long addNewAccount(String bankAccountNum, String bankAccountPwd,
             String bankAccountType, String bankAccountBalance, String transferDailyLimit,
             String transferBalance, String bankAccountStatus, String bankAccountMinSaving,
-            Long customerBasicId, Long interestId) {
+            String bankAccountDepositPeriod, Long customerBasicId, Long interestId) {
 
         BankAccount bankAccount = new BankAccount();
         String hashedPwd = "";
@@ -180,6 +180,7 @@ public class BankAccountSession implements BankAccountSessionLocal {
         bankAccount.setTransferBalance(transferBalance);
         bankAccount.setBankAccountStatus(bankAccountStatus);
         bankAccount.setBankAccountMinSaving(bankAccountMinSaving);
+        bankAccount.setBankAccountDepositPeriod(bankAccountDepositPeriod);
         bankAccount.setCustomerBasic(retrieveCustomerBasicById(customerBasicId));
         bankAccount.setInterest(interestSessionLocal.retrieveInterestById(interestId));
 
@@ -331,9 +332,28 @@ public class BankAccountSession implements BankAccountSessionLocal {
 
         return changedDate;
     }
+    
+    @Override
+    public void updateDepositPeriod(String bankAccountNumWithType,String fixedDepositPeriod) {
+        String bankAccountNum = handleAccountString(bankAccountNumWithType);
+        BankAccount bankAccount = retrieveBankAccountByNum(bankAccountNum);
+        
+        String[] depositPeriods = fixedDepositPeriod.split(" ");
+        String depositPeriod = depositPeriods[0];
+        
+        bankAccount.setBankAccountDepositPeriod(depositPeriod);
+    }
 
     private String md5Hashing(String stringToHash) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("MD5");
         return Arrays.toString(md.digest(stringToHash.getBytes()));
+    }
+    
+    private String handleAccountString(String bankAccountNumWithType) {
+
+        String[] bankAccountNums = bankAccountNumWithType.split("-");
+        String bankAccountNum = bankAccountNums[1];
+
+        return bankAccountNum;
     }
 }

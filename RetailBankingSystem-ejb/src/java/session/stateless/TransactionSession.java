@@ -114,7 +114,7 @@ public class TransactionSession implements TransactionSessionLocal {
             return "Error! Bank account does not exist!";
         } else {
             if (bankAccount.getBankAccountType().equals("Monthly Savings Account")) {
-                if (Double.valueOf(depositAmt) >=50) {
+                if (Double.valueOf(depositAmt) >= 50) {
                     bankAccount.setBankAccountMinSaving("Sufficient");
                 }
             }
@@ -209,7 +209,7 @@ public class TransactionSession implements TransactionSessionLocal {
         BankAccount bankAccountTo = bankAccountSessionLocal.retrieveBankAccountByNum(toAccount);
 
         if (bankAccountTo.getBankAccountType().equals("Monthly Savings Account")) {
-            if (Double.valueOf(transferAmt) >=50) {
+            if (Double.valueOf(transferAmt) >= 50) {
                 bankAccountTo.setBankAccountMinSaving("Sufficient");
             }
         }
@@ -272,12 +272,18 @@ public class TransactionSession implements TransactionSessionLocal {
                 bankAccount.setBankAccountStatus("Activated");
             }
         } else if (bankAccountType.equals("Fixed Deposit Account")) {
-            if (Double.valueOf(initialDepositAmount) < 1000) {
-                return "Initial deposit amount is insufficient.";
-            } else if (Double.valueOf(initialDepositAmount) > 999999) {
-                return "Please contact us at 800 820 8820 or visit our branch.";
+            
+            if (bankAccount.getBankAccountDepositPeriod().equals("None")) {
+                return "Please declare your deposit period";
             } else {
-                bankAccount.setBankAccountStatus("Activated");
+                
+                if (Double.valueOf(initialDepositAmount) < 1000) {
+                    return "Initial deposit amount is insufficient.";
+                } else if (Double.valueOf(initialDepositAmount) > 999999) {
+                    return "Please contact us at 800 820 8820 or visit our branch.";
+                } else {
+                    bankAccount.setBankAccountStatus("Activated");
+                }
             }
         }
 

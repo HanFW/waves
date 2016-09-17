@@ -30,6 +30,7 @@ public class BankAccount implements Serializable {
     private String transferBalance;
     private String bankAccountStatus;
     private String bankAccountMinSaving;
+    private String bankAccountDepositPeriod;
     
     @OneToMany(cascade={CascadeType.ALL},fetch=FetchType.EAGER,mappedBy="bankAccount")
     private List<AccTransaction> accTransaction;
@@ -134,6 +135,14 @@ public class BankAccount implements Serializable {
 
     public void setBankAccountMinSaving(String bankAccountMinSaving) {
         this.bankAccountMinSaving = bankAccountMinSaving;
+    }
+
+    public String getBankAccountDepositPeriod() {
+        return bankAccountDepositPeriod;
+    }
+
+    public void setBankAccountDepositPeriod(String bankAccountDepositPeriod) {
+        this.bankAccountDepositPeriod = bankAccountDepositPeriod;
     }
     
     @Override

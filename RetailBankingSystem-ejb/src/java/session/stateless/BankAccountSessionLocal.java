@@ -18,7 +18,7 @@ public interface BankAccountSessionLocal {
     public Long addNewAccount(String bankAccountNum,String bankAccountPwd,
             String bankAccountType,String bankAccountBalance,String transferDailyLimit,
             String transferBalance,String bankAccountStatus,String bankAccountMinSaving,
-            Long customerBasicId,Long interestId);
+            String bankAccountDepositPeriod,Long customerBasicId,Long interestId);
     public String deleteAccount(String bankAccountNum);
     public void interestAccuring();
     public void interestCrediting();
@@ -26,4 +26,5 @@ public interface BankAccountSessionLocal {
     public String generateBankAccount(String customerIdentificationNum);
     public boolean checkExistence(String customerIdentificationNum);
     public String changeDateFormat (Date customerDateOfBirth);
+    public void updateDepositPeriod(String bankAccountNum,String fixedDepositPeriod);
 }
