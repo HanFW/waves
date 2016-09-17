@@ -28,7 +28,7 @@ import javax.persistence.Query;
 public class AdminSessionBean implements AdminSessionBeanLocal {
 
     @EJB
-    private CustomerEmailSessionBeanLocal emailSessionBeanLocal;
+    private CustomerEmailSessionBeanLocal customerEmailSessionBeanLocal;
 
     @PersistenceContext
     private EntityManager em;
@@ -59,18 +59,18 @@ public class AdminSessionBean implements AdminSessionBeanLocal {
             } catch (NoSuchAlgorithmException ex) {
                 Logger.getLogger(AdminSessionBean.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
+
             //generate email
             Map emailActions = new HashMap();
             emailActions.put("onlineBanking", "yes");
             emailActions.put("onlineBankingPassword", password);
-            emailSessionBeanLocal.sendEmail(customer, "openAccount", emailActions);
+            customerEmailSessionBeanLocal.sendEmail(customer, "openAccount", emailActions);
             System.out.println("*** adminSessionBean: email sent to customer (online banking account created)");
             return account + "," + password;
         } else {
             Map emailActions = new HashMap();
             emailActions.put("onlineBanking", "no");
-            emailSessionBeanLocal.sendEmail(customer, "openAccount", emailActions);
+            customerEmailSessionBeanLocal.sendEmail(customer, "openAccount", emailActions);
             System.out.println("*** adminSessionBean: email sent to customer (not a new customer)");
             return "not a new customer";
         }
@@ -91,7 +91,7 @@ public class AdminSessionBean implements AdminSessionBeanLocal {
     private String generateAccountNumber() {
         SecureRandom random = new SecureRandom();
         String accountNumber = new BigInteger(25, random).toString();
-        while(getCustomerByOnlineBankingAccount(accountNumber) != null){
+        while (getCustomerByOnlineBankingAccount(accountNumber) != null) {
             accountNumber = new BigInteger(25, random).toString();
         }
         return accountNumber;
@@ -130,10 +130,10 @@ public class AdminSessionBean implements AdminSessionBeanLocal {
         Query query = em.createQuery("SELECT c FROM CustomerBasic c WHERE c.customerOnlineBankingAccountNum = :accountNum");
         query.setParameter("accountNum", customerAccount);
         List resultList = query.getResultList();
-        if(resultList.isEmpty()){
+        if (resultList.isEmpty()) {
             System.out.println("*** infrastructure/AdminSessionBean: getCustomerByOnlineBankingAccount(): invalid account number: no result found");
             return null;
-        }else{
+        } else {
             System.out.println("*** infrastructure/AdminSessionBean: getCustomerByOnlineBankingAccount(): valid account number: return CustomerBasic");
             return (CustomerBasic) resultList.get(0);
         }
@@ -151,18 +151,39 @@ public class AdminSessionBean implements AdminSessionBeanLocal {
     }
     
     @Override
-    public CustomerBasic getCustomerById(String identificationNum){
+    public CustomerBasic getCustomerByIdentificationNum(String identificationNum) {
         System.out.println("*** infrastructure/AdminSessionBean: getCustomerAccountById() ***");
         Query query = em.createQuery("SELECT c FROM CustomerBasic c WHERE c.customerIdentificationNum = :idNum");
         query.setParameter("idNum", identificationNum);
         List resultList = query.getResultList();
-        if(resultList.isEmpty()){
+        if (resultList.isEmpty()) {
             System.out.println("*** infrastructure/AdminSessionBean: getCustomerAccountById(): no customer found");
             return null;
-        }else{
+        } else {
             CustomerBasic customer = (CustomerBasic) resultList.get(0);
             System.out.println("*** infrastructure/AdminSessionBean: getCustomerAccountById(): get customer" + customer);
             return customer;
+        }
+    }
+
+    @Override
+    public Boolean resetPassword(String identificationNum) {
+        CustomerBasic customer = getCustomerByIdentificationNum(identificationNum);
+        if (customer == null) {
+            return false;
+        } else {
+            try {
+                String password = generatePassword();
+                String hashedPassword = md5Hashing(password + identificationNum.substring(0, 3));
+                customer.setCustomerOnlineBankingPassword(hashedPassword);
+                em.flush();
+                Map emailActions = new HashMap();
+                emailActions.put("onlineBankingPassword", password);
+                customerEmailSessionBeanLocal.sendEmail(customer, "resetOnlineBankingPassword", emailActions);
+            } catch (NoSuchAlgorithmException ex) {
+                Logger.getLogger(AdminSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            return true;
         }
     }
 

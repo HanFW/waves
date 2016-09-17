@@ -22,5 +22,7 @@ public interface AdminSessionBeanLocal {
     
     public String updateOnlineBankingAccount(String accountNum, String password, Long customerId);
     
-    public CustomerBasic getCustomerById(String identificationNum);
+    public CustomerBasic getCustomerByIdentificationNum(String identificationNum);
+            
+    public Boolean resetPassword(String identificationNum);
 }

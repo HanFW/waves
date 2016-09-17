@@ -44,8 +44,12 @@ public class CustomerEmailSessionBean implements CustomerEmailSessionBeanLocal {
                     emailText += "Please go to ??? and activate your online banking account. ";
                 }
                 break;
+            case "resetOnlineBankingPassword":
+                emailText += "Your online banking account password has been reset as follow: \n";
+                emailText += "Initial password: " + actions.get("onlineBankingPassword") + "\n";
+                emailText += "Please go to ??? and activate your online banking account. ";
         }
-        
+
         try {
             Properties props = new Properties();
             props.put("mail.transport.protocol", "smtp");

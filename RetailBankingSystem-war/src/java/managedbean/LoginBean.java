@@ -11,10 +11,6 @@ import java.io.Serializable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -22,7 +18,6 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
-import org.primefaces.event.FlowEvent;
 import session.stateless.AdminSessionBeanLocal;
 import session.stateless.CustomerEmailSessionBeanLocal;
 
@@ -33,8 +28,6 @@ import session.stateless.CustomerEmailSessionBeanLocal;
 @Named(value = "loginBean")
 @SessionScoped
 public class LoginBean implements Serializable {
-    @EJB
-    private CustomerEmailSessionBeanLocal emailSessionBeanLocal;
 
     @EJB
     private AdminSessionBeanLocal adminSessionBeanLocal;
@@ -140,7 +133,7 @@ public class LoginBean implements Serializable {
     
     public void retrieveCustomerAccount(ActionEvent event) throws IOException{
         System.out.println("=== infrastructure/LoginBean: retrieveCustomerAccount() ===");
-        CustomerBasic retrieveCustomer = adminSessionBeanLocal.getCustomerById(customerIdentification);
+        CustomerBasic retrieveCustomer = adminSessionBeanLocal.getCustomerByIdentificationNum(customerIdentification);
         customerAccount = retrieveCustomer.getCustomerOnlineBankingAccountNum();
         FacesContext context = FacesContext.getCurrentInstance();
         if(customerAccount == null){
@@ -151,11 +144,8 @@ public class LoginBean implements Serializable {
     }
     
     public void resetCustomerPassword(ActionEvent event){
-//        System.out.println("=== infrastructure/LoginBean: resetPassword() ===");
-//        CustomerBasic retrieveCustomer = adminSessionBeanLocal.getCustomerById(customerIdentification);
-//        Map map = new HashMap();
-//        map.put("customerId", retrieveCustomer.getCustomerBasicId().toString());
-//        emailSessionBeanLocal.sendEmail(retrieveCustomer, "", Boolean.FALSE, customerPassword);
+        System.out.println("=== infrastructure/LoginBean: resetPassword() ===");
+        Boolean reset = adminSessionBeanLocal.resetPassword(customerIdentification);
     }
     
     /**
