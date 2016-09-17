@@ -17,9 +17,10 @@ public interface BankAccountSessionLocal {
     public AccTransaction retrieveAccTransactionById(Long accTransactionId);
     public Long addNewAccount(String bankAccountNum,String bankAccountPwd,
             String bankAccountType,String bankAccountBalance,String transferDailyLimit,
-            String transferBalance,String bankAccountStatus,Long customerBasicId,Long interestId);
+            String transferBalance,String bankAccountStatus,String bankAccountMinSaving,
+            Long customerBasicId,Long interestId);
     public String deleteAccount(String bankAccountNum);
-    public void activateAccounts();
+    public void interestAccuring();
     public void interestCrediting();
     public String checkAccountDuplication (String bankAccountNum);
     public String generateBankAccount(String customerIdentificationNum);

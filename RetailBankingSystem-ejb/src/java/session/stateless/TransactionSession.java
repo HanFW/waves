@@ -113,6 +113,12 @@ public class TransactionSession implements TransactionSessionLocal {
         if (bankAccountId == null) {
             return "Error! Bank account does not exist!";
         } else {
+            if (bankAccount.getBankAccountType().equals("Monthly Savings Account")) {
+                if (Double.valueOf(depositAmt) >=50) {
+                    bankAccount.setBankAccountMinSaving("Sufficient");
+                }
+            }
+
             String accountCredit = null;
             String transactionCode = "ADP";
             String transactionRef = "Merlion Bank Branch";
@@ -202,9 +208,11 @@ public class TransactionSession implements TransactionSessionLocal {
         BankAccount bankAccountFrom = bankAccountSessionLocal.retrieveBankAccountByNum(fromAccount);
         BankAccount bankAccountTo = bankAccountSessionLocal.retrieveBankAccountByNum(toAccount);
 
-//        if (Double.valueOf(bankAccountFrom.getTransferBalance()) < Double.valueOf(transferAmt)) {
-//            return "Transfer Limited.";
-//        } else {
+        if (bankAccountTo.getBankAccountType().equals("Monthly Savings Account")) {
+            if (Double.valueOf(transferAmt) >=50) {
+                bankAccountTo.setBankAccountMinSaving("Sufficient");
+            }
+        }
         Double balanceAccountFrom = Double.valueOf(bankAccountFrom.getBankAccountBalance()) - Double.valueOf(transferAmt);
         Double balanceAccountTo = Double.valueOf(bankAccountTo.getBankAccountBalance()) + Double.valueOf(transferAmt);
 
@@ -232,7 +240,6 @@ public class TransactionSession implements TransactionSessionLocal {
 
         Double transfer = Double.valueOf(bankAccountFrom.getTransferBalance()) - Double.valueOf(transferAmt);
         bankAccountFrom.setTransferBalance(transfer.toString());
-//        }
 
         return "Fund Transfer Sucessfully!";
     }
@@ -253,7 +260,7 @@ public class TransactionSession implements TransactionSessionLocal {
         String bankAccountType = bankAccount.getBankAccountType();
 
         if (bankAccountType.equals("Bonus Savings Account")) {
-            if (Double.valueOf(initialDepositAmount) < 10000) {
+            if (Double.valueOf(initialDepositAmount) < 3000) {
                 return "Initial deposit amount is insufficient.";
             } else {
                 bankAccount.setBankAccountStatus("Activated");
@@ -265,7 +272,7 @@ public class TransactionSession implements TransactionSessionLocal {
                 bankAccount.setBankAccountStatus("Activated");
             }
         } else if (bankAccountType.equals("Fixed Deposit Account")) {
-            if (Double.valueOf(initialDepositAmount) < 10000) {
+            if (Double.valueOf(initialDepositAmount) < 1000) {
                 return "Initial deposit amount is insufficient.";
             } else if (Double.valueOf(initialDepositAmount) > 999999) {
                 return "Please contact us at 800 820 8820 or visit our branch.";

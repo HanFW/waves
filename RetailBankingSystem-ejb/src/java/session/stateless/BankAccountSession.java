@@ -160,7 +160,8 @@ public class BankAccountSession implements BankAccountSessionLocal {
     @Override
     public Long addNewAccount(String bankAccountNum, String bankAccountPwd,
             String bankAccountType, String bankAccountBalance, String transferDailyLimit,
-            String transferBalance, String bankAccountStatus, Long customerBasicId, Long interestId) {
+            String transferBalance, String bankAccountStatus, String bankAccountMinSaving,
+            Long customerBasicId, Long interestId) {
 
         BankAccount bankAccount = new BankAccount();
         String hashedPwd = "";
@@ -178,6 +179,7 @@ public class BankAccountSession implements BankAccountSessionLocal {
         bankAccount.setTransferDailyLimit(transferDailyLimit);
         bankAccount.setTransferBalance(transferBalance);
         bankAccount.setBankAccountStatus(bankAccountStatus);
+        bankAccount.setBankAccountMinSaving(bankAccountMinSaving);
         bankAccount.setCustomerBasic(retrieveCustomerBasicById(customerBasicId));
         bankAccount.setInterest(interestSessionLocal.retrieveInterestById(interestId));
 
@@ -206,7 +208,7 @@ public class BankAccountSession implements BankAccountSessionLocal {
     }
 
     @Override
-    public void activateAccounts() {
+    public void interestAccuring() {
         DecimalFormat df = new DecimalFormat("#.00");
 
         Query query = entityManager.createQuery("SELECT a FROM BankAccount a WHERE a.bankAccountStatus = :bankAccountStatus");
@@ -214,10 +216,11 @@ public class BankAccountSession implements BankAccountSessionLocal {
         List<BankAccount> activatedBankAccounts = query.getResultList();
 
         for (BankAccount activatedBankAccount : activatedBankAccounts) {
+
             Double currentInterest = Double.valueOf(activatedBankAccount.getInterest().getDailyInterest());
             Double currentBalance = Double.valueOf(activatedBankAccount.getBankAccountBalance());
 
-            Double totalInterest = currentInterest + currentBalance * 0.0005;
+            Double totalInterest = currentInterest + currentBalance * 0.0005 / 356;
             Double accuredInterest = Double.valueOf(df.format(totalInterest));
 
             Interest interest = activatedBankAccount.getInterest();
@@ -238,11 +241,24 @@ public class BankAccountSession implements BankAccountSessionLocal {
 
             Interest interest = activatedBankAccount.getInterest();
             Double dailyInterest = Double.valueOf(interest.getDailyInterest());
+            Double bonusInterest = 0.0;
 
             if ((interest.getIsTransfer().equals("0")) && (interest.getIsWithdraw().equals("0"))) {
                 interest.setDailyInterest("0");
+
+                if (activatedBankAccount.getBankAccountType().equals("Monthly Savings Account")) {
+                    if (activatedBankAccount.getBankAccountMinSaving().equals("Sufficient")) {
+                        bonusInterest = Double.valueOf(activatedBankAccount.getBankAccountBalance()) * 0.0035 / 12;
+                    } else if (activatedBankAccount.getBankAccountMinSaving().equals("Insufficient")) {
+                        bonusInterest = 0.0;
+                    }
+                } else if (activatedBankAccount.getBankAccountType().equals("Bonus Savings Account")) {
+                    bonusInterest = Double.valueOf(activatedBankAccount.getBankAccountBalance()) * 0.0075 / 12;
+                } else {
+                    bonusInterest = 0.0;
+                }
                 
-                Double bonusInterest = Double.valueOf(activatedBankAccount.getBankAccountBalance()) * 0.0035;
+                activatedBankAccount.setBankAccountMinSaving("Insufficient");
                 Double totalInterest = dailyInterest + bonusInterest;
                 Double creditedInterest = Double.valueOf(df.format(totalInterest));
 

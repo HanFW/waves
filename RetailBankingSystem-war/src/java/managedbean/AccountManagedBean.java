@@ -54,6 +54,7 @@ public class AccountManagedBean implements Serializable {
     private String bankAccountStatus;
     private String transferBalance;
     private String statusMessage;
+    private String bankAccountMinSaving;
 
     private String existingCustomer;
     private String onlyOneAccount;
@@ -650,6 +651,14 @@ public class AccountManagedBean implements Serializable {
         this.dateOfBirth = dateOfBirth;
     }
 
+    public String getBankAccountMinSaving() {
+        return bankAccountMinSaving;
+    }
+
+    public void setBankAccountMinSaving(String bankAccountMinSaving) {
+        this.bankAccountMinSaving = bankAccountMinSaving;
+    }
+
     public void saveAccount() throws IOException {
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
@@ -673,17 +682,20 @@ public class AccountManagedBean implements Serializable {
             newInterestId = interestSessionLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw);
 
             bankAccountBalance = "0";
-            transferDailyLimit = "2000";
-            transferBalance = "2000";
+            transferDailyLimit = "3000";
+            transferBalance = "3000";
+            bankAccountMinSaving = "";
 
             if (bankAccountType.equals("Monthly Savings Account")) {
                 bankAccountStatus = "Activated";
+                bankAccountMinSaving = "Insufficient";
             } else {
                 bankAccountStatus = "Inactivated";
             }
 
             newAccountId = bankAccountSessionLocal.addNewAccount(bankAccountNum, bankAccountPwd, bankAccountType,
-                    bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, customerBasicId, newInterestId);
+                    bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
+                    customerBasicId, newInterestId);
 
             bankAccountSessionLocal.retrieveBankAccountByCusIC(customerIdentificationNum).add(bankAccount);
 
@@ -718,17 +730,20 @@ public class AccountManagedBean implements Serializable {
             newInterestId = interestSessionLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw);
 
             bankAccountBalance = "0";
-            transferDailyLimit = "2000";
-            transferBalance = "2000";
+            transferDailyLimit = "3000";
+            transferBalance = "3000";
+            bankAccountMinSaving = "";
 
             if (bankAccountType.equals("Monthly Savings Account")) {
                 bankAccountStatus = "Activated";
+                bankAccountMinSaving = "Insufficient";
             } else {
                 bankAccountStatus = "Inactivated";
             }
 
             newAccountId = bankAccountSessionLocal.addNewAccount(bankAccountNum, bankAccountPwd, bankAccountType,
-                    bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, newCustomerBasicId, newInterestId);
+                    bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
+                    newCustomerBasicId, newInterestId);
 
 //            transactionSessionLocal.initialDeposit(newAccountId, initialDepositAmt);
             statusMessage = "New Account Saved Successfully.";
@@ -747,6 +762,11 @@ public class AccountManagedBean implements Serializable {
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Please agree to terms.", "Failed!"));
         }
+
+        customerSignature = "";
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        Map<String, Object> sessionMap = externalContext.getSessionMap();
+        sessionMap.put("customerSignature", customerSignature);
     }
 
     public void deleteAccount() throws IOException {
