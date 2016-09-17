@@ -92,7 +92,7 @@ public class AdminSessionBean implements AdminSessionBeanLocal {
     //Do customer login
     @Override
     public String login(String customerAccount, String password) {
-        System.out.println("*** adminSessionBean: login(accountNum,password)");
+        System.out.println("*** infrastructure/AdminSessionBean: login() ***");
 
         Query query = em.createQuery("SELECT c FROM CustomerBasic c WHERE c.customerOnlineBankingAccountNum = :accountNum");
         query.setParameter("accountNum", customerAccount);
@@ -101,29 +101,32 @@ public class AdminSessionBean implements AdminSessionBeanLocal {
 
         try {
             thisCustomer = (CustomerBasic) query.getSingleResult();
+            System.out.println("*** infrastructure/AdminSessionBean: login(): customer login account: " + thisCustomer.getCustomerOnlineBankingAccountNum());
         } catch (NoResultException ex) {
-            System.out.println("*** adminSessionBean: login(): invalid account");
+            System.out.println("*** infrastructure/AdminSessionBean: login(): login failed: invalid account");
             return "invalidAccount";
         }
 
         if (thisCustomer.getCustomerOnlineBankingPassword().equals(password)) {
-            System.out.println("*** adminSessionBean: login(): valid account and password" + ": account " + thisCustomer.getCustomerOnlineBankingAccountNum());
+            System.out.println("*** infrastructure/AdminSessionBean: login(): login successful");
             return "loggedIn";
         } else {
-            System.out.println("*** adminSessionBean: login(): invalid password");
+            System.out.println("*** infrastructure/AdminSessionBean: login(): login failed: invalid password");
             return "invalidPassword";
         }
     }
 
     @Override
     public CustomerBasic getCustomerByOnlineBankingAccount(String customerAccount) {
-        System.out.println("*** adminSessionBean: getCustomerByOnlineBankingAccount(): start");
+        System.out.println("*** infrastructure/AdminSessionBean: getCustomerByOnlineBankingAccount() ***");
         Query query = em.createQuery("SELECT c FROM CustomerBasic c WHERE c.customerOnlineBankingAccountNum = :accountNum");
         query.setParameter("accountNum", customerAccount);
         List resultList = query.getResultList();
         if(resultList.isEmpty()){
+            System.out.println("*** infrastructure/AdminSessionBean: getCustomerByOnlineBankingAccount(): invalid account number: no result found");
             return null;
         }else{
+            System.out.println("*** infrastructure/AdminSessionBean: getCustomerByOnlineBankingAccount(): valid account number: return CustomerBasic");
             return (CustomerBasic) resultList.get(0);
         }
     }

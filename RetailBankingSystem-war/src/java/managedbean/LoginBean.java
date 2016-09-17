@@ -52,7 +52,7 @@ public class LoginBean implements Serializable {
      * @param event
      */
     public void doLogin(ActionEvent event) throws IOException, NoSuchAlgorithmException {
-//        adminSessionBeanLocal.createOnlineBankingAccount(Long.valueOf(1));
+        System.out.println("=== infrastructure/loginBean: doLogin() ===");
 
         FacesMessage message = null;
         FacesContext context = FacesContext.getCurrentInstance();
@@ -61,7 +61,7 @@ public class LoginBean implements Serializable {
         if (customer == null) {
             message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Invalid account number: ", "Please check your account number.");
             context.addMessage(null, message);
-            System.out.println("*** loginBean: invalid account");
+            System.out.println("=== infrastructure/loginBean: doLogin(): login failed: invalid account number");
         } else {
             //encrypt the customerPassword first
             customerPassword = md5Hashing(customerPassword + customer.getCustomerIdentificationNum().substring(0, 3));
@@ -69,7 +69,7 @@ public class LoginBean implements Serializable {
 
             switch (status) {
                 case "loggedIn":
-                    System.out.println("*** loginBean: loggedIn");
+                    System.out.println("=== infrastructure/loginBean: doLogin(): login successful");
                     context.getExternalContext().getSessionMap().put("customer", getCustomer());
                     if (customer.getCustomerStatus().equals("new")) {
                         context.getExternalContext().redirect("accountActivation.xhtml?faces-redirect=true");
@@ -78,16 +78,17 @@ public class LoginBean implements Serializable {
                     }
                     break;
                 case "invalidPassword":
+                    System.out.println("=== infrastructure/loginBean: doLogin(): login failed: invalid password");
                     customerPassword = "";
                     message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Invalid password: ", "Please enter your passsword again.");
                     context.addMessage(null, message);
                     loginAttempts++;
-                    System.out.println("*** loginBean: invalid password, attempts: " + loginAttempts);
+                    System.out.println("=== infrastructure/loginBean: doLogin(): login attempts: " + loginAttempts);
                     break;
                 default:
+                    System.out.println("=== infrastructure/loginBean: doLogin(): login failed: invalid account");
                     message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Invalid account: ", "Please check your account number.");
                     context.addMessage(null, message);
-                    System.out.println("*** loginBean: invalid account");
                     break;
             }
         }
