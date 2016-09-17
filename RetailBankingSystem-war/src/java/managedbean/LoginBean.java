@@ -11,6 +11,8 @@ import java.io.Serializable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -149,8 +151,10 @@ public class LoginBean implements Serializable {
     }
     
     public void resetCustomerPassword(ActionEvent event){
-        System.out.println("=== infrastructure/LoginBean: resetPassword() ===");
+//        System.out.println("=== infrastructure/LoginBean: resetPassword() ===");
 //        CustomerBasic retrieveCustomer = adminSessionBeanLocal.getCustomerById(customerIdentification);
+//        Map map = new HashMap();
+//        map.put("customerId", retrieveCustomer.getCustomerBasicId().toString());
 //        emailSessionBeanLocal.sendEmail(retrieveCustomer, "", Boolean.FALSE, customerPassword);
     }
     

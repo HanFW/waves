@@ -26,7 +26,7 @@ import util.SMTPAuthenticator;
 public class CustomerEmailSessionBean implements CustomerEmailSessionBeanLocal {
 
     @Override
-    public void sendEmail(CustomerBasic customer, String subject, Map<String,String> actions) {
+    public void sendEmail(CustomerBasic customer, String subject, Map actions) {
         String emailServerName = "smtp.gmail.com";
         String emailFromAddress = "Han Fengwei Test Send<merlionbankes05@gmail.com>";
         String toEmailAddress = "Han Fengwei Test Receive<" + customer.getCustomerEmail() + ">";

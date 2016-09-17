@@ -15,5 +15,5 @@ import javax.ejb.Local;
  */
 @Local
 public interface CustomerEmailSessionBeanLocal {
-    public void sendEmail(CustomerBasic customer, String subject, Map<String,String> actions);
+    public void sendEmail(CustomerBasic customer, String subject, Map actions);
 }

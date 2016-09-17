@@ -61,14 +61,14 @@ public class AdminSessionBean implements AdminSessionBeanLocal {
             }
             
             //generate email
-            Map<String,String> emailActions = new HashMap<String,String>();
+            Map emailActions = new HashMap();
             emailActions.put("onlineBanking", "yes");
             emailActions.put("onlineBankingPassword", password);
             emailSessionBeanLocal.sendEmail(customer, "openAccount", emailActions);
             System.out.println("*** adminSessionBean: email sent to customer (online banking account created)");
             return account + "," + password;
         } else {
-            Map<String,String> emailActions = new HashMap<String,String>();
+            Map emailActions = new HashMap();
             emailActions.put("onlineBanking", "no");
             emailSessionBeanLocal.sendEmail(customer, "openAccount", emailActions);
             System.out.println("*** adminSessionBean: email sent to customer (not a new customer)");
