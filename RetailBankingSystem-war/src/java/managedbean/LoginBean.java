@@ -134,11 +134,11 @@ public class LoginBean implements Serializable {
     public void retrieveCustomerAccount(ActionEvent event) throws IOException{
         System.out.println("=== infrastructure/LoginBean: retrieveCustomerAccount() ===");
         CustomerBasic retrieveCustomer = adminSessionBeanLocal.getCustomerByIdentificationNum(customerIdentification);
-        customerAccount = retrieveCustomer.getCustomerOnlineBankingAccountNum();
         FacesContext context = FacesContext.getCurrentInstance();
-        if(customerAccount == null){
+        if(retrieveCustomer == null){
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Invalid identification number: ", "Please check your identification number."));
         }else{
+            customerAccount = retrieveCustomer.getCustomerOnlineBankingAccountNum();
             context.getExternalContext().redirect("customerRetrieveIBAccount.xhtml");
         }
     }
@@ -146,6 +146,14 @@ public class LoginBean implements Serializable {
     public void resetCustomerPassword(ActionEvent event){
         System.out.println("=== infrastructure/LoginBean: resetPassword() ===");
         Boolean reset = adminSessionBeanLocal.resetPassword(customerIdentification);
+        FacesContext context = FacesContext.getCurrentInstance();
+        if(reset){
+            System.out.println("=== infrastructure/LoginBean: resetPassword(): password reset successful");
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Password reset successful", "Your new password has been sent to your registered email"));
+        }else{
+            System.out.println("=== infrastructure/LoginBean: resetPassword(): password reset failed");
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Password reset failed", "Please try again"));
+        }
     }
     
     /**

@@ -80,7 +80,7 @@
             </p:panelGrid>
             <p:panelGrid rendered="#{loginBean.customerNationality == 'foreigner'}">
                 <p:row>
-                    <p:commandButton type="submit" value="Reset password" actionListener="#{loginBean.resetCustomerPassword}"/>
+                    <p:commandButton type="submit" value="View User ID" actionListener="#{loginBean.retrieveCustomerAccount}"/>
                 </p:row>
             </p:panelGrid>
         </h:form>
