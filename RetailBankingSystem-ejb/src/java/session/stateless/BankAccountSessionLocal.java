@@ -18,7 +18,8 @@ public interface BankAccountSessionLocal {
     public Long addNewAccount(String bankAccountNum,String bankAccountPwd,
             String bankAccountType,String bankAccountBalance,String transferDailyLimit,
             String transferBalance,String bankAccountStatus,String bankAccountMinSaving,
-            String bankAccountDepositPeriod,Long customerBasicId,Long interestId);
+            String bankAccountDepositPeriod, String currentFixedDepositPeriod,
+            String fixedDepositStatus, Long customerBasicId,Long interestId);
     public String deleteAccount(String bankAccountNum);
     public void interestAccuring();
     public void interestCrediting();

@@ -9,6 +9,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import session.stateless.BankAccountSessionLocal;
@@ -72,6 +73,30 @@ public class FixedDepositAccountManagedBean {
     }
 
     public void confirm() {
-        bankAccountSessionLocal.updateDepositPeriod(fixedDepositAccountWithType,fixedDepositPeriod);
+
+        ec = FacesContext.getCurrentInstance().getExternalContext();
+
+        String bankAccountNum = handleAccountString(fixedDepositAccountWithType);
+
+        BankAccount bankAccount = bankAccountSessionLocal.retrieveBankAccountByNum(bankAccountNum);
+
+        if (bankAccount.getBankAccountType().equals("Fixed Deposit Account")) {
+            if (bankAccount.getBankAccountDepositPeriod().equals("None")) {
+                bankAccountSessionLocal.updateDepositPeriod(bankAccountNum, fixedDepositPeriod);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Successfully!You have successfully declared your fixed deposit period.", "Successfully"));
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!You have already declared your fixed deposit period.", "Failed"));
+            }
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Service only for Fixed Deposit Account.", "Failed"));
+        }
+    }
+
+    private String handleAccountString(String bankAccountNumWithType) {
+
+        String[] bankAccountNums = bankAccountNumWithType.split("-");
+        String bankAccountNum = bankAccountNums[1];
+
+        return bankAccountNum;
     }
 }

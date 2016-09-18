@@ -769,15 +769,43 @@
 
                             <p:row>
                                 <p:column>
-                                    <p:outputLabel for="customerAddress" style="font-weight: bold" value="Residential Address" />
+                                    <p:outputLabel for="customerStreetName" style="font-weight: bold" value="Residential Street Name: " />
                                 </p:column>
                                 <p:column>
-                                    <p:inputText label="Residential Address" id="customerAddress"
-                                                 value="#{accountManagedBean.customerAddress}">
+                                    <p:inputText label="Residential Address" id="customerStreetName"
+                                                 value="#{accountManagedBean.customerStreetName}">
                                     </p:inputText>
                                 </p:column>
                                 <p:column>
-                                    <p:message for="customerAddress" />
+                                    <p:message for="customerStreetName" />
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="customerBlockNum" style="font-weight: bold" value="Residential Block/House No.: " />
+                                </p:column>
+                                <p:column>
+                                    <p:inputText label="Residential Address" id="customerBlockNum"
+                                                 value="#{accountManagedBean.customerBlockNum}">
+                                    </p:inputText>
+                                </p:column>
+                                <p:column>
+                                    <p:message for="customerBlockNum" />
+                                </p:column>
+                            </p:row>
+                            
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="customerUnitNum" style="font-weight: bold" value="Residential Unit No.: " />
+                                </p:column>
+                                <p:column>
+                                    <p:inputText label="Residential Address" id="customerUnitNum"
+                                                 value="#{accountManagedBean.customerUnitNum}">
+                                    </p:inputText>
+                                </p:column>
+                                <p:column>
+                                    <p:message for="customerUnitNum" />
                                 </p:column>
                             </p:row>
 
@@ -977,16 +1005,22 @@
                     <h:outputText value="Company: " />
                     <h:outputText value="#{accountManagedBean.customerCompany}"/>
                     <br/>
-                    <h:outputText value="Residential Address: " />
-                    <h:outputText value="#{accountManagedBean.customerAddress}"/>
+                    <h:outputText value="Residential Street Name: " />
+                    <h:outputText value="#{accountManagedBean.customerStreetName}"/>
                     <br/>
-                    <h:outputText value="Postal Code: " style="width:100px"/>
+                    <h:outputText value="Residential Block/House No.: " />
+                    <h:outputText value="#{accountManagedBean.customerBlockNum}"/>
+                    <br/>
+                    <h:outputText value="Residential Unit No.: " />
+                    <h:outputText value="#{accountManagedBean.customerUnitNum}"/>
+                    <br/>
+                    <h:outputText value="Postal Code: " />
                     <h:outputText value="#{accountManagedBean.customerPostal}"/>
                     <br/>
-                    <h:outputText value="Mobile: " style="width:100px"/>
+                    <h:outputText value="Mobile: " />
                     <h:outputText value="#{accountManagedBean.customerMobile}"/>
                     <br/>
-                    <h:outputText value="Email: " style="width:100px"/>
+                    <h:outputText value="Email: " />
                     <h:outputText value="#{accountManagedBean.customerEmail}"/>
                     <br/>
                     <br/>

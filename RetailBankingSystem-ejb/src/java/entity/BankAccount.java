@@ -31,6 +31,8 @@ public class BankAccount implements Serializable {
     private String bankAccountStatus;
     private String bankAccountMinSaving;
     private String bankAccountDepositPeriod;
+    private String currentFixedDepositPeriod;
+    private String fixedDepositStatus;
     
     @OneToMany(cascade={CascadeType.ALL},fetch=FetchType.EAGER,mappedBy="bankAccount")
     private List<AccTransaction> accTransaction;
@@ -143,6 +145,22 @@ public class BankAccount implements Serializable {
 
     public void setBankAccountDepositPeriod(String bankAccountDepositPeriod) {
         this.bankAccountDepositPeriod = bankAccountDepositPeriod;
+    }
+
+    public String getCurrentFixedDepositPeriod() {
+        return currentFixedDepositPeriod;
+    }
+
+    public void setCurrentFixedDepositPeriod(String currentFixedDepositPeriod) {
+        this.currentFixedDepositPeriod = currentFixedDepositPeriod;
+    }
+
+    public String getFixedDepositStatus() {
+        return fixedDepositStatus;
+    }
+
+    public void setFixedDepositStatus(String fixedDepositStatus) {
+        this.fixedDepositStatus = fixedDepositStatus;
     }
     
     @Override
