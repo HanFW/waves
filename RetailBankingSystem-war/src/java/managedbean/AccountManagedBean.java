@@ -11,9 +11,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
-import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -25,7 +23,6 @@ import session.stateless.BankAccountSessionLocal;
 import session.stateless.InterestSessionLocal;
 import javax.faces.view.ViewScoped;
 import org.apache.commons.io.IOUtils;
-import org.primefaces.context.RequestContext;
 
 @Named(value = "accountManagedBean")
 @ViewScoped
@@ -54,6 +51,10 @@ public class AccountManagedBean implements Serializable {
     private String bankAccountStatus;
     private String transferBalance;
     private String statusMessage;
+    private String bankAccountMinSaving;
+    private String bankAccountDepositPeriod;
+    private String currentFixedDepositPeriod;
+    private String fixedDepositStatus;
 
     private String existingCustomer;
     private String onlyOneAccount;
@@ -81,6 +82,9 @@ public class AccountManagedBean implements Serializable {
     private String customerNRICSG;
     private String customerNRIC;
     private String customerPassport;
+    private String customerStreetName;
+    private String customerBlockNum;
+    private String customerUnitNum;
 
     private Long newInterestId;
     private String dailyInterest;
@@ -650,6 +654,62 @@ public class AccountManagedBean implements Serializable {
         this.dateOfBirth = dateOfBirth;
     }
 
+    public String getBankAccountMinSaving() {
+        return bankAccountMinSaving;
+    }
+
+    public void setBankAccountMinSaving(String bankAccountMinSaving) {
+        this.bankAccountMinSaving = bankAccountMinSaving;
+    }
+
+    public String getBankAccountDepositPeriod() {
+        return bankAccountDepositPeriod;
+    }
+
+    public void setBankAccountDepositPeriod(String bankAccountDepositPeriod) {
+        this.bankAccountDepositPeriod = bankAccountDepositPeriod;
+    }
+
+    public String getCurrentFixedDepositPeriod() {
+        return currentFixedDepositPeriod;
+    }
+
+    public void setCurrentFixedDepositPeriod(String currentFixedDepositPeriod) {
+        this.currentFixedDepositPeriod = currentFixedDepositPeriod;
+    }
+
+    public String getFixedDepositStatus() {
+        return fixedDepositStatus;
+    }
+
+    public void setFixedDepositStatus(String fixedDepositStatus) {
+        this.fixedDepositStatus = fixedDepositStatus;
+    }
+
+    public String getCustomerStreetName() {
+        return customerStreetName;
+    }
+
+    public void setCustomerStreetName(String customerStreetName) {
+        this.customerStreetName = customerStreetName;
+    }
+
+    public String getCustomerBlockNum() {
+        return customerBlockNum;
+    }
+
+    public void setCustomerBlockNum(String customerBlockNum) {
+        this.customerBlockNum = customerBlockNum;
+    }
+
+    public String getCustomerUnitNum() {
+        return customerUnitNum;
+    }
+
+    public void setCustomerUnitNum(String customerUnitNum) {
+        this.customerUnitNum = customerUnitNum;
+    }
+
     public void saveAccount() throws IOException {
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
@@ -673,17 +733,23 @@ public class AccountManagedBean implements Serializable {
             newInterestId = interestSessionLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw);
 
             bankAccountBalance = "0";
-            transferDailyLimit = "2000";
-            transferBalance = "2000";
+            transferDailyLimit = "3000";
+            transferBalance = "3000";
+            bankAccountMinSaving = "";
+            bankAccountDepositPeriod = "None";
+            currentFixedDepositPeriod = "0";
+            fixedDepositStatus = "";
 
             if (bankAccountType.equals("Monthly Savings Account")) {
                 bankAccountStatus = "Activated";
+                bankAccountMinSaving = "Insufficient";
             } else {
                 bankAccountStatus = "Inactivated";
             }
 
             newAccountId = bankAccountSessionLocal.addNewAccount(bankAccountNum, bankAccountPwd, bankAccountType,
-                    bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, customerBasicId, newInterestId);
+                    bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
+                    bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus, customerBasicId, newInterestId);
 
             bankAccountSessionLocal.retrieveBankAccountByCusIC(customerIdentificationNum).add(bankAccount);
 
@@ -703,6 +769,8 @@ public class AccountManagedBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! You don't have Merlion bank account yet.", "Failed!"));
         } else if (existingCustomer.equals("No") && !checkExist && agreement) {
 
+            customerAddress = customerStreetName + ", "+customerBlockNum +", "+ customerUnitNum +", "+ customerPostal;
+            
             newCustomerBasicId = customerSessionBean.addNewCustomerBasic(customerName,
                     customerSalutation, customerIdentificationNum.toUpperCase(),
                     customerGender, customerEmail, customerMobile, dateOfBirth,
@@ -718,17 +786,23 @@ public class AccountManagedBean implements Serializable {
             newInterestId = interestSessionLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw);
 
             bankAccountBalance = "0";
-            transferDailyLimit = "2000";
-            transferBalance = "2000";
+            transferDailyLimit = "3000";
+            transferBalance = "3000";
+            bankAccountMinSaving = "";
+            bankAccountDepositPeriod = "None";
+            currentFixedDepositPeriod = "0";
+            fixedDepositStatus = "";
 
             if (bankAccountType.equals("Monthly Savings Account")) {
                 bankAccountStatus = "Activated";
+                bankAccountMinSaving = "Insufficient";
             } else {
                 bankAccountStatus = "Inactivated";
             }
 
             newAccountId = bankAccountSessionLocal.addNewAccount(bankAccountNum, bankAccountPwd, bankAccountType,
-                    bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, newCustomerBasicId, newInterestId);
+                    bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
+                    bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus, newCustomerBasicId, newInterestId);
 
 //            transactionSessionLocal.initialDeposit(newAccountId, initialDepositAmt);
             statusMessage = "New Account Saved Successfully.";
@@ -747,6 +821,11 @@ public class AccountManagedBean implements Serializable {
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Please agree to terms.", "Failed!"));
         }
+
+        customerSignature = "";
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        Map<String, Object> sessionMap = externalContext.getSessionMap();
+        sessionMap.put("customerSignature", customerSignature);
     }
 
     public void deleteAccount() throws IOException {
