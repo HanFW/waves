@@ -29,22 +29,27 @@
                                 <p:inputText type="password" id= "customerPassword" value="#{loginBean.customerPassword}" required="true" requiredMessage="Please enter your password."/>
                             </p:column>
                         </p:row>
-                        <p:row rendered="#{loginBean.loginAttempts >= 5}">
-                            <p:column colspan="2">
-                                You have reached the maximum number of failed login attempts.
-                                For your safety, access to online banking has been locked.
-                                To unlock your access, please enter the one-time password(OTP) sent to your mobile phone or contact our customer service at 800-820-8820.
-                                <p:captcha label="Captcha" />
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column colspan="2">
-                                <p:commandButton value="submit" type="submit" actionListener="#{loginBean.doLogin}" update="@form"/>
-                            </p:column>
-                        </p:row>
                     </p:panelGrid>
+                    <p:row rendered="#{loginBean.loginAttempts >= 5}">
+                        <p:column colspan="2">
+                            You have reached the maximum number of failed login attempts.
+                            For your safety, access to online banking has been locked.
+                            To unlock your access, please enter the one-time password(OTP) sent to your mobile phone or contact our customer service at 800-820-8820.
+                            <p:captcha label="Captcha" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="2">
+                            <p:commandButton value="submit" type="submit" actionListener="#{loginBean.doLogin}" update="@form"/>
+                            Forgot
+                            <p:link outcome="customerForgetAccountNum" value="account number"/>
+                            or
+                            <p:link outcome="customerForgetPassword" value="password"/>
+                            ?
+                        </p:column>
+                    </p:row>
                 </p:panel>
-                
+
             </h:form>
         </h:body>
     </f:view>
