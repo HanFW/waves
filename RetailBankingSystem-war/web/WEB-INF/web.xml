@@ -26,6 +26,7 @@
         <web-resource-collection>
             <web-resource-name>WRCollection</web-resource-name>
             <url-pattern>/IB/*</url-pattern>
+            <url-pattern>/employee/*</url-pattern>
         </web-resource-collection>
         <user-data-constraint>
             <transport-guarantee>CONFIDENTIAL</transport-guarantee>
