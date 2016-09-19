@@ -248,7 +248,7 @@ public class BankAccountSession implements BankAccountSessionLocal {
                     finalBalance = currentBalance + finalInterest;
                     activatedBankAccount.setBankAccountBalance(df.format(finalBalance));
 
-                    String accountCredit = null;
+                    String accountCredit = " ";
                     String transactionCode = "DEFI";
                     String transactionRef = "Interest Crediting";
 
@@ -287,7 +287,7 @@ public class BankAccountSession implements BankAccountSessionLocal {
                         activatedBankAccount.setBankAccountDepositPeriod("None");
                         activatedBankAccount.setBankAccountStatus("Inactivated");
 
-                        String accountCredit = null;
+                        String accountCredit = " ";
                         String transactionCode = "DEFI";
                         String transactionRef = "Interest Crediting";
 
@@ -357,7 +357,7 @@ public class BankAccountSession implements BankAccountSessionLocal {
                 interest.setMonthlyInterest(totalInterest.toString());
                 activatedBankAccount.setBankAccountBalance(df.format(finalBalance));
 
-                String accountCredit = null;
+                String accountCredit = " ";
                 String transactionCode = "DEFI";
                 String transactionRef = "Interest Crediting";
 
@@ -393,7 +393,7 @@ public class BankAccountSession implements BankAccountSessionLocal {
                     creditedInterest = Double.valueOf(df.format(totalInterest));
                     finalBalance = Double.valueOf(activatedBankAccount.getBankAccountBalance()) + totalInterest;
 
-                    String accountCredit = null;
+                    String accountCredit = " ";
                     String transactionCode = "DEFI";
                     String transactionRef = "Interest Crediting";
 

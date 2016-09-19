@@ -119,7 +119,7 @@ public class TransactionSession implements TransactionSessionLocal {
                 }
             }
 
-            String accountCredit = null;
+            String accountCredit = " ";
             String transactionCode = "ADP";
             String transactionRef = "Merlion Bank Branch";
 
@@ -156,7 +156,7 @@ public class TransactionSession implements TransactionSessionLocal {
         if (bankAccountId == null) {
             return "Error! Bank account does not exist!";
         } else {
-            String accountDebit = null;
+            String accountDebit = " ";
             String transactionCode = "AWL";
             String transactionRef = "Merlion Bank Branch";
 
@@ -230,9 +230,9 @@ public class TransactionSession implements TransactionSessionLocal {
         String transactionDate = dayOfMonth + "-" + (month + 1) + "-" + year;
 
         Long fromTransactionId = addNewTransaction(transactionDate, transactionCode, transactionRefFrom,
-                null, transferAmt, bankAccountFromId);
+                " ", transferAmt, bankAccountFromId);
         Long toTransactionId = addNewTransaction(transactionDate, transactionCode, transactionRefTo,
-                transferAmt, null, bankAccountToId);
+                transferAmt, " ", bankAccountToId);
 
         bankAccountFrom.setBankAccountBalance(balanceAccountFrom.toString());
         bankAccountTo.setBankAccountBalance(balanceAccountTo.toString());
