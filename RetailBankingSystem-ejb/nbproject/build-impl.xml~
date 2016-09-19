@@ -781,9 +781,9 @@ exists or setup the property manually. For example like this:
                 COMPILATION SECTION
             -->
     <target depends="init" if="no.dist.ear.dir" name="-deps-module-jar" unless="no.deps">
-        <ant antfile="${project.RetailBankingSystemRemoteInterface}/build.xml" inheritall="false" target="jar">
+<!--        <ant antfile="${project.RetailBankingSystemRemoteInterface}/build.xml" inheritall="false" target="jar">
             <property name="deploy.on.save" value="false"/>
-        </ant>
+        </ant>-->
     </target>
     <target depends="init" if="dist.ear.dir" name="-deps-ear-jar" unless="no.deps">
 <!--        <ant antfile="${project.RetailBankingSystemRemoteInterface}/build.xml" inheritall="false" target="jar">

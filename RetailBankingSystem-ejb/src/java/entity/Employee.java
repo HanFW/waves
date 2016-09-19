@@ -32,10 +32,13 @@ public class Employee implements Serializable {
     private String employeePassword;
     private String employeeDepartment;
     private String employeePosition;
+    private String employeeNRIC;
+    private String employeeMobileNum;
+    private String employeeEmail;
+    
     @ManyToMany(cascade = {CascadeType.PERSIST})
     @JoinTable(name = "EMPLOYEE_ROLE")
     private Set<Role> role = new HashSet<Role>();
-
 
     public String getEmployeeDepartment() {
         return employeeDepartment;
@@ -91,6 +94,30 @@ public class Employee implements Serializable {
 
     public void setEmployeePassword(String employeePassword) {
         this.employeePassword = employeePassword;
+    }
+
+    public String getEmployeeNRIC() {
+        return employeeNRIC;
+    }
+
+    public void setEmployeeNRIC(String employeeNRIC) {
+        this.employeeNRIC = employeeNRIC;
+    }
+
+    public String getEmployeeMobileNum() {
+        return employeeMobileNum;
+    }
+
+    public void setEmployeeMobileNum(String employeeMobileNum) {
+        this.employeeMobileNum = employeeMobileNum;
+    }
+
+    public String getEmployeeEmail() {
+        return employeeEmail;
+    }
+
+    public void setEmployeeEmail(String employeeEmail) {
+        this.employeeEmail = employeeEmail;
     }
     
     @Override
