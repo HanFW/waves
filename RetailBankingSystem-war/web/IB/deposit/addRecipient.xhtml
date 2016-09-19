@@ -28,6 +28,7 @@
                     <p:menuitem value="Cash Withdraw" url="cashWithdraw.xhtml" />
                     <p:menuitem value="View Transaction" url="viewTransaction.xhtml" />
                     <p:menuitem value="Activate Fixed Deposit Account" url="activateFixedDepositAccount.xhtml" />
+                    <p:menuitem value="View Statement" url="viewStatement.xhtml" />
                 </p:submenu>
                 
                 <p:submenu label="Transfer" >
@@ -96,6 +97,7 @@
                     </p:row>
                     
                 </p:panelGrid>
+                
                 <p:commandButton id="cancelBtn" action="index.xhtml" value="Cancel" update="panel" immediate = "true">
                     <p:confirm header="Cancel" message="Are you sure?" />
                 </p:commandButton>

@@ -94,7 +94,6 @@ public class AccountManagedBean implements Serializable {
 
     private String initialDepositAmt;
     private String depositPeriod;
-    private String initialDepositModel;
 
     private boolean agreement;
     private boolean checkExist;
@@ -104,7 +103,6 @@ public class AccountManagedBean implements Serializable {
     private boolean visible3 = false;
     private boolean visible4 = false;
     private boolean visible5 = false;
-    private boolean visible1 = false;
 
     private ExternalContext ec;
     private CustomerBasic customerBasic;
@@ -117,7 +115,7 @@ public class AccountManagedBean implements Serializable {
     //ec = FacesContext.getCurrentInstance().getExternalContext();
     public AccountManagedBean() {
     }
-
+    
     public void show() {
 
         if (customerSalutation.equals("Others")) {
@@ -181,19 +179,6 @@ public class AccountManagedBean implements Serializable {
         visible5 = false;
     }
 
-    public void show1() {
-
-        if (bankAccountType.equals("Fixed Deposit Account")) {
-            visible1 = true;
-        } else {
-            visible1 = false;
-        }
-    }
-
-    public void hide1() {
-        visible1 = false;
-    }
-
     public boolean isVisible() {
         return visible;
     }
@@ -232,14 +217,6 @@ public class AccountManagedBean implements Serializable {
 
     public void setVisible5(boolean visible5) {
         this.visible5 = visible5;
-    }
-
-    public boolean isVisible1() {
-        return visible1;
-    }
-
-    public void setVisible1(boolean visible1) {
-        this.visible1 = visible1;
     }
 
     public UploadedFile getFile() {
@@ -630,14 +607,6 @@ public class AccountManagedBean implements Serializable {
         this.customerNRICSG = customerNRICSG;
     }
 
-    public String getInitialDepositModel() {
-        return initialDepositModel;
-    }
-
-    public void setInitialDepositModel(String initialDepositModel) {
-        this.initialDepositModel = initialDepositModel;
-    }
-
     public String getCustomerSignature() {
         return customerSignature;
     }
@@ -890,7 +859,7 @@ public class AccountManagedBean implements Serializable {
         if (file != null) {
             String filename = customerName + "-" + customerIdentificationNum + ".png";
             InputStream input = file.getInputstream();
-            OutputStream output = new FileOutputStream(new File("/Users/Yongxue/Desktop/JavaBean/DepositAccountManagement/DepositAccountManagement-war/web/resources/customerIdentification", filename));
+            OutputStream output = new FileOutputStream(new File("/Users/Yongxue/Desktop/JavaBean/waves/RetailBankingSystem-war/web/resources/customerIdentification", filename));
 
             try {
                 IOUtils.copy(input, output);
