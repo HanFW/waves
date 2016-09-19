@@ -50,7 +50,7 @@ public class SendEmailSessionBean implements SendEmailSessionBeanLocal {
             query.setParameter("NRIC", employeeNRIC);
             Employee findEmployee = (Employee) query.getSingleResult();
             String emailCase="initialPwd";
-            sendPwdEmail(findEmployee,emailCase);
+            sendPwdEmail(findEmployee,emailCase,employeeEmail);
             return "valid";
         } catch (NoResultException e) {
             return "invalid";
@@ -60,15 +60,15 @@ public class SendEmailSessionBean implements SendEmailSessionBeanLocal {
         }
     }
     @Override
-    public String resetPwd(String employeeEmail) {
+    public String resetPwd(String employeeNRIC,String employeeEmail) {
         
         try {
             System.out.println("***SendEmailSessionBean: send resetPwd to " + employeeEmail);
-            Query query = em.createQuery("SELECT e FROM Employee e WHERE e.employeeEmail= :Email");
-            query.setParameter("Email", employeeEmail);
+            Query query = em.createQuery("SELECT e FROM Employee e WHERE e.employeeNRIC= :NRIC");
+            query.setParameter("NRIC", employeeNRIC);
             Employee findEmployee = (Employee) query.getSingleResult();
             String emailCase="resetPwd";
-            sendPwdEmail(findEmployee,emailCase);
+            sendPwdEmail(findEmployee,emailCase,employeeEmail);
             return "valid";
         } catch (NoResultException e) {
             return "invalid";
@@ -113,7 +113,7 @@ public class SendEmailSessionBean implements SendEmailSessionBeanLocal {
 
     }
 
-    private void sendPwdEmail(Employee findEmployee,String emailCase) throws NoSuchAlgorithmException {
+    private void sendPwdEmail(Employee findEmployee,String emailCase,String employeeEmail) throws NoSuchAlgorithmException {
         try {
         Employee employee = findEmployee;
         String password = generatePwd();
@@ -123,7 +123,7 @@ public class SendEmailSessionBean implements SendEmailSessionBeanLocal {
         em.flush();
         String emailServerName = "smtp.gmail.com";
         String emailFromAddress = "Han Fengwei Test Send<merlionbankes05@gmail.com>";
-        String toEmailAddress = "Han Fengwei Test Receive<" + employee.getEmployeeEmail() + ">";
+        String toEmailAddress = "Han Fengwei Test Receive<" + employeeEmail + ">";
         String mailer = "JavaMailer";
         String emailText = "Dear Employee, \n";
         if(emailCase.equals("initialPwd")){

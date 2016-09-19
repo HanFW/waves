@@ -103,8 +103,9 @@
                         <p:outputLabel for="employeeEmail" style="font-weight: bold" value="Email: " />
                     </p:column>
                     <p:column>
-                        <p:inputText label="Employee Email" id="employeeEmail"
+                        <p:inputText validatorMessage="Please provide a valid email address" label="Employee Email" id="employeeEmail"
                                      value="#{employeeAccountManagedBean.employeeEmail}">
+                            <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
                         </p:inputText>
                     </p:column>
                     <p:column>
@@ -133,7 +134,7 @@
                         </p:outputPanel>
                     </h:form>
                 </p:row>
- 
+
                 <p:row>
                     <p:column colspan="2">
                         <p:commandButton value="submit" type="submit" actionListener="#{employeeAccountManagedBean.createAccount}" update="@form"/>
