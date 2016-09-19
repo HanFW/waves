@@ -152,7 +152,7 @@ public class SendEmailSessionBean implements SendEmailSessionBeanLocal {
             if (msg != null) {
                 msg.setFrom(InternetAddress.parse(emailFromAddress, false)[0]);
                 msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmailAddress, false));
-                msg.setSubject("Thank you for using our service! ");;
+                msg.setSubject("Merlion Bank Internal System Service");;
                 msg.setText(emailText);
                 msg.setHeader("X-Mailer", mailer);
                 Date timeStamp = new Date();
