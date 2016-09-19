@@ -225,33 +225,28 @@ public class BankAccountSession implements BankAccountSessionLocal {
             Double currentBalance = 0.0;
             Double totalInterest = 0.0;
             Double accuredInterest = 0.0;
+            Double finalBalance = 0.0;
+            Double finalInterest =0.0;
             Interest interest = new Interest();
 
-            if (activatedBankAccount.getBankAccountType().equals("Fixed Deposit Account")) {
+            if (activatedBankAccount.getFixedDepositStatus().equals("Deposited")&&activatedBankAccount.getBankAccountType().equals("Fixed Deposit Account")) {
 
-                Double currentPeriod = Double.valueOf(activatedBankAccount.getCurrentFixedDepositPeriod());
-                Double finalPeriod = currentPeriod + 1;
-                activatedBankAccount.setCurrentFixedDepositPeriod(finalPeriod.toString());
+                if (activatedBankAccount.getInterest().getIsTransfer().equals("1") || activatedBankAccount.getInterest().getIsWithdraw().equals("1")) {
 
-                currentInterest = Double.valueOf(activatedBankAccount.getInterest().getDailyInterest());
-                currentBalance = Double.valueOf(activatedBankAccount.getBankAccountBalance());
-                String interestRate = checkInterestRate(activatedBankAccount.getBankAccountDepositPeriod());
-
-                totalInterest = currentInterest + currentBalance * Double.valueOf(interestRate) / 360;
-                accuredInterest = totalInterest;
-
-                interest = activatedBankAccount.getInterest();
-
-                if (activatedBankAccount.getCurrentFixedDepositPeriod().equals(activatedBankAccount.getBankAccountDepositPeriod())) {
-
-                    interest.setDailyInterest(accuredInterest.toString());
-                    Double finalBalance = currentBalance + accuredInterest;
+                    interest = activatedBankAccount.getInterest();
+                    interest.setIsTransfer("0");
+                    interest.setIsWithdraw("0");
                     
+                    currentInterest = Double.valueOf(activatedBankAccount.getInterest().getDailyInterest());
                     interest.setDailyInterest("0");
-                    activatedBankAccount.setBankAccountBalance(df.format(finalBalance));
                     activatedBankAccount.setFixedDepositStatus("Withdrawn");
                     activatedBankAccount.setBankAccountDepositPeriod("None");
-                    activatedBankAccount.setBankAccountStatus("Inactivated");
+                    
+                    finalInterest = currentInterest * 0.4;
+
+                    currentBalance = Double.valueOf(activatedBankAccount.getBankAccountBalance());
+                    finalBalance = currentBalance + finalInterest;
+                    activatedBankAccount.setBankAccountBalance(df.format(finalBalance));
 
                     String accountCredit = null;
                     String transactionCode = "DEFI";
@@ -264,19 +259,70 @@ public class BankAccountSession implements BankAccountSessionLocal {
                     String transactionDate = dayOfMonth + "-" + (month + 1) + "-" + year;
 
                     Long newAccTransactionId = transactionSessionLocal.addNewTransaction(transactionDate, transactionCode, transactionRef,
-                            accuredInterest.toString(), accountCredit, activatedBankAccount.getBankAccountId());
+                            finalInterest.toString(), accountCredit, activatedBankAccount.getBankAccountId());
+
                 } else {
-                    interest.setDailyInterest(accuredInterest.toString());
+                    
+                    Double currentPeriod = Double.valueOf(activatedBankAccount.getCurrentFixedDepositPeriod());
+                    Double finalPeriod = currentPeriod + 1;
+                    activatedBankAccount.setCurrentFixedDepositPeriod(finalPeriod.toString());
+
+                    currentInterest = Double.valueOf(activatedBankAccount.getInterest().getDailyInterest());
+                    currentBalance = Double.valueOf(activatedBankAccount.getBankAccountBalance());
+                    String interestRate = checkInterestRate(activatedBankAccount.getBankAccountDepositPeriod());
+
+                    totalInterest = currentInterest + currentBalance * Double.valueOf(interestRate) / 360;
+                    accuredInterest = Double.valueOf(df.format(totalInterest));
+
+                    interest = activatedBankAccount.getInterest();
+
+                    if (activatedBankAccount.getCurrentFixedDepositPeriod().equals(activatedBankAccount.getBankAccountDepositPeriod())) {
+                        
+                        interest.setDailyInterest(totalInterest.toString());
+                        finalBalance = currentBalance + totalInterest;
+
+                        interest.setDailyInterest("0");
+                        activatedBankAccount.setBankAccountBalance(df.format(finalBalance));
+                        activatedBankAccount.setFixedDepositStatus("Withdrawn");
+                        activatedBankAccount.setBankAccountDepositPeriod("None");
+                        activatedBankAccount.setBankAccountStatus("Inactivated");
+
+                        String accountCredit = null;
+                        String transactionCode = "DEFI";
+                        String transactionRef = "Interest Crediting";
+
+                        Calendar cal = Calendar.getInstance();
+                        int year = cal.get(Calendar.YEAR);
+                        int month = cal.get(Calendar.MONTH);
+                        int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
+                        String transactionDate = dayOfMonth + "-" + (month + 1) + "-" + year;
+
+                        Long newAccTransactionId = transactionSessionLocal.addNewTransaction(transactionDate, transactionCode, transactionRef,
+                                accuredInterest.toString(), accountCredit, activatedBankAccount.getBankAccountId());
+                    } else {
+                        interest.setDailyInterest(totalInterest.toString());
+                    }
                 }
-            } else {
+            } else if (activatedBankAccount.getFixedDepositStatus().equals("Withdrawn")&&activatedBankAccount.getBankAccountType().equals("Fixed Deposit Account")) {
+
                 currentInterest = Double.valueOf(activatedBankAccount.getInterest().getDailyInterest());
                 currentBalance = Double.valueOf(activatedBankAccount.getBankAccountBalance());
 
                 totalInterest = currentInterest + currentBalance * 0.0005 / 360;
-                accuredInterest = totalInterest;
 
                 interest = activatedBankAccount.getInterest();
-                interest.setDailyInterest(df.format(accuredInterest));
+                interest.setDailyInterest(totalInterest.toString());
+
+            } else {
+                
+                currentInterest = Double.valueOf(activatedBankAccount.getInterest().getDailyInterest());
+                currentBalance = Double.valueOf(activatedBankAccount.getBankAccountBalance());
+
+                totalInterest = currentInterest + currentBalance * 0.0005 / 360;
+
+                interest = activatedBankAccount.getInterest();
+
+                interest.setDailyInterest(totalInterest.toString());
             }
         }
 
@@ -295,9 +341,35 @@ public class BankAccountSession implements BankAccountSessionLocal {
             Interest interest = activatedBankAccount.getInterest();
             Double dailyInterest = Double.valueOf(interest.getDailyInterest());
             Double bonusInterest = 0.0;
+            Double totalInterest = 0.0;
+            Double creditedInterest = 0.0;
+            Double finalBalance = 0.0;
 
-            if (activatedBankAccount.getBankAccountType().equals("Fixed Deposit Account")) {
+            if (activatedBankAccount.getBankAccountType().equals("Fixed Deposit Account") && !activatedBankAccount.getFixedDepositStatus().equals("Withdrawn")) {
                 System.out.println("One Month Gone");
+            } else if (activatedBankAccount.getBankAccountType().equals("Fixed Deposit Account") && activatedBankAccount.getFixedDepositStatus().equals("Withdrawn")) {
+
+                bonusInterest = 0.0;
+                totalInterest = dailyInterest + bonusInterest;
+                creditedInterest = Double.valueOf(df.format(totalInterest));
+                finalBalance = Double.valueOf(activatedBankAccount.getBankAccountBalance()) + totalInterest;
+
+                interest.setMonthlyInterest(totalInterest.toString());
+                activatedBankAccount.setBankAccountBalance(df.format(finalBalance));
+
+                String accountCredit = null;
+                String transactionCode = "DEFI";
+                String transactionRef = "Interest Crediting";
+
+                Calendar cal = Calendar.getInstance();
+                int year = cal.get(Calendar.YEAR);
+                int month = cal.get(Calendar.MONTH);
+                int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
+                String transactionDate = dayOfMonth + "-" + (month + 1) + "-" + year;
+
+                Long newAccTransactionId = transactionSessionLocal.addNewTransaction(transactionDate, transactionCode, transactionRef,
+                        creditedInterest.toString(), accountCredit, activatedBankAccount.getBankAccountId());
+
             } else {
 
                 if ((interest.getIsTransfer().equals("0")) && (interest.getIsWithdraw().equals("0"))) {
@@ -317,9 +389,9 @@ public class BankAccountSession implements BankAccountSessionLocal {
                         bonusInterest = 0.0;
                     }
 
-                    Double totalInterest = dailyInterest + bonusInterest;
-                    Double creditedInterest = totalInterest;
-                    Double finalBalance = Double.valueOf(activatedBankAccount.getBankAccountBalance()) + creditedInterest;
+                    totalInterest = dailyInterest + bonusInterest;
+                    creditedInterest = Double.valueOf(df.format(totalInterest));
+                    finalBalance = Double.valueOf(activatedBankAccount.getBankAccountBalance()) + totalInterest;
 
                     String accountCredit = null;
                     String transactionCode = "DEFI";
@@ -331,7 +403,7 @@ public class BankAccountSession implements BankAccountSessionLocal {
                     int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
                     String transactionDate = dayOfMonth + "-" + (month + 1) + "-" + year;
 
-                    interest.setMonthlyInterest(df.format(creditedInterest));
+                    interest.setMonthlyInterest(totalInterest.toString());
                     activatedBankAccount.setBankAccountBalance(df.format(finalBalance));
 
                     Long newAccTransactionId = transactionSessionLocal.addNewTransaction(transactionDate, transactionCode, transactionRef,
@@ -402,9 +474,16 @@ public class BankAccountSession implements BankAccountSessionLocal {
         String depositPeriod = depositPeriods[0];
         Double depositPeriodDay = Double.valueOf(depositPeriod) * 30;
 
+        if (bankAccount.getFixedDepositStatus().equals("Withdrawn")) {
+            bankAccount.setBankAccountStatus("Activated");
+        }
         bankAccount.setBankAccountDepositPeriod(depositPeriodDay.toString());
         bankAccount.setFixedDepositStatus("Deposited");
         bankAccount.setCurrentFixedDepositPeriod("0");
+        bankAccount.getInterest().setIsTransfer("0");
+        bankAccount.getInterest().setIsWithdraw("0");
+        bankAccount.getInterest().setDailyInterest("0");
+        bankAccount.getInterest().setMonthlyInterest("0");
     }
 
     private String md5Hashing(String stringToHash) throws NoSuchAlgorithmException {
