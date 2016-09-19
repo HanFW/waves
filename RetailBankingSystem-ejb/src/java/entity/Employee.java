@@ -32,34 +32,10 @@ public class Employee implements Serializable {
     private String employeePassword;
     private String employeeDepartment;
     private String employeePosition;
-    private String employeeIdentificationNum;
+    private String employeeNRIC;
+    private String employeeMobileNum;
     private String employeeEmail;
-    private String employeeMobile;
-
-    public String getEmployeeIdentificationNum() {
-        return employeeIdentificationNum;
-    }
-
-    public void setEmployeeIdentificationNum(String employeeIdentificationNum) {
-        this.employeeIdentificationNum = employeeIdentificationNum;
-    }
-
-    public String getEmployeeEmail() {
-        return employeeEmail;
-    }
-
-    public void setEmployeeEmail(String employeeEmail) {
-        this.employeeEmail = employeeEmail;
-    }
-
-    public String getEmployeeMobile() {
-        return employeeMobile;
-    }
-
-    public void setEmployeeMobile(String employeeMobile) {
-        this.employeeMobile = employeeMobile;
-    }
-
+    
     @ManyToMany(cascade = {CascadeType.PERSIST})
     @JoinTable(name = "EMPLOYEE_ROLE")
     private Set<Role> role = new HashSet<Role>();
@@ -120,6 +96,30 @@ public class Employee implements Serializable {
         this.employeePassword = employeePassword;
     }
 
+    public String getEmployeeNRIC() {
+        return employeeNRIC;
+    }
+
+    public void setEmployeeNRIC(String employeeNRIC) {
+        this.employeeNRIC = employeeNRIC;
+    }
+
+    public String getEmployeeMobileNum() {
+        return employeeMobileNum;
+    }
+
+    public void setEmployeeMobileNum(String employeeMobileNum) {
+        this.employeeMobileNum = employeeMobileNum;
+    }
+
+    public String getEmployeeEmail() {
+        return employeeEmail;
+    }
+
+    public void setEmployeeEmail(String employeeEmail) {
+        this.employeeEmail = employeeEmail;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;

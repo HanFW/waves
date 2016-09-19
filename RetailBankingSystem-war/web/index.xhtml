@@ -10,6 +10,10 @@
         Hello from Facelets
         <p:button outcome="IB/login" value="login"/>
         <p:button outcome="deposit/depositIndex" value="deposit"/>
+        <h:form>
+            <p:commandButton actionListener="#{sMSManagedBean.sendOTP}" value="sendSMS"/>
+        </h:form>
+        <p:button outcome="employee/login" value="employee portal"/>
     </h:body>
 </html>
 
