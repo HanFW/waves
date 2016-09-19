@@ -146,7 +146,7 @@ public class EmployeeAccountManagedBean implements Serializable {
     }
 
     public void deleteAccount(Employee employee) throws IOException {
-        System.out.println("hi");
+//        System.out.println("hi");
         FacesMessage message = null;
         FacesContext context = FacesContext.getCurrentInstance();
 
@@ -154,8 +154,9 @@ public class EmployeeAccountManagedBean implements Serializable {
         String msg = adminSessionBeanLocal.deleteEmployee(employee);
 
         if (msg.equals("success")) {
-            message = new FacesMessage(FacesMessage.SEVERITY_INFO, "User Account Deleted!", "User account has been successfully deleted");
+
             context.getExternalContext().redirect("userAccountManagement.xhtml");
+            message = new FacesMessage(FacesMessage.SEVERITY_INFO, "User Account Deleted!", "User account has been successfully deleted");
             context.addMessage(null, message);
             System.out.println("*** AccountManagedBean: account deleted");
         }
@@ -163,17 +164,17 @@ public class EmployeeAccountManagedBean implements Serializable {
     }
 
     public void deleteCancel(Employee employee) {
-        System.out.println("hi jojo");
+//        System.out.println("hi jojo");
         System.out.println("===== AcocuntManagedBean: deleteCancel =====");
-        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO,"Archive Action Cancelled","Archive Action Cancelled");
-        FacesContext.getCurrentInstance().addMessage(null, msg);  
+        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Archive Action Cancelled", "Archive Action Cancelled");
+        FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
     public void resetPassword(ActionEvent event) {
         FacesMessage message = null;
         FacesContext context = FacesContext.getCurrentInstance();
         System.out.println("***AccountManagedBean - email: " + employeeEmail);
-        String msg = sendEmailSessionBeanLocal.resetPwd(employeeNRIC,employeeEmail);
+        String msg = sendEmailSessionBeanLocal.resetPwd(employeeNRIC, employeeEmail);
 
         if (msg.equals("valid")) {
             message = new FacesMessage(FacesMessage.SEVERITY_INFO, "A new password has been sent to your email!", "A new password has been sent to your email!");
