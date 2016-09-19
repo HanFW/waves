@@ -31,9 +31,9 @@ public class AccountDataTableBean implements Serializable{
         ec = FacesContext.getCurrentInstance().getExternalContext();
         
         CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
-        String customerId = customerBasic.getCustomerIdentificationNum();
+        String customerIC = customerBasic.getCustomerIdentificationNum();
 
-        List<BankAccount> bankAccount = bankAccountSessionLocal.retrieveBankAccountByCusIC(customerId.toUpperCase());
+        List<BankAccount> bankAccount = bankAccountSessionLocal.retrieveBankAccountByCusIC(customerIC.toUpperCase());
 
         if (bankAccount.isEmpty()) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Your identification is invalid", "Failed!"));

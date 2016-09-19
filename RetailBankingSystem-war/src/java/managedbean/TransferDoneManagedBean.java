@@ -58,6 +58,4 @@ public class TransferDoneManagedBean {
     public void setTransferAmt(String transferAmt) {
         this.transferAmt = transferAmt;
     }
-    
-    
 }

@@ -3,7 +3,6 @@ package managedbean;
 import entity.AccTransaction;
 import java.io.IOException;
 import javax.ejb.EJB;
-import javax.faces.bean.ManagedBean;
 import java.io.Serializable;
 import java.util.List;
 import javax.faces.context.ExternalContext;
