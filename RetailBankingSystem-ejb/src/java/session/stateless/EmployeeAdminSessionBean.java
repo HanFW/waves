@@ -57,7 +57,7 @@ public class EmployeeAdminSessionBean implements EmployeeAdminSessionBeanLocal {
         positions[6] = "Counter Teller";
         positions[7] = "Call Center Staff";
 
-        roles = new String[9];
+        roles = new String[10];
         roles[0] = "CEO";
         roles[1] = "Loan Officer";
         roles[2] = "Card Department Manager";
@@ -67,6 +67,8 @@ public class EmployeeAdminSessionBean implements EmployeeAdminSessionBeanLocal {
         roles[6] = "Sales Department Manager";
         roles[7] = "Counter Teller";
         roles[8] = "Call Center Staff";
+        roles[9] = "Enquiry Manager";
+
 
     }
 
