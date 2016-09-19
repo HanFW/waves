@@ -781,9 +781,9 @@ exists or setup the property manually. For example like this:
                 COMPILATION SECTION
             -->
     <target depends="init" if="no.dist.ear.dir" name="-deps-module-jar" unless="no.deps">
-        <ant antfile="${project.RetailBankingSystemRemoteInterface}/build.xml" inheritall="false" target="jar">
+<!--        <ant antfile="${project.RetailBankingSystemRemoteInterface}/build.xml" inheritall="false" target="jar">
             <property name="deploy.on.save" value="false"/>
-        </ant>
+        </ant>-->
     </target>
     <target depends="init" if="dist.ear.dir" name="-deps-ear-jar" unless="no.deps">
 <!--        <ant antfile="${project.RetailBankingSystemRemoteInterface}/build.xml" inheritall="false" target="jar">
@@ -801,17 +801,17 @@ exists or setup the property manually. For example like this:
     </target>
     <target depends="compile,-library-inclusion-in-archive-weblogic,-library-inclusion-in-archive-by-user" name="library-inclusion-in-archive"/>
     <target if="is.jars.in.ejbjar" name="-library-inclusion-in-archive-by-user">
-        <copyfiles files="${libs.Apache_Commons_Codec_1.10.classpath}" todir="${build.classes.dir}"/>
+        <copyfiles files="${reference.RetailBankingSystemRemoteInterface.jar}" todir="${build.classes.dir}"/>
     </target>
     <target if="is.server.weblogic" name="-library-inclusion-in-archive-weblogic">
-        <basename file="${libs.Apache_Commons_Codec_1.10.classpath}" property="manifest.libs.Apache_Commons_Codec_1.10.classpath"/>
+        <basename file="${reference.RetailBankingSystemRemoteInterface.jar}" property="manifest.reference.RetailBankingSystemRemoteInterface.jar"/>
         <manifest file="${build.ear.classes.dir}/META-INF/MANIFEST.MF" mode="update">
             <attribute name="Extension-List" value="jar-1 "/>
-            <attribute name="jar-1-Extension-Name" value="${manifest.libs.Apache_Commons_Codec_1.10.classpath}"/>
+            <attribute name="jar-1-Extension-Name" value="${manifest.reference.RetailBankingSystemRemoteInterface.jar}"/>
         </manifest>
     </target>
     <target depends="compile" name="library-inclusion-in-manifest">
-        <copyfiles files="${libs.Apache_Commons_Codec_1.10.classpath}" todir="${dist.ear.dir}/lib"/>
+        <!--<copyfiles files="${reference.RetailBankingSystemRemoteInterface.jar}" todir="${dist.ear.dir}/lib"/>-->
         <manifest file="${build.ear.classes.dir}/META-INF/MANIFEST.MF" mode="update"/>
     </target>
     <target name="-copy-meta-inf">
