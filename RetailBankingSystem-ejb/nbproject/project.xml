@@ -5,7 +5,7 @@
         <data xmlns="http://www.netbeans.org/ns/j2ee-ejbjarproject/3">
             <name>RetailBankingSystem-ejb</name>
             <minimum-ant-version>1.6.5</minimum-ant-version>
-            <included-library dirs="200">reference.RetailBankingSystemRemoteInterface.jar</included-library>
+            <included-library dirs="200">libs.Apache_Commons_Codec_1.10.classpath</included-library>
             <source-roots>
                 <root id="src.dir" name="Source Packages"/>
             </source-roots>
