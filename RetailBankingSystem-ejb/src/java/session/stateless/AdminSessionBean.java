@@ -5,18 +5,15 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -25,7 +22,7 @@ import javax.persistence.Query;
  * @author hanfengwei
  */
 @Stateless
-public class AdminSessionBean implements AdminSessionBeanLocal {
+public class AdminSessionBean implements AdminSessionBeanLocal{
 
     @EJB
     private CustomerEmailSessionBeanLocal customerEmailSessionBeanLocal;
