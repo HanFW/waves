@@ -74,6 +74,8 @@ public class EmployeeAccountManagedBean implements Serializable {
         String newEmployee = adminSessionBeanLocal.createEmployeeAccount(employeeName,
                 employeeDepartment, employeePosition, employeeNRIC, employeeMobileNum,
                 employeeEmail,selectedRoles);
+        
+        sendEmailSessionBeanLocal.initialPwd(employeeNRIC,employeeEmail);
 
         if (newEmployee.equals("existing account")) {
             message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error! Account Existed", "Error!The employee account has already Existed");

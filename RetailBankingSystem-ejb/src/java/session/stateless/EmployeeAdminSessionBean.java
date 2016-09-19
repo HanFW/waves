@@ -56,18 +56,18 @@ public class EmployeeAdminSessionBean implements EmployeeAdminSessionBeanLocal {
         positions[5] = "Relationship Manager";
         positions[6] = "Counter Teller";
         positions[7] = "Call Center Staff";
-        
-        roles=new String[9];
-        roles[0]="CEO";
-        roles[1]="Loan Officer";
-        roles[2]="Card Department Manager";
-        roles[3]="Mortgage Appraiser";
-        roles[4]="Underwriter";
-        roles[5]="Relationship Manager";
-        roles[6]="Sales Department Manager";
-        roles[7]="Counter Teller";
-        roles[8]="Call Center Staff";
-        
+
+        roles = new String[9];
+        roles[0] = "CEO";
+        roles[1] = "Loan Officer";
+        roles[2] = "Card Department Manager";
+        roles[3] = "Mortgage Appraiser";
+        roles[4] = "Underwriter";
+        roles[5] = "Relationship Manager";
+        roles[6] = "Sales Department Manager";
+        roles[7] = "Counter Teller";
+        roles[8] = "Call Center Staff";
+
     }
 
     @Override
@@ -92,9 +92,7 @@ public class EmployeeAdminSessionBean implements EmployeeAdminSessionBeanLocal {
 
             Query query = em.createQuery("SELECT e FROM Employee e WHERE e.employeeNRIC= :NRIC");
             query.setParameter("NRIC", employeeNRIC);
-
             Employee findEmployee = (Employee) query.getSingleResult();
-
             System.out.println("*** adminSessionBean: employee existed");
             return "existing account";
         } catch (NoResultException e) {
@@ -106,8 +104,9 @@ public class EmployeeAdminSessionBean implements EmployeeAdminSessionBeanLocal {
             employee.setEmployeeNRIC(employeeNRIC);
             employee.setEmployeeMobileNum(employeeMobileNum);
             employee.setEmployeeEmail(employeeEmail);
+            em.persist(employee);
             //generate employee account number
-            account = generateAccountNumber(employeeNRIC, employeeName);
+            account = generateAccountNumber(employeeNRIC);
             System.out.println("*** adminSessionBean: generateAccountNumber(): employee account number generated");
 
             //generate random password
@@ -115,28 +114,26 @@ public class EmployeeAdminSessionBean implements EmployeeAdminSessionBeanLocal {
             System.out.println("*** adminSessionBean: generatePassword(): employee password generated");
 
             //create employee account
-            // try {
-            employee.setEmployeeAccountNum(account);
-            // String hashedPassword = password;
-            // hashedPassword = md5Hashing(password + employee.getEmployeeIdentificationNum().substring(0, 3));
-            
-            employee.setEmployeePassword(password);
-            Set<Role> employeeRoles=new HashSet<Role>();
-            String[] selectedRolesToArray=selectedRoles.toArray(new String[selectedRoles.size()]);
-            for(i=0;i<selectedRolesToArray.length;i++){
-            System.out.println("*** adminSessionBean print employee role "+selectedRolesToArray[i]);
-            Query q = em.createQuery("SELECT r FROM Role r WHERE r.roleName= :name");
-            q.setParameter("name",selectedRolesToArray[i]);
-            Role findRole = (Role) q.getSingleResult();
-            employeeRoles.add(findRole);
+            try {
+                employee.setEmployeeAccountNum(account);
+                String hashedPassword = password;
+                hashedPassword = md5Hashing(password + employee.getEmployeeNRIC().substring(0, 3));
+                employee.setEmployeePassword(hashedPassword);
+                Set<Role> employeeRoles = new HashSet<Role>();
+                String[] selectedRolesToArray = selectedRoles.toArray(new String[selectedRoles.size()]);
+                for (i = 0; i < selectedRolesToArray.length; i++) {
+                    System.out.println("*** adminSessionBean print employee role " + selectedRolesToArray[i]);
+                    Query q = em.createQuery("SELECT r FROM Role r WHERE r.roleName= :name");
+                    q.setParameter("name", selectedRolesToArray[i]);
+                    Role findRole = (Role) q.getSingleResult();
+                    employeeRoles.add(findRole);
+                }
+                //set selected roles to an employee
+                employee.setRole(employeeRoles);
+                em.flush();
+            } catch (NoSuchAlgorithmException ex) {
+                Logger.getLogger(EmployeeAdminSessionBean.class.getName()).log(Level.SEVERE, null, ex);
             }
-            //set selected roles to an employee
-            employee.setRole(employeeRoles);
-//            System.out.println("*** adminSessionBean: employee role -" +roles);
-            em.persist(employee);
-            //} catch (NoSuchAlgorithmException ex) {
-            // Logger.getLogger(EmployeeAdminSessionBean.class.getName()).log(Level.SEVERE, null, ex);
-            //}
 
             System.out.println("*** adminSessionBean: employee account created");
             return account + "," + password;
@@ -165,7 +162,7 @@ public class EmployeeAdminSessionBean implements EmployeeAdminSessionBeanLocal {
         System.out.println("*** adminSessionBean: Display all employee positions");
         return Arrays.asList(positions);
     }
-    
+
     @Override
     public List<String> getRoles() {
         System.out.println("*** adminSessionBean: Display all roles");
@@ -174,9 +171,9 @@ public class EmployeeAdminSessionBean implements EmployeeAdminSessionBeanLocal {
 
     //edit user account info
     @Override
-    public void editUserAccount(Long employeeId,String employeeName,String employeeDepartment,
-            String employeePosition,String employeeMobileNum,String employeeEmail) {
-        Employee employee=em.find(Employee.class,employeeId);
+    public void editUserAccount(Long employeeId, String employeeName, String employeeDepartment,
+            String employeePosition, String employeeMobileNum, String employeeEmail) {
+        Employee employee = em.find(Employee.class, employeeId);
 
         System.out.println("*** adminSessionBean: find the user account to be edited" + employee.getEmployeeNRIC());
         employee.setEmployeeName(employeeName);
@@ -218,7 +215,6 @@ public class EmployeeAdminSessionBean implements EmployeeAdminSessionBeanLocal {
         em.remove(findEmployee);
         return "success";
     }
-   
 
     private String generatePassword() {
         SecureRandom random = new SecureRandom();
@@ -226,14 +222,32 @@ public class EmployeeAdminSessionBean implements EmployeeAdminSessionBeanLocal {
     }
 
     //Generate initial account number for employee account
-    private String generateAccountNumber(String employeeNRIC, String employeeName) {
-        String hash = employeeNRIC;
-        System.out.println(hash.concat(employeeName.substring(0, 3)));
-        try {
-            return md5Hashing(hash);
-        } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(EmployeeAdminSessionBean.class.getName()).log(Level.SEVERE, null, ex);
-            return Integer.toString(hash.hashCode());
+    private String generateAccountNumber(String employeeNRIC) {
+//        String hash = employeeNRIC;
+//        System.out.println(hash.concat(employeeName.substring(0, 3)));
+//        try {
+//            return md5Hashing(hash);
+//        } catch (NoSuchAlgorithmException ex) {
+//            Logger.getLogger(EmployeeAdminSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+//            return Integer.toString(hash.hashCode());
+//        }
+        System.out.println("*** employeeAdminSessionBean: employeeNRIC"+employeeNRIC);
+        Query query = em.createQuery("SELECT e FROM Employee e WHERE e.employeeNRIC= :NRIC");
+        query.setParameter("NRIC", employeeNRIC);
+        Employee employee=new Employee();
+        List resultList = query.getResultList();
+        if(resultList.isEmpty()){
+            System.out.println("*** employeeAdminSessionBean: employee cannt be found");
+            return "";
+        }
+        else{
+        employee=(Employee)resultList.get(0);
+        System.out.println("*** employeeAdminSessionBean: employee id"+employee.getEmployeeId());
+        Integer userId = (employee.getEmployeeId()).intValue()+1000;
+        System.out.println("*** employeeAdminSessionBean: employee id"+userId);
+        String accountNum = userId.toString();
+        System.out.println("*** employeeAdminSessionBean: account number created" + accountNum);
+        return accountNum;
         }
     }
 
@@ -247,8 +261,8 @@ public class EmployeeAdminSessionBean implements EmployeeAdminSessionBeanLocal {
 
         try {
             Employee thisEmployee = (Employee) query.getSingleResult();
-            //password = md5Hashing(password + thisEmployee.getEmployeeIdentificationNum().substring(0, 3));
-            // System.out.println("?????????"+password);
+            password = md5Hashing(password + thisEmployee.getEmployeeNRIC().substring(0, 3));
+            System.out.println("?????????" + password);
             if (thisEmployee.getEmployeePassword().equals(password)) {
                 System.out.println("*** adminSessionBean: login(): valid account and password" + ": account " + thisEmployee.getEmployeeAccountNum());
                 return "loggedIn";
@@ -259,10 +273,10 @@ public class EmployeeAdminSessionBean implements EmployeeAdminSessionBeanLocal {
         } catch (NoResultException ex) {
             System.out.println("*** adminSessionBean: login(): invalid account");
             return "invalidAccount";
-        } //catch (NoSuchAlgorithmException ex) {
-        // System.out.println("!!! adminSessionBean: failed to hash password");
-        // return "";
-        //}
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(EmployeeAdminSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+            return "PasswordNoSuchAlgorithmException";
+        }
     }
 
     private String md5Hashing(String stringToHash) throws NoSuchAlgorithmException {

@@ -17,4 +17,6 @@ public interface SendEmailSessionBeanLocal {
     public String resetPwd(String employeeEmail);
     
     public String changePwd(String currentPassword,String newPassword,Long employeeId);
+    
+    public String initialPwd(String employeeNRIC,String employeeEmail);
 }

@@ -8,9 +8,14 @@ package session.stateless;
 import entity.CustomerBasic;
 import entity.Employee;
 import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.mail.Message;
@@ -37,60 +42,102 @@ public class SendEmailSessionBean implements SendEmailSessionBeanLocal {
     private EntityManager em;
 
     @Override
-    public String resetPwd(String employeeEmail) {
-        System.out.println("***SendEmailSessionBean:" + employeeEmail);
+    public String initialPwd(String employeeNRIC,String employeeEmail){
+       
         try {
-            System.out.println("***SendEmailSessionBean:" + employeeEmail);
-            Query query = em.createQuery("SELECT e FROM Employee e WHERE e.employeeEmail= :Email");
-            query.setParameter("Email", employeeEmail);
+            System.out.println("***SendEmailSessionBean: send initial password to " + employeeEmail);
+            Query query = em.createQuery("SELECT e FROM Employee e WHERE e.employeeNRIC= :NRIC");
+            query.setParameter("NRIC", employeeNRIC);
             Employee findEmployee = (Employee) query.getSingleResult();
-            sendResetPwdEmail(findEmployee);
+            String emailCase="initialPwd";
+            sendPwdEmail(findEmployee,emailCase);
             return "valid";
         } catch (NoResultException e) {
             return "invalid";
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(SendEmailSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+            return "";
+        }
+    }
+    @Override
+    public String resetPwd(String employeeEmail) {
+        
+        try {
+            System.out.println("***SendEmailSessionBean: send resetPwd to " + employeeEmail);
+            Query query = em.createQuery("SELECT e FROM Employee e WHERE e.employeeEmail= :Email");
+            query.setParameter("Email", employeeEmail);
+            Employee findEmployee = (Employee) query.getSingleResult();
+            String emailCase="resetPwd";
+            sendPwdEmail(findEmployee,emailCase);
+            return "valid";
+        } catch (NoResultException e) {
+            return "invalid";
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(SendEmailSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+            return "";
         }
     }
 
     @Override
     public String changePwd(String currentPassword, String newPassword, Long employeeId) {
-        System.out.println("***SendEmailSessionBean:" + currentPassword);
+        
+        try{
+        
+        System.out.println("***SendEmailSessionBean: current password" + currentPassword);
         Employee employee = em.find(Employee.class, employeeId);
-        System.out.println("employee: "+employee);
-        String password = employee.getEmployeePassword();
-
-        if (!currentPassword.equals(password)) {
+        System.out.println("employee: " + employee);
+        String hashedPassword = employee.getEmployeePassword();
+        System.out.println("hashedpassword"+hashedPassword);
+        String hashedCurrentPassword=md5Hashing(currentPassword + employee.getEmployeeNRIC().substring(0, 3));
+        System.out.println("hashedCurrentPassword"+hashedCurrentPassword);
+        
+        if (!hashedCurrentPassword.equals(hashedPassword)) {
             return "invalid";
         } else {
             if (currentPassword.equals(newPassword)) {
                 return "equal";
             } else {
-                employee.setEmployeePassword(newPassword);
-                System.out.println("***SendEmailSessionBean: " +employee.getEmployeeId());
+                String hashedNewPassword=md5Hashing(newPassword + employee.getEmployeeNRIC().substring(0, 3));
+                employee.setEmployeePassword(hashedNewPassword);
+                System.out.println("***SendEmailSessionBean: " + employee.getEmployeeId());
                 System.out.println("***SendEmailSessionBean: newPassword " + newPassword);
                 em.flush();
                 return "success";
             }
         }
+        }catch (Exception e){
+             e.printStackTrace();
+            throw new EJBException(e.getMessage());
+        }
+        
 
     }
 
-    private void sendResetPwdEmail(Employee findEmployee) {
+    private void sendPwdEmail(Employee findEmployee,String emailCase) throws NoSuchAlgorithmException {
+        try {
         Employee employee = findEmployee;
-
         String password = generatePwd();
-        findEmployee.setEmployeePassword(password);
+        String hashedPassword = password;
+        hashedPassword = md5Hashing(password + employee.getEmployeeNRIC().substring(0, 3));
+        findEmployee.setEmployeePassword(hashedPassword);
         em.flush();
         String emailServerName = "smtp.gmail.com";
         String emailFromAddress = "Han Fengwei Test Send<merlionbankes05@gmail.com>";
         String toEmailAddress = "Han Fengwei Test Receive<" + employee.getEmployeeEmail() + ">";
         String mailer = "JavaMailer";
         String emailText = "Dear Employee, \n";
-
+        if(emailCase.equals("initialPwd")){
+        emailText += "Your user account has been successfully created.\n";
+        emailText += "Your account number is: " + employee.getEmployeeAccountNum() + "\n";
+        emailText+="Your account password is: "+password+"\n";
+        emailText += "Please go to Merlion Bank Internal System and log in with your account number and password. \n";   
+        emailText +="For security reason,you may change your password after logging in to Merlion Bank Internal System. \n";
+        }else{
         emailText += "Your user account password has been reset.\n";
         emailText += "Your new password is: " + password + "\n";
         emailText += "Please go to Merlion Bank Internal System and log in with your new password.";
-
-        try {
+        }
+        
             Properties props = new Properties();
             props.put("mail.transport.protocol", "smtp");
             props.put("mail.smtp.host", emailServerName);
@@ -121,5 +168,10 @@ public class SendEmailSessionBean implements SendEmailSessionBeanLocal {
     private String generatePwd() {
         SecureRandom random = new SecureRandom();
         return new BigInteger(40, random).toString(32);
+    }
+
+    private String md5Hashing(String stringToHash) throws NoSuchAlgorithmException {
+        MessageDigest md = MessageDigest.getInstance("MD5");
+        return Arrays.toString(md.digest(stringToHash.getBytes()));
     }
 }
