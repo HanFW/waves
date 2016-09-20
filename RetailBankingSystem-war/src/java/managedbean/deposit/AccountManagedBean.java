@@ -1,4 +1,4 @@
-package managedbean;
+package managedbean.deposit;
 
 import ejb.customer.entity.CustomerBasic;
 import javax.ejb.EJB;

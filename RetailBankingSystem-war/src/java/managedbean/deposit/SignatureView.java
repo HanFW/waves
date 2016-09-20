@@ -1,4 +1,4 @@
-package managedbean;
+package managedbean.deposit;
 
 import java.io.Serializable;
 import java.util.Map;

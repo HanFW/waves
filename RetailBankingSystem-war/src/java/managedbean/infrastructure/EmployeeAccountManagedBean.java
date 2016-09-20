@@ -1,4 +1,4 @@
-package managedbean;
+package managedbean.infrastructure;
 
 //package util;
 /*

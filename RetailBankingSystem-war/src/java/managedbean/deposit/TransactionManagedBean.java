@@ -1,4 +1,4 @@
-package managedbean;
+package managedbean.deposit;
 
 import ejb.deposit.entity.AccTransaction;
 import java.io.IOException;

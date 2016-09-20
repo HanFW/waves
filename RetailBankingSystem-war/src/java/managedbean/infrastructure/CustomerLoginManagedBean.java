@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package managedbean;
+package managedbean.infrastructure;
 
 import ejb.customer.entity.CustomerBasic;
 import java.io.IOException;
@@ -28,7 +28,7 @@ import ejb.infrastructure.session.CustomerEmailSessionBeanLocal;
  */
 @Named(value = "loginBean")
 @SessionScoped
-public class LoginBean implements Serializable {
+public class CustomerLoginManagedBean implements Serializable {
 
     @EJB
     private CustomerAdminSessionBeanLocal adminSessionBeanLocal;
@@ -46,7 +46,7 @@ public class LoginBean implements Serializable {
     /**
      * Creates a new instance of LoginBean
      */
-    public LoginBean() {
+    public CustomerLoginManagedBean() {
     }
 
     /**

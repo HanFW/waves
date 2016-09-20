@@ -1,4 +1,4 @@
-package managedbean;
+package managedbean.deposit;
 
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.entity.Interest;

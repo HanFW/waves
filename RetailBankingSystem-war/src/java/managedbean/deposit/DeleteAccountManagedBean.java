@@ -1,4 +1,4 @@
-package managedbean;
+package managedbean.deposit;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Named;

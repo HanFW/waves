@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package managedbean;
+package managedbean.customer;
 
 import ejb.customer.entity.CustomerBasic;
 import java.util.List;
