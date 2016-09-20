@@ -13,5 +13,5 @@ import javax.ejb.Local;
  */
 @Local
 public interface SMSSessionBeanLocal {
-    public void sendOTP(String target);
+    public void sendOTP(String target, String phoneNum);
 }

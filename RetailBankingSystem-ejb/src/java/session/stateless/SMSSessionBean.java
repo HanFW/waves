@@ -5,15 +5,18 @@
  */
 package session.stateless;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import com.twilio.sdk.TwilioRestClient;
+import com.twilio.sdk.TwilioRestException;
+import com.twilio.sdk.resource.factory.MessageFactory;
+import com.twilio.sdk.resource.instance.Account;
+import com.twilio.sdk.resource.instance.Message;
+import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.Stateless;
-import org.apache.commons.codec.binary.Base32;
-import org.apache.commons.codec.binary.Base64;
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.jboss.aerogear.security.otp.Totp;
+import org.jboss.aerogear.security.otp.api.Base32;
 
 /**
  *
@@ -23,46 +26,32 @@ import org.apache.commons.codec.binary.Base64;
 public class SMSSessionBean implements SMSSessionBeanLocal {
 
     @Override
-    public void sendOTP(String target) {
-        
+    public void sendOTP(String target, String phoneNum) {
+        String secret = Base32.random();
+        Totp totp = new Totp(secret);
+        String strOtp = totp.now(); //427773
+        System.out.println("*************** " + strOtp);
+        String message = "Dear customer, thank you for choosing Merlion Bank! This is your one-time password: " + strOtp;
+        sendSMS(message, phoneNum);
     }
+    
+    private void sendSMS(String message, String toPhoneNum){
+        final String ACCOUNT_SID = "ACd2668f24db04f66798892a6a99af1680";
+        final String AUTH_TOKEN = "c029686d79f83924599423aee622994c";
+        
+        TwilioRestClient client = new TwilioRestClient(ACCOUNT_SID, AUTH_TOKEN);
 
-    private void sendSMS() {
-        System.out.println("*** infrastructure/SMSSessionBean: sendSMS() ***");
+        Account account = client.getAccount();
+
+        MessageFactory messageFactory = account.getMessageFactory();
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("To", "+65"+toPhoneNum)); // Replace with a valid phone number for your account.
+        params.add(new BasicNameValuePair("From", "+16155412284 ")); // Replace with a valid phone number for your account.
+        params.add(new BasicNameValuePair("Body", message));
         try {
-            String phoneNumber = "83114121";
-            String appKey = "454b4f6f-f65d-47ac-8d9a-162b46e5f82c";
-            String appSecret = "g6socSVvYk6wNa7Bz6PBVA==";
-            String message = "Hello, world!";
-
-            URL url = new URL("https://messagingapi.sinch.com/v1/sms/" + phoneNumber);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-
-            connection.setDoOutput(true);
-            connection.setRequestMethod("POST");
-            connection.setRequestProperty("Content-Type", "application/json");
-
-            String userCredentials = "application\\" + appKey + ":" + appSecret;
-            byte[] encoded = Base64.encodeBase64(userCredentials.getBytes());
-            String basicAuth = "Basic " + new String(encoded);
-
-            connection.setRequestProperty("Authorization", basicAuth);
-            String postData = "{\"Message\":\"" + message + "\"}";
-            OutputStream os = connection.getOutputStream();
-
-            os.write(postData.getBytes());
-            StringBuilder response = new StringBuilder();
-            BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            String line;
-            while ((line = br.readLine()) != null) {
-                response.append(line);
-            }
-
-            br.close();
-            os.close();
-            System.out.println(response.toString());
-        } catch (IOException e) {
-            e.printStackTrace();
+            Message sms = messageFactory.create(params);
+        } catch (TwilioRestException ex) {
+            System.out.println(ex.getErrorMessage());
         }
     }
 }

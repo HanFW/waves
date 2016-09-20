@@ -29,6 +29,6 @@ public class SMSManagedBean {
     
     public void sendOTP(ActionEvent event){
         System.out.println("*** SMSManagedBean: send SMS");
-        sMSSessionBeanLocal.sendOTP("customer");
+        sMSSessionBeanLocal.sendOTP("customer", "83114121");
     }
 }
