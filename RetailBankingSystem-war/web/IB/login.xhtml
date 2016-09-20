@@ -1,43 +1,59 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <f:view>
-        <h:head>
-            <title>MBS iBanking</title>
-        </h:head>
-        <h:body>        
-            <h:form>
-                <p:panel header="Login">
-                    <p:messages/>
-                    <p:panelGrid>
-                        <p:row>
-                            <p:column>
-                                <p:outputLabel for="customerAccount" value="Account number: "/>
-                            </p:column>
-                            <p:column>
-                                <p:inputText type="text" id="customerAccount" value="#{loginBean.customerAccount}" required="true" requiredMessage="Please enter your account number."/>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column>
-                                <p:outputLabel for="customerPassword" value="Password: "/>
-                            </p:column>
-                            <p:column>
-                                <p:inputText type="password" id= "customerPassword" value="#{loginBean.customerPassword}" required="true" requiredMessage="Please enter your password."/>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column colspan="2">
-                                <p:commandButton value="submit" type="submit" actionListener="#{loginBean.doLogin}" update="@form"/>
-                            </p:column>
-                        </p:row>
-                    </p:panelGrid>
-                </p:panel>
-            </h:form>
-        </h:body>
-    </f:view>
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+  
+    <h:head>
+         <f:facet name="first">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+            <meta name="apple-mobile-web-app-capable" content="yes" />
+        </f:facet>
+            <title>MBS iBanking</title> 
+            <h:outputScript name="js/ripple.js" library="ultima-layout" />
+            <h:outputScript name="js/layout.js" library="ultima-layout" />  
+           
+    </h:head>
+    
+    <h:body styleClass="login-body"> 
+        <h:form>
+        <div class="card login-panel ui-fluid">
+            <div class="ui-g">
+                <div class="ui-g-12">
+                    <p:graphicImage name="images/login/logo.png" library="ultima-layout" style="width:100px;height:100px" />
+                    <br/>
+                    <label style="font-family: Eurostile;font-size:35px; color:#022A5A">Merlion Bank</label>
+                </div>
+                <p:messages/>
+                <div class="ui-g-12">
+                    
+                    <h:panelGroup styleClass="md-inputfield">
+                        <p:inputText type="text" id="customerAccount" value="#{loginBean.customerAccount}" required="true" requiredMessage="Please enter your account number."/>
+                        <label>Username</label>
+                    </h:panelGroup>
+                </div>
+                <div class="ui-g-12">
+                    <h:panelGroup styleClass="md-inputfield">
+                        
+                        <p:inputText type="password" id= "customerPassword" value="#{loginBean.customerPassword}" required="true" requiredMessage="Please enter your password."/>
+                       
+                        <label>Password</label>
+                    </h:panelGroup>
+                </div>
+                <div class="ui-g-12">
+                    <p:commandButton  value="Log in" actionListener="#{loginBean.doLogin}" icon="ui-icon-person" update="@form"/>
+                    <p:commandButton value="Forgot Password" icon="ui-icon-help" styleClass="secondary"/>
+                </div>
+            </div>
+        </div>
+        <div class="login-footer">Merlion Bank</div>
+        
+        <h:outputStylesheet name="css/ripple.css" library="ultima-layout" />
+        <h:outputStylesheet name="css/layout-#{guestPreferences.theme}.css" library="ultima-layout" />
+        </h:form>
+    </h:body>
 </html>
 

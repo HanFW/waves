@@ -91,6 +91,7 @@ public class AdminSessionBean implements AdminSessionBeanLocal {
     //Do customer login
     @Override
     public String login(String customerAccount, String password) {
+        System.out.println("////////////////////////////////////////////////");
         System.out.println("*** adminSessionBean: login(accountNum,password)");
 
         Query query = em.createQuery("SELECT c FROM CustomerBasic c WHERE c.customerOnlineBankingAccountNum = :accountNum");

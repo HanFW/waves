@@ -1,0 +1,401 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">Dashboard</ui:define>
+
+    <ui:define name="head">
+           <script type="text/javascript">
+               //<![CDATA[
+               function skinChart() {
+                   this.cfg.shadow = false;
+                   this.cfg.title = '';
+                   this.cfg.seriesColors = ['#FFC107', '#03A9F4'];
+                   this.cfg.grid = {
+                       background: '#ffffff',
+                       borderColor: '#ffffff',
+                       gridLineColor: '#EEEEEE',
+                       shadow: false
+                   };
+                   this.cfg.axesDefaults = {
+                       rendererOptions: {
+                           textColor: '#212121'
+                       }
+                   };
+                   this.cfg.seriesDefaults = {
+                       shadow: false,
+                       lineWidth: 1,
+                       markerOptions: {
+                           shadow: false,
+                           size: 7,
+                           style: 'circle'
+                       }
+                   }
+               }
+               //]]>  
+           </script>
+           <style type="text/css">
+               .main-content {
+                   padding: 0;
+               }
+           </style>
+       </ui:define>
+
+    <ui:define name="content">
+        <div class="ui-g dashboard">
+            <div class="ui-g-12 ui-md-4">
+                <div class="card overview">
+                    <div class="overview-content clearfix">
+                        <span class="overview-title">Sales</span>
+                        <span class="overview-badge">+%90</span>
+                        <span class="overview-detail">$22,650 / week</span>
+                    </div>
+                    <div class="overview-footer">
+                        <p:graphicImage name="images/dashboard/sales.svg" library="ultima-layout" style="width: 100%" />
+                    </div>
+                </div>
+            </div>
+            <div class="ui-g-12 ui-md-4">
+                <div class="card overview">
+                    <div class="overview-content clearfix">
+                        <span class="overview-title">Views</span>
+                        <span class="overview-badge">+%60</span>
+                        <span class="overview-detail">6,520 / day</span>
+                    </div>
+                    <div class="overview-footer">
+                        <p:graphicImage name="images/dashboard/views.svg" library="ultima-layout" style="width: 100%" />
+                    </div>
+                </div>
+            </div>
+            <div class="ui-g-12 ui-md-4">
+                <div class="card overview">
+                    <div class="overview-content clearfix">
+                        <span class="overview-title">Users</span>
+                        <span class="overview-badge">+%45</span>
+                        <span class="overview-detail">5,200 / day</span>
+                    </div>
+                    <div class="overview-footer">
+                        <p:graphicImage name="images/dashboard/progress.svg" library="ultima-layout" style="width: 100%" />
+                    </div>
+                </div>
+            </div>
+            
+            <div class="ui-g-12 ui-md-6 ui-lg-3">
+                <div class="ui-g card colorbox colorbox-1">
+                    <div class="ui-g-4">
+                        <i class="material-icons">check_circle</i>
+                    </div>
+                    <div class="ui-g-8">
+                        <span class="colorbox-name">Tasks</span>
+                        <span class="colorbox-count">50</span>
+                    </div>
+                </div>
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-3">
+                <div class="ui-g card colorbox colorbox-2">
+                    <div class="ui-g-4">
+                        <i class="material-icons">shopping_card</i>
+                    </div>
+                    <div class="ui-g-8">
+                        <span class="colorbox-name">Purchases</span>
+                        <span class="colorbox-count">1200</span>
+                    </div>
+                </div>
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-3">
+                <div class="ui-g card colorbox colorbox-3">
+                    <div class="ui-g-4">
+                        <i class="material-icons">report</i>
+                    </div>
+                    <div class="ui-g-8">
+                        <span class="colorbox-name">Issues</span>
+                        <span class="colorbox-count">22</span>
+                    </div>
+                </div>
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-3">
+                <div class="ui-g card colorbox colorbox-4">
+                    <div class="ui-g-4">
+                        <i class="material-icons">email</i>
+                    </div>
+                    <div class="ui-g-8">
+                        <span class="colorbox-name">Messages</span>
+                        <span class="colorbox-count">10</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="ui-g-12 ui-md-6 ui-lg-4 task-list">
+                <p:panel header="Tasks">
+                    <ul>
+                        <li>
+                            <p:selectBooleanCheckbox />
+                            <span class="task-name">Sales Reports</span>
+                            <i class="material-icons">&#xE8C9;</i>
+                        </li>
+                        <li>
+                            <p:selectBooleanCheckbox />
+                            <span class="task-name">Pay Invoices</span>
+                            <i class="material-icons">&#xE8A1;</i>
+                        </li>
+                        <li>
+                            <p:selectBooleanCheckbox />
+                            <span class="task-name">Dinner with Tony</span>
+                            <i class="material-icons">&#xE561;</i>
+                        </li>
+                        <li>
+                            <p:selectBooleanCheckbox />
+                            <span class="task-name">Client Meeting</span>
+                            <i class="material-icons">&#xE7FB;</i>
+                        </li>
+                        <li>
+                            <p:selectBooleanCheckbox />
+                            <span class="task-name">New Theme</span>
+                            <i class="material-icons">&#xE3AE;</i>
+                        </li>
+                        <li>
+                            <p:selectBooleanCheckbox />
+                            <span class="task-name">Flight Ticket</span>
+                            <i class="material-icons">&#xE01B;</i>
+                        </li>
+                    </ul>
+                </p:panel>
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-4 ui-fluid contact-form">
+                <p:panel header="Contact Us">
+                    <div class="ui-g">
+                        <div class="ui-g-12">
+                            <p:selectOneMenu id="console" value="#{selectOneMenuView.console}" autoWidth="false">
+                                <f:selectItem itemLabel="Select One" itemValue="" />
+                                <f:selectItem itemLabel="Xbox One" itemValue="Xbox One" />
+                                <f:selectItem itemLabel="PS4" itemValue="PS4" />
+                                <f:selectItem itemLabel="Wii U" itemValue="Wii U" />
+                            </p:selectOneMenu>
+                        </div>
+                        <div class="ui-g-12">
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText />
+                                <label>Name</label>
+                            </h:panelGroup>
+                        </div>
+                        <div class="ui-g-12">
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText />
+                                <label>Age</label>
+                            </h:panelGroup>
+                        </div>
+                        <div class="ui-g-12">
+                            <h:panelGroup styleClass="md-inputfield">
+                                <p:inputText />
+                                <label>Message</label>
+                            </h:panelGroup>
+                        </div>
+                    </div>
+                    <p:commandButton type="button" value="Send" icon="ui-icon-send"></p:commandButton>
+                </p:panel>
+            </div>
+            <div class="ui-g-12 ui-lg-4 contacts">
+                <p:panel header="Contacts">
+                    <ul>
+                        <li>
+                            <a href="#">
+                                <p:graphicImage name="images/avatar1.png" library="ultima-layout" width="45"/>
+                                <span class="name">Joshua Williams</span>
+                                <span class="email">joshua@pf-ultima.com</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <p:graphicImage name="images/avatar2.png" library="ultima-layout" width="45"/>
+                                <span class="name">Emily Clark</span>
+                                <span class="email">emily@pf-ultima.com</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <p:graphicImage name="images/avatar3.png" library="ultima-layout" width="45"/>
+                                <span class="name">Susan Johnson</span>
+                                <span class="email">susan@pf-ultima.com</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <p:graphicImage name="images/avatar4.png" library="ultima-layout" width="45"/>
+                                <span class="name">Kelly Stark</span>
+                                <span class="email">kelly@pf-ultima.com</span>
+                            </a>
+                        </li>
+                    </ul>
+                </p:panel>
+            </div>
+            
+            <div class="ui-g-12 ui-md-4">
+                <div class="card timeline ui-fluid">
+                    <div class="ui-g">
+                        <div class="ui-g-3">
+                            <span class="event-time">just now</span>
+                            <i class="material-icons" style="color:#009688">&#xE1BC;</i>
+                        </div>
+                        <div class="ui-g-9">
+                            <span class="event-owner" style="color:#009688">Katherine May</span>
+                            <span class="event-text">Lorem ipsun dolor amet</span>
+                            <div class="event-content">
+                                <p:graphicImage name="images/dashboard/md.png" library="ultima-layout"/>
+                            </div>
+                        </div>
+                        
+                        <div class="ui-g-3">
+                            <span class="event-time">12h ago</span>
+                            <i class="material-icons" style="color:#E91E63">&#xE885;</i>
+                        </div>
+                        <div class="ui-g-9">
+                            <span class="event-owner" style="color:#E91E63">Brandon Santos</span>
+                            <span class="event-text">Ab nobis, magnam sunt eum. Laudantium, repudiandae, similique!.</span>
+                        </div>
+                        
+                        <div class="ui-g-3">
+                            <span class="event-time">15h ago</span>
+                            <i class="material-icons" style="color:#9c27b0">&#xE0C9;</i>
+                        </div>
+                        <div class="ui-g-9">
+                            <span class="event-owner" style="color:#9c27b0">Stephan Ward</span>
+                            <span class="event-text">Omnis veniam quibusdam ratione est repellat qui nam quisquam ab mollitia dolores ullam voluptates, similique, dignissimos.</span>
+                        </div>
+                        
+                        <div class="ui-g-3">
+                            <span class="event-time">2d ago</span>
+                            <i class="material-icons" style="color:#ff9800">&#xE0C8;</i>
+                        </div>
+                        <div class="ui-g-9">
+                            <span class="event-owner" style="color:#ff9800">Jason Smith</span>
+                            <span class="event-text">Laudantium, repudiandae, similique!</span>
+                            <div class="event-content">
+                                <p:graphicImage name="images/dashboard/map.png" library="ultima-layout" />
+                            </div>
+                        </div>
+                        
+                        <div class="ui-g-3">
+                            <span class="event-time">1w ago</span>
+                            <i class="material-icons" style="color:#607d8b">&#xE91B;</i>
+                        </div>
+                        <div class="ui-g-9">
+                            <span class="event-owner">Kevin Cox</span>
+                            <span class="event-text">Quibusdam ratione est repellat qui nam quisquam veniam quibusdam ratione.</span>
+                        </div>
+                        
+                        <div class="ui-g-3">
+                            <span class="event-time">2w ago</span>
+                            <i class="material-icons" style="color:#FFC107">&#xE23A;</i>
+                        </div>
+                        <div class="ui-g-9">
+                            <span class="event-owner" style="color:#FFC107">Walter White</span>
+                            <span class="event-text">I am the one who knocks!</span>
+                        </div>
+                        
+                        <div class="ui-g-12">
+                            <p:commandButton type="button" value="Refresh" icon="ui-icon-refresh" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="ui-g-12 ui-md-8">
+                <h:form>
+                    <div class="card">
+                        <p:dataTable var="car" value="#{dtBasicView.cars}" selectionMode="single" rowKey="#{car.id}" reflow="true" style="margin-bottom:20px">
+                            <f:facet name="header">Recent Sales</f:facet>
+                            <p:column headerText="Id" sortBy="#{car.id}">
+                                <h:outputText value="#{car.id}" />
+                            </p:column>
+
+                            <p:column headerText="Year" sortBy="#{car.year}">
+                                <h:outputText value="#{car.year}" />
+                            </p:column>
+
+                            <p:column headerText="Brand" sortBy="#{car.brand}">
+                                <h:outputText value="#{car.brand}" />
+                            </p:column>
+                            
+                            <p:column headerText="Color" sortBy="#{car.color}">
+                                <h:outputText value="#{car.color}" />
+                            </p:column>
+                        </p:dataTable>   
+                        
+                        <p:panel header="Sales Graph">
+                            <p:chart type="line" model="#{chartDemoView.lineModel1}" responsive="true"/>
+                        </p:panel>
+                    </div>
+                </h:form>
+            </div>
+            
+            <div class="ui-g-12 ui-md-8">
+                <p:panel header="Calendar" style="height:100%">
+                    <p:schedule value="#{scheduleView.eventModel}"/>
+                </p:panel>
+            </div>
+            <div class="ui-g-12 ui-md-4">
+                <p:panel header="Activity" style="height:100%">
+                    <div class="activity-header">
+                        <div class="ui-g">
+                            <div class="ui-g-6">
+                                <span style="font-weight:bold">Last Activity</span>
+                                <p>Updated 1 minute ago</p>
+                            </div>
+                            <div class="ui-g-6" style="text-align:right">
+                                <p:commandButton type="button" icon="ui-icon-update" />
+                            </div>
+                        </div>
+                    </div>
+                    <ul class="activity-list">
+                        <li>
+                            <div class="count">$900</div>
+                            <div class="ui-g">
+                                <div class="ui-g-6">Income</div>
+                                <div class="ui-g-6">95%</div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="count" style="background-color:#ffc107">$250</div>
+                            <div class="ui-g">
+                                <div class="ui-g-6">Tax</div>
+                                <div class="ui-g-6">24%</div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="count" style="background-color:#673AB7">$125</div>
+                            <div class="ui-g">
+                                <div class="ui-g-6">Invoices</div>
+                                <div class="ui-g-6">55%</div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="count" style="background-color:#00bcd4">$250</div>
+                            <div class="ui-g">
+                                <div class="ui-g-6">Expenses</div>
+                                <div class="ui-g-6">15%</div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="count" style="background-color:#607D8B">$350</div>
+                            <div class="ui-g">
+                                <div class="ui-g-6">Bonus</div>
+                                <div class="ui-g-6">5%</div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="count" style="background-color:#FF5722">$500</div>
+                            <div class="ui-g">
+                                <div class="ui-g-6">Revenue</div>
+                                <div class="ui-g-6">25%</div>
+                            </div>
+                        </li>
+                    </ul>
+                </p:panel>
+            </div>
+        </div>
+    </ui:define>
+
+</ui:composition>

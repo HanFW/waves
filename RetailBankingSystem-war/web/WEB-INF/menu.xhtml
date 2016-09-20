@@ -1,0 +1,125 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:pu="http://primefaces.org/ultima">
+    
+    <h:form id="menuform"> 
+        <div class="layout-menu #{guestPreferences.menuClass}">
+            <div class="nano">
+                <div class="nano-content menu-scroll-content">
+                    <ui:fragment rendered="#{guestPreferences.profileMode == 'inline' and guestPreferences.menuLayout != 'menu-layout-static menu-layout-horizontal'}">
+                        <div class="profile">
+                            <div class="profile-image"></div>
+                            <a id="profile-options" href="#">
+                                <span class="profile-name">Jane Williams</span>
+                                <i class="material-icons">&#xE313;</i>
+                            </a>
+                        </div>
+                    
+                        <ul id="profile-menu" class="ultima-menu">
+                            <li role="menuitem">
+                                <a href="#" class="ripplelink">
+                                    <i class="material-icons">person</i>
+                                    <span>Profile</span>
+                                </a>
+                            </li>
+                            <li role="menuitem">
+                                <a href="#" class="ripplelink">
+                                    <i class="material-icons">security</i>
+                                    <span>Privacy</span>
+                                </a>
+                            </li>
+                            <li role="menuitem">
+                                <a href="#" class="ripplelink">
+                                    <i class="material-icons">settings_application</i>
+                                    <span>Settings</span>
+                                </a>
+                            </li>
+                            <li role="menuitem">
+                                <a href="#" class="ripplelink">
+                                    <i class="material-icons">power_settings_new</i>
+                                    <span>Logout</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </ui:fragment>
+                    
+                    <pu:menu widgetVar="me">
+                        <p:menuitem id="um_dashboard" value="Dashboard" icon="&#xE871;" outcome="/dashboard"/>
+                        <p:submenu id="themes" label="Themes" icon="palette">
+                            <p:menuitem id="theme1" value="Indigo - Pink" icon="brush" actionListener="#{guestPreferences.setTheme('indigo')}" ajax="false" />
+                            <p:menuitem id="theme2" value="Brown - Green" icon="brush" actionListener="#{guestPreferences.setTheme('brown')}" ajax="false" />
+                            <p:menuitem id="theme3" value="Blue - Amber" icon="brush" actionListener="#{guestPreferences.setTheme('blue')}" ajax="false" />
+                            <p:menuitem id="theme4" value="Blue Grey - Green" icon="brush" actionListener="#{guestPreferences.setTheme('blue-grey')}" ajax="false" />
+                            <p:menuitem id="theme5" value="Dark - Blue" icon="brush" actionListener="#{guestPreferences.setTheme('dark-blue')}" ajax="false" />
+                            <p:menuitem id="theme6" value="Dark - Green" icon="brush" actionListener="#{guestPreferences.setTheme('dark-green')}" ajax="false" />
+                            <p:menuitem id="theme7" value="Green - Yellow" icon="brush" actionListener="#{guestPreferences.setTheme('green')}" ajax="false" />
+                            <p:menuitem id="theme8" value="Purple - Cyan" icon="brush" actionListener="#{guestPreferences.setTheme('purple-cyan')}" ajax="false" />
+                            <p:menuitem id="theme9" value="Purple - Amber" icon="brush" actionListener="#{guestPreferences.setTheme('purple-amber')}" ajax="false" />
+                            <p:menuitem id="theme10" value="Teal - Lime" icon="brush" actionListener="#{guestPreferences.setTheme('teal')}" ajax="false" />
+                            <p:menuitem id="theme11" value="Cyan - Amber" icon="brush" actionListener="#{guestPreferences.setTheme('cyan')}" ajax="false" />
+                            <p:menuitem id="theme12" value="Grey - Deep Orange" icon="brush" actionListener="#{guestPreferences.setTheme('grey')}" ajax="false" />
+                        </p:submenu>
+                        <p:submenu id="um_customization" label="Customization" icon="settings_application">
+                            <p:menuitem id="custom1" value="Compact Size" icon="fiber_manual_record" actionListener="#{guestPreferences.setCompact(true)}" ajax="false"/>
+                            <p:menuitem id="custom2" value="Material Size" icon="fiber_smart_record" actionListener="#{guestPreferences.setCompact(false)}" ajax="false"/>
+                            <p:menuitem id="custom3" value="Static Menu" icon="menu" actionListener="#{guestPreferences.setMenuLayout('static')}" ajax="false"/>
+                            <p:menuitem id="custom4" value="Overlay Menu" icon="exit_to_app" actionListener="#{guestPreferences.setMenuLayout('overlay')}" ajax="false"/>
+                            <p:menuitem id="custom5" value="Horizontal Menu" icon="border_horizontal" actionListener="#{guestPreferences.setMenuLayout('horizontal')}" ajax="false"/>
+                            <p:menuitem id="custom6" value="Light Menu" icon="label_outline" actionListener="#{guestPreferences.setLightMenu}" ajax="false" />
+                            <p:menuitem id="custom7" value="Dark Menu" icon="label" actionListener="#{guestPreferences.setDarkMenu}" ajax="false"/>
+                            <p:menuitem id="custom8" value="Inline Profile" icon="contacts" actionListener="#{guestPreferences.setProfileMode('inline')}" ajax="false" />
+                            <p:menuitem id="custom9" value="Top Profile" icon="person_pin" actionListener="#{guestPreferences.setProfileMode('overlay')}" ajax="false"/>
+                        </p:submenu>
+                        <p:submenu id="um_components" label="Components" icon="list">
+                            <p:menuitem id="um_sample" value="Sample Page" icon="desktop_mac" outcome="/sample" />
+                            <p:menuitem id="um_forms" value="Forms" icon="input" outcome="/forms" />
+                            <p:menuitem id="um_data" value="Data" icon="grid_on" outcome="/data" />
+                            <p:menuitem id="um_panels" value="Panels" icon="content_paste" outcome="/panel" />
+                            <p:menuitem id="um_overlays" value="Overlays" icon="content_copy" outcome="/overlay" />
+                            <p:menuitem id="um_menus" value="Menus" icon="menu" outcome="/menu" />
+                            <p:menuitem id="um_messages" value="Messages" icon="message" outcome="/messages" />
+                            <p:menuitem id="um_charts" value="Charts" icon="insert_chart" outcome="/charts" />
+                            <p:menuitem id="um_file" value="File" icon="attach_file" outcome="/file" />
+                            <p:menuitem id="um_misc" value="Misc" icon="toys" outcome="/misc" />
+                        </p:submenu>
+                        <p:submenu id="um_default" label="Template Pages" icon="get_app">
+                            <p:menuitem id="um_db_landing" value="Landing" icon="flight_land" outcome="/landing"/>
+                            <p:menuitem id="um_empty" value="Empty Page" icon="hourglass_empty" outcome="/empty" />
+                            <p:menuitem id="um_login" value="Login Page" icon="verified_user" outcome="/login" />
+                            <p:menuitem id="um_error" value="Error Page" icon="error" outcome="/error" />
+                            <p:menuitem id="um_404" value="404 Page" icon="error_outline" outcome="/404" />
+                            <p:menuitem id="um_access" value="Access Denied Page" icon="security" outcome="/access" />
+                        </p:submenu>
+                        <p:submenu id="um_hierarchy" label="Menu Hierarchy" icon="menu">
+                            <p:submenu id="um_sm1" label="Submenu 1" icon="subject">
+                                <p:submenu id="um_sm11" label="Submenu 1.1" icon="subject">
+                                    <p:menuitem id="um_lnk111" value="Link 1.1.1" icon="subject" url="#" />
+                                    <p:menuitem id="um_lnk112" value="Link 1.1.2" icon="subject" url="#" />
+                                    <p:menuitem id="um_lnk113" value="Link 1.1.3" icon="subject" url="#" />
+                                </p:submenu>
+                                <p:submenu id="um_sm12" label="Submenu 1.2" icon="subject">
+                                    <p:menuitem id="um_lnk121" value="Link 1.2.1" icon="subject" url="#" />
+                                </p:submenu>
+                            </p:submenu>
+                            <p:submenu id="um_sm2" label="Submenu 2" icon="subject">
+                                <p:submenu id="um_sm21" label="Submenu 2.1" icon="subject">
+                                    <p:menuitem id="um_lnk211" value="Link 2.1.1" icon="subject" url="#" />
+                                    <p:menuitem id="um_lnk212" value="Link 2.1.2" icon="subject" url="#" />
+                                </p:submenu>
+                                <p:submenu id="um_sm22" label="Submenu 2.2" icon="subject">
+                                    <p:menuitem id="um_lnk221" value="Link 2.2.1" icon="subject" url="#" />
+                                </p:submenu>
+                            </p:submenu>
+                        </p:submenu>
+                        <p:menuitem id="um_utils" value="Utils" icon="build" outcome="/utils"/>
+                        <p:menuitem id="um_doc" value="Documentation" icon="find_in_page" outcome="/docs"/>
+                    </pu:menu>
+                </div>
+            </div>
+        </div>
+    </h:form>
+</ui:composition>

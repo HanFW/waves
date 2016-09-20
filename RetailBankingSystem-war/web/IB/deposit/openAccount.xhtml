@@ -1,38 +1,69 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html" 
-      xmlns:f="http://xmlns.jcp.org/jsf/core" 
-      xmlns:p="http://primefaces.org/ui">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">Panels</ui:define>
+
+    <ui:define name="head">
+        <style type="text/css">
+            .nba-grid {
+                width: 100%;
+                table-layout: fixed;
+                word-wrap: break-word;
+            }
+            
+            .ui-scrollpanel-content p:first-child {
+                margin: 0;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
     <h:head>
-        <title>Facelet Title</title>
+        <title>MBS Open Account</title>
     </h:head>
     <h:body>
         <h:form id="formMain">
-            <h1>Welcome to Merlion Bank</h1>
-            <p:menubar>
-                <p:submenu label="Home">
-                    <p:menuitem value="Home" url="index.xhtml" />
-                </p:submenu>
+          
+            <p:graphicImage class="pull-left" library="ultima-layout/images/login" name="logo.png" style="width:35px;height:35px"/>
+              <h1 style="line-height:1.4; font-family:Eurostile; color:#022A5A"> Welcome to Merlion Bank</h1>
 
-                <p:submenu label="My Account">
-                    <p:menuitem value="Open Account" url="openAccount.xhtml" />
-                    <p:menuitem value="Close Account" url="closeAccount.xhtml" />
-                    <p:menuitem value="View Account" url="viewAccount.xhtml" />
-                    <p:menuitem value="Cash Deposit" url="cashDeposit.xhtml" />
-                    <p:menuitem value="Cash Withdraw" url="cashWithdraw.xhtml" />
-                    <p:menuitem value="View Transaction" url="viewTransaction.xhtml" />
-                </p:submenu>
+            <p:megaMenu orientation="horizontal">
+                            <p:menuitem value="Home"  url="depositIndex.xhtml" icon="ui-icon-home"/>
 
-                <p:submenu label="Transfer" >
-                    <p:menuitem value="To My Account" url="toMyAccount.xhtml" />
-                    <p:menuitem value="To Other Merlion Accounts" url="toOthersAccount.xhtml" />
-                    <p:menuitem value="To Other Merlion Accuonts(One-time)" url="oneTimeTransfer.xhtml" />
-                    <p:menuitem value="Add Recipient" url="addRecipient.xhtml" />
-                    <p:menuitem value="Delete Recipient" url="deleteRecipient.xhtml" />
-                    <p:menuitem value="Change Daily Transfer Limit" url="dailyTransferLimit.xhtml" />
-                </p:submenu>
-            </p:menubar>
+                            <p:submenu label="My Account" icon="ui-icon-account-circle">
+
+                                <p:column>
+                                    <p:submenu>
+                                    <p:menuitem value="Open Account" url="openAccount.xhtml" />
+                                    <p:menuitem value="Close Account" url="closeAccount.xhtml" />
+                                    <p:menuitem value="View Account" url="viewAccount.xhtml" />
+                                    <p:menuitem value="Cash Deposit" url="cashDeposit.xhtml" />
+                                    <p:menuitem value="Cash Withdraw" url="cashWithdraw.xhtml" />
+                                    <p:menuitem value="View Transaction" url="viewTransaction.xhtml" />
+                                    </p:submenu>
+                                </p:column>
+                            </p:submenu>
+
+                            <p:submenu label="Transfer" icon="ui-icon-swap-horiz">
+                                <p:column>
+                                    <p:submenu>
+                                    <p:menuitem value="To My Account" url="toMyAccount.xhtml" />
+                                    <p:menuitem value="To Other Merlion Accounts" url="toOthersAccount.xhtml" />
+                                    <p:menuitem value="To Other Merlion Accuonts(One-time)" url="oneTimeTransfer.xhtml" />
+                                    <p:menuitem value="Add Recipient" url="addRecipient.xhtml" />
+                                    <p:menuitem value="Delete Recipient" url="deleteRecipient.xhtml" />
+                                    <p:menuitem value="Change Daily Transfer Limit" url="dailyTransferLimit.xhtml" />
+                                    </p:submenu>
+                                </p:column>
+                            </p:submenu>
+                               
+                                
+                            <p:menuitem value="Quit" url="depositIndex.xhtml" icon="ui-icon-exit-to-app" />
+                        </p:megaMenu>
 
             <p:ajaxStatus style="width:16px;height:16px;">
                 <f:facet name="start">
@@ -52,9 +83,12 @@
                 <p:tab id="personal" title="Personal Information">
                     <p:panel header="Personal Information"> 
                         <p:messages />
+                        
 
-                        <p:panelGrid style="margin-bottom:10px">
-                            <p:row>
+                        <p:panelGrid style="margin-bottom:10px; margin:0 auto" >
+                        
+
+                                <p:row>
                                 <p:column>
                                     <p:outputLabel style="font-weight: bold" value="Existing Customer of Merlion Bank: " />
                                 </p:column>
@@ -64,9 +98,9 @@
                                         <f:selectItem itemLabel="No" itemValue="No" />
                                     </p:selectOneRadio>
                                 </p:column>
-                                <p:column>
+                                <!--<p:column>
                                     <p:message for="existingCustomer" />
-                                </p:column>
+                                </p:column> !-->
                             </p:row>
 
                             <p:row>
@@ -90,9 +124,9 @@
                                                      value="#{accountManagedBean.customerSalutationOthers}" />  
                                     </p:panel>
                                 </p:column>
-                                <p:column>
+                                <!-- <p:column>
                                     <p:message for="customerSalutation" />
-                                </p:column>
+                                </p:column> !-->
                             </p:row>
 
                             <p:row>
@@ -105,9 +139,9 @@
                                                  value="#{accountManagedBean.customerName}">
                                     </p:inputText>
                                 </p:column>
-                                <p:column>
+                                <!-- <p:column>
                                     <p:message for="customerName" />
-                                </p:column>
+                                </p:column>  !-->
                             </p:row>
 
                             <p:row>
@@ -120,9 +154,9 @@
                                                 showHour="false" showMinute="false" showSecond="false" showMillisec="false"
                                                 showWeek="false"/>
                                 </p:column>
-                                <p:column>
+                                <!-- <p:column>
                                     <p:message for="customerDateOfBirth" />
-                                </p:column>
+                                </p:column> !-->
                             </p:row>
 
                             <p:row>
@@ -135,9 +169,9 @@
                                         <f:selectItem itemLabel="Female" itemValue="Female" />
                                     </p:selectOneRadio>
                                 </p:column>
-                                <p:column>
+                                <!-- <p:column>
                                     <p:message for="customerGender" />
-                                </p:column>
+                                </p:column> !--> 
                             </p:row>
 
                             <p:row>
@@ -149,9 +183,9 @@
                                                  value="#{accountManagedBean.customerMobile}">
                                     </p:inputText>
                                 </p:column>
-                                <p:column>
+                                <!-- <p:column>
                                     <p:message for="customerMobile" />
-                                </p:column>
+                                </p:column> !--> 
                             </p:row><!--
             
                             -->                    <p:row>
@@ -166,9 +200,9 @@
                                                                             pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />-->
                                     </p:inputText>
                                 </p:column>
-                                <p:column>
+                                <!-- <p:column>
                                     <p:message for="customerEmail" />
-                                </p:column>
+                                </p:column> !-->
                             </p:row>
                         </p:panelGrid>
                     </p:panel>
@@ -178,7 +212,7 @@
                     <p:panel header="Detailed Information"> 
                         <p:messages />
 
-                        <p:panelGrid style="margin-bottom:10px">
+                        <p:panelGrid style="margin-bottom:30px; margin:0 auto">
 
                             <p:row>
                                 <p:column>
@@ -186,7 +220,7 @@
                                 </p:column>
                                 <p:column>
                                     <p:selectOneMenu id="customerNationality" value="#{accountManagedBean.customerNationality}" 
-                                                     style="width:125px">
+                                                     style="width:275px">
                                         <f:selectItem itemLabel="Please Select" itemValue=" " />
                                         <f:selectItem itemLabel="Afghanistan" itemValue="Afghanistan" />
                                         <f:selectItem itemLabel="Albania" itemValue="Albania" />
@@ -394,9 +428,9 @@
                                         <p:ajax event="change" update="panelCustomerNationalityOthers" listener="#{accountManagedBean.show3()}"/>
                                     </p:selectOneMenu>
                                 </p:column>
-                                <p:column>
+                                <!-- <p:column>
                                     <p:message for="customerNationality" />
-                                </p:column>
+                                </p:column> !-->
                             </p:row>
                         </p:panelGrid>
 
@@ -411,16 +445,16 @@
                                                  value="#{accountManagedBean.customerNRICSG}">
                                     </p:inputText>
                                 </p:column>
-                                <p:column>
+                                <!-- <p:column>
                                     <p:message for="customerNRICSG" />
-                                </p:column>
+                                </p:column> !-->
                             </p:row>
                         </p:panel>
 
                         <p:panel style="border: none;" id="panelCustomerNationalityOthers" visible="#{accountManagedBean.visible3}" >
                             <p:row>
                                 <p:column>
-                                    <p:outputLabel for="singaporePR" style="font-weight: bold" value="Singapore PR: " />
+                                    <p:outputLabel for="singaporePR" style="font-weight: bold"  value="Singapore PR: " />
                                 </p:column>
                                 <p:column>
                                     <p:selectOneRadio id="singaporePR" value="#{accountManagedBean.singaporePR}">
@@ -430,9 +464,9 @@
                                         <p:ajax event="change" update="panelPassport" listener="#{accountManagedBean.show5()}"/>
                                     </p:selectOneRadio>
                                 </p:column>
-                                <p:column>
+                               <!--  <p:column>
                                     <p:message for="singaporePR" />
-                                </p:column>
+                                </p:column> !-->
                             </p:row>
                         </p:panel>
 
@@ -446,9 +480,9 @@
                                                  value="#{accountManagedBean.customerNRIC}">
                                     </p:inputText>
                                 </p:column>
-                                <p:column>
+                                <!-- <p:column>
                                     <p:message for="customerNRIC" />
-                                </p:column>
+                                </p:column> !-->
                             </p:row>
                         </p:panel>
 
@@ -462,13 +496,13 @@
                                                  value="#{accountManagedBean.customerPassport}">
                                     </p:inputText>
                                 </p:column>
-                                <p:column>
+                                <!-- <p:column>
                                     <p:message for="customerPassport" />
-                                </p:column>
+                                </p:column> !-->
                             </p:row>
                         </p:panel>
 
-                        <p:panelGrid >
+                        <p:panelGrid style="margin:0 auto">
                             <p:row>
                                 <p:column>
                                     <p:outputLabel for="customerCountryOfResidence" style="font-weight: bold" value="Country of Residence: " />
@@ -681,9 +715,9 @@
                                         <f:selectItem itemLabel="Zimbabwe" itemValue="Zimbabwe" />
                                     </p:selectOneMenu>
                                 </p:column>
-                                <p:column>
+                                <!-- <p:column>
                                     <p:message for="customerCountryOfResidence" />
-                                </p:column>
+                                </p:column> !-->
                             </p:row>
 
                             <p:row>
@@ -700,9 +734,9 @@
                                         <f:selectItem itemLabel="Eurasian" itemValue="Eurasian" />
                                     </p:selectOneMenu>
                                 </p:column>
-                                <p:column>
+                                <!-- <p:column>
                                     <p:message for="customerRace" />
-                                </p:column>
+                                </p:column> !-->
                             </p:row>
 
                             <p:row>
@@ -719,9 +753,9 @@
                                         <f:selectItem itemLabel="Widowed" itemValue="Widowed" />
                                     </p:selectOneMenu>
                                 </p:column>
-                                <p:column>
+                                <!-- <p:column>
                                     <p:message for="customerMaritalStatus" />
-                                </p:column>
+                                </p:column> !-->
                             </p:row>
 
                             <p:row>
@@ -765,9 +799,9 @@
                                         <f:selectItem itemLabel="Tutor" itemValue="Tutor" />
                                     </p:selectOneMenu>
                                 </p:column>
-                                <p:column>
+                                <!-- <p:column>
                                     <p:message for="customerOccupation" />
-                                </p:column>
+                                </p:column> !-->
                             </p:row>
 
                             <p:row>
@@ -779,9 +813,9 @@
                                                  value="#{accountManagedBean.customerCompany}">
                                     </p:inputText>
                                 </p:column>
-                                <p:column>
+                                <!-- <p:column>
                                     <p:message for="customerCompany" />
-                                </p:column>
+                                </p:column> !-->
                             </p:row>
 
                             <p:row>
@@ -793,9 +827,9 @@
                                                  value="#{accountManagedBean.customerAddress}">
                                     </p:inputText>
                                 </p:column>
-                                <p:column>
+                                <!-- <p:column>
                                     <p:message for="customerAddress" />
-                                </p:column>
+                                </p:column> !-->
                             </p:row>
 
                             <p:row>
@@ -807,9 +841,9 @@
                                                  value="#{accountManagedBean.customerPostal}">
                                     </p:inputText>
                                 </p:column>
-                                <p:column>
+                                <!-- <p:column>
                                     <p:message for="customerPostal" />
-                                </p:column>
+                                </p:column> !-->
                             </p:row>
                         </p:panelGrid>
                     </p:panel>
@@ -819,7 +853,7 @@
                     <p:panel header="Account Information">
                         <p:messages />
 
-                        <p:panelGrid>
+                        <p:panelGrid style="margin:0 auto">
                             <p:row>
                                 <p:column colspan="10" style="font-weight: bold">Account Information</p:column>
                             </p:row>
@@ -839,9 +873,9 @@
                                         <p:ajax event="change" update="panelCustomerDepositPeriod" listener="#{accountManagedBean.show1()}"/>
                                     </p:selectOneMenu>
                                 </p:column>
-                                <p:column>
+                                <!-- <p:column>
                                     <p:message for="bankAccountType" />
-                                </p:column>
+                                </p:column> !-->
                             </p:row>
 
                             <p:row>
@@ -854,9 +888,9 @@
                                         <!--                                <f:validateLength minimum="6" maximum="6" />-->
                                     </p:password>
                                 </p:column>
-                                <p:column>
+                                <!-- <p:column>
                                     <p:message for="bankAccountPwd" />
-                                </p:column>
+                                </p:column> !-->
                             </p:row>   
 
                             <p:row>
@@ -873,7 +907,7 @@
 
                         </p:panelGrid>
                         <br/>
-                        <p:panelGrid>
+                        <p:panelGrid style="margin:0 auto">
                             <p:row>
                                 <p:column colspan="10" style="font-weight: bold">Initial Deposit</p:column>
                             </p:row>
@@ -890,9 +924,9 @@
                                         <f:selectItem itemLabel="Intra-Transfer" itemValue="Intra-Transfer" />
                                     </p:selectOneMenu>
                                 </p:column>
-                                <p:column>
+                                <!-- <p:column>
                                     <p:message for="initialDepositModel" />
-                                </p:column>
+                                </p:column> !-->
                             </p:row>
 
                             <p:row>
@@ -904,13 +938,13 @@
                                                  value="#{accountManagedBean.initialDepositAmt}">
                                     </p:inputText>
                                 </p:column>
-                                <p:column>
+                                <!-- <p:column>
                                     <p:message for="initialDepositAmt" />
-                                </p:column>
+                                </p:column> !-->
                             </p:row>
                         </p:panelGrid>
 
-                        <p:panel style="border: none;" id="panelCustomerDepositPeriod" visible="#{accountManagedBean.visible1}" >
+                        <p:panel style="border: none;" id="panelCustomerDepositPeriod" visible="#{accountManagedBean.visible1}">
                             <p:row>
                                 <p:column>
                                     <p:outputLabel for="depositPeriod" style="font-weight: bold" value="Deposit Period: " />
@@ -920,9 +954,9 @@
                                                  value="#{accountManagedBean.depositPeriod}">
                                     </p:inputText>
                                 </p:column>
-                                <p:column>
+                                <!-- <p:column>
                                     <p:message for="depositPeriod" />
-                                </p:column>
+                                </p:column> !--> 
                             </p:row>
                         </p:panel>
                     </p:panel>
@@ -932,8 +966,8 @@
                     <p:panel header="Support Document"> 
                         <p:messages />
 
-                        <p:panel style="width:700px">
-                            <p:outputLabel value="Please provide softcopy of your identification (Only gif,jpeg and png)" />
+                        <p:panel style="width:600px;margin:0 auto">
+                            <p:outputLabel value="Please provide softcopy of your identification (Only gif,jpeg and png)" style="font-family: Eurostile;font-size:15px;text-align: center "/>
                             <br/>
                             <p:fileUpload id="fileupload"
                                           value="#{accountManagedBean.file}" mode="advanced" skinSimple="true"
@@ -942,28 +976,31 @@
                         </p:panel>
                         <br/>
 
-                        <p:outputLabel value="Please provide your signature" />
+                        <p:outputLabel style="font-family:Eurostile;font-size:15px; text-align:center" value="Please provide your signature" />
                         <br/>
-                        <p:signature style="width:400px;height:200px" widgetVar="sig" value="#{accountManagedBean.customerSignature}" 
+                        <p:signature style="width:400px;height:200px;margin:0 auto" widgetVar="sig" value="#{accountManagedBean.customerSignature}" 
                                      guideline="true"/>
-
-                        <div style="margin:20px 0">
+                        <div style="margin:0 auto">
                             <p:commandButton value="Submit" icon="ui-icon-check" update="output"/>
                             <p:commandButton value="Clear" icon="ui-icon-close" type="button" onclick="PF('sig').clear()"/>
                         </div>
 
-                        <p:outputPanel id="output">
-                            <h:outputText rendered="#{not empty accountManagedBean.customerSignature}" style="font-size:20px;display:block" value="Your Signature" />
-                            <p:signature style="width:400px;height:200px;" value="#{accountManagedBean.customerSignature}" readonly="true"
+                       
+                        <p:outputPanel id="output" style="margin:0 auto">
+                            <h:outputText rendered="#{not empty accountManagedBean.customerSignature}" style="font-family:Eurostile;font-size:15px;display:block;margin:0 auto" value="Your Signature" />
+                            <p:signature style="width:400px;height:200px;margin:0 auto" value="#{accountManagedBean.customerSignature}" readonly="true"
                                          rendered="#{not empty accountManagedBean.customerSignature}" backgroundColor="#eaeaea" color="#03a9f4"/>
                         </p:outputPanel>
+                        
                     </p:panel>
                 </p:tab>
 
                 <p:tab id="confirmation" title="Confirmation">
+                    <br/>
+                    <br/>   
                     <p:messages />
 
-                    <h:outputLabel value="About Myself" style="font-weight: bold; font-size: 24px" />
+                    <h:outputLabel value="About Myself" style="font-family:Eurostile;font-weight: bold; font-size: 24px" />
                     <br/>
                     <br/>
                     <h:outputText value="Existing Customer of Merlion Bank: "/>
@@ -1019,7 +1056,7 @@
                     <br/>
                     <br/>
                     <br/>
-                    <h:outputLabel value="My Ddeposit" style="font-weight: bold; font-size: 24px" />
+                    <h:outputLabel value="My Deposit" style="font-family:Eurostile;font-weight: bold; font-size: 24px" />
                     <br/>
                     <br/>
                     <h:outputText value="Bank Account Type: "/>
@@ -1036,13 +1073,15 @@
                         <h:outputText value="I have read and agree to the terms of Customer Declaration and Confirmation." />
                         <br/>
                         <h:outputText value="I have also read and agree to the Terms and Conditions Governing Personal Data Protection Act 2012."/>
+                        <br/>
                     </h:panelGrid>
 
                     <p:commandButton id="saveBtn" value="Open Account" update="growl"
-                                     actionListener="#{accountManagedBean.saveAccount}" ajax="true"/>
+                                     actionListener="#{accountManagedBean.saveAccount}" ajax="true" style="float: right"/>
                 </p:tab>
             </p:wizard>
         </h:form>
     </h:body>
-</html>
+    </ui:define>
+</ui:composition>
 
