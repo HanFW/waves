@@ -1,17 +1,346 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
+
     <h:head>
-        <title>Facelet Title</title>
+        <f:facet name="first">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+            <meta name="apple-mobile-web-app-capable" content="yes" />
+        </f:facet>
+        <title>PrimeFaces Ultima</title>
+        <h:outputScript name="js/ripple.js" library="ultima-layout" />
+
+        <!-- Bootstrap core CSS -->
+        <link href="bootstrap/css/bootstrap.css" rel="stylesheet"/>
+        <!-- Worthy core CSS file -->
+        <link href="css/style.css" rel="stylesheet"/>
+
+        <script type="text/javascript">
+            $(function () {
+                $('#menu-button').on('click', function (e) {
+                    var menu = $('#menu');
+                    if (menu.hasClass('lmenu-active')) {
+                        menu.addClass('fadeOutUp');
+
+                        setTimeout(function () {
+                            menu.removeClass('fadeOutUp fadeInDown lmenu-active');
+                        }, 500);
+                    }
+                    else {
+                        menu.addClass('lmenu-active fadeInDown');
+                    }
+                    e.preventDefault();
+                });
+            });
+        </script>
     </h:head>
-    <h:body>
-        Hello from Facelets
-        <p:button outcome="IB/login" value="login"/>
-        <p:button outcome="deposit/depositIndex" value="deposit"/>
-        <br />
-        <h:link outcome="welcomePrimefaces" value="Primefaces welcome page" />
+
+    <h:body styleClass="landing-body">
+        <div class="landing-wrapper">
+            <div id="header">
+                <!-- header start -->
+                <!-- ================ --> 
+                <header class="header fixed clearfix navbar navbar-fixed-top">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-4">
+
+                                <!-- header-left start -->
+                                <!-- ================ -->
+                                <div class="header-left clearfix">
+
+                                    <!-- logo -->
+                                    <div class="logo smooth-scroll">
+                                        <a href="#banner"><img id="logo" src="images/logo.png" alt="Merlion Bank"/></a>
+                                    </div>
+
+                                    <!-- name-and-slogan -->
+                                    <div class="site-name-and-slogan smooth-scroll ">
+                                        <div class="site-name"><a href="#banner"><p><span>M</span>erlion <span>B</span>ank</p></a></div>
+                                        <div class="site-slogan">Bank Anywhere Anytime</div>
+                                    </div>
+
+                                </div>
+
+                                <!-- header-left end -->
+
+                            </div>
+                            <div class="col-md-8">
+
+                                <!-- header-right start -->
+                                <!-- ================ -->
+                                <div class="header-right clearfix">
+
+                                    <!-- main-navigation start -->
+                                    <!-- ================ -->
+                                    <div class="main-navigation animated">
+
+                                        <!-- navbar start -->
+                                        <!-- ================ -->
+                                        <nav class="navbar navbar-default" role="navigation">
+                                            <div class="container-fluid">
+
+                                                <!-- Toggle get grouped for better mobile display -->
+                                                <div class="navbar-header">
+                                                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
+                                                        <span class="sr-only">Toggle navigation</span>
+                                                        <span class="icon-bar"></span>
+                                                        <span class="icon-bar"></span>
+                                                        <span class="icon-bar"></span>
+                                                    </button>
+                                                </div>
+
+                                                <!-- Collect the nav links, forms, and other content for toggling -->
+                                                <div class="collapse navbar-collapse scrollspy smooth-scroll" id="navbar-collapse-1">
+                                                    <ul class="nav navbar-nav navbar-right">
+                                                        <li class="active"><a href="#banner">Home</a></li>
+                                                        <li><a href="#introduction">Introduction</a></li>
+                                                        <li><a href="#features">Features</a></li>
+                                                        <li><a href="#promotion">Promotion</a></li>
+                                                        <li><a href="#pricing">Pricing</a></li>
+                                                        <li><a href="#video">Video</a></li>
+                                                        <li><p:button outcome="IB/login" value="login"/></li>
+         <li><p:button outcome="deposit/depositIndex" value="deposit"/></li>
+                                                    </ul>
+                                                </div>
+
+                                            </div>
+                                        </nav>
+                                        <!-- navbar end -->
+
+                                    </div>
+                                    <!-- main-navigation end -->
+
+                                </div>
+                                <!-- header-right end -->
+
+                            </div>
+                        </div>
+                    </div>
+                </header>
+                <!-- header end -->
+
+                <div class="header-top clearfix"></div>
+                <div id="banner" class="banner">
+            <div class="banner-image"></div>
+            <div class="banner-caption">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-8 col-md-offset-2 object-non-visible" data-animation-effect="fadeIn">
+                            <h2 class="text-center">Welcome to <span>Merlion Bank</span></h2>
+                            <h:outputText value="&lt;br /&gt;" escape="false" />
+                            <h:outputText value="&lt;br /&gt;" escape="false" />
+                            <p class="lead text-center">We are proud to be the one and only direct bank in Singapore.</p>
+                            <p class="lead text-center">Now, your bank is at your fingertip.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+            </div>
+                
+
+
+            <div id="features">
+                <h2>The Ultimate Material Application Template for PrimeFaces</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse delectus sit velit, aspernatur voluptates molestiae, enim recusandae. Odit dicta, maiores quas ad nesciunt, illum expedita veritatis illo quam odio id!</p>
+
+                <div class="ui-g">
+                    <div class="ui-g-12 ui-md-4">
+                        <h3>Creative</h3>
+                        <p>Lorem ipsum dolor sit amet</p>
+                        <div class="feature-icon">
+                            <i class="material-icons">&#xE150;</i>
+                        </div>
+                    </div>
+                    <div class="ui-g-12 ui-md-4">
+                        <h3>Responsive</h3>
+                        <p>Lorem ipsum dolor sit amet</p>
+                        <div class="feature-icon">
+                            <i class="material-icons">&#xE32C;</i>
+                        </div>
+                    </div>
+                    <div class="ui-g-12 ui-md-4">
+                        <h3>Cross Browser</h3>
+                        <p>Lorem ipsum dolor sit amet</p>
+                        <div class="feature-icon">
+                            <i class="material-icons">&#xE89D;</i>
+                        </div>
+                    </div>
+
+                    <div class="ui-g-12 ui-md-4">
+                        <div class="feature-icon">
+                            <i class="material-icons">&#xE259;</i>
+                        </div>
+                        <h3>Well Organized</h3>
+                        <p>Well Organ</p>
+                    </div>
+                    <div class="ui-g-12 ui-md-4">
+                        <div class="feature-icon">
+                            <i class="material-icons">&#xE40A;</i>
+                        </div>
+                        <h3>Beautiful</h3>
+                        <p>Lorem ipsum dolor sit amet</p>
+                    </div>
+                    <div class="ui-g-12 ui-md-4">
+                        <div class="feature-icon">
+                            <i class="material-icons">&#xE86C;</i>
+                        </div>
+                        <h3>Just For you</h3>
+                        <p>Lorem ipsum dolor sit amet</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="promotion" class="clearfix">
+                <div class="ui-g">
+                    <div class="ui-g-12 ui-lg-8">
+                        <h1>Boost Your Productivity.</h1>
+                        <p:button outcome="/dashboard" value="Sign Up Now" styleClass="secondary"/>
+                    </div>
+                    <div class="ui-g-12 ui-lg-4">
+                        <div class="card">
+                            <h3>Just</h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab perferendis nesciunt ad reiciendis explicabo consequatur sapiente odit ipsa harum illum, necessitatibus quaerat voluptates aspernatur iure, aperiam possimus sint sit mollitia!</p>
+                        </div>
+
+                        <div class="card">
+                            <h3>Like</h3>
+                            <p>Ab perferendis nesciunt ad reiciendis explicabo consequatur sapiente odit ipsa harum illum. Necessitatibus quaerat voluptates aspernatur iure, aperiam possimus sint sit mollitia!</p>
+                        </div>
+
+                        <div class="card">
+                            <h3>That</h3>
+                            <p>Necessitatibus quaerat voluptates aspernatur iure, aperiam possimus sint sit mollitia! Ab perferendis nesciunt ad reiciendis explicabo consequatur sapiente odit ipsa harum illum.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="pricing">
+                <h2>Pricing</h2>
+                <p>Esse delectus sit velit, aspernatur voluptates molestiae, enim recusandae. Odit dicta, maiores quas ad nesciunt, illum expedita veritatis illo quam odio id!</p>
+
+                <div class="ui-g">
+                    <div class="ui-g-12 ui-md-4 pricing-box pricing-basic">
+                        <div class="card">
+                            <div class="pricing-header">
+                                <span class="name">BASIC</span>
+                                <span class="fee">$5</span>
+                                <span class="type">Monthly</span>
+                            </div>
+                            <div class="pricing-content">
+                                <ul>
+                                    <li><i class="material-icons"></i><span>Responsive</span></li>
+                                    <li><i class="material-icons"></i><span>Push Messages</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui-g-12 ui-md-4 pricing-box pricing-standard">
+                        <div class="card">
+                            <div class="pricing-header">
+                                <span class="name">STANDARD</span>
+                                <span class="fee">$25</span>
+                                <span class="type">Monthly</span>
+                            </div>
+                            <div class="pricing-content">
+                                <ul>
+                                    <li><i class="material-icons"></i><span>Responsive</span></li>
+                                    <li><i class="material-icons"></i><span>Push Messages</span></li>
+                                    <li><i class="material-icons"></i><span>7/24 Support</span></li>
+                                    <li><i class="material-icons"></i><span>Free Shipping</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui-g-12 ui-md-4 pricing-box pricing-professional">
+                        <div class="card">
+                            <div class="pricing-header">
+                                <span class="name">PROFESSIONAL</span>
+                                <span class="fee">$50</span>
+                                <span class="type">Monthly</span>
+                            </div>
+                            <div class="pricing-content">
+                                <ul>
+                                    <li><i class="material-icons"></i><span>Responsive</span></li>
+                                    <li><i class="material-icons"></i><span>Push Messages</span></li>
+                                    <li><i class="material-icons"></i><span>7/24 Support</span></li>
+                                    <li><i class="material-icons"></i><span>Free Shipping</span></li>
+                                    <li><i class="material-icons"></i><span>Unlimited Bandwidth</span></li>
+                                    <li><i class="material-icons"></i><span>Unlimited Storage</span></li>
+                                    <li><i class="material-icons"></i><span>Gift Cards</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="video">
+                <div class="video-content">
+                    <h2>Video</h2>
+                    <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque.</p>
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/B_lYGUtCd0g" frameborder="0" width="560" height="330"></iframe>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer">
+                <div class="footer-content">
+                    <div class="ui-g">
+                        <div class="ui-g-12 ui-md-6">
+                            <p>PRIMEFACES ULTIMA</p>
+                        </div>
+                        <div class="ui-g-12 ui-md-6">
+                            <ul>
+                                <li><a href="#mobile">Promotion</a></li>
+                                <li><a href="#pricing">Pricing</a></li>
+                                <li><a href="#video">Video</a></li>
+                            </ul>
+                            <ul>
+                                <li><a href="#">Home</a></li>
+                                <li><a href="#introduction">Introduction</a></li>
+                                <li><a href="#features">Features</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h:outputStylesheet name="css/animate.css" library="ultima-layout" />
+        <h:outputStylesheet name="css/ripple.css" library="ultima-layout" />
+        <h:outputStylesheet name="css/layout-#{guestPreferences.theme}.css" library="ultima-layout" />
+        <!-- Jquery and Bootstap core js files -->
+        <script type="text/javascript" src="plugins/jquery.min.js"></script>
+        <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+
+        <!-- Modernizr javascript -->
+        <script type="text/javascript" src="plugins/modernizr.js"></script>
+
+        <!-- Isotope javascript -->
+        <script type="text/javascript" src="plugins/isotope/isotope.pkgd.min.js"></script>
+
+        <!-- Backstretch javascript -->
+        <script type="text/javascript" src="plugins/jquery.backstretch.min.js"></script>
+
+        <!-- Appear javascript -->
+        <script type="text/javascript" src="plugins/jquery.appear.js"></script>
+
+        <!-- Initialization of Plugins -->
+        <script type="text/javascript" src="js/template.js"></script>
+
+        <!-- Custom Scripts -->
+        <script type="text/javascript" src="js/custom.js"></script>
     </h:body>
+
 </html>
 
