@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <h:form>
+            <p:panel>
+                <p:panelGrid>
+                    <p:row>
+                        <p:column>
+                            Are you: 
+                        </p:column>
+                        <p:column>
+                            <p:selectOneRadio id="console" value="#{customerLoginManagedBean.customerNationality}">
+                                <f:selectItem itemLabel="Singaporean/PR" itemValue="singaporean"/>
+                                <f:selectItem itemLabel="Foreigner" itemValue="foreigner" />
+                                <p:ajax event="change" update=":nircForm :passportForm"/>
+                            </p:selectOneRadio>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </p:panel>
+        </h:form>
+        <h:form id="nircForm" >
+            <p:messages/>
+            <p:panel id="nircField" visible="#{customerLoginManagedBean.customerNationality == 'singaporean'}">
+                <p:row>
+                    <p:column>
+                        <p:outputLabel for="nirc" value="NIRC: "/>  
+                    </p:column>
+                    <p:column>
+                        <p:inputText type="text" id="nirc" value="#{customerLoginManagedBean.customerIdentification}" required="true" requiredMessage="Please enter your identification number."/>
+                    </p:column>
+                </p:row>
+            </p:panel>
+            <p:panelGrid rendered="#{customerLoginManagedBean.customerNationality == 'singaporean'}">
+                <p:row>
+                    <p:column>
+                        <p:outputLabel for="otp" value="One-time passport: "/>
+                    </p:column>
+                    <p:column>
+                        <p:inputText type="password" id="otp" required="true" requiredMessage="Please enter OTP."/>
+                        <p:commandButton value="Request OTP"/>
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+            <p:panelGrid rendered="#{customerLoginManagedBean.customerNationality == 'singaporean'}">
+                <p:row>
+                    <p:commandButton type="submit" value="View User ID" actionListener="#{customerLoginManagedBean.retrieveCustomerAccount}" update="@form"/>
+                </p:row>
+            </p:panelGrid>
+        </h:form>
+        <h:form id="passportForm">
+            <p:messages/>
+            <p:panel id="passportField" visible="#{customerLoginManagedBean.customerNationality == 'foreigner'}">
+                <p:row>
+                    <p:column>
+                        <p:outputLabel for="passport" value="Passport: "/>
+                    </p:column>
+                    <p:column>
+                        <p:inputText type="text" id="passport" value="#{customerLoginManagedBean.customerIdentification}" required="true" requiredMessage="Please enter your identification number."/>
+                    </p:column>
+                </p:row>
+            </p:panel>
+
+            <p:panelGrid rendered="#{customerLoginManagedBean.customerNationality == 'foreigner'}">
+                <p:row>
+                    <p:column>
+                        <p:outputLabel for="otp" value="One-time passport: "/>
+                    </p:column>
+                    <p:column>
+                        <p:inputText type="password" id="otp" required="true" requiredMessage="Please enter OTP."/>
+                        <p:commandButton value="Request OTP"/>
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+            <p:panelGrid rendered="#{customerLoginManagedBean.customerNationality == 'foreigner'}">
+                <p:row>
+                    <p:commandButton type="submit" value="View User ID" actionListener="#{customerLoginManagedBean.retrieveCustomerAccount}" update="@form"/>
+                </p:row>
+            </p:panelGrid>
+        </h:form>
+    </h:body>
+</html>
+

@@ -1,0 +1,81 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">Panels</ui:define>
+
+    <ui:define name="head">
+        <style type="text/css">
+            .nba-grid {
+                width: 100%;
+                table-layout: fixed;
+                word-wrap: break-word;
+            }
+            
+            .ui-scrollpanel-content p:first-child {
+                margin: 0;
+            }
+        </style>
+    </ui:define>
+    
+    <ui:define name="content">  
+        
+    <h:head>
+        <title>Save Account</title>
+        <style type="text/css">
+            .gritter-notice-wrapper {
+                left:200px;
+                top: 50px; }
+            </style>
+
+        </h:head>
+        <h:body>
+            <h:form id="formMain">
+            <h1>Welcome to Merlion Bank</h1>
+            <p:menubar>
+                <p:submenu label="Home">
+                    <p:menuitem value="Home" url="/web/merlionBank/deposit/publicDepositIndex.xhtml" />
+                </p:submenu>
+
+                <p:submenu label="My Account">
+                    <p:menuitem value="Open Account" url="/web/merlionBank/deposit/publicOpenAccount.xhtml" />
+                </p:submenu>
+
+                <p:submenu label="Login">
+                    <p:menuitem value="Login" url="/web/onlineBanking/infrastructure/customerLogin.xhtml" />
+                </p:submenu>
+            </p:menubar>
+        </h:form>
+        <h:form>
+            <br/>
+            <p:panel id="panel" header="Save Account"> 
+                <p:panelGrid>
+                    <h:form id="formMain">
+                        <h:outputText style="font-weight: bold" value="Status Message: " />
+                        <h:outputText value="#{saveAccountManagedBean.statusMessage}" />
+                        <br/>
+                        <h:outputText style="font-weight: bold" value="Bank Account Id: "/>
+                        <h:outputText value="#{saveAccountManagedBean.bankAccountId}"/>
+                        <br/>
+                        <h:outputText style="font-weight: bold" value="Customer basic Id: "/>
+                        <h:outputText value="#{saveAccountManagedBean.customerBasicId}"/>
+                        <br/>
+                        <h:outputText style="font-weight: bold" value="Bank Account Num: "/>
+                        <h:outputText value="#{saveAccountManagedBean.bankAccountNum}"/>
+                        <br/>
+                        <h:outputText style="font-weight: bold" value="Bank Account Type: "/>
+                        <h:outputText value="#{saveAccountManagedBean.bankAccountType}"/>
+                        <br/>
+                        <h:outputText style="font-weight: bold" value="Initial Deposit Amount: "/>
+                        <h:outputText value="#{saveAccountManagedBean.initialDepositAmt}"/>
+                    </h:form>
+                </p:panelGrid>
+            </p:panel>
+        </h:form>
+       </h:body>
+    </ui:define>
+</ui:composition>
+

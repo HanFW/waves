@@ -780,16 +780,8 @@ exists or setup the property manually. For example like this:
     <!--
                 COMPILATION SECTION
             -->
-    <target depends="init" if="no.dist.ear.dir" name="-deps-module-jar" unless="no.deps">
-<!--        <ant antfile="${project.RetailBankingSystemRemoteInterface}/build.xml" inheritall="false" target="jar">
-            <property name="deploy.on.save" value="false"/>
-        </ant>-->
-    </target>
-    <target depends="init" if="dist.ear.dir" name="-deps-ear-jar" unless="no.deps">
-<!--        <ant antfile="${project.RetailBankingSystemRemoteInterface}/build.xml" inheritall="false" target="jar">
-            <property name="deploy.on.save" value="false"/>
-        </ant>-->
-    </target>
+    <target depends="init" if="no.dist.ear.dir" name="-deps-module-jar" unless="no.deps"/>
+    <target depends="init" if="dist.ear.dir" name="-deps-ear-jar" unless="no.deps"/>
     <target depends="init, -deps-module-jar, -deps-ear-jar" name="deps-jar"/>
     <target depends="init,deps-jar" name="-pre-pre-compile">
         <mkdir dir="${build.classes.dir}"/>
@@ -801,17 +793,49 @@ exists or setup the property manually. For example like this:
     </target>
     <target depends="compile,-library-inclusion-in-archive-weblogic,-library-inclusion-in-archive-by-user" name="library-inclusion-in-archive"/>
     <target if="is.jars.in.ejbjar" name="-library-inclusion-in-archive-by-user">
-        <copyfiles files="${reference.RetailBankingSystemRemoteInterface.jar}" todir="${build.classes.dir}"/>
+        <copyfiles files="${libs.Apache_Commons_Codec_1.10.classpath}" todir="${build.classes.dir}"/>
+        <copyfiles files="${libs.Aerogear_OTP.classpath}" todir="${build.classes.dir}"/>
+        <copyfiles files="${libs.Twilio_Java.classpath}" todir="${build.classes.dir}"/>
+        <copyfiles files="${libs.Apache_Httpcore.classpath}" todir="${build.classes.dir}"/>
+        <copyfiles files="${libs.Apache_Httpclient.classpath}" todir="${build.classes.dir}"/>
+        <copyfiles files="${libs.Apache_Commons_Logging_1.2.classpath}" todir="${build.classes.dir}"/>
+        <copyfiles files="${libs.Apache_Commons_Lang3_3.4.classpath}" todir="${build.classes.dir}"/>
+        <copyfiles files="${libs.Jackson_Core_Asl.classpath}" todir="${build.classes.dir}"/>
+        <copyfiles files="${libs.Jackson_Mapper_Asl.classpath}" todir="${build.classes.dir}"/>
     </target>
     <target if="is.server.weblogic" name="-library-inclusion-in-archive-weblogic">
-        <basename file="${reference.RetailBankingSystemRemoteInterface.jar}" property="manifest.reference.RetailBankingSystemRemoteInterface.jar"/>
+        <basename file="${libs.Apache_Commons_Codec_1.10.classpath}" property="manifest.libs.Apache_Commons_Codec_1.10.classpath"/>
+        <basename file="${libs.Aerogear_OTP.classpath}" property="manifest.libs.Aerogear_OTP.classpath"/>
+        <basename file="${libs.Twilio_Java.classpath}" property="manifest.libs.Twilio_Java.classpath"/>
+        <basename file="${libs.Apache_Httpcore.classpath}" property="manifest.libs.Apache_Httpcore.classpath"/>
+        <basename file="${libs.Apache_Httpclient.classpath}" property="manifest.libs.Apache_Httpclient.classpath"/>
+        <basename file="${libs.Apache_Commons_Logging_1.2.classpath}" property="manifest.libs.Apache_Commons_Logging_1.2.classpath"/>
+        <basename file="${libs.Apache_Commons_Lang3_3.4.classpath}" property="manifest.libs.Apache_Commons_Lang3_3.4.classpath"/>
+        <basename file="${libs.Jackson_Core_Asl.classpath}" property="manifest.libs.Jackson_Core_Asl.classpath"/>
+        <basename file="${libs.Jackson_Mapper_Asl.classpath}" property="manifest.libs.Jackson_Mapper_Asl.classpath"/>
         <manifest file="${build.ear.classes.dir}/META-INF/MANIFEST.MF" mode="update">
-            <attribute name="Extension-List" value="jar-1 "/>
-            <attribute name="jar-1-Extension-Name" value="${manifest.reference.RetailBankingSystemRemoteInterface.jar}"/>
+            <attribute name="Extension-List" value="jar-1 jar-2 jar-3 jar-4 jar-5 jar-6 jar-7 jar-8 jar-9 "/>
+            <attribute name="jar-1-Extension-Name" value="${manifest.libs.Apache_Commons_Codec_1.10.classpath}"/>
+            <attribute name="jar-2-Extension-Name" value="${manifest.libs.Aerogear_OTP.classpath}"/>
+            <attribute name="jar-3-Extension-Name" value="${manifest.libs.Twilio_Java.classpath}"/>
+            <attribute name="jar-4-Extension-Name" value="${manifest.libs.Apache_Httpcore.classpath}"/>
+            <attribute name="jar-5-Extension-Name" value="${manifest.libs.Apache_Httpclient.classpath}"/>
+            <attribute name="jar-6-Extension-Name" value="${manifest.libs.Apache_Commons_Logging_1.2.classpath}"/>
+            <attribute name="jar-7-Extension-Name" value="${manifest.libs.Apache_Commons_Lang3_3.4.classpath}"/>
+            <attribute name="jar-8-Extension-Name" value="${manifest.libs.Jackson_Core_Asl.classpath}"/>
+            <attribute name="jar-9-Extension-Name" value="${manifest.libs.Jackson_Mapper_Asl.classpath}"/>
         </manifest>
     </target>
     <target depends="compile" name="library-inclusion-in-manifest">
-        <!--<copyfiles files="${reference.RetailBankingSystemRemoteInterface.jar}" todir="${dist.ear.dir}/lib"/>-->
+        <copyfiles files="${libs.Apache_Commons_Codec_1.10.classpath}" todir="${dist.ear.dir}/lib"/>
+        <copyfiles files="${libs.Aerogear_OTP.classpath}" todir="${dist.ear.dir}/lib"/>
+        <copyfiles files="${libs.Twilio_Java.classpath}" todir="${dist.ear.dir}/lib"/>
+        <copyfiles files="${libs.Apache_Httpcore.classpath}" todir="${dist.ear.dir}/lib"/>
+        <copyfiles files="${libs.Apache_Httpclient.classpath}" todir="${dist.ear.dir}/lib"/>
+        <copyfiles files="${libs.Apache_Commons_Logging_1.2.classpath}" todir="${dist.ear.dir}/lib"/>
+        <copyfiles files="${libs.Apache_Commons_Lang3_3.4.classpath}" todir="${dist.ear.dir}/lib"/>
+        <copyfiles files="${libs.Jackson_Core_Asl.classpath}" todir="${dist.ear.dir}/lib"/>
+        <copyfiles files="${libs.Jackson_Mapper_Asl.classpath}" todir="${dist.ear.dir}/lib"/>
         <manifest file="${build.ear.classes.dir}/META-INF/MANIFEST.MF" mode="update"/>
     </target>
     <target name="-copy-meta-inf">
@@ -1194,9 +1218,7 @@ exists or setup the property manually. For example like this:
     <!--
                 CLEANUP SECTION
             -->
-    <target depends="init" name="deps-clean" unless="no.deps">
-        <!--<ant antfile="${project.RetailBankingSystemRemoteInterface}/build.xml" inheritall="false" target="clean"/>-->
-    </target>
+    <target depends="init" name="deps-clean" unless="no.deps"/>
     <target depends="init" name="-do-clean">
         <delete dir="${build.dir}"/>
         <delete dir="${dist.dir}"/>
