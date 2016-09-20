@@ -11,7 +11,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.PersistenceContext;
 import java.util.List;
-import java.util.Date;
 import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -203,7 +202,7 @@ public class TransactionSession implements TransactionSessionLocal {
     }
 
     @Override
-    public String fundTransfer(String fromAccount, String toAccount, String transferAmt) {
+    public Long fundTransfer(String fromAccount, String toAccount, String transferAmt) {
 
         BankAccount bankAccountFrom = bankAccountSessionLocal.retrieveBankAccountByNum(fromAccount);
         BankAccount bankAccountTo = bankAccountSessionLocal.retrieveBankAccountByNum(toAccount);
@@ -241,7 +240,7 @@ public class TransactionSession implements TransactionSessionLocal {
         Double transfer = Double.valueOf(bankAccountFrom.getTransferBalance()) - Double.valueOf(transferAmt);
         bankAccountFrom.setTransferBalance(transfer.toString());
 
-        return "Fund Transfer Sucessfully!";
+        return fromTransactionId;
     }
 
     @Override
@@ -272,11 +271,11 @@ public class TransactionSession implements TransactionSessionLocal {
                 bankAccount.setBankAccountStatus("Activated");
             }
         } else if (bankAccountType.equals("Fixed Deposit Account")) {
-            
+
             if (bankAccount.getBankAccountDepositPeriod().equals("None")) {
                 return "Please declare your deposit period";
             } else {
-                
+
                 if (Double.valueOf(initialDepositAmount) < 1000) {
                     return "Initial deposit amount is insufficient.";
                 } else if (Double.valueOf(initialDepositAmount) > 999999) {

@@ -226,22 +226,22 @@ public class BankAccountSession implements BankAccountSessionLocal {
             Double totalInterest = 0.0;
             Double accuredInterest = 0.0;
             Double finalBalance = 0.0;
-            Double finalInterest =0.0;
+            Double finalInterest = 0.0;
             Interest interest = new Interest();
 
-            if (activatedBankAccount.getFixedDepositStatus().equals("Deposited")&&activatedBankAccount.getBankAccountType().equals("Fixed Deposit Account")) {
+            if (activatedBankAccount.getFixedDepositStatus().equals("Deposited") && activatedBankAccount.getBankAccountType().equals("Fixed Deposit Account")) {
 
                 if (activatedBankAccount.getInterest().getIsTransfer().equals("1") || activatedBankAccount.getInterest().getIsWithdraw().equals("1")) {
 
                     interest = activatedBankAccount.getInterest();
                     interest.setIsTransfer("0");
                     interest.setIsWithdraw("0");
-                    
+
                     currentInterest = Double.valueOf(activatedBankAccount.getInterest().getDailyInterest());
                     interest.setDailyInterest("0");
                     activatedBankAccount.setFixedDepositStatus("Withdrawn");
                     activatedBankAccount.setBankAccountDepositPeriod("None");
-                    
+
                     finalInterest = currentInterest * 0.4;
 
                     currentBalance = Double.valueOf(activatedBankAccount.getBankAccountBalance());
@@ -262,7 +262,7 @@ public class BankAccountSession implements BankAccountSessionLocal {
                             finalInterest.toString(), accountCredit, activatedBankAccount.getBankAccountId());
 
                 } else {
-                    
+
                     Double currentPeriod = Double.valueOf(activatedBankAccount.getCurrentFixedDepositPeriod());
                     Double finalPeriod = currentPeriod + 1;
                     activatedBankAccount.setCurrentFixedDepositPeriod(finalPeriod.toString());
@@ -277,7 +277,7 @@ public class BankAccountSession implements BankAccountSessionLocal {
                     interest = activatedBankAccount.getInterest();
 
                     if (activatedBankAccount.getCurrentFixedDepositPeriod().equals(activatedBankAccount.getBankAccountDepositPeriod())) {
-                        
+
                         interest.setDailyInterest(totalInterest.toString());
                         finalBalance = currentBalance + totalInterest;
 
@@ -303,7 +303,7 @@ public class BankAccountSession implements BankAccountSessionLocal {
                         interest.setDailyInterest(totalInterest.toString());
                     }
                 }
-            } else if (activatedBankAccount.getFixedDepositStatus().equals("Withdrawn")&&activatedBankAccount.getBankAccountType().equals("Fixed Deposit Account")) {
+            } else if (activatedBankAccount.getFixedDepositStatus().equals("Withdrawn") && activatedBankAccount.getBankAccountType().equals("Fixed Deposit Account")) {
 
                 currentInterest = Double.valueOf(activatedBankAccount.getInterest().getDailyInterest());
                 currentBalance = Double.valueOf(activatedBankAccount.getBankAccountBalance());
@@ -314,7 +314,7 @@ public class BankAccountSession implements BankAccountSessionLocal {
                 interest.setDailyInterest(totalInterest.toString());
 
             } else {
-                
+
                 currentInterest = Double.valueOf(activatedBankAccount.getInterest().getDailyInterest());
                 currentBalance = Double.valueOf(activatedBankAccount.getBankAccountBalance());
 
