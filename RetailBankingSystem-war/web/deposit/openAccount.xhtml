@@ -376,8 +376,8 @@
                                         <f:selectItem itemLabel="Yemen" itemValue="Yemen" />
                                         <f:selectItem itemLabel="Zambia" itemValue="Zambia" />
                                         <f:selectItem itemLabel="Zimbabwe" itemValue="Zimbabwe" />
-                                        <p:ajax event="change" update="panelCustomerNationalitySG" listener="#{accountManagedBean.show2()}"/>
-                                        <p:ajax event="change" update="panelCustomerNationalityOthers" listener="#{accountManagedBean.show3()}"/>
+                                        <p:ajax event="change" update="panelCustomerNationalitySG panelCustomerNRIC panelPassport" listener="#{accountManagedBean.show2()}"/>
+                                        <p:ajax event="change" update="panelCustomerNationalityOthers panelCustomerNRIC panelPassport" listener="#{accountManagedBean.show3()}"/>
                                     </p:selectOneMenu>
                                 </p:column>
                                 <p:column>
@@ -392,7 +392,9 @@
                                     <p:outputLabel for="customerNRICSG" style="font-weight: bold" value="NRIC No.: " />
                                 </p:column>
                                 <p:column>
-                                    <p:inputText label="customerNRICSG" id="customerNRICSG" value="#{accountManagedBean.customerNRICSG}">
+                                    <p:inputText label="customerNRICSG" id="customerNRICSG" value="#{accountManagedBean.customerNRICSG}"
+                                                 maxlength="9" validatorMessage="Invalid NRIC Number">
+                                        <f:validateLength minimum="9" maximum="9" />
                                     </p:inputText>
                                 </p:column>
                                 <p:column>
@@ -426,8 +428,9 @@
                                     <p:outputLabel for="customerNRIC" style="font-weight: bold" value="NRIC No.: " />
                                 </p:column>
                                 <p:column>
-                                    <p:inputText label="customerNRIC" id="customerNRIC"
-                                                 value="#{accountManagedBean.customerNRIC}">
+                                    <p:inputText label="customerNRIC" id="customerNRIC" maxlength="9"
+                                                 value="#{accountManagedBean.customerNRIC}" validatorMessage="Invalid NRIC Number">
+                                        <f:validateLength minimum="9" maximum="9" />
                                     </p:inputText>
                                 </p:column>
                                 <p:column>

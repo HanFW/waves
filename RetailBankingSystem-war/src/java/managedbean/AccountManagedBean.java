@@ -114,7 +114,7 @@ public class AccountManagedBean implements Serializable {
     //ec = FacesContext.getCurrentInstance().getExternalContext();
     public AccountManagedBean() {
     }
-    
+
     public void show() {
 
         if (customerSalutation.equals("Others")) {
@@ -129,8 +129,11 @@ public class AccountManagedBean implements Serializable {
     }
 
     public void show2() {
+
         if (customerNationality.equals("Singapore")) {
             visible2 = true;
+            visible4 = false;
+            visible5 = false;
         } else {
             visible2 = false;
         }
@@ -141,8 +144,11 @@ public class AccountManagedBean implements Serializable {
     }
 
     public void show3() {
+
         if (!customerNationality.equals("Singapore")) {
             visible3 = true;
+            visible4 = false;
+            visible5 = false;
         } else {
             visible3 = false;
         }
@@ -729,8 +735,8 @@ public class AccountManagedBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! You don't have Merlion bank account yet.", "Failed!"));
         } else if (existingCustomer.equals("No") && !checkExist && agreement) {
 
-            customerAddress = customerStreetName + ", "+customerBlockNum +", "+ customerUnitNum +", "+ customerPostal;
-            
+            customerAddress = customerStreetName + ", " + customerBlockNum + ", " + customerUnitNum + ", " + customerPostal;
+
             newCustomerBasicId = customerSessionBean.addNewCustomerBasic(customerName,
                     customerSalutation, customerIdentificationNum.toUpperCase(),
                     customerGender, customerEmail, customerMobile.toString(), dateOfBirth,
