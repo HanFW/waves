@@ -73,8 +73,8 @@
                     </p:column>
 
                     <p:column headerText="Balance"> 
-                        <p:commandLink process="@this" action="/web/onlineBanking/deposit/customerViewTransactionDone.xhtml" >
-                            <h:outputText value="#{bankAccount.bankAccountBalance}" />
+                        <p:commandLink process="@this" action="viewTransactionDone.xhtml" >
+                            <h:outputText value="S$#{bankAccount.bankAccountBalance}" />
                             <f:setPropertyActionListener value="#{bankAccount.bankAccountNum}" target="#{transactionManagedBean.bankAccountNum}" />
                         </p:commandLink>
                     </p:column>

@@ -57,13 +57,12 @@ public class AccountManagedBean implements Serializable {
     private String fixedDepositStatus;
 
     private String existingCustomer;
-    private String onlyOneAccount;
     private Long customerBasicId;
     private String customerSalutation;
     private String customerSalutationOthers;
     private String customerName;
     private String customerEmail;
-    private String customerMobile;
+    private Integer customerMobile;
     private String customerNationality;
     private String customerCountryOfResidence;
     private Date customerDateOfBirth;
@@ -115,7 +114,7 @@ public class AccountManagedBean implements Serializable {
     //ec = FacesContext.getCurrentInstance().getExternalContext();
     public AccountManagedBean() {
     }
-    
+
     public void show() {
 
         if (customerSalutation.equals("Others")) {
@@ -130,8 +129,12 @@ public class AccountManagedBean implements Serializable {
     }
 
     public void show2() {
+
         if (customerNationality.equals("Singapore")) {
             visible2 = true;
+            visible4 = false;
+            visible5 = false;
+            singaporePR=null;
         } else {
             visible2 = false;
         }
@@ -142,8 +145,12 @@ public class AccountManagedBean implements Serializable {
     }
 
     public void show3() {
+
         if (!customerNationality.equals("Singapore")) {
             visible3 = true;
+            visible4 = false;
+            visible5 = false;
+            singaporePR = null;
         } else {
             visible3 = false;
         }
@@ -323,14 +330,6 @@ public class AccountManagedBean implements Serializable {
         this.customerEmail = customerEmail;
     }
 
-    public String getCustomerMobile() {
-        return customerMobile;
-    }
-
-    public void setCustomerMobile(String customerMobile) {
-        this.customerMobile = customerMobile;
-    }
-
     public String getCustomerNationality() {
         return customerNationality;
     }
@@ -457,14 +456,6 @@ public class AccountManagedBean implements Serializable {
 
     public void setExistingCustomer(String existingCustomer) {
         this.existingCustomer = existingCustomer;
-    }
-
-    public String getOnlyOneAccount() {
-        return onlyOneAccount;
-    }
-
-    public void setOnlyOneAccount(String onlyOneAccount) {
-        this.onlyOneAccount = onlyOneAccount;
     }
 
     public Long getNewInterestId() {
@@ -679,6 +670,14 @@ public class AccountManagedBean implements Serializable {
         this.customerUnitNum = customerUnitNum;
     }
 
+    public Integer getCustomerMobile() {
+        return customerMobile;
+    }
+
+    public void setCustomerMobile(Integer customerMobile) {
+        this.customerMobile = customerMobile;
+    }
+
     public void saveAccount() throws IOException {
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
@@ -738,11 +737,11 @@ public class AccountManagedBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! You don't have Merlion bank account yet.", "Failed!"));
         } else if (existingCustomer.equals("No") && !checkExist && agreement) {
 
-            customerAddress = customerStreetName + ", "+customerBlockNum +", "+ customerUnitNum +", "+ customerPostal;
-            
+            customerAddress = customerStreetName + ", " + customerBlockNum + ", " + customerUnitNum + ", " + customerPostal;
+
             newCustomerBasicId = customerSessionBean.addNewCustomerBasic(customerName,
                     customerSalutation, customerIdentificationNum.toUpperCase(),
-                    customerGender, customerEmail, customerMobile, dateOfBirth,
+                    customerGender, customerEmail, customerMobile.toString(), dateOfBirth,
                     customerNationality, customerCountryOfResidence, customerRace,
                     customerMaritalStatus, customerOccupation, customerCompany,
                     customerAddress, customerPostal, customerOnlineBankingAccountNum,
@@ -795,43 +794,6 @@ public class AccountManagedBean implements Serializable {
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         Map<String, Object> sessionMap = externalContext.getSessionMap();
         sessionMap.put("customerSignature", customerSignature);
-    }
-
-    public void deleteAccount() throws IOException {
-        ec = FacesContext.getCurrentInstance().getExternalContext();
-
-        bankAccount = bankAccountSessionLocal.retrieveBankAccountByNum(bankAccountNum);
-        bankAccountType = bankAccount.getBankAccountType();
-
-        if (onlyOneAccount.equals("Yes")) {
-            if (!bankAccount.getBankAccountBalance().equals("0")) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Please withdraw all your money.", "Failed!"));
-            } else {
-                bankAccountSessionLocal.deleteAccount(bankAccountNum);
-                statusMessage = "Account has been successfully deleted.";
-
-                ec.getFlash().put("statusMessage", statusMessage);
-                ec.getFlash().put("bankAccountNum", bankAccountNum);
-                ec.getFlash().put("bankAccountType", bankAccountType);
-
-                ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerDeleteAccount.xhtml?faces-redirect=true");
-            }
-
-        } else if (onlyOneAccount.equals("No")) {
-            if (!bankAccount.getBankAccountBalance().equals("0")) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Please withdraw all your money.", "Failed!"));
-            } else {
-                bankAccountSessionLocal.deleteAccount(bankAccountNum);
-                customerSessionBean.deleteCustomerBasic(customerIdentificationNum);
-                statusMessage = "Account has been successfully deleted.";
-
-                ec.getFlash().put("statusMessage", statusMessage);
-                ec.getFlash().put("bankAccountNum", bankAccountNum);
-                ec.getFlash().put("bankAccountType", bankAccountType);
-
-                ec.redirect("ec.getRequestContextPath() + \"/web/onlineBanking/deposit/customerDeleteAccount.xhtml?faces-redirect=true\"");
-            }
-        }
     }
 
     public void checkIdentificationType() {

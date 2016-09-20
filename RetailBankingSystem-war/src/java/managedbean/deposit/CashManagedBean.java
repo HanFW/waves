@@ -24,12 +24,12 @@ public class CashManagedBean {
     private TransactionSessionBeanLocal transactionSessionLocal;
 
     private String depositModel;
-    private String depositAmt;
+    private Double depositAmt;
     private String depositAccountNum;
     private String depositAccountPwd;
     private String confirmDepositAccountPwd;
 
-    private String withdrawAmt;
+    private Double withdrawAmt;
     private String withdrawAccountNum;
     private String withdrawAccountPwd;
     private String confirmWithdrawAccountPwd;
@@ -52,11 +52,11 @@ public class CashManagedBean {
         this.depositModel = depositModel;
     }
 
-    public String getDepositAmt() {
+    public Double getDepositAmt() {
         return depositAmt;
     }
 
-    public void setDepositAmt(String depositAmt) {
+    public void setDepositAmt(Double depositAmt) {
         this.depositAmt = depositAmt;
     }
 
@@ -84,11 +84,11 @@ public class CashManagedBean {
         this.depositAccountPwd = depositAccountPwd;
     }
 
-    public String getWithdrawAmt() {
+    public Double getWithdrawAmt() {
         return withdrawAmt;
     }
 
-    public void setWithdrawAmt(String withdrawAmt) {
+    public void setWithdrawAmt(Double withdrawAmt) {
         this.withdrawAmt = withdrawAmt;
     }
 
@@ -138,7 +138,7 @@ public class CashManagedBean {
         } else {
 
             if (bankAccount.getBankAccountStatus().equals("Activated")) {
-                transactionSessionLocal.cashDeposit(depositAccountNum, depositAmt);
+                transactionSessionLocal.cashDeposit(depositAccountNum, depositAmt.toString());
 
                 statusMessage = "Cash deposit Successfully!";
 
@@ -149,7 +149,7 @@ public class CashManagedBean {
                 ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerDepositDone.xhtml?faces-redirect=true");
             } else if (bankAccount.getBankAccountStatus().equals("Inactivated")) {
 
-                activationCheck = transactionSessionLocal.checkAccountActivation(depositAccountNum, depositAmt);
+                activationCheck = transactionSessionLocal.checkAccountActivation(depositAccountNum, depositAmt.toString());
                 
                 if (activationCheck.equals("Initial deposit amount is insufficient.")) {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!Initial deposit amount is insufficient.", "Failed"));
@@ -159,7 +159,7 @@ public class CashManagedBean {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!Please declare your fixed deposit period first.", "Failed"));
                 } else if (activationCheck.equals("Activated successfully.")) {
                 
-                    transactionSessionLocal.cashDeposit(depositAccountNum, depositAmt);
+                    transactionSessionLocal.cashDeposit(depositAccountNum, depositAmt.toString());
 
                     statusMessage = "Cash deposit Successfully!";
 
@@ -191,9 +191,9 @@ public class CashManagedBean {
             withdrawAccountNum = null;
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Your bank account does not exist.", "Bank account does not exist!"));
         } else {
-            Double diffAmt = Double.valueOf(bankAccount.getBankAccountBalance()) - Double.valueOf(withdrawAmt);
+            Double diffAmt = Double.valueOf(bankAccount.getBankAccountBalance()) - withdrawAmt;
             if (diffAmt >= 0) {
-                transactionSessionLocal.cashWithdraw(withdrawAccountNum, withdrawAmt);
+                transactionSessionLocal.cashWithdraw(withdrawAccountNum, withdrawAmt.toString());
                 statusMessage = "Cash withdraw Successfully!";
 
                 ec.getFlash().put("statusMessage", statusMessage);
