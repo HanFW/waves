@@ -55,12 +55,11 @@
         <filter-name>Character Encoding Filter</filter-name>
         <servlet-name>Faces Servlet</servlet-name>
     </filter-mapping>
- 
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>*.jsf</url-pattern>
     </servlet-mapping>
- 
+
     <mime-mapping>
         <extension>ttf</extension>
         <mime-type>application/font-sfnt</mime-type>
@@ -105,4 +104,6 @@
         <extension>svg#fontawesomeregular</extension>
         <mime-type>image/svg+xml</mime-type>
     </mime-mapping>
+    
+  
 </web-app>
