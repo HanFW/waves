@@ -57,7 +57,6 @@ public class AccountManagedBean implements Serializable {
     private String fixedDepositStatus;
 
     private String existingCustomer;
-    private String onlyOneAccount;
     private Long customerBasicId;
     private String customerSalutation;
     private String customerSalutationOthers;
@@ -451,14 +450,6 @@ public class AccountManagedBean implements Serializable {
         this.existingCustomer = existingCustomer;
     }
 
-    public String getOnlyOneAccount() {
-        return onlyOneAccount;
-    }
-
-    public void setOnlyOneAccount(String onlyOneAccount) {
-        this.onlyOneAccount = onlyOneAccount;
-    }
-
     public Long getNewInterestId() {
         return newInterestId;
     }
@@ -795,43 +786,6 @@ public class AccountManagedBean implements Serializable {
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         Map<String, Object> sessionMap = externalContext.getSessionMap();
         sessionMap.put("customerSignature", customerSignature);
-    }
-
-    public void deleteAccount() throws IOException {
-        ec = FacesContext.getCurrentInstance().getExternalContext();
-
-        bankAccount = bankAccountSessionLocal.retrieveBankAccountByNum(bankAccountNum);
-        bankAccountType = bankAccount.getBankAccountType();
-
-        if (onlyOneAccount.equals("Yes")) {
-            if (!bankAccount.getBankAccountBalance().equals("0")) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Please withdraw all your money.", "Failed!"));
-            } else {
-                bankAccountSessionLocal.deleteAccount(bankAccountNum);
-                statusMessage = "Account has been successfully deleted.";
-
-                ec.getFlash().put("statusMessage", statusMessage);
-                ec.getFlash().put("bankAccountNum", bankAccountNum);
-                ec.getFlash().put("bankAccountType", bankAccountType);
-
-                ec.redirect("deleteAccount.xhtml?faces-redirect=true");
-            }
-
-        } else if (onlyOneAccount.equals("No")) {
-            if (!bankAccount.getBankAccountBalance().equals("0")) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Please withdraw all your money.", "Failed!"));
-            } else {
-                bankAccountSessionLocal.deleteAccount(bankAccountNum);
-                customerSessionBean.deleteCustomerBasic(customerIdentificationNum);
-                statusMessage = "Account has been successfully deleted.";
-
-                ec.getFlash().put("statusMessage", statusMessage);
-                ec.getFlash().put("bankAccountNum", bankAccountNum);
-                ec.getFlash().put("bankAccountType", bankAccountType);
-
-                ec.redirect("deleteAccount.xhtml?faces-redirect=true");
-            }
-        }
     }
 
     public void checkIdentificationType() {

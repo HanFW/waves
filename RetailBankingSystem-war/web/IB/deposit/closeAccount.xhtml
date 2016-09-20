@@ -20,7 +20,7 @@
                 <p:submenu label="Home">
                     <p:menuitem value="Home" url="index.xhtml" />
                 </p:submenu>
-                
+
                 <p:submenu label="My Account">
                     <p:menuitem value="Open Account" url="openAccount.xhtml" />
                     <p:menuitem value="Close Account" url="closeAccount.xhtml" />
@@ -30,7 +30,7 @@
                     <p:menuitem value="View Transaction" url="viewTransaction.xhtml" />
                     <p:menuitem value="Activate Fixed Deposit Account" url="activateFixedDepositAccount.xhtml" />
                 </p:submenu>
-                
+
                 <p:submenu label="Transfer" >
                     <p:menuitem value="To My Account" url="toMyAccount.xhtml" />
                     <p:menuitem value="To Other Merlion Accounts" url="toOthersAccount.xhtml" />
@@ -42,81 +42,59 @@
             </p:menubar>
             <br/>
             <p:panel id="panel" header="Close Account"> 
-                <p:messages />
-                
+                <p:messages globalOnly="true"/>
+
                 <p:panelGrid>
+
                     <p:row>
                         <p:column>
-                            <p:outputLabel for="customerName" style="font-weight: bold" value="Customer Name: " />
+                            <p:outputLabel for="bankAccountNum" style="font-weight: bold" value="Account Number: " />
                         </p:column>
                         <p:column>
-                            <p:inputText required="true" label="Customer Name" requiredMessage="Customer name is required." id="customerName"
-                                         value="#{accountManagedBean.customerName}">
-                            </p:inputText>
-                        </p:column>
-                        <p:column>
-                            <p:message for="customerName" />
-                        </p:column>
-                    </p:row>
-                    
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel for="customerIdentificationNum" style="font-weight: bold" value="Identification Number: " />
-                        </p:column>
-                        <p:column>
-                            <p:inputText required="true" label="Nationality" requiredMessage="Identification number is required." id="customerIdentificationNum"
-                                         value="#{accountManagedBean.customerIdentificationNum}">
-                            </p:inputText>
-                        </p:column>
-                        <p:column>
-                            <p:message for="customerIdentificationNum" />
-                        </p:column>
-                    </p:row>
-                    
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel for="bankAccountNum" style="font-weight: bold" value="Account Num: " />
-                        </p:column>
-                        <p:column>
-                            <p:inputText required="true" label="Account Num" requiredMessage="Account Number is required." id="bankAccountNum"
-                                         value="#{accountManagedBean.bankAccountNum}">
-                            </p:inputText>
+                            <p:selectOneMenu id="bankAccountNum" value="#{closeAccountManagedBean.bankAccountNumWithType}" effect="fold" editable="true"
+                                             required="true" requiredMessage="Required Field">
+                                <f:selectItems value="#{closeAccountManagedBean.myBankAccounts}" />
+                            </p:selectOneMenu>
                         </p:column>
                         <p:column>
                             <p:message for="bankAccountNum" />
                         </p:column>
                     </p:row>
-                    
+
                     <p:row>
                         <p:column>
                             <p:outputLabel for="bankAccountPwd" style="font-weight: bold" value="Account Password: " />
                         </p:column>
                         <p:column>
-                            <p:password id="bankAccountPwd" value="#{accountManagedBean.bankAccountPwd}" match="confirmBankAccountPwd" 
-                                        required="true" requiredMessage="Account password is required."/>
+                            <p:password id="bankAccountPwd" value="#{closeAccountManagedBean.bankAccountPwd}" match="confirmBankAccountPwd" 
+                                        required="true" requiredMessage="Required Field">
+                                <f:validateLength minimum="6" maximum="6" />
+                            </p:password>
                         </p:column>
                         <p:column>
                             <p:message for="bankAccountPwd" />
                         </p:column>
                     </p:row>   
-                    
+
                     <p:row>
                         <p:column>
                             <p:outputLabel for ="confirmBankAccountPwd" style="font-weight:bold" value="Confirm Password: " />
                         </p:column>
                         <p:column>
-                            <p:password id="confirmBankAccountPwd" value="#{accountManagedBean.confirmBankAccountPwd}" 
-                                        label="Confirm Password" required="true" />
+                            <p:password id="confirmBankAccountPwd" value="#{closeAccountManagedBean.confirmBankAccountPwd}" 
+                                        label="Confirm Password" required="true" maxlength="6">
+                                <f:validateLength minimum="6" maximum="6" />
+                            </p:password>
                         </p:column>
                     </p:row>
-                    
+
                     <p:row>
                         <p:column>
                             <p:outputLabel for="onlyOneAccount" style="font-weight: bold" value="Do you have more than one accounts?" />
                         </p:column>
                         <p:column>
-                            <p:selectOneRadio id="onlyOneAccount" value="#{accountManagedBean.onlyOneAccount}"
-                                              required="true">
+                            <p:selectOneRadio id="onlyOneAccount" value="#{closeAccountManagedBean.onlyOneAccount}"
+                                              required="true" requiredMessage="Required Field">
                                 <f:selectItem itemLabel="Yes" itemValue="Yes" />
                                 <f:selectItem itemLabel="No" itemValue="No" />
                             </p:selectOneRadio>
@@ -130,14 +108,14 @@
                 <p:commandButton id="cancelBtn" action="index.xhtml" value="Cancel" update="panel" immediate = "true">
                     <p:confirm header="Cancel" message="Are you sure?" />
                 </p:commandButton>
-                
+
                 <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
                     <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" action="index.xhtml"/>
                     <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" />
                 </p:confirmDialog>
-                
+
                 <p:commandButton id="deleteBtn" value="Delete Account" update="panel" 
-                                 actionListener="#{accountManagedBean.deleteAccount}" ajax="true" />
+                                 actionListener="#{closeAccountManagedBean.deleteAccount}" ajax="true" />
             </p:panel>
         </h:form>
     </h:body>
