@@ -5,7 +5,7 @@
  */
 package managedbean;
 
-import entity.CustomerBasic;
+import ejb.customer.entity.CustomerBasic;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.inject.Named;
@@ -13,7 +13,7 @@ import javax.enterprise.context.Dependent;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import session.stateless.EnquirySessionBeanLocal;
+import ejb.customer.session.EnquirySessionBeanLocal;
 
 /**
  *

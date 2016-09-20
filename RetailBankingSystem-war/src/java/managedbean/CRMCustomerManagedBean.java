@@ -5,7 +5,7 @@
  */
 package managedbean;
 
-import entity.CustomerBasic;
+import ejb.customer.entity.CustomerBasic;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
@@ -17,9 +17,9 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import session.stateless.CRMCustomerSessionBean;
+import ejb.customer.session.CRMCustomerSessionBean;
 import javax.faces.event.ActionEvent;
-import session.stateless.AdminSessionBean;
+import ejb.infrastructure.session.AdminSessionBean;
 
 /**
  *

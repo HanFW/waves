@@ -1,8 +1,8 @@
 package managedbean;
 
-import entity.BankAccount;
-import entity.CustomerBasic;
-import entity.Payee;
+import ejb.deposit.entity.BankAccount;
+import ejb.customer.entity.CustomerBasic;
+import ejb.deposit.entity.Payee;
 import java.io.IOException;
 import java.io.Serializable;
 import javax.ejb.EJB;
@@ -12,7 +12,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
-import session.stateless.BankAccountSessionLocal;
+import ejb.deposit.session.BankAccountSessionLocal;
 
 @Named(value = "accountDataTableBean")
 @RequestScoped

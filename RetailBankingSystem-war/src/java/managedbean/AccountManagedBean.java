@@ -1,9 +1,9 @@
 package managedbean;
 
-import entity.CustomerBasic;
+import ejb.customer.entity.CustomerBasic;
 import javax.ejb.EJB;
-import session.stateless.CRMCustomerSessionBean;
-import entity.BankAccount;
+import ejb.customer.session.CRMCustomerSessionBean;
+import ejb.deposit.entity.BankAccount;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -19,8 +19,8 @@ import javax.inject.Named;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.FlowEvent;
 import org.primefaces.model.UploadedFile;
-import session.stateless.BankAccountSessionLocal;
-import session.stateless.InterestSessionLocal;
+import ejb.deposit.session.BankAccountSessionLocal;
+import ejb.deposit.session.InterestSessionLocal;
 import javax.faces.view.ViewScoped;
 import org.apache.commons.io.IOUtils;
 

@@ -6,7 +6,7 @@ package managedbean;
  * and open the template in the editor.
  */
 
-import entity.Employee;
+import ejb.infrastructure.entity.Employee;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.logging.Level;
@@ -18,8 +18,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.persistence.Query;
-import session.stateless.AdminSessionBeanLocal;
-import session.stateless.EmployeeAdminSessionBeanLocal;
+import ejb.infrastructure.session.AdminSessionBeanLocal;
+import ejb.infrastructure.session.EmployeeAdminSessionBeanLocal;
 
 /**
  *

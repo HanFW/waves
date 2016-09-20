@@ -1,7 +1,7 @@
 package managedbean;
 
-import entity.BankAccount;
-import entity.CustomerBasic;
+import ejb.deposit.entity.BankAccount;
+import ejb.customer.entity.CustomerBasic;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,7 +12,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import session.stateless.BankAccountSessionLocal;
+import ejb.deposit.session.BankAccountSessionLocal;
 
 @Named(value = "fixedDepositAccountManagedBean")
 @RequestScoped

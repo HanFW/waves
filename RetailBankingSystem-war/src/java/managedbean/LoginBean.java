@@ -5,7 +5,7 @@
  */
 package managedbean;
 
-import entity.CustomerBasic;
+import ejb.customer.entity.CustomerBasic;
 import java.io.IOException;
 import java.io.Serializable;
 import java.security.MessageDigest;
@@ -19,8 +19,8 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import org.primefaces.context.RequestContext;
-import session.stateless.AdminSessionBeanLocal;
-import session.stateless.CustomerEmailSessionBeanLocal;
+import ejb.infrastructure.session.AdminSessionBeanLocal;
+import ejb.infrastructure.session.CustomerEmailSessionBeanLocal;
 
 /**
  *

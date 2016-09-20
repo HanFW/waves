@@ -1,8 +1,8 @@
 package managedbean;
 
-import entity.BankAccount;
-import entity.CustomerBasic;
-import entity.Payee;
+import ejb.deposit.entity.BankAccount;
+import ejb.customer.entity.CustomerBasic;
+import ejb.deposit.entity.Payee;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
@@ -12,9 +12,9 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
-import session.stateless.BankAccountSessionLocal;
-import session.stateless.CRMCustomerSessionBeanLocal;
-import session.stateless.PayeeSessionLocal;
+import ejb.deposit.session.BankAccountSessionLocal;
+import ejb.customer.session.CRMCustomerSessionBeanLocal;
+import ejb.deposit.session.PayeeSessionLocal;
 
 @Named(value = "payeeManagedBean")
 @RequestScoped

@@ -7,8 +7,8 @@ package managedbean;
  * and open the template in the editor.
  */
 
-import entity.Employee;
-import entity.Role;
+import ejb.infrastructure.entity.Employee;
+import ejb.infrastructure.entity.Role;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
@@ -19,9 +19,9 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import org.primefaces.event.RowEditEvent;
-import session.stateless.AdminSessionBeanLocal;
-import session.stateless.EmployeeAdminSessionBeanLocal;
-import session.stateless.SendEmailSessionBeanLocal;
+import ejb.infrastructure.session.AdminSessionBeanLocal;
+import ejb.infrastructure.session.EmployeeAdminSessionBeanLocal;
+import ejb.infrastructure.session.SendEmailSessionBeanLocal;
 
 /**
  *

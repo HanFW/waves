@@ -1,8 +1,8 @@
 package managedbean;
 
-import entity.BankAccount;
-import entity.CustomerBasic;
-import entity.Payee;
+import ejb.deposit.entity.BankAccount;
+import ejb.customer.entity.CustomerBasic;
+import ejb.deposit.entity.Payee;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -15,9 +15,9 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
-import session.stateless.BankAccountSessionLocal;
-import session.stateless.PayeeSessionLocal;
-import session.stateless.TransactionSessionLocal;
+import ejb.deposit.session.BankAccountSessionLocal;
+import ejb.deposit.session.PayeeSessionLocal;
+import ejb.deposit.session.TransactionSessionLocal;
 
 @Named(value = "transferManagedBean")
 @RequestScoped

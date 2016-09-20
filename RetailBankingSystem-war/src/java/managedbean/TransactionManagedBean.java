@@ -1,12 +1,12 @@
 package managedbean;
 
-import entity.AccTransaction;
+import ejb.deposit.entity.AccTransaction;
 import java.io.IOException;
 import javax.ejb.EJB;
 import java.io.Serializable;
 import java.util.List;
 import javax.faces.context.ExternalContext;
-import session.stateless.TransactionSessionLocal;
+import ejb.deposit.session.TransactionSessionLocal;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;

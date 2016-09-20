@@ -1,7 +1,6 @@
 package managedbean;
 
-import entity.Payee;
-import static entity.Payee_.payeeName;
+import ejb.deposit.entity.Payee;
 import java.io.IOException;
 import java.io.Serializable;
 import javax.ejb.EJB;
@@ -10,7 +9,7 @@ import javax.inject.Named;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import session.stateless.PayeeSessionLocal;
+import ejb.deposit.session.PayeeSessionLocal;
 
 @Named(value = "deletePayeeManagedBean")
 @RequestScoped
