@@ -408,7 +408,7 @@ public class TransferManagedBean {
                         ec.getFlash().put("fromAccountBalance", fromAccountBalance);
                         ec.getFlash().put("toAccountBalance", toAccountBalance);
 
-                        ec.redirect("transferDone.xhtml?faces-redirect=true");
+                        ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerTransferDone.xhtml?faces-redirect=true");
 
                     } else {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!Your account balance is insufficient.", "Failed!"));
