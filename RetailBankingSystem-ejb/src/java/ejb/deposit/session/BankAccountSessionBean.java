@@ -1,7 +1,7 @@
 package ejb.deposit.session;
 
 import ejb.customer.session.CRMCustomerSessionBean;
-import ejb.infrastructure.session.AdminSessionBeanLocal;
+import ejb.infrastructure.session.CustomerAdminSessionBeanLocal;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.entity.AccTransaction;
 import ejb.customer.entity.CustomerBasic;
@@ -29,16 +29,16 @@ import javax.persistence.NonUniqueResultException;
 
 @Stateless
 @LocalBean
-public class BankAccountSession implements BankAccountSessionLocal {
+public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
 
     @EJB
-    private AdminSessionBeanLocal adminSessionBeanLocal;
+    private CustomerAdminSessionBeanLocal adminSessionBeanLocal;
 
     @EJB
-    private TransactionSessionLocal transactionSessionLocal;
+    private TransactionSessionBeanLocal transactionSessionLocal;
 
     @EJB
-    private InterestSessionLocal interestSessionLocal;
+    private InterestSessionBeanLocal interestSessionLocal;
 
     @EJB
     private CRMCustomerSessionBean customerSessionBean;
@@ -172,7 +172,7 @@ public class BankAccountSession implements BankAccountSessionLocal {
         try {
             hashedPwd = md5Hashing(bankAccountPwd);
         } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(BankAccountSession.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(BankAccountSessionBean.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         bankAccount.setBankAccountNum(bankAccountNum);

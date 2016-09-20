@@ -19,8 +19,8 @@ import javax.inject.Named;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.FlowEvent;
 import org.primefaces.model.UploadedFile;
-import ejb.deposit.session.BankAccountSessionLocal;
-import ejb.deposit.session.InterestSessionLocal;
+import ejb.deposit.session.BankAccountSessionBeanLocal;
+import ejb.deposit.session.InterestSessionBeanLocal;
 import javax.faces.view.ViewScoped;
 import org.apache.commons.io.IOUtils;
 
@@ -30,13 +30,13 @@ import org.apache.commons.io.IOUtils;
 public class AccountManagedBean implements Serializable {
 
     @EJB
-    private InterestSessionLocal interestSessionLocal;
+    private InterestSessionBeanLocal interestSessionLocal;
 
     @EJB
     private CRMCustomerSessionBean customerSessionBean;
 
     @EJB
-    private BankAccountSessionLocal bankAccountSessionLocal;
+    private BankAccountSessionBeanLocal bankAccountSessionLocal;
 
     private BankAccount bankAccount;
 

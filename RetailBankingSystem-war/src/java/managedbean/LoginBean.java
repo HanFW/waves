@@ -19,7 +19,7 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import org.primefaces.context.RequestContext;
-import ejb.infrastructure.session.AdminSessionBeanLocal;
+import ejb.infrastructure.session.CustomerAdminSessionBeanLocal;
 import ejb.infrastructure.session.CustomerEmailSessionBeanLocal;
 
 /**
@@ -31,7 +31,7 @@ import ejb.infrastructure.session.CustomerEmailSessionBeanLocal;
 public class LoginBean implements Serializable {
 
     @EJB
-    private AdminSessionBeanLocal adminSessionBeanLocal;
+    private CustomerAdminSessionBeanLocal adminSessionBeanLocal;
 
     private String customerAccount;
     private String customerPassword;

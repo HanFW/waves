@@ -15,9 +15,9 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
-import ejb.deposit.session.BankAccountSessionLocal;
-import ejb.deposit.session.PayeeSessionLocal;
-import ejb.deposit.session.TransactionSessionLocal;
+import ejb.deposit.session.BankAccountSessionBeanLocal;
+import ejb.deposit.session.PayeeSessionBeanLocal;
+import ejb.deposit.session.TransactionSessionBeanLocal;
 
 @Named(value = "transferManagedBean")
 @RequestScoped
@@ -25,13 +25,13 @@ import ejb.deposit.session.TransactionSessionLocal;
 public class TransferManagedBean {
 
     @EJB
-    private PayeeSessionLocal payeeSessionLocal;
+    private PayeeSessionBeanLocal payeeSessionLocal;
 
     @EJB
-    private BankAccountSessionLocal bankAccountSessionLocal;
+    private BankAccountSessionBeanLocal bankAccountSessionLocal;
 
     @EJB
-    private TransactionSessionLocal transactionSessionLocal;
+    private TransactionSessionBeanLocal transactionSessionLocal;
 
     private String fromAccount;
     private Map<String, String> fromAccounts = new HashMap<String, String>();

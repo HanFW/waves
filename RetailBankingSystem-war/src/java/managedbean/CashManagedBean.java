@@ -9,8 +9,8 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
-import ejb.deposit.session.BankAccountSessionLocal;
-import ejb.deposit.session.TransactionSessionLocal;
+import ejb.deposit.session.BankAccountSessionBeanLocal;
+import ejb.deposit.session.TransactionSessionBeanLocal;
 
 @Named(value = "cashManagedBean")
 @RequestScoped
@@ -18,10 +18,10 @@ import ejb.deposit.session.TransactionSessionLocal;
 public class CashManagedBean {
 
     @EJB
-    private BankAccountSessionLocal bankAccountSessionLocal;
+    private BankAccountSessionBeanLocal bankAccountSessionLocal;
 
     @EJB
-    private TransactionSessionLocal transactionSessionLocal;
+    private TransactionSessionBeanLocal transactionSessionLocal;
 
     private String depositModel;
     private String depositAmt;

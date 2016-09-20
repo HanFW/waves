@@ -6,7 +6,7 @@ import javax.ejb.EJB;
 import java.io.Serializable;
 import java.util.List;
 import javax.faces.context.ExternalContext;
-import ejb.deposit.session.TransactionSessionLocal;
+import ejb.deposit.session.TransactionSessionBeanLocal;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
@@ -16,7 +16,7 @@ import javax.inject.Named;
 
 public class TransactionManagedBean implements Serializable{
     @EJB
-    private TransactionSessionLocal transactionSessionLocal;
+    private TransactionSessionBeanLocal transactionSessionLocal;
     
     private ExternalContext ec;
     private String bankAccountNum;

@@ -16,10 +16,10 @@ import javax.persistence.Query;
 @Stateless
 @LocalBean
 
-public class InterestSession implements InterestSessionLocal {
+public class InterestSessionBean implements InterestSessionBeanLocal {
 
     @EJB
-    private BankAccountSessionLocal bankAccountSessionLocal;
+    private BankAccountSessionBeanLocal bankAccountSessionLocal;
 
     @PersistenceContext
     private EntityManager entityManager;

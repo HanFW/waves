@@ -13,7 +13,7 @@ import javax.ejb.Local;
  * @author hanfengwei
  */
 @Local
-public interface AdminSessionBeanLocal {
+public interface CustomerAdminSessionBeanLocal {
     public String createOnlineBankingAccount(Long customerId);
 
     public String login(String customerAccount, String password);

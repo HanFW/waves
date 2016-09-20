@@ -19,7 +19,7 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import ejb.customer.session.CRMCustomerSessionBean;
 import javax.faces.event.ActionEvent;
-import ejb.infrastructure.session.AdminSessionBean;
+import ejb.infrastructure.session.CustomerAdminSessionBean;
 
 /**
  *
@@ -416,12 +416,12 @@ public class CRMCustomerManagedBean {
         try {
             hashedPassword = md5Hashing(customerOnlineBankingPassword + cb.getCustomerIdentificationNum().substring(0, 3));
         } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(AdminSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CustomerAdminSessionBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         try {
             hashedNewPassword = md5Hashing(customerOnlineBankingNewPassword + cb.getCustomerIdentificationNum().substring(0, 3));
         } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(AdminSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CustomerAdminSessionBean.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(customerSessionBean.updateCustomerOnlineBankingAccountPIN(cb.getCustomerOnlineBankingAccountNum(), hashedPassword, hashedNewPassword), " "));

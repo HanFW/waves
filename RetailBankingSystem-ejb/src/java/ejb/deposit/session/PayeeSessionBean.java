@@ -18,13 +18,13 @@ import javax.persistence.NonUniqueResultException;
 
 @Stateless
 @LocalBean
-public class PayeeSession implements PayeeSessionLocal {
+public class PayeeSessionBean implements PayeeSessionBeanLocal {
 
     @EJB
     private CRMCustomerSessionBeanLocal customerSessionBeanLocal;
 
     @EJB
-    private BankAccountSessionLocal bankAccountSessionLocal;
+    private BankAccountSessionBeanLocal bankAccountSessionLocal;
 
     @PersistenceContext
     private EntityManager entityManager;

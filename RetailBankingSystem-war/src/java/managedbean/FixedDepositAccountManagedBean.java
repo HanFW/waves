@@ -12,7 +12,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import ejb.deposit.session.BankAccountSessionLocal;
+import ejb.deposit.session.BankAccountSessionBeanLocal;
 
 @Named(value = "fixedDepositAccountManagedBean")
 @RequestScoped
@@ -20,7 +20,7 @@ import ejb.deposit.session.BankAccountSessionLocal;
 public class FixedDepositAccountManagedBean {
 
     @EJB
-    private BankAccountSessionLocal bankAccountSessionLocal;
+    private BankAccountSessionBeanLocal bankAccountSessionLocal;
 
     private Map<String, String> fixedDepositAccounts = new HashMap<String, String>();
     private String fixedDepositAccountWithType;

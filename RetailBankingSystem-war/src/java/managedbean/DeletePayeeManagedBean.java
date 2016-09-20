@@ -9,7 +9,7 @@ import javax.inject.Named;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import ejb.deposit.session.PayeeSessionLocal;
+import ejb.deposit.session.PayeeSessionBeanLocal;
 
 @Named(value = "deletePayeeManagedBean")
 @RequestScoped
@@ -17,7 +17,7 @@ import ejb.deposit.session.PayeeSessionLocal;
 public class DeletePayeeManagedBean implements Serializable{
 
     @EJB
-    private PayeeSessionLocal payeeSessionLocal;
+    private PayeeSessionBeanLocal payeeSessionLocal;
 
     private String payeeAccountNum;
     private String payeeAccountType;

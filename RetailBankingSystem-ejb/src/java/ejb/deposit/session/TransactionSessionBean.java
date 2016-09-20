@@ -22,10 +22,10 @@ import javax.persistence.NonUniqueResultException;
 
 @Stateless
 @LocalBean
-public class TransactionSession implements TransactionSessionLocal {
+public class TransactionSessionBean implements TransactionSessionBeanLocal {
 
     @EJB
-    private BankAccountSessionLocal bankAccountSessionLocal;
+    private BankAccountSessionBeanLocal bankAccountSessionLocal;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -189,7 +189,7 @@ public class TransactionSession implements TransactionSessionLocal {
         try {
             hashedPwd = md5Hashing(bankAccountPwd);
         } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(BankAccountSession.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(BankAccountSessionBean.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         if (bankAccount.getBankAccountId() == null) {

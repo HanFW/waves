@@ -5,7 +5,7 @@ import java.util.List;
 import javax.ejb.Local;
 
 @Local
-public interface PayeeSessionLocal {
+public interface PayeeSessionBeanLocal {
     public Long addNewPayee(String payeeName,String payeeAccountNum,String payeeAccountType,
             String lastTransactionDate,Long customerBasicId);
     public String deletePayee(String payeeAccountNum);

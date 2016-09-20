@@ -18,7 +18,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.persistence.Query;
-import ejb.infrastructure.session.AdminSessionBeanLocal;
+import ejb.infrastructure.session.CustomerAdminSessionBeanLocal;
 import ejb.infrastructure.session.EmployeeAdminSessionBeanLocal;
 
 /**

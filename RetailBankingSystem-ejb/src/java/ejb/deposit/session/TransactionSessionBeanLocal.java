@@ -8,7 +8,7 @@ import javax.ejb.Local;
 
 
 @Local
-public interface TransactionSessionLocal {
+public interface TransactionSessionBeanLocal {
     public Long addNewTransaction(String transactionDate,String transactionCode,String transactionRef,
             String accountDebit,String accountCredit,Long bankAccountId);
     public String cashDeposit(String bankAccountNum,String depositAmt);

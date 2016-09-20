@@ -12,14 +12,14 @@ import javax.persistence.NonUniqueResultException;
 import javax.persistence.Query;
 import java.time.LocalDate;
 import java.time.Period;
-import ejb.deposit.session.BankAccountSessionLocal;
+import ejb.deposit.session.BankAccountSessionBeanLocal;
 
 @Stateless
 @LocalBean
 
 public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal{
     @EJB
-    private BankAccountSessionLocal bankAccountSessionLocal;
+    private BankAccountSessionBeanLocal bankAccountSessionLocal;
     
     @PersistenceContext
     private EntityManager entityManager;

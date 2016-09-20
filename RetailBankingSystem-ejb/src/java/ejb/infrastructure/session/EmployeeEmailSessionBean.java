@@ -34,7 +34,7 @@ import javax.persistence.Query;
  * @author Jingyuan
  */
 @Stateless
-public class SendEmailSessionBean implements SendEmailSessionBeanLocal {
+public class EmployeeEmailSessionBean implements EmployeeEmailSessionBeanLocal {
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
@@ -55,7 +55,7 @@ public class SendEmailSessionBean implements SendEmailSessionBeanLocal {
         } catch (NoResultException e) {
             return "invalid";
         } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(SendEmailSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(EmployeeEmailSessionBean.class.getName()).log(Level.SEVERE, null, ex);
             return "";
         }
     }
@@ -73,7 +73,7 @@ public class SendEmailSessionBean implements SendEmailSessionBeanLocal {
         } catch (NoResultException e) {
             return "invalid";
         } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(SendEmailSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(EmployeeEmailSessionBean.class.getName()).log(Level.SEVERE, null, ex);
             return "";
         }
     }

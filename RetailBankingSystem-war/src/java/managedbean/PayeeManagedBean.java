@@ -12,9 +12,9 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
-import ejb.deposit.session.BankAccountSessionLocal;
+import ejb.deposit.session.BankAccountSessionBeanLocal;
 import ejb.customer.session.CRMCustomerSessionBeanLocal;
-import ejb.deposit.session.PayeeSessionLocal;
+import ejb.deposit.session.PayeeSessionBeanLocal;
 
 @Named(value = "payeeManagedBean")
 @RequestScoped
@@ -22,13 +22,13 @@ import ejb.deposit.session.PayeeSessionLocal;
 public class PayeeManagedBean implements Serializable {
 
     @EJB
-    private BankAccountSessionLocal bankAccountSessionLocal;
+    private BankAccountSessionBeanLocal bankAccountSessionLocal;
 
     @EJB
     private CRMCustomerSessionBeanLocal customerSessionBeanLocal;
 
     @EJB
-    private PayeeSessionLocal payeeSessionLocal;
+    private PayeeSessionBeanLocal payeeSessionLocal;
 
     private Long payeeId;
     private String payeeName;

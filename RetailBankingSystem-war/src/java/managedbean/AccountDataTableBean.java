@@ -12,7 +12,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
-import ejb.deposit.session.BankAccountSessionLocal;
+import ejb.deposit.session.BankAccountSessionBeanLocal;
 
 @Named(value = "accountDataTableBean")
 @RequestScoped
@@ -20,7 +20,7 @@ import ejb.deposit.session.BankAccountSessionLocal;
 public class AccountDataTableBean implements Serializable{
 
     @EJB
-    private BankAccountSessionLocal bankAccountSessionLocal;
+    private BankAccountSessionBeanLocal bankAccountSessionLocal;
 
     private ExternalContext ec;
 

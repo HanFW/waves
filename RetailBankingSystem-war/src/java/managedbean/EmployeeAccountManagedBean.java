@@ -19,9 +19,9 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import org.primefaces.event.RowEditEvent;
-import ejb.infrastructure.session.AdminSessionBeanLocal;
+import ejb.infrastructure.session.CustomerAdminSessionBeanLocal;
 import ejb.infrastructure.session.EmployeeAdminSessionBeanLocal;
-import ejb.infrastructure.session.SendEmailSessionBeanLocal;
+import ejb.infrastructure.session.EmployeeEmailSessionBeanLocal;
 
 /**
  *
@@ -37,7 +37,7 @@ public class EmployeeAccountManagedBean implements Serializable {
     @EJB
     private EmployeeAdminSessionBeanLocal adminSessionBeanLocal;
     @EJB
-    private SendEmailSessionBeanLocal sendEmailSessionBeanLocal;
+    private EmployeeEmailSessionBeanLocal sendEmailSessionBeanLocal;
 
     private Long employeeId;
     private String employeeName;

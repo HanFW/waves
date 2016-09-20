@@ -12,14 +12,14 @@ import javax.ejb.Timer;
 import javax.ejb.TimerService;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import ejb.deposit.session.BankAccountSessionLocal;
+import ejb.deposit.session.BankAccountSessionBeanLocal;
 
 @Stateless
 @LocalBean
 
-public class EjbTimerSession implements EjbTimerSessionLocal{
+public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal{
     @EJB
-    private BankAccountSessionLocal bankAccountSessionLocal;
+    private BankAccountSessionBeanLocal bankAccountSessionLocal;
 
     @Resource
     private SessionContext ctx;
@@ -31,11 +31,11 @@ public class EjbTimerSession implements EjbTimerSessionLocal{
     private final String TIMER_NAME_300000MS = "EJB-TIMER-300000MS";
     private final int TIMER_DURATION_300000MS = 300100;
 
-    public EjbTimerSession() {
+    public EjbTimerSessionBean() {
 
     }
     
-    public EjbTimerSession(String bankAccountNum) {
+    public EjbTimerSessionBean(String bankAccountNum) {
         
     }
     

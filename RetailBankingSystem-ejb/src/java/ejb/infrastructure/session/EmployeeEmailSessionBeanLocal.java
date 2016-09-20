@@ -13,7 +13,7 @@ import javax.ejb.Local;
  * @author Jingyuan
  */
 @Local
-public interface SendEmailSessionBeanLocal {
+public interface EmployeeEmailSessionBeanLocal {
     public String resetPwd(String employeeEmail);
     
     public String changePwd(String currentPassword,String newPassword,Long employeeId);

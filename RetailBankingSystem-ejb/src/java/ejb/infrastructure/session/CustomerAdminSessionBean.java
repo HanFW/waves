@@ -22,7 +22,7 @@ import javax.persistence.Query;
  * @author hanfengwei
  */
 @Stateless
-public class AdminSessionBean implements AdminSessionBeanLocal{
+public class CustomerAdminSessionBean implements CustomerAdminSessionBeanLocal{
 
     @EJB
     private CustomerEmailSessionBeanLocal customerEmailSessionBeanLocal;
@@ -54,7 +54,7 @@ public class AdminSessionBean implements AdminSessionBeanLocal{
                 customer.setCustomerStatus("new");
                 em.flush();
             } catch (NoSuchAlgorithmException ex) {
-                Logger.getLogger(AdminSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(CustomerAdminSessionBean.class.getName()).log(Level.SEVERE, null, ex);
             }
 
             //generate email
@@ -179,7 +179,7 @@ public class AdminSessionBean implements AdminSessionBeanLocal{
                 emailActions.put("onlineBankingPassword", password);
                 customerEmailSessionBeanLocal.sendEmail(customer, "resetOnlineBankingPassword", emailActions);
             } catch (NoSuchAlgorithmException ex) {
-                Logger.getLogger(AdminSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(CustomerAdminSessionBean.class.getName()).log(Level.SEVERE, null, ex);
             }
             return true;
         }

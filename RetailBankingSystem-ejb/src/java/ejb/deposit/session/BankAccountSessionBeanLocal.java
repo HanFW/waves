@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 @Local
-public interface BankAccountSessionLocal {
+public interface BankAccountSessionBeanLocal {
     public BankAccount retrieveBankAccountById(Long bankAccountId);
     public BankAccount retrieveBankAccountByNum(String bankAccountNum);
     public List<BankAccount> retrieveBankAccountByCusIC(String customerIdentificationNum);

@@ -11,7 +11,7 @@ import javax.ejb.Startup;
 @Startup
 public class InitSessionBean {
     @EJB
-    private EjbTimerSessionLocal ejbTimerSessionLocal;
+    private EjbTimerSessionBeanLocal ejbTimerSessionLocal;
     
     @PostConstruct
     public void init()
