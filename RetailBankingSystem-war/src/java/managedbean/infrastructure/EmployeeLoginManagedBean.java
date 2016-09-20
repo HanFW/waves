@@ -64,7 +64,7 @@ public class EmployeeLoginManagedBean implements Serializable {
                 System.out.println("***LoginManagedBean: loggedIn");
                 context.getExternalContext().getSessionMap().put("employee", getEmployee());
                 try {
-                    context.getExternalContext().redirect("userAccountManagement.xhtml");
+                    context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/web/internalSystem/infrastructure/employeeUserAccountManagement.xhtml");
                 } catch (IOException ex) {
                     Logger.getLogger(EmployeeLoginManagedBean.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -88,7 +88,7 @@ public class EmployeeLoginManagedBean implements Serializable {
         context.getExternalContext().invalidateSession();
         System.out.println("***LoginManagedBean: session invalidated");
         try {
-            context.getExternalContext().redirect("logout.xhtml");
+            context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/web/internalSystem/infrastructure/employeeLogout.xhtml");
         } catch (IOException ex) {
             Logger.getLogger(EmployeeLoginManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -98,7 +98,7 @@ public class EmployeeLoginManagedBean implements Serializable {
      
         FacesContext context = FacesContext.getCurrentInstance();
 
-        context.getExternalContext().redirect("forgetPassword.xhtml");
+        context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/web/internalSystem/infrastructure/employeeForgetPassword.xhtml");
         
     }
     
@@ -107,7 +107,7 @@ public class EmployeeLoginManagedBean implements Serializable {
     public void changePassword(ActionEvent event) throws IOException{
         FacesContext context = FacesContext.getCurrentInstance();
 
-        context.getExternalContext().redirect("changePassword.xhtml");
+        context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/web/internalSystem/infrastructure/employeeChangePassword.xhtml");
     }
 
     public void setEmployeeAccountNum(String employeeAccountNum) {

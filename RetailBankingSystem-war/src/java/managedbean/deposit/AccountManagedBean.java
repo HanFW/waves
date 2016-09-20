@@ -732,7 +732,7 @@ public class AccountManagedBean implements Serializable {
             ec.getFlash().put("bankAccountType", bankAccountType);
             ec.getFlash().put("initialDepositAmt", initialDepositAmt);
 
-            ec.redirect("saveAccount.xhtml?faces-redirect=true");
+            ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerSaveAccount.xhtml?faces-redirect=true");
 
         } else if (existingCustomer.equals("Yes") && !checkExist) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! You don't have Merlion bank account yet.", "Failed!"));
@@ -783,7 +783,7 @@ public class AccountManagedBean implements Serializable {
             ec.getFlash().put("bankAccountType", bankAccountType);
             ec.getFlash().put("initialDepositAmt", initialDepositAmt);
 
-            ec.redirect("saveAccount.xhtml?faces-redirect=true");
+            ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerSaveAccount.xhtml?faces-redirect=true");
 
         } else if (existingCustomer.equals("No") && checkExist) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! You have Merlion bank account already. Please check.", "Failed!"));
@@ -814,7 +814,7 @@ public class AccountManagedBean implements Serializable {
                 ec.getFlash().put("bankAccountNum", bankAccountNum);
                 ec.getFlash().put("bankAccountType", bankAccountType);
 
-                ec.redirect("deleteAccount.xhtml?faces-redirect=true");
+                ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerDeleteAccount.xhtml?faces-redirect=true");
             }
 
         } else if (onlyOneAccount.equals("No")) {
@@ -829,7 +829,7 @@ public class AccountManagedBean implements Serializable {
                 ec.getFlash().put("bankAccountNum", bankAccountNum);
                 ec.getFlash().put("bankAccountType", bankAccountType);
 
-                ec.redirect("deleteAccount.xhtml?faces-redirect=true");
+                ec.redirect("ec.getRequestContextPath() + \"/web/onlineBanking/deposit/customerDeleteAccount.xhtml?faces-redirect=true\"");
             }
         }
     }

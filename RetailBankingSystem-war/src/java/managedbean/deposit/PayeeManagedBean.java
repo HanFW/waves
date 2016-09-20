@@ -144,7 +144,8 @@ public class PayeeManagedBean implements Serializable {
                         ec.getFlash().put("payeeAccountNum", payeeAccountNum);
                         ec.getFlash().put("payeeAccountType", payeeAccountType);
 
-                        ec.redirect("addRecipientDone.xhtml?faces-redirect=true");
+                        ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerAddRecipientDone.xhtml?faces-redirect=true");
+                        
                     }
                 } else {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Recipient has existed.", "Failed!"));
@@ -186,7 +187,7 @@ public class PayeeManagedBean implements Serializable {
             ec.getFlash().put("payeeAccountNum", payeeAccountNum);
             ec.getFlash().put("payeeAccountType", payeeAccountType);
 
-            ec.redirect("deleteRecipientDone.xhtml?faces-redirect=true");
+            ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerDeleteRecipientDone.xhtml?faces-redirect=true");
         }
     }
 }

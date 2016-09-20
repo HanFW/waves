@@ -211,7 +211,7 @@ public class TransferManagedBean {
                         ec.getFlash().put("toAccount", toAccount);
                         ec.getFlash().put("transferAmt", transferAmt);
 
-                        ec.redirect("transferDone.xhtml?faces-redirect=true");
+                        ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerTransferDone.xhtml?faces-redirect=true");
                     } else {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!Your account balance is insufficient.", "Failed!"));
                     }
@@ -231,7 +231,7 @@ public class TransferManagedBean {
                     ec.getFlash().put("toAccount", toAccount);
                     ec.getFlash().put("transferAmt", transferAmt);
 
-                    ec.redirect("transferDone.xhtml?faces-redirect=true");
+                    ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerTransferDone.xhtml?faces-redirect=true");
                 } else {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!Your account balance is insufficient.", "Failed!"));
                 }
@@ -277,7 +277,7 @@ public class TransferManagedBean {
                         ec.getFlash().put("toAccount", toAccount);
                         ec.getFlash().put("transferAmt", transferAmt);
 
-                        ec.redirect("transferDone.xhtml?faces-redirect=true");
+                        ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerTransferDone.xhtml?faces-redirect=true");
                     } else {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!Your account balance is insufficient.", "Failed!"));
                     }
@@ -298,7 +298,7 @@ public class TransferManagedBean {
                     ec.getFlash().put("toAccount", toAccount);
                     ec.getFlash().put("transferAmt", transferAmt);
 
-                    ec.redirect("transferDone.xhtml?faces-redirect=true");
+                    ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerTransferDone.xhtml?faces-redirect=true");
                 } else {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!Your account balance is insufficient.", "Failed!"));
                 }
@@ -345,7 +345,7 @@ public class TransferManagedBean {
                             ec.getFlash().put("toAccount", toAccount);
                             ec.getFlash().put("transferAmt", transferAmt);
 
-                            ec.redirect("transferDone.xhtml?faces-redirect=true");
+                            ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerTransferDone.xhtml?faces-redirect=true");
                         } else {
                             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Transfer failed.", "Failed!"));
                         }
@@ -369,7 +369,7 @@ public class TransferManagedBean {
                     ec.getFlash().put("toAccount", toAccount);
                     ec.getFlash().put("transferAmt", transferAmt);
 
-                    ec.redirect("transferDone.xhtml?faces-redirect=true");
+                    ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerTransferDone.xhtml?faces-redirect=true");
                 } else {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!Your account balance is insufficient.", "Failed!"));
                 }

@@ -26,7 +26,7 @@ import ejb.infrastructure.session.CustomerEmailSessionBeanLocal;
  *
  * @author hanfengwei
  */
-@Named(value = "loginBean")
+@Named(value = "customerLoginManagedBean")
 @SessionScoped
 public class CustomerLoginManagedBean implements Serializable {
 
@@ -44,7 +44,7 @@ public class CustomerLoginManagedBean implements Serializable {
     private String customerIdentification;
 
     /**
-     * Creates a new instance of LoginBean
+     * Creates a new instance of CustomerLoginManagedBean
      */
     public CustomerLoginManagedBean() {
     }
@@ -74,9 +74,9 @@ public class CustomerLoginManagedBean implements Serializable {
                     System.out.println("=== infrastructure/loginBean: doLogin(): login successful");
                     context.getExternalContext().getSessionMap().put("customer", getCustomer());
                     if (customer.getCustomerStatus().equals("new")) {
-                        context.getExternalContext().redirect("accountActivation.xhtml?faces-redirect=true");
+                        context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/web/onlineBanking/infrastructure/customerUserIdActivation.xhtml?faces-redirect=true");
                     } else {
-                        context.getExternalContext().redirect("home.xhtml?faces-redirect=true");
+                        context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/web/onlineBanking/deposit/customerDepositIndex.xhtml?faces-redirect=true");
                     }
                     break;
                 case "invalidPassword":
@@ -104,7 +104,7 @@ public class CustomerLoginManagedBean implements Serializable {
 
         String serverName = FacesContext.getCurrentInstance().getExternalContext().getRequestServerName();
         String serverPort = "8080";
-        ec.redirect("http://" + serverName + ":" + serverPort + ec.getRequestContextPath() + "/index.xhtml?faces-redirect=true");
+        ec.redirect("http://" + serverName + ":" + serverPort + ec.getRequestContextPath() + "/web/index.xhtml?faces-redirect=true");
     }
 
     public void timeoutLogout() throws IOException {
@@ -113,7 +113,7 @@ public class CustomerLoginManagedBean implements Serializable {
         ec.invalidateSession();
         String serverName = FacesContext.getCurrentInstance().getExternalContext().getRequestServerName();
         String serverPort = "8080";
-        ec.redirect("http://" + serverName + ":" + serverPort + ec.getRequestContextPath() + "/timeout.xhtml?faces-redirect=true");
+        ec.redirect("http://" + serverName + ":" + serverPort + ec.getRequestContextPath() + "/web/merlionBank/customerTimeout.xhtml?faces-redirect=true");
     }
 
     public void activateOnlineBankingAccount(ActionEvent event) throws NoSuchAlgorithmException {
@@ -142,7 +142,7 @@ public class CustomerLoginManagedBean implements Serializable {
         } else {
             customerAccount = retrieveCustomer.getCustomerOnlineBankingAccountNum();
             System.out.println("=== infrastructure/LoginBean: retrieveCustomerAccount(): customer online banking account number retrieved: " + customerAccount);
-            context.getExternalContext().redirect("customerRetrieveIBAccount.xhtml");
+            context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/web/onlineBanking/infrastructure/customerRetrieveUserId.xhtml");
         }
     }
 
