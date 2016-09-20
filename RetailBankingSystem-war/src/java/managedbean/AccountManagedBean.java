@@ -134,6 +134,7 @@ public class AccountManagedBean implements Serializable {
             visible2 = true;
             visible4 = false;
             visible5 = false;
+            singaporePR=null;
         } else {
             visible2 = false;
         }
@@ -149,6 +150,7 @@ public class AccountManagedBean implements Serializable {
             visible3 = true;
             visible4 = false;
             visible5 = false;
+            singaporePR = null;
         } else {
             visible3 = false;
         }

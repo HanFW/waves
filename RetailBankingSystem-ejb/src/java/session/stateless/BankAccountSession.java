@@ -520,7 +520,7 @@ public class BankAccountSession implements BankAccountSessionLocal {
     @Override
     public boolean checkOnlyOneAccount(String customerIdentificationNum) {
         List<BankAccount> bankAccount = retrieveBankAccountByCusIC(customerIdentificationNum.toUpperCase());
-        System.out.println(bankAccount);
+        
         if(bankAccount.size()>1) {
             return false;
         }

@@ -393,9 +393,7 @@
                                     <p:outputLabel for="customerNRICSG" style="font-weight: bold" value="NRIC No.: " />
                                 </p:column>
                                 <p:column>
-                                    <p:inputText label="customerNRICSG" id="customerNRICSG" value="#{accountManagedBean.customerNRICSG}"
-                                                 maxlength="9" validatorMessage="Invalid NRIC Number">
-                                        <f:validateLength minimum="6" maximum="6" />
+                                    <p:inputText label="customerNRICSG" id="customerNRICSG" value="#{accountManagedBean.customerNRICSG}">
                                     </p:inputText>
                                 </p:column>
                                 <p:column>
@@ -429,9 +427,8 @@
                                     <p:outputLabel for="customerNRIC" style="font-weight: bold" value="NRIC No.: " />
                                 </p:column>
                                 <p:column>
-                                    <p:inputText label="customerNRIC" id="customerNRIC" maxlength="9"
-                                                 value="#{accountManagedBean.customerNRIC}" validatorMessage="Invalid NRIC Number">
-                                        <f:validateLength minimum="6" maximum="6" />
+                                    <p:inputText label="customerNRIC" id="customerNRIC" 
+                                                 value="#{accountManagedBean.customerNRIC}">
                                     </p:inputText>
                                 </p:column>
                                 <p:column>

@@ -168,7 +168,7 @@ public class CloseAccountManagedBean {
         } else {
 
             checkOnlyOneAccount = bankAccountSessionLocal.checkOnlyOneAccount(customerBasic.getCustomerIdentificationNum());
-            System.out.println(checkOnlyOneAccount);
+          
             if (onlyOneAccount.equals("Yes") && !checkOnlyOneAccount) {
                 if (!bankAccount.getBankAccountBalance().equals("0")) {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Please withdraw all your money.", "Failed!"));
