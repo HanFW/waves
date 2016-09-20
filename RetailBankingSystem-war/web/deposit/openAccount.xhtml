@@ -1034,15 +1034,6 @@
                         <p:captcha label="Captcha" />
                     </p:panel>
 
-                    <p:commandButton id="cancelBtn" action="index" value="Cancel" update="panel" immediate = "true">
-                        <p:confirm header="Cancel" message="Are you sure?" />
-                    </p:commandButton>
-
-                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                        <p:commandButton value="Yes" styleClass="ui-confirmdialog-yes" action="index"/>
-                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" />
-                    </p:confirmDialog>
-
                     <p:commandButton id="saveBtn" value="Open Account" update="growl"
                                      actionListener="#{accountManagedBean.saveAccount}" ajax="true"/>
                 </p:tab>
