@@ -44,7 +44,7 @@ public class EmployeeAccountManagedBean implements Serializable {
     private String employeeDepartment;
     private String employeePosition;
     private String employeeNRIC;
-    private String employeeMobileNum;
+    private Integer employeeMobileNum;
     private String employeeEmail;
     private Employee employee;
     private String currentPassword;
@@ -72,7 +72,7 @@ public class EmployeeAccountManagedBean implements Serializable {
         FacesContext context = FacesContext.getCurrentInstance();
 
         String newEmployee = adminSessionBeanLocal.createEmployeeAccount(employeeName,
-                employeeDepartment, employeePosition, employeeNRIC, employeeMobileNum,
+                employeeDepartment, employeePosition, employeeNRIC, employeeMobileNum.toString(),
                 employeeEmail, selectedRoles);
 
         sendEmailSessionBeanLocal.initialPwd(employeeNRIC, employeeEmail);
@@ -253,11 +253,11 @@ public class EmployeeAccountManagedBean implements Serializable {
         this.employeeNRIC = employeeNRIC;
     }
 
-    public String getEmployeeMobileNum() {
+    public Integer getEmployeeMobileNum() {
         return employeeMobileNum;
     }
 
-    public void setEmployeeMobileNum(String employeeMobileNum) {
+    public void setEmployeeMobileNum(Integer employeeMobileNum) {
         this.employeeMobileNum = employeeMobileNum;
     }
 

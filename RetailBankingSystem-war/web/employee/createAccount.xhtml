@@ -10,7 +10,7 @@
     <h:body>
         <h:form id="formMain">
             <h1>Add a New User Account</h1>
-            <p:messages/>
+            <p:messages globalOnly="true"/>
             <p:panelGrid>
                 <p:row>
                     <p:column>
@@ -32,8 +32,9 @@
                         <p:outputLabel for="employeeNRIC" style="font-weight: bold" value="NRIC No.: " />
                     </p:column>
                     <p:column>
-                        <p:inputText label="Employee NRIC" id="employeeNRIC"
+                        <p:inputText validatorMessage="Please provide a valid NRIC number" label="Employee NRIC" id="employeeNRIC"
                                      value="#{employeeAccountManagedBean.employeeNRIC}">
+                            <f:validateLength minimum="9" maximum="9" /> 
                         </p:inputText>
                     </p:column>
                     <p:column>
@@ -89,8 +90,9 @@
                         <p:outputLabel for="employeeMobileNum" style="font-weight: bold" value="Mobile No.: " />
                     </p:column>
                     <p:column>
-                        <p:inputText label="Employee Mobile Number" id="employeeMobileNum"
+                        <p:inputText converterMessage="invalid input" label="Employee Mobile Number" id="employeeMobileNum" validatorMessage="Please provide a valid mobile number"
                                      value="#{employeeAccountManagedBean.employeeMobileNum}">
+                            <f:validateLength minimum="8" maximum="8"/>
                         </p:inputText>
                     </p:column>
                     <p:column>
