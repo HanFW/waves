@@ -118,7 +118,8 @@
                         </p:column>
                         <p:column>
                             <p:inputText required="true" label="Amount" requiredMessage="Amount is required." id="transferAmt"
-                                         value="#{transferManagedBean.transferAmt}">
+                                         value="#{transferManagedBean.transferAmt}" converterMessage="Invalid input">
+                                <f:validateDoubleRange minimum="0.0" maximum="99999999.0" />
                             </p:inputText>
                         </p:column>
                         <p:column>

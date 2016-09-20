@@ -42,7 +42,7 @@
             </p:menubar>
             <br/>
             <p:panel id="panel" header="Cash Deposit">
-                <p:messages />
+                <p:messages globalOnly="true"/>
                 
                 <p:panelGrid style="margin-bottom:10px">
                                             
@@ -52,7 +52,8 @@
                         </p:column>
                         <p:column>
                             <p:inputText required="true" label="Deposit Amount" requiredMessage="Deposit amount is required." id="depositAmt"
-                                         value="#{cashManagedBean.depositAmt}">
+                                         value="#{cashManagedBean.depositAmt}" converterMessage="Invalid input">
+                                <f:validateDoubleRange minimum="0.0" maximum="99999999.0" />
                             </p:inputText>
                         </p:column>
                         <p:column>

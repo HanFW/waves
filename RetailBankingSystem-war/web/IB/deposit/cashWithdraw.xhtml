@@ -42,7 +42,7 @@
             </p:menubar>
             <br/>
             <p:panel id="panel" header="Cash Withdraw">
-                <p:messages />
+                <p:messages globalOnly="true"/>
                     
                 <p:panelGrid style="margin-bottom:10px">
                     <p:row>
@@ -51,7 +51,8 @@
                         </p:column>
                         <p:column>
                             <p:inputText required="true" label="Withdraw Amount" requiredMessage="Withdraw amount is required." id="withdrawAmt"
-                                         value="#{cashManagedBean.withdrawAmt}">
+                                         value="#{cashManagedBean.withdrawAmt}" converterMessage="Invalid input">
+                                <f:validateDoubleRange minimum="0.0" maximum="99999999.0" />
                             </p:inputText>
                         </p:column>
                         <p:column>
