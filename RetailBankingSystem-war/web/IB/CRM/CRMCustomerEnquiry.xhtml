@@ -38,18 +38,18 @@
                     </p:row>
 
                     <h:outputText value="&lt;br/&gt;" escape="false" />
-                    <h:form>
+                    <p:row>
                         <h:outputLabel style="font-weight: bold" value="Enquiry Details" />
                         <h:outputText value="&lt;br/&gt;" escape="false" />
-                        <p:inputTextarea id="caseDetail" value="#{enquiryManagedBean.caseDetail}" required="true" rows="5" cols="30" counter="display" maxlength="1000" counterTemplate="{0} characters remaining." autoResize="false" />
+                        <p:inputTextarea id="caseDetail" value="#{enquiryManagedBean.caseDetail}" required="true" rows="5" cols="30" counter="display" maxlength="500" counterTemplate="{0} characters remaining." autoResize="false" />
                         <h:outputText value="&lt;br/&gt;" escape="false" />
                         <h:outputText id="display" />
-                    </h:form>
+                    </p:row>
 
                 </h:panelGrid>
             </p:panel>
 
-            <p:commandButton value="Save" actionListener="#{enquiryManagedBean.saveEnquiryCase}" ajax="false" />
+            <p:commandButton value="Send Enquiry" update="@form" actionListener="#{enquiryManagedBean.saveEnquiryCase}" ajax="false" />
         </h:form>
     </h:body>
 </html>

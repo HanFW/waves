@@ -249,6 +249,10 @@ public class CustomerBasic implements Serializable {
     public void setEnquiryCase(List<EnquiryCase> enquiryCase) {
         this.enquiryCase = enquiryCase;
     }
+    
+    public void addNewCase (EnquiryCase ec) {
+        enquiryCase.add(ec);
+    }
 
     @Override
     public int hashCode() {

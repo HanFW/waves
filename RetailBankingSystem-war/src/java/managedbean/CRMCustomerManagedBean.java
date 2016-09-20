@@ -64,6 +64,8 @@ public class CRMCustomerManagedBean {
 
     private String customerOnlineBankingNewPassword;
     private String customerOnlineBankingNewPasswordConfirm;
+    private String replacedCustomerEmail;
+    private String replacedCustomerMobile;
 
     private CustomerBasic cb = new CustomerBasic();
 
@@ -303,9 +305,6 @@ public class CRMCustomerManagedBean {
         this.cb = cb;
     }
 
-    private String replacedCustomerEmail;
-    private String replacedCustomerMobile;
-
     public String getReplacedCustomerMobile() {
         return replacedCustomerMobile;
     }
@@ -404,16 +403,18 @@ public class CRMCustomerManagedBean {
     public void updateCustomerBasicProfile() {
 //        ec = FacesContext.getCurrentInstance().getExternalContext();
 
-        String updatedReplacedCustomerMobile = replacedCustomerMobile;
-        String updatedReplacedCustomerEmail = replacedCustomerEmail;
+        String updatedCustomerMobile = customerMobile;
+        String updatedCustomerEmail = customerEmail;
 
-        if (!replacedCustomerMobile.equals(customerMobileNumReplaceWithStar(customerMobile)) || !replacedCustomerEmail.equals(customerEmailReplaceWithStar(customerEmail))) {
-            replacedCustomerMobile = customerMobileNumReplaceWithStar(updatedReplacedCustomerMobile);
-            replacedCustomerEmail = customerEmailReplaceWithStar(updatedReplacedCustomerEmail);
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(customerSessionBean.updateCustomerBasicProfile(customerOnlineBankingAccountNum, customerNationality, customerCountryOfResidence, customerMaritalStatus, customerOccupation, customerCompany, updatedReplacedCustomerEmail, updatedReplacedCustomerMobile, customerAddress, customerPostal), " "));
-        } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(customerSessionBean.updateCustomerBasicProfile(customerOnlineBankingAccountNum, customerNationality, customerCountryOfResidence, customerMaritalStatus, customerOccupation, customerCompany, updatedReplacedCustomerEmail, updatedReplacedCustomerMobile, customerAddress, customerPostal), " "));
+        if (!replacedCustomerMobile.contains("*")) {
+            updatedCustomerMobile = replacedCustomerMobile;
         }
+
+        if (!replacedCustomerEmail.contains("*")) {
+            updatedCustomerEmail = replacedCustomerEmail;
+        }
+
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(customerSessionBean.updateCustomerBasicProfile(customerOnlineBankingAccountNum, customerNationality, customerCountryOfResidence, customerMaritalStatus, customerOccupation, customerCompany, updatedCustomerEmail, updatedCustomerMobile, customerAddress, customerPostal), " "));
     }
 
     public void updateOnlineBankingAccountPIN() {
