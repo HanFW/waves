@@ -21,7 +21,7 @@
                     <p:menuitem value="View Transaction" url="/web/onlineBanking/deposit/customerViewTransaction.xhtml" />
                     <p:menuitem value="Activate Fixed Deposit Account" url="/web/onlineBanking/deposit/customerActivateFixedDepositAccount.xhtml" />
                 </p:submenu>
-                
+
                 <p:submenu label="Transfer" >
                     <p:menuitem value="To My Account" url="/web/onlineBanking/deposit/customerToMyAccount.xhtml" />
                     <p:menuitem value="To Other Merlion Accounts" url="/web/onlineBanking/deposit/customerToOthersAccount.xhtml" />
@@ -30,7 +30,7 @@
                     <p:menuitem value="Delete Recipient" url="/web/onlineBanking/deposit/customerDeleteRecipient.xhtml" />
                     <p:menuitem value="Change Daily Transfer Limit" url="/web/onlineBanking/deposit/customerDailyTransferLimit.xhtml" />
                 </p:submenu>
-                
+
                 <p:submenu label="Enquiry">
                     <p:menuitem value="Write an enquiry" url="/web/onlineBanking/customer/customerEnquiry.xhtml" />
                 </p:submenu>
@@ -39,12 +39,13 @@
                     <p:menuitem value="Change password" url="/web/onlineBanking/customer/customerChangePIN.xhtml" />
                     <p:menuitem value="Update basic profile" url="/web/onlineBanking/customer/customerUpdateBasicProfile.xhtml" />
                 </p:submenu>
-                
+
                 <p:submenu label="Logout">
                     <p:menuitem value="Logout" actionListener="#{customerLoginManagedBean.doLogout}"/>
                 </p:submenu>
             </p:menubar>
-
+        </h:form>
+        <h:form>
             <p:ajaxStatus style="width:16px;height:16px;">
                 <f:facet name="start">
                     <h:graphicImage value="/images/spinner.gif" />
@@ -910,7 +911,7 @@
                         </p:panelGrid>
                         <br/>
                         <p:panelGrid>
-                            
+
                             <p:row>
                                 <p:column colspan="10" style="font-weight: bold">Initial Deposit</p:column>
                             </p:row>

@@ -27,7 +27,7 @@
                     <p:menuitem value="View Transaction" url="/web/onlineBanking/deposit/customerViewTransaction.xhtml" />
                     <p:menuitem value="Activate Fixed Deposit Account" url="/web/onlineBanking/deposit/customerActivateFixedDepositAccount.xhtml" />
                 </p:submenu>
-                
+
                 <p:submenu label="Transfer" >
                     <p:menuitem value="To My Account" url="/web/onlineBanking/deposit/customerToMyAccount.xhtml" />
                     <p:menuitem value="To Other Merlion Accounts" url="/web/onlineBanking/deposit/customerToOthersAccount.xhtml" />
@@ -36,7 +36,7 @@
                     <p:menuitem value="Delete Recipient" url="/web/onlineBanking/deposit/customerDeleteRecipient.xhtml" />
                     <p:menuitem value="Change Daily Transfer Limit" url="/web/onlineBanking/deposit/customerDailyTransferLimit.xhtml" />
                 </p:submenu>
-                
+
                 <p:submenu label="Enquiry">
                     <p:menuitem value="Write an enquiry" url="/web/onlineBanking/customer/customerEnquiry.xhtml" />
                 </p:submenu>
@@ -45,16 +45,17 @@
                     <p:menuitem value="Change password" url="/web/onlineBanking/customer/customerChangePIN.xhtml" />
                     <p:menuitem value="Update basic profile" url="/web/onlineBanking/customer/customerUpdateBasicProfile.xhtml" />
                 </p:submenu>
-                
+
                 <p:submenu label="Logout">
                     <p:menuitem value="Logout" actionListener="#{customerLoginManagedBean.doLogout}"/>
                 </p:submenu>
             </p:menubar>
-            
+        </h:form>
+        <h:form>
             <br/>
             <p:panel id="panel" header="Close Account"> 
                 <p:messages />
-                
+
                 <p:panelGrid>
                     <p:row>
                         <p:column>
@@ -69,7 +70,7 @@
                             <p:message for="customerName" />
                         </p:column>
                     </p:row>
-                    
+
                     <p:row>
                         <p:column>
                             <p:outputLabel for="customerIdentificationNum" style="font-weight: bold" value="Identification Number: " />
@@ -83,7 +84,7 @@
                             <p:message for="customerIdentificationNum" />
                         </p:column>
                     </p:row>
-                    
+
                     <p:row>
                         <p:column>
                             <p:outputLabel for="bankAccountNum" style="font-weight: bold" value="Account Num: " />
@@ -97,7 +98,7 @@
                             <p:message for="bankAccountNum" />
                         </p:column>
                     </p:row>
-                    
+
                     <p:row>
                         <p:column>
                             <p:outputLabel for="bankAccountPwd" style="font-weight: bold" value="Account Password: " />
@@ -110,7 +111,7 @@
                             <p:message for="bankAccountPwd" />
                         </p:column>
                     </p:row>   
-                    
+
                     <p:row>
                         <p:column>
                             <p:outputLabel for ="confirmBankAccountPwd" style="font-weight:bold" value="Confirm Password: " />
@@ -120,7 +121,7 @@
                                         label="Confirm Password" required="true" />
                         </p:column>
                     </p:row>
-                    
+
                     <p:row>
                         <p:column>
                             <p:outputLabel for="onlyOneAccount" style="font-weight: bold" value="Do you have more than one accounts?" />
@@ -141,12 +142,12 @@
                 <p:commandButton id="cancelBtn" action="/web/onlineBanking/deposit/customerDepositIndex.xhtml" value="Cancel" update="panel" immediate = "true">
                     <p:confirm header="Cancel" message="Are you sure?" />
                 </p:commandButton>
-                
+
                 <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
                     <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" action="/web/onlineBanking/deposit/customerDepositIndex.xhtml"/>
                     <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" />
                 </p:confirmDialog>
-                
+
                 <p:commandButton id="deleteBtn" value="Delete Account" update="panel" 
                                  actionListener="#{accountManagedBean.deleteAccount}" ajax="true" />
             </p:panel>
