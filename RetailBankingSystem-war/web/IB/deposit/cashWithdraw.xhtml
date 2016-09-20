@@ -51,7 +51,7 @@
                         </p:column>
                         <p:column>
                             <p:inputText required="true" label="Withdraw Amount" requiredMessage="Withdraw amount is required." id="withdrawAmt"
-                                         value="#{cashManagedBean.withdrawAmt}" converterMessage="Invalid input">
+                                         value="S$#{cashManagedBean.withdrawAmt}" converterMessage="Invalid input">
                                 <f:validateDoubleRange minimum="0.0" maximum="99999999.0" />
                             </p:inputText>
                         </p:column>
