@@ -28,4 +28,5 @@ public interface BankAccountSessionLocal {
     public boolean checkExistence(String customerIdentificationNum);
     public String changeDateFormat (Date customerDateOfBirth);
     public void updateDepositPeriod(String bankAccountNum,String fixedDepositPeriod);
+    public boolean checkOnlyOneAccount(String customerIdentificationNum);
 }

@@ -37,7 +37,7 @@ public class BankAccount implements Serializable {
     @OneToMany(cascade={CascadeType.ALL},fetch=FetchType.EAGER,mappedBy="bankAccount")
     private List<AccTransaction> accTransaction;
     
-    @ManyToOne(cascade={CascadeType.ALL},fetch=FetchType.EAGER)
+    @ManyToOne(cascade={CascadeType.PERSIST},fetch=FetchType.EAGER)
     private CustomerBasic customerBasic;
     
     @OneToOne(cascade={CascadeType.ALL},fetch=FetchType.EAGER)
