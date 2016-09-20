@@ -6,6 +6,7 @@
 package session.stateless;
 
 import entity.CustomerBasic;
+import java.util.Map;
 import javax.ejb.Local;
 
 /**
@@ -13,6 +14,6 @@ import javax.ejb.Local;
  * @author hanfengwei
  */
 @Local
-public interface EmailSessionBeanLocal {
-    public void sendEmail(CustomerBasic customer, String subject, Boolean createOnlineAccount, String password);
+public interface CustomerEmailSessionBeanLocal {
+    public void sendEmail(CustomerBasic customer, String subject, Map actions);
 }

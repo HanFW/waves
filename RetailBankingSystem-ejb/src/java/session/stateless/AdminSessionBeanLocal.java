@@ -19,4 +19,10 @@ public interface AdminSessionBeanLocal {
     public String login(String customerAccount, String password);
     
     public CustomerBasic getCustomerByOnlineBankingAccount(String customerAccount);
+    
+    public String updateOnlineBankingAccount(String accountNum, String password, Long customerId);
+    
+    public CustomerBasic getCustomerByIdentificationNum(String identificationNum);
+            
+    public Boolean resetPassword(String identificationNum);
 }

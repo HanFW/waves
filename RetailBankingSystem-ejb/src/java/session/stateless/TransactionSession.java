@@ -113,9 +113,13 @@ public class TransactionSession implements TransactionSessionLocal {
         if (bankAccountId == null) {
             return "Error! Bank account does not exist!";
         } else {
-            Date date = new Date();
+            if (bankAccount.getBankAccountType().equals("Monthly Savings Account")) {
+                if (Double.valueOf(depositAmt) >= 50) {
+                    bankAccount.setBankAccountMinSaving("Sufficient");
+                }
+            }
 
-            String accountCredit = null;
+            String accountCredit = " ";
             String transactionCode = "ADP";
             String transactionRef = "Merlion Bank Branch";
 
@@ -152,9 +156,7 @@ public class TransactionSession implements TransactionSessionLocal {
         if (bankAccountId == null) {
             return "Error! Bank account does not exist!";
         } else {
-            Date date = new Date();
-
-            String accountDebit = null;
+            String accountDebit = " ";
             String transactionCode = "AWL";
             String transactionRef = "Merlion Bank Branch";
 
@@ -206,39 +208,38 @@ public class TransactionSession implements TransactionSessionLocal {
         BankAccount bankAccountFrom = bankAccountSessionLocal.retrieveBankAccountByNum(fromAccount);
         BankAccount bankAccountTo = bankAccountSessionLocal.retrieveBankAccountByNum(toAccount);
 
-        if (Double.valueOf(bankAccountFrom.getTransferBalance()) < Double.valueOf(transferAmt)) {
-            return "Transfer Limited.";
-        } else {
-            Double balanceAccountFrom = Double.valueOf(bankAccountFrom.getBankAccountBalance()) - Double.valueOf(transferAmt);
-            Double balanceAccountTo = Double.valueOf(bankAccountTo.getBankAccountBalance()) + Double.valueOf(transferAmt);
-
-            Long bankAccountFromId = bankAccountFrom.getBankAccountId();
-            Long bankAccountToId = bankAccountTo.getBankAccountId();
-
-            Date date = new Date();
-
-            String transactionCode = "TRF";
-            String transactionRefFrom = toAccount;
-            String transactionRefTo = fromAccount;
-
-            Calendar cal = Calendar.getInstance();
-            int year = cal.get(Calendar.YEAR);
-            int month = cal.get(Calendar.MONTH);
-            int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
-            String transactionDate = dayOfMonth + "-" + (month + 1) + "-" + year;
-
-            Long fromTransactionId = addNewTransaction(transactionDate, transactionCode, transactionRefFrom,
-                    null, transferAmt, bankAccountFromId);
-            Long toTransactionId = addNewTransaction(transactionDate, transactionCode, transactionRefTo,
-                    transferAmt, null, bankAccountToId);
-
-            bankAccountFrom.setBankAccountBalance(balanceAccountFrom.toString());
-            bankAccountTo.setBankAccountBalance(balanceAccountTo.toString());
-            bankAccountFrom.getInterest().setIsTransfer("1");
-
-            Double transfer = Double.valueOf(bankAccountFrom.getTransferBalance()) - Double.valueOf(transferAmt);
-            bankAccountFrom.setTransferBalance(transfer.toString());
+        if (bankAccountTo.getBankAccountType().equals("Monthly Savings Account")) {
+            if (Double.valueOf(transferAmt) >= 50) {
+                bankAccountTo.setBankAccountMinSaving("Sufficient");
+            }
         }
+        Double balanceAccountFrom = Double.valueOf(bankAccountFrom.getBankAccountBalance()) - Double.valueOf(transferAmt);
+        Double balanceAccountTo = Double.valueOf(bankAccountTo.getBankAccountBalance()) + Double.valueOf(transferAmt);
+
+        Long bankAccountFromId = bankAccountFrom.getBankAccountId();
+        Long bankAccountToId = bankAccountTo.getBankAccountId();
+
+        String transactionCode = "TRF";
+        String transactionRefFrom = toAccount;
+        String transactionRefTo = fromAccount;
+
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
+        String transactionDate = dayOfMonth + "-" + (month + 1) + "-" + year;
+
+        Long fromTransactionId = addNewTransaction(transactionDate, transactionCode, transactionRefFrom,
+                " ", transferAmt, bankAccountFromId);
+        Long toTransactionId = addNewTransaction(transactionDate, transactionCode, transactionRefTo,
+                transferAmt, " ", bankAccountToId);
+
+        bankAccountFrom.setBankAccountBalance(balanceAccountFrom.toString());
+        bankAccountTo.setBankAccountBalance(balanceAccountTo.toString());
+        bankAccountFrom.getInterest().setIsTransfer("1");
+
+        Double transfer = Double.valueOf(bankAccountFrom.getTransferBalance()) - Double.valueOf(transferAmt);
+        bankAccountFrom.setTransferBalance(transfer.toString());
 
         return "Fund Transfer Sucessfully!";
     }
@@ -259,7 +260,7 @@ public class TransactionSession implements TransactionSessionLocal {
         String bankAccountType = bankAccount.getBankAccountType();
 
         if (bankAccountType.equals("Bonus Savings Account")) {
-            if (Double.valueOf(initialDepositAmount) < 10000) {
+            if (Double.valueOf(initialDepositAmount) < 3000) {
                 return "Initial deposit amount is insufficient.";
             } else {
                 bankAccount.setBankAccountStatus("Activated");
@@ -271,12 +272,18 @@ public class TransactionSession implements TransactionSessionLocal {
                 bankAccount.setBankAccountStatus("Activated");
             }
         } else if (bankAccountType.equals("Fixed Deposit Account")) {
-            if (Double.valueOf(initialDepositAmount) < 10000) {
-                return "Initial deposit amount is insufficient.";
-            } else if (Double.valueOf(initialDepositAmount) > 999999) {
-                return "Please contact us at 800 820 8820 or visit our branch.";
+            
+            if (bankAccount.getBankAccountDepositPeriod().equals("None")) {
+                return "Please declare your deposit period";
             } else {
-                bankAccount.setBankAccountStatus("Activated");
+                
+                if (Double.valueOf(initialDepositAmount) < 1000) {
+                    return "Initial deposit amount is insufficient.";
+                } else if (Double.valueOf(initialDepositAmount) > 999999) {
+                    return "Please contact us at 800 820 8820 or visit our branch.";
+                } else {
+                    bankAccount.setBankAccountStatus("Activated");
+                }
             }
         }
 

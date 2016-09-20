@@ -2,22 +2,25 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp">
     <h:head>
         <title>Facelet Title</title>
     </h:head>
     <h:body>
         Hello from online banking home page
+       
         <h:form>
             <p:menubar>
                 <p:submenu label="Home">
                     <p:menuitem value="Home" url="home.xhtml" />
                 </p:submenu>
-                
+
                 <p:submenu label="Deposit">
                     <p:menuitem value="Deposit" url="deposit/depositIndex.xhtml" />
                 </p:submenu>
-                
+
                 <p:submenu label="My profile">
                     <p:menuitem value="Change password" url="CRM/CRMCustomerChangePIN.xhtml" />
                     <p:menuitem value="Update basic profile" url="CRM/CRMCustomerUpdateBasicProfile.xhtml" />
@@ -28,7 +31,14 @@
                     <p:menuitem value="View enquiry" url="CRM/CRMCustomerViewEnquiry.xhtml" />
                 </p:submenu>
                 
+                <p:submenu label="Logout">
+                    <p:menuitem value="Logout" actionListener="#{loginBean.doLogout}"/>
+                </p:submenu>
+                
+                
             </p:menubar>
+            
+            <ez:CCTimeout/>
         </h:form>
     </h:body>
 </html>

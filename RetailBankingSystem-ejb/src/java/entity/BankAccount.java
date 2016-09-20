@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.CascadeType;
 import javax.persistence.FetchType;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -18,13 +19,20 @@ public class BankAccount implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long bankAccountId;
+    
+    @Column(unique=true)
     private String bankAccountNum;
+    
     private String bankAccountPwd;
     private String bankAccountType;
     private String bankAccountBalance;
     private String transferDailyLimit;
     private String transferBalance;
     private String bankAccountStatus;
+    private String bankAccountMinSaving;
+    private String bankAccountDepositPeriod;
+    private String currentFixedDepositPeriod;
+    private String fixedDepositStatus;
     
     @OneToMany(cascade={CascadeType.ALL},fetch=FetchType.EAGER,mappedBy="bankAccount")
     private List<AccTransaction> accTransaction;
@@ -121,6 +129,38 @@ public class BankAccount implements Serializable {
 
     public void setBankAccountStatus(String bankAccountStatus) {
         this.bankAccountStatus = bankAccountStatus;
+    }
+
+    public String getBankAccountMinSaving() {
+        return bankAccountMinSaving;
+    }
+
+    public void setBankAccountMinSaving(String bankAccountMinSaving) {
+        this.bankAccountMinSaving = bankAccountMinSaving;
+    }
+
+    public String getBankAccountDepositPeriod() {
+        return bankAccountDepositPeriod;
+    }
+
+    public void setBankAccountDepositPeriod(String bankAccountDepositPeriod) {
+        this.bankAccountDepositPeriod = bankAccountDepositPeriod;
+    }
+
+    public String getCurrentFixedDepositPeriod() {
+        return currentFixedDepositPeriod;
+    }
+
+    public void setCurrentFixedDepositPeriod(String currentFixedDepositPeriod) {
+        this.currentFixedDepositPeriod = currentFixedDepositPeriod;
+    }
+
+    public String getFixedDepositStatus() {
+        return fixedDepositStatus;
+    }
+
+    public void setFixedDepositStatus(String fixedDepositStatus) {
+        this.fixedDepositStatus = fixedDepositStatus;
     }
     
     @Override

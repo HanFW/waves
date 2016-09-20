@@ -5,13 +5,13 @@
  */
 package session.stateless;
 
-import javax.ejb.Remote;
+import javax.ejb.Local;
 
 /**
  *
- * @author Nicole
+ * @author hanfengwei
  */
-@Remote
-public interface CRMCustomerSessionBeanRemote {
-    
+@Local
+public interface SMSSessionBeanLocal {
+    public void sendOTP(String target, String phoneNum);
 }

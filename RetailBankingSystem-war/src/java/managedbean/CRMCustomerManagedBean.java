@@ -49,7 +49,6 @@ public class CRMCustomerManagedBean {
     private String customerPostal;
     private String customerOnlineBankingAccountNum;
     private String customerOnlineBankingPassword;
-    private String customerPayeeNum;
     private byte[] customerSignature;
     private Long newCustomerBasicId;
     private String customerAge;
@@ -72,14 +71,6 @@ public class CRMCustomerManagedBean {
     private ExternalContext ec;
     private String hashedPassword;
     private String hashedNewPassword;
-
-    public String getCustomerPayeeNum() {
-        return customerPayeeNum;
-    }
-
-    public void setCustomerPayeeNum(String customerPayeeNum) {
-        this.customerPayeeNum = customerPayeeNum;
-    }
 
     public String getCustomerAge() {
         return customerAge;
@@ -343,7 +334,7 @@ public class CRMCustomerManagedBean {
     public Long saveNewCustomerBasic(ActionEvent customerBasic) {
 
         try {
-            newCustomerBasicId = customerSessionBean.addNewCustomerBasic(customerName, customerSalutation, customerIdentificationNum, customerGender, customerEmail, customerMobile, customerDateOfBirth, customerNationality, customerCountryOfResidence, customerRace, customerMaritalStatus, customerOccupation, customerCompany, customerAddress, customerPostal, customerOnlineBankingAccountNum, customerOnlineBankingPassword, customerPayeeNum, customerSignature);
+            newCustomerBasicId = customerSessionBean.addNewCustomerBasic(customerName, customerSalutation, customerIdentificationNum, customerGender, customerEmail, customerMobile, customerDateOfBirth, customerNationality, customerCountryOfResidence, customerRace, customerMaritalStatus, customerOccupation, customerCompany, customerAddress, customerPostal, customerOnlineBankingAccountNum, customerOnlineBankingPassword, customerSignature);
             return newCustomerBasicId;
         } catch (Exception ex) {
             ex.printStackTrace();

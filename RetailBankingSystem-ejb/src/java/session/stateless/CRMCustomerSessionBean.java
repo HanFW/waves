@@ -30,12 +30,12 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
     @Override
     public Long addNewCustomerBasic(String customerName, String customerSalutation,
             String customerIdentificationNum, String customerGender,
-            String customerEmail, String customerMobile, String customerDateOfBirth,
-            String customerNationality, String customerCountryOfResidence, String customerRace,
-            String customerMaritalStatus, String customerOccupation, String customerCompany,
-            String customerAddress, String customerPostal, String customerOnlineBankingAccountNum,
-            String customerOnlineBankingPassword, String customerPayeeNum, byte[] customerSignature) {
-
+            String customerEmail, String customerMobile, String customerDateOfBirth, 
+            String customerNationality,String customerCountryOfResidence, String customerRace, 
+            String customerMaritalStatus,String customerOccupation, String customerCompany, 
+            String customerAddress, String customerPostal,String customerOnlineBankingAccountNum, 
+            String customerOnlineBankingPassword,byte[] customerSignature) {
+        
         CustomerBasic customerBasic = new CustomerBasic();
 
         customerBasic.setCustomerName(customerName);
@@ -56,7 +56,6 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
         customerBasic.setCustomerOnlineBankingAccountNum(null);
         customerBasic.setCustomerOnlineBankingPassword(null);
         customerBasic.setCustomerSignature(customerSignature);
-        customerBasic.setCustomerPayeeNum(customerPayeeNum);
         customerBasic.setCustomerAge(getAge(customerDateOfBirth));
 
         entityManager.persist(customerBasic);
@@ -229,19 +228,5 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
         }
 
         return customerBasic;
-    }
-
-    @Override
-    public boolean updatePayeeNum(Long customerBasicId) {
-        CustomerBasic customerBasic = bankAccountSessionLocal.retrieveCustomerBasicById(customerBasicId);
-
-        Double currentPayeeNum = Double.valueOf(customerBasic.getCustomerPayeeNum());
-        if (currentPayeeNum >= 2) {
-            return false;
-        } else {
-            Double payeeNum = currentPayeeNum + 1;
-            customerBasic.setCustomerPayeeNum(payeeNum.toString());
-            return true;
-        }
     }
 }

@@ -1,36 +1,27 @@
 package managedbean;
 
 import entity.AccTransaction;
-import javax.ejb.EJB;
-import javax.faces.bean.ManagedBean;
 import java.io.IOException;
+import javax.ejb.EJB;
+import java.io.Serializable;
 import java.util.List;
-import javax.enterprise.context.RequestScoped;
 import javax.faces.context.ExternalContext;
-import javax.faces.context.FacesContext;
 import session.stateless.TransactionSessionLocal;
+import javax.enterprise.context.RequestScoped;
+import javax.faces.context.FacesContext;
+import javax.inject.Named;
 
-@ManagedBean
+@Named(value = "transactionManagedBean")
 @RequestScoped
 
-public class TransactionManagedBean {
+public class TransactionManagedBean implements Serializable{
     @EJB
     private TransactionSessionLocal transactionSessionLocal;
     
-    private String statusMessage;
+    private ExternalContext ec;
     private String bankAccountNum;
     
-    private ExternalContext ec;
-    
     public TransactionManagedBean() {
-    }
-
-    public String getStatusMessage() {
-        return statusMessage;
-    }
-
-    public void setStatusMessage(String statusMessage) {
-        this.statusMessage = statusMessage;
     }
 
     public String getBankAccountNum() {
@@ -40,17 +31,11 @@ public class TransactionManagedBean {
     public void setBankAccountNum(String bankAccountNum) {
         this.bankAccountNum = bankAccountNum;
     }
-    
-    public List<AccTransaction> getTransaction() throws IOException
+
+    public List<AccTransaction> getAccTransaction() throws IOException
     {
         ec = FacesContext.getCurrentInstance().getExternalContext();
         List<AccTransaction> accTransaction = transactionSessionLocal.retrieveAccTransactionByBankNum(bankAccountNum);
-        
-        if(accTransaction.isEmpty()) {
-            bankAccountNum="";
-            statusMessage="Your account number is invalid";
-            ec.redirect("viewTransaction.xhtml?faces-redirect=true");
-        }
         
         return accTransaction;
     }

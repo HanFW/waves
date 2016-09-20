@@ -25,11 +25,9 @@ public interface CRMCustomerSessionBeanLocal {
             String customerNationality,String customerCountryOfResidence, String customerRace, 
             String customerMaritalStatus,String customerOccupation, String customerCompany, 
             String customerAddress, String customerPostal,String customerOnlineBankingAccountNum, 
-            String customerOnlineBankingPassword,String customerPayeeNum,byte[] customerSignature);
+            String customerOnlineBankingPassword,byte[] customerSignature);
 
     public String deleteCustomerBasic(String customerIdentificationNum);
 
     public CustomerBasic retrieveCustomerBasicByIC(String customerIdentificationNum);
-    
-    public boolean updatePayeeNum(Long customerBasicId);
 }
