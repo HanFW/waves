@@ -63,7 +63,7 @@ public class AccountManagedBean implements Serializable {
     private String customerSalutationOthers;
     private String customerName;
     private String customerEmail;
-    private String customerMobile;
+    private Integer customerMobile;
     private String customerNationality;
     private String customerCountryOfResidence;
     private Date customerDateOfBirth;
@@ -321,14 +321,6 @@ public class AccountManagedBean implements Serializable {
 
     public void setCustomerEmail(String customerEmail) {
         this.customerEmail = customerEmail;
-    }
-
-    public String getCustomerMobile() {
-        return customerMobile;
-    }
-
-    public void setCustomerMobile(String customerMobile) {
-        this.customerMobile = customerMobile;
     }
 
     public String getCustomerNationality() {
@@ -679,6 +671,14 @@ public class AccountManagedBean implements Serializable {
         this.customerUnitNum = customerUnitNum;
     }
 
+    public Integer getCustomerMobile() {
+        return customerMobile;
+    }
+
+    public void setCustomerMobile(Integer customerMobile) {
+        this.customerMobile = customerMobile;
+    }
+
     public void saveAccount() throws IOException {
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
@@ -742,7 +742,7 @@ public class AccountManagedBean implements Serializable {
             
             newCustomerBasicId = customerSessionBean.addNewCustomerBasic(customerName,
                     customerSalutation, customerIdentificationNum.toUpperCase(),
-                    customerGender, customerEmail, customerMobile, dateOfBirth,
+                    customerGender, customerEmail, customerMobile.toString(), dateOfBirth,
                     customerNationality, customerCountryOfResidence, customerRace,
                     customerMaritalStatus, customerOccupation, customerCompany,
                     customerAddress, customerPostal, customerOnlineBankingAccountNum,

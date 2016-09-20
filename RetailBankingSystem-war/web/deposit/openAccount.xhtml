@@ -131,7 +131,9 @@
                                 </p:column>
                                 <p:column>
                                     <p:inputText label="Mobile Number" id="customerMobile" value="#{accountManagedBean.customerMobile}"
-                                                 required="true" requiredMessage="Required Field">
+                                                 required="true" requiredMessage="Required Field" validatorMessage="Invalid Moblie Number"
+                                                 converterMessage="Invalid Input">
+                                        <f:validateDoubleRange minimum="10000000" maximum="99999999" />
                                     </p:inputText>
                                 </p:column>
                                 <p:column>
@@ -892,10 +894,10 @@
 
                             <p:row>
                                 <p:column>
-                                    <p:outputLabel for="initialDepositAmt" style="font-weight: bold" value="Initial Deposit Amount: " />
+                                    <p:outputLabel for="initialDepositAmt" style="font-weight: bold" value="Initial Deposit Amount(S$): " />
                                 </p:column>
                                 <p:column>
-                                    <p:inputText label="Initial Deposit Amount" id="initialDepositAmt"
+                                    <p:inputText label="Initial Deposit Amount(S$)" id="initialDepositAmt"
                                                  value="#{accountManagedBean.initialDepositAmt}" required="true" requiredMessage="Required Field">
                                     </p:inputText>
                                 </p:column>
