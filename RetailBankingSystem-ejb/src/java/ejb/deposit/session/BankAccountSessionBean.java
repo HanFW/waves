@@ -231,7 +231,10 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
             Double finalInterest = 0.0;
             Interest interest = new Interest();
 
-            if (activatedBankAccount.getFixedDepositStatus().equals("Deposited") && activatedBankAccount.getBankAccountType().equals("Fixed Deposit Account")) {
+            currentBalance = Double.valueOf(activatedBankAccount.getBankAccountBalance());
+
+            if (activatedBankAccount.getFixedDepositStatus().equals("Deposited") && activatedBankAccount.getBankAccountType().equals("Fixed Deposit Account")
+                    && currentBalance > 0) {
 
                 if (activatedBankAccount.getInterest().getIsTransfer().equals("1") || activatedBankAccount.getInterest().getIsWithdraw().equals("1")) {
 
@@ -307,7 +310,8 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
                         interest.setDailyInterest(totalInterest.toString());
                     }
                 }
-            } else if (activatedBankAccount.getFixedDepositStatus().equals("Withdrawn") && activatedBankAccount.getBankAccountType().equals("Fixed Deposit Account")) {
+            } else if (activatedBankAccount.getFixedDepositStatus().equals("Withdrawn") && activatedBankAccount.getBankAccountType().equals("Fixed Deposit Account")
+                    && currentBalance > 0) {
 
                 currentInterest = Double.valueOf(activatedBankAccount.getInterest().getDailyInterest());
                 currentBalance = Double.valueOf(activatedBankAccount.getBankAccountBalance());
@@ -317,7 +321,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
                 interest = activatedBankAccount.getInterest();
                 interest.setDailyInterest(totalInterest.toString());
 
-            } else {
+            } else if (currentBalance > 0) {
 
                 currentInterest = Double.valueOf(activatedBankAccount.getInterest().getDailyInterest());
                 currentBalance = Double.valueOf(activatedBankAccount.getBankAccountBalance());
@@ -348,10 +352,14 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
             Double totalInterest = 0.0;
             Double creditedInterest = 0.0;
             Double finalBalance = 0.0;
+            Double currentBalance = 0.0;
+
+            currentBalance = Double.valueOf(activatedBankAccount.getBankAccountBalance());
 
             if (activatedBankAccount.getBankAccountType().equals("Fixed Deposit Account") && !activatedBankAccount.getFixedDepositStatus().equals("Withdrawn")) {
                 System.out.println("One Month Gone");
-            } else if (activatedBankAccount.getBankAccountType().equals("Fixed Deposit Account") && activatedBankAccount.getFixedDepositStatus().equals("Withdrawn")) {
+            } else if (activatedBankAccount.getBankAccountType().equals("Fixed Deposit Account") && activatedBankAccount.getFixedDepositStatus().equals("Withdrawn")
+                    && currentBalance > 0) {
 
                 bonusInterest = 0.0;
                 totalInterest = dailyInterest + bonusInterest;
@@ -375,7 +383,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
                 Long newAccTransactionId = transactionSessionLocal.addNewTransaction(cal.getTime().toString(), transactionCode, transactionRef,
                         accountDebit, creditedInterest.toString(), transactionDateMilis, activatedBankAccount.getBankAccountId());
 
-            } else {
+            } else if (currentBalance > 0) {
 
                 if ((interest.getIsTransfer().equals("0")) && (interest.getIsWithdraw().equals("0"))) {
                     interest.setDailyInterest("0");
@@ -533,9 +541,9 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
 
         return true;
     }
-    
+
     @Override
-    public CustomerBasic retrieveCustomerBasicByAccNum (String bankAccountNum) {
+    public CustomerBasic retrieveCustomerBasicByAccNum(String bankAccountNum) {
         CustomerBasic customerBasic = new CustomerBasic();
         BankAccount bankAccount = retrieveBankAccountByNum(bankAccountNum);
 
