@@ -18,6 +18,9 @@ import javax.persistence.PersistenceContext;
 
 public class EjbTimerSession implements EjbTimerSessionLocal{
     @EJB
+    private StatementSessionBeanLocal statementSessionBeanLocal;
+    
+    @EJB
     private BankAccountSessionLocal bankAccountSessionLocal;
 
     @Resource
@@ -116,5 +119,6 @@ public class EjbTimerSession implements EjbTimerSessionLocal{
         System.out.println("*** 300000MS Timer timeout");
         
         bankAccountSessionLocal.interestCrediting();
+        statementSessionBeanLocal.generateStatement();
     }
 }

@@ -1,20 +1,19 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
+<html xmlns="http://www.w3.org/1999/xhtml"                                                                                                           
+      xmlns:h="http://xmlns.jcp.org/jsf/html" 
+      xmlns:f="http://xmlns.jcp.org/jsf/core" 
       xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>View Transaction History</title>
+        <title>View eStatement</title>
         <style type="text/css">
             .gritter-notice-wrapper {
                 left:200px;
-                top: 50px;
-            }
-        </style>
-    </h:head>
-    <h:body>
-        <h:form id="formMain">
+                top: 50px; }
+            </style>   
+        </h:head>
+        <h:body>
+            <h:form id="formMain">
             <h1>Welcome to Merlion Bank</h1>
             <p:menubar>
                 <p:submenu label="Home">
@@ -36,43 +35,36 @@
                     <p:menuitem value="To Other Merlion Accounts" url="toOthersAccount.xhtml" />
                     <p:menuitem value="To Other Merlion Accuonts(One-time)" url="oneTimeTransfer.xhtml" />
                     <p:menuitem value="Add Recipient" url="addRecipient.xhtml" />
-                    <p:menuitem value="Delete Recipient" url="deleteRecipient.xhtml" />
+                    <p:menuitem value="Delete Recipient" url="deleteRecipient.xhtml" />    
                     <p:menuitem value="Change Daily Transfer Limit" url="dailyTransferLimit.xhtml" />
                 </p:submenu>
             </p:menubar>
             <br/>
-            <p:panel header="View Transaction History">
-                <p:dataTable var="accTransaction" value="#{transactionManagedBean.accTransaction}" 
-                             paginator="true" rows="20" emptyMessage="No Transaction Record">
+            <p:panel id="panel" header="View eStatement"> 
+                <p:messages />
 
-                    <p:column headerText="Transaction ID">
-                        <h:outputText value="#{accTransaction.transactionId}" /> 
+                <p:dataTable var="statement" paginator="true" rows="10"
+                             value="#{viewStatementManagedBean.statement}"
+                             emptyMessage="No Statement">
+
+                    <p:column headerText="Date"> 
+                        <h:outputText value="#{statement.statementDate}" />
                     </p:column>
 
-                    <p:column headerText="Transaction Date">
-                        <h:outputText value="#{accTransaction.transactionDate}" >
-                            <f:convertDateTime pattern="dd/MM/yyyy" />
-                        </h:outputText>
+                    <p:column headerText="Statemenet Type(s)"> 
+                        <h:outputText value="#{statement.statementType}" />
                     </p:column>
 
-                    <p:column headerText="Transaction Code"> 
-                        <h:outputText value="#{accTransaction.transactionCode}" />
+                    <p:column headerText="Account Details"> 
+                        <h:outputText value="#{statement.accountDetails}" />
                     </p:column>
 
-                    <p:column headerText="Transaction Ref"> 
-                        <h:outputText value="#{accTransaction.transactionRef}" />
-                    </p:column>
-
-                    <p:column headerText="Account Debit(Withdrawal)"> 
-                        <h:outputText value="#{accTransaction.accountDebit}">
-                            <f:convertNumber type="currency" currencyCode="$" minFractionDigits="2" />
-                        </h:outputText>
-                    </p:column>
-
-                    <p:column headerText="Account Credit(Deposit)"> 
-                        <h:outputText value="#{accTransaction.accountCredit}">
-                            <f:convertNumber type="currency" currencyCode="SGD" />
-                        </h:outputText>
+                    <p:column headerText="View" style="width: 10%"> 
+                        <center>
+                            <p:commandButton ajax="false" process="@this" action="#{viewStatementManagedBean.viewStatement}" icon="ui-icon-document">
+                                <f:setPropertyActionListener value="#{statement.customerBasic.customerBasicId}" target="#{viewStatementManagedBean.customerBasicId}" />
+                            </p:commandButton>
+                        </center>
                     </p:column>
 
                 </p:dataTable>
@@ -80,3 +72,4 @@
         </h:form>
     </h:body>
 </html>
+
