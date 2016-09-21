@@ -397,6 +397,7 @@ public class TransferManagedBean {
 
                         fromAccountBalance = bankAccountFrom.getBankAccountBalance();
                         toAccountBalance = bankAccountTo.getBankAccountBalance();
+                        toBankAccountNumWithType=bankAccountTo.getBankAccountType()+"-"+bankAccountTo.getBankAccountNum();
 
                         ec.getFlash().put("statusMessage", statusMessage);
                         ec.getFlash().put("newTransactionId", newTransactionId);
