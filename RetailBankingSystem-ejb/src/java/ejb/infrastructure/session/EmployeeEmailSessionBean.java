@@ -6,7 +6,6 @@
 package ejb.infrastructure.session;
 
 import ejb.common.util.SMTPAuthenticator;
-import ejb.customer.entity.CustomerBasic;
 import ejb.infrastructure.entity.Employee;
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -59,6 +58,7 @@ public class EmployeeEmailSessionBean implements EmployeeEmailSessionBeanLocal {
             return "";
         }
     }
+    
     @Override
     public String resetPwd(String employeeNRIC,String employeeEmail) {
         

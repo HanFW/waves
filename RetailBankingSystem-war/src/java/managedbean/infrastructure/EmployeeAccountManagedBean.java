@@ -21,6 +21,7 @@ import javax.faces.event.ActionEvent;
 import org.primefaces.event.RowEditEvent;
 import ejb.infrastructure.session.EmployeeAdminSessionBeanLocal;
 import ejb.infrastructure.session.EmployeeEmailSessionBeanLocal;
+import java.io.IOException;
 
 /**
  *
