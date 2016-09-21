@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core" 
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Record Customer Enquiry</title>
+    </h:head>
+    <h:body>
+        <h:form>
+            <p:panel >
+                <p:messages />
+
+                <h:panelGrid columns="2" id="matchGrid" cellpadding="5">
+                    <h3>Customer Basic Info</h3>
+                    <p:panelGrid columns="2">
+
+                        <h:outputText value="Salutation:" />
+                        <h:outputText value="#{employeeRecordEnquiryManagedBean.cb.customerSalutation}" />
+
+                        <h:outputText value="Name:" />
+                        <h:outputText value="#{employeeRecordEnquiryManagedBean.cb.customerName}" />
+
+                        <h:outputText value="NRIC/Passport:" />
+                        <h:outputText value="#{employeeRecordEnquiryManagedBean.cb.customerIdentificationNum}" />
+
+                        <h:outputText value="Customer Online Banking Acc. Num.:" />
+                        <h:outputText value="#{employeeRecordEnquiryManagedBean.cb.customerOnlineBankingAccountNum}" />
+
+                    </p:panelGrid>
+                    <p:panel>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="caseType" style="font-weight: bold" value="What is it regarding?" />
+                            </p:column>
+                            <h:outputText value="&lt;br/&gt;" escape="false" />
+                            <p:column>
+                                <p:selectOneMenu id="caseType" value="#{employeeRecordEnquiryManagedBean.caseType}" 
+                                                 style="width:125px">
+                                    <f:selectItem itemLabel="Please Select" itemValue=" " />
+                                    <f:selectItem itemLabel="Credit Card" itemValue="Credit Card" />
+                                    <f:selectItem itemLabel="Saving Account" itemValue="Saving Account" />
+                                    <f:selectItem itemLabel="Loan" itemValue="Loan" />
+                                    <f:selectItem itemLabel="Online Banking" itemValue="Online Banking" />
+                                    <f:selectItem itemLabel="Fund Transfer" itemValue="Fund Transfer" />
+                                    <f:selectItem itemLabel="Wealth Management" itemValue="Wealth Management" />
+                                    <f:selectItem itemLabel="Others" itemValue="Others" />
+                                </p:selectOneMenu>
+                            </p:column>
+                            <p:column>
+                                <p:message for="caseType" />
+                            </p:column>
+                        </p:row>
+
+                        <h:outputText value="&lt;br/&gt;" escape="false" />
+                        <p:row>
+                            <h:outputLabel style="font-weight: bold" value="Enquiry Details" />
+                            <h:outputText value="&lt;br/&gt;" escape="false" />
+                            <p:inputTextarea id="caseDetail" value="#{employeeRecordEnquiryManagedBean.caseDetail}" required="true" rows="5" cols="30" counter="display" maxlength="500" counterTemplate="{0} characters remaining." autoResize="false" />
+                            <h:outputText value="&lt;br/&gt;" escape="false" />
+                            <h:outputText id="display" />
+                        </p:row>
+                    </p:panel>
+                </h:panelGrid>
+            </p:panel>
+
+            <p:commandButton value="Send Enquiry" update="@form" actionListener="#{enquiryManagedBean.saveEnquiryCase}" ajax="false" />
+        </h:form>
+    </h:body>
+</html>
+

@@ -17,17 +17,32 @@ import java.util.List;
 @Local
 public interface EnquirySessionBeanLocal {
     
-    public List <EnquiryCase> getCustomerEnquiry(String onlineBankingAccountNum);
+    public List <EnquiryCase> getCustomerEnquiry(Long customerId);
+    
+    public List<EnquiryCase> getAllPendingCustomerEnquiry();
+    
+    public String getCustomerEnquiryDetail(Long caseId);
+    
+    public List<FollowUp> getAllPendingCustomerFollowUp();
+    
+    public String getCustomerFollowUpDetail(Long followUpId);
     
     public List <EnquiryCase> getAllEnquiry();
        
     public List<FollowUp> getFollowUpByCaseId(Long caseId);
     
-    public String addNewCase(String onlineBankingAccountNum, String type, String detail);
+    public String addNewCase(Long customerId, String type, String detail);
+    
+    public String addNewCaseIssue(Long caseId, String departmentTo, String issueProblem);
+    
+    public String addNewFollowUpIssue(Long followUpId, String departmentTo, String issueProblem);
     
     public String updateStatus(Long caseId, String caseStatus);
     
     public String addFollowUp(Long caseId, String caseFollowUp);
 
+    public String replyCustomerCase(Long caseId, String caseReply);
+    
+    public String replyCustomerFollowUp(Long followUpId, String followUpSolution);
     
 }

@@ -104,19 +104,20 @@ public class EnquiryManagedBean implements Serializable {
     public void saveEnquiryCase() {
         ec = FacesContext.getCurrentInstance().getExternalContext();
         cb = (CustomerBasic) ec.getSessionMap().get("customer");
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(enquirySessionBeanLocal.addNewCase(cb.getCustomerOnlineBankingAccountNum(), caseType, caseDetail), " "));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(enquirySessionBeanLocal.addNewCase(cb.getCustomerBasicId(), caseType, caseDetail), " "));
+        caseType = null;
+        caseDetail = null;
     }
 
     public List<EnquiryCase> getEnquiryCase() {
         ec = FacesContext.getCurrentInstance().getExternalContext();
         cb = (CustomerBasic) ec.getSessionMap().get("customer");
-        List<EnquiryCase> enquiryCases = enquirySessionBeanLocal.getCustomerEnquiry(cb.getCustomerOnlineBankingAccountNum());
+        List<EnquiryCase> enquiryCases = enquirySessionBeanLocal.getCustomerEnquiry(cb.getCustomerBasicId());
 
         return enquiryCases;
     }
 
     public void saveFollowUp() {
-        ec = FacesContext.getCurrentInstance().getExternalContext();
 
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(enquirySessionBeanLocal.addFollowUp(caseId, followUpDetail), " "));
         caseId = null;

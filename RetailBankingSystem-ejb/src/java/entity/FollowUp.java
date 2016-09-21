@@ -22,19 +22,20 @@ import javax.persistence.OneToMany;
  */
 @Entity
 public class FollowUp implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long followUpId;
     private String followUpDetail;
     private String followUpSolution;
     private String followUpStatus;
     private String sendTime;
-    
+
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "followUp")
     private List<Issue> issue;
-    
-    @ManyToOne(cascade={CascadeType.ALL},fetch=FetchType.EAGER)
+
+    @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     private EnquiryCase enquiryCase;
 
     public Long getFollowUpId() {
@@ -93,11 +94,10 @@ public class FollowUp implements Serializable {
         this.sendTime = sendTime;
     }
 
+    public void addNewIssue(Issue newIssue) {
+        issue.add(newIssue);
+    }
 
-    
-    
-
-    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -122,5 +122,5 @@ public class FollowUp implements Serializable {
     public String toString() {
         return "entity.FollowUp[ id=" + followUpId + " ]";
     }
-    
+
 }
