@@ -5,6 +5,7 @@ import entity.CustomerBasic;
 import entity.Payee;
 import java.io.IOException;
 import java.io.Serializable;
+import static java.util.Collections.list;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -114,27 +115,38 @@ public class PayeeManagedBean implements Serializable {
 
         CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
         BankAccount bankAccount = bankAccountSessionLocal.retrieveBankAccountByNum(payeeAccountNum);
-        
+        boolean payeeExist = false;
+
         if (bankAccount.getBankAccountId() == null) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Your recipient account does not exist.", "Failed!"));
         } else if ((bankAccount.getCustomerBasic().getCustomerBasicId()).equals(customerBasic.getCustomerBasicId())) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! You cannot add your own account as recipient.", "Failed!"));
         } else {
-            
+
             if (!bankAccount.getBankAccountType().equals(payeeAccountType)) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Your recipient account type is wrong.", "Failed!"));
             } else {
-                Payee payee = payeeSessionLocal.retrievePayeeByNum(payeeAccountNum);
 
-                if (payee.getPayeeId() == null) {
-                    lastTransactionDate = "";
-                    customerBasicId = Long.valueOf(1);
+                List<Payee> payees = customerBasic.getPayee();
 
-                    newPayeeId = payeeSessionLocal.addNewPayee(payeeName, payeeAccountNum, payeeAccountType, lastTransactionDate, customerBasicId);
+                for (int i = 0; i < payees.size(); i++) {
+                    if (payees.get(i).getPayeeAccountNum().equals(payeeAccountNum)) {
+                        payeeExist = true;
+                    } else {
+                        payeeExist = false;
+                    }
+                }
+                if (!payeeExist) {
 
-                    if (customerBasic.getPayee().size() >= 20) {
+                    if (payees.size() >= 20) {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! You already have 20 recipients.", "Failed!"));
                     } else {
+                        
+                        lastTransactionDate = "";
+                        customerBasicId = customerBasic.getCustomerBasicId();
+                        newPayeeId = payeeSessionLocal.addNewPayee(payeeName, payeeAccountNum, payeeAccountType, lastTransactionDate, customerBasicId);
+                        Payee payee = payeeSessionLocal.retrievePayeeById(newPayeeId);
+
                         customerBasic.getPayee().add(payee);
                         statusMessage = "New Recipient Added Successfully.";
 

@@ -59,16 +59,17 @@
 
                     <p:column headerText="Transfer" style="width: 10%"> 
                         <center>
-                            <p:commandButton process="@this" action="index.xhtml" icon="ui-icon-extlink">
-                                <f:setPropertyActionListener value="#{bankAccount.bankAccountNum}" target="#{transactionManagedBean.bankAccountNum}" />
-                            </p:commandButton>
+                            <p:menuButton value=" ">
+                                <p:menuitem value="Transfer To My Account" action="toMyAccount.xhtml"/>
+                                <p:menuitem value="Transfer To Other Merlion Accounts" action="toOthersAccount.xhtml"/>
+                                <p:menuitem value="One-Time Transfer" action="oneTimeTransfer.xhtml"/>
+                            </p:menuButton>
                         </center>
                     </p:column>
 
                     <p:column headerText="Statement" style="width: 10%"> 
                         <center>
-                            <p:commandButton process="@this" action="index.xhtml" icon="ui-icon-document">
-                                <f:setPropertyActionListener value="#{bankAccount.bankAccountNum}" target="#{transactionManagedBean.bankAccountNum}" />
+                            <p:commandButton process="@this" action="viewStatement.xhtml" icon="ui-icon-document">
                             </p:commandButton>
                         </center>
                     </p:column>
