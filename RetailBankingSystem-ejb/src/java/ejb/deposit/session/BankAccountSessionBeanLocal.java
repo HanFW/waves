@@ -24,7 +24,7 @@ public interface BankAccountSessionBeanLocal {
     public void interestAccuring();
     public void interestCrediting();
     public String checkAccountDuplication (String bankAccountNum);
-    public String generateBankAccount(String customerIdentificationNum);
+    public String generateBankAccount();
     public boolean checkExistence(String customerIdentificationNum);
     public String changeDateFormat (Date customerDateOfBirth);
     public void updateDepositPeriod(String bankAccountNum,String fixedDepositPeriod);
