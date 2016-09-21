@@ -19,7 +19,10 @@ import ejb.deposit.session.BankAccountSessionBeanLocal;
 
 public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal{
     @EJB
-    private BankAccountSessionBeanLocal bankAccountSessionLocal;
+    private StatementSessionBeanLocal statementSessionBeanLocal;
+    
+    @EJB
+    private BankAccountSessionLocal bankAccountSessionLocal;
 
     @Resource
     private SessionContext ctx;
@@ -117,5 +120,6 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal{
         System.out.println("*** 300000MS Timer timeout");
         
         bankAccountSessionLocal.interestCrediting();
+        statementSessionBeanLocal.generateStatement();
     }
 }

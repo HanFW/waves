@@ -31,7 +31,7 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal{
             String customerNationality,String customerCountryOfResidence, String customerRace, 
             String customerMaritalStatus,String customerOccupation, String customerCompany, 
             String customerAddress, String customerPostal,String customerOnlineBankingAccountNum, 
-            String customerOnlineBankingPassword,byte[] customerSignature) {
+            String customerOnlineBankingPassword,byte[] customerSignature,Double statementDateDouble) {
         
         CustomerBasic customerBasic = new CustomerBasic();
         
@@ -54,6 +54,7 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal{
         customerBasic.setCustomerOnlineBankingPassword(null);
         customerBasic.setCustomerSignature(customerSignature);
         customerBasic.setCustomerAge(getAge(customerDateOfBirth));
+        customerBasic.setStatementDateDouble(statementDateDouble);
         
         entityManager.persist(customerBasic);
         entityManager.flush();

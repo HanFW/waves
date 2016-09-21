@@ -84,7 +84,7 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
 
     @Override
     public Long addNewTransaction(String transactionDate, String transactionCode, String transactionRef,
-            String accountDebit, String accountCredit, Long bankAccountId) {
+            String accountDebit, String accountCredit, String transactionDateMilis, Long bankAccountId) {
         AccTransaction accTransaction = new AccTransaction();
 
         accTransaction.setTransactionDate(transactionDate);
@@ -92,6 +92,7 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
         accTransaction.setTransactionRef(transactionRef);
         accTransaction.setAccountDebit(accountDebit);
         accTransaction.setAccountCredit(accountCredit);
+        accTransaction.setTransactionDateMilis(transactionDateMilis);
         accTransaction.setBankAccount(retrieveBankAccountById(bankAccountId));
 
         entityManager.persist(accTransaction);
@@ -118,18 +119,19 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
                 }
             }
 
-            String accountCredit = " ";
+            String accountDebit = " ";
             String transactionCode = "ADP";
             String transactionRef = "Merlion Bank Branch";
 
             Calendar cal = Calendar.getInstance();
-            int year = cal.get(Calendar.YEAR);
-            int month = cal.get(Calendar.MONTH);
-            int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
-            String transactionDate = dayOfMonth + "-" + (month + 1) + "-" + year;
+//            int year = cal.get(Calendar.YEAR);
+//            int month = cal.get(Calendar.MONTH);
+//            int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
+//            String transactionDate = dayOfMonth + "-" + (month + 1) + "-" + year;
+            String transactionDateMilis = String.valueOf(cal.getTimeInMillis());
 
-            accTransactionId = addNewTransaction(transactionDate, transactionCode, transactionRef,
-                    depositAmt, accountCredit, bankAccountId);
+            accTransactionId = addNewTransaction(cal.getTime().toString(), transactionCode, transactionRef,
+                    accountDebit, depositAmt, transactionDateMilis, bankAccountId);
 
             Double preBalance = Double.valueOf(bankAccount.getBankAccountBalance());
             Double depositAmtDouble = Double.valueOf(depositAmt);
@@ -155,18 +157,19 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
         if (bankAccountId == null) {
             return "Error! Bank account does not exist!";
         } else {
-            String accountDebit = " ";
+            String accountCredit = " ";
             String transactionCode = "AWL";
             String transactionRef = "Merlion Bank Branch";
 
             Calendar cal = Calendar.getInstance();
-            int year = cal.get(Calendar.YEAR);
-            int month = cal.get(Calendar.MONTH);
-            int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
-            String transactionDate = dayOfMonth + "-" + (month + 1) + "-" + year;
+//            int year = cal.get(Calendar.YEAR);
+//            int month = cal.get(Calendar.MONTH);
+//            int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
+//            String transactionDate = dayOfMonth + "-" + (month + 1) + "-" + year;
+            String transactionDateMilis = String.valueOf(cal.getTimeInMillis());
 
-            accTransactionId = addNewTransaction(transactionDate, transactionCode, transactionRef,
-                    accountDebit, withdrawAmt, bankAccountId);
+            accTransactionId = addNewTransaction(cal.getTime().toString(), transactionCode, transactionRef,
+                    withdrawAmt, accountCredit, transactionDateMilis, bankAccountId);
 
             Double preBalance = Double.valueOf(bankAccount.getBankAccountBalance());
             Double withdrawAmtDouble = Double.valueOf(withdrawAmt);
@@ -223,15 +226,16 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
         String transactionRefTo = fromAccount;
 
         Calendar cal = Calendar.getInstance();
-        int year = cal.get(Calendar.YEAR);
-        int month = cal.get(Calendar.MONTH);
-        int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
-        String transactionDate = dayOfMonth + "-" + (month + 1) + "-" + year;
+//        int year = cal.get(Calendar.YEAR);
+//        int month = cal.get(Calendar.MONTH);
+//        int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
+//        String transactionDate = dayOfMonth + "-" + (month + 1) + "-" + year;
+        String transactionDateMilis = String.valueOf(cal.getTimeInMillis());
 
-        Long fromTransactionId = addNewTransaction(transactionDate, transactionCode, transactionRefFrom,
-                " ", transferAmt, bankAccountFromId);
-        Long toTransactionId = addNewTransaction(transactionDate, transactionCode, transactionRefTo,
-                transferAmt, " ", bankAccountToId);
+        Long fromTransactionId = addNewTransaction(cal.getTime().toString(), transactionCode, transactionRefFrom,
+                transferAmt, " ", transactionDateMilis, bankAccountFromId);
+        Long toTransactionId = addNewTransaction(cal.getTime().toString(), transactionCode, transactionRefTo,
+                " ", transferAmt, transactionDateMilis, bankAccountToId);
 
         bankAccountFrom.setBankAccountBalance(balanceAccountFrom.toString());
         bankAccountTo.setBankAccountBalance(balanceAccountTo.toString());

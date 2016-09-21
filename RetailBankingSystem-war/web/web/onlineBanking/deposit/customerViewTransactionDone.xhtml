@@ -63,7 +63,9 @@
                     </p:column>
 
                     <p:column headerText="Transaction Date">
-                        <h:outputText value="#{accTransaction.transactionDate}" /> 
+                        <h:outputText value="#{accTransaction.transactionDate}" >
+                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                        </h:outputText>
                     </p:column>
 
                     <p:column headerText="Transaction Code"> 
@@ -74,12 +76,16 @@
                         <h:outputText value="#{accTransaction.transactionRef}" />
                     </p:column>
 
-                    <p:column headerText="Account Debit"> 
-                        <h:outputText value="S$#{accTransaction.accountDebit}" />
+                    <p:column headerText="Account Debit(Withdrawal)"> 
+                        <h:outputText value="#{accTransaction.accountDebit}">
+                            <f:convertNumber type="currency" currencyCode="$" minFractionDigits="2" />
+                        </h:outputText>
                     </p:column>
 
-                    <p:column headerText="Account Credit"> 
-                        <h:outputText value="S$#{accTransaction.accountCredit}" />
+                    <p:column headerText="Account Credit(Deposit)"> 
+                        <h:outputText value="#{accTransaction.accountCredit}">
+                            <f:convertNumber type="currency" currencyCode="SGD" />
+                        </h:outputText>
                     </p:column>
 
                 </p:dataTable>

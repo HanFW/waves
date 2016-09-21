@@ -64,8 +64,8 @@
                                 </p:column>
                                 <p:column>
                                     <p:selectOneMenu id="customerSalutation" value="#{accountManagedBean.customerSalutation}" 
-                                                     style="width:125px">
-                                        <f:selectItem itemLabel="Please Select" itemValue=" " />
+                                                     style="width:125px" required="true" requiredMessage="Required Field">
+                                        <f:selectItem itemLabel="Please Select" itemValue="" noSelectionOption="true"/>
                                         <f:selectItem itemLabel="Dr" itemValue="Dr" />
                                         <f:selectItem itemLabel="Mr" itemValue="Mr" />
                                         <f:selectItem itemLabel="Mrs" itemValue="Mrs" />
@@ -75,12 +75,13 @@
                                         <p:ajax event="change" update="panelCustomerSalutationOthers" listener="#{accountManagedBean.show()}"/>
                                     </p:selectOneMenu>
                                     <p:panel style="border: none;" id="panelCustomerSalutationOthers" visible="#{accountManagedBean.visible}">
-                                        <p:inputText label="Customer Salutation" id="customerSalutationOthers"
-                                                     value="#{accountManagedBean.customerSalutationOthers}" />  
+                                        <p:inputText label="Customer Salutation" id="customerSalutationOthers" requiredMessage="Required Field"
+                                                     value="#{accountManagedBean.customerSalutationOthers}" required="#{accountManagedBean.salutationRender}"/>  
                                     </p:panel>
                                 </p:column>
                                 <p:column>
                                     <p:message for="customerSalutation" />
+                                    <p:message for="panelCustomerSalutationOthers" />
                                 </p:column>
                             </p:row>
 
@@ -176,8 +177,8 @@
                                 </p:column>
                                 <p:column>
                                     <p:selectOneMenu id="customerNationality" value="#{accountManagedBean.customerNationality}" 
-                                                     style="width:125px">
-                                        <f:selectItem itemLabel="Please Select" itemValue=" " />
+                                                     style="width:125px" required="true" requiredMessage="Required Field">
+                                        <f:selectItem itemLabel="Please Select" itemValue="" noSelectionOption="true"/>
                                         <f:selectItem itemLabel="Afghanistan" itemValue="Afghanistan" />
                                         <f:selectItem itemLabel="Albania" itemValue="Albania" />
                                         <f:selectItem itemLabel="Algeria" itemValue="Algeria" />
@@ -396,7 +397,8 @@
                                     <p:outputLabel for="customerNRICSG" style="font-weight: bold" value="NRIC No.: " />
                                 </p:column>
                                 <p:column>
-                                    <p:inputText label="customerNRICSG" id="customerNRICSG" value="#{accountManagedBean.customerNRICSG}">
+                                    <p:inputText label="customerNRICSG" id="customerNRICSG" value="#{accountManagedBean.customerNRICSG}"
+                                                 required="#{accountManagedBean.nricSGRender}" requiredMessage="Required Field">
                                     </p:inputText>
                                 </p:column>
                                 <p:column>
@@ -411,7 +413,8 @@
                                     <p:outputLabel for="singaporePR" style="font-weight: bold" value="Singapore PR: " />
                                 </p:column>
                                 <p:column>
-                                    <p:selectOneRadio id="singaporePR" value="#{accountManagedBean.singaporePR}">
+                                    <p:selectOneRadio id="singaporePR" value="#{accountManagedBean.singaporePR}"
+                                                      required="#{accountManagedBean.singaporePRRender}" requiredMessage="Required Field">
                                         <f:selectItem itemLabel="Yes" itemValue="Yes" />
                                         <f:selectItem itemLabel="No" itemValue="No" />
                                         <p:ajax event="change" update="panelCustomerNRIC" listener="#{accountManagedBean.show4()}"/>
@@ -430,8 +433,8 @@
                                     <p:outputLabel for="customerNRIC" style="font-weight: bold" value="NRIC No.: " />
                                 </p:column>
                                 <p:column>
-                                    <p:inputText label="customerNRIC" id="customerNRIC"
-                                                 value="#{accountManagedBean.customerNRIC}" >
+                                    <p:inputText label="customerNRIC" id="customerNRIC" required="#{accountManagedBean.nricRender}"
+                                                 value="#{accountManagedBean.customerNRIC}" requiredMessage="Required Message">
                                     </p:inputText>
                                 </p:column>
                                 <p:column>
@@ -446,8 +449,8 @@
                                     <p:outputLabel for="customerPassport" style="font-weight: bold" value="Passport No. " />
                                 </p:column>
                                 <p:column>
-                                    <p:inputText label="customerPassport" id="customerPassport"
-                                                 value="#{accountManagedBean.customerPassport}">
+                                    <p:inputText label="customerPassport" id="customerPassport" required="#{accountManagedBean.passportRender}"
+                                                 value="#{accountManagedBean.customerPassport}" requiredMessage="Required Field">
                                     </p:inputText>
                                 </p:column>
                                 <p:column>

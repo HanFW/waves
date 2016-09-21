@@ -69,6 +69,8 @@ public class CRMCustomerManagedBean {
     private ExternalContext ec;
     private String hashedPassword;
     private String hashedNewPassword;
+    
+    private Double statementDateDouble;
 
     public String getCustomerAge() {
         return customerAge;
@@ -332,10 +334,18 @@ public class CRMCustomerManagedBean {
     public CRMCustomerManagedBean() {
     }
 
+    public Double getStatementDateDouble() {
+        return statementDateDouble;
+    }
+
+    public void setStatementDateDouble(Double statementDateDouble) {
+        this.statementDateDouble = statementDateDouble;
+    }
+
     public Long saveNewCustomerBasic(ActionEvent customerBasic) {
 
         try {
-            newCustomerBasicId = customerSessionBean.addNewCustomerBasic(customerName, customerSalutation, customerIdentificationNum, customerGender, customerEmail, customerMobile, customerDateOfBirth, customerNationality, customerCountryOfResidence, customerRace, customerMaritalStatus, customerOccupation, customerCompany, customerAddress, customerPostal, customerOnlineBankingAccountNum, customerOnlineBankingPassword, customerSignature);
+            newCustomerBasicId = customerSessionBean.addNewCustomerBasic(customerName, customerSalutation, customerIdentificationNum, customerGender, customerEmail, customerMobile, customerDateOfBirth, customerNationality, customerCountryOfResidence, customerRace, customerMaritalStatus, customerOccupation, customerCompany, customerAddress, customerPostal, customerOnlineBankingAccountNum, customerOnlineBankingPassword, customerSignature,statementDateDouble);
             return newCustomerBasicId;
         } catch (Exception ex) {
             ex.printStackTrace();

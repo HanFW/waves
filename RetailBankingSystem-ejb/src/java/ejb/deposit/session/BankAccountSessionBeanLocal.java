@@ -29,4 +29,5 @@ public interface BankAccountSessionBeanLocal {
     public String changeDateFormat (Date customerDateOfBirth);
     public void updateDepositPeriod(String bankAccountNum,String fixedDepositPeriod);
     public boolean checkOnlyOneAccount(String customerIdentificationNum);
+    public CustomerBasic retrieveCustomerBasicByAccNum (String bankAccountNum);
 }
