@@ -39,7 +39,7 @@
                             <p:outputLabel style="font-weight: bold" value="(As per NRIC/Passport): " />
                         </p:column>
                         <p:column>
-                            <p:inputText label="Customer Name" id="customerName" value="#{employeeViewAccountManagedBean.customerName}"
+                            <p:inputText label="Customer Name" id="customerName" value="#{employeeViewTransactionManagedBean.customerName}"
                                          required="true" requiredMessage="Required Field">
                             </p:inputText>
                         </p:column>
@@ -53,7 +53,7 @@
                             <p:outputLabel for="customerIdentificationNum" style="font-weight: bold" value="Identification Number: " />
                         </p:column>
                         <p:column>
-                            <p:inputText label="Customer Identification Number" id="customerIdentificationNum" value="#{employeeViewAccountManagedBean.customerIdentificationNum}"
+                            <p:inputText label="Customer Identification Number" id="customerIdentificationNum" value="#{employeeViewTransactionManagedBean.customerIdentificationNum}"
                                          required="true" requiredMessage="Required Field">
                             </p:inputText>
                         </p:column>
@@ -67,7 +67,7 @@
                             <p:outputLabel for="customerDateOfBirth" style="font-weight: bold" value="Date Of Birth: " />
                         </p:column>
                         <p:column>
-                            <p:calendar id="customerDateOfBirth" value="#{employeeViewAccountManagedBean.customerDateOfBirth}" 
+                            <p:calendar id="customerDateOfBirth" value="#{employeeViewTransactionManagedBean.customerDateOfBirth}" 
                                         showOn="button" locale="de" navigator="true" pattern="dd/MM/yyyy" 
                                         yearRange="c-200:c+200" required="true" requiredMessage="Required Field"/>
                         </p:column>
@@ -79,10 +79,9 @@
                 </p:panelGrid>
 
                 <p:commandButton id="submitBtn" value="Submit" update="panel"
-                                 action="#{employeeViewAccountManagedBean.submit}" ajax="true"/>
+                                 action="#{employeeViewTransactionManagedBean.submit}" ajax="true"/>
 
             </p:panel>
         </h:form>
     </h:body>
 </html>
-
