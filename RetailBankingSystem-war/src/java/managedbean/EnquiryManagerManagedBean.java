@@ -7,6 +7,7 @@ package managedbean;
 
 import entity.EnquiryCase;
 import entity.FollowUp;
+import entity.Issue;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
@@ -167,6 +168,14 @@ public class EnquiryManagerManagedBean implements Serializable {
         return enquirySessionBeanLocal.getCustomerFollowUpDetail(followUpId);
     }
 
+    public List<Issue> getCaseIssueById() {
+        return enquirySessionBeanLocal.getCaseIssue(caseId);
+    }
+
+    public List<Issue> getFollowUpIssueById() {
+        return enquirySessionBeanLocal.getFollowUpIssue(followUpId);
+    }
+
     public void replyToCase() throws IOException {
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
@@ -237,6 +246,27 @@ public class EnquiryManagerManagedBean implements Serializable {
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext ec = context.getExternalContext();
         ec.redirect(ec.getRequestContextPath() + "/enquiry/enquirymanagerReplyFollowUp.xhtml");
+    }
+
+//    public void redirectToViewIssue() throws IOException {
+//        FacesContext context = FacesContext.getCurrentInstance();
+//        ExternalContext ec = context.getExternalContext();
+//        ec.redirect(ec.getRequestContextPath() + "/enquiry/enquirymanagerViewIssueStatus.xhtml");
+//    }
+    public String caseIssueCreated(Long caseId) {
+        return enquirySessionBeanLocal.caseIssueIsCreated(caseId);
+    }
+
+    public String followUpIssueCreated(Long followUpId) {
+        return enquirySessionBeanLocal.followUpIssueIsCreated(followUpId);
+    }
+
+    public String caseIssueReplied(Long caseId) {
+        return enquirySessionBeanLocal.caseIssueAllReplied(caseId);
+    }
+
+    public String followUpIssueReplied(Long followUpId) {
+        return enquirySessionBeanLocal.followUpIssueAllReplied(followUpId);
     }
 
     public void show1() {

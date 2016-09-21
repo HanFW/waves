@@ -28,6 +28,14 @@
                         <h:outputText value="#{enquiryCase.caseStatus}" />
                     </p:column>
 
+                    <p:column headerText="Issue Created"> 
+                        <h:outputText value="#{enquiryManagerManagedBean.caseIssueCreated(enquiryCase.caseId)}" />
+                    </p:column>
+
+                    <p:column headerText="All Issues Replied"> 
+                        <h:outputText value="#{enquiryManagerManagedBean.caseIssueReplied(enquiryCase.caseId)}" />
+                    </p:column>
+
                     <p:column > 
                         <p:commandButton value="Reply" actionListener="#{enquiryManagerManagedBean.redirectToReplyCase}" ajax="true">
                             <f:setPropertyActionListener target="#{enquiryManagerManagedBean.caseId}" value="#{enquiryCase.caseId}" />
@@ -57,6 +65,14 @@
 
                     <p:column headerText="Status"> 
                         <h:outputText value="#{followUp.followUpStatus}" />
+                    </p:column>
+
+                    <p:column headerText="Issue Created"> 
+                        <h:outputText value="#{enquiryManagerManagedBean.followUpIssueCreated(followUp.followUpId)}" />
+                    </p:column>
+
+                    <p:column headerText="All Issues Replied"> 
+                        <h:outputText value="#{enquiryManagerManagedBean.followUpIssueReplied(followUp.followUpId)}" />
                     </p:column>
 
                     <p:column > 

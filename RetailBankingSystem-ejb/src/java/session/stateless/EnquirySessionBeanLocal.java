@@ -8,6 +8,7 @@ package session.stateless;
 import javax.ejb.Local;
 import entity.EnquiryCase;
 import entity.FollowUp;
+import entity.Issue;
 import java.util.List;
 
 /**
@@ -32,6 +33,10 @@ public interface EnquirySessionBeanLocal {
     public EnquiryCase getEnquiryByCaseId(Long caseId);
 
     public List<FollowUp> getFollowUpByCaseId(Long caseId);
+    
+    public List<Issue> getCaseIssue (Long caseId);
+    
+    public List<Issue> getFollowUpIssue(Long followUpId);
 
     public String addNewCase(Long customerId, String type, String detail);
 
@@ -46,5 +51,13 @@ public interface EnquirySessionBeanLocal {
     public String replyCustomerCase(Long caseId, String caseReply);
 
     public String replyCustomerFollowUp(Long followUpId, String followUpSolution);
+
+    public String caseIssueIsCreated(Long caseId);
+
+    public String followUpIssueIsCreated(Long followUpId);
+
+    public String caseIssueAllReplied(Long caseId);
+
+    public String followUpIssueAllReplied(Long followUpId);
 
 }

@@ -12,6 +12,26 @@
             <p:messages />
             <p:panel id="detail" header="Customer Follow-Up Detail">
                 <h:outputText value="Customer Input:   #{enquiryManagerManagedBean.followUpDetailById}" /> 
+                <p:panel header="Customer Case Issues">
+                    <p:dataTable var="issue" value="#{enquiryManagerManagedBean.followUpIssueById}" 
+                                 paginator="true" rows="10" emptyMessage="No Issue Sent to Specialists">
+                        <p:column headerText="Issue ID">
+                            <h:outputText value="#{issue.issueId}" />
+                        </p:column>
+
+                        <p:column headerText="Status"> 
+                            <h:outputText value="#{issue.issueStatus}" />
+                        </p:column>
+
+                        <p:column headerText="Detail" >
+                            <h:outputText value="#{issue.issueProblem}" /> 
+                        </p:column>
+
+                        <p:column headerText="Reply"> 
+                            <h:outputText value="#{issue.issueSolution}" />
+                        </p:column>
+                    </p:dataTable>
+                </p:panel>
             </p:panel>
             <h:outputText value="&lt;br/&gt;" escape="false" />
             <p:panel>
