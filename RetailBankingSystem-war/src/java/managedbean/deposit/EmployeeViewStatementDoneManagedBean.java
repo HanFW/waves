@@ -2,6 +2,7 @@ package managedbean.deposit;
 
 import ejb.deposit.entity.BankAccount;
 import ejb.customer.entity.CustomerBasic;
+import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import ejb.deposit.entity.Statement;
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,11 +24,16 @@ import javax.sql.DataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperRunManager;
 import ejb.deposit.session.StatementSessionBeanLocal;
+import javax.annotation.PostConstruct;
 
-@Named(value = "viewStatementManagedBean")
+@Named(value = "employeeViewStatementDoneManagedBean")
 @RequestScoped
 
-public class ViewStatementManagedBean {
+public class EmployeeViewStatementDoneManagedBean {
+    
+    @EJB
+    private CRMCustomerSessionBeanLocal customerSessionBeanLocal;
+    
     @EJB
     private StatementSessionBeanLocal statementSessionBeanLocal;
     
@@ -43,7 +49,12 @@ public class ViewStatementManagedBean {
     
     private ExternalContext ec;
 
-    public ViewStatementManagedBean() {
+    public EmployeeViewStatementDoneManagedBean() {
+    }
+    
+    @PostConstruct
+    public void init() {
+        customerIdentificationNum = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("customerIdentificationNum").toString();
     }
 
     public String getStatementDate() {
@@ -87,7 +98,8 @@ public class ViewStatementManagedBean {
     }
     
     public void viewStatement() throws ClassNotFoundException, IOException, JRException, SQLException{
-        CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
+        
+        CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum);
         BankAccount bankAccount = customerBasic.getBankAccount().get(0);
         
         Connection connection;
@@ -122,14 +134,13 @@ public class ViewStatementManagedBean {
         connection.close();
         servletOutputStream.flush();
         servletOutputStream.close();
+        
     }
 
     public List<Statement> getStatement() throws IOException {
         ec = FacesContext.getCurrentInstance().getExternalContext();
-        
-        CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
-        
-        List<Statement> statement = statementSessionBeanLocal.retrieveStatementByCusIC(customerBasic.getCustomerIdentificationNum().toUpperCase());
+
+        List<Statement> statement = statementSessionBeanLocal.retrieveStatementByCusIC(customerIdentificationNum.toUpperCase());
 
         if (statement.isEmpty()) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Your identification is invalid", "Failed!"));

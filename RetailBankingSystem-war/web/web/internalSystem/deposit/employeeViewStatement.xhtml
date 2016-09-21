@@ -5,7 +5,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>View Account</title>
+        <title>View Statement</title>
         <style type="text/css">
             .gritter-notice-wrapper {
                 left:200px;
@@ -30,7 +30,7 @@
 
         <h:form>
             <br/>
-            <p:panel id="panel" header="View Account">
+            <p:panel id="panel" header="View Statement">
                 <p:messages globalOnly="true"/>
 
                 <p:panelGrid style="margin-bottom:10px">
@@ -40,7 +40,7 @@
                             <p:outputLabel style="font-weight: bold" value="(As per NRIC/Passport): " />
                         </p:column>
                         <p:column>
-                            <p:inputText label="Customer Name" id="customerName" value="#{employeeViewAccountManagedBean.customerName}"
+                            <p:inputText label="Customer Name" id="customerName" value="#{employeeViewStatementManagedBean.customerName}"
                                          required="true" requiredMessage="Required Field">
                             </p:inputText>
                         </p:column>
@@ -54,7 +54,7 @@
                             <p:outputLabel for="customerIdentificationNum" style="font-weight: bold" value="Identification Number: " />
                         </p:column>
                         <p:column>
-                            <p:inputText label="Customer Identification Number" id="customerIdentificationNum" value="#{employeeViewAccountManagedBean.customerIdentificationNum}"
+                            <p:inputText label="Customer Identification Number" id="customerIdentificationNum" value="#{employeeViewStatementManagedBean.customerIdentificationNum}"
                                          required="true" requiredMessage="Required Field">
                             </p:inputText>
                         </p:column>
@@ -68,7 +68,7 @@
                             <p:outputLabel for="customerDateOfBirth" style="font-weight: bold" value="Date Of Birth: " />
                         </p:column>
                         <p:column>
-                            <p:calendar id="customerDateOfBirth" value="#{employeeViewAccountManagedBean.customerDateOfBirth}" 
+                            <p:calendar id="customerDateOfBirth" value="#{employeeViewStatementManagedBean.customerDateOfBirth}" 
                                         showOn="button" locale="de" navigator="true" pattern="dd/MM/yyyy" 
                                         yearRange="c-200:c+200" required="true" requiredMessage="Required Field"/>
                         </p:column>
@@ -80,8 +80,7 @@
                 </p:panelGrid>
 
                 <p:commandButton id="submitBtn" value="Submit" update="panel"
-                                 action="#{employeeViewAccountManagedBean.submit}" ajax="true"/>
-
+                                 action="#{employeeViewStatementManagedBean.submit}" ajax="true"/>
             </p:panel>
         </h:form>
     </h:body>

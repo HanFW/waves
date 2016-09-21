@@ -12,10 +12,10 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
-@Named(value = "employeeViewAccountManagedBean")
+@Named(value = "employeeViewStatementManagedBean")
 @RequestScoped
 
-public class EmployeeViewAccountManagedBean {
+public class EmployeeViewStatementManagedBean {
 
     @EJB
     private CRMCustomerSessionBeanLocal customerSessionBeanLocal;
@@ -29,7 +29,7 @@ public class EmployeeViewAccountManagedBean {
 
     private ExternalContext ec;
 
-    public EmployeeViewAccountManagedBean() {
+    public EmployeeViewStatementManagedBean() {
     }
 
     public String getCustomerName() {
@@ -59,6 +59,7 @@ public class EmployeeViewAccountManagedBean {
     public void submit() throws IOException {
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
+        System.out.println(customerIdentificationNum);
         CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum.toUpperCase());
         
         if (customerBasic.getCustomerBasicId() == null) {
@@ -76,7 +77,7 @@ public class EmployeeViewAccountManagedBean {
                 
                 ec.getFlash().put("customerIdentificationNum", customerIdentificationNum);
                 
-                ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/deposit/employeeViewAccountDone.xhtml?faces-redirect=true");
+                ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/deposit/employeeViewStatementDone.xhtml?faces-redirect=true");
             }
         }
     }
