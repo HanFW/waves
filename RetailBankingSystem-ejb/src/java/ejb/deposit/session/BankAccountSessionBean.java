@@ -435,7 +435,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
     }
 
     @Override
-    public String generateBankAccount(String customerIdentificationNum) {
+    public String generateBankAccount() {
         String bankAccountNum;
         String status;
         SecureRandom random = new SecureRandom();

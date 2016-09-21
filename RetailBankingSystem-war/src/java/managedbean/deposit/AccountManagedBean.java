@@ -735,7 +735,7 @@ public class AccountManagedBean implements Serializable {
         checkIdentificationType();
         checkSalutation();
 
-        bankAccountNum = bankAccountSessionLocal.generateBankAccount(customerIdentificationNum);
+        bankAccountNum = bankAccountSessionLocal.generateBankAccount();
         checkExist = bankAccountSessionLocal.checkExistence(customerIdentificationNum);
         dateOfBirth = bankAccountSessionLocal.changeDateFormat(customerDateOfBirth);
 
@@ -768,9 +768,9 @@ public class AccountManagedBean implements Serializable {
                     bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
                     bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus, customerBasicId, newInterestId);
 
+            bankAccount=bankAccountSessionLocal.retrieveBankAccountById(newAccountId);
             bankAccountSessionLocal.retrieveBankAccountByCusIC(customerIdentificationNum).add(bankAccount);
 
-//            transactionSessionLocal.initialDeposit(newAccountId, initialDepositAmt);
             statusMessage = "New Account Saved Successfully.";
 
             ec.getFlash().put("statusMessage", statusMessage);
@@ -822,7 +822,6 @@ public class AccountManagedBean implements Serializable {
                     bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
                     bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus, newCustomerBasicId, newInterestId);
 
-//            transactionSessionLocal.initialDeposit(newAccountId, initialDepositAmt);
             statusMessage = "New Account Saved Successfully.";
 
             ec.getFlash().put("statusMessage", statusMessage);

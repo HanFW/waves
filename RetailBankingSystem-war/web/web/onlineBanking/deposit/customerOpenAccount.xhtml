@@ -1,24 +1,30 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html" 
-      xmlns:f="http://xmlns.jcp.org/jsf/core" 
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>Facelet Title</title>
+        <title>Home</title>
+        <style type="text/css">
+            .gritter-notice-wrapper {
+                left:200px;
+                top: 50px;
+            }
+        </style>
     </h:head>
     <h:body>
         <h:form id="formMain">
             <h1>Welcome to Merlion Bank</h1>
             <p:menubar>
+
                 <p:submenu label="My Account">
                     <p:menuitem value="Home" url="/web/onlineBanking/deposit/customerDepositIndex.xhtml" />
                     <p:menuitem value="Open Account" url="/web/onlineBanking/deposit/customerOpenAccount.xhtml" />
                     <p:menuitem value="Close Account" url="/web/onlineBanking/deposit/customerCloseAccount.xhtml" />
                     <p:menuitem value="View Account" url="/web/onlineBanking/deposit/customerViewAccount.xhtml" />
-                    <p:menuitem value="Cash Deposit" url="/web/onlineBanking/deposit/customerCashDeposit.xhtml" />
-                    <p:menuitem value="Cash Withdraw" url="/web/onlineBanking/deposit/customerCashWithdraw.xhtml" />
                     <p:menuitem value="View Transaction" url="/web/onlineBanking/deposit/customerViewTransaction.xhtml" />
+                    <p:menuitem value="View Statement" url="/web/onlineBanking/deposit/customerViewStatement.xhtml" />
                     <p:menuitem value="Activate Fixed Deposit Account" url="/web/onlineBanking/deposit/customerActivateFixedDepositAccount.xhtml" />
                 </p:submenu>
 
@@ -44,1028 +50,108 @@
                     <p:menuitem value="Logout" actionListener="#{customerLoginManagedBean.doLogout}"/>
                 </p:submenu>
             </p:menubar>
-        </h:form>
-        <h:form>
+            <br/>
+
             <p:ajaxStatus style="width:16px;height:16px;">
                 <f:facet name="start">
-                    <h:graphicImage value=".resources/images/spinner.gif" />
+                    <h:graphicImage value="/resources/images/spinner.gif" />
                 </f:facet>
                 <f:facet name="complete">
                     <h:outputText value="" />
                 </f:facet>
             </p:ajaxStatus>
+        </h:form>
+        <h:form>
+            <p:panel id="panel">
+                <p:messages globalOnly="true"/>
+                
+                <p:panelGrid style="margin-bottom:10px">
+                    <h:outputLabel value="Account Details" style="font-weight: bold; font-size: 24px" />
+                    <p:separator/>
+                    <br/>
 
-            <p:growl id="growl" sticky="true" showDetail="true"/>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="bankAccountType" style="font-weight: bold" value="Account Type: " />
+                        </p:column>
+                        <p:column>
+                            <p:selectOneMenu id="bankAccountType" value="#{employeeOpenAccount.bankAccountType}" 
+                                             style="width:125px" required="true" requiredMessage="Required Field">
+                                <f:selectItem itemLabel="Please Select" itemValue="" noSelectionOption="true"/>
+                                <f:selectItem itemLabel="Monthly Savings Account" itemValue="Monthly Savings Account" />
+                                <f:selectItem itemLabel="Bonus Savings Account" itemValue="Bonus Savings Account" />
+                                <f:selectItem itemLabel="Basic Savings Account" itemValue="Basic Savings Account" />
+                                <f:selectItem itemLabel="Fixed Deposit Account" itemValue="Fixed Deposit Account" />
+                            </p:selectOneMenu>
+                        </p:column>
+                        <p:column>
+                            <p:message for="bankAccountType" />
+                        </p:column>
+                    </p:row>
 
-            <p:wizard flowListener="#{accountManagedBean.onFlowProcess}">
-                <p:tab id="personal" title="Personal Information">
-                    <p:panel header="Personal Information"> 
-                        <p:messages globalOnly="true"/>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="bankAccountPwd" style="font-weight: bold" value="Account Password: " />
+                        </p:column>
+                        <p:column>
+                            <p:password id="bankAccountPwd" value="#{employeeOpenAccount.bankAccountPwd}" match="confirmBankAccountPwd" 
+                                        required="true" requiredMessage="Required Field">
+                                <f:validateLength minimum="6" maximum="6" />
+                            </p:password>
+                        </p:column>
+                        <p:column>
+                            <p:message for="bankAccountPwd" />
+                        </p:column>
+                    </p:row>   
 
-                        <p:panelGrid style="margin-bottom:10px">
-                            <p:row>
-                                <p:column>
-                                    <p:outputLabel style="font-weight: bold" value="Existing Customer of Merlion Bank: " />
-                                </p:column>
-                                <p:column>
-                                    <p:selectOneRadio id="existingCustomer" value="#{accountManagedBean.existingCustomer}"
-                                                      required="true" requiredMessage="Required Field">
-                                        <f:selectItem itemLabel="Yes" itemValue="Yes" />
-                                        <f:selectItem itemLabel="No" itemValue="No" />
-                                    </p:selectOneRadio>
-                                </p:column>
-                                <p:column>
-                                    <p:message for="existingCustomer" />
-                                </p:column>
-                            </p:row>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for ="confirmBankAccountPwd" style="font-weight:bold" value="Confirm Password: " />
+                        </p:column>
+                        <p:column>
+                            <p:password id="confirmBankAccountPwd" value="#{employeeOpenAccount.confirmBankAccountPwd}" 
+                                        label="Confirm Password" maxlength="6" required="true" requiredMessage="Required Field">
+                                <f:validateLength minimum="6" maximum="6" />
+                            </p:password>
+                        </p:column>
+                        <p:column>
+                            <p:message for="confirmBankAccountPwd" />
+                        </p:column>
+                    </p:row>
 
-                            <p:row>
-                                <p:column>
-                                    <p:outputLabel for="customerSalutation" style="font-weight: bold" value="Salutation: " />
-                                </p:column>
-                                <p:column>
-                                    <p:selectOneMenu id="customerSalutation" value="#{accountManagedBean.customerSalutation}" 
-                                                     style="width:125px" required="true" requiredMessage="Required Field">
-                                        <f:selectItem itemLabel="Please Select" itemValue="" noSelectionOption="true"/>
-                                        <f:selectItem itemLabel="Dr" itemValue="Dr" />
-                                        <f:selectItem itemLabel="Mr" itemValue="Mr" />
-                                        <f:selectItem itemLabel="Mrs" itemValue="Mrs" />
-                                        <f:selectItem itemLabel="Ms" itemValue="Ms" />
-                                        <f:selectItem itemLabel="Mdm" itemValue="Mdm" />
-                                        <f:selectItem itemLabel="Others" itemValue="Others" />
-                                        <p:ajax event="change" update="panelCustomerSalutationOthers" listener="#{accountManagedBean.show()}"/>
-                                    </p:selectOneMenu>
-                                    <p:panel style="border: none;" id="panelCustomerSalutationOthers" visible="#{accountManagedBean.visible}">
-                                        <p:inputText label="Customer Salutation" id="customerSalutationOthers" requiredMessage="Required Field"
-                                                     value="#{accountManagedBean.customerSalutationOthers}" required="#{accountManagedBean.salutationRender}"/>  
-                                    </p:panel>
-                                </p:column>
-                                <p:column>
-                                    <p:message for="customerSalutation" />
-                                    <p:message for="panelCustomerSalutationOthers" />
-                                </p:column>
-                            </p:row>
+                </p:panelGrid>
 
-                            <p:row>
-                                <p:column>
-                                    <p:outputLabel for="customerName" style="font-weight: bold" value="Name: " />
-                                    <p:outputLabel style="font-weight: bold" value="(As per NRIC/Passport): " />
-                                </p:column>
-                                <p:column>
-                                    <p:inputText label="Customer Name" id="customerName" value="#{accountManagedBean.customerName}"
-                                                 required="true" requiredMessage="Required Field">
-                                    </p:inputText>
-                                </p:column>
-                                <p:column>
-                                    <p:message for="customerName" />
-                                </p:column>
-                            </p:row>
-
-                            <p:row>
-                                <p:column>
-                                    <p:outputLabel for="customerDateOfBirth" style="font-weight: bold" value="Date Of Birth: " />
-                                </p:column>
-                                <p:column>
-                                    <p:calendar id="customerDateOfBirth" value="#{accountManagedBean.customerDateOfBirth}" 
-                                                showOn="button" locale="de" navigator="true" pattern="dd/MM/yyyy" 
-                                                yearRange="c-200:c+200" required="true" requiredMessage="Required Field"/>
-                                </p:column>
-                                <p:column>
-                                    <p:message for="customerDateOfBirth" />
-                                </p:column>
-                            </p:row>
-
-                            <p:row>
-                                <p:column>
-                                    <p:outputLabel for="customerGender" style="font-weight: bold" value="Gender: " />
-                                </p:column>
-                                <p:column>
-                                    <p:selectOneRadio id="customerGender" value="#{accountManagedBean.customerGender}"
-                                                      required="true" requiredMessage="Required Field">
-                                        <f:selectItem itemLabel="Male" itemValue="Male" />
-                                        <f:selectItem itemLabel="Female" itemValue="Female" />
-                                    </p:selectOneRadio>
-                                </p:column>
-                                <p:column>
-                                    <p:message for="customerGender" />
-                                </p:column>
-                            </p:row>
-
-                            <p:row>
-                                <p:column>
-                                    <p:outputLabel for="customerMobile" style="font-weight: bold" value="Mobile Number: " />
-                                </p:column>
-                                <p:column>
-                                    <p:inputText label="Mobile Number" id="customerMobile" value="#{accountManagedBean.customerMobile}"
-                                                 required="true" requiredMessage="Required Field" validatorMessage="Invalid Moblie Number"
-                                                 converterMessage="Invalid Input">
-                                        <f:validateDoubleRange minimum="10000000" maximum="99999999" />
-                                    </p:inputText>
-                                </p:column>
-                                <p:column>
-                                    <p:message for="customerMobile" />
-                                </p:column>
-                            </p:row>
-
-                            <p:row>
-                                <p:column>
-                                    <p:outputLabel for="customerEmail" style="font-weight: bold" value="Email: " />
-                                </p:column>
-                                <p:column>
-                                    <p:inputText label="Email" id="customerEmail" validatorMessage="Invalid email format"
-                                                 value="#{accountManagedBean.customerEmail}" required="true" requiredMessage="Required Field">
-                                        <f:validateRegex
-                                            pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
-                                    </p:inputText>
-                                </p:column>
-                                <p:column>
-                                    <p:message for="customerEmail" />
-                                </p:column>
-                            </p:row>
-                        </p:panelGrid>
-                    </p:panel>
-                </p:tab>
                 <br/>
-                <p:tab id="detailed" title="Detailed Information">
-                    <p:panel header="Detailed Information"> 
-                        <p:messages globalOnly="true"/>
-
-                        <p:panelGrid style="margin-bottom:10px">
-
-                            <p:row>
-                                <p:column>
-                                    <p:outputLabel for="customerNationality" style="font-weight: bold" value="Nationality: " />
-                                </p:column>
-                                <p:column>
-                                    <p:selectOneMenu id="customerNationality" value="#{accountManagedBean.customerNationality}" 
-                                                     style="width:125px" required="true" requiredMessage="Required Field">
-                                        <f:selectItem itemLabel="Please Select" itemValue="" noSelectionOption="true"/>
-                                        <f:selectItem itemLabel="Afghanistan" itemValue="Afghanistan" />
-                                        <f:selectItem itemLabel="Albania" itemValue="Albania" />
-                                        <f:selectItem itemLabel="Algeria" itemValue="Algeria" />
-                                        <f:selectItem itemLabel="Andorra" itemValue="Andorra" />
-                                        <f:selectItem itemLabel="Angola" itemValue="Angola" />
-                                        <f:selectItem itemLabel="Antigua and Barbuda" itemValue="Antigua and Barbuda" />
-                                        <f:selectItem itemLabel="Argentina" itemValue="Argentina" />
-                                        <f:selectItem itemLabel="Armenia" itemValue="Armenia" />
-                                        <f:selectItem itemLabel="Aruba" itemValue="Aruba" />
-                                        <f:selectItem itemLabel="Australia" itemValue="Australia" />
-                                        <f:selectItem itemLabel="Austria" itemValue="Austria" />
-                                        <f:selectItem itemLabel="Azerbaijan" itemValue="Azerbaijan" />
-                                        <f:selectItem itemLabel="Bahrain" itemValue="Bahrain" />
-                                        <f:selectItem itemLabel="Bangladesh" itemValue="Bangladesh" />
-                                        <f:selectItem itemLabel="Barbados" itemValue="Barbados" />
-                                        <f:selectItem itemLabel="Belarus" itemValue="Belarus" />
-                                        <f:selectItem itemLabel="Belgium" itemValue="Belgium" />
-                                        <f:selectItem itemLabel="Belize" itemValue="Belize" />
-                                        <f:selectItem itemLabel="Benin" itemValue="Benin" />
-                                        <f:selectItem itemLabel="Bhutan" itemValue="Bhutan" />
-                                        <f:selectItem itemLabel="Bolivia" itemValue="Bolivia" />
-                                        <f:selectItem itemLabel="Bosnia and Herzegovina" itemValue="Bosnia and Herzegovina" />
-                                        <f:selectItem itemLabel="Botswana" itemValue="Botswana" />
-                                        <f:selectItem itemLabel="Brazil" itemValue="Brazil" />
-                                        <f:selectItem itemLabel="Brunei " itemValue="Brunei " />
-                                        <f:selectItem itemLabel="Bulgaria" itemValue="Bulgaria" />
-                                        <f:selectItem itemLabel="Burkina Faso" itemValue="Burkina Faso" />
-                                        <f:selectItem itemLabel="Burma" itemValue="Burma" />
-                                        <f:selectItem itemLabel="Burundi" itemValue="Burundi" />
-                                        <f:selectItem itemLabel="Cambodia" itemValue="Cambodia" />
-                                        <f:selectItem itemLabel="Cameroon" itemValue="Cameroon" />
-                                        <f:selectItem itemLabel="Canada" itemValue="Canada" />
-                                        <f:selectItem itemLabel="Cabo Verde" itemValue="Cabo Verde" />
-                                        <f:selectItem itemLabel="Central African Republic" itemValue="Central African Republic" />
-                                        <f:selectItem itemLabel="Chad" itemValue="Chad" />
-                                        <f:selectItem itemLabel="Chile" itemValue="Chile" />
-                                        <f:selectItem itemLabel="China" itemValue="China" />
-                                        <f:selectItem itemLabel="Colombia" itemValue="Colombia" />
-                                        <f:selectItem itemLabel="Comoros" itemValue="Comoros" />
-                                        <f:selectItem itemLabel="Congo, Democratic Republic of the" itemValue="Congo, Democratic Republic of the" />
-                                        <f:selectItem itemLabel="Congo, Republic of the" itemValue="Congo, Republic of the" />
-                                        <f:selectItem itemLabel="Costa Rica" itemValue="Costa Rica" />
-                                        <f:selectItem itemLabel="Cote d'Ivoire" itemValue="Cote d'Ivoire" />
-                                        <f:selectItem itemLabel="Croatia" itemValue="Croatia" />
-                                        <f:selectItem itemLabel="Cuba" itemValue="Cuba" />
-                                        <f:selectItem itemLabel="Curacao" itemValue="Curacao" />
-                                        <f:selectItem itemLabel="Cyprus" itemValue="Cyprus" />
-                                        <f:selectItem itemLabel="Czech Republic" itemValue="Czech Republic" />
-                                        <f:selectItem itemLabel="Denmark" itemValue="Denmark" />
-                                        <f:selectItem itemLabel="Djibouti" itemValue="Djibouti" />
-                                        <f:selectItem itemLabel="Dominica" itemValue="Dominica" />
-                                        <f:selectItem itemLabel="Dominican Republic" itemValue="Dominican Republic" />
-                                        <f:selectItem itemLabel="Ecuador" itemValue="Ecuador" />
-                                        <f:selectItem itemLabel="Egypt" itemValue="Egypt" />
-                                        <f:selectItem itemLabel="El Salvador" itemValue="El Salvador" />
-                                        <f:selectItem itemLabel="Equatorial Guinea" itemValue="Equatorial Guinea" />
-                                        <f:selectItem itemLabel="Eritrea" itemValue="Eritrea" />
-                                        <f:selectItem itemLabel="Estonia" itemValue="Estonia" />
-                                        <f:selectItem itemLabel="Ethiopia" itemValue="Ethiopia" />
-                                        <f:selectItem itemLabel="Fiji" itemValue="Fiji" />
-                                        <f:selectItem itemLabel="Finland" itemValue="Finland" />
-                                        <f:selectItem itemLabel="France" itemValue="France" />
-                                        <f:selectItem itemLabel="Gabon" itemValue="Gabon" />
-                                        <f:selectItem itemLabel="Georgia" itemValue="Georgia" />
-                                        <f:selectItem itemLabel="Germany" itemValue="Germany" />
-                                        <f:selectItem itemLabel="Ghana" itemValue="Ghana" />
-                                        <f:selectItem itemLabel="Greece" itemValue="Greece" />
-                                        <f:selectItem itemLabel="Grenada" itemValue="Grenada" />
-                                        <f:selectItem itemLabel="Guatemala" itemValue="Guatemala" />
-                                        <f:selectItem itemLabel="Guinea" itemValue="Guinea" />
-                                        <f:selectItem itemLabel="Guinea-Bissau" itemValue="Guinea-Bissau" />
-                                        <f:selectItem itemLabel="Guyana" itemValue="Guyana" />
-                                        <f:selectItem itemLabel="Haiti" itemValue="Haiti" />
-                                        <f:selectItem itemLabel="Holy See" itemValue="Holy See" />
-                                        <f:selectItem itemLabel="Honduras" itemValue="Honduras" />
-                                        <f:selectItem itemLabel="Hong Kong" itemValue="Hong Kong" />
-                                        <f:selectItem itemLabel="Hungary" itemValue="Hungary" />
-                                        <f:selectItem itemLabel="Iceland" itemValue="Iceland" />
-                                        <f:selectItem itemLabel="India" itemValue="India" />
-                                        <f:selectItem itemLabel="Indonesia" itemValue="Indonesia" />
-                                        <f:selectItem itemLabel="Iran" itemValue="Iran" />
-                                        <f:selectItem itemLabel="Iraq" itemValue="Iraq" />
-                                        <f:selectItem itemLabel="Ireland" itemValue="Ireland" />
-                                        <f:selectItem itemLabel="Israel" itemValue="Israel" />
-                                        <f:selectItem itemLabel="Italy" itemValue="Italy" />
-                                        <f:selectItem itemLabel="Jamaica" itemValue="Jamaica" />
-                                        <f:selectItem itemLabel="Japan" itemValue="Japan" />
-                                        <f:selectItem itemLabel="Jordan" itemValue="Jordan" />
-                                        <f:selectItem itemLabel="Kazakhstan" itemValue="Kazakhstan" />
-                                        <f:selectItem itemLabel="Kenya" itemValue="Kenya" />
-                                        <f:selectItem itemLabel="Kiribati" itemValue="Kiribati" />
-                                        <f:selectItem itemLabel="Korea, North" itemValue="Korea, North" />
-                                        <f:selectItem itemLabel="Korea, South" itemValue="Korea, South" />
-                                        <f:selectItem itemLabel="Kosovo" itemValue="Kosovo" />
-                                        <f:selectItem itemLabel="Kuwait" itemValue="Kuwait" />
-                                        <f:selectItem itemLabel="Kyrgyzstan" itemValue="Kyrgyzstan" />
-                                        <f:selectItem itemLabel="Laos" itemValue="Laos" />
-                                        <f:selectItem itemLabel="Latvia" itemValue="Latvia" />
-                                        <f:selectItem itemLabel="Lebanon" itemValue="Lebanon" />
-                                        <f:selectItem itemLabel="Lesotho" itemValue="Lesotho" />
-                                        <f:selectItem itemLabel="Liberia" itemValue="Liberia" />
-                                        <f:selectItem itemLabel="Libya" itemValue="Libya" />
-                                        <f:selectItem itemLabel="Liechtenstein" itemValue="Liechtenstein" />
-                                        <f:selectItem itemLabel="Lithuania" itemValue="Lithuania" />
-                                        <f:selectItem itemLabel="Luxembourg" itemValue="Luxembourg" />
-                                        <f:selectItem itemLabel="Macau" itemValue="Macau" />
-                                        <f:selectItem itemLabel="Macedonia" itemValue="Macedonia" />
-                                        <f:selectItem itemLabel="Madagascar" itemValue="Madagascar" />
-                                        <f:selectItem itemLabel="Malawi" itemValue="Malawi" />
-                                        <f:selectItem itemLabel="Malaysia" itemValue="Malaysia" />
-                                        <f:selectItem itemLabel="Maldives" itemValue="Maldives" />
-                                        <f:selectItem itemLabel="Mali" itemValue="Mali" />
-                                        <f:selectItem itemLabel="Malta" itemValue="Malta" />
-                                        <f:selectItem itemLabel="Marshall Islands" itemValue="Marshall Islands" />
-                                        <f:selectItem itemLabel="Mauritania" itemValue="Mauritania" />
-                                        <f:selectItem itemLabel="Mauritius" itemValue="Mauritius" />
-                                        <f:selectItem itemLabel="Mexico" itemValue="Mexico" />
-                                        <f:selectItem itemLabel="Micronesia" itemValue="Micronesia" />
-                                        <f:selectItem itemLabel="Moldova" itemValue="Moldova" />
-                                        <f:selectItem itemLabel="Monaco" itemValue="Monaco" />
-                                        <f:selectItem itemLabel="Mongolia" itemValue="Mongolia" />
-                                        <f:selectItem itemLabel="Montenegro" itemValue="Montenegro" />
-                                        <f:selectItem itemLabel="Morocco" itemValue="Morocco" />
-                                        <f:selectItem itemLabel="Mozambique" itemValue="Mozambique" />
-                                        <f:selectItem itemLabel="Namibia" itemValue="Namibia" />
-                                        <f:selectItem itemLabel="Nauru" itemValue="Nauru" />
-                                        <f:selectItem itemLabel="Nepal" itemValue="Nepal" />
-                                        <f:selectItem itemLabel="Netherlands" itemValue="Netherlands" />
-                                        <f:selectItem itemLabel="Netherlands Antilles" itemValue="Netherlands Antilles" />
-                                        <f:selectItem itemLabel="New Zealand" itemValue="New Zealand" />
-                                        <f:selectItem itemLabel="Nicaragua" itemValue="Nicaragua" />
-                                        <f:selectItem itemLabel="Niger" itemValue="Niger" />
-                                        <f:selectItem itemLabel="Nigeria" itemValue="Nigeria" />
-                                        <f:selectItem itemLabel="North Korea" itemValue="North Korea" />
-                                        <f:selectItem itemLabel="Oman" itemValue="Oman" />
-                                        <f:selectItem itemLabel="Pakistan" itemValue="Pakistan" />
-                                        <f:selectItem itemLabel="Palau" itemValue="Palau" />
-                                        <f:selectItem itemLabel="Palestinian Territories" itemValue="Palestinian Territories" />
-                                        <f:selectItem itemLabel="Panama" itemValue="Panama" />
-                                        <f:selectItem itemLabel="Papua New Guinea" itemValue="Papua New Guinea" />
-                                        <f:selectItem itemLabel="Paraguay" itemValue="Paraguay" />
-                                        <f:selectItem itemLabel="Peru" itemValue="Peru" />
-                                        <f:selectItem itemLabel="Philippines" itemValue="Philippines" />
-                                        <f:selectItem itemLabel="Poland" itemValue="Poland" />
-                                        <f:selectItem itemLabel="Portugal" itemValue="Portugal" />
-                                        <f:selectItem itemLabel="Qatar" itemValue="Qatar" />
-                                        <f:selectItem itemLabel="Romania" itemValue="Romania" />
-                                        <f:selectItem itemLabel="Russia" itemValue="Russia" />
-                                        <f:selectItem itemLabel="Rwanda" itemValue="Rwanda" />
-                                        <f:selectItem itemLabel="Saint Kitts and Nevis" itemValue="Saint Kitts and Nevis" />
-                                        <f:selectItem itemLabel="Saint Lucia" itemValue="Saint Lucia" />
-                                        <f:selectItem itemLabel="Saint Vincent and the Grenadines" itemValue="Saint Vincent and the Grenadines" />
-                                        <f:selectItem itemLabel="Samoa " itemValue="Samoa " />
-                                        <f:selectItem itemLabel="San Marino" itemValue="San Marino" />
-                                        <f:selectItem itemLabel="Sao Tome and Principe" itemValue="Sao Tome and Principe" />
-                                        <f:selectItem itemLabel="Saudi Arabia" itemValue="Saudi Arabia" />
-                                        <f:selectItem itemLabel="Senegal" itemValue="Senegal" />
-                                        <f:selectItem itemLabel="Serbia" itemValue="Serbia" />
-                                        <f:selectItem itemLabel="Seychelles" itemValue="Seychelles" />
-                                        <f:selectItem itemLabel="Sierra Leone" itemValue="Sierra Leone" />
-                                        <f:selectItem itemLabel="Singapore" itemValue="Singapore" />
-                                        <f:selectItem itemLabel="Sint Maarten" itemValue="Sint Maarten" />
-                                        <f:selectItem itemLabel="Slovakia" itemValue="Slovakia" />
-                                        <f:selectItem itemLabel="Slovenia" itemValue="Slovenia" />
-                                        <f:selectItem itemLabel="Solomon Islands" itemValue="Solomon Islands" />
-                                        <f:selectItem itemLabel="Somalia" itemValue="Somalia" />
-                                        <f:selectItem itemLabel="South Africa" itemValue="South Africa" />
-                                        <f:selectItem itemLabel="South Korea" itemValue="South Korea" />
-                                        <f:selectItem itemLabel="South Sudan" itemValue="South Sudan" />
-                                        <f:selectItem itemLabel="Spain " itemValue="Spain " />
-                                        <f:selectItem itemLabel="Sri Lanka" itemValue="Sri Lanka" />
-                                        <f:selectItem itemLabel="Sudan" itemValue="Sudan" />
-                                        <f:selectItem itemLabel="Suriname" itemValue="Suriname" />
-                                        <f:selectItem itemLabel="Swaziland " itemValue="Swaziland " />
-                                        <f:selectItem itemLabel="Sweden" itemValue="Sweden" />
-                                        <f:selectItem itemLabel="Switzerland" itemValue="Switzerland" />
-                                        <f:selectItem itemLabel="Syria" itemValue="Syria" />
-                                        <f:selectItem itemLabel="Taiwan" itemValue="Taiwan" />
-                                        <f:selectItem itemLabel="Tajikistan" itemValue="Tajikistan" />
-                                        <f:selectItem itemLabel="Tanzania" itemValue="Tanzania" />
-                                        <f:selectItem itemLabel="Thailand " itemValue="Thailand" />
-                                        <f:selectItem itemLabel="Timor-Leste" itemValue="Timor-Leste" />
-                                        <f:selectItem itemLabel="Togo" itemValue="Togo" />
-                                        <f:selectItem itemLabel="Tonga" itemValue="Tonga" />
-                                        <f:selectItem itemLabel="Trinidad and Tobago" itemValue="Trinidad and Tobago" />
-                                        <f:selectItem itemLabel="Tunisia" itemValue="Tunisia" />
-                                        <f:selectItem itemLabel="Turkey" itemValue="Turkey" />
-                                        <f:selectItem itemLabel="Turkmenistan" itemValue="Turkmenistan" />
-                                        <f:selectItem itemLabel="Tuvalu" itemValue="Tuvalu" />
-                                        <f:selectItem itemLabel="Uganda" itemValue="Uganda" />
-                                        <f:selectItem itemLabel="Ukraine" itemValue="Ukraine" />
-                                        <f:selectItem itemLabel="United Arab Emirates" itemValue="United Arab Emirates" />
-                                        <f:selectItem itemLabel="United Kingdom" itemValue="United Kingdom" />
-                                        <f:selectItem itemLabel="United States" itemValue="United States" />
-                                        <f:selectItem itemLabel="Uruguay" itemValue="Uruguay" />
-                                        <f:selectItem itemLabel="Uzbekistan" itemValue="Uzbekistan" />
-                                        <f:selectItem itemLabel="Vanuatu" itemValue="Vanuatu" />
-                                        <f:selectItem itemLabel="Venezuela" itemValue="Venezuela" />
-                                        <f:selectItem itemLabel="Vietnam" itemValue="Vietnam" />
-                                        <f:selectItem itemLabel="Yemen" itemValue="Yemen" />
-                                        <f:selectItem itemLabel="Zambia" itemValue="Zambia" />
-                                        <f:selectItem itemLabel="Zimbabwe" itemValue="Zimbabwe" />
-                                        <p:ajax event="change" update="panelCustomerNationalitySG panelCustomerNRIC panelPassport" listener="#{accountManagedBean.show2()}"/>
-                                        <p:ajax event="change" update="panelCustomerNationalityOthers panelCustomerNRIC panelPassport" listener="#{accountManagedBean.show3()}"/>
-                                    </p:selectOneMenu>
-                                </p:column>
-                                <p:column>
-                                    <p:message for="customerNationality" />
-                                </p:column>
-                            </p:row>
-                        </p:panelGrid>
-
-                        <p:panel style="border: none;" id="panelCustomerNationalitySG" visible="#{accountManagedBean.visible2}">
-                            <p:row>
-                                <p:column>
-                                    <p:outputLabel for="customerNRICSG" style="font-weight: bold" value="NRIC No.: " />
-                                </p:column>
-                                <p:column>
-                                    <p:inputText label="customerNRICSG" id="customerNRICSG" value="#{accountManagedBean.customerNRICSG}"
-                                                 required="#{accountManagedBean.nricSGRender}" requiredMessage="Required Field">
-                                    </p:inputText>
-                                </p:column>
-                                <p:column>
-                                    <p:message for="customerNRICSG" />
-                                </p:column>
-                            </p:row>
-                        </p:panel>
-
-                        <p:panel style="border: none;" id="panelCustomerNationalityOthers" visible="#{accountManagedBean.visible3}" >
-                            <p:row>
-                                <p:column>
-                                    <p:outputLabel for="singaporePR" style="font-weight: bold" value="Singapore PR: " />
-                                </p:column>
-                                <p:column>
-                                    <p:selectOneRadio id="singaporePR" value="#{accountManagedBean.singaporePR}"
-                                                      required="#{accountManagedBean.singaporePRRender}" requiredMessage="Required Field">
-                                        <f:selectItem itemLabel="Yes" itemValue="Yes" />
-                                        <f:selectItem itemLabel="No" itemValue="No" />
-                                        <p:ajax event="change" update="panelCustomerNRIC" listener="#{accountManagedBean.show4()}"/>
-                                        <p:ajax event="change" update="panelPassport" listener="#{accountManagedBean.show5()}"/>
-                                    </p:selectOneRadio>
-                                </p:column>
-                                <p:column>
-                                    <p:message for="singaporePR" />
-                                </p:column>
-                            </p:row>
-                        </p:panel>
-
-                        <p:panel style="border: none;" id="panelCustomerNRIC" visible="#{accountManagedBean.visible4}">
-                            <p:row>
-                                <p:column>
-                                    <p:outputLabel for="customerNRIC" style="font-weight: bold" value="NRIC No.: " />
-                                </p:column>
-                                <p:column>
-                                    <p:inputText label="customerNRIC" id="customerNRIC" required="#{accountManagedBean.nricRender}"
-                                                 value="#{accountManagedBean.customerNRIC}" requiredMessage="Required Message">
-                                    </p:inputText>
-                                </p:column>
-                                <p:column>
-                                    <p:message for="customerNRIC" />
-                                </p:column>
-                            </p:row>
-                        </p:panel>
-
-                        <p:panel style="border: none;" id="panelPassport" visible="#{accountManagedBean.visible5}">
-                            <p:row>
-                                <p:column>
-                                    <p:outputLabel for="customerPassport" style="font-weight: bold" value="Passport No. " />
-                                </p:column>
-                                <p:column>
-                                    <p:inputText label="customerPassport" id="customerPassport" required="#{accountManagedBean.passportRender}"
-                                                 value="#{accountManagedBean.customerPassport}" requiredMessage="Required Field">
-                                    </p:inputText>
-                                </p:column>
-                                <p:column>
-                                    <p:message for="customerPassport" />
-                                </p:column>
-                            </p:row>
-                        </p:panel>
-
-                        <p:panelGrid >
-                            <p:row>
-                                <p:column>
-                                    <p:outputLabel for="customerCountryOfResidence" style="font-weight: bold" value="Country of Residence: " />
-                                </p:column>
-                                <p:column>
-                                    <p:selectOneMenu id="customerCountryOfResidence" value="#{accountManagedBean.customerCountryOfResidence}" 
-                                                     style="width:125px" required="true" requiredMessage="Required Field">
-                                        <f:selectItem itemLabel="Please Select" itemValue="" />
-                                        <f:selectItem itemLabel="Afghanistan" itemValue="Afghanistan" />
-                                        <f:selectItem itemLabel="Albania" itemValue="Albania" />
-                                        <f:selectItem itemLabel="Algeria" itemValue="Algeria" />
-                                        <f:selectItem itemLabel="Andorra" itemValue="Andorra" />
-                                        <f:selectItem itemLabel="Angola" itemValue="Angola" />
-                                        <f:selectItem itemLabel="Antigua and Barbuda" itemValue="Antigua and Barbuda" />
-                                        <f:selectItem itemLabel="Argentina" itemValue="Argentina" />
-                                        <f:selectItem itemLabel="Armenia" itemValue="Armenia" />
-                                        <f:selectItem itemLabel="Aruba" itemValue="Aruba" />
-                                        <f:selectItem itemLabel="Australia" itemValue="Australia" />
-                                        <f:selectItem itemLabel="Austria" itemValue="Austria" />
-                                        <f:selectItem itemLabel="Azerbaijan" itemValue="Azerbaijan" />
-                                        <f:selectItem itemLabel="Bahrain" itemValue="Bahrain" />
-                                        <f:selectItem itemLabel="Bangladesh" itemValue="Bangladesh" />
-                                        <f:selectItem itemLabel="Barbados" itemValue="Barbados" />
-                                        <f:selectItem itemLabel="Belarus" itemValue="Belarus" />
-                                        <f:selectItem itemLabel="Belgium" itemValue="Belgium" />
-                                        <f:selectItem itemLabel="Belize" itemValue="Belize" />
-                                        <f:selectItem itemLabel="Benin" itemValue="Benin" />
-                                        <f:selectItem itemLabel="Bhutan" itemValue="Bhutan" />
-                                        <f:selectItem itemLabel="Bolivia" itemValue="Bolivia" />
-                                        <f:selectItem itemLabel="Bosnia and Herzegovina" itemValue="Bosnia and Herzegovina" />
-                                        <f:selectItem itemLabel="Botswana" itemValue="Botswana" />
-                                        <f:selectItem itemLabel="Brazil" itemValue="Brazil" />
-                                        <f:selectItem itemLabel="Brunei " itemValue="Brunei " />
-                                        <f:selectItem itemLabel="Bulgaria" itemValue="Bulgaria" />
-                                        <f:selectItem itemLabel="Burkina Faso" itemValue="Burkina Faso" />
-                                        <f:selectItem itemLabel="Burma" itemValue="Burma" />
-                                        <f:selectItem itemLabel="Burundi" itemValue="Burundi" />
-                                        <f:selectItem itemLabel="Cambodia" itemValue="Cambodia" />
-                                        <f:selectItem itemLabel="Cameroon" itemValue="Cameroon" />
-                                        <f:selectItem itemLabel="Canada" itemValue="Canada" />
-                                        <f:selectItem itemLabel="Cabo Verde" itemValue="Cabo Verde" />
-                                        <f:selectItem itemLabel="Central African Republic" itemValue="Central African Republic" />
-                                        <f:selectItem itemLabel="Chad" itemValue="Chad" />
-                                        <f:selectItem itemLabel="Chile" itemValue="Chile" />
-                                        <f:selectItem itemLabel="China" itemValue="China" />
-                                        <f:selectItem itemLabel="Colombia" itemValue="Colombia" />
-                                        <f:selectItem itemLabel="Comoros" itemValue="Comoros" />
-                                        <f:selectItem itemLabel="Congo, Democratic Republic of the" itemValue="Congo, Democratic Republic of the" />
-                                        <f:selectItem itemLabel="Congo, Republic of the" itemValue="Congo, Republic of the" />
-                                        <f:selectItem itemLabel="Costa Rica" itemValue="Costa Rica" />
-                                        <f:selectItem itemLabel="Cote d'Ivoire" itemValue="Cote d'Ivoire" />
-                                        <f:selectItem itemLabel="Croatia" itemValue="Croatia" />
-                                        <f:selectItem itemLabel="Cuba" itemValue="Cuba" />
-                                        <f:selectItem itemLabel="Curacao" itemValue="Curacao" />
-                                        <f:selectItem itemLabel="Cyprus" itemValue="Cyprus" />
-                                        <f:selectItem itemLabel="Czech Republic" itemValue="Czech Republic" />
-                                        <f:selectItem itemLabel="Denmark" itemValue="Denmark" />
-                                        <f:selectItem itemLabel="Djibouti" itemValue="Djibouti" />
-                                        <f:selectItem itemLabel="Dominica" itemValue="Dominica" />
-                                        <f:selectItem itemLabel="Dominican Republic" itemValue="Dominican Republic" />
-                                        <f:selectItem itemLabel="Ecuador" itemValue="Ecuador" />
-                                        <f:selectItem itemLabel="Egypt" itemValue="Egypt" />
-                                        <f:selectItem itemLabel="El Salvador" itemValue="El Salvador" />
-                                        <f:selectItem itemLabel="Equatorial Guinea" itemValue="Equatorial Guinea" />
-                                        <f:selectItem itemLabel="Eritrea" itemValue="Eritrea" />
-                                        <f:selectItem itemLabel="Estonia" itemValue="Estonia" />
-                                        <f:selectItem itemLabel="Ethiopia" itemValue="Ethiopia" />
-                                        <f:selectItem itemLabel="Fiji" itemValue="Fiji" />
-                                        <f:selectItem itemLabel="Finland" itemValue="Finland" />
-                                        <f:selectItem itemLabel="France" itemValue="France" />
-                                        <f:selectItem itemLabel="Gabon" itemValue="Gabon" />
-                                        <f:selectItem itemLabel="Georgia" itemValue="Georgia" />
-                                        <f:selectItem itemLabel="Germany" itemValue="Germany" />
-                                        <f:selectItem itemLabel="Ghana" itemValue="Ghana" />
-                                        <f:selectItem itemLabel="Greece" itemValue="Greece" />
-                                        <f:selectItem itemLabel="Grenada" itemValue="Grenada" />
-                                        <f:selectItem itemLabel="Guatemala" itemValue="Guatemala" />
-                                        <f:selectItem itemLabel="Guinea" itemValue="Guinea" />
-                                        <f:selectItem itemLabel="Guinea-Bissau" itemValue="Guinea-Bissau" />
-                                        <f:selectItem itemLabel="Guyana" itemValue="Guyana" />
-                                        <f:selectItem itemLabel="Haiti" itemValue="Haiti" />
-                                        <f:selectItem itemLabel="Holy See" itemValue="Holy See" />
-                                        <f:selectItem itemLabel="Honduras" itemValue="Honduras" />
-                                        <f:selectItem itemLabel="Hong Kong" itemValue="Hong Kong" />
-                                        <f:selectItem itemLabel="Hungary" itemValue="Hungary" />
-                                        <f:selectItem itemLabel="Iceland" itemValue="Iceland" />
-                                        <f:selectItem itemLabel="India" itemValue="India" />
-                                        <f:selectItem itemLabel="Indonesia" itemValue="Indonesia" />
-                                        <f:selectItem itemLabel="Iran" itemValue="Iran" />
-                                        <f:selectItem itemLabel="Iraq" itemValue="Iraq" />
-                                        <f:selectItem itemLabel="Ireland" itemValue="Ireland" />
-                                        <f:selectItem itemLabel="Israel" itemValue="Israel" />
-                                        <f:selectItem itemLabel="Italy" itemValue="Italy" />
-                                        <f:selectItem itemLabel="Jamaica" itemValue="Jamaica" />
-                                        <f:selectItem itemLabel="Japan" itemValue="Japan" />
-                                        <f:selectItem itemLabel="Jordan" itemValue="Jordan" />
-                                        <f:selectItem itemLabel="Kazakhstan" itemValue="Kazakhstan" />
-                                        <f:selectItem itemLabel="Kenya" itemValue="Kenya" />
-                                        <f:selectItem itemLabel="Kiribati" itemValue="Kiribati" />
-                                        <f:selectItem itemLabel="Korea, North" itemValue="Korea, North" />
-                                        <f:selectItem itemLabel="Korea, South" itemValue="Korea, South" />
-                                        <f:selectItem itemLabel="Kosovo" itemValue="Kosovo" />
-                                        <f:selectItem itemLabel="Kuwait" itemValue="Kuwait" />
-                                        <f:selectItem itemLabel="Kyrgyzstan" itemValue="Kyrgyzstan" />
-                                        <f:selectItem itemLabel="Laos" itemValue="Laos" />
-                                        <f:selectItem itemLabel="Latvia" itemValue="Latvia" />
-                                        <f:selectItem itemLabel="Lebanon" itemValue="Lebanon" />
-                                        <f:selectItem itemLabel="Lesotho" itemValue="Lesotho" />
-                                        <f:selectItem itemLabel="Liberia" itemValue="Liberia" />
-                                        <f:selectItem itemLabel="Libya" itemValue="Libya" />
-                                        <f:selectItem itemLabel="Liechtenstein" itemValue="Liechtenstein" />
-                                        <f:selectItem itemLabel="Lithuania" itemValue="Lithuania" />
-                                        <f:selectItem itemLabel="Luxembourg" itemValue="Luxembourg" />
-                                        <f:selectItem itemLabel="Macau" itemValue="Macau" />
-                                        <f:selectItem itemLabel="Macedonia" itemValue="Macedonia" />
-                                        <f:selectItem itemLabel="Madagascar" itemValue="Madagascar" />
-                                        <f:selectItem itemLabel="Malawi" itemValue="Malawi" />
-                                        <f:selectItem itemLabel="Malaysia" itemValue="Malaysia" />
-                                        <f:selectItem itemLabel="Maldives" itemValue="Maldives" />
-                                        <f:selectItem itemLabel="Mali" itemValue="Mali" />
-                                        <f:selectItem itemLabel="Malta" itemValue="Malta" />
-                                        <f:selectItem itemLabel="Marshall Islands" itemValue="Marshall Islands" />
-                                        <f:selectItem itemLabel="Mauritania" itemValue="Mauritania" />
-                                        <f:selectItem itemLabel="Mauritius" itemValue="Mauritius" />
-                                        <f:selectItem itemLabel="Mexico" itemValue="Mexico" />
-                                        <f:selectItem itemLabel="Micronesia" itemValue="Micronesia" />
-                                        <f:selectItem itemLabel="Moldova" itemValue="Moldova" />
-                                        <f:selectItem itemLabel="Monaco" itemValue="Monaco" />
-                                        <f:selectItem itemLabel="Mongolia" itemValue="Mongolia" />
-                                        <f:selectItem itemLabel="Montenegro" itemValue="Montenegro" />
-                                        <f:selectItem itemLabel="Morocco" itemValue="Morocco" />
-                                        <f:selectItem itemLabel="Mozambique" itemValue="Mozambique" />
-                                        <f:selectItem itemLabel="Namibia" itemValue="Namibia" />
-                                        <f:selectItem itemLabel="Nauru" itemValue="Nauru" />
-                                        <f:selectItem itemLabel="Nepal" itemValue="Nepal" />
-                                        <f:selectItem itemLabel="Netherlands" itemValue="Netherlands" />
-                                        <f:selectItem itemLabel="Netherlands Antilles" itemValue="Netherlands Antilles" />
-                                        <f:selectItem itemLabel="New Zealand" itemValue="New Zealand" />
-                                        <f:selectItem itemLabel="Nicaragua" itemValue="Nicaragua" />
-                                        <f:selectItem itemLabel="Niger" itemValue="Niger" />
-                                        <f:selectItem itemLabel="Nigeria" itemValue="Nigeria" />
-                                        <f:selectItem itemLabel="North Korea" itemValue="North Korea" />
-                                        <f:selectItem itemLabel="Oman" itemValue="Oman" />
-                                        <f:selectItem itemLabel="Pakistan" itemValue="Pakistan" />
-                                        <f:selectItem itemLabel="Palau" itemValue="Palau" />
-                                        <f:selectItem itemLabel="Palestinian Territories" itemValue="Palestinian Territories" />
-                                        <f:selectItem itemLabel="Panama" itemValue="Panama" />
-                                        <f:selectItem itemLabel="Papua New Guinea" itemValue="Papua New Guinea" />
-                                        <f:selectItem itemLabel="Paraguay" itemValue="Paraguay" />
-                                        <f:selectItem itemLabel="Peru" itemValue="Peru" />
-                                        <f:selectItem itemLabel="Philippines" itemValue="Philippines" />
-                                        <f:selectItem itemLabel="Poland" itemValue="Poland" />
-                                        <f:selectItem itemLabel="Portugal" itemValue="Portugal" />
-                                        <f:selectItem itemLabel="Qatar" itemValue="Qatar" />
-                                        <f:selectItem itemLabel="Romania" itemValue="Romania" />
-                                        <f:selectItem itemLabel="Russia" itemValue="Russia" />
-                                        <f:selectItem itemLabel="Rwanda" itemValue="Rwanda" />
-                                        <f:selectItem itemLabel="Saint Kitts and Nevis" itemValue="Saint Kitts and Nevis" />
-                                        <f:selectItem itemLabel="Saint Lucia" itemValue="Saint Lucia" />
-                                        <f:selectItem itemLabel="Saint Vincent and the Grenadines" itemValue="Saint Vincent and the Grenadines" />
-                                        <f:selectItem itemLabel="Samoa " itemValue="Samoa " />
-                                        <f:selectItem itemLabel="San Marino" itemValue="San Marino" />
-                                        <f:selectItem itemLabel="Sao Tome and Principe" itemValue="Sao Tome and Principe" />
-                                        <f:selectItem itemLabel="Saudi Arabia" itemValue="Saudi Arabia" />
-                                        <f:selectItem itemLabel="Senegal" itemValue="Senegal" />
-                                        <f:selectItem itemLabel="Serbia" itemValue="Serbia" />
-                                        <f:selectItem itemLabel="Seychelles" itemValue="Seychelles" />
-                                        <f:selectItem itemLabel="Sierra Leone" itemValue="Sierra Leone" />
-                                        <f:selectItem itemLabel="Singapore" itemValue="Singapore" />
-                                        <f:selectItem itemLabel="Sint Maarten" itemValue="Sint Maarten" />
-                                        <f:selectItem itemLabel="Slovakia" itemValue="Slovakia" />
-                                        <f:selectItem itemLabel="Slovenia" itemValue="Slovenia" />
-                                        <f:selectItem itemLabel="Solomon Islands" itemValue="Solomon Islands" />
-                                        <f:selectItem itemLabel="Somalia" itemValue="Somalia" />
-                                        <f:selectItem itemLabel="South Africa" itemValue="South Africa" />
-                                        <f:selectItem itemLabel="South Korea" itemValue="South Korea" />
-                                        <f:selectItem itemLabel="South Sudan" itemValue="South Sudan" />
-                                        <f:selectItem itemLabel="Spain " itemValue="Spain " />
-                                        <f:selectItem itemLabel="Sri Lanka" itemValue="Sri Lanka" />
-                                        <f:selectItem itemLabel="Sudan" itemValue="Sudan" />
-                                        <f:selectItem itemLabel="Suriname" itemValue="Suriname" />
-                                        <f:selectItem itemLabel="Swaziland " itemValue="Swaziland " />
-                                        <f:selectItem itemLabel="Sweden" itemValue="Sweden" />
-                                        <f:selectItem itemLabel="Switzerland" itemValue="Switzerland" />
-                                        <f:selectItem itemLabel="Syria" itemValue="Syria" />
-                                        <f:selectItem itemLabel="Taiwan" itemValue="Taiwan" />
-                                        <f:selectItem itemLabel="Tajikistan" itemValue="Tajikistan" />
-                                        <f:selectItem itemLabel="Tanzania" itemValue="Tanzania" />
-                                        <f:selectItem itemLabel="Thailand " itemValue="Thailand" />
-                                        <f:selectItem itemLabel="Timor-Leste" itemValue="Timor-Leste" />
-                                        <f:selectItem itemLabel="Togo" itemValue="Togo" />
-                                        <f:selectItem itemLabel="Tonga" itemValue="Tonga" />
-                                        <f:selectItem itemLabel="Trinidad and Tobago" itemValue="Trinidad and Tobago" />
-                                        <f:selectItem itemLabel="Tunisia" itemValue="Tunisia" />
-                                        <f:selectItem itemLabel="Turkey" itemValue="Turkey" />
-                                        <f:selectItem itemLabel="Turkmenistan" itemValue="Turkmenistan" />
-                                        <f:selectItem itemLabel="Tuvalu" itemValue="Tuvalu" />
-                                        <f:selectItem itemLabel="Uganda" itemValue="Uganda" />
-                                        <f:selectItem itemLabel="Ukraine" itemValue="Ukraine" />
-                                        <f:selectItem itemLabel="United Arab Emirates" itemValue="United Arab Emirates" />
-                                        <f:selectItem itemLabel="United Kingdom" itemValue="United Kingdom" />
-                                        <f:selectItem itemLabel="United States" itemValue="United States" />
-                                        <f:selectItem itemLabel="Uruguay" itemValue="Uruguay" />
-                                        <f:selectItem itemLabel="Uzbekistan" itemValue="Uzbekistan" />
-                                        <f:selectItem itemLabel="Vanuatu" itemValue="Vanuatu" />
-                                        <f:selectItem itemLabel="Venezuela" itemValue="Venezuela" />
-                                        <f:selectItem itemLabel="Vietnam" itemValue="Vietnam" />
-                                        <f:selectItem itemLabel="Yemen" itemValue="Yemen" />
-                                        <f:selectItem itemLabel="Zambia" itemValue="Zambia" />
-                                        <f:selectItem itemLabel="Zimbabwe" itemValue="Zimbabwe" />
-                                    </p:selectOneMenu>
-                                </p:column>
-                                <p:column>
-                                    <p:message for="customerCountryOfResidence" />
-                                </p:column>
-                            </p:row>
-
-                            <p:row>
-                                <p:column>
-                                    <p:outputLabel for="customerRace" style="font-weight: bold" value="Race: " />
-                                </p:column>
-                                <p:column>
-                                    <p:selectOneMenu id="customerRace" value="#{accountManagedBean.customerRace}" 
-                                                     style="width:125px" required="true" requiredMessage="Required Field">
-                                        <f:selectItem itemLabel="Please Select" itemValue="" />
-                                        <f:selectItem itemLabel="Chinese" itemValue="Chinese" />
-                                        <f:selectItem itemLabel="Malay" itemValue="Malay" />
-                                        <f:selectItem itemLabel="Indian" itemValue="Indian" />
-                                        <f:selectItem itemLabel="Eurasian" itemValue="Eurasian" />
-                                    </p:selectOneMenu>
-                                </p:column>
-                                <p:column>
-                                    <p:message for="customerRace" />
-                                </p:column>
-                            </p:row>
-
-                            <p:row>
-                                <p:column>
-                                    <p:outputLabel for="customerMaritalStatus" style="font-weight: bold" value="MaritalStatus: " />
-                                </p:column>
-                                <p:column>
-                                    <p:selectOneMenu id="customerMaritalStatus" value="#{accountManagedBean.customerMaritalStatus}" 
-                                                     style="width:125px" required="true" requiredMessage="Required Field">
-                                        <f:selectItem itemLabel="Please Select" itemValue="" />
-                                        <f:selectItem itemLabel="Single" itemValue="Single" />
-                                        <f:selectItem itemLabel="Married" itemValue="Married" />
-                                        <f:selectItem itemLabel="Divorced" itemValue="Divorced" />
-                                        <f:selectItem itemLabel="Widowed" itemValue="Widowed" />
-                                    </p:selectOneMenu>
-                                </p:column>
-                                <p:column>
-                                    <p:message for="customerMaritalStatus" />
-                                </p:column>
-                            </p:row>
-
-                            <p:row>
-                                <p:column>
-                                    <p:outputLabel for="customerOccupation" style="font-weight: bold" value="Occupation: " />
-                                </p:column>
-                                <p:column>
-                                    <p:selectOneMenu id="customerOccupation" value="#{accountManagedBean.customerOccupation}" 
-                                                     style="width:125px" required="true" requiredMessage="Required Field">
-                                        <f:selectItem itemLabel="Please Select" itemValue="" />
-                                        <f:selectItem itemLabel="Accountant" itemValue="Accountant" />
-                                        <f:selectItem itemLabel="Architect" itemValue="Architect" />
-                                        <f:selectItem itemLabel="Armed Forces" itemValue="Armed Forces" />
-                                        <f:selectItem itemLabel="Auditor" itemValue="Auditor" />
-                                        <f:selectItem itemLabel="Cook/Baker/Chef" itemValue="Cook/Baker/Chef" />
-                                        <f:selectItem itemLabel="Clerical/Admin" itemValue="Clerical/Admin" />
-                                        <f:selectItem itemLabel="Construction Worker" itemValue="Construction Worker" />
-                                        <f:selectItem itemLabel="Consultant" itemValue="Consultant" />
-                                        <f:selectItem itemLabel="Diplomat" itemValue="Diplomat" />
-                                        <f:selectItem itemLabel="Director" itemValue="Director" />
-                                        <f:selectItem itemLabel="Electrician" itemValue="Electrician" />
-                                        <f:selectItem itemLabel="Engineer" itemValue="Engineer" />
-                                        <f:selectItem itemLabel="Fund Manager" itemValue="Fund Manager" />
-                                        <f:selectItem itemLabel="Headmaster/Principal" itemValue="Headmaster/Principal" />
-                                        <f:selectItem itemLabel="Insurance Agent" itemValue="Insurance Agent" />
-                                        <f:selectItem itemLabel="IT Systems Analyst/Programmer" itemValue="IT Systems Analyst/Programmer" />
-                                        <f:selectItem itemLabel="Journalist/Reporter" itemValue="Journalist/Reporter" />
-                                        <f:selectItem itemLabel="Lawyer" itemValue="Lawyer" />
-                                        <f:selectItem itemLabel="Lecturer" itemValue="Lecturer" />
-                                        <f:selectItem itemLabel="Legal Advisor (of a company)" itemValue="Legal Advisor (of a company)" />
-                                        <f:selectItem itemLabel="Medical Professional" itemValue="Medical Professional" />
-                                        <f:selectItem itemLabel="Managerial(AVP,VP ETC)" itemValue="Managerial(AVP,VP ETC)" />
-                                        <f:selectItem itemLabel="Pawnbrokers" itemValue="Pawnbrokers" />
-                                        <f:selectItem itemLabel="Pilot/Ship Master" itemValue="Pilot/Ship Master" />
-                                        <f:selectItem itemLabel="Politician" itemValue="Politician" />
-                                        <f:selectItem itemLabel="Self-Employed" itemValue="Self-Employed" />
-                                        <f:selectItem itemLabel="Sales/Marketing Exclusive" itemValue="Sales/Marketing Exclusive" />
-                                        <f:selectItem itemLabel="Student" itemValue="Student" />
-                                        <f:selectItem itemLabel="Teacher" itemValue="Teacher" />
-                                        <f:selectItem itemLabel="Technician/Mechanics" itemValue="Technician/Mechanics" />
-                                        <f:selectItem itemLabel="Tutor" itemValue="Tutor" />
-                                    </p:selectOneMenu>
-                                </p:column>
-                                <p:column>
-                                    <p:message for="customerOccupation" />
-                                </p:column>
-                            </p:row>
-
-                            <p:row>
-                                <p:column>
-                                    <p:outputLabel for="customerCompany" style="font-weight: bold" value="Name of Company: " />
-                                </p:column>
-                                <p:column>
-                                    <p:inputText label="Name of Company" id="customerCompany" value="#{accountManagedBean.customerCompany}"
-                                                 required="true" requiredMessage="Required Field">
-                                    </p:inputText>
-                                </p:column>
-                                <p:column>
-                                    <p:message for="customerCompany" />
-                                </p:column>
-                            </p:row>
-
-                            <p:row>
-                                <p:column>
-                                    <p:outputLabel for="customerStreetName" style="font-weight: bold" value="Residential Street Name: " />
-                                </p:column>
-                                <p:column>
-                                    <p:inputText label="Residential Address" id="customerStreetName" value="#{accountManagedBean.customerStreetName}"
-                                                 required="true" requiredMessage="Required Field">
-                                    </p:inputText>
-                                </p:column>
-                                <p:column>
-                                    <p:message for="customerStreetName" />
-                                </p:column>
-                            </p:row>
-
-                            <p:row>
-                                <p:column>
-                                    <p:outputLabel for="customerBlockNum" style="font-weight: bold" value="Residential Block/House No.: " />
-                                </p:column>
-                                <p:column>
-                                    <p:inputText label="Residential Address" id="customerBlockNum"
-                                                 value="#{accountManagedBean.customerBlockNum}"
-                                                 required="true" requiredMessage="Required Field">
-                                    </p:inputText>
-                                </p:column>
-                                <p:column>
-                                    <p:message for="customerBlockNum" />
-                                </p:column>
-                            </p:row>
-
-                            <p:row>
-                                <p:column>
-                                    <p:outputLabel for="customerUnitNum" style="font-weight: bold" value="Residential Unit No.: " />
-                                </p:column>
-                                <p:column>
-                                    <p:inputText label="Residential Address" id="customerUnitNum"
-                                                 value="#{accountManagedBean.customerUnitNum}"
-                                                 required="true" requiredMessage="Required Field">
-                                    </p:inputText>
-                                </p:column>
-                                <p:column>
-                                    <p:message for="customerUnitNum" />
-                                </p:column>
-                            </p:row>
-
-                            <p:row>
-                                <p:column>
-                                    <p:outputLabel for="customerPostal" style="font-weight: bold" value="Postal Code" />
-                                </p:column>
-                                <p:column>
-                                    <p:inputText label="Postal Code" id="customerPostal"
-                                                 value="#{accountManagedBean.customerPostal}"
-                                                 required="true" requiredMessage="Required Field">
-                                    </p:inputText>
-                                </p:column>
-                                <p:column>
-                                    <p:message for="customerPostal" />
-                                </p:column>
-                            </p:row>
-                        </p:panelGrid>
-                    </p:panel>
-                </p:tab>
+                <h:outputLabel value="My Details" style="font-weight: bold; font-size: 24px" />
+                <p:separator/>
                 <br/>
-                <p:tab id="account" title="Account Information">
-                    <p:panel header="Account Information">
-                        <p:messages globalOnly="true"/>
+                <h:outputText value="Name: "  style="font-weight: bold"/>
+                <h:outputText value="#{employeeOpenAccount.customerName}" />
+                <br/>
+                <br/>
+                <h:outputText value="Identification Number: " style="font-weight: bold"/>
+                <h:outputText value="#{employeeOpenAccount.customerIdentificationNum}" />
+                <br/>
+                <br/>
+                <h:outputText value="Email: " style="font-weight: bold"/>
+                <h:outputText value="#{employeeOpenAccount.customerEmail}"/>
+                <br/>
+                <br/>
+                <h:outputText value="Mobile: " style="font-weight: bold"/>
+                <h:outputText value="#{employeeOpenAccount.customerMobile}"/>
+                <br/>
+                <br/>
+                <h:panelGrid columns="2" style="margin-bottom:10px">
+                    <p:selectBooleanCheckbox id = "agreement" value="#{employeeOpenAccount.agreement}" 
+                                             style="margin-top:5px"/>
+                    <h:outputText value="I have read and agree to the terms of Customer Declaration and Confirmation." />
+                    <br/>
+                    <h:outputText value="I have also read and agree to the Terms and Conditions Governing Personal Data Protection Act 2012."/>
+                </h:panelGrid>
 
-                        <p:panelGrid>
-                            <p:row>
-                                <p:column colspan="10" style="font-weight: bold">Account Information</p:column>
-                            </p:row>
-
-                            <p:row>
-                                <p:column>
-                                    <p:outputLabel for="bankAccountType" style="font-weight: bold" value="Account Type: " />
-                                </p:column>
-                                <p:column>
-                                    <p:selectOneMenu id="bankAccountType" value="#{accountManagedBean.bankAccountType}" 
-                                                     style="width:125px" required="true" requiredMessage="Required Field">
-                                        <f:selectItem itemLabel="Please Select" itemValue=" " />
-                                        <f:selectItem itemLabel="Monthly Savings Account" itemValue="Monthly Savings Account" />
-                                        <f:selectItem itemLabel="Bonus Savings Account" itemValue="Bonus Savings Account" />
-                                        <f:selectItem itemLabel="Basic Savings Account" itemValue="Basic Savings Account" />
-                                        <f:selectItem itemLabel="Fixed Deposit Account" itemValue="Fixed Deposit Account" />
-                                    </p:selectOneMenu>
-                                </p:column>
-                                <p:column>
-                                    <p:message for="bankAccountType" />
-                                </p:column>
-                            </p:row>
-
-                            <p:row>
-                                <p:column>
-                                    <p:outputLabel for="bankAccountPwd" style="font-weight: bold" value="Account Password: " />
-                                </p:column>
-                                <p:column>
-                                    <p:password id="bankAccountPwd" value="#{accountManagedBean.bankAccountPwd}" match="confirmBankAccountPwd" >
-                                        <f:validateLength minimum="6" maximum="6" />
-                                    </p:password>
-                                </p:column>
-                                <p:column>
-                                    <p:message for="bankAccountPwd" />
-                                </p:column>
-                            </p:row>   
-
-                            <p:row>
-                                <p:column>
-                                    <p:outputLabel for ="confirmBankAccountPwd" style="font-weight:bold" value="Confirm Password: " />
-                                </p:column>
-                                <p:column>
-                                    <p:password id="confirmBankAccountPwd" value="#{accountManagedBean.confirmBankAccountPwd}" 
-                                                label="Confirm Password" maxlength="6" >
-                                        <f:validateLength minimum="6" maximum="6" />
-                                    </p:password>
-                                </p:column>
-                            </p:row>
-
-                        </p:panelGrid>
-                        <br/>
-                        <p:panelGrid>
-
-                            <p:row>
-                                <p:column colspan="10" style="font-weight: bold">Initial Deposit</p:column>
-                            </p:row>
-
-                            <p:row>
-                                <p:column>
-                                    <p:outputLabel for="initialDepositAmt" style="font-weight: bold" value="Initial Deposit Amount(S$): " />
-                                </p:column>
-                                <p:column>
-                                    <p:inputText label="Initial Deposit Amount(S$)" id="initialDepositAmt"
-                                                 value="#{accountManagedBean.initialDepositAmt}" required="true" requiredMessage="Required Field">
-                                    </p:inputText>
-                                </p:column>
-                                <p:column>
-                                    <p:message for="initialDepositAmt" />
-                                </p:column>
-                            </p:row>
-
-                        </p:panelGrid>
-                    </p:panel>
-                </p:tab>
-
-                <p:tab id="identification" title="Support Document">
-                    <p:panel header="Support Document"> 
-
-                        <p:messages globalOnly="true" id="messagesFileupload" />
-
-                        <p:panel style="width:700px">
-                            <p:outputLabel value="Please provide softcopy of your identification (Only gif,jpeg and png)" />
-                            <br/>
-                            <p:fileUpload id="fileupload" update="messagesFileupload"
-                                          value="#{accountManagedBean.file}" mode="advanced" skinSimple="true"
-                                          sizeLimit="10000000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" 
-                                          fileUploadListener="#{accountManagedBean.upload}"/>
-                        </p:panel>
-                        <br/>
-
-                        <p:outputLabel value="Please provide your signature" />
-                        <br/>
-                        <p:signature id="input" style="width:400px;height:200px" widgetVar="sig" value="#{signatureView.customerSignature}" 
-                                     guideline="true"/>
-
-                        <div style="margin:20px 0">
-                            <p:commandButton process="@this input output" value="Submit" icon="ui-icon-check" update="output"/>
-                            <p:commandButton process="@this input output" value="Clear" icon="ui-icon-close" type="button" onclick="PF('sig').clear()"/>
-                        </div>
-
-                        <p:outputPanel id="output">
-                            <h:outputText rendered="#{not empty signatureView.customerSignature}" style="font-size:20px;display:block" value="Your Signature" />
-                            <p:signature style="width:400px;height:200px;" value="#{signatureView.customerSignature}" readonly="true"
-                                         rendered="#{not empty signatureView.customerSignature}" backgroundColor="#eaeaea" color="#03a9f4"/>
-                        </p:outputPanel>
-                    </p:panel>
-                </p:tab>
-
-                <p:tab id="confirmation" title="Confirmation">
-                    <p:messages globalOnly="true"/>
-
-                    <p:panel>
-                        <h:outputLabel value="About Myself" style="font-weight: bold; font-size: 24px" />
-                        <br/>
-                        <br/>
-                        <h:outputText value="Existing Customer of Merlion Bank: "/>
-                        <h:outputText value="#{accountManagedBean.existingCustomer}"/>
-                        <br/>
-                        <h:outputText value="Name: " />
-                        <h:outputText value="#{accountManagedBean.customerName}" />
-                        <br/>
-                        <h:outputText value="Nationality: " />
-                        <h:outputText value="#{accountManagedBean.customerNationality}" />
-                        <br/>
-                        <h:outputText value="Singapore PR: "/>
-                        <h:outputText value="#{accountManagedBean.singaporePR}"/>
-                        <br/>
-                        <h:outputText value="Passport Number: "/>
-                        <h:outputText value="#{accountManagedBean.customerPassport}"/>
-                        <br/>
-                        <h:outputText value="NRIC: " />
-                        <h:outputText value="#{accountManagedBean.customerNRIC}"/>
-                        <br/>
-                        <h:outputText value="Country of Domicile: " />
-                        <h:outputText value="#{accountManagedBean.customerCountryOfResidence}"/>
-                        <br/>
-                        <h:outputText value="Date of Birth: " />
-                        <h:outputText value="#{accountManagedBean.customerDateOfBirth}">
-                            <f:convertDateTime pattern="dd/MM/yyyy" />
-                        </h:outputText>
-                        <br/>
-                        <h:outputText value="Gender: "/>
-                        <h:outputText value="#{accountManagedBean.customerGender}"/>
-                        <br/>
-                        <h:outputText value="Race: " />
-                        <h:outputText value="#{accountManagedBean.customerRace}"/>
-                        <br/>
-                        <h:outputText value="Marital Status: " />
-                        <h:outputText value="#{accountManagedBean.customerMaritalStatus}"/>
-                        <br/>
-                        <h:outputText value="Occupation: " />
-                        <h:outputText value="#{accountManagedBean.customerOccupation}"/>
-                        <br/>
-                        <h:outputText value="Company: " />
-                        <h:outputText value="#{accountManagedBean.customerCompany}"/>
-                        <br/>
-                        <h:outputText value="Residential Street Name: " />
-                        <h:outputText value="#{accountManagedBean.customerStreetName}"/>
-                        <br/>
-                        <h:outputText value="Residential Block/House No.: " />
-                        <h:outputText value="#{accountManagedBean.customerBlockNum}"/>
-                        <br/>
-                        <h:outputText value="Residential Unit No.: " />
-                        <h:outputText value="#{accountManagedBean.customerUnitNum}"/>
-                        <br/>
-                        <h:outputText value="Postal Code: " />
-                        <h:outputText value="#{accountManagedBean.customerPostal}"/>
-                        <br/>
-                        <h:outputText value="Mobile: " />
-                        <h:outputText value="#{accountManagedBean.customerMobile}"/>
-                        <br/>
-                        <h:outputText value="Email: " />
-                        <h:outputText value="#{accountManagedBean.customerEmail}"/>
-                        <br/>
-                        <br/>
-                        <br/>
-                        <h:outputLabel value="My Deposit" style="font-weight: bold; font-size: 24px" />
-                        <br/>
-                        <br/>
-                        <h:outputText value="Bank Account Type: "/>
-                        <h:outputText value="#{accountManagedBean.bankAccountType}"/>
-                        <br/>
-                        <h:outputText value="Initial Deposit Amount: "/>
-                        <h:outputText value="#{accountManagedBean.initialDepositAmt}"/>
-                        <br/>
-                        <br/>
-                        <br/>
-                        <h:panelGrid columns="2" style="margin-bottom:10px">
-                            <p:selectBooleanCheckbox id = "agreement" value="#{accountManagedBean.agreement}" 
-                                                     style="margin-top:5px"/>
-                            <h:outputText value="I have read and agree to the terms of Customer Declaration and Confirmation." />
-                            <br/>
-                            <h:outputText value="I have also read and agree to the Terms and Conditions Governing Personal Data Protection Act 2012."/>
-                        </h:panelGrid>
-
-                        <p:messages showDetail="true"/>
-                        <p:captcha label="Captcha" />
-                    </p:panel>
-
-                    <p:commandButton id="saveBtn" value="Open Account" update="growl"
-                                     actionListener="#{accountManagedBean.saveAccount}" ajax="true"/>
-                </p:tab>
-            </p:wizard>
+                <p:commandButton id="saveBtn" value="Open Account" actionListener="#{employeeOpenAccount.saveAccount}" 
+                                 ajax="true" update="panel"/>
+            </p:panel>
         </h:form>
     </h:body>
 </html>

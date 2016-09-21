@@ -27,7 +27,7 @@
         <h:form>
             <p:ajaxStatus style="width:16px;height:16px;">
                 <f:facet name="start">
-                    <h:graphicImage value="./resources/images/spinner.gif" />
+                    <h:graphicImage value="/resources/images/spinner.gif" />
                 </f:facet>
                 <f:facet name="complete">
                     <h:outputText value="" />
@@ -853,7 +853,7 @@
                                 <p:column>
                                     <p:selectOneMenu id="bankAccountType" value="#{accountManagedBean.bankAccountType}" 
                                                      style="width:125px" required="true" requiredMessage="Required Field">
-                                        <f:selectItem itemLabel="Please Select" itemValue=" " />
+                                        <f:selectItem itemLabel="Please Select" itemValue="" noSelectionOption="true"/>
                                         <f:selectItem itemLabel="Monthly Savings Account" itemValue="Monthly Savings Account" />
                                         <f:selectItem itemLabel="Bonus Savings Account" itemValue="Bonus Savings Account" />
                                         <f:selectItem itemLabel="Basic Savings Account" itemValue="Basic Savings Account" />
@@ -870,7 +870,8 @@
                                     <p:outputLabel for="bankAccountPwd" style="font-weight: bold" value="Account Password: " />
                                 </p:column>
                                 <p:column>
-                                    <p:password id="bankAccountPwd" value="#{accountManagedBean.bankAccountPwd}" match="confirmBankAccountPwd" >
+                                    <p:password id="bankAccountPwd" value="#{accountManagedBean.bankAccountPwd}" match="confirmBankAccountPwd" 
+                                                required="true" requiredMessage="Required Field">
                                         <f:validateLength minimum="6" maximum="6" />
                                     </p:password>
                                 </p:column>
@@ -885,7 +886,8 @@
                                 </p:column>
                                 <p:column>
                                     <p:password id="confirmBankAccountPwd" value="#{accountManagedBean.confirmBankAccountPwd}" 
-                                                label="Confirm Password" maxlength="6" >
+                                                label="Confirm Password" maxlength="6" 
+                                                required="true" requiredMessage="Required Field">
                                         <f:validateLength minimum="6" maximum="6" />
                                     </p:password>
                                 </p:column>

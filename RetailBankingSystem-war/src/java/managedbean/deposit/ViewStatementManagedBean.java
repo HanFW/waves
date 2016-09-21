@@ -1,4 +1,4 @@
-package managedbean;
+package managedbean.deposit;
 
 import ejb.deposit.entity.BankAccount;
 import ejb.customer.entity.CustomerBasic;
@@ -26,7 +26,7 @@ import ejb.deposit.session.StatementSessionBeanLocal;
 
 @Named(value = "viewStatementManagedBean")
 @RequestScoped
-public class viewStatementManagedBean {
+public class ViewStatementManagedBean {
     @EJB
     private StatementSessionBeanLocal statementSessionBeanLocal;
     
@@ -40,7 +40,7 @@ public class viewStatementManagedBean {
     
     private ExternalContext ec;
 
-    public viewStatementManagedBean() {
+    public ViewStatementManagedBean() {
     }
 
     public String getStatementDate() {
