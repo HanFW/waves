@@ -1,20 +1,19 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
+<html xmlns="http://www.w3.org/1999/xhtml"                                                                                                           
+      xmlns:h="http://xmlns.jcp.org/jsf/html" 
+      xmlns:f="http://xmlns.jcp.org/jsf/core" 
       xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>View Account</title>
+        <title>View eStatement</title>
         <style type="text/css">
             .gritter-notice-wrapper {
                 left:200px;
-                top: 50px;
-            }
-        </style>
-    </h:head>
-    <h:body>
-        <h:form id="formMain">
+                top: 50px; }
+            </style>   
+        </h:head>
+        <h:body>
+            <h:form id="formMain">
             <h1>Welcome to Merlion Bank</h1>
             <p:menubar>
 
@@ -50,38 +49,30 @@
                     <p:menuitem value="Logout" actionListener="#{customerLoginManagedBean.doLogout}"/>
                 </p:submenu>
             </p:menubar>
-        </h:form>
-        <h:form>
             <br/>
-            <p:panel header="View My Account">
-                <p:dataTable var="bankAccount" value="#{accountDataTableBean.bankAccount}" 
-                             paginator="true" rows="10" emptyMessage="No Account">
+            <p:panel id="panel" header="View eStatement"> 
+                <p:messages />
 
-                    <p:column headerText="Bank Account Type"> 
-                        <h:outputText value="#{bankAccount.bankAccountType}" />
+                <p:dataTable var="statement" paginator="true" rows="10"
+                             value="#{viewStatementManagedBean.statement}"
+                             emptyMessage="No Statement">
+
+                    <p:column headerText="Date"> 
+                        <h:outputText value="#{statement.statementDate}" />
                     </p:column>
 
-                    <p:column headerText="Bank Account Number" >
-                        <h:outputText value="#{bankAccount.bankAccountNum}" /> 
+                    <p:column headerText="Statemenet Type(s)"> 
+                        <h:outputText value="#{statement.statementType}" />
                     </p:column>
 
-                    <p:column headerText="Balance"> 
-                        <h:outputText value="S$#{bankAccount.bankAccountBalance}" />
+                    <p:column headerText="Account Details"> 
+                        <h:outputText value="#{statement.accountDetails}" />
                     </p:column>
 
-                    <p:column headerText="Transfer" style="width: 10%"> 
+                    <p:column headerText="View" style="width: 10%"> 
                         <center>
-                            <p:menuButton value=" ">
-                                <p:menuitem value="Transfer To My Account" action="/web/onlineBanking/deposit/customerToMyAccount.xhtml"/>
-                                <p:menuitem value="Transfer To Other Merlion Accounts" action="/web/onlineBanking/deposit/ToOthersAccount.xhtml"/>
-                                <p:menuitem value="One-Time Transfer" action="/web/onlineBanking/deposit/OneTimeTransfer.xhtml"/>
-                            </p:menuButton>
-                        </center>
-                    </p:column>
-
-                    <p:column headerText="Statement" style="width: 10%"> 
-                        <center>
-                            <p:commandButton process="@this" action="/web/onlineBanking/deposit/ViewStatement.xhtml" icon="ui-icon-document">
+                            <p:commandButton ajax="false" process="@this" action="#{viewStatementManagedBean.viewStatement}" icon="ui-icon-document">
+                                <f:setPropertyActionListener value="#{statement.customerBasic.customerBasicId}" target="#{viewStatementManagedBean.customerBasicId}" />
                             </p:commandButton>
                         </center>
                     </p:column>
@@ -91,3 +82,4 @@
         </h:form>
     </h:body>
 </html>
+

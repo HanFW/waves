@@ -23,9 +23,8 @@
                     <p:menuitem value="Open Account" url="/web/onlineBanking/deposit/customerOpenAccount.xhtml" />
                     <p:menuitem value="Close Account" url="/web/onlineBanking/deposit/customerCloseAccount.xhtml" />
                     <p:menuitem value="View Account" url="/web/onlineBanking/deposit/customerViewAccount.xhtml" />
-                    <p:menuitem value="Cash Deposit" url="/web/onlineBanking/deposit/customerCashDeposit.xhtml" />
-                    <p:menuitem value="Cash Withdraw" url="/web/onlineBanking/deposit/customerCashWithdraw.xhtml" />
                     <p:menuitem value="View Transaction" url="/web/onlineBanking/deposit/customerViewTransaction.xhtml" />
+                    <p:menuitem value="View Statement" url="/web/onlineBanking/deposit/customerViewStatement.xhtml" />
                     <p:menuitem value="Activate Fixed Deposit Account" url="/web/onlineBanking/deposit/customerActivateFixedDepositAccount.xhtml" />
                 </p:submenu>
 
@@ -63,9 +62,7 @@
                     </p:column>
 
                     <p:column headerText="Transaction Date">
-                        <h:outputText value="#{accTransaction.transactionDate}" >
-                            <f:convertDateTime pattern="dd/MM/yyyy" />
-                        </h:outputText>
+                        <h:outputText value="#{accTransaction.transactionDate}" />
                     </p:column>
 
                     <p:column headerText="Transaction Code"> 
