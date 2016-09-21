@@ -76,14 +76,26 @@ public class EnquirySessionBean implements EnquirySessionBeanLocal {
     }
 
     @Override
-    public List<FollowUp> getFollowUpByCaseId(Long caseId) {
+    public EnquiryCase getEnquiryByCaseId(Long caseId) {
+        Query query = entityManager.createQuery("SELECT ec FROM EnquiryCase ec WHERE ec.caseId = :caseId");
+        query.setParameter("caseId", caseId);
+        List resultList = query.getResultList();
+        EnquiryCase ec = (EnquiryCase) resultList.get(0);
+        System.out.println("********list size***"+resultList.size()+"//////caseId///"+ec.getCaseId());
+        return ec;
+    }
+
+@Override
+        public List<FollowUp> getFollowUpByCaseId(Long caseId
+    ) {
         Query query = entityManager.createQuery("SELECT fu FROM FollowUp fu WHERE fu.enquiryCase.caseId = :caseId");
         query.setParameter("caseId", caseId);
         return query.getResultList();
     }
 
     @Override
-    public String addNewCase(Long customerId, String type, String detail) {
+        public String addNewCase(Long customerId, String type, String detail
+    ) {
 
         EnquiryCase enquiryCase = new EnquiryCase();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MMM-dd HH:mm:ss");
@@ -115,7 +127,8 @@ public class EnquirySessionBean implements EnquirySessionBeanLocal {
     }
 
     @Override
-    public String updateStatus(Long caseId, String caseStatus) {
+        public String updateStatus(Long caseId, String caseStatus
+    ) {
 
         Query query = entityManager.createQuery("SELECT ec FROM EnquiryCase ec WHERE ec.caseId = :caseId");
         query.setParameter("caseId", caseId);
@@ -134,7 +147,8 @@ public class EnquirySessionBean implements EnquirySessionBeanLocal {
     }
 
     @Override
-    public String addFollowUp(Long caseId, String caseFollowUp) {
+        public String addFollowUp(Long caseId, String caseFollowUp
+    ) {
         Query query = entityManager.createQuery("SELECT ec FROM EnquiryCase ec WHERE ec.caseId = :caseId");
         query.setParameter("caseId", caseId);
         List resultList = query.getResultList();
@@ -164,7 +178,8 @@ public class EnquirySessionBean implements EnquirySessionBeanLocal {
     }
 
     @Override
-    public String addNewCaseIssue(Long caseId, String departmentTo, String issueProblem) {
+        public String addNewCaseIssue(Long caseId, String departmentTo, String issueProblem
+    ) {
 
         Issue issue = new Issue();
 
@@ -191,7 +206,8 @@ public class EnquirySessionBean implements EnquirySessionBeanLocal {
     }
 
     @Override
-    public String addNewFollowUpIssue(Long followUpId, String departmentTo, String issueProblem) {
+        public String addNewFollowUpIssue(Long followUpId, String departmentTo, String issueProblem
+    ) {
 
         Issue issue = new Issue();
 
@@ -218,7 +234,8 @@ public class EnquirySessionBean implements EnquirySessionBeanLocal {
     }
 
     @Override
-    public String replyCustomerCase(Long caseId, String caseReply) {
+        public String replyCustomerCase(Long caseId, String caseReply
+    ) {
         Query query = entityManager.createQuery("SELECT ec FROM EnquiryCase ec WHERE ec.caseId = :caseId");
         query.setParameter("caseId", caseId);
         List resultList = query.getResultList();
@@ -235,7 +252,8 @@ public class EnquirySessionBean implements EnquirySessionBeanLocal {
     }
 
     @Override
-    public String replyCustomerFollowUp(Long followUpId, String followUpSolution) {
+        public String replyCustomerFollowUp(Long followUpId, String followUpSolution
+    ) {
         Query query = entityManager.createQuery("SELECT fu FROM FollowUp fu WHERE fu.followUpId = :followUpId");
         query.setParameter("followUpId", followUpId);
         List resultList = query.getResultList();

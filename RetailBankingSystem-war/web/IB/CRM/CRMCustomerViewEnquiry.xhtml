@@ -13,7 +13,7 @@
             <p:panel header="View My Enquiry">
 
                 <p:accordionPanel value="#{enquiryManagedBean.enquiryCase}" var="enquiryCase">
-                    <p:tab title="Enquiry Case - created time: #{enquiryCase.createdTime}">
+                    <p:tab title="Enquiry Case ID: #{enquiryCase.caseId} - created time: #{enquiryCase.createdTime}">
                         <h:panelGrid cellpadding="5">
                             <p:panel>
                                 <p:row>
@@ -49,6 +49,9 @@
                             <p:panel header="My Follow-up Questions">
                                 <p:dataTable var="followUp" value="#{enquiryCase.followUp}" 
                                              paginator="true" rows="10" emptyMessage="No Follow-up Questions">
+                                    <p:column headerText="Follow Up ID">
+                                        <h:outputText value="#{followUp.followUpId}" />
+                                    </p:column>
                                     <p:column headerText="Created Time">
                                         <h:outputText value="#{followUp.sendTime}" />
                                     </p:column>

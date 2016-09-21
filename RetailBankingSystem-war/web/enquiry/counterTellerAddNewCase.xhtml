@@ -13,23 +13,12 @@
                 <p:messages />
 
                 <h:panelGrid columns="2" id="matchGrid" cellpadding="5">
-                    <h3>Customer Basic Info</h3>
-                    <p:panelGrid columns="2">
 
-                        <h:outputText value="Salutation:" />
-                        <h:outputText value="#{employeeRecordEnquiryManagedBean.cb.customerSalutation}" />
-
-                        <h:outputText value="Name:" />
-                        <h:outputText value="#{employeeRecordEnquiryManagedBean.cb.customerName}" />
-
-                        <h:outputText value="NRIC/Passport:" />
-                        <h:outputText value="#{employeeRecordEnquiryManagedBean.cb.customerIdentificationNum}" />
-
-                        <h:outputText value="Customer Online Banking Acc. Num.:" />
-                        <h:outputText value="#{employeeRecordEnquiryManagedBean.cb.customerOnlineBankingAccountNum}" />
-
-                    </p:panelGrid>
                     <p:panel>
+                        <p:row>
+                            <h:outputText value="Record a Case" style="font-weight: bolder"/>
+                        </p:row>
+
                         <p:row>
                             <p:column>
                                 <p:outputLabel for="caseType" style="font-weight: bold" value="What is it regarding?" />
@@ -57,15 +46,84 @@
                         <p:row>
                             <h:outputLabel style="font-weight: bold" value="Enquiry Details" />
                             <h:outputText value="&lt;br/&gt;" escape="false" />
-                            <p:inputTextarea id="caseDetail" value="#{employeeRecordEnquiryManagedBean.caseDetail}" required="true" rows="5" cols="30" counter="display" maxlength="500" counterTemplate="{0} characters remaining." autoResize="false" />
-                            <h:outputText value="&lt;br/&gt;" escape="false" />
-                            <h:outputText id="display" />
+                            <p:inputTextarea id="caseDetail" value="#{employeeRecordEnquiryManagedBean.caseDetail}"  rows="5" cols="50"  autoResize="false" />
                         </p:row>
                     </p:panel>
+                    <p:commandButton value="Send Enquiry" update="@form" actionListener="#{employeeRecordEnquiryManagedBean.saveEnquiryCase()}" ajax="false" />
                 </h:panelGrid>
             </p:panel>
 
-            <p:commandButton value="Send Enquiry" update="@form" actionListener="#{enquiryManagedBean.saveEnquiryCase}" ajax="false" />
+            <p:accordionPanel value="#{employeeRecordEnquiryManagedBean.enquiryCase}" var="enquiryCase">
+                <p:tab title="Enquiry Case ID: #{enquiryCase.caseId} - created time: #{enquiryCase.createdTime}">
+                    <h:panelGrid cellpadding="5">
+                        <p:panel>
+                            <p:row>
+                                <p:column colspan="2">
+                                    <h:outputText value="Detail:   " style="font-weight: bold" />
+                                </p:column>
+                                <p:column>
+                                    <h:outputText value="#{enquiryCase.caseDetail}" />
+                                </p:column>
+                            </p:row>
+                            <h:outputText value="&lt;br/&gt;" escape="false" />
+                            <p:row>
+                                <p:column colspan="2">
+                                    <h:outputText value="Status:  " style="font-weight: bold" />
+                                </p:column>
+
+                                <p:column>
+                                    <h:outputText value="#{enquiryCase.caseStatus}" />
+                                </p:column>
+                            </p:row>
+                            <h:outputText value="&lt;br/&gt;" escape="false" />
+                            <p:row>
+                                <p:column colspan="2">
+                                    <h:outputText value="Reply:   " style="font-weight: bold" />
+                                </p:column>
+                                <p:column>
+                                    <h:outputText value="#{enquiryCase.caseReply}" />
+                                </p:column>
+                            </p:row>
+                        </p:panel>
+
+                        <p:row>
+                            <p:panel header="Customer Follow-up Questions">
+                                <p:dataTable var="followUp" value="#{enquiryCase.followUp}" 
+                                             paginator="true" rows="10" emptyMessage="No Follow-up Questions">
+                                    <p:column headerText="Follow Up ID">
+                                        <h:outputText value="#{followUp.followUpId}" />
+                                    </p:column>
+                                    <p:column headerText="Created Time">
+                                        <h:outputText value="#{followUp.sendTime}" />
+                                    </p:column>
+
+                                    <p:column headerText="Detail" >
+                                        <h:outputText value="#{followUp.followUpDetail}" /> 
+                                    </p:column>
+
+                                    <p:column headerText="Status"> 
+                                        <h:outputText value="#{followUp.followUpStatus}" />
+                                    </p:column>
+
+                                    <p:column headerText="Reply"> 
+                                        <h:outputText value="#{followUp.followUpSolution}" />
+                                    </p:column>
+                                </p:dataTable>
+                            </p:panel>
+                        </p:row>
+
+                        <p:row>
+                            <p:column colspan="2">
+                                <p:commandButton value="Add Follow Up Question" action="counterTellerAddFollowUp.xhtml" ajax="false">
+                                    <f:setPropertyActionListener target="#{employeeRecordEnquiryManagedBean.caseId}" value="#{enquiryCase.caseId}" />
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                    </h:panelGrid>
+                </p:tab>
+            </p:accordionPanel>
+
+
         </h:form>
     </h:body>
 </html>

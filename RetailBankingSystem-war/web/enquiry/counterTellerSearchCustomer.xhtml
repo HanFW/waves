@@ -2,7 +2,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Search Customer</title>
     </h:head>
@@ -10,7 +11,50 @@
         <h:form>
             <p:outputLabel for="customerID"  value="Customer NRIC/Passport:" />
             <p:inputText id="customerID" value="#{employeeRecordEnquiryManagedBean.identificationNum}" />
-            <p:commandButton value="Write Enquiry" actionListener="#{employeeRecordEnquiryManagedBean.retieveCustomerByIdentification}"/>
+            <p:commandButton value="Show Customer" actionListener="#{employeeRecordEnquiryManagedBean.retieveCustomerByIdentification}" update="@form"/>
+
+            <p:panelGrid rendered="#{employeeRecordEnquiryManagedBean.visible}">
+
+                <p:row>
+                    <p:column colspan="2">
+                        <h:outputText value="Customer Basic Information" />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <h:outputText value="Salutation:" />
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{employeeRecordEnquiryManagedBean.cb.customerSalutation}" />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <h:outputText value="Name:" />
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{employeeRecordEnquiryManagedBean.cb.customerName}" />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <h:outputText value="NRIC/Passport:" />
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{employeeRecordEnquiryManagedBean.cb.customerIdentificationNum}" />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <h:outputText value="Customer Online Banking Acc. Num.:" />
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="#{employeeRecordEnquiryManagedBean.cb.customerOnlineBankingAccountNum}" />
+                    </p:column>
+                </p:row>
+                <p:commandButton value="Write Enquiry" actionListener="#{employeeRecordEnquiryManagedBean.helpCustomerRecordEnquiry}"/>
+            </p:panelGrid>
+            
         </h:form>
     </h:body>
 </html>
