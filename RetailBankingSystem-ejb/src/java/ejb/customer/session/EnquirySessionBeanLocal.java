@@ -7,13 +7,14 @@ package ejb.customer.session;
 
 import javax.ejb.Local;
 import ejb.customer.entity.EnquiryCase;
+import ejb.customer.entity.FollowUp;
+import ejb.customer.entity.Issue;
 import java.util.List;
 
 /**
  *
  * @author aaa
  */
-@Local
 public interface EnquirySessionBeanLocal {
 
     public List<EnquiryCase> getCustomerEnquiry(Long customerId);

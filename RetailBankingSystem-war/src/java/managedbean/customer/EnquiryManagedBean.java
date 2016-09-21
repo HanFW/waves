@@ -5,8 +5,8 @@
  */
 package managedbean.customer;
 
-import entity.CustomerBasic;
-import entity.EnquiryCase;
+import ejb.customer.entity.CustomerBasic;
+import ejb.customer.entity.EnquiryCase;
 import ejb.customer.entity.FollowUp;
 import java.io.Serializable;
 import java.util.List;

@@ -5,14 +5,14 @@
  */
 package ejb.customer.session;
 
-import entity.CustomerBasic;
-import entity.Issue;
+import ejb.customer.entity.CustomerBasic;
+import ejb.customer.entity.EnquiryCase;
+import ejb.customer.entity.FollowUp;
+import ejb.customer.entity.Issue;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import entity.EnquiryCase;
-import entity.FollowUp;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
@@ -24,7 +24,6 @@ import javax.persistence.Query;
  * @author aaa
  */
 @Stateless
-@LocalBean
 public class EnquirySessionBean implements EnquirySessionBeanLocal {
 
     @PersistenceContext

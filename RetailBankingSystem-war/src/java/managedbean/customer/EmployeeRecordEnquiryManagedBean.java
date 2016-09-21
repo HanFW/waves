@@ -3,10 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package managedbean;
+package managedbean.customer;
 
-import entity.CustomerBasic;
-import entity.EnquiryCase;
+import ejb.customer.entity.CustomerBasic;
+import ejb.customer.entity.EnquiryCase;
+import ejb.customer.session.CRMCustomerSessionBeanLocal;
+import ejb.customer.session.EnquirySessionBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
@@ -16,8 +18,6 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import session.stateless.CRMCustomerSessionBeanLocal;
-import session.stateless.EnquirySessionBeanLocal;
 
 /**
  *
@@ -129,7 +129,7 @@ public class EmployeeRecordEnquiryManagedBean implements Serializable {
         FacesContext context = FacesContext.getCurrentInstance();
         context.addMessage(null, new FacesMessage(enquirySessionBeanLocal.addNewCase(cb.getCustomerBasicId(), caseType, caseDetail), " "));
         ExternalContext ec = context.getExternalContext();
-        ec.redirect(ec.getRequestContextPath() + "/enquiry/counterTellerAddEnquiryDone.xhtml");
+        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/counterTellerAddEnquiryDone.xhtml");
         caseType = null;
         caseDetail = null;
         identificationNum = null;
@@ -138,10 +138,9 @@ public class EmployeeRecordEnquiryManagedBean implements Serializable {
 
     public void saveFollowUp() throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
-        System.out.println("///////////caseId//////"+caseId+"*******followup**** "+followUpDetail);
         context.addMessage(null, new FacesMessage(enquirySessionBeanLocal.addFollowUp(caseId, followUpDetail), " "));
         ExternalContext ec = context.getExternalContext();
-        ec.redirect(ec.getRequestContextPath() + "/enquiry/counterTellerAddEnquiryDone.xhtml");
+        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/counterTellerAddEnquiryDone.xhtml");
         caseId = null;
         caseIdStr = "";
         followUpDetail = null;
@@ -160,20 +159,14 @@ public class EmployeeRecordEnquiryManagedBean implements Serializable {
         ec = enquirySessionBeanLocal.getEnquiryByCaseId(caseId);
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext ec = context.getExternalContext();
-        ec.redirect(ec.getRequestContextPath() + "/enquiry/counterTellerSearchCaseDone.xhtml");
+        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/counterTellerSearchCaseDone.xhtml");
     }
 
     public void helpCustomerRecordEnquiry() throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext ec = context.getExternalContext();
-        ec.redirect(ec.getRequestContextPath() + "/enquiry/counterTellerAddNewCase.xhtml");
+        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/counterTellerAddNewCase.xhtml");
         visible = false;
     }
-
-//    public void redirectToSearchCaseDone() throws IOException {
-//        FacesContext context = FacesContext.getCurrentInstance();
-//        ExternalContext ec = context.getExternalContext();
-//        ec.redirect(ec.getRequestContextPath() + "/enquiry/counterTellerSearchCaseDone.xhtml");
-//    }
 
 }

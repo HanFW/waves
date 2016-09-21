@@ -1,10 +1,10 @@
 package ejb.customer.session;
 
+import ejb.customer.entity.CustomerBasic;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import entity.CustomerBasic;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
@@ -15,6 +15,7 @@ import javax.persistence.Query;
 import java.time.LocalDate;
 import java.time.Period;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
+import java.util.Arrays;
 
 @Stateless
 @LocalBean

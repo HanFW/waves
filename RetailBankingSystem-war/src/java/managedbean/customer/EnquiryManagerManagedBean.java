@@ -3,11 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package managedbean;
+package managedbean.customer;
 
-import entity.EnquiryCase;
-import entity.FollowUp;
-import entity.Issue;
+import ejb.customer.entity.EnquiryCase;
+import ejb.customer.entity.FollowUp;
+import ejb.customer.entity.Issue;
+import ejb.customer.session.EnquirySessionBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
@@ -17,7 +18,6 @@ import javax.inject.Named;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import session.stateless.EnquirySessionBeanLocal;
 
 /**
  *
@@ -184,7 +184,7 @@ public class EnquiryManagerManagedBean implements Serializable {
         caseReply = null;
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext ec = context.getExternalContext();
-        ec.redirect(ec.getRequestContextPath() + "/enquiry/enquirymanagerReplyCaseDone.xhtml");
+        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/enquirymanagerReplyCaseDone.xhtml");
     }
 
     public void replyToFollowUp() throws IOException {
@@ -193,7 +193,7 @@ public class EnquiryManagerManagedBean implements Serializable {
         followUpSolution = null;
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext ec = context.getExternalContext();
-        ec.redirect(ec.getRequestContextPath() + "/enquiry/enquirymanagerReplyCaseDone.xhtml");
+        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/enquirymanagerReplyCaseDone.xhtml");
     }
 
     public void addIssue() throws IOException {
@@ -210,7 +210,7 @@ public class EnquiryManagerManagedBean implements Serializable {
         caseId = null;
         departmentTo = null;
         issueProblem = null;
-        ec.redirect(ec.getRequestContextPath() + "/enquiry/enquirymanagerSubmitDone.xhtml");
+        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/enquirymanagerSubmitDone.xhtml");
     }
 
     public void addFollowUpIssue() throws IOException {
@@ -227,32 +227,27 @@ public class EnquiryManagerManagedBean implements Serializable {
         followUpId = null;
         departmentTo = null;
         issueProblem = null;
-        ec.redirect(ec.getRequestContextPath() + "/enquiry/enquirymanagerSubmitDone.xhtml");
+        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/enquirymanagerSubmitDone.xhtml");
     }
 
     public void redirectToViewEnquiryDone() throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext ec = context.getExternalContext();
-        ec.redirect(ec.getRequestContextPath() + "/enquiry/enquirymanagerViewEnquiryDone.xhtml");
+        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/enquirymanagerViewEnquiryDone.xhtml");
     }
 
     public void redirectToReplyCase() throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext ec = context.getExternalContext();
-        ec.redirect(ec.getRequestContextPath() + "/enquiry/enquirymanagerReplyCase.xhtml");
+        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/enquirymanagerReplyCase.xhtml");
     }
 
     public void redirectToReplyFollowUp() throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext ec = context.getExternalContext();
-        ec.redirect(ec.getRequestContextPath() + "/enquiry/enquirymanagerReplyFollowUp.xhtml");
+        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/enquirymanagerReplyFollowUp.xhtml");
     }
 
-//    public void redirectToViewIssue() throws IOException {
-//        FacesContext context = FacesContext.getCurrentInstance();
-//        ExternalContext ec = context.getExternalContext();
-//        ec.redirect(ec.getRequestContextPath() + "/enquiry/enquirymanagerViewIssueStatus.xhtml");
-//    }
     public String caseIssueCreated(Long caseId) {
         return enquirySessionBeanLocal.caseIssueIsCreated(caseId);
     }
