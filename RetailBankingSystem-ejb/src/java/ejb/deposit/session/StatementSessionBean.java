@@ -1,8 +1,9 @@
-package session.stateless;
+package ejb.deposit.session;
 
-import entity.BankAccount;
-import entity.CustomerBasic;
-import entity.Statement;
+import ejb.customer.entity.CustomerBasic;
+import ejb.customer.session.CRMCustomerSessionBeanLocal;
+import ejb.deposit.entity.BankAccount;
+import ejb.deposit.entity.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
@@ -20,7 +21,7 @@ import javax.persistence.Query;
 public class StatementSessionBean implements StatementSessionBeanLocal {
 
     @EJB
-    private BankAccountSessionLocal bankAccountSessionLocal;
+    private BankAccountSessionBeanLocal bankAccountSessionLocal;
 
     @EJB
     private CRMCustomerSessionBeanLocal customerSessionBeanLocal;

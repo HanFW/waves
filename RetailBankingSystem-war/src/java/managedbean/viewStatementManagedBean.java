@@ -1,8 +1,8 @@
 package managedbean;
 
-import entity.BankAccount;
-import entity.CustomerBasic;
-import entity.Statement;
+import ejb.deposit.entity.BankAccount;
+import ejb.customer.entity.CustomerBasic;
+import ejb.deposit.entity.Statement;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperRunManager;
-import session.stateless.StatementSessionBeanLocal;
+import ejb.deposit.session.StatementSessionBeanLocal;
 
 @Named(value = "viewStatementManagedBean")
 @RequestScoped

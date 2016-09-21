@@ -1,6 +1,6 @@
-package entity;
+package ejb.deposit.entity;
 
-import static entity.Interest_.bankAccount;
+import ejb.customer.entity.CustomerBasic;
 import java.io.Serializable;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;

@@ -1,6 +1,5 @@
 package ejb.common.util;
 
-import ejb.deposit.entity.BankAccount;
 import java.util.Collection;
 import javax.annotation.Resource;
 import javax.ejb.EJB;
@@ -13,6 +12,7 @@ import javax.ejb.TimerService;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
+import ejb.deposit.session.StatementSessionBeanLocal;
 
 @Stateless
 @LocalBean
@@ -22,7 +22,7 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal{
     private StatementSessionBeanLocal statementSessionBeanLocal;
     
     @EJB
-    private BankAccountSessionLocal bankAccountSessionLocal;
+    private BankAccountSessionBeanLocal bankAccountSessionLocal;
 
     @Resource
     private SessionContext ctx;

@@ -1,6 +1,6 @@
-package session.stateless;
+package ejb.deposit.session;
 
-import entity.Statement;
+import ejb.deposit.entity.Statement;
 import java.util.List;
 import javax.ejb.Local;
 
