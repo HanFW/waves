@@ -5,11 +5,14 @@
  */
 package managedbean.customer;
 
-import ejb.customer.entity.CustomerBasic;
+import entity.CustomerBasic;
+import entity.EnquiryCase;
+import ejb.customer.entity.FollowUp;
+import java.io.Serializable;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
-import javax.enterprise.context.Dependent;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -20,19 +23,20 @@ import ejb.customer.session.EnquirySessionBeanLocal;
  * @author aaa
  */
 @Named(value = "enquiryManagedBean")
-@Dependent
-public class EnquiryManagedBean {
+@SessionScoped
+public class EnquiryManagedBean implements Serializable {
 
     @EJB
     private EnquirySessionBeanLocal enquirySessionBeanLocal;
 
-
     private Long caseId;
     private String caseType;
     private String caseDetail;
-    private List<String> caseFollowUp;
+    
+    private String followUpDetail;
     private String caseStatus;
     private String onlineBankingAccountNum;
+    
 
     private ExternalContext ec;
 
@@ -65,14 +69,6 @@ public class EnquiryManagedBean {
         this.caseDetail = caseDetail;
     }
 
-    public List<String> getCaseFollowUp() {
-        return caseFollowUp;
-    }
-
-    public void setCaseFollowUp(List<String> caseFollowUp) {
-        this.caseFollowUp = caseFollowUp;
-    }
-
     public String getCaseStatus() {
         return caseStatus;
     }
@@ -89,13 +85,43 @@ public class EnquiryManagedBean {
         this.onlineBankingAccountNum = onlineBankingAccountNum;
     }
 
+
+
+    public String getFollowUpDetail() {
+        return followUpDetail;
+    }
+
+    public void setFollowUpDetail(String followUpDetail) {
+        this.followUpDetail = followUpDetail;
+    }
+    
+        
+    public List<FollowUp> retrieveFollowUpByCaseId() {
+        List<FollowUp> fu = enquirySessionBeanLocal.getFollowUpByCaseId(caseId);
+        return fu;
+    }
+
     public void saveEnquiryCase() {
         ec = FacesContext.getCurrentInstance().getExternalContext();
         cb = (CustomerBasic) ec.getSessionMap().get("customer");
-     
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(enquirySessionBeanLocal.addNewCase(cb.getCustomerOnlineBankingAccountNum(), caseType, caseDetail), " "));
-        
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(enquirySessionBeanLocal.addNewCase(cb.getCustomerBasicId(), caseType, caseDetail), " "));
+        caseType = null;
+        caseDetail = null;
     }
-    
-    
+
+    public List<EnquiryCase> getEnquiryCase() {
+        ec = FacesContext.getCurrentInstance().getExternalContext();
+        cb = (CustomerBasic) ec.getSessionMap().get("customer");
+        List<EnquiryCase> enquiryCases = enquirySessionBeanLocal.getCustomerEnquiry(cb.getCustomerBasicId());
+
+        return enquiryCases;
+    }
+
+    public void saveFollowUp() {
+
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(enquirySessionBeanLocal.addFollowUp(caseId, followUpDetail), " "));
+        caseId = null;
+        followUpDetail = null;
+    }
+
 }
