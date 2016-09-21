@@ -109,23 +109,67 @@ public class AccountManagedBean implements Serializable {
     private UploadedFile file;
     private String customerSignature;
     private String dateOfBirth;
+    private Double statementDateDouble;
 
+    private boolean salutationRender=false;
+    private boolean nricSGRender=false;
+    private boolean nricRender=false;
+    private boolean passportRender=false;
+    private boolean singaporePRRender=false;
     //private ExternalContext ec;
     //ec = FacesContext.getCurrentInstance().getExternalContext();
     public AccountManagedBean() {
+    }
+
+    public boolean isSalutationRender() {
+        return salutationRender;
+    }
+
+    public void setSalutationRender(boolean salutationRender) {
+        this.salutationRender = salutationRender;
+    }
+
+    public boolean isNricSGRender() {
+        return nricSGRender;
+    }
+
+    public void setNricSGRender(boolean nricSGRender) {
+        this.nricSGRender = nricSGRender;
+    }
+
+    public boolean isNricRender() {
+        return nricRender;
+    }
+
+    public void setNricRender(boolean nricRender) {
+        this.nricRender = nricRender;
+    }
+
+    public boolean isPassportRender() {
+        return passportRender;
+    }
+
+    public void setPassportRender(boolean passportRender) {
+        this.passportRender = passportRender;
+    }
+
+    public boolean isSingaporePRRender() {
+        return singaporePRRender;
+    }
+
+    public void setSingaporePRRender(boolean singaporePRRender) {
+        this.singaporePRRender = singaporePRRender;
     }
 
     public void show() {
 
         if (customerSalutation.equals("Others")) {
             visible = true;
+            salutationRender=true;
         } else {
             visible = false;
+            salutationRender=false;
         }
-    }
-
-    public void hide() {
-        visible = false;
     }
 
     public void show2() {
@@ -135,13 +179,11 @@ public class AccountManagedBean implements Serializable {
             visible4 = false;
             visible5 = false;
             singaporePR=null;
+            nricSGRender=true;
         } else {
             visible2 = false;
+            nricSGRender=false;
         }
-    }
-
-    public void hide2() {
-        visible2 = false;
     }
 
     public void show3() {
@@ -150,40 +192,39 @@ public class AccountManagedBean implements Serializable {
             visible3 = true;
             visible4 = false;
             visible5 = false;
-            singaporePR = null;
+            singaporePR=null;
+            singaporePRRender=true;
+            nricRender=false;
+            passportRender=false;
+            nricSGRender=false;
         } else {
             visible3 = false;
+            singaporePRRender=false;
         }
-    }
-
-    public void hide3() {
-        visible3 = false;
     }
 
     public void show4() {
 
         if (singaporePR.equals("Yes")) {
             visible4 = true;
+            nricRender=true;
+            passportRender=false;
         } else {
             visible4 = false;
+            nricRender=false;
         }
-    }
-
-    public void hide4() {
-        visible4 = false;
     }
 
     public void show5() {
 
         if (singaporePR.equals("No")) {
             visible5 = true;
+            passportRender=true;
+            nricRender=false;
         } else {
             visible5 = false;
+            passportRender=false;
         }
-    }
-
-    public void hide5() {
-        visible5 = false;
     }
 
     public boolean isVisible() {
@@ -678,6 +719,14 @@ public class AccountManagedBean implements Serializable {
         this.customerMobile = customerMobile;
     }
 
+    public Double getStatementDateDouble() {
+        return statementDateDouble;
+    }
+
+    public void setStatementDateDouble(Double statementDateDouble) {
+        this.statementDateDouble = statementDateDouble;
+    }
+
     public void saveAccount() throws IOException {
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
@@ -738,14 +787,15 @@ public class AccountManagedBean implements Serializable {
         } else if (existingCustomer.equals("No") && !checkExist && agreement) {
 
             customerAddress = customerStreetName + ", " + customerBlockNum + ", " + customerUnitNum + ", " + customerPostal;
-
+            statementDateDouble=0.0;
+            
             newCustomerBasicId = customerSessionBean.addNewCustomerBasic(customerName,
                     customerSalutation, customerIdentificationNum.toUpperCase(),
                     customerGender, customerEmail, customerMobile.toString(), dateOfBirth,
                     customerNationality, customerCountryOfResidence, customerRace,
                     customerMaritalStatus, customerOccupation, customerCompany,
                     customerAddress, customerPostal, customerOnlineBankingAccountNum,
-                    customerOnlineBankingPassword, customerSignature.getBytes());
+                    customerOnlineBankingPassword, customerSignature.getBytes(),statementDateDouble);
 
             dailyInterest = "0";
             monthlyInterest = "0";
