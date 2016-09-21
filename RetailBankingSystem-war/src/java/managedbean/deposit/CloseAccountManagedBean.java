@@ -157,9 +157,9 @@ public class CloseAccountManagedBean {
         CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
 
         bankAccountNum = handleAccountString(bankAccountNumWithType);
-        bankAccountType = bankAccount.getBankAccountType();
         String passwordCheck = transactionSessionLocal.checkPassword(bankAccountNum, bankAccountPwd);
         bankAccount = bankAccountSessionLocal.retrieveBankAccountByNum(bankAccountNum);
+        bankAccountType = bankAccount.getBankAccountType();
 
         if (passwordCheck.equals("Error! Bank account does not exist!")) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Error! Bank account does not exist!", "Failed!"));
@@ -168,7 +168,7 @@ public class CloseAccountManagedBean {
         } else {
 
             checkOnlyOneAccount = bankAccountSessionLocal.checkOnlyOneAccount(customerBasic.getCustomerIdentificationNum());
-          
+
             if (onlyOneAccount.equals("Yes") && !checkOnlyOneAccount) {
                 if (!bankAccount.getBankAccountBalance().equals("0")) {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Please withdraw all your money.", "Failed!"));
