@@ -39,6 +39,10 @@ public class Employee implements Serializable {
     @ManyToMany(cascade = {CascadeType.PERSIST})
     @JoinTable(name = "EMPLOYEE_ROLE")
     private Set<Role> role = new HashSet<Role>();
+    
+    public boolean hasRole(Role checkRole){
+        return role.contains(checkRole);
+    }
 
     public String getEmployeeDepartment() {
         return employeeDepartment;

@@ -13,6 +13,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
@@ -69,6 +70,11 @@ public class EmployeeAdminSessionBean implements EmployeeAdminSessionBeanLocal {
         roles[8] = "Call Center Staff";
         roles[9] = "Enquiry Manager";
 
+    }
+
+    @Override
+    public Role findRole(Long roleId) {
+        return em.find(Role.class, roleId);
 
     }
 
@@ -143,6 +149,33 @@ public class EmployeeAdminSessionBean implements EmployeeAdminSessionBeanLocal {
 
     }
 
+    @Override
+    public void updateEmployeeAccount(String employeeName, String employeeDepartment,
+            String employeePosition, Long employeeId, String employeeMobileNum, String employeeEmail,
+            Set<String> roles) {
+        Employee employee = getEmployeeById(employeeId);
+        employee.setEmployeeName(employeeName);
+        employee.setEmployeeDepartment(employeeDepartment);
+        employee.setEmployeePosition(employeePosition);
+        employee.setEmployeeMobileNum(employeeMobileNum);
+        employee.setEmployeeEmail(employeeEmail);
+
+        Set<Role> employeeRoles = new HashSet<Role>();
+        String[] selectedRolesToArray = roles.toArray(new String[roles.size()]);
+        for (int i = 0; i < selectedRolesToArray.length; i++) {
+            System.out.println("*** adminSessionBean print employee role " + selectedRolesToArray[i]);
+            Query q = em.createQuery("SELECT r FROM Role r WHERE r.roleName= :name");
+            q.setParameter("name", selectedRolesToArray[i]);
+            Role findRole = (Role) q.getSingleResult();
+            employeeRoles.add(findRole);
+        }
+        //set selected roles to an employee
+        employee.setRole(employeeRoles);
+
+        em.flush();
+        System.out.println("*** adminSessionBean: Update employee account info");
+    }
+
     //display all employee accounts
     @Override
     public List<Employee> getEmployees() {
@@ -150,6 +183,57 @@ public class EmployeeAdminSessionBean implements EmployeeAdminSessionBeanLocal {
         Query query = em.createQuery("SELECT e FROM Employee e");
         List<Employee> employees = query.getResultList();
         return employees;
+    }
+
+    @Override
+    public Employee getEmployeeById(Long employeeId) {
+
+        Employee employee = em.find(Employee.class, employeeId);
+        System.out.println("*** adminSessionBean: get employee by id" + employee.getEmployeeName());
+        return employee;
+
+    }
+
+    @Override
+    public Set<String> getSelectedRoles(Long employeeId) {
+        Employee employee = em.find(Employee.class, employeeId);
+        System.out.println("*** adminSessionBean-getSelectedRoles: get employee by id" + employee.getEmployeeName());
+        Set<Role> employeeRoles = employee.getRole();
+        String[] roles = new String[10];
+        Set<String> selectedRoles = new HashSet();
+
+        int i = 0;
+
+        Iterator iterator = employeeRoles.iterator();
+        while (iterator.hasNext()) {
+            Role employeeRole = (Role) iterator.next();
+            String employeeRoleToString = employeeRole.getRoleName();
+            roles[i] = employeeRoleToString;
+            selectedRoles.add(roles[i]);
+            i++;
+        }
+        System.out.println(selectedRoles);
+
+        return selectedRoles;
+    }
+
+    @Override
+    public void setSelectedRoles(Long employeeId, Set<String> selectedRoles) {
+        System.out.println("====== internalSystem/employeAdminSessionBean: setSelectedRoles() ======");
+        Employee employee = em.find(Employee.class, employeeId);
+
+        Set<Role> employeeRoles = new HashSet<Role>();
+        String[] selectedRolesToArray = selectedRoles.toArray(new String[selectedRoles.size()]);
+        for (int i = 0; i < selectedRolesToArray.length; i++) {
+            System.out.println("*** adminSessionBean print employee role " + selectedRolesToArray[i]);
+            Query q = em.createQuery("SELECT r FROM Role r WHERE r.roleName= :name");
+            q.setParameter("name", selectedRolesToArray[i]);
+            Role findRole = (Role) q.getSingleResult();
+            employeeRoles.add(findRole);
+        }
+        //set selected roles to an employee
+        employee.setRole(employeeRoles);
+        em.flush();
     }
 
     @Override
@@ -233,23 +317,22 @@ public class EmployeeAdminSessionBean implements EmployeeAdminSessionBeanLocal {
 //            Logger.getLogger(EmployeeAdminSessionBean.class.getName()).log(Level.SEVERE, null, ex);
 //            return Integer.toString(hash.hashCode());
 //        }
-        System.out.println("*** employeeAdminSessionBean: employeeNRIC"+employeeNRIC);
+        System.out.println("*** employeeAdminSessionBean: employeeNRIC" + employeeNRIC);
         Query query = em.createQuery("SELECT e FROM Employee e WHERE e.employeeNRIC= :NRIC");
         query.setParameter("NRIC", employeeNRIC);
-        Employee employee=new Employee();
+        Employee employee = new Employee();
         List resultList = query.getResultList();
-        if(resultList.isEmpty()){
+        if (resultList.isEmpty()) {
             System.out.println("*** employeeAdminSessionBean: employee cannt be found");
             return "";
-        }
-        else{
-        employee=(Employee)resultList.get(0);
-        System.out.println("*** employeeAdminSessionBean: employee id"+employee.getEmployeeId());
-        Integer userId = (employee.getEmployeeId()).intValue()+1000;
-        System.out.println("*** employeeAdminSessionBean: employee id"+userId);
-        String accountNum = userId.toString();
-        System.out.println("*** employeeAdminSessionBean: account number created" + accountNum);
-        return accountNum;
+        } else {
+            employee = (Employee) resultList.get(0);
+            System.out.println("*** employeeAdminSessionBean: employee id" + employee.getEmployeeId());
+            Integer userId = (employee.getEmployeeId()).intValue() + 1000;
+            System.out.println("*** employeeAdminSessionBean: employee id" + userId);
+            String accountNum = userId.toString();
+            System.out.println("*** employeeAdminSessionBean: account number created" + accountNum);
+            return accountNum;
         }
     }
 
@@ -284,6 +367,16 @@ public class EmployeeAdminSessionBean implements EmployeeAdminSessionBeanLocal {
     private String md5Hashing(String stringToHash) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("MD5");
         return Arrays.toString(md.digest(stringToHash.getBytes()));
+    }
+
+    @Override
+    public Role getRoleByName(String roleName) {
+        Query query = em.createQuery("SELECT r FROM Role r WHERE r.roleName = :name");
+        query.setParameter("name",roleName);
+        Role role = (Role)query.getSingleResult();
+                
+        return role;
+
     }
 
 }

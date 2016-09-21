@@ -5,7 +5,6 @@ package managedbean;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 import entity.Employee;
 import java.io.IOException;
 import java.io.Serializable;
@@ -25,7 +24,7 @@ import session.stateless.EmployeeAdminSessionBeanLocal;
  *
  * @author Jingyuan
  */
-@ManagedBean
+@ManagedBean(name = "employeeLoginManagedBean")
 @SessionScoped
 public class EmployeeLoginManagedBean implements Serializable {
 
@@ -40,6 +39,7 @@ public class EmployeeLoginManagedBean implements Serializable {
     private Employee employee;
     private String currentPassword;
     private String newPassword;
+    private boolean loggedIn = false;
 
     /**
      * Creates a new instance of loginManagedBean
@@ -56,15 +56,18 @@ public class EmployeeLoginManagedBean implements Serializable {
         FacesMessage message = null;
         FacesContext context = FacesContext.getCurrentInstance();
 
-      
         String status = adminSessionBeanLocal.login(employeeAccountNum, employeePassword);
         switch (status) {
             case "loggedIn":
 //                message = new FacesMessage(FacesMessage.SEVERITY_INFO, status, "Welcome back!");
                 System.out.println("***LoginManagedBean: loggedIn");
                 context.getExternalContext().getSessionMap().put("employee", getEmployee());
+                loggedIn = true;
                 try {
-                    context.getExternalContext().redirect("userAccountManagement.xhtml");
+                    context.getExternalContext().redirect("employeeMainPage.xhtml");
+                    message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Welcome " + employee.getEmployeeName() + " !", "Welcome message");
+                    context.addMessage(null, message);
+                    System.out.println("*** LoginManagedBean: welcome message");
                 } catch (IOException ex) {
                     Logger.getLogger(EmployeeLoginManagedBean.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -83,9 +86,10 @@ public class EmployeeLoginManagedBean implements Serializable {
     }
 
     public void doLogOut(ActionEvent event) throws IOException {
-      
+
         FacesContext context = FacesContext.getCurrentInstance();
         context.getExternalContext().invalidateSession();
+        loggedIn = false;
         System.out.println("***LoginManagedBean: session invalidated");
         try {
             context.getExternalContext().redirect("logout.xhtml");
@@ -93,18 +97,16 @@ public class EmployeeLoginManagedBean implements Serializable {
             Logger.getLogger(EmployeeLoginManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    public void forgetPassword(ActionEvent event) throws IOException{
-     
+
+    public void forgetPassword(ActionEvent event) throws IOException {
+
         FacesContext context = FacesContext.getCurrentInstance();
 
         context.getExternalContext().redirect("forgetPassword.xhtml");
-        
-    }
-    
 
-    
-    public void changePassword(ActionEvent event) throws IOException{
+    }
+
+    public void changePassword(ActionEvent event) throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
 
         context.getExternalContext().redirect("changePassword.xhtml");
@@ -127,12 +129,20 @@ public class EmployeeLoginManagedBean implements Serializable {
     }
 
     public Employee getEmployee() {
-        employee=adminSessionBeanLocal.getEmployeeByAccountNum(employeeAccountNum);
+        employee = adminSessionBeanLocal.getEmployeeByAccountNum(employeeAccountNum);
         return employee;
     }
 
     public void setEmployee(Employee employee) {
         this.employee = employee;
+    }
+
+    public boolean isLoggedIn() {
+        return loggedIn;
+    }
+
+    public void setLoggedIn(boolean loggedIn) {
+        this.loggedIn = loggedIn;
     }
 
 }
