@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"                                                                                                           
+      xmlns:h="http://xmlns.jcp.org/jsf/html" 
+      xmlns:f="http://xmlns.jcp.org/jsf/core" 
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>View Statement</title>
+        <style type="text/css">
+            .gritter-notice-wrapper {
+                left:200px;
+                top: 50px; }
+            </style>   
+        </h:head>
+        <h:body>
+            <h:form id="formMain">
+            <h1>Welcome to Merlion Bank</h1>
+            <p:menubar>
+                    <p:submenu label="My Account">
+                        <p:menuitem value="Home" url="/web/onlineBanking/deposit/customerDepositIndex.xhtml" />
+                        <p:menuitem value="Cash Deposit" url="/web/onlineBanking/deposit/customerDepositIndex.xhtml" />
+                        <p:menuitem value="Cash Withdraw" url="/web/internalSystem/deposit/employeeCashWithdraw.xhtml" />
+                        <p:menuitem value="View Account" url="/web/internalSystem/deposit/employeeViewAccount.xhtml" />
+                        <p:menuitem value="View Transaction" url="/web/internalSystem/deposit/employeeViewTransaction.xhtml" />
+                        <p:menuitem value="View Statement" url="/web/internalSystem/deposit/employeeViewStatement.xhtml" />
+                    </p:submenu>
+            </p:menubar>
+            <br/>
+            <p:panel id="panel" header="View Statement"> 
+                <p:messages />
+
+                <p:dataTable var="statement" paginator="true" rows="10"
+                             value="#{employeeViewStatementDoneManagedBean.statement}"
+                             emptyMessage="No Statement">
+
+                    <p:column headerText="Date"> 
+                        <h:outputText value="#{statement.statementDate}" />
+                    </p:column>
+
+                    <p:column headerText="Statemenet Type(s)"> 
+                        <h:outputText value="#{statement.statementType}" />
+                    </p:column>
+
+                    <p:column headerText="Account Details"> 
+                        <h:outputText value="#{statement.accountDetails}" />
+                    </p:column>
+
+                    <p:column headerText="View" style="width: 10%"> 
+                        <center>
+                            <p:commandButton ajax="false" process="@this" action="#{employeeViewStatementDoneManagedBean.viewStatement}" icon="ui-icon-document">
+                                <f:setPropertyActionListener value="#{statement.bankAccount.bankAccountId}" target="#{employeeViewStatementDoneManagedBean.bankAccountId}" />
+                            </p:commandButton>
+                        </center>
+                    </p:column>
+
+                </p:dataTable>
+            </p:panel>
+        </h:form>
+    </h:body>
+</html>

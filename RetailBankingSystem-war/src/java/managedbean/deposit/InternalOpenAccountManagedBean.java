@@ -1,4 +1,4 @@
-package managedbean.deposit;
+package managedbean.deposit.employee;
 
 import ejb.customer.entity.CustomerBasic;
 import ejb.deposit.entity.BankAccount;
@@ -14,10 +14,10 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import org.primefaces.event.FlowEvent;
 
-@Named(value = "employeeOpenAccount")
+@Named(value = "internalOpenAccountManagedBean")
 @RequestScoped
 
-public class EmployeeOpenAccountManagedBean {
+public class InternalOpenAccountManagedBean {
 
     @EJB
     private BankAccountSessionBeanLocal bankAccountSessionBeanLocal;
@@ -56,8 +56,9 @@ public class EmployeeOpenAccountManagedBean {
 
     private ExternalContext ec;
     private BankAccount bankAccount;
+    private Double statementDateDouble;
 
-    public EmployeeOpenAccountManagedBean() {
+    public InternalOpenAccountManagedBean() {
     }
 
     @PostConstruct
@@ -276,6 +277,14 @@ public class EmployeeOpenAccountManagedBean {
         this.statusMessage = statusMessage;
     }
 
+    public Double getStatementDateDouble() {
+        return statementDateDouble;
+    }
+
+    public void setStatementDateDouble(Double statementDateDouble) {
+        this.statementDateDouble = statementDateDouble;
+    }
+
     public void saveAccount() throws IOException {
         System.out.println("hello");
         ec = FacesContext.getCurrentInstance().getExternalContext();
@@ -301,6 +310,7 @@ public class EmployeeOpenAccountManagedBean {
             bankAccountDepositPeriod = "None";
             currentFixedDepositPeriod = "0";
             fixedDepositStatus = "";
+            statementDateDouble=0.0;
 
             if (bankAccountType.equals("Monthly Savings Account")) {
                 bankAccountStatus = "Activated";
@@ -313,7 +323,8 @@ public class EmployeeOpenAccountManagedBean {
 
             newAccountId = bankAccountSessionBeanLocal.addNewAccount(bankAccountNum, bankAccountPwd, bankAccountType,
                     bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
-                    bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus, customerBasicId, newInterestId);
+                    bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus, 
+                    statementDateDouble, customerBasicId, newInterestId);
             bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountById(newAccountId);
 
             statusMessage = "New Account Saved Successfully.";

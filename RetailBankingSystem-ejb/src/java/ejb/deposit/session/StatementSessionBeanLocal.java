@@ -9,7 +9,7 @@ import javax.ejb.Local;
 public interface StatementSessionBeanLocal {
     
     public Long addNewStatement(String statementDate, String statementType, String accountDetails,Long customerBasicId);
-    public List<Statement> retrieveStatementByCusIC(String customerIdentificationNum);
     public Statement retrieveStatementById(Long statementId);
+    public List<Statement> retrieveStatementByAccNum(String bankAccountNum);
     public void generateStatement();
 }

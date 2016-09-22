@@ -21,7 +21,7 @@ public class Statement implements Serializable {
     private String accountDetails;
     
     @ManyToOne(cascade={CascadeType.ALL},fetch=FetchType.EAGER)
-    private CustomerBasic customerBasic;
+    private BankAccount bankAccount;
 
     public Long getStatementId() {
         return statementId;
@@ -55,12 +55,12 @@ public class Statement implements Serializable {
         this.accountDetails = accountDetails;
     }
 
-    public CustomerBasic getCustomerBasic() {
-        return customerBasic;
+    public BankAccount getBankAccount() {
+        return bankAccount;
     }
 
-    public void setCustomerBasic(CustomerBasic customerBasic) {
-        this.customerBasic = customerBasic;
+    public void setBankAccount(BankAccount bankAccount) {
+        this.bankAccount = bankAccount;
     }
 
     @Override

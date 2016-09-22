@@ -2,6 +2,7 @@ package managedbean.deposit;
 
 import ejb.deposit.entity.BankAccount;
 import ejb.customer.entity.CustomerBasic;
+import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import ejb.deposit.entity.Statement;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import java.io.IOException;
@@ -25,11 +26,15 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperRunManager;
 import ejb.deposit.session.StatementSessionBeanLocal;
 import java.util.ArrayList;
+import javax.annotation.PostConstruct;
 
-@Named(value = "viewStatementManagedBean")
+@Named(value = "employeeViewStatementDoneManagedBean")
 @RequestScoped
 
-public class ViewStatementManagedBean {
+public class EmployeeViewStatementDoneManagedBean {
+
+    @EJB
+    private CRMCustomerSessionBeanLocal customerSessionBeanLocal;
 
     @EJB
     private BankAccountSessionBeanLocal bankAccountSessionBeanLocal;
@@ -49,7 +54,7 @@ public class ViewStatementManagedBean {
 
     private ExternalContext ec;
 
-    public ViewStatementManagedBean() {
+    public EmployeeViewStatementDoneManagedBean() {
     }
 
     public String getStatementDate() {
@@ -134,8 +139,9 @@ public class ViewStatementManagedBean {
         System.out.println("getStatement");
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
-        CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
+        customerIdentificationNum = ec.getSessionMap().get("customerIdentificationNum").toString();
 
+        CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum);
         List<BankAccount> bankAccounts = customerBasic.getBankAccount();
         List<Statement> statement = new ArrayList();
 
@@ -149,7 +155,9 @@ public class ViewStatementManagedBean {
                 return statement;
             }
         }
-        
+
+        customerIdentificationNum = null;
+
         return statement;
     }
 }
