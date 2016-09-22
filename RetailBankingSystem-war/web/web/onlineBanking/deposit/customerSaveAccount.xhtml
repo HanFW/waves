@@ -54,8 +54,8 @@
 
                 <p:panelGrid>
                     <h:form id="formMain">
-                        <h:outputLabel value="Attention: If your bank account is inactive, please deposit/transfer sufficient amouont to your account to activate." 
-                                       style="font-weight:bold;font-size: 22px"/>
+                        <h:outputText style="font-weight: bold;font-size: 20px" value="Attention: " />
+                        <h:outputText value="#{saveAccountManagedBean.attention}"/>
                         <br/>
                         <br/>
                         <h:outputText style="font-weight: bold" value="Status Message: " />
