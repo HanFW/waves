@@ -3021,7 +3021,7 @@ body {
   /* Fatal */ }
   body .ui-widget,
   body .ui-widget .ui-widget {
-    font-family: "Roboto","Helvetica Neue",sans-serif;
+    font-family: "Eurostile",sans-serif;
     text-decoration: none; }
   body .ui-widget-content {
     background-color: #ffffff;
@@ -3168,7 +3168,9 @@ body {
     body .ui-panel .ui-panel-content {
       height: 100%;
       box-sizing: border-box;
-      padding: 10px 16px; }
+      padding: 10px 16px; 
+      margin:0 auto;
+      width:50%;}
     body .ui-panel .ui-panel-footer {
       padding: 10px 16px;
       border: 0 none;
@@ -3968,7 +3970,7 @@ body {
         width: 24px;
         margin-top: -8px; }
     body .ui-selectonemenu .ui-selectonemenu-label.ui-inputfield {
-      font: 16px "Roboto", "Helvetica Neue", sans-serif; }
+      font: 16px "Eurostile", sans-serif;}
   body .ui-selectonemenu-panel {
     -moz-border-radius: 0;
     -webkit-border-radius: 0;

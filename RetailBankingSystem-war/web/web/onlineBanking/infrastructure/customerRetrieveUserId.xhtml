@@ -1,17 +1,48 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">Panels</ui:define>
+
+    <ui:define name="head">
+        <style type="text/css">
+            .nba-grid {
+                width: 100%;
+                table-layout: fixed;
+                word-wrap: break-word;
+            }
+
+            .ui-scrollpanel-content p:first-child {
+                margin: 0;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
     <h:head>
-        <title>Facelet Title</title>
+        <title>Retrieve User ID</title>
     </h:head>
     <h:body>
         <h:form>
-            <p:outputLabel value="User ID: " for="userID"/>
-            <h:outputText id="userID" value="#{customerLoginManagedBean.customerAccount}"/>
-            <p:button outcome="/web/onlineBanking/infrastructure/customerLogin" value="Login"/>
+            <div align="center">
+                <p:panel style="width:500px;height:150px;margin:0 auto;margin-top:10%">
+                    <p>
+                        <p:outputLabel value="User ID: " for="userID" style="font-family:Eurostile;font-size:20pt; "/>
+                        <h:outputText id="userID" value="#{customerLoginManagedBean.customerAccount}" style="font-family:Eurostile;font-size:20pt"/>
+                        </p>
+                        <br/>
+                        <p:button outcome="/web/onlineBanking/infrastructure/customerLogin" value="Login" style="font-family:Eurostile;font-size:20pt "/>
+       
+                </p:panel>
+            </div>
+            <br/>
+            <br/>
+            <br/>
         </h:form>
     </h:body>
-</html>
+   </ui:define>
+</ui:composition>
 

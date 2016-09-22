@@ -331,8 +331,8 @@
     -moz-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12); }
 
 .login-body {
-    background: url("#{resource['ultima-layout:images/login/login.png']}") top left no-repeat #f7f7f7;
-    background-size: 100% auto; }
+  background: url("#{resource['ultima-layout:images/login/background.jpg']}") top left no-repeat #f7f7f7;
+  background-size: 100% auto; }
 
 .login-panel {
     text-align: center;
@@ -354,9 +354,9 @@
     color: #757575; }
 
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-    .login-body {
-        background: url("#{resource['ultima-layout:images/login/login2x.png']}") top left no-repeat #f7f7f7;
-        background-size: 100% auto; } }
+  .login-body {
+    background: url("#{resource['ultima-layout:images/login/login2x.png']}") top left no-repeat #fea;
+    background-size: 100% auto; } }
 @media (max-width: 1024px) {
     .login-panel {
         text-align: center;
@@ -1397,11 +1397,11 @@ body.layout-compact .layout-wrapper .layout-menu #profile-menu li:last-child {
     margin-bottom: 14px; }
 body.layout-compact .layout-wrapper .layout-menu > .nano > .nano-content > ul:last-child {
     margin-top: 14px; }
-body.layout-compact .ui-widget-content {
-    font-size: 14px; }
-body.layout-compact .ui-widget-header {
-    font-size: 14px; }
-body.layout-compact .ui-icon {
+  body.layout-compact .ui-widget-content {
+    font-size: 16px; }
+  body.layout-compact .ui-widget-header {
+    font-size: 16px; }
+  body.layout-compact .ui-icon {
     font-size: 20px; }
 body.layout-compact .card {
     padding: 16px;
@@ -1440,27 +1440,32 @@ body.layout-compact .ui-button {
     font-size: 14px;
     height: 30px;
     padding: 0 14px; }
-body.layout-compact .ui-button .ui-button-text {
-    line-height: 30px; }
-body.layout-compact .ui-button.ui-button-icon-only {
-    width: 32px;
-    height: 32px; }
-body.layout-compact .ui-button.ui-button-icon-only .ui-icon {
-    width: 20px;
-    height: 20px;
-    font-size: 20px;
-    margin-top: -10px;
-    margin-left: -10px; }
-body.layout-compact .ui-button.ui-button-text-icon-left .ui-icon, body.layout-compact .ui-button.ui-button-text-icon-right .ui-icon {
-    width: 20px;
-    height: 20px;
-    font-size: 20px;
-    margin-top: -10px; }
-body.layout-compact .ui-button.ui-button-text-icon-left {
-    padding-left: 36px; }
-body.layout-compact .ui-button.ui-button-text-icon-right {
-    padding-right: 36px; }
-body.layout-compact .ui-splitbutton .ui-splitbutton-menubutton {
+    body.layout-compact .ui-button .ui-button-text {
+      line-height: 30px;
+      font-family: Eurostile;
+     }
+    body.layout-compact .ui-button.ui-button-icon-only {
+      width: 32px;
+      height: 32px; 
+    }
+      body.layout-compact .ui-button.ui-button-icon-only .ui-icon {
+        width: 20px;
+        height: 20px;
+        font-size: 20px;
+        font-family:Eurostile;
+        margin-top: -10px;
+        margin-left: -10px; }
+    body.layout-compact .ui-button.ui-button-text-icon-left .ui-icon, body.layout-compact .ui-button.ui-button-text-icon-right .ui-icon {
+      width: 20px;
+      height: 20px;
+      font-size: 20px;
+      font-family:Eurostile;
+      margin-top: -10px; }
+    body.layout-compact .ui-button.ui-button-text-icon-left {
+      padding-left: 36px; }
+    body.layout-compact .ui-button.ui-button-text-icon-right {
+      padding-right: 36px; }
+  body.layout-compact .ui-splitbutton .ui-splitbutton-menubutton {
     height: 30px; }
 body.layout-compact .ui-inputfield {
     font-size: 14px; }

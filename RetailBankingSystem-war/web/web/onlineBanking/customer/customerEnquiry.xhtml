@@ -16,18 +16,22 @@
                     <div class="card"> 
             <p:panel >
                 <p:messages />
-
+                <div align='center'>
                 <h:panelGrid columns="2" id="matchGrid" cellpadding="5">
 
                     <p:row>
+                        <div align='center'>
                         <p:column>
-                            <p:outputLabel for="caseType" style="font-weight: bold" value="What is it regarding?" />
+                            <p:outputLabel for="caseType" style="font-family: Eurostile; font-size:15pt" value="What is it regarding?" />
                         </p:column>
+                        </div>
+                        <br/>
                         <h:outputText value="&lt;br/&gt;" escape="false" />
                         <p:column>
+                            <div class="card card-w-title">
                             <p:selectOneMenu id="caseType" value="#{enquiryManagedBean.caseType}" 
-                                             style="width:125px">
-                                <f:selectItem itemLabel="Please Select" itemValue=" " />
+                                             style="margin-bottom:10pxs" styleClass="form-group ui-panelgrid-blank">
+                                <f:selectItem itemLabel="Please Select" itemValue="" />
                                 <f:selectItem itemLabel="Credit Card" itemValue="Credit Card" />
                                 <f:selectItem itemLabel="Saving Account" itemValue="Saving Account" />
                                 <f:selectItem itemLabel="Loan" itemValue="Loan" />
@@ -36,22 +40,26 @@
                                 <f:selectItem itemLabel="Wealth Management" itemValue="Wealth Management" />
                                 <f:selectItem itemLabel="Others" itemValue="Others" />
                             </p:selectOneMenu>
+                            </div>
+                            
                         </p:column>
-                        <p:column>
+                        <p:column style='border:none'>
                             <p:message for="caseType" />
                         </p:column>
                     </p:row>
-
+                    
                     <h:outputText value="&lt;br/&gt;" escape="false" />
                     <h:form>
-                        <h:outputLabel style="font-weight: bold" value="Enquiry Details" />
+                        <div class="card card-w-title">
                         <h:outputText value="&lt;br/&gt;" escape="false" />
-                        <p:inputTextarea id="caseDetail" value="#{enquiryManagedBean.caseDetail}" required="true" rows="5" cols="30" counter="display" maxlength="1000" counterTemplate="{0} characters remaining." autoResize="false" />
+                        <p:inputTextarea id="caseDetail" placeholder="Enquiry Detail" value="#{enquiryManagedBean.caseDetail}" required="true" rows="5" cols="80" counter="display" maxlength="1000" counterTemplate="{0} characters remaining." autoResize="false" />
                         <h:outputText value="&lt;br/&gt;" escape="false" />
                         <h:outputText id="display" />
+                        </div>
                     </h:form>
 
                 </h:panelGrid>
+                </div>
             </p:panel>
 
             <p:commandButton value="Save" actionListener="#{enquiryManagedBean.saveEnquiryCase}" ajax="false" />

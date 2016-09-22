@@ -12,7 +12,6 @@
             <included-library dirs="200">libs.Apache_Commons_Logging_1.2.classpath</included-library>
             <included-library dirs="200">libs.Jackson_Core_Asl.classpath</included-library>
             <included-library dirs="200">libs.Jackson_Mapper_Asl.classpath</included-library>
-            <included-library dirs="200">libs.Apache_Commons_lang3_3.4.classpath</included-library>
             <included-library dirs="200">libs.Twilio_Jave.classpath</included-library>
             <source-roots>
                 <root id="src.dir"/>
