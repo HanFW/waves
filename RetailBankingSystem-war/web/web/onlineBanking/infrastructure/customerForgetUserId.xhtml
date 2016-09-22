@@ -1,90 +1,132 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">Panels</ui:define>
+
+    <ui:define name="head">
+        <style type="text/css">
+            .nba-grid {
+                width: 100%;
+                table-layout: fixed;
+                word-wrap: break-word;
+            }
+
+            .ui-scrollpanel-content p:first-child {
+                margin: 0;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
     <h:head>
-        <title>Facelet Title</title>
+        <title>Forget Account Number</title>
     </h:head>
     <h:body>
         <h:form>
-            <p:panel>
-                <p:panelGrid>
-                    <p:row>
-                        <p:column>
-                            Are you: 
-                        </p:column>
-                        <p:column>
-                            <p:selectOneRadio id="console" value="#{customerLoginManagedBean.customerNationality}">
+            <p:panel style="width:700px;height:200px;margin:0 auto;margin-top:10%">
+                <p:panelGrid  style="margin:0 auto;width:10px;height:15px">
+                        <p:row>
+                        <h3  style="text-align: center;font-family: Eurostile;font-size:20pt;margin:0 auto;line-height: 2">Are you:</h3>
+                         </p:row>
+                    <br/>
+                    <hr/>
+                        <p:row>
+                            <p:selectOneRadio id="console" value="#{customerLoginManagedBean.customerNationality}" style="line-height:2;font-family:Eurostile;font-size:20pt;margin:0 auto">
                                 <f:selectItem itemLabel="Singaporean/PR" itemValue="singaporean"/>
                                 <f:selectItem itemLabel="Foreigner" itemValue="foreigner" />
                                 <p:ajax event="change" update=":nircForm :passportForm"/>
                             </p:selectOneRadio>
-                        </p:column>
-                    </p:row>
+                        </p:row>
                 </p:panelGrid>
             </p:panel>
         </h:form>
+        <br/>
+
+  
         <h:form id="nircForm" >
             <p:messages/>
-            <p:panel id="nircField" visible="#{customerLoginManagedBean.customerNationality == 'singaporean'}">
+            <p:panel id="nircField" visible="#{customerLoginManagedBean.customerNationality == 'singaporean'}"  style="width:700px;height:50px;margin:0 auto">
                 <p:row>
                     <p:column>
-                        <p:outputLabel for="nirc" value="NIRC: "/>  
-                    </p:column>
-                    <p:column>
+                         <div align="center">
+                        <p:outputLabel for="nirc" value="NRIC: " style="margin:0 auto;font-family:Eurostile;font-size:14pt;line-height:2" />  
                         <p:inputText type="text" id="nirc" value="#{customerLoginManagedBean.customerIdentification}" required="true" requiredMessage="Please enter your identification number."/>
+                        </div>
                     </p:column>
                 </p:row>
             </p:panel>
-            <p:panelGrid rendered="#{customerLoginManagedBean.customerNationality == 'singaporean'}">
+            <br/>
+      
+           
+            <p:panelGrid rendered="#{customerLoginManagedBean.customerNationality == 'singaporean'}"  style="width:700px;height:80px;margin:0 auto">
                 <p:row>
                     <p:column>
-                        <p:outputLabel for="otp" value="One-time passport: "/>
+                        <p:outputLabel for="otp" value="One-time passport: " style="font-family:Eurostile;font-size:14pt"/>
                     </p:column>
                     <p:column>
                         <p:inputText type="password" id="otp" required="true" requiredMessage="Please enter OTP."/>
-                        <p:commandButton value="Request OTP"/>
+                        <p:commandButton value="Request OTP" style="float:right;font-family:Eurostile;font-size:12pt"/>
                     </p:column>
                 </p:row>
             </p:panelGrid>
             <p:panelGrid rendered="#{customerLoginManagedBean.customerNationality == 'singaporean'}">
                 <p:row>
-                    <p:commandButton type="submit" value="View User ID" actionListener="#{customerLoginManagedBean.retrieveCustomerAccount}" update="@form"/>
+                    <br/>
+                    <br/>
+                    <div align="center">
+                    <p:commandButton type="submit" value="View User ID" actionListener="#{customerLoginManagedBean.retrieveCustomerAccount}" update="@form" style="margin:0 auto;font-family:Eurostile;font-size:15pt"/>
+                    </div>
+                    <br/>
+                    <br/>
                 </p:row>
             </p:panelGrid>
         </h:form>
         <h:form id="passportForm">
             <p:messages/>
-            <p:panel id="passportField" visible="#{customerLoginManagedBean.customerNationality == 'foreigner'}">
+            <p:panel id="passportField" visible="#{customerLoginManagedBean.customerNationality == 'foreigner'}" style="margin:0 auto;width:700px;height:50px">
                 <p:row>
                     <p:column>
-                        <p:outputLabel for="passport" value="Passport: "/>
-                    </p:column>
-                    <p:column>
+                        <div align="center">
+                        <p:outputLabel for="passport" value="Passport: " style="margin:0 auto;font-family:Eurostile;font-size:14pt;line-height:2"/>
+                        
                         <p:inputText type="text" id="passport" value="#{customerLoginManagedBean.customerIdentification}" required="true" requiredMessage="Please enter your identification number."/>
+                        </div>
                     </p:column>
                 </p:row>
             </p:panel>
+            <br/>
+            <br/>
 
-            <p:panelGrid rendered="#{customerLoginManagedBean.customerNationality == 'foreigner'}">
+            <p:panelGrid rendered="#{customerLoginManagedBean.customerNationality == 'foreigner'}" style="margin:0 auto;width:700px;height:80px">
                 <p:row>
                     <p:column>
-                        <p:outputLabel for="otp" value="One-time passport: "/>
+                        <p:outputLabel for="otp" value="One-time passport: " style="font-family:Eurostile;font-size:14pt"/>
                     </p:column>
                     <p:column>
                         <p:inputText type="password" id="otp" required="true" requiredMessage="Please enter OTP."/>
-                        <p:commandButton value="Request OTP"/>
+                        <p:commandButton value="Request OTP" style="float:right;font-family:Eurostile;font-size:12pt"/>
                     </p:column>
                 </p:row>
             </p:panelGrid>
+           
             <p:panelGrid rendered="#{customerLoginManagedBean.customerNationality == 'foreigner'}">
                 <p:row>
-                    <p:commandButton type="submit" value="View User ID" actionListener="#{customerLoginManagedBean.retrieveCustomerAccount}" update="@form"/>
+                    <br/>
+                    <br/>
+                    <div align="center">
+                    <p:commandButton type="submit" value="View User ID" actionListener="#{customerLoginManagedBean.retrieveCustomerAccount}" update="@form" style="margin:0 auto;font-family:Eurostile;font-size:15pt"/>
+                    </div>
+                    <br/>
+                    <br/>
                 </p:row>
             </p:panelGrid>
+            <br/>
+            <br/>
         </h:form>
     </h:body>
-</html>
-
+   </ui:define>
+</ui:composition>

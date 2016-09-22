@@ -51,7 +51,9 @@
   margin-bottom: 16px;
   box-sizing: border-box; }
   .card.card-w-title {
-    padding-bottom: 32px; }
+    padding-bottom: 32px;
+    border:none;
+    margin:auto;}
   .card h1 {
     font-size: 24px;
     font-weight: 400;
@@ -324,7 +326,7 @@
   -moz-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12); }
 
 .login-body {
-  background: url("#{resource['ultima-layout:images/login/login.png']}") top left no-repeat #f7f7f7;
+  background: url("#{resource['ultima-layout:images/login/background.jpg']}") top left no-repeat #f7f7f7;
   background-size: 100% auto; }
 
 .login-panel {
@@ -348,7 +350,7 @@
 
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
   .login-body {
-    background: url("#{resource['ultima-layout:images/login/login2x.png']}") top left no-repeat #f7f7f7;
+    background: url("#{resource['ultima-layout:images/login/login2x.png']}") top left no-repeat #fea;
     background-size: 100% auto; } }
 @media (max-width: 1024px) {
   .login-panel {
@@ -1388,9 +1390,9 @@ body.layout-compact {
   body.layout-compact .layout-wrapper .layout-menu > .nano > .nano-content > ul:last-child {
     margin-top: 14px; }
   body.layout-compact .ui-widget-content {
-    font-size: 14px; }
+    font-size: 16px; }
   body.layout-compact .ui-widget-header {
-    font-size: 14px; }
+    font-size: 16px; }
   body.layout-compact .ui-icon {
     font-size: 20px; }
   body.layout-compact .card {
@@ -1431,20 +1433,25 @@ body.layout-compact {
     height: 30px;
     padding: 0 14px; }
     body.layout-compact .ui-button .ui-button-text {
-      line-height: 30px; }
+      line-height: 30px;
+      font-family: Eurostile;
+     }
     body.layout-compact .ui-button.ui-button-icon-only {
       width: 32px;
-      height: 32px; }
+      height: 32px; 
+    }
       body.layout-compact .ui-button.ui-button-icon-only .ui-icon {
         width: 20px;
         height: 20px;
         font-size: 20px;
+        font-family:Eurostile;
         margin-top: -10px;
         margin-left: -10px; }
     body.layout-compact .ui-button.ui-button-text-icon-left .ui-icon, body.layout-compact .ui-button.ui-button-text-icon-right .ui-icon {
       width: 20px;
       height: 20px;
       font-size: 20px;
+      font-family:Eurostile;
       margin-top: -10px; }
     body.layout-compact .ui-button.ui-button-text-icon-left {
       padding-left: 36px; }

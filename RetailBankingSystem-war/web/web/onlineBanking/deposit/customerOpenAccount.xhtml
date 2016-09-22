@@ -111,7 +111,7 @@
                                             <f:selectItem itemLabel="No" itemValue="No" />
                                         </p:selectOneRadio>
                                     </p:column>
-                                    <p:column>
+                                    <p:column style="border:none">
                                         <p:message for="existingCustomer" />
                                     </p:column>
                                 </p:row>
@@ -137,7 +137,7 @@
                                                          value="#{accountManagedBean.customerSalutationOthers}" />  
                                         </p:panel>
                                     </p:column>
-                                    <p:column>
+                                    <p:column  style="border:none">
                                         <p:message for="customerSalutation" />
                                     </p:column>
                                 </p:row>
@@ -152,7 +152,7 @@
                                                      required="true" requiredMessage="Required Field">
                                         </p:inputText>
                                     </p:column>
-                                    <p:column>
+                                    <p:column  style="border:none">
                                         <p:message for="customerName" />
                                     </p:column>
                                 </p:row>
@@ -166,7 +166,7 @@
                                                     showOn="button" locale="de" navigator="true" pattern="dd/MM/yyyy" 
                                                     yearRange="c-200:c+200" required="true" requiredMessage="Required Field"/>
                                     </p:column>
-                                    <p:column>
+                                    <p:column  style="border:none">
                                         <p:message for="customerDateOfBirth" />
                                     </p:column>
                                 </p:row>
@@ -182,7 +182,7 @@
                                             <f:selectItem itemLabel="Female" itemValue="Female" />
                                         </p:selectOneRadio>
                                     </p:column>
-                                    <p:column>
+                                    <p:column  style="border:none">
                                         <p:message for="customerGender" />
                                     </p:column>
                                 </p:row>
@@ -196,7 +196,7 @@
                                                      required="true" requiredMessage="Required Field">
                                         </p:inputText>
                                     </p:column>
-                                    <p:column>
+                                    <p:column  style="border:none">
                                         <p:message for="customerMobile" />
                                     </p:column>
                                 </p:row>
@@ -213,7 +213,7 @@
                                                 pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
                                         </p:inputText>
                                     </p:column>
-                                    <p:column>
+                                    <p:column  style="border:none">
                                         <p:message for="customerEmail" />
                                     </p:column>
                                 </p:row>
@@ -441,7 +441,7 @@
                                             <p:ajax event="change" update="panelCustomerNationalityOthers" listener="#{accountManagedBean.show3()}"/>
                                         </p:selectOneMenu>
                                     </p:column>
-                                    <p:column>
+                                    <p:column  style="border:none">
                                         <p:message for="customerNationality" />
                                     </p:column>
                                 </p:row>
@@ -456,7 +456,7 @@
                                         <p:inputText label="customerNRICSG" id="customerNRICSG" value="#{accountManagedBean.customerNRICSG}">
                                         </p:inputText>
                                     </p:column>
-                                    <p:column>
+                                    <p:column  style="border:none">
                                         <p:message for="customerNRICSG" />
                                     </p:column>
                                 </p:row>
@@ -475,7 +475,7 @@
                                             <p:ajax event="change" update="panelPassport" listener="#{accountManagedBean.show5()}"/>
                                         </p:selectOneRadio>
                                     </p:column>
-                                    <p:column>
+                                    <p:column  style="border:none">
                                         <p:message for="singaporePR" />
                                     </p:column>
                                 </p:row>
@@ -491,7 +491,7 @@
                                                      value="#{accountManagedBean.customerNRIC}">
                                         </p:inputText>
                                     </p:column>
-                                    <p:column>
+                                    <p:column  style="border:none">
                                         <p:message for="customerNRIC" />
                                     </p:column>
                                 </p:row>
@@ -507,7 +507,7 @@
                                                      value="#{accountManagedBean.customerPassport}">
                                         </p:inputText>
                                     </p:column>
-                                    <p:column>
+                                    <p:column  style="border:none">
                                         <p:message for="customerPassport" />
                                     </p:column>
                                 </p:row>
@@ -726,7 +726,7 @@
                                             <f:selectItem itemLabel="Zimbabwe" itemValue="Zimbabwe" />
                                         </p:selectOneMenu>
                                     </p:column>
-                                    <p:column>
+                                    <p:column  style="border:none">
                                         <p:message for="customerCountryOfResidence" />
                                     </p:column>
                                 </p:row>
@@ -745,7 +745,7 @@
                                             <f:selectItem itemLabel="Eurasian" itemValue="Eurasian" />
                                         </p:selectOneMenu>
                                     </p:column>
-                                    <p:column>
+                                    <p:column  style="border:none">
                                         <p:message for="customerRace" />
                                     </p:column>
                                 </p:row>
@@ -764,7 +764,7 @@
                                             <f:selectItem itemLabel="Widowed" itemValue="Widowed" />
                                         </p:selectOneMenu>
                                     </p:column>
-                                    <p:column>
+                                    <p:column  style="border:none">
                                         <p:message for="customerMaritalStatus" />
                                     </p:column>
                                 </p:row>
@@ -810,7 +810,7 @@
                                             <f:selectItem itemLabel="Tutor" itemValue="Tutor" />
                                         </p:selectOneMenu>
                                     </p:column>
-                                    <p:column>
+                                    <p:column  style="border:none">
                                         <p:message for="customerOccupation" />
                                     </p:column>
                                 </p:row>
@@ -824,7 +824,7 @@
                                                      required="true" requiredMessage="Required Field">
                                         </p:inputText>
                                     </p:column>
-                                    <p:column>
+                                    <p:column  style="border:none">
                                         <p:message for="customerCompany" />
                                     </p:column>
                                 </p:row>
@@ -838,7 +838,7 @@
                                                      required="true" requiredMessage="Required Field">
                                         </p:inputText>
                                     </p:column>
-                                    <p:column>
+                                    <p:column  style="border:none">
                                         <p:message for="customerStreetName" />
                                     </p:column>
                                 </p:row>
@@ -853,7 +853,7 @@
                                                      required="true" requiredMessage="Required Field">
                                         </p:inputText>
                                     </p:column>
-                                    <p:column>
+                                    <p:column  style="border:none">
                                         <p:message for="customerBlockNum" />
                                     </p:column>
                                 </p:row>
@@ -868,7 +868,7 @@
                                                      required="true" requiredMessage="Required Field">
                                         </p:inputText>
                                     </p:column>
-                                    <p:column>
+                                    <p:column  style="border:none">
                                         <p:message for="customerUnitNum" />
                                     </p:column>
                                 </p:row>
@@ -883,7 +883,7 @@
                                                      required="true" requiredMessage="Required Field">
                                         </p:inputText>
                                     </p:column>
-                                    <p:column>
+                                    <p:column  style="border:none">
                                         <p:message for="customerPostal" />
                                     </p:column>
                                 </p:row>
@@ -914,7 +914,7 @@
                                             <f:selectItem itemLabel="Fixed Deposit Account" itemValue="Fixed Deposit Account" />
                                         </p:selectOneMenu>
                                     </p:column>
-                                    <p:column>
+                                    <p:column  style="border:none">
                                         <p:message for="bankAccountType" />
                                     </p:column>
                                 </p:row>
@@ -928,7 +928,7 @@
                                             <f:validateLength minimum="6" maximum="6" />
                                         </p:password>
                                     </p:column>
-                                    <p:column>
+                                    <p:column  style="border:none">
                                         <p:message for="bankAccountPwd" />
                                     </p:column>
                                 </p:row>   
@@ -961,7 +961,7 @@
                                                      value="#{accountManagedBean.initialDepositAmt}" required="true" requiredMessage="Required Field">
                                         </p:inputText>
                                     </p:column>
-                                    <p:column>
+                                    <p:column  style="border:none">
                                         <p:message for="initialDepositAmt" />
                                     </p:column>
                                 </p:row>
