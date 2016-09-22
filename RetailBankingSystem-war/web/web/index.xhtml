@@ -12,7 +12,9 @@
             <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
             <meta name="apple-mobile-web-app-capable" content="yes" />
         </f:facet>
-        <title>PrimeFaces Ultima</title>
+       <!-- Favicon -->
+        <link rel="shortcut icon" href="#{resource['ultima-layout:images/logo.png']}"/>   
+        <title>Bank Anywhere, Anytime</title>
         <h:outputScript name="js/ripple.js" library="ultima-layout" />
 
         <!-- Bootstrap core CSS -->
@@ -46,7 +48,7 @@
                 <!-- header start -->
                 <!-- ================ --> 
                 <header class="header fixed clearfix navbar navbar-fixed-top">
-                    <div class="container">
+                   
                         <div class="row">
                             <div class="col-md-4">
 
@@ -99,13 +101,12 @@
                                                 <div class="collapse navbar-collapse scrollspy smooth-scroll" id="navbar-collapse-1">
                                                     <ul class="nav navbar-nav navbar-right">
                                                         <li class="active"><a href="#banner">Home</a></li>
-                                                        <li><a href="#introduction">Introduction</a></li>
-                                                        <li><a href="#features">Features</a></li>
-                                                        <li><a href="#promotion">Promotion</a></li>
-                                                        <li><a href="#pricing">Pricing</a></li>
-                                                        <li><a href="#video">Video</a></li>
-                                                        <li><p:button outcome="/web/onlineBanking/infrastructure/customerLogin" value="login"/></li>
-         <li><p:button outcome="/web/merlionBank/deposit/publicDepositIndex.xhtml" value="deposit"/></li>
+                                                        <li><h:link outcome="/web/merlionBank/deposit/publicDepositIndex.xhtml">Accounts</h:link></li>
+                                                        <li><a href="#features">Cards</a></li>
+                                                        <li><a href="#promotion">Wealth</a></li>
+                                                        <li><a href="#pricing">Loan</a></li>
+                                                        <li><h:link outcome="/web/onlineBanking/infrastructure/customerLogin">Login</h:link></li>
+                                                 
                                                     </ul>
                                                 </div>
 
@@ -121,7 +122,7 @@
 
                             </div>
                         </div>
-                    </div>
+                   
                 </header>
                 <!-- header end -->
 
@@ -147,8 +148,7 @@
 
 
             <div id="features">
-                <h2>The Ultimate Material Application Template for PrimeFaces</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse delectus sit velit, aspernatur voluptates molestiae, enim recusandae. Odit dicta, maiores quas ad nesciunt, illum expedita veritatis illo quam odio id!</p>
+                <h3>Products/Services We Provided</h3>
 
                 <div class="ui-g">
                     <div class="ui-g-12 ui-md-4">
