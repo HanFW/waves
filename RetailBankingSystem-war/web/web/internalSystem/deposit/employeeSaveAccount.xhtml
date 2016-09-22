@@ -14,16 +14,14 @@
             <h:form id="formMain">
             <h1>Welcome to Merlion Bank</h1>
             <p:menubar>
-                <p:submenu label="Home">
-                    <p:menuitem value="Home" url="/web/merlionBank/deposit/publicDepositIndex.xhtml" />
-                </p:submenu>
-
                 <p:submenu label="My Account">
-                    <p:menuitem value="Open Account" url="/web/merlionBank/deposit/publicOpenAccount.xhtml" />
-                </p:submenu>
-
-                <p:submenu label="Login">
-                    <p:menuitem value="Login" url="/web/onlineBanking/infrastructure/customerLogin.xhtml" />
+                    <p:menuitem value="Home" url="/web/onlineBanking/deposit/customerDepositIndex.xhtml" />
+                    <p:menuitem value="Open Account" url="/web/internalSystem/deposit/employeeOpenAccount.xhtml" />
+                    <p:menuitem value="Cash Deposit" url="/web/onlineBanking/deposit/customerDepositIndex.xhtml" />
+                    <p:menuitem value="Cash Withdraw" url="/web/internalSystem/deposit/employeeCashWithdraw.xhtml" />
+                    <p:menuitem value="View Account" url="/web/internalSystem/deposit/employeeViewAccount.xhtml" />
+                    <p:menuitem value="View Transaction" url="/web/internalSystem/deposit/employeeViewTransaction.xhtml" />
+                    <p:menuitem value="View Statement" url="/web/internalSystem/deposit/employeeViewStatement.xhtml" />
                 </p:submenu>
             </p:menubar>
         </h:form>
@@ -33,23 +31,22 @@
                 <p:panelGrid>
                     <h:form id="formMain">
                         <h:outputText style="font-weight: bold" value="Status Message: " />
-                        <h:outputText value="#{saveAccountManagedBean.statusMessage}" />
+                        <h:outputText value="#{employeeSaveAccountManagedBean.statusMessage}" />
                         <br/>
                         <h:outputText style="font-weight: bold" value="Bank Account Id: "/>
-                        <h:outputText value="#{saveAccountManagedBean.bankAccountId}"/>
+                        <h:outputText value="#{employeeSaveAccountManagedBean.bankAccountId}"/>
                         <br/>
                         <h:outputText style="font-weight: bold" value="Customer basic Id: "/>
-                        <h:outputText value="#{saveAccountManagedBean.customerBasicId}"/>
+                        <h:outputText value="#{employeeSaveAccountManagedBean.customerBasicId}"/>
                         <br/>
                         <h:outputText style="font-weight: bold" value="Bank Account Num: "/>
-                        <h:outputText value="#{saveAccountManagedBean.bankAccountNum}"/>
+                        <h:outputText value="#{employeeSaveAccountManagedBean.bankAccountNum}"/>
                         <br/>
                         <h:outputText style="font-weight: bold" value="Bank Account Type: "/>
-                        <h:outputText value="#{saveAccountManagedBean.bankAccountType}"/>
+                        <h:outputText value="#{employeeSaveAccountManagedBean.bankAccountType}"/>
                     </h:form>
                 </p:panelGrid>
             </p:panel>
         </h:form>
     </h:body>
 </html>
-
