@@ -4,9 +4,9 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/template.xhtml">
-                
+
     <ui:define name="title">Forms</ui:define>
-                
+
     <ui:define name="content">
     <h:head>
         <title>Customer Enquiry</title>
@@ -68,7 +68,7 @@
                         <p:column>
                             <div class="card card-w-title">
                             <p:selectOneMenu id="caseType" value="#{enquiryManagedBean.caseType}" 
-                                             style="margin-bottom:10pxs" styleClass="form-group ui-panelgrid-blank">
+                                             style="margin-bottom:10px" styleClass="form-group ui-panelgrid-blank">
                                 <f:selectItem itemLabel="Please Select" itemValue="" />
                                 <f:selectItem itemLabel="Credit Card" itemValue="Credit Card" />
                                 <f:selectItem itemLabel="Saving Account" itemValue="Saving Account" />
