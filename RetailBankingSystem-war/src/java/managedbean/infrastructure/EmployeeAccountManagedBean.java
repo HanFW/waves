@@ -61,6 +61,7 @@ public class EmployeeAccountManagedBean implements Serializable {
     private Set<String> selectedRoles;
     private List<String> roles;
     private boolean loggedIn;
+    private String employeeStatus;
     //    private Set<String> updatedRoles;
 
     /**
@@ -95,7 +96,7 @@ public class EmployeeAccountManagedBean implements Serializable {
         this.login = login;
     }
 
-    public void createAccount(ActionEvent event) {
+    public void createAccount(ActionEvent event) throws IOException {
 
         FacesMessage message = null;
         FacesContext context = FacesContext.getCurrentInstance();
@@ -107,16 +108,20 @@ public class EmployeeAccountManagedBean implements Serializable {
         sendEmailSessionBeanLocal.initialPwd(employeeNRIC, employeeEmail);
 
         if (newEmployee.equals("existing account")) {
+
             message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error! Account Existed", "Error!The employee account has already Existed");
             context.addMessage(null, message);
             System.out.println("*** AccountManagedBean: account existed");
         } else {
-            message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Account Created", "A new employee account has been successfully created.");
+
+            message = new FacesMessage(FacesMessage.SEVERITY_INFO, "A new employee account has been successfully created", "Account created.");
             context.addMessage(null, message);
             System.out.println("*** AccountManagedBean: account created");
         }
 
     }
+    
+
 
     public void updateAccountInfo(ActionEvent event) {
         adminSessionBeanLocal.updateEmployeeAccount(employeeName,
@@ -196,8 +201,8 @@ public class EmployeeAccountManagedBean implements Serializable {
 
         if (msg.equals("success")) {
 
-            context.getExternalContext().redirect("userAccountManagement.xhtml");
-            message = new FacesMessage(FacesMessage.SEVERITY_INFO, "User Account Deleted!", "User account has been successfully deleted");
+            context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/web/internalSystem/infrastructure/employeeUserAccountManagement.xhtml");
+            message = new FacesMessage(FacesMessage.SEVERITY_INFO, "User Account ARchived!", "User account has been successfully archived");
             context.addMessage(null, message);
             System.out.println("*** AccountManagedBean: account deleted");
         }
@@ -456,7 +461,7 @@ public class EmployeeAccountManagedBean implements Serializable {
         Role hasRole = adminSessionBeanLocal.getRoleByName("CEO");
         return employee.getRole().contains(hasRole);
     }
-    
+
     public boolean hasRoleSystemAdmin() {
 
         FacesContext context = FacesContext.getCurrentInstance();

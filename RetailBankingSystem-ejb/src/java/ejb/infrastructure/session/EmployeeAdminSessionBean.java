@@ -58,7 +58,7 @@ public class EmployeeAdminSessionBean implements EmployeeAdminSessionBeanLocal {
         positions[6] = "Counter Teller";
         positions[7] = "Call Center Staff";
 
-        roles = new String[10];
+        roles = new String[16];
         roles[0] = "CEO";
         roles[1] = "Loan Officer";
         roles[2] = "Card Department Manager";
@@ -68,8 +68,13 @@ public class EmployeeAdminSessionBean implements EmployeeAdminSessionBeanLocal {
         roles[6] = "Sales Department Manager";
         roles[7] = "Counter Teller";
         roles[8] = "Call Center Staff";
-        roles[9] = "Enquiry Manager";
-//        roles[10]="System Admin";
+        roles[9] = "Card Specialist";
+        roles[10] = "Loan Specialist";
+        roles[11] = "Deposit Specialist";
+        roles[12] = "Operation Specialist";
+        roles[13] = "Wealth Management Specialist";
+        roles[14] = "Enquiry Manager";
+        roles[15] = "System Admin";
 
     }
 
@@ -90,8 +95,7 @@ public class EmployeeAdminSessionBean implements EmployeeAdminSessionBeanLocal {
 
     @Override
     public String createEmployeeAccount(String employeeName, String employeeDepartment,
-            String employeePosition, String employeeNRIC, String employeeMobileNum, String employeeEmail,
-            Set<String> selectedRoles) {
+            String employeePosition, String employeeNRIC, String employeeMobileNum, String employeeEmail,Set<String> selectedRoles) {
 
         String account = null;
         String password = null;
@@ -113,6 +117,7 @@ public class EmployeeAdminSessionBean implements EmployeeAdminSessionBeanLocal {
             employee.setEmployeeNRIC(employeeNRIC);
             employee.setEmployeeMobileNum(employeeMobileNum);
             employee.setEmployeeEmail(employeeEmail);
+            employee.setEmployeeStatus("true");
             em.persist(employee);
             //generate employee account number
             account = generateAccountNumber(employeeNRIC);
@@ -181,7 +186,8 @@ public class EmployeeAdminSessionBean implements EmployeeAdminSessionBeanLocal {
     @Override
     public List<Employee> getEmployees() {
         System.out.println("*** adminSessionBean: Display all employee accounts");
-        Query query = em.createQuery("SELECT e FROM Employee e");
+        Query query = em.createQuery("SELECT e FROM Employee e where e.employeeStatus=:status");
+        query.setParameter("status","true");
         List<Employee> employees = query.getResultList();
         return employees;
     }
@@ -296,10 +302,10 @@ public class EmployeeAdminSessionBean implements EmployeeAdminSessionBeanLocal {
         Long employeeId = employee.getEmployeeId();
 
         System.out.println("*** adminSessionBean:" + employeeId);
-        System.out.println("*** adminSessionBean: delete employee account from database");
+        System.out.println("*** adminSessionBean: Archive employee account");
 
         Employee findEmployee = em.find(Employee.class, employeeId);
-        em.remove(findEmployee);
+        findEmployee.setEmployeeStatus("false");
         return "success";
     }
 

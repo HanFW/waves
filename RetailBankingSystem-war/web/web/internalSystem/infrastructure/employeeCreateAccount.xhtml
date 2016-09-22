@@ -8,7 +8,7 @@
         <title>Employee Account Management</title>
     </h:head>
     <h:body>
-        <h:form id="formMain">
+        <h:form>
             <h1>Add a New User Account</h1>
             <p:messages globalOnly="true"/>
             <p:panelGrid>
@@ -116,35 +116,45 @@
                 </p:row>
 
                 <p:row>
-                    <h:form>
+                    <!--<h:form>-->
 
-                        <p:column>
-                            <h:outputLabel for="role" style="font-weight: bold" value="Role:" />
-                        </p:column>
-                        <p:column>
-                            <p:selectCheckboxMenu id="menu" value="#{employeeAccountManagedBean.selectedRoles}" label="Select"
-                                                  filter="true" filterMatchMode="startsWith" panelStyle="width:250px">
-                                <f:selectItems value="#{employeeAccountManagedBean.roles}" />
-                            </p:selectCheckboxMenu>
-                            <p:commandLink value="Confirm" style="margin-left: 20px" update="display"/>
-                        </p:column>
-
-                        <p:outputPanel id="display" style="width:250px;padding-left:5px">
-                            <p:dataList value="#{employeeAccountManagedBean.selectedRoles}" var="role" emptyMessage="No roles selected">
-                                #{role}
-                            </p:dataList>
-                        </p:outputPanel>
-                    </h:form>
+                    <p:column>
+                        <h:outputLabel for="role" style="font-weight: bold" value="Role:" />
+                    </p:column>
+                    <p:column>
+                        <p:selectCheckboxMenu id="menu" value="#{employeeAccountManagedBean.selectedRoles}" label="Select"
+                                              filter="true" filterMatchMode="startsWith" panelStyle="width:250px">
+                            <f:selectItems value="#{employeeAccountManagedBean.roles}" />
+                        </p:selectCheckboxMenu>
+                        <p:commandLink value="Confirm" style="margin-left: 20px" update="display"/>
+                    </p:column>
                 </p:row>
 
                 <p:row>
-                    <p:column colspan="2">
-                        <p:commandButton value="submit" type="submit" actionListener="#{employeeAccountManagedBean.createAccount}" update="@form"/>
-                    </p:column>
+                    <p:outputPanel id="display" style="width:250px;padding-left:5px">
+                        <p:dataList value="#{employeeAccountManagedBean.selectedRoles}" var="role" emptyMessage="No roles selected">
+                            #{role}
+                        </p:dataList>
+                    </p:outputPanel>
+                    <!--</h:form>-->
                 </p:row>
             </p:panelGrid>
 
+            <p:row>
+                <p:column colspan="2">
+                    <p:commandButton type="submit" value="Submit" actionListener="#{employeeAccountManagedBean.createAccount}" update="@form"/>
+                </p:column>
+                <p:column colspan="2">
+                    <p:commandButton style="width:20%" value="Submit and Add Another User Account" type="submit" actionListener="#{employeeAccountManagedBean.createAccount}"/>
+                </p:column>
+                <p:column colspan="2">
+                    <p:commandButton value="Quit" type="submit" action="/web/internalSystem/infrastructure/employeeUserAccountManagement.xhtml" immediate="true"/>
+                </p:column>
+            </p:row>
+
         </h:form>
+
+
     </h:body>
 </html>
 

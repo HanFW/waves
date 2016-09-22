@@ -8,7 +8,10 @@
         <title>Employee Main Page</title>
     </h:head>
     <h:body>
-        <h1>Welcome to Merlion Bank Internal System</h1>
+        <!--        <h1>Welcome to Merlion Bank Internal System</h1>-->
+        <p:notificationBar position="top" effect="slide" styleClass="top" widgetVar="bar">
+            <h:outputText value="Welcome!" style="font-size:36px;" />
+        </p:notificationBar>
         <h:form>
             <p:panel visible="#{employeeAccountManagedBean.hasRoleSystemAdmin()}" style="border: none">
                 <p:row>
@@ -79,7 +82,7 @@
                     </p:button>
                 </p:row>
             </p:panel>
-            
+
             <p:panel visible="#{employeeAccountManagedBean.hasRoleCEO()}" style="border: none">
                 <p:row>
                     <p:button outcome="/web/internalSystem/infrastructure/employeeCEOMainPage.xhtml" value="Chief Executive Officer">

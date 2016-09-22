@@ -134,14 +134,14 @@
         </f:facet>
     </p:cellEditor>
 </p:column>-->
-                <p:column style="width:7%">
-                    <p:commandButton action="editAccountInfo.xhtml" icon="ui-icon-pencil">
+                <p:column style="width:4%">
+                    <p:commandButton action="/web/internalSystem/infrastructure/employeeEditAccountInfo.xhtml" icon="ui-icon-pencil">
                         <f:setPropertyActionListener value="#{employee.employeeId}" target="#{employeeAccountManagedBean.employeeId}"/>
                     </p:commandButton>
                 </p:column> 
 
                 <p:column style="width:5%">
-                    <p:rowEditor />
+                    <p:rowEditor/>
                 </p:column>
 
                 <p:contextMenu for="userAccount2" widgetVar="Menu">   
@@ -152,11 +152,11 @@
 
 
 
-                <p:column style="width:7%">
+                <p:column style="width:10%">
                     <!--<h:form>-->
 
                     <p:growl showDetail="true" />
-                    <p:commandButton id="delete" icon="ui-icon ui-icon-trash" onclick="PF('deleteConfirmMsg').show()">
+                    <p:commandButton id="delete" value="Archive" icon="ui-icon ui-icon-trash" onclick="PF('deleteConfirmMsg').show()">
                     </p:commandButton>
 
 

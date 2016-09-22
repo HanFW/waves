@@ -41,6 +41,7 @@ public class EmployeeLoginManagedBean implements Serializable {
     private String currentPassword;
     private String newPassword;
     private boolean loggedIn = false;
+    private boolean ArchiveStatus = false;
 
     /**
      * Creates a new instance of loginManagedBean
