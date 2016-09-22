@@ -16,10 +16,11 @@ public class EmployeeSaveAccountManagedBean {
     private String bankAccountNum;
     private String bankAccountType;
     private String initialDepositAmt;
-            
+    private String bankAccountStatus;
+
     public EmployeeSaveAccountManagedBean() {
     }
-    
+
     @PostConstruct
     public void init() {
         statusMessage = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("statusMessage").toString();
@@ -27,6 +28,13 @@ public class EmployeeSaveAccountManagedBean {
         customerBasicId = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("newCustomerBasicId").toString();
         bankAccountNum = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("bankAccountNum").toString();
         bankAccountType = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("bankAccountType").toString();
+        bankAccountStatus = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("bankAccountStatus").toString();
+
+        if (bankAccountStatus.equals("Inactivated")) {
+            bankAccountStatus = "Inactive";
+        } else {
+            bankAccountStatus = "Active";
+        }
     }
 
     public String getStatusMessage() {
@@ -76,6 +84,12 @@ public class EmployeeSaveAccountManagedBean {
     public void setInitialDepositAmt(String initialDepositAmt) {
         this.initialDepositAmt = initialDepositAmt;
     }
-    
-    
+
+    public String getBankAccountStatus() {
+        return bankAccountStatus;
+    }
+
+    public void setBankAccountStatus(String bankAccountStatus) {
+        this.bankAccountStatus = bankAccountStatus;
+    }
 }

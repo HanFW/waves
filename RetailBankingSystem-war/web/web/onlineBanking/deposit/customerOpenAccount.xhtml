@@ -64,7 +64,7 @@
         <h:form>
             <p:panel id="panel">
                 <p:messages globalOnly="true"/>
-                
+
                 <p:panelGrid style="margin-bottom:10px">
                     <h:outputLabel value="Account Details" style="font-weight: bold; font-size: 24px" />
                     <p:separator/>
@@ -140,6 +140,129 @@
                 <h:outputText value="Mobile: " style="font-weight: bold"/>
                 <h:outputText value="#{internalOpenAccountManagedBean.customerMobile}"/>
                 <br/>
+                <p:panelGrid>
+                    <h3>
+                        Introduction of various bank account types: 
+                    </h3>
+                    <h:outputText value="(a) Monthly Savings Account"/>
+                    <br/>
+                    <h:outputText value="- Initial Deposit: S$0  Monthly Minimum Saving: S$50" style="margin-left:28px"/>
+                    <br/>
+                    <h:outputText value="- Basic Interest Rate: 0.05%  Bonus Interest Rate: 0.35%" style="margin-left:28px"/>
+                    <br/>
+                    <h:outputText value="- Bonus Interest Rate Criteria" style="margin-left:28px"/>
+                    <br/>
+                    <h:outputText value="· No withdrawal during this month" style="margin-left:40px"/>
+                    <br/>
+                    <h:outputText value="· No transfer to others' account during this month" style="margin-left:40px"/>
+                    <br/>
+                    <h:outputText value="· Monthly Minimum Saving S$50" style="margin-left:40px"/>
+                    <br/>
+                    <br/>
+                    <h:outputText value="(b) Basic Savings Account"/>
+                    <br/>
+                    <h:outputText value="- Initial Deposit: S$1  Basic Interest Rate: 0.05%" style="margin-left:28px"/>
+                    <br/>
+                    <br/>
+                    <h:outputText value="(c) Bonus Savings Account"/>
+                    <br/>
+                    <h:outputText value="- Initial Deposit: S$3000" style="margin-left:28px"/> 
+                    <br/>
+                    <h:outputText value="- Basic Interest Rate: 0.05%  Bonus Interest Rate: 0.75%" style="margin-left:28px"/>
+                    <br/>
+                    <h:outputText value="- Bonus Interest Rate Criteria" style="margin-left:28px"/>
+                    <br/>
+                    <h:outputText value="· No withdrawal during this month" style="margin-left:40px"/>
+                    <br/>
+                    <h:outputText value="· No transfer to others' account during this month" style="margin-left:40px"/>
+                    <br/>
+                    <br/>
+                    <h:outputText value="(d) Fixed Deposit Account"/>
+                    <br/>
+                    <h:outputText value="- Initial Deposit: S$1000" style="margin-left:28px"/>
+                    <br/>
+                </p:panelGrid>
+                <br/>
+                <p:panelGrid>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel style="font-weight: bold" value="Deposit Period(Month)" />
+                        </p:column>
+
+                        <p:column>
+                            <p:outputLabel value="1 - 2" />
+                        </p:column>
+
+                        <p:column>
+                            <p:outputLabel value="3 - 5" />
+                        </p:column>
+
+                        <p:column>
+                            <p:outputLabel value="6 - 8" />
+                        </p:column>
+
+                        <p:column>
+                            <p:outputLabel value="9 - 11" />
+                        </p:column>
+
+                        <p:column>
+                            <p:outputLabel value="12"/>
+                        </p:column>
+
+                        <p:column>
+                            <p:outputLabel value="18"/>
+                        </p:column>
+
+                        <p:column>
+                            <p:outputLabel value="24"/>
+                        </p:column>
+
+                        <p:column>
+                            <p:outputLabel value="36"/>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel style="font-weight: bold" value="Interest Rate" />
+                        </p:column>
+
+                        <p:column>
+                            <p:outputLabel value="0.05%" />
+                        </p:column>
+
+                        <p:column>
+                            <p:outputLabel value="0.1%" />
+                        </p:column>
+
+                        <p:column>
+                            <p:outputLabel value="0.15%" />
+                        </p:column>
+
+                        <p:column>
+                            <p:outputLabel value="0.2%" />
+                        </p:column>
+
+                        <p:column>
+                            <p:outputLabel value="0.25%" />
+                        </p:column>
+
+                        <p:column>
+                            <p:outputLabel value="0.5%" />
+                        </p:column>
+
+                        <p:column>
+                            <p:outputLabel value="0.55%" />
+                        </p:column>
+
+                        <p:column>
+                            <p:outputLabel value="0.65%" />
+                        </p:column>
+                    </p:row>
+
+                </p:panelGrid>
+                <br/>
                 <br/>
                 <h:panelGrid columns="2" style="margin-bottom:10px">
                     <p:selectBooleanCheckbox id = "agreement" value="#{internalOpenAccountManagedBean.agreement}" 
@@ -148,9 +271,10 @@
                     <br/>
                     <h:outputText value="I have also read and agree to the Terms and Conditions Governing Personal Data Protection Act 2012."/>
                 </h:panelGrid>
-
+                <br/>
                 <p:commandButton id="saveBtn" value="Open Account" actionListener="#{internalOpenAccountManagedBean.saveAccount}" 
                                  ajax="true" update="panel"/>
+
             </p:panel>
         </h:form>
     </h:body>
