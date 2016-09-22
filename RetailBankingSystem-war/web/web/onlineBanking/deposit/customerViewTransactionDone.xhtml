@@ -1,0 +1,92 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>View Transaction History</title>
+        <style type="text/css">
+            .gritter-notice-wrapper {
+                left:200px;
+                top: 50px;
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <h:form id="formMain">
+            <h1>Welcome to Merlion Bank</h1>
+            <p:menubar>
+
+                <p:submenu label="My Account">
+                    <p:menuitem value="Home" url="/web/onlineBanking/deposit/customerDepositIndex.xhtml" />
+                    <p:menuitem value="Open Account" url="/web/onlineBanking/deposit/customerOpenAccount.xhtml" />
+                    <p:menuitem value="Close Account" url="/web/onlineBanking/deposit/customerCloseAccount.xhtml" />
+                    <p:menuitem value="View Account" url="/web/onlineBanking/deposit/customerViewAccount.xhtml" />
+                    <p:menuitem value="View Transaction" url="/web/onlineBanking/deposit/customerViewTransaction.xhtml" />
+                    <p:menuitem value="View Statement" url="/web/onlineBanking/deposit/customerViewStatement.xhtml" />
+                    <p:menuitem value="Activate Fixed Deposit Account" url="/web/onlineBanking/deposit/customerActivateFixedDepositAccount.xhtml" />
+                </p:submenu>
+
+                <p:submenu label="Transfer" >
+                    <p:menuitem value="To My Account" url="/web/onlineBanking/deposit/customerToMyAccount.xhtml" />
+                    <p:menuitem value="To Other Merlion Accounts" url="/web/onlineBanking/deposit/customerToOthersAccount.xhtml" />
+                    <p:menuitem value="To Other Merlion Accuonts(One-time)" url="/web/onlineBanking/deposit/customerOneTimeTransfer.xhtml" />
+                    <p:menuitem value="Add Recipient" url="/web/onlineBanking/deposit/customerAddRecipient.xhtml" />
+                    <p:menuitem value="Delete Recipient" url="/web/onlineBanking/deposit/customerDeleteRecipient.xhtml" />
+                    <p:menuitem value="Change Daily Transfer Limit" url="/web/onlineBanking/deposit/customerDailyTransferLimit.xhtml" />
+                </p:submenu>
+
+                <p:submenu label="Enquiry">
+                    <p:menuitem value="Write an enquiry" url="/web/onlineBanking/customer/customerEnquiry.xhtml" />
+                </p:submenu>
+
+                <p:submenu label="My profile">
+                    <p:menuitem value="Change password" url="/web/onlineBanking/customer/customerChangePIN.xhtml" />
+                    <p:menuitem value="Update basic profile" url="/web/onlineBanking/customer/customerUpdateBasicProfile.xhtml" />
+                </p:submenu>
+
+                <p:submenu label="Logout">
+                    <p:menuitem value="Logout" actionListener="#{customerLoginManagedBean.doLogout}"/>
+                </p:submenu>
+            </p:menubar>
+        </h:form>
+        <h:form>
+            <br/>
+            <p:panel header="View Transaction History">
+                <p:dataTable var="accTransaction" value="#{transactionManagedBean.accTransaction}" 
+                             paginator="true" rows="20" emptyMessage="No Transaction Record">
+
+                    <p:column headerText="Transaction ID">
+                        <h:outputText value="#{accTransaction.transactionId}" /> 
+                    </p:column>
+
+                    <p:column headerText="Transaction Date">
+                        <h:outputText value="#{accTransaction.transactionDate}" />
+                    </p:column>
+
+                    <p:column headerText="Transaction Code"> 
+                        <h:outputText value="#{accTransaction.transactionCode}" />
+                    </p:column>
+
+                    <p:column headerText="Transaction Ref"> 
+                        <h:outputText value="#{accTransaction.transactionRef}" />
+                    </p:column>
+
+                    <p:column headerText="Account Debit(Withdrawal)"> 
+                        <h:outputText value="#{accTransaction.accountDebit}">
+                            <f:convertNumber type="currency" currencyCode="$" minFractionDigits="2" />
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="Account Credit(Deposit)"> 
+                        <h:outputText value="#{accTransaction.accountCredit}">
+                            <f:convertNumber type="currency" currencyCode="SGD" />
+                        </h:outputText>
+                    </p:column>
+
+                </p:dataTable>
+            </p:panel>
+        </h:form>
+    </h:body>
+</html>

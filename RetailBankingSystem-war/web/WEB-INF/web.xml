@@ -13,25 +13,29 @@
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>*.xhtml</url-pattern>
     </servlet-mapping>
+    
     <session-config>
         <session-timeout>
             30
         </session-timeout>
     </session-config>
+    
     <welcome-file-list>
-        <welcome-file>index.xhtml</welcome-file>
+        <welcome-file>web/index.xhtml</welcome-file>
     </welcome-file-list>
+    
     <security-constraint>
         <display-name>SecurityConstraint</display-name>
         <web-resource-collection>
             <web-resource-name>WRCollection</web-resource-name>
-            <url-pattern>/IB/*</url-pattern>
-            <url-pattern>/employee/*</url-pattern>
+            <url-pattern>/web/onlineBanking/*</url-pattern>
+            <url-pattern>/web/internalSystem/*</url-pattern>
         </web-resource-collection>
         <user-data-constraint>
             <transport-guarantee>CONFIDENTIAL</transport-guarantee>
         </user-data-constraint>
     </security-constraint>
+    
     <context-param>
         <param-name>primefaces.PUBLIC_CAPTCHA_KEY</param-name>
         <param-value>6Lf9HSoTAAAAAAP9e1hxqzTPyNj3WQqc4bGnCThK</param-value>
@@ -40,35 +44,25 @@
         <param-name>primefaces.PRIVATE_CAPTCHA_KEY</param-name>
         <param-value>6Lf9HSoTAAAAAMU5HSEEKwL4pXQd-8vTkYPf0-zA</param-value>
     </context-param>
+
+    <context-param>
+        <param-name>javax.faces.DATETIMECONVERTER_DEFAULT_TIMEZONE_IS_SYSTEM_TIMEZONE</param-name>
+        <param-value>true</param-value>
+    </context-param>
     
-<!--    <filter>
-        <filter-name>LoginFilter</filter-name>
-        <filter-class>jsf.filter.LoginFilter</filter-class>
-        <init-param>
-            <param-name>test-param</param-name>
-            <param-value>Initialization Paramter</param-value>
-        </init-param>
-    </filter>
-
-    -->    
+    <context-param>
+        <param-name>primefaces.UPLOADER</param-name>
+        <param-value>commons</param-value>
+    </context-param>
+    
     <filter>
-        <filter-name>AuthorizationFilter</filter-name>
-        <filter-class>jsf.filter.AuthorizationFilter</filter-class>
-        <init-param>
-            <param-name>test-param</param-name>
-            <param-value>Initialization Paramter</param-value>
-        </init-param>
-    </filter><!--
-
+        <filter-name>PrimeFaces FileUpload Filter</filter-name>
+        <filter-class>
+            org.primefaces.webapp.filter.FileUploadFilter
+        </filter-class>
+    </filter>
     <filter-mapping>
-        <filter-name>LoginFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-        <dispatcher>REQUEST</dispatcher>
-        <dispatcher>POST</dispatcher>
-    </filter-mapping>-->
-
-    <filter-mapping>
-        <filter-name>AuthorizationFilter</filter-name>
-        <url-pattern>/employee/*</url-pattern>
+        <filter-name>PrimeFaces FileUpload Filter</filter-name>
+        <servlet-name>Faces Servlet</servlet-name>
     </filter-mapping>
 </web-app>
