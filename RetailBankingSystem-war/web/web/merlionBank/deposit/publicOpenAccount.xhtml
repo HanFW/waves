@@ -45,7 +45,7 @@
         <h:form>
             <p:ajaxStatus style="width:16px;height:16px;">
                 <f:facet name="start">
-                    <h:graphicImage value="/images/spinner.gif" />
+                    <h:graphicImage value="./resources/images/spinner.gif" />
                 </f:facet>
                 <f:facet name="complete">
                     <h:outputText value="" />
@@ -153,7 +153,9 @@
                                 </p:column>
                                 <p:column>
                                     <p:inputText label="Mobile Number" id="customerMobile" value="#{accountManagedBean.customerMobile}"
-                                                 required="true" requiredMessage="Required Field">
+                                                 required="true" requiredMessage="Required Field" validatorMessage="Invalid Moblie Number"
+                                                 converterMessage="Invalid Input">
+                                        <f:validateDoubleRange minimum="10000000" maximum="99999999" />
                                     </p:inputText>
                                 </p:column>
                                 <p:column>
@@ -396,8 +398,8 @@
                                         <f:selectItem itemLabel="Yemen" itemValue="Yemen" />
                                         <f:selectItem itemLabel="Zambia" itemValue="Zambia" />
                                         <f:selectItem itemLabel="Zimbabwe" itemValue="Zimbabwe" />
-                                        <p:ajax event="change" update="panelCustomerNationalitySG" listener="#{accountManagedBean.show2()}"/>
-                                        <p:ajax event="change" update="panelCustomerNationalityOthers" listener="#{accountManagedBean.show3()}"/>
+                                        <p:ajax event="change" update="panelCustomerNationalitySG panelCustomerNRIC panelPassport" listener="#{accountManagedBean.show2()}"/>
+                                        <p:ajax event="change" update="panelCustomerNationalityOthers panelCustomerNRIC panelPassport" listener="#{accountManagedBean.show3()}"/>
                                     </p:selectOneMenu>
                                 </p:column>
                                 <p:column>
@@ -447,7 +449,7 @@
                                 </p:column>
                                 <p:column>
                                     <p:inputText label="customerNRIC" id="customerNRIC"
-                                                 value="#{accountManagedBean.customerNRIC}">
+                                                 value="#{accountManagedBean.customerNRIC}" >
                                     </p:inputText>
                                 </p:column>
                                 <p:column>
@@ -914,10 +916,10 @@
 
                             <p:row>
                                 <p:column>
-                                    <p:outputLabel for="initialDepositAmt" style="font-weight: bold" value="Initial Deposit Amount: " />
+                                    <p:outputLabel for="initialDepositAmt" style="font-weight: bold" value="Initial Deposit Amount(S$): " />
                                 </p:column>
                                 <p:column>
-                                    <p:inputText label="Initial Deposit Amount" id="initialDepositAmt"
+                                    <p:inputText label="Initial Deposit Amount(S$)" id="initialDepositAmt"
                                                  value="#{accountManagedBean.initialDepositAmt}" required="true" requiredMessage="Required Field">
                                     </p:inputText>
                                 </p:column>
@@ -964,93 +966,95 @@
                 </p:tab>
 
                 <p:tab id="confirmation" title="Confirmation">
-                    <p:messages />
+                    <p:messages globalOnly="true"/>
 
-                    <h:outputLabel value="About Myself" style="font-weight: bold; font-size: 24px" />
-                    <br/>
-                    <br/>
-                    <h:outputText value="Existing Customer of Merlion Bank: "/>
-                    <h:outputText value="#{accountManagedBean.existingCustomer}"/>
-                    <br/>
-                    <h:outputText value="Name: " />
-                    <h:outputText value="#{accountManagedBean.customerName}" />
-                    <br/>
-                    <h:outputText value="Nationality: " />
-                    <h:outputText value="#{accountManagedBean.customerNationality}" />
-                    <br/>
-                    <h:outputText value="Singapore PR: "/>
-                    <h:outputText value="#{accountManagedBean.singaporePR}"/>
-                    <br/>
-                    <h:outputText value="Passport Number: "/>
-                    <h:outputText value="#{accountManagedBean.customerPassport}"/>
-                    <br/>
-                    <h:outputText value="NRIC: " />
-                    <h:outputText value="#{accountManagedBean.customerNRIC}"/>
-                    <br/>
-                    <h:outputText value="Country of Domicile: " />
-                    <h:outputText value="#{accountManagedBean.customerCountryOfResidence}"/>
-                    <br/>
-                    <h:outputText value="Date of Birth: " />
-                    <h:outputText value="#{accountManagedBean.customerDateOfBirth}">
-                        <f:convertDateTime pattern="dd/MM/yyyy" />
-                    </h:outputText>
-                    <br/>
-                    <h:outputText value="Gender: "/>
-                    <h:outputText value="#{accountManagedBean.customerGender}"/>
-                    <br/>
-                    <h:outputText value="Race: " />
-                    <h:outputText value="#{accountManagedBean.customerRace}"/>
-                    <br/>
-                    <h:outputText value="Marital Status: " />
-                    <h:outputText value="#{accountManagedBean.customerMaritalStatus}"/>
-                    <br/>
-                    <h:outputText value="Occupation: " />
-                    <h:outputText value="#{accountManagedBean.customerOccupation}"/>
-                    <br/>
-                    <h:outputText value="Company: " />
-                    <h:outputText value="#{accountManagedBean.customerCompany}"/>
-                    <br/>
-                    <h:outputText value="Residential Street Name: " />
-                    <h:outputText value="#{accountManagedBean.customerStreetName}"/>
-                    <br/>
-                    <h:outputText value="Residential Block/House No.: " />
-                    <h:outputText value="#{accountManagedBean.customerBlockNum}"/>
-                    <br/>
-                    <h:outputText value="Residential Unit No.: " />
-                    <h:outputText value="#{accountManagedBean.customerUnitNum}"/>
-                    <br/>
-                    <h:outputText value="Postal Code: " />
-                    <h:outputText value="#{accountManagedBean.customerPostal}"/>
-                    <br/>
-                    <h:outputText value="Mobile: " />
-                    <h:outputText value="#{accountManagedBean.customerMobile}"/>
-                    <br/>
-                    <h:outputText value="Email: " />
-                    <h:outputText value="#{accountManagedBean.customerEmail}"/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <h:outputLabel value="My Deposit" style="font-weight: bold; font-size: 24px" />
-                    <br/>
-                    <br/>
-                    <h:outputText value="Bank Account Type: "/>
-                    <h:outputText value="#{accountManagedBean.bankAccountType}"/>
-                    <br/>
-                    <h:outputText value="Initial Deposit Amount: "/>
-                    <h:outputText value="#{accountManagedBean.initialDepositAmt}"/>
-                    <br/>
-                    <br/>
-                    <br/>
-                    <h:panelGrid columns="2" style="margin-bottom:10px">
-                        <p:selectBooleanCheckbox id = "agreement" value="#{accountManagedBean.agreement}" 
-                                                 style="margin-top:5px"/>
-                        <h:outputText value="I have read and agree to the terms of Customer Declaration and Confirmation." />
+                    <p:panel>
+                        <h:outputLabel value="About Myself" style="font-weight: bold; font-size: 24px" />
                         <br/>
-                        <h:outputText value="I have also read and agree to the Terms and Conditions Governing Personal Data Protection Act 2012."/>
-                    </h:panelGrid>
+                        <br/>
+                        <h:outputText value="Existing Customer of Merlion Bank: "/>
+                        <h:outputText value="#{accountManagedBean.existingCustomer}"/>
+                        <br/>
+                        <h:outputText value="Name: " />
+                        <h:outputText value="#{accountManagedBean.customerName}" />
+                        <br/>
+                        <h:outputText value="Nationality: " />
+                        <h:outputText value="#{accountManagedBean.customerNationality}" />
+                        <br/>
+                        <h:outputText value="Singapore PR: "/>
+                        <h:outputText value="#{accountManagedBean.singaporePR}"/>
+                        <br/>
+                        <h:outputText value="Passport Number: "/>
+                        <h:outputText value="#{accountManagedBean.customerPassport}"/>
+                        <br/>
+                        <h:outputText value="NRIC: " />
+                        <h:outputText value="#{accountManagedBean.customerNRIC}"/>
+                        <br/>
+                        <h:outputText value="Country of Domicile: " />
+                        <h:outputText value="#{accountManagedBean.customerCountryOfResidence}"/>
+                        <br/>
+                        <h:outputText value="Date of Birth: " />
+                        <h:outputText value="#{accountManagedBean.customerDateOfBirth}">
+                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                        </h:outputText>
+                        <br/>
+                        <h:outputText value="Gender: "/>
+                        <h:outputText value="#{accountManagedBean.customerGender}"/>
+                        <br/>
+                        <h:outputText value="Race: " />
+                        <h:outputText value="#{accountManagedBean.customerRace}"/>
+                        <br/>
+                        <h:outputText value="Marital Status: " />
+                        <h:outputText value="#{accountManagedBean.customerMaritalStatus}"/>
+                        <br/>
+                        <h:outputText value="Occupation: " />
+                        <h:outputText value="#{accountManagedBean.customerOccupation}"/>
+                        <br/>
+                        <h:outputText value="Company: " />
+                        <h:outputText value="#{accountManagedBean.customerCompany}"/>
+                        <br/>
+                        <h:outputText value="Residential Street Name: " />
+                        <h:outputText value="#{accountManagedBean.customerStreetName}"/>
+                        <br/>
+                        <h:outputText value="Residential Block/House No.: " />
+                        <h:outputText value="#{accountManagedBean.customerBlockNum}"/>
+                        <br/>
+                        <h:outputText value="Residential Unit No.: " />
+                        <h:outputText value="#{accountManagedBean.customerUnitNum}"/>
+                        <br/>
+                        <h:outputText value="Postal Code: " />
+                        <h:outputText value="#{accountManagedBean.customerPostal}"/>
+                        <br/>
+                        <h:outputText value="Mobile: " />
+                        <h:outputText value="#{accountManagedBean.customerMobile}"/>
+                        <br/>
+                        <h:outputText value="Email: " />
+                        <h:outputText value="#{accountManagedBean.customerEmail}"/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <h:outputLabel value="My Deposit" style="font-weight: bold; font-size: 24px" />
+                        <br/>
+                        <br/>
+                        <h:outputText value="Bank Account Type: "/>
+                        <h:outputText value="#{accountManagedBean.bankAccountType}"/>
+                        <br/>
+                        <h:outputText value="Initial Deposit Amount: "/>
+                        <h:outputText value="#{accountManagedBean.initialDepositAmt}"/>
+                        <br/>
+                        <br/>
+                        <br/>
+                        <h:panelGrid columns="2" style="margin-bottom:10px">
+                            <p:selectBooleanCheckbox id = "agreement" value="#{accountManagedBean.agreement}" 
+                                                     style="margin-top:5px"/>
+                            <h:outputText value="I have read and agree to the terms of Customer Declaration and Confirmation." />
+                            <br/>
+                            <h:outputText value="I have also read and agree to the Terms and Conditions Governing Personal Data Protection Act 2012."/>
+                        </h:panelGrid>
 
-                    <p:messages showDetail="true"/>
-                    <p:captcha label="Captcha" />
+                        <p:messages showDetail="true"/>
+                        <p:captcha label="Captcha" />
+                    </p:panel>
 
                     <p:commandButton id="saveBtn" value="Open Account" update="growl"
                                      actionListener="#{accountManagedBean.saveAccount}" ajax="true"/>

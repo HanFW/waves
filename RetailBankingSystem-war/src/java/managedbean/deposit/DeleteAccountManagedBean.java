@@ -13,13 +13,12 @@ public class DeleteAccountManagedBean {
     private String statusMessage;
     private String bankAccountNum;
     private String bankAccountType;
-    
+
     public DeleteAccountManagedBean() {
     }
-    
+
     @PostConstruct
-    public void init()
-    {
+    public void init() {
         statusMessage = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("statusMessage").toString();
         bankAccountNum = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("bankAccountNum").toString();
         bankAccountType = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("bankAccountType").toString();
@@ -48,5 +47,4 @@ public class DeleteAccountManagedBean {
     public void setBankAccountType(String bankAccountType) {
         this.bankAccountType = bankAccountType;
     }
-    
 }
