@@ -355,7 +355,7 @@
 
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
   .login-body {
-    background: url("#{resource['ultima-layout:images/login/login2x.png']}") top left no-repeat #fea;
+    background: url("#{resource['ultima-layout:images/login/background.jpg']}") top left no-repeat #fea;
     background-size: 100% auto; } }
 @media (max-width: 1024px) {
     .login-panel {
