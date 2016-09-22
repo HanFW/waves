@@ -21,6 +21,7 @@ public class AccTransaction implements Serializable {
     private String transactionRef;
     private String accountDebit;
     private String accountCredit;
+    private String transactionDateMilis;
     
     @ManyToOne(cascade={CascadeType.ALL},fetch=FetchType.EAGER)
     private BankAccount bankAccount;
@@ -79,6 +80,14 @@ public class AccTransaction implements Serializable {
 
     public void setBankAccount(BankAccount bankAccount) {
         this.bankAccount = bankAccount;
+    }
+
+    public String getTransactionDateMilis() {
+        return transactionDateMilis;
+    }
+
+    public void setTransactionDateMilis(String transactionDateMilis) {
+        this.transactionDateMilis = transactionDateMilis;
     }
     
     @Override

@@ -27,10 +27,15 @@ public class Issue implements Serializable {
     private String departmentTo;
     private String issueProblem;
     private String issueSolution;
+    private String issueStatus;
     
     @ManyToOne(cascade={CascadeType.ALL},fetch=FetchType.EAGER)
     private EnquiryCase enquiryCase;
+    
+    @ManyToOne(cascade={CascadeType.ALL},fetch=FetchType.EAGER)
+    private FollowUp followUp;
 
+    
     public EnquiryCase getEnquiryCase() {
         return enquiryCase;
     }
@@ -78,7 +83,14 @@ public class Issue implements Serializable {
     public void setIssueStatus(String issueStatus) {
         this.issueStatus = issueStatus;
     }
-    private String issueStatus;
+
+    public FollowUp getFollowUp() {
+        return followUp;
+    }
+
+    public void setFollowUp(FollowUp followUp) {
+        this.followUp = followUp;
+    }
 
 
     @Override

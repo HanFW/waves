@@ -6,6 +6,7 @@
 package ejb.infrastructure.session;
 
 import javax.ejb.Local;
+import org.jboss.aerogear.security.otp.Totp;
 
 /**
  *
@@ -13,5 +14,5 @@ import javax.ejb.Local;
  */
 @Local
 public interface SMSSessionBeanLocal {
-    public void sendOTP(String target, String phoneNum);
+    public String sendOTP(String target, String phoneNum);
 }

@@ -14,7 +14,8 @@ import javax.ejb.Local;
  */
 @Local
 public interface EmployeeEmailSessionBeanLocal {
-    public String resetPwd(String employeeEmail);
+    
+    public String resetPwd(String employeeNRIC,String employeeEmail);
     
     public String changePwd(String currentPassword,String newPassword,Long employeeId);
     
