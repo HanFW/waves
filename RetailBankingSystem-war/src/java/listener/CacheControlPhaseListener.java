@@ -1,4 +1,4 @@
-package jsf.listener;
+package listener;
 
 import java.io.IOException;
 import java.util.logging.Level;

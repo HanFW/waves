@@ -6,7 +6,6 @@ package managedbean.infrastructure;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 import ejb.infrastructure.entity.Employee;
 import ejb.infrastructure.entity.Role;
 import java.io.Serializable;
@@ -368,33 +367,103 @@ public class EmployeeAccountManagedBean implements Serializable {
 //        adminSessionBeanLocal.setSelectedRoles(employeeId, selectedRoles);
 //        System.out.println("*** AccountManagedBean - setSelectedRoles");
 //    }
-
     public boolean hasRoleCounterTeller() {
-      
+
         FacesContext context = FacesContext.getCurrentInstance();
         employee = (Employee) context.getExternalContext().getSessionMap().get("employee");
-        
-        Role hasRole=adminSessionBeanLocal.getRoleByName("Counter Teller");
+
+        Role hasRole = adminSessionBeanLocal.getRoleByName("Counter Teller");
         return employee.getRole().contains(hasRole);
     }
-    
+
     public boolean hasRoleEnquiryManager() {
-      
+
         FacesContext context = FacesContext.getCurrentInstance();
         employee = (Employee) context.getExternalContext().getSessionMap().get("employee");
-        
-        Role hasRole=adminSessionBeanLocal.getRoleByName("Enquiry Manager");
+
+        Role hasRole = adminSessionBeanLocal.getRoleByName("Enquiry Manager");
         return employee.getRole().contains(hasRole);
     }
-    
+
     public boolean hasRoleCallCenterStaff() {
-      
+
         FacesContext context = FacesContext.getCurrentInstance();
         employee = (Employee) context.getExternalContext().getSessionMap().get("employee");
-        
-        Role hasRole=adminSessionBeanLocal.getRoleByName("Call Center Staff");
+
+        Role hasRole = adminSessionBeanLocal.getRoleByName("Call Center Staff");
+        return employee.getRole().contains(hasRole);
+    }
+
+    public boolean hasRoleRelationshipManager() {
+
+        FacesContext context = FacesContext.getCurrentInstance();
+        employee = (Employee) context.getExternalContext().getSessionMap().get("employee");
+
+        Role hasRole = adminSessionBeanLocal.getRoleByName("Relationship Manager");
+        return employee.getRole().contains(hasRole);
+    }
+
+    public boolean hasRoleCardDepartmentManager() {
+
+        FacesContext context = FacesContext.getCurrentInstance();
+        employee = (Employee) context.getExternalContext().getSessionMap().get("employee");
+
+        Role hasRole = adminSessionBeanLocal.getRoleByName("Card Department Manager");
+        return employee.getRole().contains(hasRole);
+    }
+
+    public boolean hasRoleLoanOfficer() {
+
+        FacesContext context = FacesContext.getCurrentInstance();
+        employee = (Employee) context.getExternalContext().getSessionMap().get("employee");
+
+        Role hasRole = adminSessionBeanLocal.getRoleByName("Loan Officer");
+        return employee.getRole().contains(hasRole);
+    }
+
+    public boolean hasRoleUnderwriter() {
+
+        FacesContext context = FacesContext.getCurrentInstance();
+        employee = (Employee) context.getExternalContext().getSessionMap().get("employee");
+
+        Role hasRole = adminSessionBeanLocal.getRoleByName("Underwriter");
+        return employee.getRole().contains(hasRole);
+    }
+
+    public boolean hasRoleSalesDepartmentManager() {
+
+        FacesContext context = FacesContext.getCurrentInstance();
+        employee = (Employee) context.getExternalContext().getSessionMap().get("employee");
+
+        Role hasRole = adminSessionBeanLocal.getRoleByName("Sales Department Manager");
+        return employee.getRole().contains(hasRole);
+    }
+
+    public boolean hasRoleMortgageAppraiser() {
+
+        FacesContext context = FacesContext.getCurrentInstance();
+        employee = (Employee) context.getExternalContext().getSessionMap().get("employee");
+
+        Role hasRole = adminSessionBeanLocal.getRoleByName("Mortgage Appraiser");
+        return employee.getRole().contains(hasRole);
+    }
+
+    public boolean hasRoleCEO() {
+
+        FacesContext context = FacesContext.getCurrentInstance();
+        employee = (Employee) context.getExternalContext().getSessionMap().get("employee");
+
+        Role hasRole = adminSessionBeanLocal.getRoleByName("CEO");
         return employee.getRole().contains(hasRole);
     }
     
+    public boolean hasRoleSystemAdmin() {
+
+        FacesContext context = FacesContext.getCurrentInstance();
+        employee = (Employee) context.getExternalContext().getSessionMap().get("employee");
+
+        Role hasRole = adminSessionBeanLocal.getRoleByName("System Admin");
+        return employee.getRole().contains(hasRole);
+    }
 
 }

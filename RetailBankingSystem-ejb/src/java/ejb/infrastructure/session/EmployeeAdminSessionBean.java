@@ -69,6 +69,7 @@ public class EmployeeAdminSessionBean implements EmployeeAdminSessionBeanLocal {
         roles[7] = "Counter Teller";
         roles[8] = "Call Center Staff";
         roles[9] = "Enquiry Manager";
+//        roles[10]="System Admin";
 
     }
 

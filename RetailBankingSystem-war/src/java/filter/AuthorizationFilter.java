@@ -1,12 +1,9 @@
-package jsf.filter;
+package filter;
 
-import entity.Employee;
-import entity.Role;
+import ejb.infrastructure.entity.Role;
+import ejb.infrastructure.session.EmployeeAdminSessionBeanLocal;
 import java.io.IOException;
 import javax.ejb.EJB;
-import javax.faces.context.FacesContext;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.servlet.DispatcherType;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -18,9 +15,8 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import managedbean.EmployeeAccountManagedBean;
-import managedbean.EmployeeLoginManagedBean;
-import session.stateless.EmployeeAdminSessionBeanLocal;
+import managedbean.infrastructure.EmployeeAccountManagedBean;
+import managedbean.infrastructure.EmployeeLoginManagedBean;
 
 @WebFilter(filterName = "AuthorizationFilter", urlPatterns = {"*.xhtml"}, dispatcherTypes = {DispatcherType.REQUEST})
 
@@ -60,7 +56,7 @@ public class AuthorizationFilter implements Filter {
             System.out.println("*** Authorization filter: path " + requestServletPath);
             System.out.println("********** SecurityFilter.doFilter: " + requestServletPath.equals("/employee/login.xhtml"));
             System.out.println("********** SecurityFilter.doFilter: " + requestServletPath.equals("/employee/changePassword.xhtml"));
-            if (requestServletPath.equals("/employee/login.xhtml")) {
+            if (requestServletPath.equals("/web/internalSystem/infrastructure/employeeLogin.xhtml")) {
                 System.err.println("********** SecurityFilter.doFilter: Checking login and access rights control");
 //                Boolean isLogin = (httpSession.getAttribute("employee") != null) ? ((Boolean) httpSession.getAttribute("employee")) : (false);
 
@@ -91,7 +87,7 @@ public class AuthorizationFilter implements Filter {
 
                 if (account != null && !account.getLoggedIn()) {
                     System.err.println("********** SecurityFilter.doFilter: not log in");
-                    req.getRequestDispatcher("/employee/login.xhtml?faces-redirect=true").forward(request, response);
+                    req.getRequestDispatcher("/web/internalSystem/infrastructure/employeeMainPage.xhtml").forward(request, response);
                 } else {
 
                     System.err.println("********** SecurityFilter.doFilter:log in already");

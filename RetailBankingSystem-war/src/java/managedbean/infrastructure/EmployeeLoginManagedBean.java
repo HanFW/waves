@@ -65,7 +65,7 @@ public class EmployeeLoginManagedBean implements Serializable {
                 context.getExternalContext().getSessionMap().put("employee", getEmployee());
                 loggedIn = true;
                 try {
-                    context.getExternalContext().redirect("employeeMainPage.xhtml");
+                    context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath()+"/web/internalSystem/infrastructure/employeeMainPage.xhtml");
                     message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Welcome " + employee.getEmployeeName() + " !", "Welcome message");
                     context.addMessage(null, message);
                     System.out.println("*** LoginManagedBean: welcome message");
