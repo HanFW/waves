@@ -164,7 +164,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
             String bankAccountType, String bankAccountBalance, String transferDailyLimit,
             String transferBalance, String bankAccountStatus, String bankAccountMinSaving,
             String bankAccountDepositPeriod, String currentFixedDepositPeriod,
-            String fixedDepositStatus, Long customerBasicId, Long interestId) {
+            String fixedDepositStatus, Double statementDateDouble, Long customerBasicId, Long interestId) {
 
         BankAccount bankAccount = new BankAccount();
         String hashedPwd = "";
@@ -186,6 +186,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
         bankAccount.setBankAccountDepositPeriod(bankAccountDepositPeriod);
         bankAccount.setCurrentFixedDepositPeriod(currentFixedDepositPeriod);
         bankAccount.setFixedDepositStatus(fixedDepositStatus);
+        bankAccount.setStatementDateDouble(statementDateDouble);
         bankAccount.setCustomerBasic(retrieveCustomerBasicById(customerBasicId));
         bankAccount.setInterest(interestSessionLocal.retrieveInterestById(interestId));
 

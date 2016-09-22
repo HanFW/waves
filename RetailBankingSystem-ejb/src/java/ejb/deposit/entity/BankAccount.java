@@ -35,6 +35,8 @@ public class BankAccount implements Serializable {
     private String currentFixedDepositPeriod;
     private String fixedDepositStatus;
     
+    private Double statementDateDouble;
+    
     @OneToMany(cascade={CascadeType.ALL},fetch=FetchType.EAGER,mappedBy="bankAccount")
     private List<AccTransaction> accTransaction;
     
@@ -43,6 +45,9 @@ public class BankAccount implements Serializable {
     
     @OneToOne(cascade={CascadeType.ALL},fetch=FetchType.EAGER)
     private Interest interest;
+    
+    @OneToMany(cascade={CascadeType.ALL},fetch=FetchType.EAGER,mappedBy="bankAccount")
+    private List<Statement> statement;
     
     public Long getBankAccountId() {
         return bankAccountId;
@@ -162,6 +167,22 @@ public class BankAccount implements Serializable {
 
     public void setFixedDepositStatus(String fixedDepositStatus) {
         this.fixedDepositStatus = fixedDepositStatus;
+    }
+
+    public List<Statement> getStatement() {
+        return statement;
+    }
+
+    public void setStatement(List<Statement> statement) {
+        this.statement = statement;
+    }
+
+    public Double getStatementDateDouble() {
+        return statementDateDouble;
+    }
+
+    public void setStatementDateDouble(Double statementDateDouble) {
+        this.statementDateDouble = statementDateDouble;
     }
     
     @Override

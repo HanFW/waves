@@ -19,7 +19,7 @@ public interface BankAccountSessionBeanLocal {
             String bankAccountType,String bankAccountBalance,String transferDailyLimit,
             String transferBalance,String bankAccountStatus,String bankAccountMinSaving,
             String bankAccountDepositPeriod, String currentFixedDepositPeriod,
-            String fixedDepositStatus, Long customerBasicId,Long interestId);
+            String fixedDepositStatus, Double statementDateDouble, Long customerBasicId,Long interestId);
     public String deleteAccount(String bankAccountNum);
     public void interestAccuring();
     public void interestCrediting();

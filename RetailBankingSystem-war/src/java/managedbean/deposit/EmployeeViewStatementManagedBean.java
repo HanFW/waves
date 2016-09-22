@@ -5,6 +5,7 @@ import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import java.io.IOException;
 import java.util.Date;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
@@ -61,7 +62,7 @@ public class EmployeeViewStatementManagedBean {
 
         System.out.println(customerIdentificationNum);
         CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum.toUpperCase());
-        
+
         if (customerBasic.getCustomerBasicId() == null) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Customer does not exist.", "Failed!"));
         } else {
@@ -74,9 +75,13 @@ public class EmployeeViewStatementManagedBean {
             } else if (!dateOfBirth.equals(customerDateOfBirthString)) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Customer Date of Birth is Wrong.", "Failed!"));
             } else {
-                
-                ec.getFlash().put("customerIdentificationNum", customerIdentificationNum);
-                
+
+                ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+                Map<String, Object> sessionMap = externalContext.getSessionMap();
+                sessionMap.put("customerIdentificationNum", customerIdentificationNum);
+
+                customerIdentificationNum = null;
+
                 ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/deposit/employeeViewStatementDone.xhtml?faces-redirect=true");
             }
         }

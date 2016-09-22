@@ -30,7 +30,7 @@
                 <p:messages />
 
                 <p:dataTable var="statement" paginator="true" rows="10"
-                             value="#{EmployeeViewStatementManagedBean.statement}"
+                             value="#{employeeViewStatementDoneManagedBean.statement}"
                              emptyMessage="No Statement">
 
                     <p:column headerText="Date"> 
@@ -47,8 +47,8 @@
 
                     <p:column headerText="View" style="width: 10%"> 
                         <center>
-                            <p:commandButton ajax="false" process="@this" action="#{EmployeeViewStatementManagedBean.viewStatement}" icon="ui-icon-document">
-                                <f:setPropertyActionListener value="#{statement.customerBasic.customerBasicId}" target="#{EmployeeViewStatementManagedBean.customerBasicId}" />
+                            <p:commandButton ajax="false" process="@this" action="#{employeeViewStatementDoneManagedBean.viewStatement}" icon="ui-icon-document">
+                                <f:setPropertyActionListener value="#{statement.bankAccount.bankAccountId}" target="#{employeeViewStatementDoneManagedBean.bankAccountId}" />
                             </p:commandButton>
                         </center>
                     </p:column>
