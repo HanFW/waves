@@ -15,12 +15,12 @@
        <!-- Favicon -->
         <link rel="shortcut icon" href="#{resource['ultima-layout:images/logo.png']}"/>   
         <title>Bank Anywhere, Anytime</title>
-        <h:outputScript name="js/ripple.js" library="ultima-layout" />
+        <h:outputScript name="/RetailBankingSystem-war/resources/js/ripple.js" library="ultima-layout" />
 
         <!-- Bootstrap core CSS -->
-        <link href="./resources/bootstrap/css/bootstrap.css" rel="stylesheet"/>
+        <link href="/RetailBankingSystem-war/resources/bootstrap/css/bootstrap.css" rel="stylesheet"/>
         <!-- Worthy core CSS file -->
-        <link href="./resources/css/style.css" rel="stylesheet"/>
+        <link href="/RetailBankingSystem-war/resources/css/style.css" rel="stylesheet"/>
 
         <script type="text/javascript">
             $(function () {
@@ -58,7 +58,7 @@
 
                                     <!-- logo -->
                                     <div class="logo smooth-scroll">
-                                        <a href="#banner"><img id="logo" src="./resources/images/logo.png" alt="Merlion Bank"/></a>
+                                        <a href="#banner"><img id="logo" src="/RetailBankingSystem-war/resources/images/logo.png" alt="Merlion Bank"/></a>
                                     </div>
 
                                     <!-- name-and-slogan -->
@@ -319,26 +319,26 @@
         <h:outputStylesheet name="css/ripple.css" library="ultima-layout" />
         <h:outputStylesheet name="css/layout-#{guestPreferences.theme}.css" library="ultima-layout" />
         <!-- Jquery and Bootstap core js files -->
-        <script type="text/javascript" src="./resources/plugins/jquery.min.js"></script>
-        <script type="text/javascript" src="./resources/bootstrap/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="/RetailBankingSystem-war/resources/plugins/jquery.min.js"></script>
+        <script type="text/javascript" src="/RetailBankingSystem-war/resources/bootstrap/js/bootstrap.min.js"></script>
 
         <!-- Modernizr javascript -->
-        <script type="text/javascript" src="./resources/plugins/modernizr.js"></script>
+        <script type="text/javascript" src="/RetailBankingSystem-war/resources/plugins/modernizr.js"></script>
 
         <!-- Isotope javascript -->
-        <script type="text/javascript" src="./resources/plugins/isotope/isotope.pkgd.min.js"></script>
+        <script type="text/javascript" src="/RetailBankingSystem-war/resources/plugins/isotope/isotope.pkgd.min.js"></script>
 
         <!-- Backstretch javascript -->
-        <script type="text/javascript" src="./resources/plugins/jquery.backstretch.min.js"></script>
+        <script type="text/javascript" src="/RetailBankingSystem-war/resources/plugins/jquery.backstretch.min.js"></script>
 
         <!-- Appear javascript -->
-        <script type="text/javascript" src="./resources/plugins/jquery.appear.js"></script>
+        <script type="text/javascript" src="/RetailBankingSystem-war/resources/plugins/jquery.appear.js"></script>
 
         <!-- Initialization of Plugins -->
-        <script type="text/javascript" src="./resources/js/template.js"></script>
+        <script type="text/javascript" src="/RetailBankingSystem-war/resources/js/template.js"></script>
 
         <!-- Custom Scripts -->
-        <script type="text/javascript" src="./resources/js/custom.js"></script>
+        <script type="text/javascript" src="/RetailBankingSystem-war/resources/js/custom.js"></script>
     </h:body>
 
 </html>
@@ -354,19 +354,13 @@
                     <p:menuitem value="Home" url="/web/merlionBank/deposit/publicDepositIndex.xhtml" />
                     <p:menuitem value="Open Account" url="/web/merlionBank/deposit/publicOpenAccount.xhtml" />
                 </p:submenu>
-
+               
                 <p:submenu label="Login">
                     <p:menuitem value="Login" url="/web/onlineBanking/infrastructure/customerLogin.xhtml"/>
                 </p:submenu>
-
+                
                 <p:submenu label="Employee">
                     <p:menuitem value="Employee Login" url="/web/internalSystem/infrastructure/employeeLogin.xhtml"/>
-                    <p:menuitem value="Open Account" url="/web/internalSystem/deposit/employeeOpenAccount.xhtml" />
-                    <p:menuitem value="Cash Deposit" url="/web/internalSystem/deposit/employeeCashDeposit.xhtml"/>
-                    <p:menuitem value="Cash Withdraw" url="/web/internalSystem/deposit/employeeCashWithdraw.xhtml"/>
-                    <p:menuitem value="View Account" url="/web/internalSystem/deposit/employeeViewAccount.xhtml" />
-                    <p:menuitem value="View Transaction" url="/web/internalSystem/deposit/employeeViewTransaction.xhtml" />
-                    <p:menuitem value="View Statement" url="/web/internalSystem/deposit/employeeViewStatement.xhtml" />
                 </p:submenu>
             </p:menubar>
         </h:form>

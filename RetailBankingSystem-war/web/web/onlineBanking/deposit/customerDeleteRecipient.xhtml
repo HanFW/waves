@@ -9,49 +9,48 @@
 
 
     <ui:define name="content">
-        <h:body>
 
         <h:form>
-            <br/>
+            
             <div class="ui-g">
                 <div class="ui-g-12">
                     <div class="card"> 
-            <p:panel id="panel" header="Delete Recipient"> 
-                <p:messages />
+                        <p:panel id="panel" header="Delete Recipient"> 
+                            <p:messages />
 
-                <p:dataTable var="payee" value="#{payeeManagedBean.payee}" 
-                             paginator="true" rows="10" emptyMessage="No Recipient">
+                            <p:dataTable var="payee" value="#{payeeManagedBean.payee}" 
+                                         paginator="true" rows="10" emptyMessage="No Recipient">
 
-                    <p:column headerText="Recipient's Name" >
-                        <h:outputText value="#{payee.payeeName}" /> 
-                    </p:column>
+                                <p:column headerText="Recipient's Name" >
+                                    <h:outputText value="#{payee.payeeName}" /> 
+                                </p:column>
 
-                    <p:column headerText="Recipient's Bank Account Number"> 
-                        <h:outputText value="#{payee.payeeAccountNum}" />
-                    </p:column>
+                                <p:column headerText="Recipient's Bank Account Number"> 
+                                    <h:outputText value="#{payee.payeeAccountNum}" />
+                                </p:column>
 
-                    <p:column headerText="Recipient's Bank Account Type"> 
-                        <h:outputText value="#{payee.payeeAccountType}" />
-                    </p:column>
+                                <p:column headerText="Recipient's Bank Account Type"> 
+                                    <h:outputText value="#{payee.payeeAccountType}" />
+                                </p:column>
 
-                    <p:column headerText="Last Transaction Date"> 
-                        <h:outputText value="#{payee.lastTransactionDate}" />
-                    </p:column>
+                                <p:column headerText="Last Transaction Date"> 
+                                    <h:outputText value="#{payee.lastTransactionDate}" />
+                                </p:column>
 
-                    <p:column headerText="Action"> 
-                        <p:commandButton process="@this" action="#{deletePayeeManagedBean.deletePayee()}"
-                                         icon="ui-icon-trash" ajax="false">
-                            <f:setPropertyActionListener target="#{deletePayeeManagedBean.payeeAccountNum}" value="#{payee.payeeAccountNum}" />
-                        </p:commandButton>
-                    </p:column>
+                                <p:column headerText="Action"> 
+                                    <p:commandButton process="@this" action="#{deletePayeeManagedBean.deletePayee()}"
+                                                     icon="ui-icon-trash" ajax="false">
+                                        <f:setPropertyActionListener target="#{deletePayeeManagedBean.payeeAccountNum}" value="#{payee.payeeAccountNum}" />
+                                    </p:commandButton>
+                                </p:column>
 
-                </p:dataTable>
+                            </p:dataTable>
 
-            </p:panel>
-                                   </div>
+                        </p:panel>
+                    </div>
                 </div>
             </div>
         </h:form>
-    </h:body>
+
     </ui:define>
 </ui:composition>
