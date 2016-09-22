@@ -10,6 +10,7 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.event.ActionEvent;
 import ejb.infrastructure.session.SMSSessionBeanLocal;
+import java.io.IOException;
 import java.io.Serializable;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
@@ -60,7 +61,7 @@ public class SMSManagedBean implements Serializable{
         this.originalOTP = originalOTP;
     }
     
-    public void verifyOTP(ActionEvent event){
+    public void verifyOTP(ActionEvent event) throws IOException{
         System.out.println("-");
         System.out.println("====== infrastructure/SMSManagedBean: verifyOTP() ======");
         FacesContext context = FacesContext.getCurrentInstance();
@@ -73,6 +74,7 @@ public class SMSManagedBean implements Serializable{
             customerOTP = null;
             originalOTP = null;
             //redirect customer to the destination page
+            context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/web/onlineBanking/OTP");
         }else{
             System.out.println("====== infrastructure/SMSManagedBean: verifyOTP(): OTP does not match");
             customerOTP = null;
