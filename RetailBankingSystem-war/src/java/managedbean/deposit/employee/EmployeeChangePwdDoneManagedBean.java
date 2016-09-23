@@ -26,6 +26,7 @@ import javax.faces.view.ViewScoped;
 @ViewScoped
 
 public class EmployeeChangePwdDoneManagedBean implements Serializable{
+    
     @EJB
     private CRMCustomerSessionBeanLocal customerSessionBeanLocal;
 
@@ -50,14 +51,14 @@ public class EmployeeChangePwdDoneManagedBean implements Serializable{
     public void init() {
 
         ec = FacesContext.getCurrentInstance().getExternalContext();
+        
         customerIdentificationNum = ec.getSessionMap().get("customerIdentificationNum").toString();
-        System.out.println(customerIdentificationNum);
         CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum);
 
         if (customerBasic.getCustomerBasicId()!=null) {
-            System.out.println(customerBasic);
+            
             List<BankAccount> bankAccounts = bankAccountSessionBeanLocal.retrieveBankAccountByCusIC(customerBasic.getCustomerIdentificationNum());
-            System.out.println(bankAccounts);
+            
             bankAccountNums = new HashMap<String, String>();
 
             for (int i = 0; i < bankAccounts.size(); i++) {

@@ -1,7 +1,9 @@
-package managedbean.deposit;
+package managedbean.deposit.employee;
 
-import ejb.deposit.entity.BankAccount;
 import ejb.customer.entity.CustomerBasic;
+import ejb.customer.session.CRMCustomerSessionBeanLocal;
+import ejb.deposit.entity.BankAccount;
+import ejb.deposit.session.BankAccountSessionBeanLocal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,39 +14,50 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import ejb.deposit.session.BankAccountSessionBeanLocal;
 
-@Named(value = "fixedDepositAccountManagedBean")
+@Named(value = "employeeActivateFixedDepositDoneManagedBean")
 @RequestScoped
 
-public class FixedDepositAccountManagedBean {
+public class EmployeeActivateFixedDepositDoneManagedBean {
 
     @EJB
     private BankAccountSessionBeanLocal bankAccountSessionLocal;
+    
+    @EJB
+    private CRMCustomerSessionBeanLocal customerSessionBeanLocal;
 
     private Map<String, String> fixedDepositAccounts = new HashMap<String, String>();
     private String fixedDepositAccountWithType;
     private String fixedDepositPeriod;
+    private String customerIdentificationNum;
+    
     private ExternalContext ec;
 
-    public FixedDepositAccountManagedBean() {
+    public EmployeeActivateFixedDepositDoneManagedBean() {
     }
 
     @PostConstruct
     public void init() {
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
-        if (ec.getSessionMap().get("customer") != null) {
-            CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
+        customerIdentificationNum = ec.getSessionMap().get("customerIdentificationNum").toString();
+        CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum);
+        
+        List<BankAccount> bankAccounts = bankAccountSessionLocal.retrieveBankAccountByCusIC(customerBasic.getCustomerIdentificationNum());
 
-            List<BankAccount> bankAccounts = bankAccountSessionLocal.retrieveBankAccountByCusIC(customerBasic.getCustomerIdentificationNum());
+        fixedDepositAccounts = new HashMap<String, String>();
 
-            fixedDepositAccounts = new HashMap<String, String>();
-
-            for (int i = 0; i < bankAccounts.size(); i++) {
-                fixedDepositAccounts.put(bankAccounts.get(i).getBankAccountType() + "-" + bankAccounts.get(i).getBankAccountNum(), bankAccounts.get(i).getBankAccountType() + "-" + bankAccounts.get(i).getBankAccountNum());
-            }
+        for (int i = 0; i < bankAccounts.size(); i++) {
+            fixedDepositAccounts.put(bankAccounts.get(i).getBankAccountType() + "-" + bankAccounts.get(i).getBankAccountNum(), bankAccounts.get(i).getBankAccountType() + "-" + bankAccounts.get(i).getBankAccountNum());
         }
+    }
+
+    public BankAccountSessionBeanLocal getBankAccountSessionLocal() {
+        return bankAccountSessionLocal;
+    }
+
+    public void setBankAccountSessionLocal(BankAccountSessionBeanLocal bankAccountSessionLocal) {
+        this.bankAccountSessionLocal = bankAccountSessionLocal;
     }
 
     public Map<String, String> getFixedDepositAccounts() {
@@ -98,4 +111,5 @@ public class FixedDepositAccountManagedBean {
 
         return bankAccountNum;
     }
+
 }

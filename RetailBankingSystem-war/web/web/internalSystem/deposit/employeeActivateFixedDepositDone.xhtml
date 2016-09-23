@@ -5,7 +5,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>View Statement</title>
+        <title>Cash Deposit</title>
         <style type="text/css">
             .gritter-notice-wrapper {
                 left:200px;
@@ -32,71 +32,73 @@
                 </p:submenu>
             </p:menubar>
         </h:form>
-
         <h:form>
             <br/>
-            <p:panel id="panel" header="View Statement">
+            <p:panel id="panel" header="Activate Fixed Deposit Account">
                 <p:messages globalOnly="true"/>
 
                 <p:panelGrid style="margin-bottom:10px">
                     <p:row>
                         <p:column>
-                            <p:outputLabel for="customerName" style="font-weight: bold" value="Name: " />
-                            <p:outputLabel style="font-weight: bold" value="(As per NRIC/Passport): " />
+                            <p:outputLabel for="fixedDepositAccountNum" style="font-weight: bold" value="Account: " />
                         </p:column>
                         <p:column>
-                            <p:inputText label="Customer Name" id="customerName" value="#{employeeViewStatementManagedBean.customerName}"
-                                         required="true" requiredMessage="Required Field">
-                            </p:inputText>
+                            <p:selectOneMenu id="fixedDepositAccountNum" value="#{employeeActivateFixedDepositDoneManagedBean.fixedDepositAccountWithType}" 
+                                             effect="fold" editable="true">
+                                <f:selectItems value="#{employeeActivateFixedDepositDoneManagedBean.fixedDepositAccounts}" />
+                            </p:selectOneMenu>
                         </p:column>
                         <p:column>
-                            <p:message for="customerName" />
-                        </p:column>
-                    </p:row>
-
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel for="customerIdentificationNum" style="font-weight: bold" value="Identification Number: " />
-                        </p:column>
-                        <p:column>
-                            <p:inputText label="Customer Identification Number" id="customerIdentificationNum" value="#{employeeViewStatementManagedBean.customerIdentificationNum}"
-                                         required="true" requiredMessage="Required Field">
-                            </p:inputText>
-                        </p:column>
-                        <p:column>
-                            <p:message for="customerIdentificationNum" />
+                            <p:message for="fixedDepositAccountNum" />
                         </p:column>
                     </p:row>
 
                     <p:row>
                         <p:column>
-                            <p:outputLabel for="customerDateOfBirth" style="font-weight: bold" value="Date Of Birth: " />
+                            <p:outputLabel for="fixedDepositPeriod" style="font-weight: bold" value="Deposit Period: " />
                         </p:column>
                         <p:column>
-                            <p:calendar id="customerDateOfBirth" value="#{employeeViewStatementManagedBean.customerDateOfBirth}" 
-                                        showOn="button" locale="de" navigator="true" pattern="dd/MM/yyyy" 
-                                        yearRange="c-200:c+200" required="true" requiredMessage="Required Field"/>
+                            <p:selectOneMenu id="fixedDepositPeriod" value="#{employeeActivateFixedDepositDoneManagedBean.fixedDepositPeriod}" 
+                                             style="width:125px">
+                                <f:selectItem itemLabel="Please Select" itemValue=" " />
+                                <f:selectItem itemLabel="1 Month" itemValue="1 Month" />
+                                <f:selectItem itemLabel="2 Month" itemValue="2 Month" />
+                                <f:selectItem itemLabel="3 Month" itemValue="3 Month" />
+                                <f:selectItem itemLabel="4 Month" itemValue="4 Month" />
+                                <f:selectItem itemLabel="5 Month" itemValue="5 Month" />
+                                <f:selectItem itemLabel="6 Month" itemValue="6 Month" />
+                                <f:selectItem itemLabel="7 Month" itemValue="7 Month" />
+                                <f:selectItem itemLabel="8 Month" itemValue="8 Month" />
+                                <f:selectItem itemLabel="9 Month" itemValue="9 Month" />
+                                <f:selectItem itemLabel="10 Month" itemValue="10 Month" />
+                                <f:selectItem itemLabel="11 Month" itemValue="11 Month" />
+                                <f:selectItem itemLabel="12 Month" itemValue="12 Month" />
+                                <f:selectItem itemLabel="18 Month" itemValue="18 Month" />
+                                <f:selectItem itemLabel="24 Month" itemValue="24 Month" />
+                                <f:selectItem itemLabel="36 Month" itemValue="36 Month" />
+                            </p:selectOneMenu>
                         </p:column>
                         <p:column>
-                            <p:message for="customerDateOfBirth" />
+                            <p:message for="fixedDepositPeriod" />
                         </p:column>
                     </p:row>
 
                 </p:panelGrid>
-
+                <br/>
                 <p:commandButton id="cancelBtn" action="/web/index.xhtml" value="Cancel" update="panel" immediate = "true">
                     <p:confirm header="Cancel" message="Are you sure?" />
                 </p:commandButton>
 
                 <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                    <p:commandButton value="Yes" styleClass="ui-confirmdialog-yes" action="/web/index.xhtml"/>
+                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" action="/web/index.xhtml"/>
                     <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" />
                 </p:confirmDialog>
 
-                <p:commandButton id="submitBtn" value="Submit" update="panel"
-                                 action="#{employeeViewStatementManagedBean.submit}" ajax="true"/>
+                <p:commandButton id="confirmBtn" value="Confirm" update="panel" 
+                                 actionListener="#{employeeActivateFixedDepositDoneManagedBean.confirm}" ajax="true"/>
             </p:panel>
         </h:form>
     </h:body>
 </html>
+
 
