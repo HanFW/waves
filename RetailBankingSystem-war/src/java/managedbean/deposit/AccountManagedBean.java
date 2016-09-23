@@ -781,7 +781,7 @@ public class AccountManagedBean implements Serializable {
             ec.getFlash().put("newCustomerBasicId", customerBasicId);
             ec.getFlash().put("bankAccountNum", bankAccountNum);
             ec.getFlash().put("bankAccountType", bankAccountType);
-            ec.getFlash().put("initialDepositAmt", initialDepositAmt);
+            ec.getFlash().put("bankAccountStatus", bankAccountStatus);
 
             ec.redirect(ec.getRequestContextPath() + "/web/merlionBank/deposit/publicSaveAccount.xhtml?faces-redirect=true");
 
@@ -833,7 +833,7 @@ public class AccountManagedBean implements Serializable {
             ec.getFlash().put("newCustomerBasicId", newCustomerBasicId);
             ec.getFlash().put("bankAccountNum", bankAccountNum);
             ec.getFlash().put("bankAccountType", bankAccountType);
-            ec.getFlash().put("initialDepositAmt", initialDepositAmt);
+            ec.getFlash().put("bankAccountStatus", bankAccountStatus);
 
             ec.redirect(ec.getRequestContextPath() + "/web/merlionBank/deposit/publicSaveAccount.xhtml?faces-redirect=true");
 
