@@ -793,7 +793,6 @@ exists or setup the property manually. For example like this:
     </target>
     <target depends="compile,-library-inclusion-in-archive-weblogic,-library-inclusion-in-archive-by-user" name="library-inclusion-in-archive"/>
     <target if="is.jars.in.ejbjar" name="-library-inclusion-in-archive-by-user">
-        <copyfiles files="${libs.Apache_Commons_Codec_1.10.classpath}" todir="${build.classes.dir}"/>
         <copyfiles files="${libs.Aerogear_OTP.classpath}" todir="${build.classes.dir}"/>
         <copyfiles files="${libs.Twilio_Java.classpath}" todir="${build.classes.dir}"/>
         <copyfiles files="${libs.Apache_Httpcore.classpath}" todir="${build.classes.dir}"/>
@@ -802,9 +801,9 @@ exists or setup the property manually. For example like this:
         <copyfiles files="${libs.Apache_Commons_Lang3_3.4.classpath}" todir="${build.classes.dir}"/>
         <copyfiles files="${libs.Jackson_Core_Asl.classpath}" todir="${build.classes.dir}"/>
         <copyfiles files="${libs.Jackson_Mapper_Asl.classpath}" todir="${build.classes.dir}"/>
+        <copyfiles files="${libs.Apache_Commons_Codec_1.10.classpath}" todir="${build.classes.dir}"/>
     </target>
     <target if="is.server.weblogic" name="-library-inclusion-in-archive-weblogic">
-        <basename file="${libs.Apache_Commons_Codec_1.10.classpath}" property="manifest.libs.Apache_Commons_Codec_1.10.classpath"/>
         <basename file="${libs.Aerogear_OTP.classpath}" property="manifest.libs.Aerogear_OTP.classpath"/>
         <basename file="${libs.Twilio_Java.classpath}" property="manifest.libs.Twilio_Java.classpath"/>
         <basename file="${libs.Apache_Httpcore.classpath}" property="manifest.libs.Apache_Httpcore.classpath"/>
@@ -813,21 +812,21 @@ exists or setup the property manually. For example like this:
         <basename file="${libs.Apache_Commons_Lang3_3.4.classpath}" property="manifest.libs.Apache_Commons_Lang3_3.4.classpath"/>
         <basename file="${libs.Jackson_Core_Asl.classpath}" property="manifest.libs.Jackson_Core_Asl.classpath"/>
         <basename file="${libs.Jackson_Mapper_Asl.classpath}" property="manifest.libs.Jackson_Mapper_Asl.classpath"/>
+        <basename file="${libs.Apache_Commons_Codec_1.10.classpath}" property="manifest.libs.Apache_Commons_Codec_1.10.classpath"/>
         <manifest file="${build.ear.classes.dir}/META-INF/MANIFEST.MF" mode="update">
             <attribute name="Extension-List" value="jar-1 jar-2 jar-3 jar-4 jar-5 jar-6 jar-7 jar-8 jar-9 "/>
-            <attribute name="jar-1-Extension-Name" value="${manifest.libs.Apache_Commons_Codec_1.10.classpath}"/>
-            <attribute name="jar-2-Extension-Name" value="${manifest.libs.Aerogear_OTP.classpath}"/>
-            <attribute name="jar-3-Extension-Name" value="${manifest.libs.Twilio_Java.classpath}"/>
-            <attribute name="jar-4-Extension-Name" value="${manifest.libs.Apache_Httpcore.classpath}"/>
-            <attribute name="jar-5-Extension-Name" value="${manifest.libs.Apache_Httpclient.classpath}"/>
-            <attribute name="jar-6-Extension-Name" value="${manifest.libs.Apache_Commons_Logging_1.2.classpath}"/>
-            <attribute name="jar-7-Extension-Name" value="${manifest.libs.Apache_Commons_Lang3_3.4.classpath}"/>
-            <attribute name="jar-8-Extension-Name" value="${manifest.libs.Jackson_Core_Asl.classpath}"/>
-            <attribute name="jar-9-Extension-Name" value="${manifest.libs.Jackson_Mapper_Asl.classpath}"/>
+            <attribute name="jar-1-Extension-Name" value="${manifest.libs.Aerogear_OTP.classpath}"/>
+            <attribute name="jar-2-Extension-Name" value="${manifest.libs.Twilio_Java.classpath}"/>
+            <attribute name="jar-3-Extension-Name" value="${manifest.libs.Apache_Httpcore.classpath}"/>
+            <attribute name="jar-4-Extension-Name" value="${manifest.libs.Apache_Httpclient.classpath}"/>
+            <attribute name="jar-5-Extension-Name" value="${manifest.libs.Apache_Commons_Logging_1.2.classpath}"/>
+            <attribute name="jar-6-Extension-Name" value="${manifest.libs.Apache_Commons_Lang3_3.4.classpath}"/>
+            <attribute name="jar-7-Extension-Name" value="${manifest.libs.Jackson_Core_Asl.classpath}"/>
+            <attribute name="jar-8-Extension-Name" value="${manifest.libs.Jackson_Mapper_Asl.classpath}"/>
+            <attribute name="jar-9-Extension-Name" value="${manifest.libs.Apache_Commons_Codec_1.10.classpath}"/>
         </manifest>
     </target>
     <target depends="compile" name="library-inclusion-in-manifest">
-        <copyfiles files="${libs.Apache_Commons_Codec_1.10.classpath}" todir="${dist.ear.dir}/lib"/>
         <copyfiles files="${libs.Aerogear_OTP.classpath}" todir="${dist.ear.dir}/lib"/>
         <copyfiles files="${libs.Twilio_Java.classpath}" todir="${dist.ear.dir}/lib"/>
         <copyfiles files="${libs.Apache_Httpcore.classpath}" todir="${dist.ear.dir}/lib"/>
@@ -836,6 +835,7 @@ exists or setup the property manually. For example like this:
         <copyfiles files="${libs.Apache_Commons_Lang3_3.4.classpath}" todir="${dist.ear.dir}/lib"/>
         <copyfiles files="${libs.Jackson_Core_Asl.classpath}" todir="${dist.ear.dir}/lib"/>
         <copyfiles files="${libs.Jackson_Mapper_Asl.classpath}" todir="${dist.ear.dir}/lib"/>
+        <copyfiles files="${libs.Apache_Commons_Codec_1.10.classpath}" todir="${dist.ear.dir}/lib"/>
         <manifest file="${build.ear.classes.dir}/META-INF/MANIFEST.MF" mode="update"/>
     </target>
     <target name="-copy-meta-inf">

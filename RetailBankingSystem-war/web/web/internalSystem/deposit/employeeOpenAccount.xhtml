@@ -11,16 +11,14 @@
         <h:form id="formMain">
             <h1>Welcome to Merlion Bank</h1>
             <p:menubar>
-                <p:submenu label="Home">
-                    <p:menuitem value="Home" url="/web/merlionBank/deposit/publicDepositIndex.xhtml" />
-                </p:submenu>
-
                 <p:submenu label="My Account">
-                    <p:menuitem value="Open Account" url="/web/merlionBank/deposit/publicOpenAccount.xhtml" />
-                </p:submenu>
-
-                <p:submenu label="Login">
-                    <p:menuitem value="Login" url="/web/onlineBanking/infrastructure/customerLogin.xhtml" />
+                    <p:menuitem value="Home" url="/web/onlineBanking/deposit/customerDepositIndex.xhtml" />
+                    <p:menuitem value="Open Account" url="/web/internalSystem/deposit/employeeOpenAccount.xhtml" />
+                    <p:menuitem value="Cash Deposit" url="/web/onlineBanking/deposit/customerDepositIndex.xhtml" />
+                    <p:menuitem value="Cash Withdraw" url="/web/internalSystem/deposit/employeeCashWithdraw.xhtml" />
+                    <p:menuitem value="View Account" url="/web/internalSystem/deposit/employeeViewAccount.xhtml" />
+                    <p:menuitem value="View Transaction" url="/web/internalSystem/deposit/employeeViewTransaction.xhtml" />
+                    <p:menuitem value="View Statement" url="/web/internalSystem/deposit/employeeViewStatement.xhtml" />
                 </p:submenu>
             </p:menubar>
         </h:form>
@@ -36,7 +34,7 @@
 
             <p:growl id="growl" sticky="true" showDetail="true"/>
 
-            <p:wizard flowListener="#{accountManagedBean.onFlowProcess}">
+            <p:wizard flowListener="#{employeeOpenAccountManagedBean.onFlowProcess}">
                 <p:tab id="personal" title="Personal Information">
                     <p:panel header="Personal Information"> 
                         <p:messages globalOnly="true"/>
@@ -47,7 +45,7 @@
                                     <p:outputLabel style="font-weight: bold" value="Existing Customer of Merlion Bank: " />
                                 </p:column>
                                 <p:column>
-                                    <p:selectOneRadio id="existingCustomer" value="#{accountManagedBean.existingCustomer}"
+                                    <p:selectOneRadio id="existingCustomer" value="#{employeeOpenAccountManagedBean.existingCustomer}"
                                                       required="true" requiredMessage="Required Field">
                                         <f:selectItem itemLabel="Yes" itemValue="Yes" />
                                         <f:selectItem itemLabel="No" itemValue="No" />
@@ -63,7 +61,7 @@
                                     <p:outputLabel for="customerSalutation" style="font-weight: bold" value="Salutation: " />
                                 </p:column>
                                 <p:column>
-                                    <p:selectOneMenu id="customerSalutation" value="#{accountManagedBean.customerSalutation}" 
+                                    <p:selectOneMenu id="customerSalutation" value="#{employeeOpenAccountManagedBean.customerSalutation}" 
                                                      style="width:125px" required="true" requiredMessage="Required Field">
                                         <f:selectItem itemLabel="Please Select" itemValue="" noSelectionOption="true"/>
                                         <f:selectItem itemLabel="Dr" itemValue="Dr" />
@@ -72,11 +70,11 @@
                                         <f:selectItem itemLabel="Ms" itemValue="Ms" />
                                         <f:selectItem itemLabel="Mdm" itemValue="Mdm" />
                                         <f:selectItem itemLabel="Others" itemValue="Others" />
-                                        <p:ajax event="change" update="panelCustomerSalutationOthers" listener="#{accountManagedBean.show()}"/>
+                                        <p:ajax event="change" update="panelCustomerSalutationOthers" listener="#{employeeOpenAccountManagedBean.show()}"/>
                                     </p:selectOneMenu>
-                                    <p:panel style="border: none;" id="panelCustomerSalutationOthers" visible="#{accountManagedBean.visible}">
+                                    <p:panel style="border: none;" id="panelCustomerSalutationOthers" visible="#{employeeOpenAccountManagedBean.visible}">
                                         <p:inputText label="Customer Salutation" id="customerSalutationOthers" requiredMessage="Required Field"
-                                                     value="#{accountManagedBean.customerSalutationOthers}" required="#{accountManagedBean.salutationRender}"/>  
+                                                     value="#{employeeOpenAccountManagedBean.customerSalutationOthers}" required="#{employeeOpenAccountManagedBean.salutationRender}"/>  
                                     </p:panel>
                                 </p:column>
                                 <p:column>
@@ -91,7 +89,7 @@
                                     <p:outputLabel style="font-weight: bold" value="(As per NRIC/Passport): " />
                                 </p:column>
                                 <p:column>
-                                    <p:inputText label="Customer Name" id="customerName" value="#{accountManagedBean.customerName}"
+                                    <p:inputText label="Customer Name" id="customerName" value="#{employeeOpenAccountManagedBean.customerName}"
                                                  required="true" requiredMessage="Required Field">
                                     </p:inputText>
                                 </p:column>
@@ -105,7 +103,7 @@
                                     <p:outputLabel for="customerDateOfBirth" style="font-weight: bold" value="Date Of Birth: " />
                                 </p:column>
                                 <p:column>
-                                    <p:calendar id="customerDateOfBirth" value="#{accountManagedBean.customerDateOfBirth}" 
+                                    <p:calendar id="customerDateOfBirth" value="#{employeeOpenAccountManagedBean.customerDateOfBirth}" 
                                                 showOn="button" locale="de" navigator="true" pattern="dd/MM/yyyy" 
                                                 yearRange="c-200:c+200" required="true" requiredMessage="Required Field"/>
                                 </p:column>
@@ -119,7 +117,7 @@
                                     <p:outputLabel for="customerGender" style="font-weight: bold" value="Gender: " />
                                 </p:column>
                                 <p:column>
-                                    <p:selectOneRadio id="customerGender" value="#{accountManagedBean.customerGender}"
+                                    <p:selectOneRadio id="customerGender" value="#{employeeOpenAccountManagedBean.customerGender}"
                                                       required="true" requiredMessage="Required Field">
                                         <f:selectItem itemLabel="Male" itemValue="Male" />
                                         <f:selectItem itemLabel="Female" itemValue="Female" />
@@ -135,7 +133,7 @@
                                     <p:outputLabel for="customerMobile" style="font-weight: bold" value="Mobile Number: " />
                                 </p:column>
                                 <p:column>
-                                    <p:inputText label="Mobile Number" id="customerMobile" value="#{accountManagedBean.customerMobile}"
+                                    <p:inputText label="Mobile Number" id="customerMobile" value="#{employeeOpenAccountManagedBean.customerMobile}"
                                                  required="true" requiredMessage="Required Field" validatorMessage="Invalid Moblie Number"
                                                  converterMessage="Invalid Input">
                                         <f:validateDoubleRange minimum="10000000" maximum="99999999" />
@@ -152,7 +150,7 @@
                                 </p:column>
                                 <p:column>
                                     <p:inputText label="Email" id="customerEmail" validatorMessage="Invalid email format"
-                                                 value="#{accountManagedBean.customerEmail}" required="true" requiredMessage="Required Field">
+                                                 value="#{employeeOpenAccountManagedBean.customerEmail}" required="true" requiredMessage="Required Field">
                                         <f:validateRegex
                                             pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
                                     </p:inputText>
@@ -176,7 +174,7 @@
                                     <p:outputLabel for="customerNationality" style="font-weight: bold" value="Nationality: " />
                                 </p:column>
                                 <p:column>
-                                    <p:selectOneMenu id="customerNationality" value="#{accountManagedBean.customerNationality}" 
+                                    <p:selectOneMenu id="customerNationality" value="#{employeeOpenAccountManagedBean.customerNationality}" 
                                                      style="width:125px" required="true" requiredMessage="Required Field">
                                         <f:selectItem itemLabel="Please Select" itemValue="" noSelectionOption="true"/>
                                         <f:selectItem itemLabel="Afghanistan" itemValue="Afghanistan" />
@@ -381,8 +379,8 @@
                                         <f:selectItem itemLabel="Yemen" itemValue="Yemen" />
                                         <f:selectItem itemLabel="Zambia" itemValue="Zambia" />
                                         <f:selectItem itemLabel="Zimbabwe" itemValue="Zimbabwe" />
-                                        <p:ajax event="change" update="panelCustomerNationalitySG panelCustomerNRIC panelPassport" listener="#{accountManagedBean.show2()}"/>
-                                        <p:ajax event="change" update="panelCustomerNationalityOthers panelCustomerNRIC panelPassport" listener="#{accountManagedBean.show3()}"/>
+                                        <p:ajax event="change" update="panelCustomerNationalitySG panelCustomerNRIC panelPassport" listener="#{employeeOpenAccountManagedBean.show2()}"/>
+                                        <p:ajax event="change" update="panelCustomerNationalityOthers panelCustomerNRIC panelPassport" listener="#{employeeOpenAccountManagedBean.show3()}"/>
                                     </p:selectOneMenu>
                                 </p:column>
                                 <p:column>
@@ -391,14 +389,14 @@
                             </p:row>
                         </p:panelGrid>
 
-                        <p:panel style="border: none;" id="panelCustomerNationalitySG" visible="#{accountManagedBean.visible2}">
+                        <p:panel style="border: none;" id="panelCustomerNationalitySG" visible="#{employeeOpenAccountManagedBean.visible2}">
                             <p:row>
                                 <p:column>
                                     <p:outputLabel for="customerNRICSG" style="font-weight: bold" value="NRIC No.: " />
                                 </p:column>
                                 <p:column>
-                                    <p:inputText label="customerNRICSG" id="customerNRICSG" value="#{accountManagedBean.customerNRICSG}"
-                                                 required="#{accountManagedBean.nricSGRender}" requiredMessage="Required Field">
+                                    <p:inputText label="customerNRICSG" id="customerNRICSG" value="#{employeeOpenAccountManagedBean.customerNRICSG}"
+                                                 required="#{employeeOpenAccountManagedBean.nricSGRender}" requiredMessage="Required Field">
                                     </p:inputText>
                                 </p:column>
                                 <p:column>
@@ -407,18 +405,18 @@
                             </p:row>
                         </p:panel>
 
-                        <p:panel style="border: none;" id="panelCustomerNationalityOthers" visible="#{accountManagedBean.visible3}" >
+                        <p:panel style="border: none;" id="panelCustomerNationalityOthers" visible="#{employeeOpenAccountManagedBean.visible3}" >
                             <p:row>
                                 <p:column>
                                     <p:outputLabel for="singaporePR" style="font-weight: bold" value="Singapore PR: " />
                                 </p:column>
                                 <p:column>
-                                    <p:selectOneRadio id="singaporePR" value="#{accountManagedBean.singaporePR}"
-                                                      required="#{accountManagedBean.singaporePRRender}" requiredMessage="Required Field">
+                                    <p:selectOneRadio id="singaporePR" value="#{employeeOpenAccountManagedBean.singaporePR}"
+                                                      required="#{employeeOpenAccountManagedBean.singaporePRRender}" requiredMessage="Required Field">
                                         <f:selectItem itemLabel="Yes" itemValue="Yes" />
                                         <f:selectItem itemLabel="No" itemValue="No" />
-                                        <p:ajax event="change" update="panelCustomerNRIC" listener="#{accountManagedBean.show4()}"/>
-                                        <p:ajax event="change" update="panelPassport" listener="#{accountManagedBean.show5()}"/>
+                                        <p:ajax event="change" update="panelCustomerNRIC" listener="#{employeeOpenAccountManagedBean.show4()}"/>
+                                        <p:ajax event="change" update="panelPassport" listener="#{employeeOpenAccountManagedBean.show5()}"/>
                                     </p:selectOneRadio>
                                 </p:column>
                                 <p:column>
@@ -427,14 +425,14 @@
                             </p:row>
                         </p:panel>
 
-                        <p:panel style="border: none;" id="panelCustomerNRIC" visible="#{accountManagedBean.visible4}">
+                        <p:panel style="border: none;" id="panelCustomerNRIC" visible="#{employeeOpenAccountManagedBean.visible4}">
                             <p:row>
                                 <p:column>
                                     <p:outputLabel for="customerNRIC" style="font-weight: bold" value="NRIC No.: " />
                                 </p:column>
                                 <p:column>
-                                    <p:inputText label="customerNRIC" id="customerNRIC" required="#{accountManagedBean.nricRender}"
-                                                 value="#{accountManagedBean.customerNRIC}" requiredMessage="Required Message">
+                                    <p:inputText label="customerNRIC" id="customerNRIC" required="#{employeeOpenAccountManagedBean.nricRender}"
+                                                 value="#{employeeOpenAccountManagedBean.customerNRIC}" requiredMessage="Required Message">
                                     </p:inputText>
                                 </p:column>
                                 <p:column>
@@ -443,14 +441,14 @@
                             </p:row>
                         </p:panel>
 
-                        <p:panel style="border: none;" id="panelPassport" visible="#{accountManagedBean.visible5}">
+                        <p:panel style="border: none;" id="panelPassport" visible="#{employeeOpenAccountManagedBean.visible5}">
                             <p:row>
                                 <p:column>
                                     <p:outputLabel for="customerPassport" style="font-weight: bold" value="Passport No. " />
                                 </p:column>
                                 <p:column>
-                                    <p:inputText label="customerPassport" id="customerPassport" required="#{accountManagedBean.passportRender}"
-                                                 value="#{accountManagedBean.customerPassport}" requiredMessage="Required Field">
+                                    <p:inputText label="customerPassport" id="customerPassport" required="#{employeeOpenAccountManagedBean.passportRender}"
+                                                 value="#{employeeOpenAccountManagedBean.customerPassport}" requiredMessage="Required Field">
                                     </p:inputText>
                                 </p:column>
                                 <p:column>
@@ -465,7 +463,7 @@
                                     <p:outputLabel for="customerCountryOfResidence" style="font-weight: bold" value="Country of Residence: " />
                                 </p:column>
                                 <p:column>
-                                    <p:selectOneMenu id="customerCountryOfResidence" value="#{accountManagedBean.customerCountryOfResidence}" 
+                                    <p:selectOneMenu id="customerCountryOfResidence" value="#{employeeOpenAccountManagedBean.customerCountryOfResidence}" 
                                                      style="width:125px" required="true" requiredMessage="Required Field">
                                         <f:selectItem itemLabel="Please Select" itemValue="" />
                                         <f:selectItem itemLabel="Afghanistan" itemValue="Afghanistan" />
@@ -682,7 +680,7 @@
                                     <p:outputLabel for="customerRace" style="font-weight: bold" value="Race: " />
                                 </p:column>
                                 <p:column>
-                                    <p:selectOneMenu id="customerRace" value="#{accountManagedBean.customerRace}" 
+                                    <p:selectOneMenu id="customerRace" value="#{employeeOpenAccountManagedBean.customerRace}" 
                                                      style="width:125px" required="true" requiredMessage="Required Field">
                                         <f:selectItem itemLabel="Please Select" itemValue="" />
                                         <f:selectItem itemLabel="Chinese" itemValue="Chinese" />
@@ -701,7 +699,7 @@
                                     <p:outputLabel for="customerMaritalStatus" style="font-weight: bold" value="MaritalStatus: " />
                                 </p:column>
                                 <p:column>
-                                    <p:selectOneMenu id="customerMaritalStatus" value="#{accountManagedBean.customerMaritalStatus}" 
+                                    <p:selectOneMenu id="customerMaritalStatus" value="#{employeeOpenAccountManagedBean.customerMaritalStatus}" 
                                                      style="width:125px" required="true" requiredMessage="Required Field">
                                         <f:selectItem itemLabel="Please Select" itemValue="" />
                                         <f:selectItem itemLabel="Single" itemValue="Single" />
@@ -720,7 +718,7 @@
                                     <p:outputLabel for="customerOccupation" style="font-weight: bold" value="Occupation: " />
                                 </p:column>
                                 <p:column>
-                                    <p:selectOneMenu id="customerOccupation" value="#{accountManagedBean.customerOccupation}" 
+                                    <p:selectOneMenu id="customerOccupation" value="#{employeeOpenAccountManagedBean.customerOccupation}" 
                                                      style="width:125px" required="true" requiredMessage="Required Field">
                                         <f:selectItem itemLabel="Please Select" itemValue="" />
                                         <f:selectItem itemLabel="Accountant" itemValue="Accountant" />
@@ -766,7 +764,7 @@
                                     <p:outputLabel for="customerCompany" style="font-weight: bold" value="Name of Company: " />
                                 </p:column>
                                 <p:column>
-                                    <p:inputText label="Name of Company" id="customerCompany" value="#{accountManagedBean.customerCompany}"
+                                    <p:inputText label="Name of Company" id="customerCompany" value="#{employeeOpenAccountManagedBean.customerCompany}"
                                                  required="true" requiredMessage="Required Field">
                                     </p:inputText>
                                 </p:column>
@@ -780,7 +778,7 @@
                                     <p:outputLabel for="customerStreetName" style="font-weight: bold" value="Residential Street Name: " />
                                 </p:column>
                                 <p:column>
-                                    <p:inputText label="Residential Address" id="customerStreetName" value="#{accountManagedBean.customerStreetName}"
+                                    <p:inputText label="Residential Address" id="customerStreetName" value="#{employeeOpenAccountManagedBean.customerStreetName}"
                                                  required="true" requiredMessage="Required Field">
                                     </p:inputText>
                                 </p:column>
@@ -795,7 +793,7 @@
                                 </p:column>
                                 <p:column>
                                     <p:inputText label="Residential Address" id="customerBlockNum"
-                                                 value="#{accountManagedBean.customerBlockNum}"
+                                                 value="#{employeeOpenAccountManagedBean.customerBlockNum}"
                                                  required="true" requiredMessage="Required Field">
                                     </p:inputText>
                                 </p:column>
@@ -810,7 +808,7 @@
                                 </p:column>
                                 <p:column>
                                     <p:inputText label="Residential Address" id="customerUnitNum"
-                                                 value="#{accountManagedBean.customerUnitNum}"
+                                                 value="#{employeeOpenAccountManagedBean.customerUnitNum}"
                                                  required="true" requiredMessage="Required Field">
                                     </p:inputText>
                                 </p:column>
@@ -825,7 +823,7 @@
                                 </p:column>
                                 <p:column>
                                     <p:inputText label="Postal Code" id="customerPostal"
-                                                 value="#{accountManagedBean.customerPostal}"
+                                                 value="#{employeeOpenAccountManagedBean.customerPostal}"
                                                  required="true" requiredMessage="Required Field">
                                     </p:inputText>
                                 </p:column>
@@ -851,7 +849,7 @@
                                     <p:outputLabel for="bankAccountType" style="font-weight: bold" value="Account Type: " />
                                 </p:column>
                                 <p:column>
-                                    <p:selectOneMenu id="bankAccountType" value="#{accountManagedBean.bankAccountType}" 
+                                    <p:selectOneMenu id="bankAccountType" value="#{employeeOpenAccountManagedBean.bankAccountType}" 
                                                      style="width:125px" required="true" requiredMessage="Required Field">
                                         <f:selectItem itemLabel="Please Select" itemValue="" noSelectionOption="true"/>
                                         <f:selectItem itemLabel="Monthly Savings Account" itemValue="Monthly Savings Account" />
@@ -870,7 +868,7 @@
                                     <p:outputLabel for="bankAccountPwd" style="font-weight: bold" value="Account Password: " />
                                 </p:column>
                                 <p:column>
-                                    <p:password id="bankAccountPwd" value="#{accountManagedBean.bankAccountPwd}" match="confirmBankAccountPwd" 
+                                    <p:password id="bankAccountPwd" value="#{employeeOpenAccountManagedBean.bankAccountPwd}" match="confirmBankAccountPwd" 
                                                 required="true" requiredMessage="Required Field">
                                         <f:validateLength minimum="6" maximum="6" />
                                     </p:password>
@@ -885,7 +883,7 @@
                                     <p:outputLabel for ="confirmBankAccountPwd" style="font-weight:bold" value="Confirm Password: " />
                                 </p:column>
                                 <p:column>
-                                    <p:password id="confirmBankAccountPwd" value="#{accountManagedBean.confirmBankAccountPwd}" 
+                                    <p:password id="confirmBankAccountPwd" value="#{employeeOpenAccountManagedBean.confirmBankAccountPwd}" 
                                                 label="Confirm Password" maxlength="6" 
                                                 required="true" requiredMessage="Required Field">
                                         <f:validateLength minimum="6" maximum="6" />
@@ -907,7 +905,7 @@
                                 </p:column>
                                 <p:column>
                                     <p:inputText label="Initial Deposit Amount(S$)" id="initialDepositAmt"
-                                                 value="#{accountManagedBean.initialDepositAmt}" required="true" requiredMessage="Required Field">
+                                                 value="#{employeeOpenAccountManagedBean.initialDepositAmt}" required="true" requiredMessage="Required Field">
                                     </p:inputText>
                                 </p:column>
                                 <p:column>
@@ -928,9 +926,9 @@
                             <p:outputLabel value="Please provide softcopy of your identification (Only gif,jpeg and png)" />
                             <br/>
                             <p:fileUpload id="fileupload" update="messagesFileupload"
-                                          value="#{accountManagedBean.file}" mode="advanced" skinSimple="true"
+                                          value="#{employeeOpenAccountManagedBean.file}" mode="advanced" skinSimple="true"
                                           sizeLimit="10000000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" 
-                                          fileUploadListener="#{accountManagedBean.upload}"/>
+                                          fileUploadListener="#{employeeOpenAccountManagedBean.upload}"/>
                         </p:panel>
                         <br/>
 
@@ -960,63 +958,63 @@
                         <br/>
                         <br/>
                         <h:outputText value="Existing Customer of Merlion Bank: "/>
-                        <h:outputText value="#{accountManagedBean.existingCustomer}"/>
+                        <h:outputText value="#{employeeOpenAccountManagedBean.existingCustomer}"/>
                         <br/>
                         <h:outputText value="Name: " />
-                        <h:outputText value="#{accountManagedBean.customerName}" />
+                        <h:outputText value="#{employeeOpenAccountManagedBean.customerName}" />
                         <br/>
                         <h:outputText value="Nationality: " />
-                        <h:outputText value="#{accountManagedBean.customerNationality}" />
+                        <h:outputText value="#{employeeOpenAccountManagedBean.customerNationality}" />
                         <br/>
                         <h:outputText value="Singapore PR: "/>
-                        <h:outputText value="#{accountManagedBean.singaporePR}"/>
+                        <h:outputText value="#{employeeOpenAccountManagedBean.singaporePR}"/>
                         <br/>
                         <h:outputText value="Passport Number: "/>
-                        <h:outputText value="#{accountManagedBean.customerPassport}"/>
+                        <h:outputText value="#{employeeOpenAccountManagedBean.customerPassport}"/>
                         <br/>
                         <h:outputText value="NRIC: " />
-                        <h:outputText value="#{accountManagedBean.customerNRIC}"/>
+                        <h:outputText value="#{employeeOpenAccountManagedBean.customerNRIC}"/>
                         <br/>
                         <h:outputText value="Country of Domicile: " />
-                        <h:outputText value="#{accountManagedBean.customerCountryOfResidence}"/>
+                        <h:outputText value="#{employeeOpenAccountManagedBean.customerCountryOfResidence}"/>
                         <br/>
                         <h:outputText value="Date of Birth: " />
-                        <h:outputText value="#{accountManagedBean.customerDateOfBirth}">
+                        <h:outputText value="#{employeeOpenAccountManagedBean.customerDateOfBirth}">
                             <f:convertDateTime pattern="dd/MM/yyyy" />
                         </h:outputText>
                         <br/>
                         <h:outputText value="Gender: "/>
-                        <h:outputText value="#{accountManagedBean.customerGender}"/>
+                        <h:outputText value="#{employeeOpenAccountManagedBean.customerGender}"/>
                         <br/>
                         <h:outputText value="Race: " />
-                        <h:outputText value="#{accountManagedBean.customerRace}"/>
+                        <h:outputText value="#{employeeOpenAccountManagedBean.customerRace}"/>
                         <br/>
                         <h:outputText value="Marital Status: " />
-                        <h:outputText value="#{accountManagedBean.customerMaritalStatus}"/>
+                        <h:outputText value="#{employeeOpenAccountManagedBean.customerMaritalStatus}"/>
                         <br/>
                         <h:outputText value="Occupation: " />
-                        <h:outputText value="#{accountManagedBean.customerOccupation}"/>
+                        <h:outputText value="#{employeeOpenAccountManagedBean.customerOccupation}"/>
                         <br/>
                         <h:outputText value="Company: " />
-                        <h:outputText value="#{accountManagedBean.customerCompany}"/>
+                        <h:outputText value="#{employeeOpenAccountManagedBean.customerCompany}"/>
                         <br/>
                         <h:outputText value="Residential Street Name: " />
-                        <h:outputText value="#{accountManagedBean.customerStreetName}"/>
+                        <h:outputText value="#{employeeOpenAccountManagedBean.customerStreetName}"/>
                         <br/>
                         <h:outputText value="Residential Block/House No.: " />
-                        <h:outputText value="#{accountManagedBean.customerBlockNum}"/>
+                        <h:outputText value="#{employeeOpenAccountManagedBean.customerBlockNum}"/>
                         <br/>
                         <h:outputText value="Residential Unit No.: " />
-                        <h:outputText value="#{accountManagedBean.customerUnitNum}"/>
+                        <h:outputText value="#{employeeOpenAccountManagedBean.customerUnitNum}"/>
                         <br/>
                         <h:outputText value="Postal Code: " />
-                        <h:outputText value="#{accountManagedBean.customerPostal}"/>
+                        <h:outputText value="#{employeeOpenAccountManagedBean.customerPostal}"/>
                         <br/>
                         <h:outputText value="Mobile: " />
-                        <h:outputText value="#{accountManagedBean.customerMobile}"/>
+                        <h:outputText value="#{employeeOpenAccountManagedBean.customerMobile}"/>
                         <br/>
                         <h:outputText value="Email: " />
-                        <h:outputText value="#{accountManagedBean.customerEmail}"/>
+                        <h:outputText value="#{employeeOpenAccountManagedBean.customerEmail}"/>
                         <br/>
                         <br/>
                         <br/>
@@ -1024,15 +1022,15 @@
                         <br/>
                         <br/>
                         <h:outputText value="Bank Account Type: "/>
-                        <h:outputText value="#{accountManagedBean.bankAccountType}"/>
+                        <h:outputText value="#{employeeOpenAccountManagedBean.bankAccountType}"/>
                         <br/>
                         <h:outputText value="Initial Deposit Amount: "/>
-                        <h:outputText value="#{accountManagedBean.initialDepositAmt}"/>
+                        <h:outputText value="#{employeeOpenAccountManagedBean.initialDepositAmt}"/>
                         <br/>
                         <br/>
                         <br/>
                         <h:panelGrid columns="2" style="margin-bottom:10px">
-                            <p:selectBooleanCheckbox id = "agreement" value="#{accountManagedBean.agreement}" 
+                            <p:selectBooleanCheckbox id = "agreement" value="#{employeeOpenAccountManagedBean.agreement}" 
                                                      style="margin-top:5px"/>
                             <h:outputText value="I have read and agree to the terms of Customer Declaration and Confirmation." />
                             <br/>
@@ -1044,7 +1042,7 @@
                     </p:panel>
 
                     <p:commandButton id="saveBtn" value="Open Account" update="growl"
-                                     actionListener="#{accountManagedBean.saveAccount}" ajax="true"/>
+                                     actionListener="#{employeeOpenAccountManagedBean.saveAccount}" ajax="true"/>
                 </p:tab>
             </p:wizard>
         </h:form>

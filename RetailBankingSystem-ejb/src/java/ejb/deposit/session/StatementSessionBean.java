@@ -31,14 +31,14 @@ public class StatementSessionBean implements StatementSessionBeanLocal {
 
     @Override
     public Long addNewStatement(String statementDate, String statementType, String accountDetails,
-            Long customerBasicId) {
+            Long bankAccountId) {
 
         Statement statement = new Statement();
 
         statement.setStatementDate(statementDate);
         statement.setStatementType(statementType);
         statement.setAccountDetails(accountDetails);
-        statement.setCustomerBasic(bankAccountSessionLocal.retrieveCustomerBasicById(customerBasicId));
+        statement.setBankAccount(bankAccountSessionLocal.retrieveBankAccountById(bankAccountId));
 
         entityManager.persist(statement);
         entityManager.flush();
@@ -47,15 +47,15 @@ public class StatementSessionBean implements StatementSessionBeanLocal {
     }
 
     @Override
-    public List<Statement> retrieveStatementByCusIC(String customerIdentificationNum) {
-        CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum.toUpperCase());
+    public List<Statement> retrieveStatementByAccNum(String bankAccountNum) {
+        BankAccount bankAccount = bankAccountSessionLocal.retrieveBankAccountByNum(bankAccountNum);
 
-        if (customerBasic.getCustomerBasicId() == null) {
+        if (bankAccount.getBankAccountId() == null) {
             return new ArrayList<Statement>();
         }
         try {
-            Query query = entityManager.createQuery("Select s From Statement s Where s.customerBasic=:customerBasic");
-            query.setParameter("customerBasic", customerBasic);
+            Query query = entityManager.createQuery("Select s From Statement s Where s.bankAccount=:bankAccount");
+            query.setParameter("bankAccount", bankAccount);
             return query.getResultList();
         } catch (EntityNotFoundException enfe) {
             System.out.println("\nEntity not found error: " + enfe.getMessage());
@@ -93,21 +93,22 @@ public class StatementSessionBean implements StatementSessionBeanLocal {
             System.out.println("generateStatement for");
             String bankAccountNum = activatedBankAccount.getBankAccountNum();
             CustomerBasic customerBasic = bankAccountSessionLocal.retrieveCustomerBasicByAccNum(bankAccountNum);
-            List<Statement> statemens = customerBasic.getStatement();
+            List<Statement> statemens = activatedBankAccount.getStatement();
 
-            Double statementDateDouble = customerBasic.getStatementDateDouble() + 1;
+            Double statementDateDouble = activatedBankAccount.getStatementDateDouble() + 1;
             if (statementDateDouble == 12) {
-                customerBasic.setStatementDateDouble(0.0);
+                activatedBankAccount.setStatementDateDouble(0.0);
             } else {
-                customerBasic.setStatementDateDouble(statementDateDouble);
+                activatedBankAccount.setStatementDateDouble(statementDateDouble);
             }
 
             String statementDate = handleStatementDate(statementDateDouble);
             String statementType = "Merlion Bank Consolidated Statement";
 
             String customerName = customerBasic.getCustomerName();
-            String customerAddress = customerBasic.getCustomerAddress();
-            String accountDetails = customerName + "\n" + customerAddress;
+            bankAccountNum = activatedBankAccount.getBankAccountNum();
+            String bankAccountType = activatedBankAccount.getBankAccountType();
+            String accountDetails = customerName + "\n" + bankAccountNum + "\n" + bankAccountType;
 
             System.out.println("generateStatement add");
             Long newStatementId = addNewStatement(statementDate, statementType, accountDetails, customerBasic.getCustomerBasicId());

@@ -43,7 +43,6 @@ public class CustomerBasic implements Serializable {
     private String customerAge;
 
     private byte[] customerSignature;
-    private Double statementDateDouble;
 
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
     private List<BankAccount> bankAccount;
@@ -53,9 +52,6 @@ public class CustomerBasic implements Serializable {
 
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
     private List<EnquiryCase> enquiryCase;
-    
-    @OneToMany(cascade={CascadeType.ALL},fetch=FetchType.EAGER,mappedBy="customerBasic")
-    private List<Statement> statement;
 
     public Long getCustomerBasicId() {
         return customerBasicId;
@@ -259,22 +255,6 @@ public class CustomerBasic implements Serializable {
     
     public void addNewCase (EnquiryCase ec) {
         enquiryCase.add(ec);
-    }
-
-    public List<Statement> getStatement() {
-        return statement;
-    }
-
-    public void setStatement(List<Statement> statement) {
-        this.statement = statement;
-    }
-
-    public Double getStatementDateDouble() {
-        return statementDateDouble;
-    }
-
-    public void setStatementDateDouble(Double statementDateDouble) {
-        this.statementDateDouble = statementDateDouble;
     }
 
     @Override
