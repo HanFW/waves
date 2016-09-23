@@ -86,7 +86,7 @@ public class CustomerLoginManagedBean implements Serializable {
                 case "invalidPassword":
                     System.out.println("=== infrastructure/loginBean: doLogin(): login failed: invalid password");
                     customerPassword = "";
-                    message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid password: ", "Please enter your passsword again.");
+                    message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid password: ", "Please enter your password again.");
                     context.addMessage(null, message);
                     loginAttempts++;
                     System.out.println("=== infrastructure/loginBean: doLogin(): login attempts: " + loginAttempts);
@@ -131,6 +131,13 @@ public class CustomerLoginManagedBean implements Serializable {
                 customerOTP = null;
             }
         }
+    }
+    
+    public void sendOTP(ActionEvent event) {
+        System.out.println("-");
+        System.out.println("====== infrastructure/CustomerLoginManagedBean: sendOTP() ======");
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        sMSSessionBeanLocal.sendOTP("customer", customer);
     }
 
     public void doLogout(ActionEvent event) throws IOException {

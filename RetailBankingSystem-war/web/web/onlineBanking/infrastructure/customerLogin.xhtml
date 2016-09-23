@@ -53,7 +53,7 @@
             </h:form>
             <h:form id="otpForm">
                 <p:dialog header="One-time Password" widgetVar="otpDialog" resizable="false">
-                    <h:panelGrid>
+                    <h:panelGrid id="otpPanel">
                         <p:row>
                             <p:column>
                                 <p:outputLabel value="Please enter the one-time password sent to your registered mobile. "/>
@@ -63,12 +63,12 @@
                         <p:row>
                             <p:column>
                                 <p:inputText type="password" value="#{customerLoginManagedBean.customerOTP}"/>
-                                <p:commandLink value="Resend OTP" actionListener="#{sMSManagedBean.sendOTP}"/>
+                                <p:commandLink value="Resend OTP" actionListener="#{customerLoginManagedBean.sendOTP}"/>
                             </p:column>
                         </p:row>
                         <p:row>
                             <p:column>
-                                <p:commandButton value="Submit" actionListener="#{customerLoginManagedBean.verifyLoginOTP}"/>
+                                <p:commandButton value="Submit" actionListener="#{customerLoginManagedBean.verifyLoginOTP}" update="otpPanel"/>
                             </p:column>
                         </p:row>
                     </h:panelGrid>
