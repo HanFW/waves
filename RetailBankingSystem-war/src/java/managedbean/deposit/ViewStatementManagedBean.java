@@ -106,7 +106,7 @@ public class ViewStatementManagedBean {
                 .getExternalContext().getResponse();
 
         InputStream reportStream = ctx.getExternalContext()
-                .getResourceAsStream("/E-Statements/myBankStatement.jasper");
+                .getResourceAsStream("/E-Statements/myStatement.jasper");
 
         if (reportStream == null) {
             System.err.println("********* INputstream is null");
@@ -125,13 +125,10 @@ public class ViewStatementManagedBean {
         Long startTimeLong = cal.getTimeInMillis()-30000000;
         Long endTimeLong = cal.getTimeInMillis();
 
-        System.out.println(bankAccount.getBankAccountId());
-        System.out.println(startTimeLong);
-        System.out.println(cal.getTimeInMillis());
         Map parameters = new HashMap();
-        parameters.put("BankAccountId", bankAccount.getBankAccountId());
-        parameters.put("StartTime", startTimeLong);
-        parameters.put("EndTime", endTimeLong);
+        parameters.put("bankAccountId", bankAccount.getBankAccountId());
+        parameters.put("startTimeLong", startTimeLong);
+        parameters.put("endTimeLong", endTimeLong);
         
         JasperRunManager.runReportToPdfStream(reportStream, servletOutputStream, parameterMap, connection);
 

@@ -44,8 +44,8 @@ public class EmployeeSaveAccountManagedBean {
             attention = "Dear customer, you have to declare your fixed deposit period before activating your account."
                     + "To activate, please deposit/transfer sufficient amount to your account.";
         }
-        if (bankAccountType.equals("Dear customer, monthly Savings Account")) {
-            attention = "Minimum monthly saving is S$50.";
+        if (bankAccountType.equals("Monthly Savings Account")) {
+            attention = "Dear customer, minimum monthly saving is S$50.";
         }
     }
 

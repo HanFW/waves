@@ -144,7 +144,6 @@ public class EmployeeChangePwdDoneManagedBean implements Serializable{
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Your old password is wrong.", "Failed!"));
         }
         
-        customerIdentificationNum=null;
     }
 
     private String handleAccountString(String bankAccountNumWithType) {

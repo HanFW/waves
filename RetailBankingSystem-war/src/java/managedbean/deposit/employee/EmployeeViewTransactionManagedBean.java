@@ -78,8 +78,6 @@ public class EmployeeViewTransactionManagedBean {
                 Map<String, Object> sessionMap = externalContext.getSessionMap();
                 sessionMap.put("customerIdentificationNum", customerIdentificationNum);
                 
-                customerIdentificationNum=null;
-                
                 ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/deposit/employeeViewTransactionDone.xhtml?faces-redirect=true");
             }
         }

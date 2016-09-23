@@ -111,12 +111,12 @@ public class AccountManagedBean implements Serializable {
     private String dateOfBirth;
     private Double statementDateDouble;
 
-    private boolean salutationRender=false;
-    private boolean nricSGRender=false;
-    private boolean nricRender=false;
-    private boolean passportRender=false;
-    private boolean singaporePRRender=false;
-    
+    private boolean salutationRender = false;
+    private boolean nricSGRender = false;
+    private boolean nricRender = false;
+    private boolean passportRender = false;
+    private boolean singaporePRRender = false;
+
     //private ExternalContext ec;
     //ec = FacesContext.getCurrentInstance().getExternalContext();
     public AccountManagedBean() {
@@ -166,10 +166,10 @@ public class AccountManagedBean implements Serializable {
 
         if (customerSalutation.equals("Others")) {
             visible = true;
-            salutationRender=true;
+            salutationRender = true;
         } else {
             visible = false;
-            salutationRender=false;
+            salutationRender = false;
         }
     }
 
@@ -179,11 +179,11 @@ public class AccountManagedBean implements Serializable {
             visible2 = true;
             visible4 = false;
             visible5 = false;
-            singaporePR=null;
-            nricSGRender=true;
+            singaporePR = null;
+            nricSGRender = true;
         } else {
             visible2 = false;
-            nricSGRender=false;
+            nricSGRender = false;
         }
     }
 
@@ -193,14 +193,14 @@ public class AccountManagedBean implements Serializable {
             visible3 = true;
             visible4 = false;
             visible5 = false;
-            singaporePR=null;
-            singaporePRRender=true;
-            nricRender=false;
-            passportRender=false;
-            nricSGRender=false;
+            singaporePR = null;
+            singaporePRRender = true;
+            nricRender = false;
+            passportRender = false;
+            nricSGRender = false;
         } else {
             visible3 = false;
-            singaporePRRender=false;
+            singaporePRRender = false;
         }
     }
 
@@ -208,11 +208,11 @@ public class AccountManagedBean implements Serializable {
 
         if (singaporePR.equals("Yes")) {
             visible4 = true;
-            nricRender=true;
-            passportRender=false;
+            nricRender = true;
+            passportRender = false;
         } else {
             visible4 = false;
-            nricRender=false;
+            nricRender = false;
         }
     }
 
@@ -220,11 +220,11 @@ public class AccountManagedBean implements Serializable {
 
         if (singaporePR.equals("No")) {
             visible5 = true;
-            passportRender=true;
-            nricRender=false;
+            passportRender = true;
+            nricRender = false;
         } else {
             visible5 = false;
-            passportRender=false;
+            passportRender = false;
         }
     }
 
@@ -732,7 +732,7 @@ public class AccountManagedBean implements Serializable {
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
         customerSignature = ec.getSessionMap().get("customerSignature").toString();
-
+        
         checkIdentificationType();
         checkSalutation();
 
@@ -740,7 +740,8 @@ public class AccountManagedBean implements Serializable {
         checkExist = bankAccountSessionLocal.checkExistence(customerIdentificationNum);
         dateOfBirth = bankAccountSessionLocal.changeDateFormat(customerDateOfBirth);
 
-        if (existingCustomer.equals("Yes") && checkExist && agreement) {
+        if (existingCustomer.equals(
+                "Yes") && checkExist && agreement) {
             dailyInterest = "0";
             monthlyInterest = "0";
             isTransfer = "0";
@@ -757,7 +758,7 @@ public class AccountManagedBean implements Serializable {
             bankAccountDepositPeriod = "None";
             currentFixedDepositPeriod = "0";
             fixedDepositStatus = "";
-            statementDateDouble=0.0;
+            statementDateDouble = 0.0;
 
             if (bankAccountType.equals("Monthly Savings Account")) {
                 bankAccountStatus = "Activated";
@@ -768,10 +769,10 @@ public class AccountManagedBean implements Serializable {
 
             newAccountId = bankAccountSessionLocal.addNewAccount(bankAccountNum, bankAccountPwd, bankAccountType,
                     bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
-                    bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus, 
+                    bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
                     statementDateDouble, customerBasicId, newInterestId);
 
-            bankAccount=bankAccountSessionLocal.retrieveBankAccountById(newAccountId);
+            bankAccount = bankAccountSessionLocal.retrieveBankAccountById(newAccountId);
             bankAccountSessionLocal.retrieveBankAccountByCusIC(customerIdentificationNum).add(bankAccount);
 
             statusMessage = "New Account Saved Successfully.";
@@ -785,12 +786,14 @@ public class AccountManagedBean implements Serializable {
 
             ec.redirect(ec.getRequestContextPath() + "/web/merlionBank/deposit/publicSaveAccount.xhtml?faces-redirect=true");
 
-        } else if (existingCustomer.equals("Yes") && !checkExist) {
+        } else if (existingCustomer.equals(
+                "Yes") && !checkExist) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! You don't have Merlion bank account yet.", "Failed!"));
-        } else if (existingCustomer.equals("No") && !checkExist && agreement) {
+        } else if (existingCustomer.equals(
+                "No") && !checkExist && agreement) {
 
             customerAddress = customerStreetName + ", " + customerBlockNum + ", " + customerUnitNum + ", " + customerPostal;
-            
+
             newCustomerBasicId = customerSessionBean.addNewCustomerBasic(customerName,
                     customerSalutation, customerIdentificationNum.toUpperCase(),
                     customerGender, customerEmail, customerMobile.toString(), dateOfBirth,
@@ -812,7 +815,7 @@ public class AccountManagedBean implements Serializable {
             bankAccountDepositPeriod = "None";
             currentFixedDepositPeriod = "0";
             fixedDepositStatus = "";
-            statementDateDouble=0.0;
+            statementDateDouble = 0.0;
 
             if (bankAccountType.equals("Monthly Savings Account")) {
                 bankAccountStatus = "Activated";
@@ -823,7 +826,7 @@ public class AccountManagedBean implements Serializable {
 
             newAccountId = bankAccountSessionLocal.addNewAccount(bankAccountNum, bankAccountPwd, bankAccountType,
                     bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
-                    bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus, 
+                    bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
                     statementDateDouble, newCustomerBasicId, newInterestId);
 
             statusMessage = "New Account Saved Successfully.";
@@ -837,16 +840,18 @@ public class AccountManagedBean implements Serializable {
 
             ec.redirect(ec.getRequestContextPath() + "/web/merlionBank/deposit/publicSaveAccount.xhtml?faces-redirect=true");
 
-        } else if (existingCustomer.equals("No") && checkExist) {
+        } else if (existingCustomer.equals(
+                "No") && checkExist) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! You have Merlion bank account already. Please check.", "Failed!"));
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Please agree to terms.", "Failed!"));
         }
 
-        customerSignature = "";
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         Map<String, Object> sessionMap = externalContext.getSessionMap();
-        sessionMap.put("customerSignature", customerSignature);
+
+        sessionMap.put(
+                "customerSignature", customerSignature);
     }
 
     public void checkIdentificationType() {

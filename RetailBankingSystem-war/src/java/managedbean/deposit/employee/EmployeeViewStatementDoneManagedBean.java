@@ -110,7 +110,7 @@ public class EmployeeViewStatementDoneManagedBean {
                 .getExternalContext().getResponse();
 
         InputStream reportStream = ctx.getExternalContext()
-                .getResourceAsStream("/E-Statements/myBankStatement.jasper");
+                .getResourceAsStream("/E-Statements/bankStatement.jasper");
 
         if (reportStream == null) {
             System.err.println("********* INputstream is null");
@@ -126,16 +126,18 @@ public class EmployeeViewStatementDoneManagedBean {
         response.setContentType("application/pdf");
         
         Calendar cal = Calendar.getInstance();
-        Long startTimeLong = cal.getTimeInMillis()-30000000;
-        Long endTimeLong = cal.getTimeInMillis();
+        Long startTimeLong = 1474615723704l;
+        Long endTimeLong = 1474616924103l;
         
         Map parameters = new HashMap();
-        parameters.put("BankAccountId", bankAccount.getBankAccountId().toString());
-        parameters.put("StartTime", startTimeLong);
-        parameters.put("EndTime", endTimeLong);
+        parameters.put("bankAccountId", bankAccount.getBankAccountId());
 
+        System.err.println("********** Start Jasper");
+        
         JasperRunManager.runReportToPdfStream(reportStream, servletOutputStream, parameterMap, connection);
 
+        System.err.println("********** End Jasper");
+        
         connection.close();
         servletOutputStream.flush();
         servletOutputStream.close();
@@ -160,8 +162,6 @@ public class EmployeeViewStatementDoneManagedBean {
                 return statement;
             }
         }
-
-        customerIdentificationNum = null;
 
         return statement;
     }
