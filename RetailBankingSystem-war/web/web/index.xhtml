@@ -17,15 +17,19 @@
                     <p:menuitem value="Home" url="/web/merlionBank/deposit/publicDepositIndex.xhtml" />
                     <p:menuitem value="Open Account" url="/web/merlionBank/deposit/publicOpenAccount.xhtml" />
                 </p:submenu>
-               
+
                 <p:submenu label="Login">
                     <p:menuitem value="Login" url="/web/onlineBanking/infrastructure/customerLogin.xhtml"/>
                 </p:submenu>
-                
+
                 <p:submenu label="Employee">
                     <p:menuitem value="Employee Login" url="/web/internalSystem/infrastructure/employeeLogin.xhtml"/>
+                    <p:menuitem value="Open Account" url="/web/internalSystem/deposit/employeeOpenAccount.xhtml" />
                     <p:menuitem value="Cash Deposit" url="/web/internalSystem/deposit/employeeCashDeposit.xhtml"/>
-                    <p:menuitem value="Cash Deposit" url="/web/internalSystem/deposit/employeeCashWithdraw.xhtml"/>
+                    <p:menuitem value="Cash Withdraw" url="/web/internalSystem/deposit/employeeCashWithdraw.xhtml"/>
+                    <p:menuitem value="View Account" url="/web/internalSystem/deposit/employeeViewAccount.xhtml" />
+                    <p:menuitem value="View Transaction" url="/web/internalSystem/deposit/employeeViewTransaction.xhtml" />
+                    <p:menuitem value="View Statement" url="/web/internalSystem/deposit/employeeViewStatement.xhtml" />
                 </p:submenu>
             </p:menubar>
         </h:form>

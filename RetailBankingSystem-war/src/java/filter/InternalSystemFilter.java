@@ -15,14 +15,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 
-@WebFilter(filterName = "AuthenticationFilter", urlPatterns = {"*.xhtml"}, dispatcherTypes = {DispatcherType.REQUEST})
+@WebFilter(filterName = "InternalSystemFilter", urlPatterns = {"/web/internalSystem/*"}, dispatcherTypes = {DispatcherType.REQUEST})
 
-public class AuthenticationFilter implements Filter {
+public class InternalSystemFilter implements Filter {
 
    
     private FilterConfig filterConfig = null;
 
-    public AuthenticationFilter() {
+    public InternalSystemFilter() {
     }
 
     @Override
@@ -32,7 +32,6 @@ public class AuthenticationFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         try {
-
             HttpServletRequest req = (HttpServletRequest) request;
             HttpServletResponse res = (HttpServletResponse) response;
             HttpSession httpSession = req.getSession(true);
@@ -56,7 +55,6 @@ public class AuthenticationFilter implements Filter {
                 if (!isLogin) {
                     System.err.println("********** SecurityFilter.doFilter: not log in");
                     req.getRequestDispatcher("/web/index.xhtml").forward(request, response);
-
                 }
 
                 System.err.println("********** SecurityFilter.doFilter:log in already");

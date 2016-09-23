@@ -49,7 +49,9 @@
                     <p:menuitem value="Logout" actionListener="#{customerLoginManagedBean.doLogout}"/>
                 </p:submenu>
             </p:menubar>
-            <br/>
+        </h:form>
+
+        <h:form>
             <p:panel id="panel" header="View eStatement"> 
                 <p:messages />
 
@@ -72,7 +74,7 @@
                     <p:column headerText="View" style="width: 10%"> 
                         <center>
                             <p:commandButton ajax="false" process="@this" action="#{viewStatementManagedBean.viewStatement}" icon="ui-icon-document">
-                                <f:setPropertyActionListener value="#{statement.customerBasic.customerBasicId}" target="#{viewStatementManagedBean.customerBasicId}" />
+                                <f:setPropertyActionListener value="#{statement.bankAccount.bankAccountId}" target="#{viewStatementManagedBean.bankAccountId}" />
                             </p:commandButton>
                         </center>
                     </p:column>

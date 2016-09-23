@@ -7,14 +7,14 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
-@Named(value = "signatureView")
+@Named(value = "signatureViewManagedBean")
 @RequestScoped
 
-public class SignatureView implements Serializable {
+public class SignatureViewManagedBean implements Serializable {
 
     private String customerSignature;
 
-    public SignatureView() {
+    public SignatureViewManagedBean() {
     }
 
     public String getCustomerSignature() {

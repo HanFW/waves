@@ -116,6 +116,7 @@ public class AccountManagedBean implements Serializable {
     private boolean nricRender=false;
     private boolean passportRender=false;
     private boolean singaporePRRender=false;
+    
     //private ExternalContext ec;
     //ec = FacesContext.getCurrentInstance().getExternalContext();
     public AccountManagedBean() {
@@ -756,6 +757,7 @@ public class AccountManagedBean implements Serializable {
             bankAccountDepositPeriod = "None";
             currentFixedDepositPeriod = "0";
             fixedDepositStatus = "";
+            statementDateDouble=0.0;
 
             if (bankAccountType.equals("Monthly Savings Account")) {
                 bankAccountStatus = "Activated";
@@ -766,7 +768,8 @@ public class AccountManagedBean implements Serializable {
 
             newAccountId = bankAccountSessionLocal.addNewAccount(bankAccountNum, bankAccountPwd, bankAccountType,
                     bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
-                    bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus, customerBasicId, newInterestId);
+                    bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus, 
+                    statementDateDouble, customerBasicId, newInterestId);
 
             bankAccount=bankAccountSessionLocal.retrieveBankAccountById(newAccountId);
             bankAccountSessionLocal.retrieveBankAccountByCusIC(customerIdentificationNum).add(bankAccount);
@@ -780,14 +783,13 @@ public class AccountManagedBean implements Serializable {
             ec.getFlash().put("bankAccountType", bankAccountType);
             ec.getFlash().put("initialDepositAmt", initialDepositAmt);
 
-            ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerSaveAccount.xhtml?faces-redirect=true");
+            ec.redirect(ec.getRequestContextPath() + "/web/merlionBank/deposit/publicSaveAccount.xhtml?faces-redirect=true");
 
         } else if (existingCustomer.equals("Yes") && !checkExist) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! You don't have Merlion bank account yet.", "Failed!"));
         } else if (existingCustomer.equals("No") && !checkExist && agreement) {
 
             customerAddress = customerStreetName + ", " + customerBlockNum + ", " + customerUnitNum + ", " + customerPostal;
-            statementDateDouble=0.0;
             
             newCustomerBasicId = customerSessionBean.addNewCustomerBasic(customerName,
                     customerSalutation, customerIdentificationNum.toUpperCase(),
@@ -795,7 +797,7 @@ public class AccountManagedBean implements Serializable {
                     customerNationality, customerCountryOfResidence, customerRace,
                     customerMaritalStatus, customerOccupation, customerCompany,
                     customerAddress, customerPostal, customerOnlineBankingAccountNum,
-                    customerOnlineBankingPassword, customerSignature.getBytes(),statementDateDouble);
+                    customerOnlineBankingPassword, customerSignature.getBytes());
 
             dailyInterest = "0";
             monthlyInterest = "0";
@@ -810,6 +812,7 @@ public class AccountManagedBean implements Serializable {
             bankAccountDepositPeriod = "None";
             currentFixedDepositPeriod = "0";
             fixedDepositStatus = "";
+            statementDateDouble=0.0;
 
             if (bankAccountType.equals("Monthly Savings Account")) {
                 bankAccountStatus = "Activated";
@@ -820,7 +823,8 @@ public class AccountManagedBean implements Serializable {
 
             newAccountId = bankAccountSessionLocal.addNewAccount(bankAccountNum, bankAccountPwd, bankAccountType,
                     bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
-                    bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus, newCustomerBasicId, newInterestId);
+                    bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus, 
+                    statementDateDouble, newCustomerBasicId, newInterestId);
 
             statusMessage = "New Account Saved Successfully.";
 
@@ -831,7 +835,7 @@ public class AccountManagedBean implements Serializable {
             ec.getFlash().put("bankAccountType", bankAccountType);
             ec.getFlash().put("initialDepositAmt", initialDepositAmt);
 
-            ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerSaveAccount.xhtml?faces-redirect=true");
+            ec.redirect(ec.getRequestContextPath() + "/web/merlionBank/deposit/publicSaveAccount.xhtml?faces-redirect=true");
 
         } else if (existingCustomer.equals("No") && checkExist) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! You have Merlion bank account already. Please check.", "Failed!"));

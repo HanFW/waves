@@ -75,7 +75,7 @@
                             <p:outputLabel for="bankAccountType" style="font-weight: bold" value="Account Type: " />
                         </p:column>
                         <p:column>
-                            <p:selectOneMenu id="bankAccountType" value="#{employeeOpenAccount.bankAccountType}" 
+                            <p:selectOneMenu id="bankAccountType" value="#{internalOpenAccountManagedBean.bankAccountType}" 
                                              style="width:125px" required="true" requiredMessage="Required Field">
                                 <f:selectItem itemLabel="Please Select" itemValue="" noSelectionOption="true"/>
                                 <f:selectItem itemLabel="Monthly Savings Account" itemValue="Monthly Savings Account" />
@@ -94,7 +94,7 @@
                             <p:outputLabel for="bankAccountPwd" style="font-weight: bold" value="Account Password: " />
                         </p:column>
                         <p:column>
-                            <p:password id="bankAccountPwd" value="#{employeeOpenAccount.bankAccountPwd}" match="confirmBankAccountPwd" 
+                            <p:password id="bankAccountPwd" value="#{internalOpenAccountManagedBean.bankAccountPwd}" match="confirmBankAccountPwd" 
                                         required="true" requiredMessage="Required Field">
                                 <f:validateLength minimum="6" maximum="6" />
                             </p:password>
@@ -109,7 +109,7 @@
                             <p:outputLabel for ="confirmBankAccountPwd" style="font-weight:bold" value="Confirm Password: " />
                         </p:column>
                         <p:column>
-                            <p:password id="confirmBankAccountPwd" value="#{employeeOpenAccount.confirmBankAccountPwd}" 
+                            <p:password id="confirmBankAccountPwd" value="#{internalOpenAccountManagedBean.confirmBankAccountPwd}" 
                                         label="Confirm Password" maxlength="6" required="true" requiredMessage="Required Field">
                                 <f:validateLength minimum="6" maximum="6" />
                             </p:password>
@@ -126,30 +126,30 @@
                 <p:separator/>
                 <br/>
                 <h:outputText value="Name: "  style="font-weight: bold"/>
-                <h:outputText value="#{employeeOpenAccount.customerName}" />
+                <h:outputText value="#{internalOpenAccountManagedBean.customerName}" />
                 <br/>
                 <br/>
                 <h:outputText value="Identification Number: " style="font-weight: bold"/>
-                <h:outputText value="#{employeeOpenAccount.customerIdentificationNum}" />
+                <h:outputText value="#{internalOpenAccountManagedBean.customerIdentificationNum}" />
                 <br/>
                 <br/>
                 <h:outputText value="Email: " style="font-weight: bold"/>
-                <h:outputText value="#{employeeOpenAccount.customerEmail}"/>
+                <h:outputText value="#{internalOpenAccountManagedBean.customerEmail}"/>
                 <br/>
                 <br/>
                 <h:outputText value="Mobile: " style="font-weight: bold"/>
-                <h:outputText value="#{employeeOpenAccount.customerMobile}"/>
+                <h:outputText value="#{internalOpenAccountManagedBean.customerMobile}"/>
                 <br/>
                 <br/>
                 <h:panelGrid columns="2" style="margin-bottom:10px">
-                    <p:selectBooleanCheckbox id = "agreement" value="#{employeeOpenAccount.agreement}" 
+                    <p:selectBooleanCheckbox id = "agreement" value="#{internalOpenAccountManagedBean.agreement}" 
                                              style="margin-top:5px"/>
                     <h:outputText value="I have read and agree to the terms of Customer Declaration and Confirmation." />
                     <br/>
                     <h:outputText value="I have also read and agree to the Terms and Conditions Governing Personal Data Protection Act 2012."/>
                 </h:panelGrid>
 
-                <p:commandButton id="saveBtn" value="Open Account" actionListener="#{employeeOpenAccount.saveAccount}" 
+                <p:commandButton id="saveBtn" value="Open Account" actionListener="#{internalOpenAccountManagedBean.saveAccount}" 
                                  ajax="true" update="panel"/>
             </p:panel>
         </h:form>

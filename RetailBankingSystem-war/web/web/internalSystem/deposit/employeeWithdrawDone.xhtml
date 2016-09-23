@@ -1,6 +1,9 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> <html xmlns="http://www.w3.org/1999/xhtml"
-                                                                                                                                xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:p="http://primefaces.org/ui">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"                                                                                                       
+      xmlns:h="http://xmlns.jcp.org/jsf/html" 
+      xmlns:f="http://xmlns.jcp.org/jsf/core" 
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>Cash Withdraw</title>
         <style type="text/css">
@@ -15,8 +18,13 @@
             <h1>Welcome to Merlion Bank</h1>
             <p:menubar>
                 <p:submenu label="My Account">
+                    <p:menuitem value="Home" url="/web/onlineBanking/deposit/customerDepositIndex.xhtml" />
+                    <p:menuitem value="Open Account" url="/web/internalSystem/deposit/employeeOpenAccount.xhtml" />
                     <p:menuitem value="Cash Deposit" url="/web/onlineBanking/deposit/customerDepositIndex.xhtml" />
-                    <p:menuitem value="Cash Withdraw" url="employeeCashWithdraw.xhtml" />
+                    <p:menuitem value="Cash Withdraw" url="/web/internalSystem/deposit/employeeCashWithdraw.xhtml" />
+                    <p:menuitem value="View Account" url="/web/internalSystem/deposit/employeeViewAccount.xhtml" />
+                    <p:menuitem value="View Transaction" url="/web/internalSystem/deposit/employeeViewTransaction.xhtml" />
+                    <p:menuitem value="View Statement" url="/web/internalSystem/deposit/employeeViewStatement.xhtml" />
                 </p:submenu>
             </p:menubar>
         </h:form>
