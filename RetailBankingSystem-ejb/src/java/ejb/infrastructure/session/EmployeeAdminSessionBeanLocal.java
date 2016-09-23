@@ -40,6 +40,8 @@ public interface EmployeeAdminSessionBeanLocal {
     
     public List<Employee> getEmployees();
     
+    public List<Employee> getArchivedEmployees();
+    
     public Employee getEmployeeById(Long employeeId);
     
     public List<String> getEmployeeDepartments();

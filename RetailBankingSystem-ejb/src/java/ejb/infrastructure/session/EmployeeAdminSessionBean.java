@@ -191,6 +191,15 @@ public class EmployeeAdminSessionBean implements EmployeeAdminSessionBeanLocal {
         List<Employee> employees = query.getResultList();
         return employees;
     }
+    
+    @Override
+     public List<Employee> getArchivedEmployees(){
+        System.out.println("*** adminSessionBean: Display all employee accounts");
+        Query query = em.createQuery("SELECT e FROM Employee e where e.employeeStatus=:status");
+        query.setParameter("status","false");
+        List<Employee> employees = query.getResultList();
+        return employees;
+     }
 
     @Override
     public Employee getEmployeeById(Long employeeId) {
@@ -305,7 +314,9 @@ public class EmployeeAdminSessionBean implements EmployeeAdminSessionBeanLocal {
         System.out.println("*** adminSessionBean: Archive employee account");
 
         Employee findEmployee = em.find(Employee.class, employeeId);
+        System.out.println("*** adminSessionBean: Archive employee account name: "+findEmployee.getEmployeeName());
         findEmployee.setEmployeeStatus("false");
+        em.flush();
         return "success";
     }
 

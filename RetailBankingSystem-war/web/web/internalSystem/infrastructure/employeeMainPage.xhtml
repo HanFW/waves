@@ -8,15 +8,16 @@
         <title>Employee Main Page</title>
     </h:head>
     <h:body>
-        <!--        <h1>Welcome to Merlion Bank Internal System</h1>-->
-        <p:notificationBar position="top" effect="slide" styleClass="top" widgetVar="bar">
-            <h:outputText value="Welcome!" style="font-size:36px;" />
-        </p:notificationBar>
+   
+<!--           <h:outputText value="Welcome "  style="font-size:24px;font-family: Arial" />
+           <h:outputText value='"  style="font-size:24px;font-family: Arial" />
+           <h:outputText value="Welcome "  style="font-size:24px;font-family: Arial" />-->
+        
         <h:form>
             <p:panel visible="#{employeeAccountManagedBean.hasRoleSystemAdmin()}" style="border: none">
                 <p:row>
-                    <p:button outcome="/web/internalSystem/infrastructure/employeeUserAccountManagement.xhtml" value="System Administrator">
-                    </p:button>
+                    <p:link outcome="/web/internalSystem/infrastructure/employeeUserAccountManagement.xhtml" value="System Administrator">
+                    </p:link>
                 </p:row>
             </p:panel>
 

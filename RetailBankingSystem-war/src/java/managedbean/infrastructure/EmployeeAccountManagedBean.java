@@ -136,6 +136,14 @@ public class EmployeeAccountManagedBean implements Serializable {
         }
         return employees;
     }
+    
+      public List<Employee> getArchivedEmployees() {
+
+        if (employees == null) {
+            employees = adminSessionBeanLocal.getArchivedEmployees();;
+        }
+        return employees;
+    }
 
     public List<String> getDepartments() {
         if (departments == null) {
