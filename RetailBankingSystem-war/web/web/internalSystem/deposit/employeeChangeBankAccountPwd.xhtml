@@ -17,7 +17,7 @@
         <h:form id="formMain">
             <h1>Welcome to Merlion Bank</h1>
             <p:menubar>
-                <p:submenu label="My Account">
+                <p:submenu label="Change Deposit Account Password">
                     <p:menuitem value="Home" url="/web/onlineBanking/deposit/customerDepositIndex.xhtml" />
                     <p:menuitem value="Open Account" url="/web/internalSystem/deposit/employeeOpenAccount.xhtml" />
                     <p:menuitem value="Cash Deposit" url="/web/internalSystem/deposit/employeeCashDeposit.xhtml" />
@@ -32,7 +32,7 @@
 
         <h:form>
             <br/>
-            <p:panel id="panel" header="View Account">
+            <p:panel id="panel" header="Change Deposit Account Password">
                 <p:messages globalOnly="true"/>
 
                 <p:panelGrid style="margin-bottom:10px">
@@ -42,7 +42,7 @@
                             <p:outputLabel style="font-weight: bold" value="(As per NRIC/Passport): " />
                         </p:column>
                         <p:column>
-                            <p:inputText label="Customer Name" id="customerName" value="#{employeeViewAccountManagedBean.customerName}"
+                            <p:inputText label="Customer Name" id="customerName" value="#{employeeChangeBankAccountPwdManagedBean.customerName}"
                                          required="true" requiredMessage="Required Field">
                             </p:inputText>
                         </p:column>
@@ -56,7 +56,7 @@
                             <p:outputLabel for="customerIdentificationNum" style="font-weight: bold" value="Identification Number: " />
                         </p:column>
                         <p:column>
-                            <p:inputText label="Customer Identification Number" id="customerIdentificationNum" value="#{employeeViewAccountManagedBean.customerIdentificationNum}"
+                            <p:inputText label="Customer Identification Number" id="customerIdentificationNum" value="#{employeeChangeBankAccountPwdManagedBean.customerIdentificationNum}"
                                          required="true" requiredMessage="Required Field">
                             </p:inputText>
                         </p:column>
@@ -70,7 +70,7 @@
                             <p:outputLabel for="customerDateOfBirth" style="font-weight: bold" value="Date Of Birth: " />
                         </p:column>
                         <p:column>
-                            <p:calendar id="customerDateOfBirth" value="#{employeeViewAccountManagedBean.customerDateOfBirth}" 
+                            <p:calendar id="customerDateOfBirth" value="#{employeeChangeBankAccountPwdManagedBean.customerDateOfBirth}" 
                                         showOn="button" locale="de" navigator="true" pattern="dd/MM/yyyy" 
                                         yearRange="c-200:c+200" required="true" requiredMessage="Required Field"/>
                         </p:column>
@@ -80,7 +80,7 @@
                     </p:row>
 
                 </p:panelGrid>
-
+                
                 <p:commandButton id="cancelBtn" action="/web/index.xhtml" value="Cancel" update="panel" immediate = "true">
                     <p:confirm header="Cancel" message="Are you sure?" />
                 </p:commandButton>
@@ -91,7 +91,7 @@
                 </p:confirmDialog>
 
                 <p:commandButton id="submitBtn" value="Submit" update="panel"
-                                 action="#{employeeViewAccountManagedBean.submit}" ajax="true"/>
+                                 action="#{employeeChangeBankAccountPwdManagedBean.submit}" ajax="true"/>
 
             </p:panel>
         </h:form>
