@@ -76,7 +76,7 @@ public class OnlineBankingFilter implements Filter {
                         // customer need to get verified by OTP
                         System.out.println("~~~~~~ OnlineBankingFilter: " + requestServletPath + " ~~~ page acessible with OTP");
 
-                        if (httpSession.getAttribute("isVerified") == null) {
+                        if (httpSession.getAttribute("isVerified") == null || httpSession.getAttribute("isVerified").equals("false")) {
                             // customer not verified
                             System.out.println("~~~~~~ OnlineBankingFilter: " + requestServletPath + " ~~~ not verified with OTP");
                             httpSession.setAttribute("beforeOTP", requestServletPath);

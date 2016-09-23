@@ -74,10 +74,14 @@ public class SMSManagedBean implements Serializable{
             customerOTP = null;
             originalOTP = null;
             //redirect customer to the destination page
+            context.getExternalContext().getSessionMap().put("isVerified", "true");
+            System.out.println("====== infrastructure/SMSManagedBean: verifyOTP(): customer is verified");
             context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/web/onlineBanking/OTP");
         }else{
             System.out.println("====== infrastructure/SMSManagedBean: verifyOTP(): OTP does not match");
             customerOTP = null;
+            context.getExternalContext().getSessionMap().put("isVerified", "false");
+            System.out.println("====== infrastructure/SMSManagedBean: verifyOTP(): set customer verified status to false");
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "OTP does not match: ", "That is an invalid iBanking OTP. Please re-enter."));
         }
     }
