@@ -147,6 +147,19 @@ public class EmployeeAccountManagedBean implements Serializable {
         if (employees == null) {
             employees = adminSessionBeanLocal.getEmployees();;
         }
+       
+        FacesContext context = FacesContext.getCurrentInstance();
+        Employee findEmployee=(Employee) context.getExternalContext().getSessionMap().get("employee");
+        System.out.println("*** AccountManagedBean: get current system admin "+findEmployee.getEmployeeName());
+        if(employees.contains(findEmployee))
+            employees.remove(findEmployee);
+        
+        for(int i=0;i<employees.size();i++){
+            if(findSystemAdmins(employees.get(i))){
+                System.out.println("*** AccountManagedBean: remove other system admin "+employees.get(i));
+                employees.remove(employees.get(i));
+            }
+        }
         return employees;
     }
 
@@ -489,6 +502,13 @@ public class EmployeeAccountManagedBean implements Serializable {
         FacesContext context = FacesContext.getCurrentInstance();
         employee = (Employee) context.getExternalContext().getSessionMap().get("employee");
 
+        Role hasRole = adminSessionBeanLocal.getRoleByName("System Admin");
+        return employee.getRole().contains(hasRole);
+    }
+    
+    public boolean findSystemAdmins(Employee employee) {
+
+       
         Role hasRole = adminSessionBeanLocal.getRoleByName("System Admin");
         return employee.getRole().contains(hasRole);
     }
