@@ -122,6 +122,7 @@ public class ForgotPasswordManagedBean {
     }
     
     public void submit() throws IOException {
+        
         ec = FacesContext.getCurrentInstance().getExternalContext();
         
         bankAccountNum = handleAccountString(bankAccountNumWithType);
