@@ -16,13 +16,14 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import org.jboss.aerogear.security.otp.api.Base32;
 
 /**
  *
  * @author hanfengwei
  */
 @Stateless
-public class CustomerAdminSessionBean implements CustomerAdminSessionBeanLocal{
+public class CustomerAdminSessionBean implements CustomerAdminSessionBeanLocal {
 
     @EJB
     private CustomerEmailSessionBeanLocal customerEmailSessionBeanLocal;
@@ -35,15 +36,17 @@ public class CustomerAdminSessionBean implements CustomerAdminSessionBeanLocal{
         CustomerBasic customer = em.find(CustomerBasic.class, customerId);
         String account = null;
         String password = null;
+        String secret = null;
 
         if (isNewCustomer(customer)) {
             //generate online banking account number
             account = generateAccountNumber();
-            System.out.println("*** adminSessionBean: generateAccountNumber(): online banking account number generated");
 
             //generate random password
             password = generatePassword();
-            System.out.println("*** adminSessionBean: generatePassword(): online banking account password generated");
+
+            //generate customerOTP secret
+            secret = generateOTPSecret();
 
             //create customer account
             try {
@@ -52,6 +55,7 @@ public class CustomerAdminSessionBean implements CustomerAdminSessionBeanLocal{
                 hashedPassword = md5Hashing(password + customer.getCustomerIdentificationNum().substring(0, 3));
                 customer.setCustomerOnlineBankingPassword(hashedPassword);
                 customer.setCustomerStatus("new");
+                customer.setCustomerOTPSecret(secret);
                 em.flush();
             } catch (NoSuchAlgorithmException ex) {
                 Logger.getLogger(CustomerAdminSessionBean.class.getName()).log(Level.SEVERE, null, ex);
@@ -81,7 +85,9 @@ public class CustomerAdminSessionBean implements CustomerAdminSessionBeanLocal{
     //Generate initial password for customer online banking account
     private String generatePassword() {
         SecureRandom random = new SecureRandom();
-        return new BigInteger(50, random).toString(32);
+        String password = new BigInteger(50, random).toString(32);
+        System.out.println("****** adminSessionBean: generatePassword(): online banking account password generated");
+        return password;
     }
 
     //Generate initial account number for customer online banking account
@@ -91,13 +97,34 @@ public class CustomerAdminSessionBean implements CustomerAdminSessionBeanLocal{
         while (getCustomerByOnlineBankingAccount(accountNumber) != null) {
             accountNumber = new BigInteger(25, random).toString();
         }
+        System.out.println("****** adminSessionBean: generateAccountNumber(): online banking account number generated");
         return accountNumber;
+    }
+
+    //Generate customer OTP secret
+    private String generateOTPSecret() {
+        SecureRandom random = new SecureRandom();
+        String secret = new BigInteger(80, random).toString(32);
+        
+        boolean isUnique = false;
+        while (!isUnique) {
+            Query query = em.createQuery("SELECT c FROM CustomerBasic c WHERE c.customerOTPSecret = :secret");
+            query.setParameter("secret", secret);
+            List resultList = query.getResultList();
+            if(resultList.isEmpty()){
+                isUnique = true;
+            }else{
+                secret = new BigInteger(80, random).toString(32);
+            }
+        }
+        System.out.println("****** adminSessionBean: generateOTPSecret(): OTP secret generated");
+        return secret;
     }
 
     //Do customer login
     @Override
     public String login(String customerAccount, String password) {
-        System.out.println("*** infrastructure/AdminSessionBean: login() ***");
+        System.out.println("****** infrastructure/AdminSessionBean: login() ***");
 
         Query query = em.createQuery("SELECT c FROM CustomerBasic c WHERE c.customerOnlineBankingAccountNum = :accountNum");
         query.setParameter("accountNum", customerAccount);

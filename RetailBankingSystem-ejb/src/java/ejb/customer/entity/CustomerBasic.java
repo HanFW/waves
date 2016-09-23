@@ -41,6 +41,7 @@ public class CustomerBasic implements Serializable {
     private String customerStatus;
     private String customerPayeeNum;
     private String customerAge;
+    private String customerOTPSecret;
 
     private byte[] customerSignature;
 
@@ -255,6 +256,14 @@ public class CustomerBasic implements Serializable {
     
     public void addNewCase (EnquiryCase ec) {
         enquiryCase.add(ec);
+    }
+
+    public String getCustomerOTPSecret() {
+        return customerOTPSecret;
+    }
+
+    public void setCustomerOTPSecret(String customerOTPSecret) {
+        this.customerOTPSecret = customerOTPSecret;
     }
 
     @Override
