@@ -99,22 +99,23 @@ public class CustomerAdminSessionBean implements CustomerAdminSessionBeanLocal {
         }
         System.out.println("****** adminSessionBean: generateAccountNumber(): online banking account number generated");
         return accountNumber;
-    }
+    } 
 
     //Generate customer OTP secret
     private String generateOTPSecret() {
         SecureRandom random = new SecureRandom();
-        String secret = new BigInteger(80, random).toString(32);
-        
+//        String secret = new BigInteger(80, random).toString(32).toUpperCase();
+        String secret = Base32.random();
+
         boolean isUnique = false;
         while (!isUnique) {
             Query query = em.createQuery("SELECT c FROM CustomerBasic c WHERE c.customerOTPSecret = :secret");
             query.setParameter("secret", secret);
             List resultList = query.getResultList();
-            if(resultList.isEmpty()){
+            if (resultList.isEmpty()) {
                 isUnique = true;
-            }else{
-                secret = new BigInteger(80, random).toString(32);
+            } else {
+                secret = Base32.random();
             }
         }
         System.out.println("****** adminSessionBean: generateOTPSecret(): OTP secret generated");
