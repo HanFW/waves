@@ -1,4 +1,4 @@
-package managedbean.deposit.employee;
+package managedbean.deposit;
 
 import ejb.customer.entity.CustomerBasic;
 import ejb.deposit.entity.BankAccount;

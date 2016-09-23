@@ -17,6 +17,7 @@ public class EmployeeSaveAccountManagedBean {
     private String bankAccountType;
     private String initialDepositAmt;
     private String bankAccountStatus;
+    private String attention;
 
     public EmployeeSaveAccountManagedBean() {
     }
@@ -35,6 +36,25 @@ public class EmployeeSaveAccountManagedBean {
         } else {
             bankAccountStatus = "Active";
         }
+
+        if (bankAccountStatus.equals("Inactive") && !bankAccountType.equals("Fixed Deposit Account")) {
+            attention = "Dear customer, your bank account is inactive."
+                    + "To activate, please deposit/transfer sufficient amount to your account.";
+        } else if (bankAccountStatus.equals("Inactive") && bankAccountType.equals("Fixed Deposit Account")) {
+            attention = "Dear customer, you have to declare your fixed deposit period before activating your account."
+                    + "To activate, please deposit/transfer sufficient amount to your account.";
+        }
+        if (bankAccountType.equals("Dear customer, monthly Savings Account")) {
+            attention = "Minimum monthly saving is S$50.";
+        }
+    }
+
+    public String getAttention() {
+        return attention;
+    }
+
+    public void setAttention(String attention) {
+        this.attention = attention;
     }
 
     public String getStatusMessage() {
