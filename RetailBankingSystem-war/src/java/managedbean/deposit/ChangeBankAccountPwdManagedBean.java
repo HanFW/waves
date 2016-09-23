@@ -111,7 +111,6 @@ public class ChangeBankAccountPwdManagedBean {
         bankAccountNum = handleAccountString(bankAccountNumWithType);
 
         BankAccount bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountByNum(bankAccountNum);
-
         String hashedPwd = "";
 
         try {
