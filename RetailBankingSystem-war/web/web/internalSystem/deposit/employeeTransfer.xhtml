@@ -5,7 +5,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>Cash Withdraw</title>
+        <title>View Account</title>
         <style type="text/css">
             .gritter-notice-wrapper {
                 left:200px;
@@ -17,11 +17,11 @@
         <h:form id="formMain">
             <h1>Welcome to Merlion Bank</h1>
             <p:menubar>
-                <p:submenu label="My Account">
+                <p:submenu label="Change Deposit Account Password">
                     <p:menuitem value="Home" url="/web/index.xhtml" />
                     <p:menuitem value="Open Account" url="/web/internalSystem/deposit/employeeOpenAccount.xhtml" />
                     <p:menuitem value="Close Account" url="/web/internalSystem/deposit/employeeCloseAccount.xhtml" />
-                    <p:menuitem value="Cash Deposit" url="/web/internalSystem/deposit/customerCashDeposit.xhtml" />
+                    <p:menuitem value="Cash Deposit" url="/web/internalSystem/deposit/employeeCashDeposit.xhtml" />
                     <p:menuitem value="Cash Withdraw" url="/web/internalSystem/deposit/employeeCashWithdraw.xhtml" />
                     <p:menuitem value="Fund Transfer" url="/web/internalSystem/deposit/employeeTransfer.xhtml" />
                     <p:menuitem value="View Account" url="/web/internalSystem/deposit/employeeViewAccount.xhtml" />
@@ -33,77 +33,72 @@
                 </p:submenu>
             </p:menubar>
         </h:form>
+
         <h:form>
             <br/>
-            <p:panel id="panel" header="Cash Withdraw">
+            <p:panel id="panel" header="Change Deposit Account Password">
                 <p:messages globalOnly="true"/>
 
                 <p:panelGrid style="margin-bottom:10px">
                     <p:row>
                         <p:column>
-                            <p:outputLabel for="withdrawAmt" style="font-weight: bold" value="Withdraw Amount(S$): " />
+                            <p:outputLabel for="customerName" style="font-weight: bold" value="Name: " />
+                            <p:outputLabel style="font-weight: bold" value="(As per NRIC/Passport): " />
                         </p:column>
                         <p:column>
-                            <p:inputText required="true" label="Withdraw Amount" requiredMessage="Withdraw amount is required." id="withdrawAmt"
-                                         value="#{cashManagedBean.withdrawAmt}" converterMessage="Invalid input">
-                                <f:validateDoubleRange minimum="0.0" maximum="99999999.0" />
+                            <p:inputText label="Customer Name" id="customerName" value="#{employeeTransferManagedBean.customerName}"
+                                         required="true" requiredMessage="Required Field">
                             </p:inputText>
                         </p:column>
                         <p:column>
-                            <p:message for="withdrawAmt" />
+                            <p:message for="customerName" />
                         </p:column>
                     </p:row>
 
                     <p:row>
                         <p:column>
-                            <p:outputLabel for="withdrawAccountNum" style="font-weight: bold" value="Withdraw Number: " />
+                            <p:outputLabel for="customerIdentificationNum" style="font-weight: bold" value="Identification Number: " />
                         </p:column>
                         <p:column>
-                            <p:inputText required="true" label="Withdraw Account Number" requiredMessage="Account number is required." id="withdrawAccountNum"
-                                         value="#{cashManagedBean.withdrawAccountNum}">
+                            <p:inputText label="Customer Identification Number" id="customerIdentificationNum" value="#{employeeTransferManagedBean.customerIdentificationNum}"
+                                         required="true" requiredMessage="Required Field">
                             </p:inputText>
                         </p:column>
                         <p:column>
-                            <p:message for="withdrawAccountNum" />
+                            <p:message for="customerIdentificationNum" />
                         </p:column>
                     </p:row>
 
                     <p:row>
                         <p:column>
-                            <p:outputLabel for="withdrawAccountPwd" style="font-weight: bold" value="Account Password: " />
+                            <p:outputLabel for="customerDateOfBirth" style="font-weight: bold" value="Date Of Birth: " />
                         </p:column>
                         <p:column>
-                            <p:password id="withdrawAccountPwd" value="#{cashManagedBean.withdrawAccountPwd}" match="confirmWithdrawAccountPwd"
-                                        required="true" requiredMessage="Account password is required."/>
+                            <p:calendar id="customerDateOfBirth" value="#{employeeTransferManagedBean.customerDateOfBirth}" 
+                                        showOn="button" locale="de" navigator="true" pattern="dd/MM/yyyy" 
+                                        yearRange="c-200:c+200" required="true" requiredMessage="Required Field"/>
                         </p:column>
                         <p:column>
-                            <p:message for="withdrawAccountPwd" />
+                            <p:message for="customerDateOfBirth" />
                         </p:column>
                     </p:row>
 
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel for ="confirmWithdrawAccountPwd" style="font-weight:bold" value="Confirm Password: " />
-                        </p:column>
-                        <p:column>
-                            <p:password id="confirmWithdrawAccountPwd" value="#{cashManagedBean.confirmWithdrawAccountPwd}" 
-                                        label="Confirm Password" required="true" />
-                        </p:column>
-                    </p:row>    
                 </p:panelGrid>
-                <br/>
-                <p:commandButton id="cancelBtn" action="/webindex.xhtml" value="Cancel" update="panel" immediate = "true"> 
+
+                <p:commandButton id="cancelBtn" action="/web/index.xhtml" value="Cancel" update="panel" immediate = "true">
                     <p:confirm header="Cancel" message="Are you sure?" />
                 </p:commandButton>
 
                 <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" action="/web/index.xhtml"/>
+                    <p:commandButton value="Yes" styleClass="ui-confirmdialog-yes" action="/web/index.xhtml"/>
                     <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" />
                 </p:confirmDialog>
 
-                <p:commandButton id="withdrawBtn" value="Withdraw" update="panel" 
-                                 actionListener="#{cashManagedBean.cashWithdraw}" ajax="true" />
+                <p:commandButton id="submitBtn" value="Submit" update="panel"
+                                 action="#{employeeTransferManagedBean.submit}" ajax="true"/>
+
             </p:panel>
         </h:form>
     </h:body>
 </html>
+
