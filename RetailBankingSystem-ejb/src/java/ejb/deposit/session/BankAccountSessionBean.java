@@ -263,7 +263,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
 //                    int month = cal.get(Calendar.MONTH);
 //                    int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
 //                    String transactionDate = dayOfMonth + "-" + (month + 1) + "-" + year;
-                    String transactionDateMilis = String.valueOf(cal.getTimeInMillis());
+                    Long transactionDateMilis = cal.getTimeInMillis();
 
                     Long newAccTransactionId = transactionSessionLocal.addNewTransaction(cal.getTime().toString(), transactionCode, transactionRef,
                             accountDebit, finalInterest.toString(), transactionDateMilis, activatedBankAccount.getBankAccountId());
@@ -303,7 +303,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
 //                        int month = cal.get(Calendar.MONTH);
 //                        int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
 //                        String transactionDate = dayOfMonth + "-" + (month + 1) + "-" + year;
-                        String transactionDateMilis = String.valueOf(cal.getTimeInMillis());
+                        Long transactionDateMilis = cal.getTimeInMillis();
 
                         Long newAccTransactionId = transactionSessionLocal.addNewTransaction(cal.getTime().toString(), transactionCode, transactionRef,
                                 accountDebit, accuredInterest.toString(), transactionDateMilis, activatedBankAccount.getBankAccountId());
@@ -379,7 +379,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
 //                int month = cal.get(Calendar.MONTH);
 //                int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
 //                String transactionDate = dayOfMonth + "-" + (month + 1) + "-" + year;
-                String transactionDateMilis = String.valueOf(cal.getTimeInMillis());
+                Long transactionDateMilis = cal.getTimeInMillis();
 
                 Long newAccTransactionId = transactionSessionLocal.addNewTransaction(cal.getTime().toString(), transactionCode, transactionRef,
                         accountDebit, creditedInterest.toString(), transactionDateMilis, activatedBankAccount.getBankAccountId());
@@ -416,7 +416,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
 //                    int month = cal.get(Calendar.MONTH);
 //                    int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
 //                    String transactionDate = dayOfMonth + "-" + (month + 1) + "-" + year;
-                    String transactionDateMilis = String.valueOf(cal.getTimeInMillis());
+                    Long transactionDateMilis = cal.getTimeInMillis();
 
                     interest.setMonthlyInterest(totalInterest.toString());
                     activatedBankAccount.setBankAccountBalance(df.format(finalBalance));
@@ -565,5 +565,21 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
         }
 
         return customerBasic;
+    }
+    
+    @Override
+    public void updatePwd(String bankAccountNum, String bankAccountPwd) {
+        
+        BankAccount bankAccount = retrieveBankAccountByNum(bankAccountNum);
+        
+        String hashedPwd = "";
+
+        try {
+            hashedPwd = md5Hashing(bankAccountPwd);
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(BankAccountSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        bankAccount.setBankAccountPwd(hashedPwd);
     }
 }

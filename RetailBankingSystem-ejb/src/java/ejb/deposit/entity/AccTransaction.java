@@ -21,7 +21,7 @@ public class AccTransaction implements Serializable {
     private String transactionRef;
     private String accountDebit;
     private String accountCredit;
-    private String transactionDateMilis;
+    private Long transactionDateMilis;
     
     @ManyToOne(cascade={CascadeType.ALL},fetch=FetchType.EAGER)
     private BankAccount bankAccount;
@@ -82,11 +82,11 @@ public class AccTransaction implements Serializable {
         this.bankAccount = bankAccount;
     }
 
-    public String getTransactionDateMilis() {
+    public Long getTransactionDateMilis() {
         return transactionDateMilis;
     }
 
-    public void setTransactionDateMilis(String transactionDateMilis) {
+    public void setTransactionDateMilis(Long transactionDateMilis) {
         this.transactionDateMilis = transactionDateMilis;
     }
     

@@ -13,6 +13,7 @@ public class DepositDoneManagedBean {
     private String statusMessage;
     private String depositAccountNum;
     private String depositAmt;
+    private String transactionId;
     
     public DepositDoneManagedBean() {
     }
@@ -23,6 +24,15 @@ public class DepositDoneManagedBean {
         statusMessage = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("statusMessage").toString();
         depositAccountNum = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("depositAccountNum").toString();
         depositAmt = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("depositAmt").toString();
+        transactionId = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("transactionId").toString();
+    }
+
+    public String getTransactionId() {
+        return transactionId;
+    }
+
+    public void setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
     }
     
     public String getStatusMessage() {

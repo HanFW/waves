@@ -30,6 +30,9 @@
             <p:panel id="panel" header="Cash Deposit"> 
                 <p:panelGrid>
                     <h:form id="formMain">
+                        <h:outputText style="font-weight: bold" value="Transaction Id: "/>
+                        <h:outputText value="#{depositDoneManagedBean.transactionId}"/>
+                        <br/>
                         <h:outputText style="font-weight: bold" value="Status Message: " />
                         <h:outputText value="#{depositDoneManagedBean.statusMessage}" />
                         <br/>

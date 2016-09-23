@@ -60,7 +60,6 @@ public class EmployeeViewStatementManagedBean {
     public void submit() throws IOException {
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
-        System.out.println(customerIdentificationNum);
         CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum.toUpperCase());
 
         if (customerBasic.getCustomerBasicId() == null) {

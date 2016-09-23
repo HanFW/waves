@@ -26,7 +26,7 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperRunManager;
 import ejb.deposit.session.StatementSessionBeanLocal;
 import java.util.ArrayList;
-import javax.annotation.PostConstruct;
+import java.util.Calendar;
 
 @Named(value = "employeeViewStatementDoneManagedBean")
 @RequestScoped
@@ -98,7 +98,7 @@ public class EmployeeViewStatementDoneManagedBean {
     }
 
     public void viewStatement() throws ClassNotFoundException, IOException, JRException, SQLException {
-        System.out.println(bankAccountId);
+        
         BankAccount bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountById(bankAccountId);
 
         Connection connection;
@@ -110,7 +110,7 @@ public class EmployeeViewStatementDoneManagedBean {
                 .getExternalContext().getResponse();
 
         InputStream reportStream = ctx.getExternalContext()
-                .getResourceAsStream("/E-Statements/myStatement.jasper");
+                .getResourceAsStream("/E-Statements/myBankStatement.jasper");
 
         if (reportStream == null) {
             System.err.println("********* INputstream is null");
@@ -124,9 +124,15 @@ public class EmployeeViewStatementDoneManagedBean {
 
         ctx.responseComplete();
         response.setContentType("application/pdf");
-
+        
+        Calendar cal = Calendar.getInstance();
+        Long startTimeLong = cal.getTimeInMillis()-30000000;
+        Long endTimeLong = cal.getTimeInMillis();
+        
         Map parameters = new HashMap();
-        parameters.put("BankAccountId", bankAccount.getBankAccountId());
+        parameters.put("BankAccountId", bankAccount.getBankAccountId().toString());
+        parameters.put("StartTime", startTimeLong);
+        parameters.put("EndTime", endTimeLong);
 
         JasperRunManager.runReportToPdfStream(reportStream, servletOutputStream, parameterMap, connection);
 
@@ -136,7 +142,7 @@ public class EmployeeViewStatementDoneManagedBean {
     }
 
     public List<Statement> getStatement() throws IOException {
-        System.out.println("getStatement");
+        
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
         customerIdentificationNum = ec.getSessionMap().get("customerIdentificationNum").toString();
@@ -151,7 +157,6 @@ public class EmployeeViewStatementDoneManagedBean {
             if (statement.isEmpty()) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Your account number is invalid", "Failed!"));
             } else {
-                System.out.println(statement);
                 return statement;
             }
         }
