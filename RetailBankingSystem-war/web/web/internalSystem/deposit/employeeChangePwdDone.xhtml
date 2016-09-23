@@ -56,9 +56,10 @@
                             <p:outputLabel for="oldBankAccountPwd" style="font-weight: bold" value="Old Password: " />
                         </p:column>
                         <p:column>
-                            <p:inputText required="true" label="Old Password" requiredMessage="Required Field" id="oldBankAccountPwd"
-                                         value="#{employeeChangePwdDoneManagedBean.oldPassword}">
-                            </p:inputText>
+                            <p:password id="oldBankAccountPwd" value="#{employeeChangePwdDoneManagedBean.oldPassword}"
+                                        required="true" requiredMessage="Required Field">
+                                <f:validateLength minimum="6" maximum="6" />
+                            </p:password>
                         </p:column>
                         <p:column>
                             <p:message for="oldBankAccountPwd" />
