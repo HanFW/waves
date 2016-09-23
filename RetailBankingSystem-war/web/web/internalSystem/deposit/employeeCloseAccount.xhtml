@@ -5,7 +5,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>View Transaction</title>
+        <title>View Account</title>
         <style type="text/css">
             .gritter-notice-wrapper {
                 left:200px;
@@ -20,7 +20,7 @@
                 <p:submenu label="My Account">
                     <p:menuitem value="Home" url="/web/index.xhtml" />
                     <p:menuitem value="Open Account" url="/web/internalSystem/deposit/employeeOpenAccount.xhtml" />
-                    <p:menuitem value="Close Account" url="/web/internalSystem/deposit/employeeCloseAccount.xhtml" />
+                    <p:menuitem value="Close Account" url="/web/internalSystem/deposit/employeeCloseAccount.xhtml" />ƒ
                     <p:menuitem value="Cash Deposit" url="/web/internalSystem/deposit/employeeCashDeposit.xhtml" />
                     <p:menuitem value="Cash Withdraw" url="/web/internalSystem/deposit/employeeCashWithdraw.xhtml" />
                     <p:menuitem value="View Account" url="/web/internalSystem/deposit/employeeViewAccount.xhtml" />
@@ -34,7 +34,7 @@
 
         <h:form>
             <br/>
-            <p:panel id="panel" header="View Transaction">
+            <p:panel id="panel" header="Close Account">
                 <p:messages globalOnly="true"/>
 
                 <p:panelGrid style="margin-bottom:10px">
@@ -44,7 +44,7 @@
                             <p:outputLabel style="font-weight: bold" value="(As per NRIC/Passport): " />
                         </p:column>
                         <p:column>
-                            <p:inputText label="Customer Name" id="customerName" value="#{employeeViewTransactionManagedBean.customerName}"
+                            <p:inputText label="Customer Name" id="customerName" value="#{employeeCloseAccountManagedBean.customerName}"
                                          required="true" requiredMessage="Required Field">
                             </p:inputText>
                         </p:column>
@@ -58,7 +58,7 @@
                             <p:outputLabel for="customerIdentificationNum" style="font-weight: bold" value="Identification Number: " />
                         </p:column>
                         <p:column>
-                            <p:inputText label="Customer Identification Number" id="customerIdentificationNum" value="#{employeeViewTransactionManagedBean.customerIdentificationNum}"
+                            <p:inputText label="Customer Identification Number" id="customerIdentificationNum" value="#{employeeCloseAccountManagedBean.customerIdentificationNum}"
                                          required="true" requiredMessage="Required Field">
                             </p:inputText>
                         </p:column>
@@ -72,7 +72,7 @@
                             <p:outputLabel for="customerDateOfBirth" style="font-weight: bold" value="Date Of Birth: " />
                         </p:column>
                         <p:column>
-                            <p:calendar id="customerDateOfBirth" value="#{employeeViewTransactionManagedBean.customerDateOfBirth}" 
+                            <p:calendar id="customerDateOfBirth" value="#{employeeCloseAccountManagedBean.customerDateOfBirth}" 
                                         showOn="button" locale="de" navigator="true" pattern="dd/MM/yyyy" 
                                         yearRange="c-200:c+200" required="true" requiredMessage="Required Field"/>
                         </p:column>
@@ -93,9 +93,10 @@
                 </p:confirmDialog>
 
                 <p:commandButton id="submitBtn" value="Submit" update="panel"
-                                 action="#{employeeViewTransactionManagedBean.submit}" ajax="true"/>
+                                 action="#{employeeCloseAccountManagedBean.submit}" ajax="true"/>
 
             </p:panel>
         </h:form>
     </h:body>
 </html>
+

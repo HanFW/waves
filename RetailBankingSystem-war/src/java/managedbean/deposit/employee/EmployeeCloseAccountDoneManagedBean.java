@@ -1,4 +1,4 @@
-package managedbean.deposit;
+package managedbean.deposit.employee;
 
 import ejb.customer.entity.CustomerBasic;
 import ejb.customer.session.CRMCustomerSessionBeanLocal;
@@ -17,21 +17,22 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
-@Named(value = "closeAccountManagedBean")
+@Named(value = "employeeCloseAccountDoneManagedBean")
 @RequestScoped
 
-public class CloseAccountManagedBean {
-
-    @EJB
-    private TransactionSessionBeanLocal transactionSessionLocal;
+public class EmployeeCloseAccountDoneManagedBean {
 
     @EJB
     private CRMCustomerSessionBeanLocal customerSessionBeanLocal;
 
     @EJB
-    private BankAccountSessionBeanLocal bankAccountSessionLocal;
+    private BankAccountSessionBeanLocal bankAccountSessionBeanLocal;
+
+    @EJB
+    private TransactionSessionBeanLocal transactionSessionBeanLocal;
 
     private ExternalContext ec;
+
     private BankAccount bankAccount;
     private String bankAccountNumWithType;
     private String bankAccountNum;
@@ -45,30 +46,39 @@ public class CloseAccountManagedBean {
 
     private Map<String, String> myBankAccounts = new HashMap<String, String>();
 
-    public CloseAccountManagedBean() {
+    public EmployeeCloseAccountDoneManagedBean() {
     }
 
     @PostConstruct
     public void init() {
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
-        CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
+        customerIdentificationNum = ec.getSessionMap().get("customerIdentificationNum").toString();
+        CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum);
 
-        List<BankAccount> bankAccounts = bankAccountSessionLocal.retrieveBankAccountByCusIC(customerBasic.getCustomerIdentificationNum());
+        List<BankAccount> bankAccounts = bankAccountSessionBeanLocal.retrieveBankAccountByCusIC(customerBasic.getCustomerIdentificationNum());
         myBankAccounts = new HashMap<String, String>();
 
         for (int j = 0; j < bankAccounts.size(); j++) {
             myBankAccounts.put(bankAccounts.get(j).getBankAccountType() + "-" + bankAccounts.get(j).getBankAccountNum(), bankAccounts.get(j).getBankAccountType() + "-" + bankAccounts.get(j).getBankAccountNum());
-
         }
+
     }
 
-    public BankAccount getBankAccount() {
-        return bankAccount;
+    public ExternalContext getEc() {
+        return ec;
     }
 
-    public void setBankAccount(BankAccount bankAccount) {
-        this.bankAccount = bankAccount;
+    public void setEc(ExternalContext ec) {
+        this.ec = ec;
+    }
+
+    public String getBankAccountNumWithType() {
+        return bankAccountNumWithType;
+    }
+
+    public void setBankAccountNumWithType(String bankAccountNumWithType) {
+        this.bankAccountNumWithType = bankAccountNumWithType;
     }
 
     public String getBankAccountNum() {
@@ -127,22 +137,6 @@ public class CloseAccountManagedBean {
         this.confirmBankAccountPwd = confirmBankAccountPwd;
     }
 
-    public Map<String, String> getMyBankAccounts() {
-        return myBankAccounts;
-    }
-
-    public void setMyBankAccounts(Map<String, String> myBankAccounts) {
-        this.myBankAccounts = myBankAccounts;
-    }
-
-    public String getBankAccountNumWithType() {
-        return bankAccountNumWithType;
-    }
-
-    public void setBankAccountNumWithType(String bankAccountNumWithType) {
-        this.bankAccountNumWithType = bankAccountNumWithType;
-    }
-
     public boolean isCheckOnlyOneAccount() {
         return checkOnlyOneAccount;
     }
@@ -151,13 +145,20 @@ public class CloseAccountManagedBean {
         this.checkOnlyOneAccount = checkOnlyOneAccount;
     }
 
+    public Map<String, String> getMyBankAccounts() {
+        return myBankAccounts;
+    }
+
+    public void setMyBankAccounts(Map<String, String> myBankAccounts) {
+        this.myBankAccounts = myBankAccounts;
+    }
+
     public void deleteAccount() throws IOException {
         ec = FacesContext.getCurrentInstance().getExternalContext();
-        CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
 
         bankAccountNum = handleAccountString(bankAccountNumWithType);
-        String passwordCheck = transactionSessionLocal.checkPassword(bankAccountNum, bankAccountPwd);
-        bankAccount = bankAccountSessionLocal.retrieveBankAccountByNum(bankAccountNum);
+        String passwordCheck = transactionSessionBeanLocal.checkPassword(bankAccountNum, bankAccountPwd);
+        bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountByNum(bankAccountNum);
         bankAccountType = bankAccount.getBankAccountType();
 
         if (passwordCheck.equals("Error! Bank account does not exist!")) {
@@ -165,22 +166,24 @@ public class CloseAccountManagedBean {
         } else if (passwordCheck.equals("Password is incorrect!")) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Password is incorrect!", "Failed!"));
         } else {
-
-            checkOnlyOneAccount = bankAccountSessionLocal.checkOnlyOneAccount(customerBasic.getCustomerIdentificationNum());
+            customerIdentificationNum = ec.getSessionMap().get("customerIdentificationNum").toString();
+            CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum);
+            
+            checkOnlyOneAccount = bankAccountSessionBeanLocal.checkOnlyOneAccount(customerBasic.getCustomerIdentificationNum());
 
             if (onlyOneAccount.equals("Yes") && !checkOnlyOneAccount) {
                 if (!bankAccount.getBankAccountBalance().equals("0")) {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Please withdraw all your money.", "Failed!"));
                 } else {
 
-                    bankAccountSessionLocal.deleteAccount(bankAccountNum);
+                    bankAccountSessionBeanLocal.deleteAccount(bankAccountNum);
                     statusMessage = "Account has been successfully deleted.";
 
                     ec.getFlash().put("statusMessage", statusMessage);
                     ec.getFlash().put("bankAccountNum", bankAccountNum);
                     ec.getFlash().put("bankAccountType", bankAccountType);
 
-                    ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerDeleteAccount.xhtml?faces-redirect=true");
+                    ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/deposit/employeeDeleteAccount.xhtml?faces-redirect=true");
                 }
 
             } else if (onlyOneAccount.equals("Yes") && checkOnlyOneAccount) {
@@ -190,7 +193,7 @@ public class CloseAccountManagedBean {
                 if (!bankAccount.getBankAccountBalance().equals("0")) {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Please withdraw all your money.", "Failed!"));
                 } else {
-                    bankAccountSessionLocal.deleteAccount(bankAccountNum);
+                    bankAccountSessionBeanLocal.deleteAccount(bankAccountNum);
                     customerSessionBeanLocal.deleteCustomerBasic(customerIdentificationNum);
                     statusMessage = "Account has been successfully deleted.";
 
@@ -198,7 +201,7 @@ public class CloseAccountManagedBean {
                     ec.getFlash().put("bankAccountNum", bankAccountNum);
                     ec.getFlash().put("bankAccountType", bankAccountType);
 
-                    ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/employeeDeleteAccount.xhtml?faces-redirect=true");
+                    ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/deposit/employeeDeleteAccount.xhtml?faces-redirect=true");
                 }
             } else if (onlyOneAccount.equals("No") && !checkOnlyOneAccount) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! You have more than one accounts.", "Failed!"));
