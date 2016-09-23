@@ -21,6 +21,9 @@ import javax.faces.event.ActionEvent;
 import org.primefaces.context.RequestContext;
 import ejb.infrastructure.session.CustomerAdminSessionBeanLocal;
 import ejb.infrastructure.session.CustomerEmailSessionBeanLocal;
+import ejb.infrastructure.session.SMSSessionBeanLocal;
+import org.jboss.aerogear.security.otp.Totp;
+import org.jboss.aerogear.security.otp.api.Clock;
 
 /**
  *
@@ -29,6 +32,8 @@ import ejb.infrastructure.session.CustomerEmailSessionBeanLocal;
 @Named(value = "customerLoginManagedBean")
 @SessionScoped
 public class CustomerLoginManagedBean implements Serializable {
+    @EJB
+    private SMSSessionBeanLocal sMSSessionBeanLocal;
 
     @EJB
     private CustomerAdminSessionBeanLocal adminSessionBeanLocal;
@@ -42,6 +47,7 @@ public class CustomerLoginManagedBean implements Serializable {
     private String customerStatus;
     private String customerNationality;
     private String customerIdentification;
+    private String customerOTP;
 
     /**
      * Creates a new instance of CustomerLoginManagedBean
@@ -61,7 +67,7 @@ public class CustomerLoginManagedBean implements Serializable {
         customer = adminSessionBeanLocal.getCustomerByOnlineBankingAccount(customerAccount);
 
         if (customer == null) {
-            message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Invalid account number: ", "Please check your account number.");
+            message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid account number: ", "Please check your account number.");
             context.addMessage(null, message);
             System.out.println("=== infrastructure/loginBean: doLogin(): login failed: invalid account number");
         } else {
@@ -72,29 +78,59 @@ public class CustomerLoginManagedBean implements Serializable {
             switch (status) {
                 case "loggedIn":
                     System.out.println("=== infrastructure/loginBean: doLogin(): login successful");
-                    context.getExternalContext().getSessionMap().put("customer", getCustomer());
-                    if (customer.getCustomerStatus().equals("new")) {
-                        context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/web/onlineBanking/infrastructure/customerUserIdActivation.xhtml?faces-redirect=true");
-                    } else {
-                        context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/web/onlineBanking/deposit/customerDepositIndex.xhtml?faces-redirect=true");
-                    }
+                    RequestContext rc = RequestContext.getCurrentInstance();
+                    rc.execute("PF('otpDialog').show();");
+                    sMSSessionBeanLocal.sendOTP("customer", customer);
+                    customerPassword = null;
                     break;
                 case "invalidPassword":
                     System.out.println("=== infrastructure/loginBean: doLogin(): login failed: invalid password");
                     customerPassword = "";
-                    message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Invalid password: ", "Please enter your passsword again.");
+                    message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid password: ", "Please enter your passsword again.");
                     context.addMessage(null, message);
                     loginAttempts++;
                     System.out.println("=== infrastructure/loginBean: doLogin(): login attempts: " + loginAttempts);
                     break;
                 default:
                     System.out.println("=== infrastructure/loginBean: doLogin(): login failed: invalid account");
-                    message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Invalid account: ", "Please check your account number.");
+                    message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid account: ", "Please check your account number.");
                     context.addMessage(null, message);
+                    customerAccount = null;
+                    customerPassword = null;
                     break;
             }
         }
 
+    }
+
+    public void verifyLoginOTP(ActionEvent event) throws IOException {
+        System.out.println("====== infrastructure/CustomerLoginManagedBean: verifyLoginOTP() ======");
+        FacesMessage message = null;
+        FacesContext context = FacesContext.getCurrentInstance();
+        ExternalContext ec = context.getExternalContext();
+
+        if (customerOTP == null || customerOTP.trim().length() == 0) {
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid input: ", "Please enter your OTP"));
+        } else {
+            Clock clock = new Clock(120);
+            Totp totp = new Totp(customer.getCustomerOTPSecret(), clock);
+            if (totp.verify(customerOTP)) {
+                System.out.println("====== infrastructure/CustomerLoginManagedBean: verifyLoginOTP(): customer verified with OTP");
+                ec.getSessionMap().put("customer", getCustomer());
+                customerOTP = null;
+                if (customer.getCustomerStatus().equals("new")) {
+                    System.out.println("====== infrastructure/CustomerLoginManagedBean: verifyLoginOTP(): new customer: redirect to activation page");
+                    context.getExternalContext().redirect(ec.getRequestContextPath() + "/web/onlineBanking/infrastructure/customerUserIdActivation.xhtml?faces-redirect=true");
+                } else {
+                    System.out.println("====== infrastructure/CustomerLoginManagedBean: verifyLoginOTP(): existing customer: redirect to online banking home page");
+                    context.getExternalContext().redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerDepositIndex.xhtml?faces-redirect=true");
+                }
+            } else {
+                System.out.println("====== infrastructure/CustomerLoginManagedBean: verifyLoginOTP(): customer entered wrong OTP");
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "OTP does not match: ", "That is an invalid online banking OTP. Please re-enter."));
+                customerOTP = null;
+            }
+        }
     }
 
     public void doLogout(ActionEvent event) throws IOException {
@@ -255,4 +291,13 @@ public class CustomerLoginManagedBean implements Serializable {
         MessageDigest md = MessageDigest.getInstance("MD5");
         return Arrays.toString(md.digest(stringToHash.getBytes()));
     }
+
+    public String getCustomerOTP() {
+        return customerOTP;
+    }
+
+    public void setCustomerOTP(String customerOTP) {
+        this.customerOTP = customerOTP;
+    }
+
 }

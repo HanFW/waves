@@ -27,7 +27,7 @@ import org.jboss.aerogear.security.otp.api.Clock;
 public class SMSSessionBean implements SMSSessionBeanLocal {
 
     @Override
-    public String sendOTP(String target, CustomerBasic customer) {
+    public void sendOTP(String target, CustomerBasic customer) {
         System.out.println("-");
         System.out.println("****** infrastructure/SMSSessionBean: sendOTP() ******");
         Clock clock = new Clock(120);
@@ -36,7 +36,6 @@ public class SMSSessionBean implements SMSSessionBeanLocal {
         System.out.println("****** infrastructure/SMSSessionBean: sendOTP(): OTP generated");
         String message = "Dear customer, thank you for choosing Merlion Bank! This is your one-time password: " + strOtp;
         sendSMS(message, customer.getCustomerMobile());
-        return strOtp;
     }
     
     private void sendSMS(String message, String toPhoneNum){

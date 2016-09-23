@@ -30,7 +30,6 @@ public class SMSManagedBean implements Serializable {
     @EJB
     private SMSSessionBeanLocal sMSSessionBeanLocal;
     private String customerOTP;
-    private String originalOTP;
 
     /**
      * Creates a new instance of SMSManagedBean
@@ -42,7 +41,7 @@ public class SMSManagedBean implements Serializable {
         System.out.println("-");
         System.out.println("====== infrastructure/SMSManagedBean: sendOTP() ======");
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-        originalOTP = sMSSessionBeanLocal.sendOTP("customer", (CustomerBasic) ec.getSessionMap().get("customer"));
+        sMSSessionBeanLocal.sendOTP("customer", (CustomerBasic) ec.getSessionMap().get("customer"));
     }
 
     public String getCustomerOTP() {
@@ -51,14 +50,6 @@ public class SMSManagedBean implements Serializable {
 
     public void setCustomerOTP(String customerOTP) {
         this.customerOTP = customerOTP;
-    }
-
-    public String getOriginalOTP() {
-        return originalOTP;
-    }
-
-    public void setOriginalOTP(String originalOTP) {
-        this.originalOTP = originalOTP;
     }
 
     public void verifyOTP(ActionEvent event) throws IOException {
@@ -76,7 +67,6 @@ public class SMSManagedBean implements Serializable {
             if (totp.verify(customerOTP)) {
                 System.out.println("====== infrastructure/SMSManagedBean: verifyOTP(): OTP correct - redirect customer to destination page");
                 customerOTP = null;
-                originalOTP = null;
                 //redirect customer to the destination page
                 context.getExternalContext().getSessionMap().put("isVerified", "true");
                 System.out.println("====== infrastructure/SMSManagedBean: verifyOTP(): customer is verified");
@@ -86,7 +76,7 @@ public class SMSManagedBean implements Serializable {
                 customerOTP = null;
                 context.getExternalContext().getSessionMap().put("isVerified", "false");
                 System.out.println("====== infrastructure/SMSManagedBean: verifyOTP(): set customer verified status to false");
-                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "OTP does not match: ", "That is an invalid iBanking OTP. Please re-enter."));
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "OTP does not match: ", "That is an invalid online banking OTP. Please re-enter."));
             }
         }
     }
