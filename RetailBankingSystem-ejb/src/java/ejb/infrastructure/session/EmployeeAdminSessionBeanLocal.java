@@ -28,9 +28,11 @@ public interface EmployeeAdminSessionBeanLocal {
     String employeePosition, String employeeNRIC, String employeeMobileNum, String employeeEmail,
     Set<String> roles);
     
-    public void updateEmployeeAccount(String employeeName, String employeeDepartment,
-    String employeePosition, Long employeeId, String employeeMobileNum, String employeeEmail,
-    Set<String> roles);
+//    public void updateEmployeeAccount(String employeeName, String employeeDepartment,
+//    String employeePosition, Long employeeId, String employeeMobileNum, String employeeEmail,
+//    Set<String> roles);
+    
+    public void updateEmployeeAccount(Long id, String name, String department, String position, String mobile, String email, Set<String> roles);
     
     public Set<String> getSelectedRoles(Long employeeId);
     

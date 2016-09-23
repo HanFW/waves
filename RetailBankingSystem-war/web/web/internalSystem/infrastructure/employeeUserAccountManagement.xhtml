@@ -19,6 +19,8 @@
                 </p:submenu>
             </p:menubar>
         </h:form>
+        
+        <h:outputText value="Welcome #{employeeAccountManagedBean.userName} !"/>
 
         <h:form>
 
@@ -81,7 +83,7 @@
 
                         <p:column style="width:4%">
                             <p:commandButton action="/web/internalSystem/infrastructure/employeeEditAccountInfo.xhtml" icon="ui-icon-pencil">
-                                <f:setPropertyActionListener value="#{employee.employeeId}" target="#{employeeAccountManagedBean.employeeId}"/>
+                                <f:setPropertyActionListener value="#{employee.employeeId}" target="#{systemAdminEditUserAccountManagedBean.employeeId}"/>
                             </p:commandButton>
                         </p:column> 
 
@@ -106,8 +108,8 @@
 
 
                             <p:confirmDialog header="Confirmation" message="Are you sure you want to archive the user account?" showEffect="fade" hideEffect="fade"  widgetVar="deleteConfirmMsg">
-                                <p:commandButton value="Yes" styleClass="ui-confirmdialog-yes" action="#{employeeAccountManagedBean.deleteAccount(employee)}" oncomplete="PF('deleteConfirmMsg').hide()" ajax="false"/>
-                                <p:commandButton value="No" styleClass="ui-confirmdialog-no" action="#{employeeAccountManagedBean.deleteCancel(employee)}" oncomplete="PF('deleteConfirmMsg').hide()" ajax="false"/>
+                                <p:commandButton value="Yes" styleClass="ui-confirmdialog-yes" action="#{employeeAccountManagedBean.deleteAccount(employee)}" oncomplete="PF('deleteConfirmMsg').hide()" update="@form" ajax="false"/>
+                                <p:commandButton value="No" styleClass="ui-confirmdialog-no" action="#{employeeAccountManagedBean.deleteCancel(employee)}" oncomplete="PF('deleteConfirmMsg').hide()" update="@form"/>
                             </p:confirmDialog>
                             <!--</h:form>-->
                         </p:column>

@@ -84,5 +84,14 @@ public class Role implements Serializable {
     public String toString() {
         return "entity.Role[ id=" + roleId + " ]";
     }
+    
+    public void addEmployeeToRole(Employee employee){
+        
+     this.employee.add(employee);
+    }
+    
+    public void deleteEmployeeFromRole(Employee employee){
+        this.employee.remove(employee);
+    }
 
 }
