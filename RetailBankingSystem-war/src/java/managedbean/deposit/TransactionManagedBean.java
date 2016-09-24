@@ -7,12 +7,12 @@ import java.io.Serializable;
 import java.util.List;
 import javax.faces.context.ExternalContext;
 import ejb.deposit.session.TransactionSessionBeanLocal;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
 @Named(value = "transactionManagedBean")
-@RequestScoped
+@SessionScoped
 
 public class TransactionManagedBean implements Serializable{
     @EJB

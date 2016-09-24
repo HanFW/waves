@@ -1,4 +1,4 @@
-package managedbean.deposit;
+package managedbean.deposit.employee;
 
 import ejb.customer.entity.CustomerBasic;
 import ejb.customer.session.CRMCustomerSessionBeanLocal;
@@ -13,10 +13,10 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
-@Named(value = "employeeViewStatementManagedBean")
+@Named(value = "employeeChangeBankAccountPwdManagedBean")
 @RequestScoped
 
-public class EmployeeViewStatementManagedBean {
+public class EmployeeChangeBankAccountPwdManagedBean {
 
     @EJB
     private CRMCustomerSessionBeanLocal customerSessionBeanLocal;
@@ -30,7 +30,7 @@ public class EmployeeViewStatementManagedBean {
 
     private ExternalContext ec;
 
-    public EmployeeViewStatementManagedBean() {
+    public EmployeeChangeBankAccountPwdManagedBean() {
     }
 
     public String getCustomerName() {
@@ -60,9 +60,8 @@ public class EmployeeViewStatementManagedBean {
     public void submit() throws IOException {
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
-        System.out.println(customerIdentificationNum);
         CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum.toUpperCase());
-
+        
         if (customerBasic.getCustomerBasicId() == null) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Customer does not exist.", "Failed!"));
         } else {
@@ -75,14 +74,12 @@ public class EmployeeViewStatementManagedBean {
             } else if (!dateOfBirth.equals(customerDateOfBirthString)) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Customer Date of Birth is Wrong.", "Failed!"));
             } else {
-
+                
                 ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
                 Map<String, Object> sessionMap = externalContext.getSessionMap();
                 sessionMap.put("customerIdentificationNum", customerIdentificationNum);
-
-                customerIdentificationNum = null;
-
-                ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/deposit/employeeViewStatementDone.xhtml?faces-redirect=true");
+                
+                ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/deposit/employeeChangePwdDone.xhtml?faces-redirect=true");
             }
         }
     }

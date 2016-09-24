@@ -28,7 +28,7 @@
             </p:panel>
         </h:form>
         <h:form id="nircForm" >
-            <p:messages id="nircMessage"/>
+            <p:messages autoUpdate="true" showDetail="true"/>
             <p:panel id="nircField" visible="#{customerLoginManagedBean.customerNationality == 'singaporean'}">
                 <p:row>
                     <p:column>
@@ -42,17 +42,17 @@
             <p:panelGrid rendered="#{customerLoginManagedBean.customerNationality == 'singaporean'}">
                 <p:row>
                     <p:column>
-                        <p:outputLabel for="otp" value="One-time passport: "/>
+                        <p:outputLabel for="otp" value="One-time password: "/>
                     </p:column>
                     <p:column>
-                        <p:inputText type="password" id="otp" required="true" requiredMessage="Please enter OTP."/>
-                        <p:commandButton value="Request OTP"/>
+                        <p:inputText type="password" id="otp" value="#{customerLoginManagedBean.customerOTP}"/>
+                        <p:commandButton value="Request OTP" actionListener="#{customerLoginManagedBean.forgetOTP}"/>
                     </p:column>
                 </p:row>
             </p:panelGrid>
             <p:panelGrid rendered="#{customerLoginManagedBean.customerNationality == 'singaporean'}">
                 <p:row>
-                    <p:commandButton type="submit" value="Reset my password" actionListener="#{customerLoginManagedBean.resetCustomerPassword}" update="nircMessage"/>
+                    <p:commandButton type="submit" value="Reset my password" actionListener="#{customerLoginManagedBean.resetCustomerPassword}" update="@form"/>
                 </p:row>
             </p:panelGrid>
             <p:confirmDialog id="resetConfirmation" message="Your online banking password has been reset successfully and sent to your registered email." header="Password reset successful" severity="info" widgetVar="resetConfirmation" closable="false">
@@ -60,7 +60,6 @@
             </p:confirmDialog>
         </h:form>
         <h:form id="passportForm">
-            <p:messages id="passportMessage"/>
             <p:panel id="passportField" visible="#{customerLoginManagedBean.customerNationality == 'foreigner'}">
                 <p:row>
                     <p:column>
@@ -78,14 +77,14 @@
                         <p:outputLabel for="otp" value="One-time password: "/>
                     </p:column>
                     <p:column>
-                        <p:inputText type="password" id="otp" required="true" requiredMessage="Please enter OTP."/>
-                        <p:commandButton value="Request OTP"/>
+                        <p:inputText type="password" id="otp" value="#{customerLoginManagedBean.customerOTP}"/>
+                        <p:commandButton value="Request OTP" actionListener="#{customerLoginManagedBean.forgetOTP}"/>
                     </p:column>
                 </p:row>
             </p:panelGrid>
             <p:panelGrid rendered="#{customerLoginManagedBean.customerNationality == 'foreigner'}">
                 <p:row>
-                    <p:commandButton type="submit" value="Reset my password" actionListener="#{customerLoginManagedBean.resetCustomerPassword}" update="passportMessage"/>
+                    <p:commandButton type="submit" value="Reset my password" actionListener="#{customerLoginManagedBean.resetCustomerPassword}" update="@form"/>
                 </p:row>
             </p:panelGrid>
             <p:confirmDialog id="resetConfirmation" message="Your online banking password has been reset successfully and sent to your registered email." header="Password reset successful" severity="info" widgetVar="resetConfirmation" closable="false" closeOnEscape="false">

@@ -2,7 +2,6 @@ package ejb.customer.entity;
 
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.entity.Payee;
-import ejb.deposit.entity.Statement;
 import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -41,6 +40,7 @@ public class CustomerBasic implements Serializable {
     private String customerStatus;
     private String customerPayeeNum;
     private String customerAge;
+    private String customerOTPSecret;
 
     private byte[] customerSignature;
 
@@ -255,6 +255,14 @@ public class CustomerBasic implements Serializable {
     
     public void addNewCase (EnquiryCase ec) {
         enquiryCase.add(ec);
+    }
+
+    public String getCustomerOTPSecret() {
+        return customerOTPSecret;
+    }
+
+    public void setCustomerOTPSecret(String customerOTPSecret) {
+        this.customerOTPSecret = customerOTPSecret;
     }
 
     @Override

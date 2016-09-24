@@ -22,6 +22,8 @@
                     <p:menuitem value="View Transaction" url="/web/onlineBanking/deposit/customerViewTransaction.xhtml" />
                     <p:menuitem value="View Statement" url="/web/onlineBanking/deposit/customerViewStatement.xhtml" />
                     <p:menuitem value="Activate Fixed Deposit Account" url="/web/onlineBanking/deposit/customerActivateFixedDepositAccount.xhtml" />
+                    <p:menuitem value="Change Password" url="/web/onlineBanking/deposit/customerChangeBankAccountPwd.xhtml" />
+                    <p:menuitem value="Forgot Password" url="/web/onlineBanking/deposit/customerForgotPassword.xhtml" />
                 </p:submenu>
 
                 <p:submenu label="Transfer" >
@@ -50,8 +52,14 @@
         <h:form>
             <br/>
             <p:panel id="panel" header="Save Account"> 
+                <p:messages />
+
                 <p:panelGrid>
                     <h:form id="formMain">
+                        <h:outputText style="font-weight: bold;font-size: 20px" value="Attention: " />
+                        <h:outputText value="#{saveAccountManagedBean.attention}"/>
+                        <br/>
+                        <br/>
                         <h:outputText style="font-weight: bold" value="Status Message: " />
                         <h:outputText value="#{saveAccountManagedBean.statusMessage}" />
                         <br/>
@@ -66,6 +74,10 @@
                         <br/>
                         <h:outputText style="font-weight: bold" value="Bank Account Type: "/>
                         <h:outputText value="#{saveAccountManagedBean.bankAccountType}"/>
+                        <br/>
+                        <h:outputText style="font-weight: bold" value="Bank Account Status: "/>
+                        <h:outputText value="#{saveAccountManagedBean.bankAccountStatus}"/>
+                        <br/>
                     </h:form>
                 </p:panelGrid>
             </p:panel>

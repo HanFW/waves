@@ -1,4 +1,4 @@
-package managedbean.deposit;
+package managedbean.deposit.employee;
 
 import ejb.customer.entity.CustomerBasic;
 import javax.ejb.EJB;
@@ -781,7 +781,7 @@ public class EmployeeOpenAccountManagedBean implements Serializable {
             ec.getFlash().put("newCustomerBasicId", customerBasicId);
             ec.getFlash().put("bankAccountNum", bankAccountNum);
             ec.getFlash().put("bankAccountType", bankAccountType);
-            ec.getFlash().put("initialDepositAmt", initialDepositAmt);
+            ec.getFlash().put("bankAccountStatus", bankAccountStatus);
 
             ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/deposit/employeeSaveAccount.xhtml?faces-redirect=true");
 
@@ -833,7 +833,7 @@ public class EmployeeOpenAccountManagedBean implements Serializable {
             ec.getFlash().put("newCustomerBasicId", newCustomerBasicId);
             ec.getFlash().put("bankAccountNum", bankAccountNum);
             ec.getFlash().put("bankAccountType", bankAccountType);
-            ec.getFlash().put("initialDepositAmt", initialDepositAmt);
+            ec.getFlash().put("bankAccountStatus", bankAccountStatus);
 
             ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/deposit/employeeSaveAccount.xhtml?faces-redirect=true");
 

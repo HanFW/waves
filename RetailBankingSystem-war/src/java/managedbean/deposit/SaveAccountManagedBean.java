@@ -3,6 +3,8 @@ package managedbean.deposit;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
 @Named(value = "saveAccountManagedBean")
@@ -16,10 +18,12 @@ public class SaveAccountManagedBean {
     private String bankAccountNum;
     private String bankAccountType;
     private String initialDepositAmt;
-            
+    private String bankAccountStatus;
+    private String attention;
+
     public SaveAccountManagedBean() {
     }
-    
+
     @PostConstruct
     public void init() {
         statusMessage = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("statusMessage").toString();
@@ -27,6 +31,32 @@ public class SaveAccountManagedBean {
         customerBasicId = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("newCustomerBasicId").toString();
         bankAccountNum = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("bankAccountNum").toString();
         bankAccountType = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("bankAccountType").toString();
+        bankAccountStatus = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("bankAccountStatus").toString();
+
+        if (bankAccountStatus.equals("Inactivated")) {
+            bankAccountStatus = "Inactive";
+        } else {
+            bankAccountStatus = "Active";
+        }
+
+        if (bankAccountStatus.equals("Inactive") && !bankAccountType.equals("Fixed Deposit Account")) {
+            attention = "Dear customer, your bank account is inactive."
+                    + "To activate, please deposit/transfer sufficient amount to your account.";
+        } else if (bankAccountStatus.equals("Inactive") && bankAccountType.equals("Fixed Deposit Account")) {
+            attention = "Dear customer, you have to declare your fixed deposit period before activating your account."
+                    + "To activate, please deposit/transfer sufficient amount to your account.";
+        }
+        if (bankAccountType.equals("Monthly Savings Account")) {
+            attention = "Dear customer, minimum monthly saving is S$50.";
+        }
+    }
+
+    public String getAttention() {
+        return attention;
+    }
+
+    public void setAttention(String attention) {
+        this.attention = attention;
     }
 
     public String getStatusMessage() {
@@ -76,6 +106,12 @@ public class SaveAccountManagedBean {
     public void setInitialDepositAmt(String initialDepositAmt) {
         this.initialDepositAmt = initialDepositAmt;
     }
-    
-    
+
+    public String getBankAccountStatus() {
+        return bankAccountStatus;
+    }
+
+    public void setBankAccountStatus(String bankAccountStatus) {
+        this.bankAccountStatus = bankAccountStatus;
+    }
 }

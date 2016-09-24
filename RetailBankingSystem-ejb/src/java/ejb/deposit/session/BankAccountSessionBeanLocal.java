@@ -30,4 +30,7 @@ public interface BankAccountSessionBeanLocal {
     public void updateDepositPeriod(String bankAccountNum,String fixedDepositPeriod);
     public boolean checkOnlyOneAccount(String customerIdentificationNum);
     public CustomerBasic retrieveCustomerBasicByAccNum (String bankAccountNum);
+    public void updatePwd(String bankAccountNum, String bankAccountPwd);
+    public void resetDailyTransferLimit();
+    public void updateDailyTransferLimit(String bankAccountNum,String dailyTransferLimit);
 }

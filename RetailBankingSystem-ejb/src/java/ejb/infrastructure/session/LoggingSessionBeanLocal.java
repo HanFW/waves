@@ -3,15 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ejb.session.singleton;
+package ejb.infrastructure.session;
 
 import javax.ejb.Local;
 
 /**
  *
- * @author Jingyuan
+ * @author hanfengwei
  */
 @Local
-public interface InitSessionBeanLocal {
-    
+public interface LoggingSessionBeanLocal {
+    public void createNewLogging(String trigger, Long person, String activity, String result, String remarks);
 }
