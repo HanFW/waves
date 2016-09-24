@@ -77,8 +77,14 @@
                         <p:outputLabel for="customerEmailAddress"  value="Email Address:" />
                         <p:inputText id="customerEmailAddress" value="#{cRMCustomerManagedBean.replacedCustomerEmail}" required="true"  />
 
-                        <p:outputLabel for="customerAddress"  value="Address:" />
-                        <p:inputText id="customerAddress" value="#{cRMCustomerManagedBean.customerAddress}" required="true"  />
+                        <p:outputLabel for="customerStreet"  value="Residential Street Name: " />
+                        <p:inputText id="customerStreet" value="#{cRMCustomerManagedBean.streetName}" required="true"  />
+                        
+                        <p:outputLabel for="customerUnitNum"  value="Residential Unit No.: " />
+                        <p:inputText id="customerUnitNum" value="#{cRMCustomerManagedBean.unitNum}" required="true"  />
+                        
+                        <p:outputLabel for="customerBlockNum"  value="Residential Block/House No.: " />
+                        <p:inputText id="customerBlockNum" value="#{cRMCustomerManagedBean.blockNum}" required="true"  />
 
                         <p:outputLabel for="customerPostalCode"  value="Postal Code:" />
                         <p:inputText id="customerPostalCode" value="#{cRMCustomerManagedBean.customerPostal}" required="true"  />

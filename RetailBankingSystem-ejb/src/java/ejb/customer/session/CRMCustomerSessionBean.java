@@ -1,5 +1,6 @@
 package ejb.customer.session;
 
+import ejb.customer.entity.CustomerAdvanced;
 import ejb.customer.entity.CustomerBasic;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
@@ -24,19 +25,19 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
 
     @EJB
     private BankAccountSessionBeanLocal bankAccountSessionLocal;
-    
+
     @PersistenceContext
     private EntityManager entityManager;
 
     @Override
     public Long addNewCustomerBasic(String customerName, String customerSalutation,
             String customerIdentificationNum, String customerGender,
-            String customerEmail, String customerMobile, String customerDateOfBirth, 
-            String customerNationality,String customerCountryOfResidence, String customerRace, 
-            String customerMaritalStatus,String customerOccupation, String customerCompany, 
-            String customerAddress, String customerPostal,String customerOnlineBankingAccountNum, 
-            String customerOnlineBankingPassword,byte[] customerSignature,Double statementDateDouble) {
-        
+            String customerEmail, String customerMobile, String customerDateOfBirth,
+            String customerNationality, String customerCountryOfResidence, String customerRace,
+            String customerMaritalStatus, String customerOccupation, String customerCompany,
+            String customerAddress, String customerPostal, String customerOnlineBankingAccountNum,
+            String customerOnlineBankingPassword, byte[] customerSignature, Double statementDateDouble) {
+
         CustomerBasic customerBasic = new CustomerBasic();
 
         customerBasic.setCustomerName(customerName);
@@ -59,7 +60,7 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
         customerBasic.setCustomerSignature(customerSignature);
         customerBasic.setCustomerAge(getAge(customerDateOfBirth));
         customerBasic.setStatementDateDouble(statementDateDouble);
-        
+
         entityManager.persist(customerBasic);
         entityManager.flush();
 
@@ -150,6 +151,15 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
         query.setParameter("inCustomer", customer);
         return query.getResultList();
     }
+    
+    @Override 
+    public CustomerAdvanced getCustomerAdvancedByAccNum(String onlineBankingAccountNum) {
+        Query query = entityManager.createQuery("SELECT ca FROM CustomerAdvanced ca WHERE ca.customerOnlineBankingAccountNum = :onlineBankingAccountNum");
+        query.setParameter("onlineBankingAccountNum", onlineBankingAccountNum);
+        List resultList = query.getResultList();
+        CustomerAdvanced ca = (CustomerAdvanced) resultList.get(0);
+        return ca;
+    }
 
     @Override
     public List<CustomerBasic> getAllCustomerBasicProfile() {
@@ -159,7 +169,7 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
 
     @Override
     public String updateCustomerOnlineBankingAccountPIN(String customerOnlineBankingAccountNum, String hashedCurrentPassword, String hashedNewPassword) {
-       
+
         Query query = entityManager.createQuery("SELECT cb FROM CustomerBasic cb WHERE cb.customerOnlineBankingAccountNum = :customerOnlineBankingAccountNum AND cb.customerOnlineBankingPassword = :hashedCurrentPassword");
         query.setParameter("customerOnlineBankingAccountNum", customerOnlineBankingAccountNum);
         query.setParameter("hashedCurrentPassword", hashedCurrentPassword);
@@ -169,7 +179,7 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
             return "Incorrect Current Password";
         } else {
             CustomerBasic cb = (CustomerBasic) resultList.get(0);
-          
+
             if (!cb.getCustomerOnlineBankingPassword().equalsIgnoreCase(hashedNewPassword)) {
                 cb.setCustomerOnlineBankingPassword(hashedNewPassword);
                 entityManager.flush();
@@ -203,6 +213,27 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
             cb.setCustomerEmail(customerEmail);
             cb.setCustomerAddress(customerAddress);
             cb.setCustomerPostal(customerPostal);
+            entityManager.flush();
+
+            return "Update Successful";
+        }
+    }
+
+    @Override
+    public String updateCustomerAdvancedProfile(String customerOnlineBankingAccountNum, String customerEmploymentDetails, String customerFamilyInfo, String customerCreditReport, String customerFinancialRiskRating, String customerFinanacialAssets, String customerFinanacialGoals) {
+        Query query = entityManager.createQuery("SELECT ca FROM CustomerAdvanced ca WHERE ca.customerOnlineBankingAccountNum = :customerOnlineBankingAccountNum");
+        query.setParameter("customerOnlineBankingAccountNum", customerOnlineBankingAccountNum);
+        List resultList = query.getResultList();
+        if (resultList.isEmpty()) {
+            return "Cannot find customer profile, please contact with our IT staff";
+        } else {
+            CustomerAdvanced ca = (CustomerAdvanced) resultList.get(0);
+            ca.setCustomerEmploymentDetails(customerEmploymentDetails);
+            ca.setCustomerCreditReport(customerCreditReport);
+            ca.setCustomerFamilyInfo(customerFamilyInfo);
+            ca.setCustomerFinanacialAssets(customerFinanacialAssets);
+            ca.setCustomerFinancialRiskRating(customerFinancialRiskRating);
+            ca.setCustomerFinanacialGoals(customerFinanacialGoals);
             entityManager.flush();
 
             return "Update Successful";

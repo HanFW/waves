@@ -5,11 +5,16 @@
  */
 package ejb.customer.entity;
 
+import ejb.infrastructure.entity.Employee;
 import java.io.Serializable;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -28,7 +33,13 @@ public class CustomerAdvanced implements Serializable {
     private String customerFinanacialGoals;
     private String customerFinanacialAssets;
     private String customerOnlineBankingAccountNum;
+    
+    @OneToOne(cascade={CascadeType.ALL},fetch=FetchType.EAGER)
+    private CustomerBasic customerBasic;
 
+    @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    private Employee employee;
+    
     public String getCustomerEmploymentDetails() {
         return customerEmploymentDetails;
     }
@@ -93,6 +104,24 @@ public class CustomerAdvanced implements Serializable {
     public void setCustomerAdvancedId(Long customerAdvancedId) {
         this.customerAdvancedId = customerAdvancedId;
     }
+
+    public CustomerBasic getCustomerBasic() {
+        return customerBasic;
+    }
+
+    public void setCustomerBasic(CustomerBasic customerBasic) {
+        this.customerBasic = customerBasic;
+    }
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
+    
+    
 
     @Override
     public int hashCode() {

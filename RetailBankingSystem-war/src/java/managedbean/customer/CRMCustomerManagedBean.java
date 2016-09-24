@@ -20,6 +20,7 @@ import javax.faces.context.FacesContext;
 import ejb.customer.session.CRMCustomerSessionBean;
 import javax.faces.event.ActionEvent;
 import ejb.infrastructure.session.CustomerAdminSessionBean;
+import java.util.List;
 
 /**
  *
@@ -52,6 +53,10 @@ public class CRMCustomerManagedBean {
     private byte[] customerSignature;
     private Long newCustomerBasicId;
     private String customerAge;
+    private String streetName;
+    private String blockNum;
+    private String unitNum;
+    List<String> addressList;
 
 //advanced profile
     private String customerEmploymentDetails;
@@ -71,7 +76,7 @@ public class CRMCustomerManagedBean {
     private ExternalContext ec;
     private String hashedPassword;
     private String hashedNewPassword;
-    
+
     private Double statementDateDouble;
 
     public String getCustomerAge() {
@@ -341,10 +346,50 @@ public class CRMCustomerManagedBean {
         this.statementDateDouble = statementDateDouble;
     }
 
+    public String getStreetName() {
+        return streetName;
+    }
+
+    public void setStreetName(String streetName) {
+        this.streetName = streetName;
+    }
+
+    public String getBlockNum() {
+        return blockNum;
+    }
+
+    public void setBlockNum(String blockNum) {
+        this.blockNum = blockNum;
+    }
+
+    public String getUnitNum() {
+        return unitNum;
+    }
+
+    public void setUnitNum(String unitNum) {
+        this.unitNum = unitNum;
+    }
+
+    public String getHashedPassword() {
+        return hashedPassword;
+    }
+
+    public void setHashedPassword(String hashedPassword) {
+        this.hashedPassword = hashedPassword;
+    }
+
+    public String getHashedNewPassword() {
+        return hashedNewPassword;
+    }
+
+    public void setHashedNewPassword(String hashedNewPassword) {
+        this.hashedNewPassword = hashedNewPassword;
+    }
+
     public Long saveNewCustomerBasic(ActionEvent customerBasic) {
 
         try {
-            newCustomerBasicId = customerSessionBean.addNewCustomerBasic(customerName, customerSalutation, customerIdentificationNum, customerGender, customerEmail, customerMobile, customerDateOfBirth, customerNationality, customerCountryOfResidence, customerRace, customerMaritalStatus, customerOccupation, customerCompany, customerAddress, customerPostal, customerOnlineBankingAccountNum, customerOnlineBankingPassword, customerSignature,statementDateDouble);
+            newCustomerBasicId = customerSessionBean.addNewCustomerBasic(customerName, customerSalutation, customerIdentificationNum, customerGender, customerEmail, customerMobile, customerDateOfBirth, customerNationality, customerCountryOfResidence, customerRace, customerMaritalStatus, customerOccupation, customerCompany, customerAddress, customerPostal, customerOnlineBankingAccountNum, customerOnlineBankingPassword, customerSignature, statementDateDouble);
             return newCustomerBasicId;
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -357,6 +402,7 @@ public class CRMCustomerManagedBean {
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         cb = (CustomerBasic) ec.getSessionMap().get("customer");
 //        cb = customerSessionBean.getAllCustomerBasicProfile().get(0);
+        
         if (customerName == null) {
             customerName = cb.getCustomerName();
             customerOnlineBankingAccountNum = cb.getCustomerOnlineBankingAccountNum();
@@ -374,21 +420,25 @@ public class CRMCustomerManagedBean {
             replacedCustomerEmail = customerEmailReplaceWithStar(customerEmail);
             customerAddress = cb.getCustomerAddress();
             customerPostal = cb.getCustomerPostal();
+            addressList = Arrays.asList(customerAddress.split(","));
+            streetName = addressList.get(0).trim();
+            blockNum = addressList.get(1).trim();
+            unitNum = addressList.get(2).trim();
         }
 
         return cb;
 
     }
 
-//    public String customerAccountNumReplaceWithStar(String inputCustomerAccountNumber) {
-//
-//        String customerAccountNumAfterReplaced = "";
-//
-//        if (inputCustomerAccountNumber != null) {
-//            customerAccountNumAfterReplaced = inputCustomerAccountNumber.substring(0, 2) + "****" + inputCustomerAccountNumber.substring(6);
-//        }
-//        return customerAccountNumAfterReplaced;
-//    }
+     //    public String customerAccountNumReplaceWithStar(String inputCustomerAccountNumber) {
+    //
+    //        String customerAccountNumAfterReplaced = "";
+    //
+    //        if (inputCustomerAccountNumber != null) {
+    //            customerAccountNumAfterReplaced = inputCustomerAccountNumber.substring(0, 2) + "****" + inputCustomerAccountNumber.substring(6);
+    //        }
+    //        return customerAccountNumAfterReplaced;
+    //    }
     public String customerMobileNumReplaceWithStar(String inputCustomerMobileNum) {
         String customerMobileNumAfterReplaced = "";
         customerMobileNumAfterReplaced = "****" + inputCustomerMobileNum.substring(4);
@@ -414,7 +464,8 @@ public class CRMCustomerManagedBean {
         if (!replacedCustomerEmail.contains("*")) {
             updatedCustomerEmail = replacedCustomerEmail;
         }
-
+        
+        customerAddress = streetName + ", " + blockNum + ", " + unitNum + ", " + customerPostal;
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(customerSessionBean.updateCustomerBasicProfile(customerOnlineBankingAccountNum, customerNationality, customerCountryOfResidence, customerMaritalStatus, customerOccupation, customerCompany, updatedCustomerEmail, updatedCustomerMobile, customerAddress, customerPostal), " "));
     }
 
