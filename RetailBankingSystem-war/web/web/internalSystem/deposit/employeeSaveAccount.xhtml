@@ -9,47 +9,47 @@
 
 
     <ui:define name="content">   
-    <h:head>
-        <title>Open Account</title>
-        <style type="text/css">
-            .gritter-notice-wrapper {
-                left:200px;
-                top: 50px; }
-            </style>
+        <h:head>
+            <title>Open Account</title>
+            <style type="text/css">
+                .gritter-notice-wrapper {
+                    left:200px;
+                    top: 50px; }
+                </style>
 
-        </h:head>
-        <h:body>
-           
-        <h:form>
-            <br/>
-            <p:panel id="panel" header="Save Account"> 
-                <p:panelGrid>
-                    <h:form id="formMain">
-                        <br/>
-                        <h:outputText style="font-weight: bold" value="Status Message: " />
-                        <h:outputText value="#{employeeSaveAccountManagedBean.statusMessage}" />
-                        <br/>
-                        <br/>
-                        <h:outputText style="font-weight: bold" value="Bank Account Id: "/>
-                        <h:outputText value="#{employeeSaveAccountManagedBean.bankAccountId}"/>
-                        <br/>
-                        <br/>
-                        <h:outputText style="font-weight: bold" value="Customer basic Id: "/>
-                        <h:outputText value="#{employeeSaveAccountManagedBean.customerBasicId}"/>
-                        <br/>
-                        <br/>
-                        <h:outputText style="font-weight: bold" value="Bank Account Num: "/>
-                        <h:outputText value="#{employeeSaveAccountManagedBean.bankAccountNum}"/>
-                        <br/>
-                        <br/>
-                        <h:outputText style="font-weight: bold" value="Bank Account Type: "/>
-                        <h:outputText value="#{employeeSaveAccountManagedBean.bankAccountType}"/>
-                        <br/>
-                        <br/>
-                    </h:form>
-                </p:panelGrid>
-            </p:panel>
-        </h:form>
-    </h:body>
-   </ui:define>
+            </h:head>
+            <h:body>
+
+                <h:form>
+                    <br/>
+                    <p:panel id="panel" header="Save Account"> 
+                    <p:panelGrid>
+                        <h:form id="formMain">
+                            <br/>
+                            <h:outputText style="font-weight: bold" value="Status Message: " />
+                            <h:outputText value="#{employeeSaveAccountManagedBean.statusMessage}" />
+                            <br/>
+                            <br/>
+                            <h:outputText style="font-weight: bold" value="Bank Account Id: "/>
+                            <h:outputText value="#{employeeSaveAccountManagedBean.bankAccountId}"/>
+                            <br/>
+                            <br/>
+                            <h:outputText style="font-weight: bold" value="Customer basic Id: "/>
+                            <h:outputText value="#{employeeSaveAccountManagedBean.customerBasicId}"/>
+                            <br/>
+                            <br/>
+                            <h:outputText style="font-weight: bold" value="Bank Account Num: "/>
+                            <h:outputText value="#{employeeSaveAccountManagedBean.bankAccountNum}"/>
+                            <br/>
+                            <br/>
+                            <h:outputText style="font-weight: bold" value="Bank Account Type: "/>
+                            <h:outputText value="#{employeeSaveAccountManagedBean.bankAccountType}"/>
+                            <br/>
+                            <br/>
+                        </h:form>
+                    </p:panelGrid>
+                </p:panel>
+            </h:form>
+        </h:body>
+    </ui:define>
 </ui:composition>
