@@ -3,7 +3,9 @@ package managedbean.deposit;
 import ejb.customer.entity.CustomerBasic;
 import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import ejb.deposit.entity.BankAccount;
+import ejb.deposit.entity.Payee;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
+import ejb.deposit.session.PayeeSessionBeanLocal;
 import ejb.deposit.session.TransactionSessionBeanLocal;
 import java.io.IOException;
 import java.util.HashMap;
@@ -21,6 +23,9 @@ import javax.faces.context.FacesContext;
 @RequestScoped
 
 public class CloseAccountManagedBean {
+
+    @EJB
+    private PayeeSessionBeanLocal payeeSessionBeanLocal;
 
     @EJB
     private TransactionSessionBeanLocal transactionSessionLocal;
@@ -189,15 +194,27 @@ public class CloseAccountManagedBean {
                 if (!bankAccount.getBankAccountBalance().equals("0")) {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Please withdraw all your money.", "Failed!"));
                 } else {
+
+                    if (!customerBasic.getPayee().isEmpty()) {
+                        List<Payee> payees = customerBasic.getPayee();
+                        String payeeAccountNum = "";
+
+                        for (int i = customerBasic.getPayee().size() - 1; i >= 0; i--) {
+                            payeeAccountNum = payees.get(i).getPayeeAccountNum();
+                            payeeSessionBeanLocal.deletePayee(payeeAccountNum);
+                        }
+                    }
+
                     bankAccountSessionLocal.deleteAccount(bankAccountNum);
-                    customerSessionBeanLocal.deleteCustomerBasic(customerIdentificationNum);
+                    customerSessionBeanLocal.deleteCustomerBasic(customerBasic.getCustomerIdentificationNum());
+
                     statusMessage = "Account has been successfully deleted.";
 
                     ec.getFlash().put("statusMessage", statusMessage);
                     ec.getFlash().put("bankAccountNum", bankAccountNum);
                     ec.getFlash().put("bankAccountType", bankAccountType);
 
-                    ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/employeeDeleteAccount.xhtml?faces-redirect=true");
+                    ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerDeleteAccount.xhtml?faces-redirect=true");
                 }
             } else if (onlyOneAccount.equals("No") && !checkOnlyOneAccount) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! You have more than one accounts.", "Failed!"));

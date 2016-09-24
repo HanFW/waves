@@ -748,7 +748,8 @@ public class AccountManagedBean implements Serializable {
     public void saveAccount() throws IOException {
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
-        if (customerNRIC.length() > 9 || customerNRIC.length() < 9 || customerNRICSG.length() < 9 || customerNRICSG.length() > 9) {
+        if ((customerNRIC.length() > 9 || customerNRIC.length() < 9 || customerNRICSG.length() < 9 || customerNRICSG.length() > 9)
+                && (customerPassport==null)) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Invalid NRIC", "Failed!"));
         } else {
             customerSignature = ec.getSessionMap().get("customerSignature").toString();

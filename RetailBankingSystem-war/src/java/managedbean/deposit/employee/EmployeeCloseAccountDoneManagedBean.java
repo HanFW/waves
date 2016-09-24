@@ -3,7 +3,9 @@ package managedbean.deposit.employee;
 import ejb.customer.entity.CustomerBasic;
 import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import ejb.deposit.entity.BankAccount;
+import ejb.deposit.entity.Payee;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
+import ejb.deposit.session.PayeeSessionBeanLocal;
 import ejb.deposit.session.TransactionSessionBeanLocal;
 import java.io.IOException;
 import java.util.HashMap;
@@ -21,6 +23,8 @@ import javax.faces.context.FacesContext;
 @RequestScoped
 
 public class EmployeeCloseAccountDoneManagedBean {
+    @EJB
+    private PayeeSessionBeanLocal payeeSessionBeanLocal;
 
     @EJB
     private CRMCustomerSessionBeanLocal customerSessionBeanLocal;
@@ -193,6 +197,17 @@ public class EmployeeCloseAccountDoneManagedBean {
                 if (!bankAccount.getBankAccountBalance().equals("0")) {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Please withdraw all your money.", "Failed!"));
                 } else {
+                    
+                    if (!customerBasic.getPayee().isEmpty()) {
+                        List<Payee> payees = customerBasic.getPayee();
+                        String payeeAccountNum = "";
+
+                        for (int i = customerBasic.getPayee().size() - 1; i >= 0; i--) {
+                            payeeAccountNum = payees.get(i).getPayeeAccountNum();
+                            payeeSessionBeanLocal.deletePayee(payeeAccountNum);
+                        }
+                    }
+                    
                     bankAccountSessionBeanLocal.deleteAccount(bankAccountNum);
                     customerSessionBeanLocal.deleteCustomerBasic(customerIdentificationNum);
                     statusMessage = "Account has been successfully deleted.";
