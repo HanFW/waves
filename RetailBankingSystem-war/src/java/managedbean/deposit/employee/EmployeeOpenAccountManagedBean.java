@@ -4,6 +4,7 @@ import ejb.customer.entity.CustomerBasic;
 import javax.ejb.EJB;
 import ejb.customer.session.CRMCustomerSessionBean;
 import ejb.deposit.entity.BankAccount;
+import ejb.deposit.entity.Verify;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -21,6 +22,7 @@ import org.primefaces.event.FlowEvent;
 import org.primefaces.model.UploadedFile;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import ejb.deposit.session.InterestSessionBeanLocal;
+import ejb.deposit.session.VerifySessionBeanLocal;
 import javax.faces.view.ViewScoped;
 import org.apache.commons.io.IOUtils;
 
@@ -28,6 +30,8 @@ import org.apache.commons.io.IOUtils;
 @ViewScoped
 
 public class EmployeeOpenAccountManagedBean implements Serializable {
+    @EJB
+    private VerifySessionBeanLocal verifySessionBeanLocal;
 
     @EJB
     private InterestSessionBeanLocal interestSessionLocal;
@@ -111,12 +115,12 @@ public class EmployeeOpenAccountManagedBean implements Serializable {
     private String dateOfBirth;
     private Double statementDateDouble;
 
-    private boolean salutationRender=false;
-    private boolean nricSGRender=false;
-    private boolean nricRender=false;
-    private boolean passportRender=false;
-    private boolean singaporePRRender=false;
-    
+    private boolean salutationRender = false;
+    private boolean nricSGRender = false;
+    private boolean nricRender = false;
+    private boolean passportRender = false;
+    private boolean singaporePRRender = false;
+
     //private ExternalContext ec;
     //ec = FacesContext.getCurrentInstance().getExternalContext();
     public EmployeeOpenAccountManagedBean() {
@@ -166,10 +170,10 @@ public class EmployeeOpenAccountManagedBean implements Serializable {
 
         if (customerSalutation.equals("Others")) {
             visible = true;
-            salutationRender=true;
+            salutationRender = true;
         } else {
             visible = false;
-            salutationRender=false;
+            salutationRender = false;
         }
     }
 
@@ -179,11 +183,11 @@ public class EmployeeOpenAccountManagedBean implements Serializable {
             visible2 = true;
             visible4 = false;
             visible5 = false;
-            singaporePR=null;
-            nricSGRender=true;
+            singaporePR = null;
+            nricSGRender = true;
         } else {
             visible2 = false;
-            nricSGRender=false;
+            nricSGRender = false;
         }
     }
 
@@ -193,14 +197,14 @@ public class EmployeeOpenAccountManagedBean implements Serializable {
             visible3 = true;
             visible4 = false;
             visible5 = false;
-            singaporePR=null;
-            singaporePRRender=true;
-            nricRender=false;
-            passportRender=false;
-            nricSGRender=false;
+            singaporePR = null;
+            singaporePRRender = true;
+            nricRender = false;
+            passportRender = false;
+            nricSGRender = false;
         } else {
             visible3 = false;
-            singaporePRRender=false;
+            singaporePRRender = false;
         }
     }
 
@@ -208,11 +212,11 @@ public class EmployeeOpenAccountManagedBean implements Serializable {
 
         if (singaporePR.equals("Yes")) {
             visible4 = true;
-            nricRender=true;
-            passportRender=false;
+            nricRender = true;
+            passportRender = false;
         } else {
             visible4 = false;
-            nricRender=false;
+            nricRender = false;
         }
     }
 
@@ -220,11 +224,11 @@ public class EmployeeOpenAccountManagedBean implements Serializable {
 
         if (singaporePR.equals("No")) {
             visible5 = true;
-            passportRender=true;
-            nricRender=false;
+            passportRender = true;
+            nricRender = false;
         } else {
             visible5 = false;
-            passportRender=false;
+            passportRender = false;
         }
     }
 
@@ -731,122 +735,138 @@ public class EmployeeOpenAccountManagedBean implements Serializable {
     public void saveAccount() throws IOException {
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
-        customerSignature = ec.getSessionMap().get("customerSignature").toString();
+        String customerVerify = "";
 
-        checkIdentificationType();
-        checkSalutation();
-
-        bankAccountNum = bankAccountSessionLocal.generateBankAccount();
-        checkExist = bankAccountSessionLocal.checkExistence(customerIdentificationNum);
-        dateOfBirth = bankAccountSessionLocal.changeDateFormat(customerDateOfBirth);
-
-        if (existingCustomer.equals("Yes") && checkExist && agreement) {
-            dailyInterest = "0";
-            monthlyInterest = "0";
-            isTransfer = "0";
-            isWithdraw = "0";
-
-            customerBasicId = customerSessionBean.retrieveCustomerBasicByIC(customerIdentificationNum.toUpperCase()).getCustomerBasicId();
-
-            newInterestId = interestSessionLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw);
-
-            bankAccountBalance = "0";
-            transferDailyLimit = "3000";
-            transferBalance = "3000";
-            bankAccountMinSaving = "";
-            bankAccountDepositPeriod = "None";
-            currentFixedDepositPeriod = "0";
-            fixedDepositStatus = "";
-            statementDateDouble=0.0;
-
-            if (bankAccountType.equals("Monthly Savings Account")) {
-                bankAccountStatus = "Activated";
-                bankAccountMinSaving = "Insufficient";
-            } else {
-                bankAccountStatus = "Inactivated";
-            }
-
-            newAccountId = bankAccountSessionLocal.addNewAccount(bankAccountNum, bankAccountPwd, bankAccountType,
-                    bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
-                    bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus, 
-                    statementDateDouble, customerBasicId, newInterestId);
-
-            bankAccount=bankAccountSessionLocal.retrieveBankAccountById(newAccountId);
-            bankAccountSessionLocal.retrieveBankAccountByCusIC(customerIdentificationNum).add(bankAccount);
-
-            statusMessage = "New Account Saved Successfully.";
-
-            ec.getFlash().put("statusMessage", statusMessage);
-            ec.getFlash().put("newAccountId", newAccountId);
-            ec.getFlash().put("newCustomerBasicId", customerBasicId);
-            ec.getFlash().put("bankAccountNum", bankAccountNum);
-            ec.getFlash().put("bankAccountType", bankAccountType);
-            ec.getFlash().put("bankAccountStatus", bankAccountStatus);
-
-            ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/deposit/employeeSaveAccount.xhtml?faces-redirect=true");
-
-        } else if (existingCustomer.equals("Yes") && !checkExist) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! You don't have Merlion bank account yet.", "Failed!"));
-        } else if (existingCustomer.equals("No") && !checkExist && agreement) {
-
-            customerAddress = customerStreetName + ", " + customerBlockNum + ", " + customerUnitNum + ", " + customerPostal;
-            
-            newCustomerBasicId = customerSessionBean.addNewCustomerBasic(customerName,
-                    customerSalutation, customerIdentificationNum.toUpperCase(),
-                    customerGender, customerEmail, customerMobile.toString(), dateOfBirth,
-                    customerNationality, customerCountryOfResidence, customerRace,
-                    customerMaritalStatus, customerOccupation, customerCompany,
-                    customerAddress, customerPostal, customerOnlineBankingAccountNum,
-                    customerOnlineBankingPassword, customerSignature.getBytes());
-
-            dailyInterest = "0";
-            monthlyInterest = "0";
-            isTransfer = "0";
-            isWithdraw = "0";
-            newInterestId = interestSessionLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw);
-
-            bankAccountBalance = "0";
-            transferDailyLimit = "3000";
-            transferBalance = "3000";
-            bankAccountMinSaving = "";
-            bankAccountDepositPeriod = "None";
-            currentFixedDepositPeriod = "0";
-            fixedDepositStatus = "";
-            statementDateDouble=0.0;
-
-            if (bankAccountType.equals("Monthly Savings Account")) {
-                bankAccountStatus = "Activated";
-                bankAccountMinSaving = "Insufficient";
-            } else {
-                bankAccountStatus = "Inactivated";
-            }
-
-            newAccountId = bankAccountSessionLocal.addNewAccount(bankAccountNum, bankAccountPwd, bankAccountType,
-                    bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
-                    bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus, 
-                    statementDateDouble, newCustomerBasicId, newInterestId);
-
-            statusMessage = "New Account Saved Successfully.";
-
-            ec.getFlash().put("statusMessage", statusMessage);
-            ec.getFlash().put("newAccountId", newAccountId);
-            ec.getFlash().put("newCustomerBasicId", newCustomerBasicId);
-            ec.getFlash().put("bankAccountNum", bankAccountNum);
-            ec.getFlash().put("bankAccountType", bankAccountType);
-            ec.getFlash().put("bankAccountStatus", bankAccountStatus);
-
-            ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/deposit/employeeSaveAccount.xhtml?faces-redirect=true");
-
-        } else if (existingCustomer.equals("No") && checkExist) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! You have Merlion bank account already. Please check.", "Failed!"));
+        if (customerNationality.equals("Singapore")) {
+            customerVerify = customerVerify(customerName, customerNRICSG, "Local");
         } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Please agree to terms.", "Failed!"));
+            if (singaporePR.equals("Yes")) {
+                customerVerify = customerVerify(customerName, customerNRIC, "PR");
+            } else if (singaporePR.equals("No")) {
+                customerVerify = customerVerify(customerName, customerPassport, "Foreigner");
+            }
         }
 
-        customerSignature = "";
-        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-        Map<String, Object> sessionMap = externalContext.getSessionMap();
-        sessionMap.put("customerSignature", customerSignature);
+        if (customerVerify.equals("Verify Failed. Invalid Identification Number")) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Verify Failed. Invalid Identification Number", "Failed!"));
+        } else if (customerVerify.equals("Verify Failed. Please check your identification number")) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Verify Failed. Please check your identification number", "Failed!"));
+        } else if (customerVerify.equals("Verify Failed. Please check your identification type and identification number")) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Verify Failed. Please check your identification type and identification number", "Failed!"));
+        } else if (customerVerify.equals("Verify Successfully")) {
+
+            customerSignature = ec.getSessionMap().get("customerSignature").toString();
+
+            checkIdentificationType();
+            checkSalutation();
+
+            bankAccountNum = bankAccountSessionLocal.generateBankAccount();
+            checkExist = bankAccountSessionLocal.checkExistence(customerIdentificationNum);
+            dateOfBirth = bankAccountSessionLocal.changeDateFormat(customerDateOfBirth);
+
+            if (existingCustomer.equals("Yes") && checkExist && agreement) {
+                dailyInterest = "0";
+                monthlyInterest = "0";
+                isTransfer = "0";
+                isWithdraw = "0";
+
+                customerBasicId = customerSessionBean.retrieveCustomerBasicByIC(customerIdentificationNum.toUpperCase()).getCustomerBasicId();
+
+                newInterestId = interestSessionLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw);
+
+                bankAccountBalance = "0";
+                transferDailyLimit = "3000";
+                transferBalance = "3000";
+                bankAccountMinSaving = "";
+                bankAccountDepositPeriod = "None";
+                currentFixedDepositPeriod = "0";
+                fixedDepositStatus = "";
+                statementDateDouble = 0.0;
+
+                if (bankAccountType.equals("Monthly Savings Account")) {
+                    bankAccountStatus = "Activated";
+                    bankAccountMinSaving = "Insufficient";
+                } else {
+                    bankAccountStatus = "Inactivated";
+                }
+
+                newAccountId = bankAccountSessionLocal.addNewAccount(bankAccountNum, bankAccountPwd, bankAccountType,
+                        bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
+                        bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
+                        statementDateDouble, customerBasicId, newInterestId);
+
+                bankAccount = bankAccountSessionLocal.retrieveBankAccountById(newAccountId);
+                bankAccountSessionLocal.retrieveBankAccountByCusIC(customerIdentificationNum).add(bankAccount);
+
+                statusMessage = "New Account Saved Successfully.";
+
+                ec.getFlash().put("statusMessage", statusMessage);
+                ec.getFlash().put("newAccountId", newAccountId);
+                ec.getFlash().put("newCustomerBasicId", customerBasicId);
+                ec.getFlash().put("bankAccountNum", bankAccountNum);
+                ec.getFlash().put("bankAccountType", bankAccountType);
+                ec.getFlash().put("bankAccountStatus", bankAccountStatus);
+
+                ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/deposit/employeeSaveAccount.xhtml?faces-redirect=true");
+
+            } else if (existingCustomer.equals("Yes") && !checkExist) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! You don't have Merlion bank account yet.", "Failed!"));
+            } else if (existingCustomer.equals("No") && !checkExist && agreement) {
+
+                customerAddress = customerStreetName + ", " + customerBlockNum + ", " + customerUnitNum + ", " + customerPostal;
+
+                newCustomerBasicId = customerSessionBean.addNewCustomerBasic(customerName,
+                        customerSalutation, customerIdentificationNum.toUpperCase(),
+                        customerGender, customerEmail, customerMobile.toString(), dateOfBirth,
+                        customerNationality, customerCountryOfResidence, customerRace,
+                        customerMaritalStatus, customerOccupation, customerCompany,
+                        customerAddress, customerPostal, customerOnlineBankingAccountNum,
+                        customerOnlineBankingPassword, customerSignature.getBytes());
+
+                dailyInterest = "0";
+                monthlyInterest = "0";
+                isTransfer = "0";
+                isWithdraw = "0";
+                newInterestId = interestSessionLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw);
+
+                bankAccountBalance = "0";
+                transferDailyLimit = "3000";
+                transferBalance = "3000";
+                bankAccountMinSaving = "";
+                bankAccountDepositPeriod = "None";
+                currentFixedDepositPeriod = "0";
+                fixedDepositStatus = "";
+                statementDateDouble = 0.0;
+
+                if (bankAccountType.equals("Monthly Savings Account")) {
+                    bankAccountStatus = "Activated";
+                    bankAccountMinSaving = "Insufficient";
+                } else {
+                    bankAccountStatus = "Inactivated";
+                }
+
+                newAccountId = bankAccountSessionLocal.addNewAccount(bankAccountNum, bankAccountPwd, bankAccountType,
+                        bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
+                        bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
+                        statementDateDouble, newCustomerBasicId, newInterestId);
+
+                statusMessage = "New Account Saved Successfully.";
+
+                ec.getFlash().put("statusMessage", statusMessage);
+                ec.getFlash().put("newAccountId", newAccountId);
+                ec.getFlash().put("newCustomerBasicId", newCustomerBasicId);
+                ec.getFlash().put("bankAccountNum", bankAccountNum);
+                ec.getFlash().put("bankAccountType", bankAccountType);
+                ec.getFlash().put("bankAccountStatus", bankAccountStatus);
+
+                ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/deposit/employeeSaveAccount.xhtml?faces-redirect=true");
+
+            } else if (existingCustomer.equals("No") && checkExist) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! You have Merlion bank account already. Please check.", "Failed!"));
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Please agree to terms.", "Failed!"));
+            }
+        }
     }
 
     public void checkIdentificationType() {
@@ -888,6 +908,22 @@ public class EmployeeOpenAccountManagedBean implements Serializable {
 
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cannot find the file, please upload again.", "");
             FacesContext.getCurrentInstance().addMessage(null, message);
+        }
+    }
+
+    public String customerVerify(String customerName, String customerIdentificationNum, String IdentificationType) {
+        Verify verify = verifySessionBeanLocal.retrieveVerifyByCusIc(customerIdentificationNum);
+        System.out.println(verify);
+        if (verify.getVerifyId() == null) {
+            return "Verify Failed. Invalid Identification Number";
+        } else {
+            if (!verify.getCustomerName().equals(customerName)) {
+                return "Verify Failed. Please check your identification number";
+            } else if (!verify.getCustomerIdentificationType().equals(IdentificationType)) {
+                return "Verify Failed. Please check your identification type and identification number";
+            } else {
+                return "Verify Successfully";
+            }
         }
     }
 }
