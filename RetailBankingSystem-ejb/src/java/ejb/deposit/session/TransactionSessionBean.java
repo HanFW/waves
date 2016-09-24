@@ -84,7 +84,7 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
 
     @Override
     public Long addNewTransaction(String transactionDate, String transactionCode, String transactionRef,
-            String accountDebit, String accountCredit, String transactionDateMilis, Long bankAccountId) {
+            String accountDebit, String accountCredit, Long transactionDateMilis, Long bankAccountId) {
         AccTransaction accTransaction = new AccTransaction();
 
         accTransaction.setTransactionDate(transactionDate);
@@ -102,16 +102,16 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
     }
 
     @Override
-    public String cashDeposit(String bankAccountNum, String depositAmt) {
+    public Long cashDeposit(String bankAccountNum, String depositAmt) {
 
         Long bankAccountId;
-        Long accTransactionId;
+        Long accTransactionId=Long.valueOf(0);
 
         BankAccount bankAccount = retrieveBankAccountByNum(bankAccountNum);
         bankAccountId = bankAccount.getBankAccountId();
 
         if (bankAccountId == null) {
-            return "Error! Bank account does not exist!";
+            return accTransactionId;
         } else {
             if (bankAccount.getBankAccountType().equals("Monthly Savings Account")) {
                 if (Double.valueOf(depositAmt) >= 50) {
@@ -128,7 +128,7 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
 //            int month = cal.get(Calendar.MONTH);
 //            int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
 //            String transactionDate = dayOfMonth + "-" + (month + 1) + "-" + year;
-            String transactionDateMilis = String.valueOf(cal.getTimeInMillis());
+            Long transactionDateMilis = cal.getTimeInMillis();
 
             accTransactionId = addNewTransaction(cal.getTime().toString(), transactionCode, transactionRef,
                     accountDebit, depositAmt, transactionDateMilis, bankAccountId);
@@ -139,15 +139,15 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
             String balance = totalBalance.toString();
             bankAccount.setBankAccountBalance(balance);
 
-            return "Deposit successfully!";
+            return accTransactionId;
         }
     }
 
     @Override
-    public String cashWithdraw(String bankAccountNum, String withdrawAmt) {
+    public Long cashWithdraw(String bankAccountNum, String withdrawAmt) {
 
         Long bankAccountId;
-        Long accTransactionId;
+        Long accTransactionId=Long.valueOf(0);
 
         BankAccount bankAccount = retrieveBankAccountByNum(bankAccountNum);
         Interest interest = bankAccount.getInterest();
@@ -155,7 +155,7 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
         bankAccountId = bankAccount.getBankAccountId();
 
         if (bankAccountId == null) {
-            return "Error! Bank account does not exist!";
+            return accTransactionId;
         } else {
             String accountCredit = " ";
             String transactionCode = "AWL";
@@ -166,7 +166,7 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
 //            int month = cal.get(Calendar.MONTH);
 //            int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
 //            String transactionDate = dayOfMonth + "-" + (month + 1) + "-" + year;
-            String transactionDateMilis = String.valueOf(cal.getTimeInMillis());
+            Long transactionDateMilis = cal.getTimeInMillis();
 
             accTransactionId = addNewTransaction(cal.getTime().toString(), transactionCode, transactionRef,
                     withdrawAmt, accountCredit, transactionDateMilis, bankAccountId);
@@ -178,7 +178,7 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
             bankAccount.setBankAccountBalance(balance);
             interest.setIsWithdraw("1");
 
-            return "Withdraw successfully!";
+            return accTransactionId;
         }
     }
 
@@ -230,19 +230,19 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
 //        int month = cal.get(Calendar.MONTH);
 //        int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
 //        String transactionDate = dayOfMonth + "-" + (month + 1) + "-" + year;
-        String transactionDateMilis = String.valueOf(cal.getTimeInMillis());
+        Long transactionDateMilis = cal.getTimeInMillis();
 
         Long fromTransactionId = addNewTransaction(cal.getTime().toString(), transactionCode, transactionRefFrom,
                 transferAmt, " ", transactionDateMilis, bankAccountFromId);
         Long toTransactionId = addNewTransaction(cal.getTime().toString(), transactionCode, transactionRefTo,
                 " ", transferAmt, transactionDateMilis, bankAccountToId);
-
+        
         bankAccountFrom.setBankAccountBalance(balanceAccountFrom.toString());
         bankAccountTo.setBankAccountBalance(balanceAccountTo.toString());
         bankAccountFrom.getInterest().setIsTransfer("1");
 
-        Double transfer = Double.valueOf(bankAccountFrom.getTransferBalance()) - Double.valueOf(transferAmt);
-        bankAccountFrom.setTransferBalance(transfer.toString());
+        Double currentDailyTransferLimit = Double.valueOf(bankAccountFrom.getTransferBalance()) - Double.valueOf(transferAmt);
+        bankAccountFrom.setTransferBalance(currentDailyTransferLimit.toString());
 
         return fromTransactionId;
     }

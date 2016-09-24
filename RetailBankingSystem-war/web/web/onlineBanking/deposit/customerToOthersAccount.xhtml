@@ -22,6 +22,8 @@
                     <p:menuitem value="View Transaction" url="/web/onlineBanking/deposit/customerViewTransaction.xhtml" />
                     <p:menuitem value="View Statement" url="/web/onlineBanking/deposit/customerViewStatement.xhtml" />
                     <p:menuitem value="Activate Fixed Deposit Account" url="/web/onlineBanking/deposit/customerActivateFixedDepositAccount.xhtml" />
+                    <p:menuitem value="Change Password" url="/web/onlineBanking/deposit/customerChangeBankAccountPwd.xhtml" />
+                    <p:menuitem value="Forgot Password" url="/web/onlineBanking/deposit/customerForgotPassword.xhtml" />
                 </p:submenu>
 
                 <p:submenu label="Transfer" >
@@ -78,7 +80,6 @@
                         <p:column>
                             <p:selectOneMenu id="transferToCurrency" value="#{transferManagedBean.toCurrency}" 
                                              style="width:125px" required="true">
-                                <f:selectItem itemLabel="Please Select" itemValue="" />
                                 <f:selectItem itemLabel="Singapore Dollar" itemValue="SGD - Singapore Dollar" />
                             </p:selectOneMenu>
                         </p:column>
@@ -115,7 +116,6 @@
                         <p:column>
                             <p:selectOneMenu id="transferFromCurrency" value="#{transferManagedBean.fromCurrency}" 
                                              style="width:125px" required="true">
-                                <f:selectItem itemLabel="Please Select" itemValue="" />
                                 <f:selectItem itemLabel="Singapore Dollar" itemValue="SGD - Singapore Dollar" />
                             </p:selectOneMenu>
                         </p:column>

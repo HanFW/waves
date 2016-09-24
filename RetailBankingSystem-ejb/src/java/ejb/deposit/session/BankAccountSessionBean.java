@@ -1,11 +1,13 @@
 package ejb.deposit.session;
 
-import ejb.customer.session.CRMCustomerSessionBean;
 import ejb.infrastructure.session.CustomerAdminSessionBeanLocal;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.entity.AccTransaction;
 import ejb.customer.entity.CustomerBasic;
+import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import ejb.deposit.entity.Interest;
+import ejb.infrastructure.session.CustomerAdminSessionBean;
+import ejb.infrastructure.session.CustomerEmailSessionBeanLocal;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -15,11 +17,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -32,6 +36,9 @@ import javax.persistence.NonUniqueResultException;
 public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
 
     @EJB
+    private CRMCustomerSessionBeanLocal customerSessionBeanLocal;
+
+    @EJB
     private CustomerAdminSessionBeanLocal adminSessionBeanLocal;
 
     @EJB
@@ -39,9 +46,6 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
 
     @EJB
     private InterestSessionBeanLocal interestSessionLocal;
-
-    @EJB
-    private CRMCustomerSessionBean customerSessionBean;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -90,7 +94,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
 
     @Override
     public List<BankAccount> retrieveBankAccountByCusIC(String customerIdentificationNum) {
-        CustomerBasic customerBasic = customerSessionBean.retrieveCustomerBasicByIC(customerIdentificationNum.toUpperCase());
+        CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum.toUpperCase());
 
         if (customerBasic.getCustomerBasicId() == null) {
             return new ArrayList<BankAccount>();
@@ -263,7 +267,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
 //                    int month = cal.get(Calendar.MONTH);
 //                    int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
 //                    String transactionDate = dayOfMonth + "-" + (month + 1) + "-" + year;
-                    String transactionDateMilis = String.valueOf(cal.getTimeInMillis());
+                    Long transactionDateMilis = cal.getTimeInMillis();
 
                     Long newAccTransactionId = transactionSessionLocal.addNewTransaction(cal.getTime().toString(), transactionCode, transactionRef,
                             accountDebit, finalInterest.toString(), transactionDateMilis, activatedBankAccount.getBankAccountId());
@@ -303,7 +307,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
 //                        int month = cal.get(Calendar.MONTH);
 //                        int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
 //                        String transactionDate = dayOfMonth + "-" + (month + 1) + "-" + year;
-                        String transactionDateMilis = String.valueOf(cal.getTimeInMillis());
+                        Long transactionDateMilis = cal.getTimeInMillis();
 
                         Long newAccTransactionId = transactionSessionLocal.addNewTransaction(cal.getTime().toString(), transactionCode, transactionRef,
                                 accountDebit, accuredInterest.toString(), transactionDateMilis, activatedBankAccount.getBankAccountId());
@@ -379,7 +383,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
 //                int month = cal.get(Calendar.MONTH);
 //                int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
 //                String transactionDate = dayOfMonth + "-" + (month + 1) + "-" + year;
-                String transactionDateMilis = String.valueOf(cal.getTimeInMillis());
+                Long transactionDateMilis = cal.getTimeInMillis();
 
                 Long newAccTransactionId = transactionSessionLocal.addNewTransaction(cal.getTime().toString(), transactionCode, transactionRef,
                         accountDebit, creditedInterest.toString(), transactionDateMilis, activatedBankAccount.getBankAccountId());
@@ -416,7 +420,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
 //                    int month = cal.get(Calendar.MONTH);
 //                    int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
 //                    String transactionDate = dayOfMonth + "-" + (month + 1) + "-" + year;
-                    String transactionDateMilis = String.valueOf(cal.getTimeInMillis());
+                    Long transactionDateMilis = cal.getTimeInMillis();
 
                     interest.setMonthlyInterest(totalInterest.toString());
                     activatedBankAccount.setBankAccountBalance(df.format(finalBalance));
@@ -565,5 +569,39 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
         }
 
         return customerBasic;
+    }
+
+    @Override
+    public void updatePwd(String bankAccountNum, String bankAccountPwd) {
+
+        BankAccount bankAccount = retrieveBankAccountByNum(bankAccountNum);
+
+        String hashedPwd = "";
+
+        try {
+            hashedPwd = md5Hashing(bankAccountPwd);
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(BankAccountSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        bankAccount.setBankAccountPwd(hashedPwd);
+    }
+
+    @Override
+    public void resetDailyTransferLimit() {
+
+        Query query = entityManager.createQuery("SELECT a FROM BankAccount a WHERE a.bankAccountStatus = :bankAccountStatus");
+        query.setParameter("bankAccountStatus", "Activated");
+        List<BankAccount> activatedBankAccounts = query.getResultList();
+
+        for (BankAccount activatedBankAccount : activatedBankAccounts) {
+            activatedBankAccount.setTransferBalance(activatedBankAccount.getTransferDailyLimit());
+        }
+    }
+
+    @Override
+    public void updateDailyTransferLimit(String bankAccountNum,String dailyTransferLimit) {
+        BankAccount bankAccount = retrieveBankAccountByNum(bankAccountNum);
+        bankAccount.setTransferDailyLimit(dailyTransferLimit);
     }
 }

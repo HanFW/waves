@@ -1,4 +1,4 @@
-package managedbean.deposit;
+package managedbean.deposit.employee;
 
 import ejb.deposit.entity.AccTransaction;
 import ejb.deposit.session.TransactionSessionBeanLocal;

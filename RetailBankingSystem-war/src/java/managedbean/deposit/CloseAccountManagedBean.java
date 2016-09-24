@@ -3,7 +3,9 @@ package managedbean.deposit;
 import ejb.customer.entity.CustomerBasic;
 import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import ejb.deposit.entity.BankAccount;
+import ejb.deposit.entity.Payee;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
+import ejb.deposit.session.PayeeSessionBeanLocal;
 import ejb.deposit.session.TransactionSessionBeanLocal;
 import java.io.IOException;
 import java.util.HashMap;
@@ -21,6 +23,9 @@ import javax.faces.context.FacesContext;
 @RequestScoped
 
 public class CloseAccountManagedBean {
+
+    @EJB
+    private PayeeSessionBeanLocal payeeSessionBeanLocal;
 
     @EJB
     private TransactionSessionBeanLocal transactionSessionLocal;
@@ -52,15 +57,14 @@ public class CloseAccountManagedBean {
     public void init() {
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
-        if (ec.getSessionMap().get("customer") != null) {
-            CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
+        CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
 
-            List<BankAccount> bankAccounts = bankAccountSessionLocal.retrieveBankAccountByCusIC(customerBasic.getCustomerIdentificationNum());
-            myBankAccounts = new HashMap<String, String>();
+        List<BankAccount> bankAccounts = bankAccountSessionLocal.retrieveBankAccountByCusIC(customerBasic.getCustomerIdentificationNum());
+        myBankAccounts = new HashMap<String, String>();
 
-            for (int j = 0; j < bankAccounts.size(); j++) {
-                myBankAccounts.put(bankAccounts.get(j).getBankAccountType() + "-" + bankAccounts.get(j).getBankAccountNum(), bankAccounts.get(j).getBankAccountType() + "-" + bankAccounts.get(j).getBankAccountNum());
-            }
+        for (int j = 0; j < bankAccounts.size(); j++) {
+            myBankAccounts.put(bankAccounts.get(j).getBankAccountType() + "-" + bankAccounts.get(j).getBankAccountNum(), bankAccounts.get(j).getBankAccountType() + "-" + bankAccounts.get(j).getBankAccountNum());
+
         }
     }
 
@@ -173,7 +177,6 @@ public class CloseAccountManagedBean {
                 if (!bankAccount.getBankAccountBalance().equals("0")) {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Please withdraw all your money.", "Failed!"));
                 } else {
-
                     bankAccountSessionLocal.deleteAccount(bankAccountNum);
                     statusMessage = "Account has been successfully deleted.";
 
@@ -191,8 +194,20 @@ public class CloseAccountManagedBean {
                 if (!bankAccount.getBankAccountBalance().equals("0")) {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Please withdraw all your money.", "Failed!"));
                 } else {
+
+                    if (!customerBasic.getPayee().isEmpty()) {
+                        List<Payee> payees = customerBasic.getPayee();
+                        String payeeAccountNum = "";
+
+                        for (int i = customerBasic.getPayee().size() - 1; i >= 0; i--) {
+                            payeeAccountNum = payees.get(i).getPayeeAccountNum();
+                            payeeSessionBeanLocal.deletePayee(payeeAccountNum);
+                        }
+                    }
+
                     bankAccountSessionLocal.deleteAccount(bankAccountNum);
-                    customerSessionBeanLocal.deleteCustomerBasic(customerIdentificationNum);
+                    customerSessionBeanLocal.deleteCustomerBasic(customerBasic.getCustomerIdentificationNum());
+
                     statusMessage = "Account has been successfully deleted.";
 
                     ec.getFlash().put("statusMessage", statusMessage);

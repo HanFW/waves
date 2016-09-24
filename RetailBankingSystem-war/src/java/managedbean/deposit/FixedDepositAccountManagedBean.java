@@ -43,7 +43,6 @@ public class FixedDepositAccountManagedBean {
 
             for (int i = 0; i < bankAccounts.size(); i++) {
                 fixedDepositAccounts.put(bankAccounts.get(i).getBankAccountType() + "-" + bankAccounts.get(i).getBankAccountNum(), bankAccounts.get(i).getBankAccountType() + "-" + bankAccounts.get(i).getBankAccountNum());
-                fixedDepositAccounts.put(bankAccounts.get(i).getBankAccountType() + "-" + bankAccounts.get(i).getBankAccountNum(), bankAccounts.get(i).getBankAccountType() + "-" + bankAccounts.get(i).getBankAccountNum());
             }
         }
     }
