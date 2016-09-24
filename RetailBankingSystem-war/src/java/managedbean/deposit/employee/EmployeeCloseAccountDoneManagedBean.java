@@ -23,6 +23,7 @@ import javax.faces.context.FacesContext;
 @RequestScoped
 
 public class EmployeeCloseAccountDoneManagedBean {
+    
     @EJB
     private PayeeSessionBeanLocal payeeSessionBeanLocal;
 

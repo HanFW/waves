@@ -148,12 +148,14 @@ public class EmployeeTransferDoneManagedBean {
 
         if (bankAccountFrom.getBankAccountId() == null || bankAccountTo.getBankAccountId() == null) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Your deposit account does not exist.", "Failed!"));
+        } else if (bankAccountTo.getBankAccountType().equals("Fixed Deposit Account")) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Dear Customer, you are not allowed transferring fund to a fixed deposit account. ", "Failed!"));
         } else {
 
             if (Double.valueOf(bankAccountFrom.getTransferBalance()) < transferAmt) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Dear Customer, your transfer amount has been exceeded your daily transfer limit.", "Failed!"));
             } else {
-                
+
                 if (fromAccount.equals(toAccount)) {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Fund transfer cannot be done within the same accounts.", "Failed!"));
                 } else {
