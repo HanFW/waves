@@ -131,15 +131,10 @@
 .ui-g.form-group > div {
     padding: 12px 16px; }
 
-.ui-panelgrid.form-group.ui-panelgrid{
-    margin:0 auto;
-    border:none; 
-}
-
-.ui-panelgrid.form-group .ui-panelgrid-cell { 
-    padding: 12px 16px; }
-.ui-panelgrid.form-group .ui-panelgrid-title{
-    text-align:center;
+.ui-panelgrid.form-group.ui-panelgrid-cell{
+    padding: 12px 16px;
+/*    margin:0 auto;
+    border:none; */
 }
 
 .ui-selectoneradio.form-group .ui-grid-row > div, .ui-selectmanycheckbox.form-group .ui-grid-row > div {
@@ -559,7 +554,7 @@
     /*    background-size: 200px 30px; }*/}
 .landing-wrapper #MBcards .pricing-box .MBcards3{
     padding: 88px 0;
-    background: url("#{resource['ultima-layout:images/onlineBanking/card3.jpg']}")center;
+    background: url("#{resource['ultima-layout:images/onlineBanking/card1.jpg']}")center;
     /*    background-size: 200px 30px; }*/}
 .landing-wrapper #MBcards .pricing-box .MBcards4{
     padding: 88px 0;
@@ -1471,7 +1466,7 @@ body.layout-compact .ui-button {
     font-size: 14px;
     height: 30px;
     padding: 0 14px;
-    width:50%;
+    width:100%;
     margin:0 auto;}
 body.layout-compact .ui-button .ui-button-text {
     line-height: 30px; 

@@ -30,12 +30,14 @@
                 </f:facet>
             </p:ajaxStatus>
         </h:form>
-        <h:form>
+<!--        <h:form>-->
+<div class="ui-g ui-fluid">
+                <div class="ui-g-12 ui-lg-12">
+                    <div class="card card-w-title"> 
+                        <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
             <p:panel id="panel">
                 <p:messages globalOnly="true"/>
-                <div class="card card-w-title">
-
-                    <p:panelGrid styleClass="ui-panelgrid-blank form-group">
+               
                         <h:outputLabel value="Account Details" style="font-weight: bold; font-size: 24px" />
                         <p:separator/>
                         <br/>
@@ -47,7 +49,7 @@
                             </p:column>
                             <p:column>
                                 <p:selectOneMenu id="bankAccountType" value="#{internalOpenAccountManagedBean.bankAccountType}" 
-                                                 style="width:125px" required="true" requiredMessage="Required Field">
+                                                  required="true" requiredMessage="Required Field">
                                     <f:selectItem itemLabel="Please Select" itemValue="" noSelectionOption="true"/>
                                     <f:selectItem itemLabel="Monthly Savings Account" itemValue="Monthly Savings Account" />
                                     <f:selectItem itemLabel="Bonus Savings Account" itemValue="Bonus Savings Account" />
@@ -90,7 +92,7 @@
                             </p:column>
                         </p:row>
 
-                    </p:panelGrid>
+                   
 
 
                     <br/>
@@ -121,12 +123,17 @@
                         <h:outputText value="I have also read and agree to the Terms and Conditions Governing Personal Data Protection Act 2012."/>
                     </h:panelGrid>
 
-                </div>
+             
 
                 <p:commandButton id="saveBtn" value="Open Account" actionListener="#{internalOpenAccountManagedBean.saveAccount}" 
                                  ajax="true" update="panel"/>
             </p:panel>
-        </h:form>
+                            </p:panelGrid>
+
+      </div>
+                </div>
+            </div>
+<!--        </h:form>-->
 
     </ui:define>
 </ui:composition>
