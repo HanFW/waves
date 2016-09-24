@@ -55,9 +55,6 @@ public class CustomerBasic implements Serializable {
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
     private List<EnquiryCase> enquiryCase;
     
-    @OneToMany(cascade={CascadeType.ALL},fetch=FetchType.EAGER,mappedBy="customerBasic")
-    private List<Statement> statement;
-    
     @OneToOne(cascade={CascadeType.ALL},fetch=FetchType.EAGER,mappedBy="customerBasic")
     private CustomerAdvanced customerAdvanced;
     
