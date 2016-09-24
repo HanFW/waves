@@ -1,6 +1,7 @@
 package ejb.customer.entity;
 
 import ejb.deposit.entity.BankAccount;
+import ejb.deposit.entity.MessageBox;
 import ejb.deposit.entity.Payee;
 import java.io.Serializable;
 import javax.persistence.Entity;
@@ -52,6 +53,9 @@ public class CustomerBasic implements Serializable {
 
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
     private List<EnquiryCase> enquiryCase;
+    
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
+    private List<MessageBox> messageBox;
 
     public Long getCustomerBasicId() {
         return customerBasicId;
@@ -263,6 +267,14 @@ public class CustomerBasic implements Serializable {
 
     public void setCustomerOTPSecret(String customerOTPSecret) {
         this.customerOTPSecret = customerOTPSecret;
+    }
+
+    public List<MessageBox> getMessageBox() {
+        return messageBox;
+    }
+
+    public void setMessageBox(List<MessageBox> messageBox) {
+        this.messageBox = messageBox;
     }
 
     @Override

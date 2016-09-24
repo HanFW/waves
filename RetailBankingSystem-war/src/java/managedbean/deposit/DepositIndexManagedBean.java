@@ -52,7 +52,7 @@ public class DepositIndexManagedBean {
         Double totalBalance =0.0;
         
         for(int i=0;i<bankAccounts.size();i++) {
-            totalBalance = Double.valueOf(bankAccounts.get(i).getBankAccountBalance()) + totalBalance;
+            totalBalance = totalBalance + Double.valueOf(bankAccounts.get(i).getBankAccountBalance());
         }
         
         BarChartModel model = new BarChartModel();

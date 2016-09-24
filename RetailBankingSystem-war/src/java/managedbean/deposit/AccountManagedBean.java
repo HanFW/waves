@@ -22,6 +22,8 @@ import org.primefaces.model.UploadedFile;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import ejb.deposit.session.InterestSessionBeanLocal;
 import ejb.deposit.session.VerifySessionBeanLocal;
+import ejb.infrastructure.session.MessageSessionBeanLocal;
+import java.util.Calendar;
 import javax.faces.view.ViewScoped;
 import org.apache.commons.io.IOUtils;
 
@@ -29,6 +31,9 @@ import org.apache.commons.io.IOUtils;
 @ViewScoped
 
 public class AccountManagedBean implements Serializable {
+
+    @EJB
+    private MessageSessionBeanLocal messageSessionBeanLocal;
 
     @EJB
     private VerifySessionBeanLocal verifySessionBeanLocal;
@@ -120,6 +125,10 @@ public class AccountManagedBean implements Serializable {
     private boolean nricRender = false;
     private boolean passportRender = false;
     private boolean singaporePRRender = false;
+
+    private String subject;
+    private Date receivedDate;
+    private String messageContent;
 
 //    private boolean singaporePROutputRender = false;
 //    private boolean singaporeNRICOutputRender = false;
@@ -749,6 +758,30 @@ public class AccountManagedBean implements Serializable {
         this.statementDateDouble = statementDateDouble;
     }
 
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
+    public Date getReceivedDate() {
+        return receivedDate;
+    }
+
+    public void setReceivedDate(Date receivedDate) {
+        this.receivedDate = receivedDate;
+    }
+
+    public String getMessageContent() {
+        return messageContent;
+    }
+
+    public void setMessageContent(String messageContent) {
+        this.messageContent = messageContent;
+    }
+
     public void saveAccount() throws IOException {
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
@@ -771,7 +804,7 @@ public class AccountManagedBean implements Serializable {
         } else if (customerVerify.equals("Verify Failed. Please check your identification type and identification number")) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Verify Failed. Please check your identification type and identification number", "Failed!"));
         } else if (customerVerify.equals("Verify Successfully")) {
-            
+
             if ((customerNRIC.length() > 9 || customerNRIC.length() < 9 || customerNRICSG.length() < 9 || customerNRICSG.length() > 9)
                     && (customerPassport == null)) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Invalid NRIC", "Failed!"));
@@ -825,6 +858,13 @@ public class AccountManagedBean implements Serializable {
                         bankAccountSessionLocal.retrieveBankAccountByCusIC(customerIdentificationNum).add(bankAccount);
 
                         statusMessage = "New Account Saved Successfully.";
+
+                        subject = "Welcome to Merlion Bank";
+                        Calendar cal = Calendar.getInstance();
+                        receivedDate = cal.getTime();
+                        messageContent = "Welcome to Merlion Bank! Please deposit/transfer sufficient fund to your bank account.";
+                        bankAccountSessionLocal.sendMessage("Merlion Bank", "Service", subject, receivedDate.toString(),
+                                messageContent, customerBasicId);
 
                         ec.getFlash().put("statusMessage", statusMessage);
                         ec.getFlash().put("newAccountId", newAccountId);
@@ -886,6 +926,13 @@ public class AccountManagedBean implements Serializable {
                                 statementDateDouble, newCustomerBasicId, newInterestId);
 
                         statusMessage = "New Account Saved Successfully.";
+
+                        subject = "Welcome to Merlion Bank";
+                        Calendar cal = Calendar.getInstance();
+                        receivedDate = cal.getTime();
+                        messageContent = "Welcome to Merlion Bank! Please deposit/transfer sufficient fund to your bank account.";
+                        bankAccountSessionLocal.sendMessage("Merlion Bank", "Service", subject, receivedDate.toString(),
+                                messageContent, newCustomerBasicId);
 
                         ec.getFlash().put("statusMessage", statusMessage);
                         ec.getFlash().put("newAccountId", newAccountId);
@@ -949,7 +996,7 @@ public class AccountManagedBean implements Serializable {
 
     public String customerVerify(String customerName, String customerIdentificationNum, String identification) {
         Verify verify = verifySessionBeanLocal.retrieveVerifyByCusIc(customerIdentificationNum);
-        
+
         if (verify.getVerifyId() == null) {
             return "Verify Failed. Invalid Identification Number";
         } else {
