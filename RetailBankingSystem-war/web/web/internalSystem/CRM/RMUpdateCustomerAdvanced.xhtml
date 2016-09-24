@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core" 
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Update Customer Advanced Profile</title>
+    </h:head>
+    <h:body>
+        <h:form>
+            <p:dataList id="customerCurrentAdvancedProfile" value="#{rMUpdateCustomerAdvancedManagedBean.customerAdvancedInfo}" type="definition">
+                <p:panel >
+                    <p:messages />
+
+                    <h:panelGrid id="AdvancedProfile" columns="2" cellpadding="5" >
+
+                        <p:outputLabel for="customerEmploymentDetails"  value="Employment Details:" />
+                        <p:inputText id="customerEmploymentDetails" value="#{rMUpdateCustomerAdvancedManagedBean.customerEmploymentDetails}" required="true" />
+
+                        <p:outputLabel for="customerFamilyInfo"  value="Family Information" />
+                        <p:inputText id="customerFamilyInfo" value="#{rMUpdateCustomerAdvancedManagedBean.customerFamilyInfo}" required="true"  />
+
+                        <p:outputLabel for="customerCreditReport"  value="Credit Report:" />
+                        <p:inputText id="customerCreditReport" value="#{rMUpdateCustomerAdvancedManagedBean.customerCreditReport}" required="true"  />
+
+                        <p:outputLabel for="customerFinancialRiskRating"  value="Financial Risk Rating:" />
+                        <p:inputText id="customerFinancialRiskRating" value="#{rMUpdateCustomerAdvancedManagedBean.customerFinancialRiskRating}" required="true"  />
+
+                        <p:outputLabel for="customerFinanacialAssets"  value="Finanacial Assets:" />
+                        <p:inputText id="customerFinanacialAssets" value="#{rMUpdateCustomerAdvancedManagedBean.customerFinanacialAssets}" required="true"  />
+
+                        <p:outputLabel for="customerFinanacialGoals"  value="Finanacial Goals:" />
+                        <p:inputText id="customerFinanacialGoals" value="#{rMUpdateCustomerAdvancedManagedBean.customerFinanacialGoals}" required="true"  />
+
+                    </h:panelGrid>   
+                </p:panel>
+                <p:commandButton value="Reset" type="reset" />
+
+                <p:commandButton value="Update" actionListener="#{rMUpdateCustomerAdvancedManagedBean.updateCustomerAdvanced}" ajax="false"/>
+
+            </p:dataList>
+        </h:form>
+    </h:body>
+</html>
+

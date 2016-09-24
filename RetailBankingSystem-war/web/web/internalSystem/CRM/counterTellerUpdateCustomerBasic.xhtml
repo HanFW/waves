@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"                                                                                                                     
+      xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Counter Teller Update Basic Profile</title>
+        <style type="text/css">
+            .gritter-notice-wrapper {
+                left:200px;
+                top: 50px; 
+            }
+        </style>
+    </h:head>
+
+        <h:form>
+            <p:dataList id="customerCurrentBasicProfile" value="#{employeeRecordEnquiryManagedBean.customerBasicInfo}" type="definition">
+                <p:panel >
+                    <p:messages />
+
+                    <h:panelGrid id="BasicProfile" columns="2" cellpadding="5" >
+
+                        <p:outputLabel for="customerNationality"  value="Nationality:" />
+                        <p:inputText id="customerNationality" value="#{employeeRecordEnquiryManagedBean.customerNationality}" required="true" />
+
+                        <p:outputLabel for="customerCountryOfResidence"  value="Country of Residence:" />
+                        <p:inputText id="customerCountryOfResidence" value="#{employeeRecordEnquiryManagedBean.customerCountryOfResidence}" required="true"  />
+
+                        <p:outputLabel for="customerMaritalStatus"  value="Marital Status:" />
+                        <p:inputText id="customerMaritalStatus" value="#{employeeRecordEnquiryManagedBean.customerMaritalStatus}" required="true"  />
+
+                        <p:outputLabel for="customerOccupation"  value="Occupation:" />
+                        <p:inputText id="customerOccupation" value="#{employeeRecordEnquiryManagedBean.customerOccupation}" required="true"  />
+
+                        <p:outputLabel for="customerCompany"  value="Company:" />
+
+                        <p:inputText id="customerCompany" value="#{employeeRecordEnquiryManagedBean.customerCompany}" required="true"  />
+
+                        <p:outputLabel for="customerMobileNumber"  value="Mobile Number:" />
+                        <p:inputText id="customerMobileNumber" value="#{employeeRecordEnquiryManagedBean.replacedCustomerMobile}" required="true"  />
+
+                        <p:outputLabel for="customerEmailAddress"  value="Email Address:" />
+                        <p:inputText id="customerEmailAddress" value="#{employeeRecordEnquiryManagedBean.replacedCustomerEmail}" required="true"  />
+
+                        <p:outputLabel for="customerStreet"  value="Residential Street Name: " />
+                        <p:inputText id="customerStreet" value="#{employeeRecordEnquiryManagedBean.streetName}" required="true"  />
+                        
+                        <p:outputLabel for="customerUnitNum"  value="Residential Unit No.: " />
+                        <p:inputText id="customerUnitNum" value="#{employeeRecordEnquiryManagedBean.unitNum}" required="true"  />
+                        
+                        <p:outputLabel for="customerBlockNum"  value="Residential Block/House No.: " />
+                        <p:inputText id="customerBlockNum" value="#{employeeRecordEnquiryManagedBean.blockNum}" required="true"  />
+
+                        <p:outputLabel for="customerPostalCode"  value="Postal Code:" />
+                        <p:inputText id="customerPostalCode" value="#{employeeRecordEnquiryManagedBean.customerPostal}" required="true"  />
+
+                    </h:panelGrid>   
+                </p:panel>
+                <p:commandButton value="Reset" type="reset" />
+
+                <p:commandButton value="Update" actionListener="#{employeeRecordEnquiryManagedBean.updateCustomerBasicProfile}" ajax="false"/>
+
+            </p:dataList>
+        </h:form>
+
+    </h:body>
+</html>
