@@ -225,20 +225,28 @@ public class CustomerLoginManagedBean implements Serializable {
         ExternalContext ec = context.getExternalContext();
         newCustomerPassword = md5Hashing(newCustomerPassword + customer.getCustomerIdentificationNum().substring(0, 3));
         if (newCustomerAccount.equals(customerAccount)) {
-            context.addMessage("activationMessage", new FacesMessage(FacesMessage.SEVERITY_WARN, "Unsecured account number: ", "For your safety, please enter a new account number different from the initial account number."));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Unsecured account number: ", "For your safety, please enter a new account number different from the initial account number."));
             newCustomerAccount = "";
             newCustomerPassword = "";
         } else if (newCustomerPassword.equals(customerPassword)) {
-            context.addMessage("activationMessage", new FacesMessage(FacesMessage.SEVERITY_WARN, "Unsecured account password: ", "For your safety, please enter a new account password different from the initial password."));
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Unsecured account password: ", "For your safety, please enter a new account password different from the initial password."));
             newCustomerPassword = "";
         } else {
             customerStatus = adminSessionBeanLocal.updateOnlineBankingAccount(newCustomerAccount, newCustomerPassword, customer.getCustomerBasicId());
-            CustomerBasic currentCustomer = (CustomerBasic) ec.getSessionMap().get("customer");
-            currentCustomer.setCustomerOnlineBankingAccountNum(newCustomerAccount);
-            currentCustomer.setCustomerOnlineBankingPassword(newCustomerPassword);
-            newCustomerPassword = null;
-            System.out.println("====== infrastructure/CustomerLoginManagedBean: activateOnlineBankingAccount(): account activated");
-            loggingSessionBeanLocal.createNewLogging("customer", customer.getCustomerBasicId(), "activate online banking account", "successful", null);
+            if (customerStatus.equals("invalidAccountNum")) {
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Duplicate user ID", "Pleaes create your own unique user ID"));
+                newCustomerAccount = "";
+                newCustomerPassword = "";
+            } else {
+                RequestContext rc = RequestContext.getCurrentInstance();
+                rc.execute("PF('activationDialog').show();");
+                CustomerBasic currentCustomer = (CustomerBasic) ec.getSessionMap().get("customer");
+                currentCustomer.setCustomerOnlineBankingAccountNum(newCustomerAccount);
+                currentCustomer.setCustomerOnlineBankingPassword(newCustomerPassword);
+                newCustomerPassword = null;
+                System.out.println("====== infrastructure/CustomerLoginManagedBean: activateOnlineBankingAccount(): account activated");
+                loggingSessionBeanLocal.createNewLogging("customer", customer.getCustomerBasicId(), "activate online banking account", "successful", null);
+            }
         }
     }
 
@@ -254,7 +262,9 @@ public class CustomerLoginManagedBean implements Serializable {
             context.addMessage("activationMessage", new FacesMessage(FacesMessage.SEVERITY_WARN, "Unsecured account password: ", "For your safety, please enter a new account password different from the initial password."));
             newCustomerPassword = "";
         } else {
-            customerStatus = adminSessionBeanLocal.updateOnlineBankingAccount(customer.getCustomerOnlineBankingAccountNum(), newCustomerPassword, customer.getCustomerBasicId());
+            RequestContext rc = RequestContext.getCurrentInstance();
+            rc.execute("PF('pinActivationDialog').show();");
+            adminSessionBeanLocal.updateOnlineBankingPIN(newCustomerPassword, customer.getCustomerBasicId());
             CustomerBasic currentCustomer = (CustomerBasic) ec.getSessionMap().get("customer");
             currentCustomer.setCustomerOnlineBankingPassword(newCustomerPassword);
             newCustomerPassword = null;
@@ -302,7 +312,7 @@ public class CustomerLoginManagedBean implements Serializable {
 
         if (customerOTP == null || customerOTP.trim().length() == 0) {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid input: ", "Please enter your OTP"));
-        }else if (customer == null) {
+        } else if (customer == null) {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Retrive user ID failed", "Please enter correct identification number and OTP"));
         } else {
             Clock clock = new Clock(120);

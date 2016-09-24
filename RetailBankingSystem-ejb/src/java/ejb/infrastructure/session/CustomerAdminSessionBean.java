@@ -104,7 +104,7 @@ public class CustomerAdminSessionBean implements CustomerAdminSessionBeanLocal {
         }
         System.out.println("****** infrastructure/CustomerAdminSessionBean: generateAccountNumber(): online banking account user ID generated");
         return accountNumber;
-    } 
+    }
 
     //Generate customer OTP secret
     private String generateOTPSecret() {
@@ -161,7 +161,7 @@ public class CustomerAdminSessionBean implements CustomerAdminSessionBeanLocal {
     @Override
     public CustomerBasic getCustomerByOnlineBankingAccount(String customerAccount) {
         System.out.println("*");
-        System.out.println("****** infrastructure/CustomerAdminSessionBean: getCustomerByOnlineBankingAccount() ******");        
+        System.out.println("****** infrastructure/CustomerAdminSessionBean: getCustomerByOnlineBankingAccount() ******");
         Query query = em.createQuery("SELECT c FROM CustomerBasic c WHERE c.customerOnlineBankingAccountNum = :accountNum");
         query.setParameter("accountNum", customerAccount);
         List resultList = query.getResultList();
@@ -178,13 +178,31 @@ public class CustomerAdminSessionBean implements CustomerAdminSessionBeanLocal {
     public String updateOnlineBankingAccount(String accountNum, String password, Long customerId) {
         System.out.println("*");
         System.out.println("****** infrastructure/CustomerAdminSessionBean: updateOnlineBankingAccount() ******");
+
+        Query query = em.createQuery("SELECT c FROM CustomerBasic c WHERE c.customerOnlineBankingAccountNum = :accountNum");
+        query.setParameter("accountNum", accountNum);
+
+        if (query.getResultList().isEmpty()) {
+            CustomerBasic customer = em.find(CustomerBasic.class, customerId);
+            customer.setCustomerOnlineBankingAccountNum(accountNum);
+            customer.setCustomerOnlineBankingPassword(password);
+            customer.setCustomerStatus("activated");
+            em.flush();
+            return "activated";
+        } else {
+            return "invalidAccountNum";
+        }
+    }
+
+    @Override
+    public void updateOnlineBankingPIN(String password, Long customerId) {
+        System.out.println("*");
+        System.out.println("****** infrastructure/CustomerAdminSessionBean: updateOnlineBankingAccount() ******");
+
         CustomerBasic customer = em.find(CustomerBasic.class, customerId);
-        customer.setCustomerOnlineBankingAccountNum(accountNum);
         customer.setCustomerOnlineBankingPassword(password);
         customer.setCustomerStatus("activated");
         em.flush();
-        
-        return "activated";
     }
 
     @Override
@@ -218,7 +236,7 @@ public class CustomerAdminSessionBean implements CustomerAdminSessionBeanLocal {
                 String password = generatePassword();
                 String hashedPassword = md5Hashing(password + identificationNum.substring(0, 3));
                 customer.setCustomerOnlineBankingPassword(hashedPassword);
-                if(!customer.getCustomerStatus().equals("new")){
+                if (!customer.getCustomerStatus().equals("new")) {
                     customer.setCustomerStatus("reset");
                 }
                 em.flush();

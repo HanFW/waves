@@ -33,7 +33,7 @@
             </p:panel>
         </h:form>
         <h:form id="activationConfirmation">
-            <p:confirmDialog visible="true" closable="false" rendered="#{customerLoginManagedBean.customerStatus eq 'activated'}" message="Your account has been successfully updated. Please remember your new online banking PIN. " header="Your PIN has been updated" severity="info">
+            <p:confirmDialog widgetVar="pinActivationDialog" closable="false" message="Your account has been successfully updated. Please remember your new online banking PIN. " header="Your PIN has been updated" severity="info">
                 <p:commandButton action="/web/onlineBanking/deposit/customerDepositIndex.xhtml" value="OK"/>
             </p:confirmDialog>
         </h:form>
