@@ -28,18 +28,19 @@ public class SMSSessionBean implements SMSSessionBeanLocal {
 
     @Override
     public void sendOTP(String target, CustomerBasic customer) {
-        System.out.println("-");
-        System.out.println("****** infrastructure/SMSSessionBean: sendOTP() ******");
+        System.out.println("@");
+        System.out.println("@@@@@@ infrastructure/SMSSessionBean: sendOTP() @@@@@@");
         Clock clock = new Clock(120);
         Totp totp = new Totp(customer.getCustomerOTPSecret(), clock);        
         String strOtp = totp.now(); 
         System.out.println("****** infrastructure/SMSSessionBean: sendOTP(): OTP generated");
         String message = "Dear customer, thank you for choosing Merlion Bank! This is your one-time password: " + strOtp;
         sendSMS(message, customer.getCustomerMobile());
+        System.out.println("@");
     }
     
     private void sendSMS(String message, String toPhoneNum){
-        System.out.println("-");
+        System.out.println("*");
         System.out.println("****** infrastructure/SMSSessionBean: sendSMS() ******");
         final String ACCOUNT_SID = "ACd2668f24db04f66798892a6a99af1680";
         final String AUTH_TOKEN = "c029686d79f83924599423aee622994c";

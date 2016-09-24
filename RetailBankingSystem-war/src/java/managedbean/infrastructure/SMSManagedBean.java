@@ -38,7 +38,7 @@ public class SMSManagedBean implements Serializable {
     }
 
     public void sendOTP(ActionEvent event) {
-        System.out.println("-");
+        System.out.println("=");
         System.out.println("====== infrastructure/SMSManagedBean: sendOTP() ======");
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         sMSSessionBeanLocal.sendOTP("customer", (CustomerBasic) ec.getSessionMap().get("customer"));
@@ -53,7 +53,7 @@ public class SMSManagedBean implements Serializable {
     }
 
     public void verifyOTP(ActionEvent event) throws IOException {
-        System.out.println("-");
+        System.out.println("=");
         System.out.println("====== infrastructure/SMSManagedBean: verifyOTP() ======");
 
         FacesContext context = FacesContext.getCurrentInstance();
