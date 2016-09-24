@@ -16,8 +16,14 @@
                     <div class="card"> 
             <br/>
             <p:panel id="panel" header="Save Account"> 
+                <p:messages />
+
                 <p:panelGrid>
                     <h:form id="formMain">
+                        <h:outputText style="font-weight: bold;font-size: 20px" value="Attention: " />
+                        <h:outputText value="#{saveAccountManagedBean.attention}"/>
+                        <br/>
+                        <br/>
                         <h:outputText style="font-weight: bold" value="Status Message: " />
                         <h:outputText value="#{saveAccountManagedBean.statusMessage}" />
                         <br/>
@@ -32,6 +38,10 @@
                         <br/>
                         <h:outputText style="font-weight: bold" value="Bank Account Type: "/>
                         <h:outputText value="#{saveAccountManagedBean.bankAccountType}"/>
+                        <br/>
+                        <h:outputText style="font-weight: bold" value="Bank Account Status: "/>
+                        <h:outputText value="#{saveAccountManagedBean.bankAccountStatus}"/>
+                        <br/>
                     </h:form>
                 </p:panelGrid>
             </p:panel>

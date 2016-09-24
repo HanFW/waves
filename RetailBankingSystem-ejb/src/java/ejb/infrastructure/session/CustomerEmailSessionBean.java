@@ -27,6 +27,9 @@ public class CustomerEmailSessionBean implements CustomerEmailSessionBeanLocal {
 
     @Override
     public void sendEmail(CustomerBasic customer, String subject, Map actions) {
+        System.out.println("@");
+        System.out.println("@@@@@@ infrastructure/CustomerEmailSessionBean: sendEmail() @@@@@@");
+        
         String emailServerName = "smtp.gmail.com";
         String emailFromAddress = "Han Fengwei Test Send<merlionbankes05@gmail.com>";
         String toEmailAddress = "Han Fengwei Test Receive<" + customer.getCustomerEmail() + ">";
@@ -72,6 +75,7 @@ public class CustomerEmailSessionBean implements CustomerEmailSessionBeanLocal {
                 msg.setSentDate(timeStamp);
                 Transport.send(msg);
             }
+            System.out.println("@");
         } catch (Exception e) {
             e.printStackTrace();
             throw new EJBException(e.getMessage());

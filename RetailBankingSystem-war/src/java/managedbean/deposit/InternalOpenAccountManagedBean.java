@@ -1,10 +1,12 @@
-package managedbean.deposit.employee;
+package managedbean.deposit;
 
 import ejb.customer.entity.CustomerBasic;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import ejb.deposit.session.InterestSessionBeanLocal;
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
@@ -58,6 +60,10 @@ public class InternalOpenAccountManagedBean {
     private BankAccount bankAccount;
     private Double statementDateDouble;
 
+    private String subject;
+    private Date receivedDate;
+    private String messageContent;
+    
     public InternalOpenAccountManagedBean() {
     }
 
@@ -285,6 +291,30 @@ public class InternalOpenAccountManagedBean {
         this.statementDateDouble = statementDateDouble;
     }
 
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
+    public Date getReceivedDate() {
+        return receivedDate;
+    }
+
+    public void setReceivedDate(Date receivedDate) {
+        this.receivedDate = receivedDate;
+    }
+
+    public String getMessageContent() {
+        return messageContent;
+    }
+
+    public void setMessageContent(String messageContent) {
+        this.messageContent = messageContent;
+    }
+
     public void saveAccount() throws IOException {
         System.out.println("hello");
         ec = FacesContext.getCurrentInstance().getExternalContext();
@@ -328,12 +358,20 @@ public class InternalOpenAccountManagedBean {
             bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountById(newAccountId);
 
             statusMessage = "New Account Saved Successfully.";
+            
+            subject = "Welcome to Merlion Bank";
+                        Calendar cal = Calendar.getInstance();
+                        receivedDate = cal.getTime();
+                        messageContent = "Welcome to Merlion Bank! Please deposit/transfer sufficient fund to your bank account.";
+                        bankAccountSessionBeanLocal.sendMessage("Merlion Bank", "Service", subject, receivedDate.toString(),
+                                messageContent, customerBasicId);
 
             ec.getFlash().put("statusMessage", statusMessage);
             ec.getFlash().put("newAccountId", newAccountId);
             ec.getFlash().put("newCustomerBasicId", customerBasicId);
             ec.getFlash().put("bankAccountNum", bankAccountNum);
             ec.getFlash().put("bankAccountType", bankAccountType);
+            ec.getFlash().put("bankAccountStatus", bankAccountStatus);
 
             ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerSaveAccount.xhtml?faces-redirect=true");
 

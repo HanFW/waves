@@ -6,41 +6,39 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/onlineBankingTemplate.xhtml">
-
-
     <ui:define name="content">
-    <h:body>
-       
-        <h:form>
-             <div class="ui-g">
-                <div class="ui-g-12">
-                    <div class="card"> 
+        <h:body>
 
-            <br/>
-            <p:panel header="View My Recipients">
-                <p:panelGrid styleClass="ui-panelgrid-blank form-group">
-                    <h:form id="formMain">
-                        <h:outputText style="font-weight: bold" value="Status Message: " />
-                        <h:outputText value="#{addRecipientDoneManagedBean.statusMessage}" />
-                        <br/>
-                        <h:outputText style="font-weight: bold" value="New Recipient Id: "/>
-                        <h:outputText value="#{addRecipientDoneManagedBean.newPayeeId}"/>
-                        <br/>
-                        <h:outputText style="font-weight: bold" value="Recipient's Name: "/>
-                        <h:outputText value="#{addRecipientDoneManagedBean.payeeName}"/>
-                        <br/>
-                        <h:outputText style="font-weight: bold" value="Recipient's Account Number: "/>
-                        <h:outputText value="#{addRecipientDoneManagedBean.payeeAccountNum}"/>
-                        <br/>
-                        <h:outputText style="font-weight: bold" value="Recipient's Account Type: "/>
-                        <h:outputText value="#{addRecipientDoneManagedBean.payeeAccountType}"/>
-                    </h:form>
-                </p:panelGrid>
-            </p:panel>
-                      </div>
+            <h:form>
+                <div class="ui-g">
+                    <div class="ui-g-12">
+                        <div class="card"> 
+
+                            <br/>
+                            <p:panel header="View My Recipients">
+                                <p:panelGrid styleClass="ui-panelgrid-blank form-group">
+                                    <h:form id="formMain">
+                                        <h:outputText style="font-weight: bold" value="Status Message: " />
+                                        <h:outputText value="#{addRecipientDoneManagedBean.statusMessage}" />
+                                        <br/>
+                                        <h:outputText style="font-weight: bold" value="New Recipient Id: "/>
+                                        <h:outputText value="#{addRecipientDoneManagedBean.newPayeeId}"/>
+                                        <br/>
+                                        <h:outputText style="font-weight: bold" value="Recipient's Name: "/>
+                                        <h:outputText value="#{addRecipientDoneManagedBean.payeeName}"/>
+                                        <br/>
+                                        <h:outputText style="font-weight: bold" value="Recipient's Account Number: "/>
+                                        <h:outputText value="#{addRecipientDoneManagedBean.payeeAccountNum}"/>
+                                        <br/>
+                                        <h:outputText style="font-weight: bold" value="Recipient's Account Type: "/>
+                                        <h:outputText value="#{addRecipientDoneManagedBean.payeeAccountType}"/>
+                                    </h:form>
+                                </p:panelGrid>
+                            </p:panel>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </h:form>
-    </h:body>
+            </h:form>
+        </h:body>
     </ui:define>
 </ui:composition>

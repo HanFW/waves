@@ -84,13 +84,12 @@ public class StatementSessionBean implements StatementSessionBeanLocal {
     @Override
     public void generateStatement() {
 
-        System.out.println("generateStatement");
         Query query = entityManager.createQuery("SELECT a FROM BankAccount a WHERE a.bankAccountStatus = :bankAccountStatus");
         query.setParameter("bankAccountStatus", "Activated");
         List<BankAccount> activatedBankAccounts = query.getResultList();
 
         for (BankAccount activatedBankAccount : activatedBankAccounts) {
-            System.out.println("generateStatement for");
+            
             String bankAccountNum = activatedBankAccount.getBankAccountNum();
             CustomerBasic customerBasic = bankAccountSessionLocal.retrieveCustomerBasicByAccNum(bankAccountNum);
             List<Statement> statemens = activatedBankAccount.getStatement();
@@ -110,7 +109,6 @@ public class StatementSessionBean implements StatementSessionBeanLocal {
             String bankAccountType = activatedBankAccount.getBankAccountType();
             String accountDetails = customerName + "\n" + bankAccountNum + "\n" + bankAccountType;
 
-            System.out.println("generateStatement add");
             Long newStatementId = addNewStatement(statementDate, statementType, accountDetails, customerBasic.getCustomerBasicId());
             Statement statement = retrieveStatementById(newStatementId);
 

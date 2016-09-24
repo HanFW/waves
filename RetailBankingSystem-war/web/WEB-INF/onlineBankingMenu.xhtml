@@ -5,20 +5,24 @@
     xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:p="http://primefaces.org/ui"
     xmlns:pu="http://primefaces.org/ultima">
-    
+
     <h:form id="menuform"> 
         <div class="layout-menu #{guestPreferences.menuClass}">
-            
-                    
-                    <pu:menu widgetVar="me">
-                        
-                    <p:submenu label="My Account">
+
+
+            <pu:menu widgetVar="me">
+
+                <p:submenu label="My Account">
                     <p:menuitem value="Home" url="/web/onlineBanking/deposit/customerDepositIndex.xhtml" />
                     <p:menuitem value="Open Account" url="/web/onlineBanking/deposit/customerOpenAccount.xhtml" />
                     <p:menuitem value="Close Account" url="/web/onlineBanking/deposit/customerCloseAccount.xhtml" />
                     <p:menuitem value="View Account" url="/web/onlineBanking/deposit/customerViewAccount.xhtml" />
                     <p:menuitem value="View Transaction" url="/web/onlineBanking/deposit/customerViewTransaction.xhtml" />
+                    <p:menuitem value="View Statement" url="/web/onlineBanking/deposit/customerViewStatement.xhtml" />
                     <p:menuitem value="Activate Fixed Deposit Account" url="/web/onlineBanking/deposit/customerActivateFixedDepositAccount.xhtml" />
+                    <p:menuitem value="Change Password" url="/web/onlineBanking/deposit/customerChangeBankAccountPwd.xhtml" />
+                    <p:menuitem value="Forgot Password" url="/web/onlineBanking/deposit/customerForgotPassword.xhtml" />
+                    <p:menuitem value="Message Box" url="/web/onlineBanking/infrastructure/customerViewMessage.xhtml" />
                 </p:submenu>
 
                 <p:submenu label="Transfer" >
@@ -32,6 +36,7 @@
 
                 <p:submenu label="Enquiry">
                     <p:menuitem value="Write an enquiry" url="/web/onlineBanking/customer/customerEnquiry.xhtml" />
+                    <p:menuitem value="View enquiry" url="/web/onlineBanking/customer/CRMCustomerViewEnquiry.xhtml"/>
                 </p:submenu>
 
                 <p:submenu label="My profile">
@@ -42,9 +47,9 @@
                 <p:submenu label="Logout">
                     <p:menuitem value="Logout" actionListener="#{customerLoginManagedBean.doLogout}"/>
                 </p:submenu>
-                                        
-                    </pu:menu>
-            
+
+            </pu:menu>
+
         </div>
     </h:form>
 </ui:composition>

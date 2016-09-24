@@ -1,7 +1,6 @@
 package ejb.deposit.session;
 
 import ejb.customer.session.CRMCustomerSessionBeanLocal;
-import ejb.deposit.entity.BankAccount;
 import ejb.customer.entity.CustomerBasic;
 import ejb.deposit.entity.Payee;
 import java.util.ArrayList;

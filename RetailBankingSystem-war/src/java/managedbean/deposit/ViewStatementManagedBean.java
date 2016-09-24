@@ -25,6 +25,7 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperRunManager;
 import ejb.deposit.session.StatementSessionBeanLocal;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 @Named(value = "viewStatementManagedBean")
 @RequestScoped
@@ -93,7 +94,7 @@ public class ViewStatementManagedBean {
     }
 
     public void viewStatement() throws ClassNotFoundException, IOException, JRException, SQLException {
-        System.out.println(bankAccountId);
+
         BankAccount bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountById(bankAccountId);
 
         Connection connection;
@@ -120,9 +121,15 @@ public class ViewStatementManagedBean {
         ctx.responseComplete();
         response.setContentType("application/pdf");
 
-        Map parameters = new HashMap();
-        parameters.put("BankAccountId", bankAccount.getBankAccountId());
+        Calendar cal = Calendar.getInstance();
+        Long startTimeLong = cal.getTimeInMillis()-30000000;
+        Long endTimeLong = cal.getTimeInMillis();
 
+        Map parameters = new HashMap();
+        parameters.put("bankAccountId", bankAccount.getBankAccountId());
+        parameters.put("startTimeLong", startTimeLong);
+        parameters.put("endTimeLong", endTimeLong);
+        
         JasperRunManager.runReportToPdfStream(reportStream, servletOutputStream, parameterMap, connection);
 
         connection.close();
@@ -131,7 +138,7 @@ public class ViewStatementManagedBean {
     }
 
     public List<Statement> getStatement() throws IOException {
-        System.out.println("getStatement");
+
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
         CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
@@ -145,11 +152,10 @@ public class ViewStatementManagedBean {
             if (statement.isEmpty()) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Your account number is invalid", "Failed!"));
             } else {
-                System.out.println(statement);
                 return statement;
             }
         }
-        
+
         return statement;
     }
 }

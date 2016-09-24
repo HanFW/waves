@@ -10,7 +10,26 @@
 
     <ui:define name="content">
     <h:body>
-   
+        <h:form id="formMain">
+            <h1>Welcome to Merlion Bank</h1>
+            <p:menubar>
+                <p:submenu label="My Account">
+                    <p:menuitem value="Home" url="/web/index.xhtml" />
+                    <p:menuitem value="Open Account" url="/web/internalSystem/deposit/employeeOpenAccount.xhtml" />
+                    <p:menuitem value="Close Account" url="/web/internalSystem/deposit/employeeCloseAccount.xhtml" />
+                    <p:menuitem value="Cash Deposit" url="/web/internalSystem/deposit/customerCashDeposit.xhtml" />
+                    <p:menuitem value="Cash Withdraw" url="/web/internalSystem/deposit/employeeCashWithdraw.xhtml" />
+                    <p:menuitem value="Fund Transfer" url="/web/internalSystem/deposit/employeeTransfer.xhtml" />
+                    <p:menuitem value="View Account" url="/web/internalSystem/deposit/employeeViewAccount.xhtml" />
+                    <p:menuitem value="View Transaction" url="/web/internalSystem/deposit/employeeViewTransaction.xhtml" />
+                    <p:menuitem value="View Statement" url="/web/internalSystem/deposit/employeeViewStatement.xhtml" />
+                    <p:menuitem value="Change Deposit Account Password" url="/web/internalSystem/deposit/employeeChangeBankAccountPwd.xhtml" />
+                    <p:menuitem value="Forgot Deposit Account Password" url="/web/internalSystem/deposit/employeeForgotDepositPassword.xhtml" />
+                    <p:menuitem value="Activate Fixed Deposit Account" url="/web/internalSystem/deposit/employeeActivateFixedDeposit.xhtml" />
+                    <p:menuitem value="Change Daily Transfer Limit" url="/web/internalSystem/deposit/employeeChangeDailyTransferLimit.xhtml" />
+                </p:submenu>
+            </p:menubar>
+        </h:form>
         <h:form>
              <div class="ui-g">
                 <div class="ui-g-12">
@@ -73,12 +92,12 @@
                     </p:row>    
                 </p:panelGrid>
                 <br/>
-                <p:commandButton id="cancelBtn" action="/web/onlineBanking/deposit/customerDepositIndex.xhtml" value="Cancel" update="panel" immediate = "true"> 
+                <p:commandButton id="cancelBtn" action="/webindex.xhtml" value="Cancel" update="panel" immediate = "true"> 
                     <p:confirm header="Cancel" message="Are you sure?" />
                 </p:commandButton>
 
                 <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" action="/web/onlineBanking/deposit/customerDepositIndex.xhtml"/>
+                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" action="/web/index.xhtml"/>
                     <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" />
                 </p:confirmDialog>
 
