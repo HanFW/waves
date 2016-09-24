@@ -182,6 +182,7 @@ public class CustomerLoginManagedBean implements Serializable {
     public void activateOnlineBankingAccount(ActionEvent event) throws NoSuchAlgorithmException {
         System.out.println("*** loginBean: activateOnlineBankingAccount");
         FacesContext context = FacesContext.getCurrentInstance();
+        ExternalContext ec = context.getExternalContext();
         newCustomerPassword = md5Hashing(newCustomerPassword + customer.getCustomerIdentificationNum().substring(0, 3));
         if (newCustomerAccount.equals(customerAccount)) {
             context.addMessage("activationMessage", new FacesMessage(FacesMessage.SEVERITY_WARN, "Unsecured account number: ", "For your safety, please enter a new account number different from the initial account number."));
@@ -192,6 +193,11 @@ public class CustomerLoginManagedBean implements Serializable {
             newCustomerPassword = "";
         } else {
             customerStatus = adminSessionBeanLocal.updateOnlineBankingAccount(newCustomerAccount, newCustomerPassword, customer.getCustomerBasicId());
+            CustomerBasic currentCustomer = (CustomerBasic) ec.getSessionMap().get("customer");
+            currentCustomer.setCustomerOnlineBankingAccountNum(newCustomerAccount);
+            currentCustomer.setCustomerOnlineBankingPassword(newCustomerPassword);
+//            ec.getSessionMap().replace("customer", currentCustomer);
+            newCustomerPassword = null;
         }
     }
 
