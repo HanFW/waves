@@ -22,13 +22,25 @@ public interface EmployeeAdminSessionBeanLocal {
     
     public Employee getEmployeeByAccountNum(String accountNum);
     
+    public Role findRole(Long RoleId);
+    
     public String createEmployeeAccount(String employeeName, String employeeDepartment,
     String employeePosition, String employeeNRIC, String employeeMobileNum, String employeeEmail,
     Set<String> roles);
     
+    public void updateEmployeeAccount(String employeeName, String employeeDepartment,
+    String employeePosition, Long employeeId, String employeeMobileNum, String employeeEmail,
+    Set<String> roles);
+    
+    public Set<String> getSelectedRoles(Long employeeId);
+    
+    public void setSelectedRoles(Long employeeId,Set<String> selectedRoles);
+    
     public List<Employee> filterAccountByDepartment(String employeeDepartment);
     
     public List<Employee> getEmployees();
+    
+    public Employee getEmployeeById(Long employeeId);
     
     public List<String> getEmployeeDepartments();
     
@@ -40,5 +52,7 @@ public interface EmployeeAdminSessionBeanLocal {
             String employeePosition,String employeeMobileNum,String employeeEmail);
     
     public List<String> getRoles();
+    
+    public Role getRoleByName(String roleName);
     
 }

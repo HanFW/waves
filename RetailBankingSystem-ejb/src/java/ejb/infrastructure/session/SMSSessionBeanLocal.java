@@ -5,6 +5,7 @@
  */
 package ejb.infrastructure.session;
 
+import ejb.customer.entity.CustomerBasic;
 import javax.ejb.Local;
 
 /**
@@ -13,5 +14,5 @@ import javax.ejb.Local;
  */
 @Local
 public interface SMSSessionBeanLocal {
-    public void sendOTP(String target, String phoneNum);
+    public void sendOTP(String target, CustomerBasic customer);
 }

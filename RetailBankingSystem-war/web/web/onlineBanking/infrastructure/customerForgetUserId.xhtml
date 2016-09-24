@@ -19,33 +19,34 @@
                             <p:selectOneRadio id="console" value="#{customerLoginManagedBean.customerNationality}">
                                 <f:selectItem itemLabel="Singaporean/PR" itemValue="singaporean"/>
                                 <f:selectItem itemLabel="Foreigner" itemValue="foreigner" />
-                                <p:ajax event="change" update=":nircForm :passportForm"/>
+                                <p:ajax event="change" update=":nricForm :passportForm"/>
                             </p:selectOneRadio>
                         </p:column>
                     </p:row>
                 </p:panelGrid>
             </p:panel>
         </h:form>
-        <h:form id="nircForm" >
-            <p:messages/>
-            <p:panel id="nircField" visible="#{customerLoginManagedBean.customerNationality == 'singaporean'}">
+        
+        <h:form id="nricForm" >
+            <p:messages autoUpdate="true" showDetail="true"/>
+            <p:panel id="nricField" visible="#{customerLoginManagedBean.customerNationality == 'singaporean'}">
                 <p:row>
                     <p:column>
-                        <p:outputLabel for="nirc" value="NIRC: "/>  
+                        <p:outputLabel for="nric" value="NRIC: "/>  
                     </p:column>
                     <p:column>
-                        <p:inputText type="text" id="nirc" value="#{customerLoginManagedBean.customerIdentification}" required="true" requiredMessage="Please enter your identification number."/>
+                        <p:inputText type="text" id="nric" value="#{customerLoginManagedBean.customerIdentification}" required="true" requiredMessage="Please enter your identification number."/>
                     </p:column>
                 </p:row>
             </p:panel>
             <p:panelGrid rendered="#{customerLoginManagedBean.customerNationality == 'singaporean'}">
                 <p:row>
                     <p:column>
-                        <p:outputLabel for="otp" value="One-time passport: "/>
+                        <p:outputLabel for="otp" value="One-time password: "/>
                     </p:column>
                     <p:column>
-                        <p:inputText type="password" id="otp" required="true" requiredMessage="Please enter OTP."/>
-                        <p:commandButton value="Request OTP"/>
+                        <p:inputText type="password" id="otp" value="#{customerLoginManagedBean.customerOTP}" required="true" requiredMessage="Please enter OTP."/>
+                        <p:commandButton value="Request OTP" actionListener="#{customerLoginManagedBean.forgetOTP}"/>
                     </p:column>
                 </p:row>
             </p:panelGrid>
@@ -56,7 +57,6 @@
             </p:panelGrid>
         </h:form>
         <h:form id="passportForm">
-            <p:messages/>
             <p:panel id="passportField" visible="#{customerLoginManagedBean.customerNationality == 'foreigner'}">
                 <p:row>
                     <p:column>
@@ -71,11 +71,11 @@
             <p:panelGrid rendered="#{customerLoginManagedBean.customerNationality == 'foreigner'}">
                 <p:row>
                     <p:column>
-                        <p:outputLabel for="otp" value="One-time passport: "/>
+                        <p:outputLabel for="otp" value="One-time password: "/>
                     </p:column>
                     <p:column>
-                        <p:inputText type="password" id="otp" required="true" requiredMessage="Please enter OTP."/>
-                        <p:commandButton value="Request OTP"/>
+                        <p:inputText id="otp" type="password" value="#{customerLoginManagedBean.customerOTP}"/>
+                        <p:commandButton value="Request OTP"  actionListener="#{customerLoginManagedBean.forgetOTP}"/>
                     </p:column>
                 </p:row>
             </p:panelGrid>

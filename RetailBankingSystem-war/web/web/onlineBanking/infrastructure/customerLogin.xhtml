@@ -9,27 +9,28 @@
             <title>MBS iBanking</title>
         </h:head>
         <h:body>        
-            <h:form id="login">
+            <h:form id="loginForm">
                 <p:panel header="Login">
                     <p:messages showDetail="true"/>
                     <p:panelGrid>
                         <p:row>
                             <p:column>
-                                <p:outputLabel for="customerAccount" value="Account number: "/>
+                                <p:outputLabel for="customerAccount" value="User ID: "/>
                             </p:column>
                             <p:column>
-                                <p:inputText type="text" id="customerAccount" value="#{customerLoginManagedBean.customerAccount}" required="true" requiredMessage="Please enter your account number."/>
+                                <p:inputText type="text" id="customerAccount" value="#{customerLoginManagedBean.customerAccount}" required="true" requiredMessage="Please enter your User ID."/>
                             </p:column>
                         </p:row>
                         <p:row>
                             <p:column>
-                                <p:outputLabel for="customerPassword" value="Password: "/>
+                                <p:outputLabel for="customerPassword" value="PIN: "/>
                             </p:column>
                             <p:column>
-                                <p:inputText type="password" id= "customerPassword" value="#{customerLoginManagedBean.customerPassword}" required="true" requiredMessage="Please enter your password."/>
+                                <p:inputText type="password" id= "customerPassword" value="#{customerLoginManagedBean.customerPassword}" required="true" requiredMessage="Please enter your PIN."/>
                             </p:column>
                         </p:row>
                     </p:panelGrid>
+
                     <p:row rendered="#{customerLoginManagedBean.loginAttempts >= 5}">
                         <p:column colspan="2">
                             You have reached the maximum number of failed login attempts.
@@ -40,7 +41,7 @@
                     </p:row>
                     <p:row>
                         <p:column colspan="2">
-                            <p:commandButton value="submit" type="submit" actionListener="#{customerLoginManagedBean.doLogin}" update="@form"/>
+                            <p:commandButton value="submit" type="submit" actionListener="#{customerLoginManagedBean.doLogin}" update="loginForm"/>
                             Forgot
                             <p:link outcome="/web/onlineBanking/infrastructure/customerForgetUserId" value="account number"/>
                             or
@@ -49,7 +50,29 @@
                         </p:column>
                     </p:row>
                 </p:panel>
-
+            </h:form>
+            <h:form id="otpForm">
+                <p:dialog header="One-time Password" widgetVar="otpDialog" resizable="false">
+                    <h:panelGrid id="otpPanel">
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="Please enter the one-time password sent to your registered mobile. "/>
+                            </p:column>
+                        </p:row>
+                        <p:row><p:messages autoUpdate="true" showDetail="true"/></p:row>
+                        <p:row>
+                            <p:column>
+                                <p:inputText type="password" value="#{customerLoginManagedBean.customerOTP}"/>
+                                <p:commandLink value="Resend OTP" actionListener="#{customerLoginManagedBean.sendOTP}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:commandButton value="Submit" actionListener="#{customerLoginManagedBean.verifyLoginOTP}" update="otpPanel"/>
+                            </p:column>
+                        </p:row>
+                    </h:panelGrid>
+                </p:dialog>
             </h:form>
         </h:body>
     </f:view>

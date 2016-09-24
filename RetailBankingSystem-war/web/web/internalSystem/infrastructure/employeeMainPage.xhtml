@@ -1,0 +1,97 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Employee Main Page</title>
+    </h:head>
+    <h:body>
+        <!--        <h1>Welcome to Merlion Bank Internal System</h1>-->
+        <p:notificationBar position="top" effect="slide" styleClass="top" widgetVar="bar">
+            <h:outputText value="Welcome!" style="font-size:36px;" />
+        </p:notificationBar>
+        <h:form>
+            <p:panel visible="#{employeeAccountManagedBean.hasRoleSystemAdmin()}" style="border: none">
+                <p:row>
+                    <p:button outcome="/web/internalSystem/infrastructure/employeeUserAccountManagement.xhtml" value="System Administrator">
+                    </p:button>
+                </p:row>
+            </p:panel>
+
+            <p:panel visible="#{employeeAccountManagedBean.hasRoleCounterTeller()}" style="border: none">
+                <p:row>
+                    <p:button outcome="/web/internalSystem/infrastructure/employeeCounterTellerMainPage.xhtml" value="Counter Teller">
+                    </p:button>
+                </p:row>
+            </p:panel>
+
+            <p:panel visible="#{employeeAccountManagedBean.hasRoleCallCenterStaff()}" style="border: none">
+                <p:row>
+                    <p:button outcome="/web/internalSystem/infrastructure/employeeCallCenterStaffMainPage.xhtml" value="Call Center Staff">
+                    </p:button>
+                </p:row>
+            </p:panel>
+
+            <p:panel visible="#{employeeAccountManagedBean.hasRoleEnquiryManager()}" style="border: none">
+                <p:row>
+                    <p:button outcome="/web/internalSystem/infrastructure/employeeEnquiryManagerMainPage.xhtml" value="Enquiry Manager">
+                    </p:button>
+                </p:row>
+            </p:panel>
+
+            <p:panel visible="#{employeeAccountManagedBean.hasRoleRelationshipManager()}" style="border: none">
+                <p:row>
+                    <p:button outcome="/web/internalSystem/infrastructure/employeeRelationshipManagerMainPage.xhtml" value="Relationship Manager">
+                    </p:button>
+                </p:row>
+            </p:panel>
+
+            <p:panel visible="#{employeeAccountManagedBean.hasRoleCardDepartmentManager()}" style="border: none">
+                <p:row>
+                    <p:button outcome="/web/internalSystem/infrastructure/employeeCardDepartmentManagerMainPage.xhtml" value="Card Department Manager">
+                    </p:button>
+                </p:row>
+            </p:panel>
+
+            <p:panel visible="#{employeeAccountManagedBean.hasRoleLoanOfficer()}" style="border: none">
+                <p:row>
+                    <p:button outcome="/web/internalSystem/infrastructure/employeeLoanOfficerMainPage.xhtml" value="Loan Department Manager">
+                    </p:button>
+                </p:row>
+            </p:panel>
+
+            <p:panel visible="#{employeeAccountManagedBean.hasRoleUnderwriter()}" style="border: none">
+                <p:row>
+                    <p:button outcome="/web/internalSystem/infrastructure/employeeUnderwriterMainPage.xhtml" value="Underwriter">
+                    </p:button>
+                </p:row>
+            </p:panel>
+
+            <p:panel visible="#{employeeAccountManagedBean.hasRoleSalesDepartmentManager()}" style="border: none">
+                <p:row>
+                    <p:button outcome="/web/internalSystem/infrastructure/employeeSalesDepartmentManagerMainPage.xhtml" value="SalesDepartmentManager">
+                    </p:button>
+                </p:row>
+            </p:panel>
+
+            <p:panel visible="#{employeeAccountManagedBean.hasRoleMortgageAppraiser()}" style="border: none">
+                <p:row>
+                    <p:button outcome="/web/internalSystem/infrastructure/employeeMortgageAppraiserMainPage.xhtml" value="Mortage Appraiser">
+                    </p:button>
+                </p:row>
+            </p:panel>
+
+            <p:panel visible="#{employeeAccountManagedBean.hasRoleCEO()}" style="border: none">
+                <p:row>
+                    <p:button outcome="/web/internalSystem/infrastructure/employeeCEOMainPage.xhtml" value="Chief Executive Officer">
+                    </p:button>
+                </p:row>
+            </p:panel>
+
+        </h:form>
+    </h:body>
+</html>
+
+

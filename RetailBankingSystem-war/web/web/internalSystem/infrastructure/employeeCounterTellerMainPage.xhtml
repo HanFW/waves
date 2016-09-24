@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <h:head>
+        <title>Counter Teller Main Page</title>
+    </h:head>
+    <h:body>
+
+        <h:form>
+            <p:menubar>
+                <p:submenu label="Manage My Account">
+                    <p:menuitem value="Change Password" actionListener="#{employeeLoginManagedBean.changePassword}" />
+                </p:submenu>
+
+                <p:submenu label="Log Out">
+                    <p:menuitem value="Logout" actionListener="#{employeeLoginManagedBean.doLogOut}" />
+                </p:submenu>
+            </p:menubar>
+        </h:form>
+
+        <h:form id="form">           
+            <p:growl id="msgs" showDetail="true" />
+
+
+            <p:accordionPanel>
+                <p:ajax event="tabChange" listener="#{tabbedView.onTabChange}" update=":form:msgs" />
+                <p:ajax event="tabClose" listener="#{tabbedView.onTabClose}" update=":form:msgs" />
+
+                <p:tab title="Customer Management">
+                    <h:panelGrid columns="2" cellpadding="10">
+                        <p:commandButton value="View Enquiry Case" action="/web/internalSystem/enquiry/counterTellerSearchCustomer.xhtml"/>
+                        <p:commandButton value="Create Enquiry Case" action="/web/internalSystem/enquiry/counterTellerSearchCustomer.xhtml"/>
+                        <p:commandButton value="Search Enquiry" action="/web/internalSystem/enquiry/counterTellerSearchCaseById.xhtml"/>
+                        <p:commandButton value="Add Follow Up Questions" action="/web/internalSystem/enquiry/counterTellerSearchCustomer.xhtml"/>
+                    </h:panelGrid>
+                </p:tab>
+                <p:tab title="Deposit">
+                    <h:panelGrid columns="2" cellpadding="10">
+                        <p:commandButton value="Deposit Account" action="/web/internalSystem/enquiry/counterTellerSearchCustomer.xhtml"/>
+                        <p:commandButton value="View Transaction History" action="/web/internalSystem/enquiry/counterTellerSearchCustomer.xhtml"/>
+                        <p:commandButton value="View Bank Statement" action="/web/internalSystem/enquiry/counterTellerSearchCustomer.xhtml"/>
+                        <p:commandButton value="Fund Transfer" action="/web/internalSystem/deposit/employeeCashDeposit.xhtml"/>
+                        <p:commandButton value="Cash Deposit" action="/web/internalSystem/deposit/employeeCashDeposit.xhtml"/>
+                        <p:commandButton value="Cash Withdraw" action="/web/internalSystem/deposit/employeeCashWithdraw.xhtml"/>
+                    </h:panelGrid>
+                </p:tab>
+                <p:tab title="Loan">
+                    <h:panelGrid columns="2" cellpadding="10">
+                        
+                    </h:panelGrid>
+                </p:tab>
+                <p:tab title="Card">
+                    <h:panelGrid columns="2" cellpadding="10">
+                      
+                    </h:panelGrid>
+                </p:tab>
+                <p:tab title="Billing and Payment">
+                    <h:panelGrid columns="2" cellpadding="10">
+                        
+                    </h:panelGrid>
+                </p:tab>
+            </p:accordionPanel>
+        </h:form>
+    </h:body>
+
+</html>
+

@@ -68,9 +68,9 @@
                 <p:ajax event="rowEditCancel" listener="#{employeeAccountManagedBean.onRowCancel}" update=":form:msgs" />
 
 
-<!--                <p:column headerText="Id" style="width:5%">
-                    <h:outputText value="#{employee.employeeId}" />
-                </p:column>-->
+                <!--                <p:column headerText="Id" style="width:5%">
+                                    <h:outputText value="#{employee.employeeId}" />
+                                </p:column>-->
 
                 <p:column headerText="Name" style="width:10%">
                     <p:cellEditor>
@@ -85,7 +85,7 @@
                         <f:facet name="input">
                             <h:selectOneMenu id="employeeDepartment" value="#{employee.employeeDepartment}" 
                                              style="width:125px">
-                               <f:selectItems value="#{employeeAccountManagedBean.departments}" var="department" itemLabel="#{department}" itemValue="#{department}" />
+                                <f:selectItems value="#{employeeAccountManagedBean.departments}" var="department" itemLabel="#{department}" itemValue="#{department}" />
                             </h:selectOneMenu>
                         </f:facet>
                     </p:cellEditor>
@@ -117,26 +117,31 @@
                     </p:cellEditor>
                 </p:column>
 
-<!--                 <p:column headerText="Role" style="width:10%">
-                    <p:cellEditor>
-                        <f:facet name="output"><h:outputText value="" /></f:facet>
-                        <p:outputPanel id="display" style="width:250px;padding-left:5px">
-                            <p:dataList value="#{employee.selectedRoles}" var="role">
-                                #{role}
-                            </p:dataList>
-                        </p:outputPanel>
-                        <f:facet name="input">
-                             <p:selectCheckboxMenu id="menu" value="#{employee.selectedRoles}" label="Select"
-                                                  filter="true" filterMatchMode="startsWith" panelStyle="width:250px">
-                                <f:selectItems value="#{employeeAccountManagedBean.roles}" />
-                            </p:selectCheckboxMenu>
-                        </f:facet>
-                    </p:cellEditor>
-                </p:column>-->
+                <!--                 <p:column headerText="Role" style="width:10%">
+                                    <p:cellEditor>
+                                        <f:facet name="output">
+                                        <h:outputText id="display" style="width:250px;padding-left:5px">
+                                            <p:dataList value="#{employeeAccountManagedBean.roles}" var="role">
+                #{role}
+            </p:dataList>
+        </h:outputText>
+        </f:facet>
+        <f:facet name="input">
+             <p:selectCheckboxMenu id="menu" value="#{employee.selectedRoles}" label="Select"
+                                  filter="true" filterMatchMode="startsWith" panelStyle="width:250px">
+                <f:selectItems value="#{employeeAccountManagedBean.roles}" />
+            </p:selectCheckboxMenu>
+        </f:facet>
+    </p:cellEditor>
+</p:column>-->
+                <p:column style="width:4%">
+                    <p:commandButton action="/web/internalSystem/infrastructure/employeeEditAccountInfo.xhtml" icon="ui-icon-pencil">
+                        <f:setPropertyActionListener value="#{employee.employeeId}" target="#{employeeAccountManagedBean.employeeId}"/>
+                    </p:commandButton>
+                </p:column> 
 
-     
-                <p:column style="width:10%">
-                    <p:rowEditor />
+                <p:column style="width:5%">
+                    <p:rowEditor/>
                 </p:column>
 
                 <p:contextMenu for="userAccount2" widgetVar="Menu">   
@@ -145,13 +150,27 @@
                     <p:menuitem value="Hide Menu" icon="ui-icon-close" onclick="PF('Menu').hide()"/>  
                 </p:contextMenu>
 
+
+
                 <p:column style="width:10%">
-                    <p:commandButton value="Delete" id="Delete" actionListener="#{employeeAccountManagedBean.deleteAccount(employee)}" ajax="false"/>
+                    <!--<h:form>-->
+
+                    <p:growl showDetail="true" />
+                    <p:commandButton id="delete" value="Archive" icon="ui-icon ui-icon-trash" onclick="PF('deleteConfirmMsg').show()">
+                    </p:commandButton>
+
+
+                    <p:confirmDialog header="Confirmation" message="Are you sure you want to archive the user account?" showEffect="fade" hideEffect="fade"  widgetVar="deleteConfirmMsg">
+                        <p:commandButton value="Yes" styleClass="ui-confirmdialog-yes" action="#{employeeAccountManagedBean.deleteAccount(employee)}" oncomplete="PF('deleteConfirmMsg').hide()" ajax="false"/>
+                        <p:commandButton value="No" styleClass="ui-confirmdialog-no" action="#{employeeAccountManagedBean.deleteCancel(employee)}" oncomplete="PF('deleteConfirmMsg').hide()" ajax="false"/>
+                    </p:confirmDialog>
+                    <!--</h:form>-->
                 </p:column>
 
             </p:dataTable>
-
         </h:form>
+
+
 
         <h:form>
             <p:row>
