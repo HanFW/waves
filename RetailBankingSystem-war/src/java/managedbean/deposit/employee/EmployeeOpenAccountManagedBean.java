@@ -12,7 +12,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.Map;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -911,15 +910,15 @@ public class EmployeeOpenAccountManagedBean implements Serializable {
         }
     }
 
-    public String customerVerify(String customerName, String customerIdentificationNum, String IdentificationType) {
+    public String customerVerify(String customerName, String customerIdentificationNum, String identification) {
         Verify verify = verifySessionBeanLocal.retrieveVerifyByCusIc(customerIdentificationNum);
-        System.out.println(verify);
+        
         if (verify.getVerifyId() == null) {
             return "Verify Failed. Invalid Identification Number";
         } else {
             if (!verify.getCustomerName().equals(customerName)) {
                 return "Verify Failed. Please check your identification number";
-            } else if (!verify.getCustomerIdentificationType().equals(IdentificationType)) {
+            } else if (!verify.getIdentification().equals(identification)) {
                 return "Verify Failed. Please check your identification type and identification number";
             } else {
                 return "Verify Successfully";

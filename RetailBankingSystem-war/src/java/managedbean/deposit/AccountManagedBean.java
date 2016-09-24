@@ -947,15 +947,15 @@ public class AccountManagedBean implements Serializable {
         }
     }
 
-    public String customerVerify(String customerName, String customerIdentificationNum, String IdentificationType) {
+    public String customerVerify(String customerName, String customerIdentificationNum, String identification) {
         Verify verify = verifySessionBeanLocal.retrieveVerifyByCusIc(customerIdentificationNum);
-        System.out.println(verify);
+        
         if (verify.getVerifyId() == null) {
             return "Verify Failed. Invalid Identification Number";
         } else {
             if (!verify.getCustomerName().equals(customerName)) {
                 return "Verify Failed. Please check your identification number";
-            } else if (!verify.getCustomerIdentificationType().equals(IdentificationType)) {
+            } else if (!verify.getIdentification().equals(identification)) {
                 return "Verify Failed. Please check your identification type and identification number";
             } else {
                 return "Verify Successfully";
