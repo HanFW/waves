@@ -23,15 +23,13 @@
                     </p:row>
                     <p:row>
                         <p:column>
-                            <p:inputText type="password" value="#{sMSManagedBean.customerOTP}" />
-                            
-                            <p:commandButton value="Resend OTP" type="submit" actionListener="#{sMSManagedBean.sendOTP}"style="float:right"/>
-                            
+                            <p:inputText required="false" type="password" value="#{sMSManagedBean.customerOTP}"/>
+                            <p:commandButton value="Resend OTP" type="submit" actionListener="#{sMSManagedBean.sendOTP}" style="float:right"/>
                         </p:column>
                     </p:row>
                     <p:row>
                         <p:column>
-                            <p:messages showDetail="true" autoUpdate="true" globalOnly="true" closable="true"/>
+                            <p:messages showDetail="true" globalOnly="true" closable="true"/>
                         </p:column>
                     </p:row>
                     <p:row>

@@ -38,7 +38,7 @@
                             <p:selectOneRadio id="console" value="#{customerLoginManagedBean.customerNationality}" style="line-height:2;font-size:20pt;margin:0 auto">
                                 <f:selectItem itemLabel="Singaporean/PR" itemValue="singaporean"/>
                                 <f:selectItem itemLabel="Foreigner" itemValue="foreigner" />
-                                <p:ajax event="change" update=":nircForm :passportForm"/>
+                                <p:ajax event="change" update=":nricForm :passportForm"/>
                             </p:selectOneRadio>
                         </p:row>
                 </p:panelGrid>
@@ -47,14 +47,14 @@
         <br/>
 
   
-        <h:form id="nircForm" >
-            <p:messages/>
-            <p:panel id="nircField" visible="#{customerLoginManagedBean.customerNationality == 'singaporean'}"  style="margin:0 auto">
+        <h:form id="nricForm" >
+            <p:messages autoUpdate="true" showDetail="true"/>
+            <p:panel id="nricField" visible="#{customerLoginManagedBean.customerNationality == 'singaporean'}"  style="margin:0 auto">
                 <p:row>
                     <p:column>
                          <div align="center">
-                        <p:outputLabel for="nirc" value="NRIC: " style="margin:0 auto;font-size:14pt;line-height:2" />  
-                        <p:inputText type="text" id="nirc" value="#{customerLoginManagedBean.customerIdentification}" required="true" requiredMessage="Please enter your identification number."/>
+                        <p:outputLabel for="nric" value="NRIC: " style="margin:0 auto;font-size:14pt;line-height:2" />  
+                        <p:inputText type="text" id="nric" value="#{customerLoginManagedBean.customerIdentification}" required="true" requiredMessage="Please enter your identification number."/>
                         </div>
                     </p:column>
                 </p:row>
@@ -69,8 +69,8 @@
                         <p:outputLabel for="otp" value="One-time passport: " style="font-size:14pt"/>
                     </p:column>
                     <p:column>
-                        <p:inputText type="password" id="otp" required="true" requiredMessage="Please enter OTP."/>
-                        <p:commandButton value="Request OTP" style="float:right;font-size:12pt"/>
+                        <p:inputText type="password" id="otp" value="#{customerLoginManagedBean.customerOTP}" required="true" requiredMessage="Please enter OTP."/>
+                        <p:commandButton value="Request OTP" actionListener="#{customerLoginManagedBean.forgetOTP}" style="float:right;font-size:12pt"/>
                     </p:column>
                 </p:row>
             </p:panelGrid>
@@ -90,8 +90,6 @@
             </p:panelGrid>
         </h:form>
         <h:form id="passportForm">
-            <p:messages/>
-            <p:panel id="passportField" visible="#{customerLoginManagedBean.customerNationality == 'foreigner'}" style="margin:0 auto">
                 <p:row>
                     <p:column>
                         <div align="center">
@@ -109,11 +107,7 @@
             <p:panelGrid rendered="#{customerLoginManagedBean.customerNationality == 'foreigner'}" style="margin:0 auto" styleClass="ui-panelgrid-blank form-group">
                 <p:row>
                     <p:column>
-                        <p:outputLabel for="otp" value="One-time passport: " style="font-size:14pt"/>
-                    </p:column>
-                    <p:column>
-                        <p:inputText type="password" id="otp" required="true" requiredMessage="Please enter OTP."/>
-                        <p:commandButton value="Request OTP" style="float:right;font-size:12pt"/>
+            <p:panel id="passportField" visible="#{customerLoginManagedBean.customerNationality == 'foreigner'}" style="margin:0 auto">
                     </p:column>
                 </p:row>
             </p:panelGrid>
@@ -136,3 +130,8 @@
     </h:body>
    </ui:define>
 </ui:composition>
+                        <p:outputLabel for="otp" value="One-time passport: " style="font-size:14pt"/>
+                    </p:column>
+                    <p:column>
+                        <p:inputText id="otp" type="password" value="#{customerLoginManagedBean.customerOTP}"/>
+                        <p:commandButton value="Request OTP" actionListener="#{customerLoginManagedBean.forgetOTP}" style="float:right;font-size:12pt"/>

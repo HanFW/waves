@@ -33,8 +33,8 @@
         <br/>
 
         <h:form id="nircForm" >
-            <p:messages id="nircMessage"/>
-            <p:panel id="nircField" visible="#{customerLoginManagedBean.customerNationality == 'singaporean'}" style="margin:0 auto">
+            <p:messages autoUpdate="true" showDetail="true"/>
+            <p:panel id="nircField" visible="#{customerLoginManagedBean.customerNationality == 'singaporean'}">
                 <p:row>
                         <div align='center'>
                         <p:outputLabel style="margin:0 auto;font-size:14pt;line-height:2" for="nirc" value="NRIC: "/> 
@@ -49,28 +49,18 @@
             <p:panelGrid rendered="#{customerLoginManagedBean.customerNationality == 'singaporean'}" style="margin:0 auto" styleClass="ui-panelgrid-blank form-group">
                 <p:row>
                     <p:column>
-                        <div align="center">
-                        <p:outputLabel for="otp" value="One-time passport: " style="font-size:14pt"/>
-                        </div>
+                        <p:outputLabel for="otp" value="One-time password: "/>
                     </p:column>
                     <p:column>
-                        <div align="center">
-                        <p:inputText type="password" id="otp" required="true" requiredMessage="Please enter OTP." />
-                        <p:commandButton style="float:right;font-size:12pt " value="Request OTP"/>
-                        </div>
+                        <p:inputText type="password" id="otp" value="#{customerLoginManagedBean.customerOTP}"/>
+                        <p:commandButton value="Request OTP" actionListener="#{customerLoginManagedBean.forgetOTP}"/>
                     </p:column>
                 </p:row>
             </p:panelGrid>
-            </p:panel>
-            
-            <p:panelGrid style="margin:0 auto" rendered="#{customerLoginManagedBean.customerNationality == 'singaporean'}">
-                <br/>
-                <br/>
-                <div align="center">
-                    <p:commandButton type="submit" value="Reset my password" actionListener="#{customerLoginManagedBean.resetCustomerPassword}" update="nircMessage" style="margin:0 auto;font-family:Eurostile;font-size:15pt"/>
-                </div>
-                <br/>
-                <br/>
+            <p:panelGrid rendered="#{customerLoginManagedBean.customerNationality == 'singaporean'}">
+                <p:row>
+                    <p:commandButton type="submit" value="Reset my password" actionListener="#{customerLoginManagedBean.resetCustomerPassword}" update="@form"/>
+                </p:row>
             </p:panelGrid>
                
             <p:confirmDialog id="resetConfirmation" message="Your online banking password has been reset successfully and sent to your registered email." header="Password reset successful" severity="info" widgetVar="resetConfirmation" closable="false" style="font-family:Eurostile">
@@ -81,8 +71,7 @@
         </h:form>
         
         <h:form id="passportForm">
-            <p:messages id="passportMessage"/>
-            <p:panel id="passportField" visible="#{customerLoginManagedBean.customerNationality == 'foreigner'}" style="margin:0 auto">
+            <p:panel id="passportField" visible="#{customerLoginManagedBean.customerNationality == 'foreigner'}">
                 <p:row>
                       <div align="center">
                         <p:outputLabel for="passport" value="Passport: " style="font-size:14pt;line-height:2"/>
@@ -100,8 +89,8 @@
                         <p:outputLabel for="otp" value="One-time password: " style="font-size:14pt"/>
                     </p:column>
                     <p:column>
-                        <p:inputText type="password" id="otp" required="true" requiredMessage="Please enter OTP."/>
-                        <p:commandButton value="Request OTP" style="float:right;font-size:12pt"/>
+                        <p:inputText type="password" id="otp" value="#{customerLoginManagedBean.customerOTP}"/>
+                        <p:commandButton value="Request OTP" actionListener="#{customerLoginManagedBean.forgetOTP}"/>
                     </p:column>
                 </p:row>
             </p:panelGrid>
@@ -112,7 +101,7 @@
                 <br/>
                 <br/>
                 <div align="center">
-                    <p:commandButton type="submit" value="Reset my password" actionListener="#{customerLoginManagedBean.resetCustomerPassword}" update="passportMessage" style="margin:0 auto;font-family:Eurostile;font-size:15pt"/>
+                    <p:commandButton type="submit" value="Reset my password" actionListener="#{customerLoginManagedBean.resetCustomerPassword}" update="@form" style="margin:0 auto;font-family:Eurostile;font-size:15pt"/>
                 </div>
                 <br/>
                 <br/>

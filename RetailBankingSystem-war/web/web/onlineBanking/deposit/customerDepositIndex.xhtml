@@ -35,5 +35,58 @@
 
         </b:carousel>
 
+                <p:submenu label="My profile">
+                    <p:menuitem value="Change password" url="/web/onlineBanking/customer/customerChangePIN.xhtml" />
+                    <p:menuitem value="Update basic profile" url="/web/onlineBanking/customer/customerUpdateBasicProfile.xhtml" />
+                </p:submenu>
+
+                <p:submenu label="Logout">
+                    <p:menuitem value="Logout" actionListener="#{customerLoginManagedBean.doLogout}"/>
+                </p:submenu>
+            </p:menubar>
+        </h:form>
+        <h:form>
+            <br/>
+            <p:panel>
+                <p:outputLabel value="Your Quick Summary" style="margin-left: 95px"/>
+                <br/>
+                <br/>
+                <p:chart type="bar" model="#{depositIndexManagedBean.barModel}" style="height:300px;width: 300px;alignment-adjust: central"/>
+                <br/>
+                <p:outputLabel value="Deposits" style="font-weight: bold; font-size: 24px" />
+                <p:separator/>
+                <br/>
+                <p:dataTable var="bankAccount" value="#{depositIndexManagedBean.bankAccount}" 
+                             paginator="true" rows="10" emptyMessage="No Account">
+
+                    <p:column headerText="Bank Account Type"> 
+                        <p:commandLink process="@this" action="/web/onlineBanking/deposit/customerViewTransactionDone.xhtml">
+                            <h:outputText value="#{bankAccount.bankAccountType}" />
+                            <f:setPropertyActionListener value="#{bankAccount.bankAccountNum}" target="#{transactionManagedBean.bankAccountNum}" />
+                        </p:commandLink>
+                    </p:column>
+
+                    <p:column headerText="Bank Account Number" >
+                        <p:commandLink process="@this" action="/web/onlineBanking/deposit/customerViewTransactionDone.xhtml" >
+                            <h:outputText value="#{bankAccount.bankAccountNum}" /> 
+                            <f:setPropertyActionListener value="#{bankAccount.bankAccountNum}" target="#{transactionManagedBean.bankAccountNum}" />
+                        </p:commandLink>
+                    </p:column>
+
+                    <p:column headerText="Balance"> 
+                        <p:commandLink process="@this" action="/web/onlineBanking/deposit/customerViewTransactionDone.xhtml" >
+                            <h:outputText value="S$#{bankAccount.bankAccountBalance}" />
+                            <f:setPropertyActionListener value="#{bankAccount.bankAccountNum}" target="#{transactionManagedBean.bankAccountNum}" />
+                        </p:commandLink>
+                    </p:column>
+
+                </p:dataTable>
+                
+            </p:panel>
+        </h:form>
+        
+        <ezcomp:CCTimeout/>
+    </h:body>
+</html>
     </ui:define>
 </ui:composition>

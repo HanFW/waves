@@ -27,7 +27,7 @@
                         <br/>
                         <label style="font-family: Eurostile;font-size:35px; color:#022A5A">Merlion Bank</label>
                     </div>
-                    <p:messages/>
+                    <p:messages showDetail="true"/>
                     <div class="ui-g-12">
                         <h:panelGroup styleClass="md-inputfield">
                             <p:inputText type="text" id="customerAccount" value="#{customerLoginManagedBean.customerAccount}" required="true" requiredMessage="Please enter your Online Banking User ID."/>
@@ -66,5 +66,28 @@
             <h:outputStylesheet name="css/ripple.css" library="ultima-layout" />
             <h:outputStylesheet name="css/layout-#{guestPreferences.theme}.css" library="ultima-layout" />
         </h:form>
+        <h:form id="otpForm">
+                <p:dialog header="One-time Password" widgetVar="otpDialog" resizable="false">
+                    <h:panelGrid id="otpPanel">
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="Please enter the one-time password sent to your registered mobile. "/>
+                            </p:column>
+                        </p:row>
+                        <p:row><p:messages autoUpdate="true" showDetail="true"/></p:row>
+                        <p:row>
+                            <p:column>
+                                <p:inputText type="password" value="#{customerLoginManagedBean.customerOTP}"/>
+                                <p:commandLink value="Resend OTP" actionListener="#{customerLoginManagedBean.sendOTP}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:commandButton value="Submit" actionListener="#{customerLoginManagedBean.verifyLoginOTP}" update="otpPanel"/>
+                            </p:column>
+                        </p:row>
+                    </h:panelGrid>
+                </p:dialog>
+            </h:form>
     </h:body>
 </html>

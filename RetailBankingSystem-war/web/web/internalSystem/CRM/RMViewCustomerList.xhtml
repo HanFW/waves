@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core" 
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>View My Customers</title>
+    </h:head>
+    <h:body>
+        <h:form>
+            <p:panel header="My Current Customers">
+                <p:dataTable var="customerAdvanced" value="#{rMUpdateCustomerAdvancedManagedBean.customerListFromEmployeeId}" 
+                             paginator="true" rows="10" emptyMessage="No Customer Assigned">
+                    <p:column headerText="Customer Name" >
+                        <h:outputText value="#{customerAdvanced.customerBasic.customerName}" /> 
+                    </p:column>
+
+                    <p:column headerText="Gender" >
+                        <h:outputText value="#{customerAdvanced.customerBasic.customerGender}" /> 
+                    </p:column>
+
+                    <p:column headerText="Identification No." >
+                        <h:outputText value="#{customerAdvanced.customerBasic.customerIdentificationNum}" /> 
+                    </p:column>
+
+                    <p:column > 
+                        <p:commandButton value="View Advanced Profile" actionListener="#{rMUpdateCustomerAdvancedManagedBean.redirectToViewAdvanced}" ajax="false">
+                            <f:setPropertyActionListener target="#{rMUpdateCustomerAdvancedManagedBean.customerOnlineBankingAccountNum}" value="#{customerAdvanced.customerBasic.customerIdentificationNum}" />
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+        </h:form>
+    </h:body>
+</html>
+

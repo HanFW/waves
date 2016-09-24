@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        For your safety, please reset your password
+        <h:form id="activationForm">
+            <p:panel header="Please reset your PIN">
+                <p:messages globalOnly="true" showDetail="true" id="activationMessage"/>
+                <p:panelGrid>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="customerPassword" value="New PIN: "/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText type="password" id= "customerPassword" value="#{customerLoginManagedBean.newCustomerPassword}" required="true" requiredMessage="Please create a new password.">
+                                <f:validateLength minimum="6" maximum="20" />
+                            </p:inputText>
+                            <p:message for="customerPassword"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="2">
+                            <p:commandButton value="submit" type="submit" actionListener="#{customerLoginManagedBean.activateNewPIN}" update="activationConfirmation activationForm"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </p:panel>
+        </h:form>
+        <h:form id="activationConfirmation">
+            <p:confirmDialog widgetVar="pinActivationDialog" closable="false" message="Your account has been successfully updated. Please remember your new online banking PIN. " header="Your PIN has been updated" severity="info">
+                <p:commandButton action="/web/onlineBanking/deposit/customerDepositIndex.xhtml" value="OK"/>
+            </p:confirmDialog>
+        </h:form>
+    </h:body>
+</html>
+

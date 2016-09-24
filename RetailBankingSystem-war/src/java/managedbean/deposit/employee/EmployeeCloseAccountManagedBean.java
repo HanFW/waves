@@ -1,6 +1,7 @@
-package managedbean.deposit;
+package managedbean.deposit.employee;
 
 import ejb.customer.entity.CustomerBasic;
+import static ejb.customer.entity.CustomerBasic_.customerName;
 import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import java.io.IOException;
@@ -13,32 +14,23 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
-@Named(value = "employeeViewTransactionManagedBean")
+@Named(value = "employeeCloseAccountManagedBean")
 @RequestScoped
 
-public class EmployeeViewTransactionManagedBean {
-
+public class EmployeeCloseAccountManagedBean {
+    @EJB
+    private BankAccountSessionBeanLocal bankAccountSessionBeanLocal;
+    
     @EJB
     private CRMCustomerSessionBeanLocal customerSessionBeanLocal;
 
-    @EJB
-    private BankAccountSessionBeanLocal bankAccountSessionBeanLocal;
-
-    private String customerName;
+    private ExternalContext ec;
+    
     private String customerIdentificationNum;
     private Date customerDateOfBirth;
-
-    private ExternalContext ec;
-
-    public EmployeeViewTransactionManagedBean() {
-    }
-
-    public String getCustomerName() {
-        return customerName;
-    }
-
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
+    private String customerName;
+    
+    public EmployeeCloseAccountManagedBean() {
     }
 
     public String getCustomerIdentificationNum() {
@@ -57,6 +49,14 @@ public class EmployeeViewTransactionManagedBean {
         this.customerDateOfBirth = customerDateOfBirth;
     }
 
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+    
     public void submit() throws IOException {
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
@@ -78,11 +78,8 @@ public class EmployeeViewTransactionManagedBean {
                 Map<String, Object> sessionMap = externalContext.getSessionMap();
                 sessionMap.put("customerIdentificationNum", customerIdentificationNum);
                 
-                customerIdentificationNum=null;
-                
-                ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/deposit/employeeViewTransactionDone.xhtml?faces-redirect=true");
+                ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/deposit/employeeCloseAccountDone.xhtml?faces-redirect=true");
             }
         }
     }
 }
-

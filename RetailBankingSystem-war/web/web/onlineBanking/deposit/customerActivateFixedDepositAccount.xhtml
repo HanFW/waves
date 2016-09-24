@@ -6,6 +6,42 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/onlineBankingTemplate.xhtml">
+    <h:head>
+        <title>Add Recipient</title>
+        <style type="text/css">
+            .gritter-notice-wrapper {
+                left:200px;
+                top: 50px; }
+            </style>   
+        </h:head>
+        <h:body>
+            <h:form id="formMain">
+            <h1>Welcome to Merlion Bank</h1>
+            <p:menubar>
+                <p:submenu label="My Account">
+                    <p:menuitem value="Home" url="/web/onlineBanking/deposit/customerDepositIndex.xhtml" />
+                    <p:menuitem value="Open Account" url="/web/onlineBanking/deposit/customerOpenAccount.xhtml" />
+                    <p:menuitem value="Close Account" url="/web/onlineBanking/deposit/customerCloseAccount.xhtml" />
+                    <p:menuitem value="View Account" url="/web/onlineBanking/deposit/customerViewAccount.xhtml" />
+                    <p:menuitem value="View Transaction" url="/web/onlineBanking/deposit/customerViewTransaction.xhtml" />
+                    <p:menuitem value="View Statement" url="/web/onlineBanking/deposit/customerViewStatement.xhtml" />
+                    <p:menuitem value="Activate Fixed Deposit Account" url="/web/onlineBanking/deposit/customerActivateFixedDepositAccount.xhtml" />
+                    <p:menuitem value="Change Password" url="/web/onlineBanking/deposit/customerChangeBankAccountPwd.xhtml" />
+                    <p:menuitem value="Forgot Password" url="/web/onlineBanking/deposit/customerForgotPassword.xhtml" />
+                </p:submenu>
+
+                <p:submenu label="Transfer" >
+                    <p:menuitem value="To My Account" url="/web/onlineBanking/deposit/customerToMyAccount.xhtml" />
+                    <p:menuitem value="To Other Merlion Accounts" url="/web/onlineBanking/deposit/customerToOthersAccount.xhtml" />
+                    <p:menuitem value="To Other Merlion Accuonts(One-time)" url="/web/onlineBanking/deposit/customerOneTimeTransfer.xhtml" />
+                    <p:menuitem value="Add Recipient" url="/web/onlineBanking/deposit/customerAddRecipient.xhtml" />
+                    <p:menuitem value="Delete Recipient" url="/web/onlineBanking/deposit/customerDeleteRecipient.xhtml" />
+                    <p:menuitem value="Change Daily Transfer Limit" url="/web/onlineBanking/deposit/customerDailyTransferLimit.xhtml" />
+                </p:submenu>
+
+                <p:submenu label="Enquiry">
+                    <p:menuitem value="Write an enquiry" url="/web/onlineBanking/customer/customerEnquiry.xhtml" />
+                </p:submenu>
 
 
     <ui:define name="content">
@@ -68,6 +104,16 @@
                 </p:panelGrid>
                 <br/>
                 <div align="center">
+                
+                <p:commandButton id="cancelBtn" action="/web/onlineBanking/deposit/customerDepositIndex.xhtml" value="Cancel" update="panel" immediate = "true">
+                    <p:confirm header="Cancel" message="Are you sure?" />
+                </p:commandButton>
+
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Yes" styleClass="ui-confirmdialog-yes" action="depositIndex"/>
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" />
+                </p:confirmDialog>
+                
                 <p:commandButton id="confirmBtn" value="Confirm" update="panel" 
                                  actionListener="#{fixedDepositAccountManagedBean.confirm}" ajax="true"/>
                 </div>

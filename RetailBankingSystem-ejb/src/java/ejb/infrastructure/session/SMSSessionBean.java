@@ -10,13 +10,14 @@ import com.twilio.sdk.TwilioRestException;
 import com.twilio.sdk.resource.factory.MessageFactory;
 import com.twilio.sdk.resource.instance.Account;
 import com.twilio.sdk.resource.instance.Message;
+import ejb.customer.entity.CustomerBasic;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.jboss.aerogear.security.otp.Totp;
-import org.jboss.aerogear.security.otp.api.Base32;
+import org.jboss.aerogear.security.otp.api.Clock;
 
 /**
  *
@@ -26,20 +27,20 @@ import org.jboss.aerogear.security.otp.api.Base32;
 public class SMSSessionBean implements SMSSessionBeanLocal {
 
     @Override
-    public String sendOTP(String target, String phoneNum) {
-        System.out.println("-");
-        System.out.println("****** infrastructure/SMSSessionBean: sendOTP() ******");
-        String secret = Base32.random();
-        Totp totp = new Totp(secret);
+    public void sendOTP(String target, CustomerBasic customer) {
+        System.out.println("@");
+        System.out.println("@@@@@@ infrastructure/SMSSessionBean: sendOTP() @@@@@@");
+        Clock clock = new Clock(120);
+        Totp totp = new Totp(customer.getCustomerOTPSecret(), clock);        
         String strOtp = totp.now(); 
         System.out.println("****** infrastructure/SMSSessionBean: sendOTP(): OTP generated");
         String message = "Dear customer, thank you for choosing Merlion Bank! This is your one-time password: " + strOtp;
-        sendSMS(message, phoneNum);
-        return strOtp;
+        sendSMS(message, customer.getCustomerMobile());
+        System.out.println("@");
     }
     
     private void sendSMS(String message, String toPhoneNum){
-        System.out.println("-");
+        System.out.println("*");
         System.out.println("****** infrastructure/SMSSessionBean: sendSMS() ******");
         final String ACCOUNT_SID = "ACd2668f24db04f66798892a6a99af1680";
         final String AUTH_TOKEN = "c029686d79f83924599423aee622994c";

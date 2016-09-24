@@ -156,9 +156,19 @@
                 </p:row>
             </p:panelGrid>
 
+            <p:row>
+                <p:column colspan="2">
+                    <p:commandButton type="submit" value="Submit" actionListener="#{employeeAccountManagedBean.createAccount}" update="@form"/>
+                </p:column>
+                <p:column colspan="2">
+                    <p:commandButton style="width:20%" value="Submit and Add Another User Account" type="submit" actionListener="#{employeeAccountManagedBean.createAccount}"/>
+                </p:column>
+                <p:column colspan="2">
+                    <p:commandButton value="Quit" type="submit" action="/web/internalSystem/infrastructure/employeeUserAccountManagement.xhtml" immediate="true"/>
+                </p:column>
+            </p:row>
+
         </h:form>
-</p:panelGrid>
-        </p:panel>
     </h:body>
     </ui:define>
 </ui:composition>

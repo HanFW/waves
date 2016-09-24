@@ -7,6 +7,9 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/merlionBankTemplate.xhtml">
 
+                <p:submenu label="Deposit">
+                    <p:menuitem value="Open Account" url="/web/merlionBank/deposit/publicOpenAccount.xhtml" />
+                </p:submenu>
 
     <ui:define name="content">
     <h:body>
@@ -29,50 +32,13 @@
                         <div class="card card-w-title">
                             <p:panelGrid styleClass="ui-panelgrid-blank form-group">
 
-                                <p:row>
-                                    <p:column>
-                                        <p:outputLabel style="font-weight: bold" value="Existing Customer of Merlion Bank: " />
-                                    </p:column>
-                                    <p:column>
-                                        <p:selectOneRadio id="existingCustomer" value="#{accountManagedBean.existingCustomer}"
-                                                          required="true" requiredMessage="Required Field">
-                                            <f:selectItem itemLabel="Yes" itemValue="Yes" />
-                                            <f:selectItem itemLabel="No" itemValue="No" />
-                                        </p:selectOneRadio>
-                                    </p:column>
-                                    <p:column>
-                                        <p:message for="existingCustomer" />
-                                    </p:column>
-                                </p:row>
+                        <p:panelGrid style="margin-bottom:10px">
+                            <p:outputLabel style="font-size: 20px;font-weight: bold" value="Dear Customer, if you are our existing customer, please login your online banking."/>
+                            <br/>
+                            <p:outputLabel style="font-size: 20px;font-weight: bold" value="After you login, you could apply for opening a new account under 'My Account'."/>
+                            <br/>
+                            <br/>
 
-                                <p:row>
-                                    <p:column>
-                                        <p:outputLabel for="customerSalutation" style="font-weight: bold" value="Salutation: " />
-                                    </p:column>
-                                    <p:column>
-                                        <p:selectOneMenu id="customerSalutation" value="#{accountManagedBean.customerSalutation}" 
-                                                         style="width:125px" required="true" requiredMessage="Required Field">
-                                            <f:selectItem itemLabel="Please Select" itemValue="" noSelectionOption="true"/>
-                                            <f:selectItem itemLabel="Dr" itemValue="Dr" />
-                                            <f:selectItem itemLabel="Mr" itemValue="Mr" />
-                                            <f:selectItem itemLabel="Mrs" itemValue="Mrs" />
-                                            <f:selectItem itemLabel="Ms" itemValue="Ms" />
-                                            <f:selectItem itemLabel="Mdm" itemValue="Mdm" />
-                                            <f:selectItem itemLabel="Others" itemValue="Others" />
-                                            <p:ajax event="change" update="panelCustomerSalutationOthers" listener="#{accountManagedBean.show()}"/>
-                                        </p:selectOneMenu>
-                                        <p:panel style="border: none;" id="panelCustomerSalutationOthers" visible="#{accountManagedBean.visible}">
-                                            <p:inputText label="Customer Salutation" id="customerSalutationOthers" requiredMessage="Required Field"
-                                                         value="#{accountManagedBean.customerSalutationOthers}" required="#{accountManagedBean.salutationRender}"/>  
-                                        </p:panel>
-                                    </p:column>
-                                    <p:column>
-                                        <p:message for="customerSalutation" />
-                                        <p:message for="panelCustomerSalutationOthers" />
-                                    </p:column>
-                                </p:row>
-
-                        
                             <p:row>
                                 <p:column>
                                     <p:outputLabel style="font-weight: bold" value="Existing Customer of Merlion Bank: " />
@@ -80,7 +46,7 @@
                                 <p:column>
                                     <p:selectOneRadio id="existingCustomer" value="#{accountManagedBean.existingCustomer}"
                                                       required="true" requiredMessage="Required Field">
-                                        <f:selectItem itemLabel="Yes" itemValue="Yes" />
+                                        <f:selectItem itemLabel="Yes" itemValue="Yes"/>
                                         <f:selectItem itemLabel="No" itemValue="No" />
                                     </p:selectOneRadio>
                                 </p:column>
@@ -89,19 +55,36 @@
                                 </p:column>
                             </p:row>
 
-                                <p:row>
-                                    <p:column>
-                                        <p:outputLabel for="customerDateOfBirth" style="font-weight: bold" value="Date Of Birth: " />
-                                    </p:column>
-                                    <p:column>
-                                        <p:calendar id="customerDateOfBirth" value="#{accountManagedBean.customerDateOfBirth}" 
-                                                    showOn="button" locale="de" navigator="true" pattern="dd/MM/yyyy" 
-                                                    yearRange="c-200:c+200" required="true" requiredMessage="Required Field"/>
-                                    </p:column>
-                                    <p:column>
-                                        <p:message for="customerDateOfBirth" />
-                                    </p:column>
-                                </p:row>
+                            <p:dialog header="Basic Dialog" widgetVar="dlg1" minHeight="40">
+                                <h:outputText value="Resistance to PrimeFaces is futile!" />
+                            </p:dialog>
+
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="customerSalutation" style="font-weight: bold" value="Salutation: " />
+                                </p:column>
+                                <p:column>
+                                    <p:selectOneMenu id="customerSalutation" value="#{accountManagedBean.customerSalutation}" 
+                                                     style="width:125px" required="true" requiredMessage="Required Field">
+                                        <f:selectItem itemLabel="Please Select" itemValue="" noSelectionOption="true"/>
+                                        <f:selectItem itemLabel="Dr" itemValue="Dr" />
+                                        <f:selectItem itemLabel="Mr" itemValue="Mr" />
+                                        <f:selectItem itemLabel="Mrs" itemValue="Mrs" />
+                                        <f:selectItem itemLabel="Ms" itemValue="Ms" />
+                                        <f:selectItem itemLabel="Mdm" itemValue="Mdm" />
+                                        <f:selectItem itemLabel="Others" itemValue="Others" />
+                                        <p:ajax event="change" update="panelCustomerSalutationOthers" listener="#{accountManagedBean.show()}"/>
+                                    </p:selectOneMenu>
+                                    <p:panel style="border: none;" id="panelCustomerSalutationOthers" visible="#{accountManagedBean.visible}">
+                                        <p:inputText label="Customer Salutation" id="customerSalutationOthers" requiredMessage="Required Field"
+                                                     value="#{accountManagedBean.customerSalutationOthers}" required="#{accountManagedBean.salutationRender}"/>  
+                                    </p:panel>
+                                </p:column>
+                                <p:column>
+                                    <p:message for="customerSalutation" />
+                                    <p:message for="panelCustomerSalutationOthers" />
+                                </p:column>
+                            </p:row>
 
                                 <p:row>
                                     <p:column>
@@ -856,25 +839,126 @@
 
                         </p:panelGrid>
                         <br/>
-                        <p:panelGrid styleClass="ui-panelgrid-blank form-group">
+                        <p:panelGrid>
+                            <h3>
+                                Introduction of various bank account types: 
+                            </h3>
+                            <h:outputText value="(a) Monthly Savings Account"/>
+                            <br/>
+                            <h:outputText value="- Initial Deposit: S$0  Monthly Minimum Saving: S$50" style="margin-left:28px"/>
+                            <br/>
+                            <h:outputText value="- Basic Interest Rate: 0.05%  Bonus Interest Rate: 0.35%" style="margin-left:28px"/>
+                            <br/>
+                            <h:outputText value="- Bonus Interest Rate Criteria" style="margin-left:28px"/>
+                            <br/>
+                            <h:outputText value="· No withdrawal during this month" style="margin-left:40px"/>
+                            <br/>
+                            <h:outputText value="· No transfer to others' account during this month" style="margin-left:40px"/>
+                            <br/>
+                            <h:outputText value="· Monthly Minimum Saving S$50" style="margin-left:40px"/>
+                            <br/>
+                            <br/>
+                            <h:outputText value="(b) Basic Savings Account"/>
+                            <br/>
+                            <h:outputText value="- Initial Deposit: S$1  Basic Interest Rate: 0.05%" style="margin-left:28px"/>
+                            <br/>
+                            <br/>
+                            <h:outputText value="(c) Bonus Savings Account"/>
+                            <br/>
+                            <h:outputText value="- Initial Deposit: S$3000" style="margin-left:28px"/> 
+                            <br/>
+                            <h:outputText value="- Basic Interest Rate: 0.05%  Bonus Interest Rate: 0.75%" style="margin-left:28px"/>
+                            <br/>
+                            <h:outputText value="- Bonus Interest Rate Criteria" style="margin-left:28px"/>
+                            <br/>
+                            <h:outputText value="· No withdrawal during this month" style="margin-left:40px"/>
+                            <br/>
+                            <h:outputText value="· No transfer to others' account during this month" style="margin-left:40px"/>
+                            <br/>
+                            <br/>
+                            <h:outputText value="(d) Fixed Deposit Account"/>
+                            <br/>
+                            <h:outputText value="- Initial Deposit: S$1000" style="margin-left:28px"/>
+                            <br/>
+                        </p:panelGrid>
+                        <br/>
+                        <p:panelGrid>
 
-                                <p:row>
-                                    <p:column>
-                                        <p:outputLabel for="initialDepositAmt" style="font-weight: bold" value="Initial Deposit Amount(S$): " />
-                                    </p:column>
-                                    <p:column>
-                                        <p:inputText label="Initial Deposit Amount(S$)" id="initialDepositAmt"
-                                                     value="#{accountManagedBean.initialDepositAmt}" required="true" requiredMessage="Required Field">
-                                        </p:inputText>
-                                    </p:column>
-                                    <p:column>
-                                        <p:message for="initialDepositAmt" />
-                                    </p:column>
-                                </p:row>
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel style="font-weight: bold" value="Deposit Period(Month)" />
+                                </p:column>
 
-                            </p:panelGrid>
-                        </div>
-                    </p:tab>
+                                <p:column>
+                                    <p:outputLabel value="1 - 2" />
+                                </p:column>
+
+                                <p:column>
+                                    <p:outputLabel value="3 - 5" />
+                                </p:column>
+
+                                <p:column>
+                                    <p:outputLabel value="6 - 8" />
+                                </p:column>
+
+                                <p:column>
+                                    <p:outputLabel value="9 - 11" />
+                                </p:column>
+
+                                <p:column>
+                                    <p:outputLabel value="12"/>
+                                </p:column>
+
+                                <p:column>
+                                    <p:outputLabel value="18"/>
+                                </p:column>
+
+                                <p:column>
+                                    <p:outputLabel value="24"/>
+                                </p:column>
+
+                                <p:column>
+                                    <p:outputLabel value="36"/>
+                                </p:column>
+                            </p:row>
+
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel style="font-weight: bold" value="Interest Rate" />
+                                </p:column>
+
+                                <p:column>
+                                    <p:outputLabel value="0.05%" />
+                                </p:column>
+
+                                <p:column>
+                                    <p:outputLabel value="0.1%" />
+                                </p:column>
+
+                                <p:column>
+                                    <p:outputLabel value="0.15%" />
+                                </p:column>
+
+                                <p:column>
+                                    <p:outputLabel value="0.2%" />
+                                </p:column>
+
+                                <p:column>
+                                    <p:outputLabel value="0.25%" />
+                                </p:column>
+
+                                <p:column>
+                                    <p:outputLabel value="0.5%" />
+                                </p:column>
+
+                                <p:column>
+                                    <p:outputLabel value="0.55%" />
+                                </p:column>
+
+                                <p:column>
+                                    <p:outputLabel value="0.65%" />
+                                </p:column>
+                            </p:row>
 
                     <p:tab id="identification" title="Support Document">
 
