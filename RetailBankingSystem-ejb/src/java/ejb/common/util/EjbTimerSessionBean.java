@@ -30,7 +30,7 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal{
     private EntityManager entityManager;
 
     private final String TIMER_NAME_10000MS = "EJB-TIMER-10000MS";
-    private final int TIMER_DURATION_10000MS = 10000;
+    private final int TIMER_DURATION_10000MS = 15000;
     private final String TIMER_NAME_300000MS = "EJB-TIMER-300000MS";
     private final int TIMER_DURATION_300000MS = 300100;
 
@@ -114,6 +114,7 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal{
 //        System.out.println("*** 10000MS Timer timeout");
         
         bankAccountSessionLocal.interestAccuring();
+        bankAccountSessionLocal.resetDailyTransferLimit();
     }
     
     private void handleTimeout_300000ms() {

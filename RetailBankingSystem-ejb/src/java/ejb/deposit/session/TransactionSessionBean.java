@@ -236,13 +236,13 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
                 transferAmt, " ", transactionDateMilis, bankAccountFromId);
         Long toTransactionId = addNewTransaction(cal.getTime().toString(), transactionCode, transactionRefTo,
                 " ", transferAmt, transactionDateMilis, bankAccountToId);
-
+        
         bankAccountFrom.setBankAccountBalance(balanceAccountFrom.toString());
         bankAccountTo.setBankAccountBalance(balanceAccountTo.toString());
         bankAccountFrom.getInterest().setIsTransfer("1");
 
-        Double transfer = Double.valueOf(bankAccountFrom.getTransferBalance()) - Double.valueOf(transferAmt);
-        bankAccountFrom.setTransferBalance(transfer.toString());
+        Double currentDailyTransferLimit = Double.valueOf(bankAccountFrom.getTransferBalance()) - Double.valueOf(transferAmt);
+        bankAccountFrom.setTransferBalance(currentDailyTransferLimit.toString());
 
         return fromTransactionId;
     }

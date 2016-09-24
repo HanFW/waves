@@ -64,18 +64,13 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal{
     
     @Override
     public String deleteCustomerBasic(String customerIdentificationNum){
-        Query query = entityManager.createQuery("Select c From CustomerBasic c Where c.customerIdentificationNum=:customerIdentificationNum");
-        query.setParameter("customerIdentificationNum",customerIdentificationNum);
-        List<CustomerBasic> result = query.getResultList();
         
-        if(result.isEmpty()) {
-            return "Error! Account does not exist!";
-        }
-        else {
-            CustomerBasic customerBasic = result.get(0);
-            entityManager.remove(customerBasic);
-            return "Successfully deleted!";
-        }
+        CustomerBasic customerBasic = retrieveCustomerBasicByIC(customerIdentificationNum);
+        
+        entityManager.remove(customerBasic);
+        entityManager.flush();
+        
+        return "Delete Customer Successfully";
     }
 
     private CustomerBasic getCustomer(String onlineBankingAccountNum) {
