@@ -23,7 +23,7 @@
 
     <h:body styleClass="main-body #{guestPreferences.compact ? 'layout-compact' : null}">
         
-        <div class="layout-wrapper menu-layout-static menu-layout-horizontal">
+        <div class="layout-wrapper #{guestPreferences.menuLayout}">
             <ui:include src="./topbar.xhtml" />
             <ui:include src="./menu.xhtml" />
             

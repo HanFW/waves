@@ -3048,7 +3048,7 @@ body {
   body .ui-corner-all {
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
-    border-radius: 3px; }
+    border-radius: 0px; }
   body .ui-corner-top {
     -moz-border-radius-topleft: 3px;
     -webkit-border-top-left-radius: 3px;
@@ -3709,6 +3709,16 @@ body {
       body .ui-button.blue-grey-btn.ui-state-hover {
         background-color: #37474F; }
       body .ui-button.blue-grey-btn.ui-state-focus {
+        outline: 0 none;
+        background-color: #7b96a3; }     
+      body .ui-button.theme-btn {
+       width:100%;
+       height:100%;
+       font-size:22px;
+      background-color: #E6A82E; }
+      body .ui-button.theme-btn.ui-state-hover {
+        background-color: #022A5A; }
+      body .ui-button.theme.ui-state-focus {
         outline: 0 none;
         background-color: #7b96a3; }
     body .ui-button.cyan-btn {

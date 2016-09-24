@@ -5,9 +5,7 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/onlineBankingTemplate.xhtml">
 
-
-    <ui:define name="content">
-    <!--    <ui:define name="head">
+<!--<ui:define name="head">
             <style type="text/css">
                 .nba-grid {
                     width: 100%;
@@ -16,10 +14,12 @@
                 }
     
                 .ui-scrollpanel-content p:first-child {
-                    margin: 0;
+                    margin: 60px;;
                 }
             </style>
         </ui:define>-->
+    <ui:define name="content">
+        
     <h:form>
         <p:ajaxStatus style="width:16px;height:16px;">
             <f:facet name="start">
@@ -33,8 +33,8 @@
     <h:form>
         <p:panel id="panel">
             <p:messages globalOnly="true"/>
-
-            <p:panelGrid style="margin-bottom:10px">
+<div class="card card-w-title">
+            <p:panelGrid styleClass="ui-panelgrid-blank form-group">
                 <h:outputLabel value="Account Details" style="font-weight: bold; font-size: 24px" />
                 <p:separator/>
                 <br/>
@@ -89,7 +89,7 @@
                 </p:row>
 
             </p:panelGrid>
-
+</div>
             <br/>
             <h:outputLabel value="My Details" style="font-weight: bold; font-size: 24px" />
             <p:separator/>

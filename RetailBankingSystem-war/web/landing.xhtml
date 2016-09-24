@@ -12,7 +12,9 @@
             <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
             <meta name="apple-mobile-web-app-capable" content="yes" />
         </f:facet>
-        <title>PrimeFaces Ultima</title>
+        <!-- Favicon -->
+        <link rel="shortcut icon" href="#{resource['ultima-layout:images/favicon.png']}"/>   
+        <title>Bank Anywhere, Anytime</title>
         <h:outputScript name="js/ripple.js" library="ultima-layout" />
         <script type="text/javascript">
         $(function() {
@@ -45,18 +47,20 @@
                     </a>
                     <ul id="menu" class="animated">
                        <li><a href="#"><i class="ui-icon ui-icon-home"></i><span>Home</span></a></li>
-                       <li><a href="#introduction"><i class="ui-icon ui-icon-open-in-browser"></i><span>Introduction</span></a></li>
-                       <li><a href="#features"><i class="ui-icon ui-icon-list"></i><span>Features</span></a></li>
-                       <li><a href="#promotion"><i class="ui-icon ui-icon-group-work"></i><span>Promotion</span></a></li>
-                       <li><a href="#pricing"><i class="ui-icon ui-icon-attach-money"></i><span>Pricing</span></a></li>
-                       <li><a href="#video"><i class="ui-icon ui-icon-videocam"></i><span>Video</span></a></li>
+                       <li><h:link outcome="/web/merlionBank/deposit/publicDepositIndex.xhtml">Accounts</h:link></li>
+                       <li><a href="#features"><i class="ui-icon ui-icon-open-in-browser"></i><span>Cards</span></a></li>
+                       <li><a href="#promotion"><i class="ui-icon ui-icon-list"></i><span>Wealth</span></a></li>
+                       <li><a href="#pricing"><i class="ui-icon ui-icon-group-work"></i><span>Loan</span></a></li>
+                       <li><h:link outcome="/web/onlineBanking/infrastructure/customerLogin">Login</h:link></li>
                     </ul>
                 </div>
                 
                 <div class="header-content clearfix">
-                    <h1>Your application slogan comes here</h1>
-                    <p:button outcome="/dashboard" value="Sign Up Now" styleClass="secondary"/>
-                </div>
+                    <h1><span>Welcome to Merlion Bank</span></h1>
+                    <h2>We are proud to be the one and only direct bank in Singapore.</h2>
+                    <h2>Now, your bank is at your fingertip.</h2>
+               
+              </div>
             </div>
             
             <div id="features">
