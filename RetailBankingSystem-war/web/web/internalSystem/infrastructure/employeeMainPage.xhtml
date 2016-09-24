@@ -13,6 +13,8 @@
         <h:outputText value="! You have logged in as "/>
 
         <h:form>
+            <h:outputText value="Welcome #{employeeAccountManagedBean.userName} !"/>
+            
             <p:panel visible="#{employeeAccountManagedBean.hasRoleSystemAdmin()}" style="border: none">
                 <p:row>
                     <p:button outcome="/web/internalSystem/infrastructure/employeeUserAccountManagement.xhtml" value="System Administrator">

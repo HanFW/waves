@@ -6,6 +6,7 @@
 package ejb.infrastructure.session;
 
 import ejb.infrastructure.entity.Employee;
+import ejb.infrastructure.entity.Permission;
 import ejb.infrastructure.entity.Role;
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -39,6 +40,10 @@ public class EmployeeAdminSessionBean implements EmployeeAdminSessionBeanLocal {
     private final static String[] departments;
     private final static String[] positions;
     private final static String[] roles;
+
+    private final static String[] permissionList1;
+//    private final static String[] permissionList2;
+//    private final static String[] permissionList3;
 
     static {
         departments = new String[5];
@@ -76,6 +81,30 @@ public class EmployeeAdminSessionBean implements EmployeeAdminSessionBeanLocal {
         roles[14] = "Enquiry Manager";
         roles[15] = "System Admin";
 
+        permissionList1 = new String[23];
+        permissionList1[0] = "View Customer Basic Information";
+        permissionList1[1] = "Create Enquiry Case";
+        permissionList1[2] = "Add Follow Up Questions";
+        permissionList1[3] = "Search Enquiry";
+        permissionList1[4] = "Edit Customer Basic Information";
+        permissionList1[5] = "View Enquiry";
+        permissionList1[6] = "Add A New Account";
+        permissionList1[7] = "Delete An Account";
+        permissionList1[8] = "View Transaction History";
+        permissionList1[9] = "View Bank Statement";
+        permissionList1[10] = "Fund-transfer";
+        permissionList1[11] = "Cash Deposit";
+        permissionList1[12] = "Cash Withdraw";
+        permissionList1[13] = "Forward Enquiry To Specialist";
+        permissionList1[14] = "Edit Customer Advanced Information";
+        permissionList1[15] = "View Cutsomer Advanced Information";
+        permissionList1[16] = "User Account Management";
+        permissionList1[17] = "Manage Permissions of Roles";
+        permissionList1[18] = "View Deposit Department Issue";
+        permissionList1[19] = "View Card Department Issue";
+        permissionList1[20] = "View Loan Department Issue";
+        permissionList1[21] = "View Operation Department Issue";
+        permissionList1[22] = "View Wealth Management Issue";
     }
 
     @Override
@@ -186,6 +215,15 @@ public class EmployeeAdminSessionBean implements EmployeeAdminSessionBeanLocal {
     }
 
     @Override
+    public List<Role> getAllRoles() {
+        System.out.println("*** adminSessionBean: Display all roles");
+        Query query = em.createQuery("SELECT r FROM Role r");
+        List<Role> roles = query.getResultList();
+        System.out.println("*** adminSessionBean: Display all roles" + roles);
+        return roles;
+    }
+
+    @Override
     public List<Employee> getArchivedEmployees() {
         System.out.println("*** adminSessionBean: Display archived employee accounts");
         Query query = em.createQuery("SELECT e FROM Employee e where e.employeeStatus=:status");
@@ -257,7 +295,7 @@ public class EmployeeAdminSessionBean implements EmployeeAdminSessionBeanLocal {
 
         System.out.println("*** adminSessionBean-getSelectedRoles: get employee by id" + employee.getEmployeeName());
         Set<Role> employeeRoles = employee.getRole();
-        String[] roles = new String[10];
+        String[] roles = new String[16];
         Set<String> selectedRoles = new HashSet();
 
         if (!employeeRoles.isEmpty()) {
@@ -276,6 +314,74 @@ public class EmployeeAdminSessionBean implements EmployeeAdminSessionBeanLocal {
         System.out.println(selectedRoles);
 
         return selectedRoles;
+    }
+
+    @Override
+    public String[] getSelectedPermissionList(Long roleId) {
+        System.out.println("###### employeeAdminSessionBean: getSeletectedPermissionList: start");
+        Role role = em.find(Role.class, roleId);
+
+        System.out.println("*** adminSessionBean-getSelectedRoles: getrole by id" + role.getRoleName());
+        Set<Permission> permissions = role.getPermissions();
+        String[] permissionList = new String[16];
+
+        if (!permissions.isEmpty()) {
+            int i = 0;
+
+            Iterator iterator = permissions.iterator();
+            while (iterator.hasNext()) {
+                Permission permission = (Permission) iterator.next();
+                String permissionToString = permission.getPermissionName();
+                permissionList[i] = permissionToString;
+                i++;
+            }
+        }
+
+        System.out.println(permissionList);
+
+        return permissionList;
+    }
+
+    @Override
+    public void setSelectedPermissionList(String roleName, String[] selectedPermission) {
+        System.out.println("====== internalSystem/employeAdminSessionBean: setSelectedPermission() ======");
+        Query query=em.createQuery("Select r from Role r where r.roleName= :name");
+        query.setParameter("name", roleName);
+        Role role=(Role) query.getSingleResult();
+
+        Set<Permission> permission = new HashSet<Permission>();
+
+        for (int i = 0; i < selectedPermission.length; i++) {
+            System.out.println("*** adminSessionBean print permission " + selectedPermission[i]);
+            Query q = em.createQuery("SELECT p FROM Permission p WHERE p.permissionName= :name");
+            q.setParameter("name", selectedPermission[i]);
+            Permission findPermission = (Permission) q.getSingleResult();
+            permission.add(findPermission);
+        }
+
+        role.setPermissions(permission);
+        em.flush();
+
+        //update roles of selected permissions
+        for (int j = 1; j < 5; j++) {
+            Integer k = j;
+            Long l = k.longValue();
+            Permission thisPermission = em.find(Permission.class, l);
+            if (thisPermission == null) {
+                System.err.println("~~~~~adminSessionBean print permission is null");
+            }
+
+            if (permission.contains(thisPermission) && !thisPermission.getRoles().contains(role)) {
+                thisPermission.addRoleToPermission(role);
+            } else if (!permission.contains(thisPermission) && thisPermission.getRoles().contains(role)) {
+                thisPermission.deleteEmployeeFromRole(role);
+            }
+
+            em.flush();
+            System.out.println("~~~~~adminSessionBean print permission get roles " + thisPermission);
+
+        }//end for loop
+
     }
 
     @Override
@@ -447,4 +553,32 @@ public class EmployeeAdminSessionBean implements EmployeeAdminSessionBeanLocal {
 
     }
 
+    @Override
+    public String[] getPermissionList(String roleName) {
+
+        System.out.println("*** adminSessionBean: Display all permissions of "+roleName);
+        Query query = em.createQuery("SELECT r FROM Role r WHERE r.roleName = :name");
+        query.setParameter("name", roleName);
+        Role role = (Role) query.getSingleResult();
+        
+        Set<Permission> permissions=role.getPermissions();
+        String[] permissionsToStringArray = new String[]{};
+
+        if (!permissions.isEmpty()) {
+            int i = 0;
+
+            Iterator iterator = permissions.iterator();
+            while (iterator.hasNext()) {
+                Permission rolePermission= (Permission) iterator.next();
+                String rolePermissionToString = rolePermission.getPermissionName();
+                permissionsToStringArray[i] = rolePermissionToString;
+                
+                i++;
+            }
+        }
+
+        System.out.println("***** adminSessionBean: all permissions of the role "+permissionsToStringArray);
+        
+        return permissionsToStringArray;
+    }
 }

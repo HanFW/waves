@@ -42,6 +42,8 @@ public interface EmployeeAdminSessionBeanLocal {
     
     public List<Employee> getEmployees();
     
+    public List<Role> getAllRoles();
+    
     public List<Employee> getArchivedEmployees();
     
     public Employee getEmployeeById(Long employeeId);
@@ -57,6 +59,13 @@ public interface EmployeeAdminSessionBeanLocal {
     
     public List<String> getRoles();
     
+    public String[] getPermissionList(String roleName);
+    
+    public String[] getSelectedPermissionList(Long roleId);
+    
+    public void setSelectedPermissionList(String roleName,String[] selectedPermission);
+    
     public Role getRoleByName(String roleName);
+    
     
 }
