@@ -1,18 +1,34 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <h:head>
-        <title>Search Customer</title>
-    </h:head>
-    <h:body>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/onlineBankingTemplate.xhtml">
+
+
+    <ui:define name="content">
+        
+  <h:body>
+        <p:panel header="Search Customer">
+
+  
         <h:form>
+            <br/>
+            <br/>
+            <div align="center">
             <p:outputLabel for="CaseID"  value="Customer Case ID:" />
             <p:inputText id="CaseID" value="#{employeeRecordEnquiryManagedBean.caseIdStr}" />
+            <br/>
+            <br/>
             <p:commandButton value="Search" actionListener="#{employeeRecordEnquiryManagedBean.retrieveCaseByCaseRef}" />
+            </div>
+           
         </h:form>
+        </p:panel>
     </h:body>
-</html>
+        
+    </ui:define>
+</ui:composition>
 

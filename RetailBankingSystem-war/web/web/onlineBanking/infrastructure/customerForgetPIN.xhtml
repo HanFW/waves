@@ -5,32 +5,22 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/template.xhtml">
 
-    <ui:define name="title">Menus</ui:define>
-                
-    <ui:define name="head">
-        <style type="text/css">
-            .ui-steps .ui-steps-item {
-                width: 25%;
-            }
-        </style>
-    </ui:define>
-
     <ui:define name="content">
     <h:head>
         <title>Forget PIN</title>
     </h:head>
     <h:body>
         <h:form>
-            <p:panel style="width:700px;height:200px;margin:0 auto;margin-top:10%">
+            <p:panel style="margin:0 auto;margin-top:3%">
                 <p:messages/>
-                <p:panelGrid style="margin:0 auto;width:10px;height:15px">
+                <p:panelGrid style="margin:0 auto">
                     <p:row>
-                        <h3  style="text-align: center;font-family: Eurostile;font-size:20pt;margin:0 auto;line-height: 2">Are you:</h3>
+                        <h3  style="text-align: center;font-size:20pt;margin:0 auto;line-height: 2">Are you:</h3>
                     </p:row>
                     <br/>
                 <hr/>
                         <p:row>
-                            <p:selectOneRadio style="line-height:2;font-family:Eurostile;font-size:20pt;margin:0 auto" id="console" value="#{customerLoginManagedBean.customerNationality}">
+                            <p:selectOneRadio style="line-height:2;font-size:20pt;margin:0 auto" id="console" value="#{customerLoginManagedBean.customerNationality}">
                                 <f:selectItem itemLabel="Singaporean/PR" itemValue="singaporean"/>
                                 <f:selectItem itemLabel="Foreigner" itemValue="foreigner" />
                                 <p:ajax event="change" update=":nircForm :passportForm"/>
@@ -42,36 +32,37 @@
         </h:form>
         <br/>
 
-   
         <h:form id="nircForm" >
             <p:messages id="nircMessage"/>
-            <p:panel id="nircField" visible="#{customerLoginManagedBean.customerNationality == 'singaporean'}" style="width:700px;height:50px;margin:0 auto">
+            <p:panel id="nircField" visible="#{customerLoginManagedBean.customerNationality == 'singaporean'}" style="margin:0 auto">
                 <p:row>
                         <div align='center'>
-                        <p:outputLabel style="margin:0 auto;font-family:Eurostile;font-size:14pt;line-height:2" for="nirc" value="NRIC: "/> 
+                        <p:outputLabel style="margin:0 auto;font-size:14pt;line-height:2" for="nirc" value="NRIC: "/> 
                         <p:inputText type="text" id="nirc" value="#{customerLoginManagedBean.customerIdentification}" required="true" requiredMessage="Please enter your identification number."/>
                         </div>
                 </p:row>
             </p:panel>
             <br/>
-            <br/>
+   
          
-
-            <p:panelGrid rendered="#{customerLoginManagedBean.customerNationality == 'singaporean'}" style="width:700px;height:80px;margin:0 auto">
+            <p:panel>
+            <p:panelGrid rendered="#{customerLoginManagedBean.customerNationality == 'singaporean'}" style="margin:0 auto" styleClass="ui-panelgrid-blank form-group">
                 <p:row>
                     <p:column>
                         <div align="center">
-                        <p:outputLabel for="otp" value="One-time passport: " style="font-family:Eurostile;font-size:14pt"/>
+                        <p:outputLabel for="otp" value="One-time passport: " style="font-size:14pt"/>
                         </div>
                     </p:column>
                     <p:column>
                         <div align="center">
                         <p:inputText type="password" id="otp" required="true" requiredMessage="Please enter OTP." />
-                        <p:commandButton style="float:right;font-family: Eurostile;font-size:12pt " value="Request OTP"/>
+                        <p:commandButton style="float:right;font-size:12pt " value="Request OTP"/>
                         </div>
                     </p:column>
                 </p:row>
             </p:panelGrid>
+            </p:panel>
+            
             <p:panelGrid style="margin:0 auto" rendered="#{customerLoginManagedBean.customerNationality == 'singaporean'}">
                 <br/>
                 <br/>
@@ -81,6 +72,7 @@
                 <br/>
                 <br/>
             </p:panelGrid>
+               
             <p:confirmDialog id="resetConfirmation" message="Your online banking password has been reset successfully and sent to your registered email." header="Password reset successful" severity="info" widgetVar="resetConfirmation" closable="false" style="font-family:Eurostile">
                 <div align="center">
                 <p:commandButton value="OK" action="/web/onlineBanking/infrastructure/customerLogin.xhtml?faces-redirect=true"/>
@@ -90,10 +82,10 @@
         
         <h:form id="passportForm">
             <p:messages id="passportMessage"/>
-            <p:panel id="passportField" visible="#{customerLoginManagedBean.customerNationality == 'foreigner'}" style="margin:0 auto;width:700px;height:50px">
+            <p:panel id="passportField" visible="#{customerLoginManagedBean.customerNationality == 'foreigner'}" style="margin:0 auto">
                 <p:row>
                       <div align="center">
-                        <p:outputLabel for="passport" value="Passport: " style="font-family:Eurostile;font-size:14pt;line-height:2"/>
+                        <p:outputLabel for="passport" value="Passport: " style="font-size:14pt;line-height:2"/>
                         <p:inputText type="text" id="passport" value="#{customerLoginManagedBean.customerIdentification}" required="true" requiredMessage="Please enter your identification number."/>
                       </div>
                 </p:row>
@@ -101,17 +93,19 @@
             <br/>
             <br/>
             
-            <p:panelGrid rendered="#{customerLoginManagedBean.customerNationality == 'foreigner'}" style="margin:0 auto;width:700px;height:80px">
+            <p:panel>
+            <p:panelGrid rendered="#{customerLoginManagedBean.customerNationality == 'foreigner'}" style="margin:0 auto" styleClass="ui-panelgrid-blank form-group">
                 <p:row>
                     <p:column>
-                        <p:outputLabel for="otp" value="One-time password: " style="font-family:Eurostile;font-size:14pt"/>
+                        <p:outputLabel for="otp" value="One-time password: " style="font-size:14pt"/>
                     </p:column>
                     <p:column>
                         <p:inputText type="password" id="otp" required="true" requiredMessage="Please enter OTP."/>
-                        <p:commandButton value="Request OTP" style="float:right;font-family:Eurostile;font-size:12pt"/>
+                        <p:commandButton value="Request OTP" style="float:right;font-size:12pt"/>
                     </p:column>
                 </p:row>
             </p:panelGrid>
+            </p:panel>
             
             <p:panelGrid rendered="#{customerLoginManagedBean.customerNationality == 'foreigner'}">
                 <p:row>
@@ -124,6 +118,7 @@
                 <br/>
                 </p:row>
             </p:panelGrid>
+               
             <p:confirmDialog id="resetConfirmation" message="Your online banking password has been reset successfully and sent to your registered email." header="Password reset successful" severity="info" widgetVar="resetConfirmation" closable="false" closeOnEscape="false">
                 <p:commandButton value="OK" action="/web/onlineBanking/infrastructure/customerLogin.xhtml?faces-redirect=true"/>
             </p:confirmDialog>

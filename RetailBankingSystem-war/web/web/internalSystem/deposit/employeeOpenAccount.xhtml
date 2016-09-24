@@ -1,9 +1,14 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html" 
-      xmlns:f="http://xmlns.jcp.org/jsf/core" 
-      xmlns:p="http://primefaces.org/ui">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/onlineBankingTemplate.xhtml">
+
+
+    <ui:define name="content">
     <h:head>
         <title>Facelet Title</title>
     </h:head>
@@ -37,9 +42,10 @@
             <p:wizard flowListener="#{employeeOpenAccountManagedBean.onFlowProcess}">
                 <p:tab id="personal" title="Personal Information">
                     <p:panel header="Personal Information"> 
+                        
                         <p:messages globalOnly="true"/>
 
-                        <p:panelGrid style="margin-bottom:10px">
+                        <p:panelGrid style="margin-bottom:10px" styleClass="ui-panelgrid-blank form-group">
                             <p:row>
                                 <p:column>
                                     <p:outputLabel style="font-weight: bold" value="Existing Customer of Merlion Bank: " />
@@ -167,7 +173,7 @@
                     <p:panel header="Detailed Information"> 
                         <p:messages globalOnly="true"/>
 
-                        <p:panelGrid style="margin-bottom:10px">
+                        <p:panelGrid style="margin-bottom:10px" styleClass="ui-panelgrid-blank form-group">
 
                             <p:row>
                                 <p:column>
@@ -457,7 +463,7 @@
                             </p:row>
                         </p:panel>
 
-                        <p:panelGrid >
+                        <p:panelGrid styleClass="ui-panelgrid-blank form-group">
                             <p:row>
                                 <p:column>
                                     <p:outputLabel for="customerCountryOfResidence" style="font-weight: bold" value="Country of Residence: " />
@@ -839,7 +845,7 @@
                     <p:panel header="Account Information">
                         <p:messages globalOnly="true"/>
 
-                        <p:panelGrid>
+                        <p:panelGrid styleClass="ui-panelgrid-blank form-group">
                             <p:row>
                                 <p:column colspan="10" style="font-weight: bold">Account Information</p:column>
                             </p:row>
@@ -893,7 +899,7 @@
 
                         </p:panelGrid>
                         <br/>
-                        <p:panelGrid>
+                        <p:panelGrid styleClass="ui-panelgrid-blank form-group">
 
                             <p:row>
                                 <p:column colspan="10" style="font-weight: bold">Initial Deposit</p:column>
@@ -921,7 +927,8 @@
                     <p:panel header="Support Document"> 
 
                         <p:messages globalOnly="true" id="messagesFileupload" />
-
+                        
+                        <div align="center">
                         <p:panel style="width:700px">
                             <p:outputLabel value="Please provide softcopy of your identification (Only gif,jpeg and png)" />
                             <br/>
@@ -930,13 +937,18 @@
                                           sizeLimit="10000000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" 
                                           fileUploadListener="#{employeeOpenAccountManagedBean.upload}"/>
                         </p:panel>
+                        </div>
                         <br/>
 
-                        <p:outputLabel value="Please provide your signature" />
+                        <div align="center">
+                        <p:outputLabel value="Please provide your signature"/>
                         <br/>
+                        
                         <p:signature id="input" style="width:400px;height:200px" widgetVar="sig" value="#{signatureViewManagedBean.customerSignature}" 
                                      guideline="true"/>
-
+                        </div>
+                       
+                        
                         <div style="margin:20px 0">
                             <p:commandButton process="@this input output" value="Submit" icon="ui-icon-check" update="output"/>
                             <p:commandButton process="@this input output" value="Clear" icon="ui-icon-close" type="button" onclick="PF('sig').clear()"/>
@@ -952,9 +964,9 @@
 
                 <p:tab id="confirmation" title="Confirmation">
                     <p:messages globalOnly="true"/>
-
+                    <div align="center">
                     <p:panel>
-                        <h:outputLabel value="About Myself" style="font-weight: bold; font-size: 24px" />
+                        <h:outputLabel value="Personal Particulars" style="font-weight: bold; font-size: 24px; text-align: center" />
                         <br/>
                         <br/>
                         <h:outputText value="Existing Customer of Merlion Bank: "/>
@@ -1036,16 +1048,24 @@
                             <br/>
                             <h:outputText value="I have also read and agree to the Terms and Conditions Governing Personal Data Protection Act 2012."/>
                         </h:panelGrid>
+                        
 
                         <p:messages showDetail="true"/>
                         <p:captcha label="Captcha" />
-                    </p:panel>
+                   
 
+                   <br/>
                     <p:commandButton id="saveBtn" value="Open Account" update="growl"
                                      actionListener="#{employeeOpenAccountManagedBean.saveAccount}" ajax="true"/>
+                    
+                    <br/>
+                    <br/>
+                    </p:panel>
+                    </div>
                 </p:tab>
             </p:wizard>
         </h:form>
     </h:body>
-</html>
+    </ui:define>
+</ui:composition>
 

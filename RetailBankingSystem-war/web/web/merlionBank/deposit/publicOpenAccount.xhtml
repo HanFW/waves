@@ -26,22 +26,7 @@
         <title>Open Account</title>
     </h:head>
     <h:body>
-        <h:form id="formMain">
-            <h1>Welcome to Merlion Bank</h1>
-            <p:menubar>
-                <p:submenu label="Home">
-                    <p:menuitem value="Home" url="/web/merlionBank/deposit/publicDepositIndex.xhtml" />
-                </p:submenu>
 
-                <p:submenu label="My Account">
-                    <p:menuitem value="Open Account" url="/web/merlionBank/deposit/publicOpenAccount.xhtml" />
-                </p:submenu>
-
-                <p:submenu label="Login">
-                    <p:menuitem value="Login" url="/web/onlineBanking/infrastructure/customerLogin.xhtml" />
-                </p:submenu>
-            </p:menubar>
-        </h:form>
         <h:form>
             <p:ajaxStatus style="width:16px;height:16px;">
                 <f:facet name="start">
@@ -59,7 +44,7 @@
                     <p:panel header="Personal Information"> 
                         <p:messages globalOnly="true"/>
 
-                        <p:panelGrid style="margin-bottom:10px">
+                        <p:panelGrid style="margin-bottom:10px" styleClass="ui-panelgrid-blank form-group">
                             <p:row>
                                 <p:column>
                                     <p:outputLabel style="font-weight: bold" value="Existing Customer of Merlion Bank: " />
@@ -187,7 +172,7 @@
                     <p:panel header="Detailed Information"> 
                         <p:messages globalOnly="true"/>
 
-                        <p:panelGrid style="margin-bottom:10px">
+                        <p:panelGrid style="margin-bottom:10px" styleClass="ui-panelgrid-blank form-group">
 
                             <p:row>
                                 <p:column>
@@ -477,7 +462,7 @@
                             </p:row>
                         </p:panel>
 
-                        <p:panelGrid >
+                        <p:panelGrid styleClass="ui-panelgrid-blank form-group">
                             <p:row>
                                 <p:column>
                                     <p:outputLabel for="customerCountryOfResidence" style="font-weight: bold" value="Country of Residence: " />
@@ -859,7 +844,7 @@
                     <p:panel header="Account Information">
                         <p:messages globalOnly="true"/>
 
-                        <p:panelGrid>
+                        <p:panelGrid styleClass="ui-panelgrid-blank form-group">
                             <p:row>
                                 <p:column colspan="10" style="font-weight: bold">Account Information</p:column>
                             </p:row>
@@ -913,7 +898,7 @@
 
                         </p:panelGrid>
                         <br/>
-                        <p:panelGrid>
+                        <p:panelGrid styleClass="ui-panelgrid-blank form-group">
 
                             <p:row>
                                 <p:column colspan="10" style="font-weight: bold">Initial Deposit</p:column>
@@ -1049,7 +1034,7 @@
                         <br/>
                         <br/>
                         <br/>
-                        <h:panelGrid columns="2" style="margin-bottom:10px">
+                        <h:panelGrid columns="2" style="margin-bottom:10px" styleClass="ui-panelgrid-blank form-group">
                             <p:selectBooleanCheckbox id = "agreement" value="#{accountManagedBean.agreement}" 
                                                      style="margin-top:5px"/>
                             <h:outputText value="I have read and agree to the terms of Customer Declaration and Confirmation." />
@@ -1059,10 +1044,15 @@
 
                         <p:messages showDetail="true"/>
                         <p:captcha label="Captcha" />
-                    </p:panel>
-
-                    <p:commandButton id="saveBtn" value="Open Account" update="growl"
+                 
+                        <div align="center">
+                            <br/>
+                    <p:commandButton id="saveBtn" value="Open Account" update="growl" 
                                      actionListener="#{accountManagedBean.saveAccount}" ajax="true"/>
+                        </div>
+                    <br/>
+                   
+                    </p:panel>
                 </p:tab>
             </p:wizard>
         </h:form>

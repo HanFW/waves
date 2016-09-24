@@ -1,9 +1,14 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core" 
-      xmlns:p="http://primefaces.org/ui">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/onlineBankingTemplate.xhtml">
+
+
+    <ui:define name="content">
     <h:head>
         <title>Add Customer Follow-up</title>
     </h:head>
@@ -12,22 +17,26 @@
             <p:panel >
                 <p:messages />
 
-                <h:panelGrid columns="2" id="matchGrid" cellpadding="5">
+                <h:panelGrid columns="2" id="matchGrid" cellpadding="5" style="margin:0 auto">
 
 
                     <p:row>
+                        
                         <h:outputLabel style="font-weight: bold" value="Record more about customer's previous enquiry" />
                         <h:outputText value="&lt;br/&gt;" escape="false" />
-                        <p:inputTextarea id="followUpDetail" value="#{employeeRecordEnquiryManagedBean.followUpDetail}" required="true" rows="5" cols="50" counter="display" maxlength="500" counterTemplate="{0} characters remaining." autoResize="false" />
+                        <br/>
+                        <p:inputTextarea placeholder="Enquiry Detail" id="followUpDetail" value="#{employeeRecordEnquiryManagedBean.followUpDetail}" required="true" rows="10" counter="display" maxlength="500" counterTemplate="{0} characters remaining." autoResize="false" />
                         <h:outputText value="&lt;br/&gt;" escape="false" />
                         <h:outputText id="display" />
                     </p:row>
 
                 </h:panelGrid>
             </p:panel>
-
+            <div align="center">
             <p:commandButton value="Send Follow-up" actionListener="#{employeeRecordEnquiryManagedBean.saveFollowUp}" ajax="false" />
+            </div>
         </h:form>
     </h:body>
-</html>
+    </ui:define>
+</ui:composition>
 

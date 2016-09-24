@@ -10,22 +10,21 @@
 
     <ui:define name="content">
     <h:body>
-        <br/>
-        <div align="center">
-        <p:outputLabel style="font-family:Eurostile;font-size:20pt">Please activate your account by entering your new account number and password</p:outputLabel>
-        </div>
+        
         <h:form id="activationForm">
-            <br/>
-            <p:panel style="font-family:Eurostile;text-align:center  " header="Please activate your account">
+         
+            <p:panel style="text-align:center  " header="Please activate your account by entering your new account number and password">
+                <br/>
+                <br/>
+                <br/>
                 <p:messages globalOnly="true" showDetail="true" id="activationMessage"/>
-                <p:panelGrid style='margin:0 auto'>
+                <p:panelGrid styleClass="ui-panelgrid-blank form-group">
                     <p:row>
                         <p:column>
-                            <p:outputLabel style="font-family:Eurostile;font-size:16pt" for="customerAccount" value="New account number: "/>
+                            <p:outputLabel style="font-size:16pt" for="customerAccount" value="New account number: "/>
                         </p:column>
                         <p:column>
-                            <br/>
-                            <br/>
+                            
                             <p:inputText type="text" id="customerAccount" value="#{customerLoginManagedBean.newCustomerAccount}" required="true" requiredMessage="Please create a new account number.">
                                 <f:validateLength minimum="8" maximum="8" />
                             </p:inputText>
@@ -34,11 +33,11 @@
                     </p:row>
                     <p:row>
                         <p:column>
-                            <p:outputLabel style="font-family:Eurostile;font-size:16pt" for="customerPassword" value="New password: "/>
+                            <p:outputLabel style="font-size:16pt" for="customerPassword" value="New password: "/>
                         </p:column>
                         <p:column>
-                            <br/>
-                            <br/>
+                        
+                           
                             <p:inputText type="password" id= "customerPassword" value="#{customerLoginManagedBean.newCustomerPassword}" required="true" requiredMessage="Please create a new password." >
                                 <f:validateLength minimum="6" maximum="20" />
                             </p:inputText>

@@ -1,18 +1,22 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition 
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    template="/WEB-INF/onlineBankingTemplate.xhtml">
+       <ui:define name="content">
     <f:view>
         <h:head>
             <title>MBS Bank Internal System</title>
         </h:head>
         <h:body>        
             <h:form id="formMain">
-                <h1>Welcome to Merlion Bank Internal System</h1>
+           
                 <p:panel header="Login">
                     <p:messages/>
-                    <p:panelGrid>
+                    <p:panelGrid styleClass="ui-panelgrid-blank form-group">
                         <p:row>
                             <p:column>
                                 <p:outputLabel for="employeeAccountNum" value="Account number: "/>
@@ -32,19 +36,25 @@
 
                         <p:row>
                             <p:column colspan="2">
+                                <div align="center">
                                 <p:commandButton value="submit" type="submit" actionListener="#{employeeLoginManagedBean.doLogin}" update="@form"/>
+                                </div>
                             </p:column>
                         </p:row>
 
                         <p:row>
+                            
                             <p:column colspan="2">
+                                <div align="center">
                                 <p:commandLink value="Forget Pasword" type="submit" actionListener="#{employeeLoginManagedBean.forgetPassword}" update="@form"/>
+                                </div>
                             </p:column>
+                            
                         </p:row>
                     </p:panelGrid>
                 </p:panel>
             </h:form>
         </h:body>
     </f:view>
-</html>
-
+</ui:define>
+</ui:composition>
