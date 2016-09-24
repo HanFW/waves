@@ -202,6 +202,7 @@ public class CustomerAdminSessionBean implements CustomerAdminSessionBeanLocal {
                 String password = generatePassword();
                 String hashedPassword = md5Hashing(password + identificationNum.substring(0, 3));
                 customer.setCustomerOnlineBankingPassword(hashedPassword);
+                customer.setCustomerStatus("reset");
                 em.flush();
                 Map emailActions = new HashMap();
                 emailActions.put("onlineBankingPassword", password);

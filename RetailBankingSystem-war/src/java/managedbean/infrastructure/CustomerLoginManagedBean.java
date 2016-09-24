@@ -121,7 +121,10 @@ public class CustomerLoginManagedBean implements Serializable {
                 customerOTP = null;
                 if (customer.getCustomerStatus().equals("new")) {
                     System.out.println("====== infrastructure/CustomerLoginManagedBean: verifyLoginOTP(): new customer: redirect to activation page");
-                    context.getExternalContext().redirect(ec.getRequestContextPath() + "/web/onlineBanking/infrastructure/customerUserIdActivation.xhtml?faces-redirect=true");
+                    ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/infrastructure/customerUserIdActivation.xhtml?faces-redirect=true");
+                } else if(customer.getCustomerStatus().equals("reset")){
+                    System.out.println("====== infrastructure/CustomerLoginManagedBean: verifyLoginOTP(): customer reset password: redirect to reset password page");
+                    ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/infrastructure/customerPINReset.xhtml?faces-redirect=true");
                 } else {
                     System.out.println("====== infrastructure/CustomerLoginManagedBean: verifyLoginOTP(): existing customer: redirect to online banking home page");
                     context.getExternalContext().redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerDepositIndex.xhtml?faces-redirect=true");
@@ -195,6 +198,24 @@ public class CustomerLoginManagedBean implements Serializable {
             customerStatus = adminSessionBeanLocal.updateOnlineBankingAccount(newCustomerAccount, newCustomerPassword, customer.getCustomerBasicId());
             CustomerBasic currentCustomer = (CustomerBasic) ec.getSessionMap().get("customer");
             currentCustomer.setCustomerOnlineBankingAccountNum(newCustomerAccount);
+            currentCustomer.setCustomerOnlineBankingPassword(newCustomerPassword);
+//            ec.getSessionMap().replace("customer", currentCustomer);
+            newCustomerPassword = null;
+        }
+    }
+    
+    // customer change PIN after reset
+    public void activateNewPIN (ActionEvent event) throws NoSuchAlgorithmException{
+        System.out.println("*** loginBean: activateOnlineBankingAccount");
+        FacesContext context = FacesContext.getCurrentInstance();
+        ExternalContext ec = context.getExternalContext();
+        newCustomerPassword = md5Hashing(newCustomerPassword + customer.getCustomerIdentificationNum().substring(0, 3));
+        if (newCustomerPassword.equals(customerPassword)) {
+            context.addMessage("activationMessage", new FacesMessage(FacesMessage.SEVERITY_WARN, "Unsecured account password: ", "For your safety, please enter a new account password different from the initial password."));
+            newCustomerPassword = "";
+        }else {
+            customerStatus = adminSessionBeanLocal.updateOnlineBankingAccount(customer.getCustomerOnlineBankingAccountNum(), newCustomerPassword, customer.getCustomerBasicId());
+            CustomerBasic currentCustomer = (CustomerBasic) ec.getSessionMap().get("customer");
             currentCustomer.setCustomerOnlineBankingPassword(newCustomerPassword);
 //            ec.getSessionMap().replace("customer", currentCustomer);
             newCustomerPassword = null;
