@@ -9,13 +9,14 @@
 
 
     <ui:define name="content">
-       
+       <h:form>
             <div class="ui-g ui-fluid">
                 <div class="ui-g-12 ui-lg-12">
                     <div class="card card-w-title"> 
                       <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
                         
-                          <p:panel id="panel"> 
+                          <p:panel id="panel" header="Choose the Account You Want to Delete"> 
+                           
                             <p:messages globalOnly="true"/>
 
                                 
@@ -72,11 +73,11 @@
                             <p:commandButton id="deleteBtn" value="Delete Account" update="panel" 
                                              actionListener="#{closeAccountManagedBean.deleteAccount}" ajax="true" />
                         </p:panel>
-                           </p:panelGrid>
+                      </p:panelGrid>
                     </div>
                 </div>
             </div>
 
-     
+       </h:form>
     </ui:define>
 </ui:composition>

@@ -8,46 +8,39 @@
                 template="/WEB-INF/onlineBankingTemplate.xhtml">
 
 
-    <ui:define name="content">  
-        <h:head>
-            <title>Customer Follow-up</title>
-        </h:head>
-        <h:body>
-            <div class="ui-g">
-                <div class="ui-g-12">
-                    <div class="card"> 
-                        <div align="center">  
-                            <h:form>
+    <ui:define name="content">
+        <h:form>
+            <div class="ui-g ui-fluid">
+                <div class="ui-g-12 ui-lg-12">
+                    <div class="card card-w-title"> 
+                        <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                            <p:panel >
+                                <p:messages />
 
-                                <p:panel >
-                                    <p:messages />
-
-                                    <h:panelGrid columns="2" id="matchGrid" cellpadding="5" styleClass="ui-panelgrid-blank form-group">
-
-
-                                        <p:row>
-                                            <div align="center">
-                                                <h:outputLabel style="font-size:15pt" value="Tell us more about your previous enquiry" />
-                                            </div>
-                                            <h:outputText value="&lt;br/&gt;" escape="false" />
-                                            <br/>
-
-                                            <p:inputTextarea id="followUpDetail" placeholder="Enquiry Detail" value="#{enquiryManagedBean.followUpDetail}" required="true" rows="9"  counter="display" maxlength="500" counterTemplate="{0} characters remaining." autoResize="false" />
-                                            <h:outputText value="&lt;br/&gt;" escape="false" />
-                                            <h:outputText id="display" />
-
-                                        </p:row>
-
-                                    </h:panelGrid>
-
-                                </p:panel>
                               
-                                <p:commandButton value="Send Follow-up" actionListener="#{enquiryManagedBean.saveFollowUp}" ajax="false" />
-                            </h:form>
-                        </div>
+
+                                    <p:row>
+                                        <div align="center">
+                                            <h:outputLabel style="font-size:15pt" value="Tell us more about your previous enquiry" />
+                                        </div>
+                                        <h:outputText value="&lt;br/&gt;" escape="false" />
+                                        <br/>
+
+                                        <p:inputTextarea id="followUpDetail" placeholder="Enquiry Detail" value="#{enquiryManagedBean.followUpDetail}" required="true" rows="9"  counter="display" maxlength="500" counterTemplate="{0} characters remaining." autoResize="false" />
+                                        <h:outputText value="&lt;br/&gt;" escape="false" />
+                                        <h:outputText id="display" />
+
+                                    </p:row>
+                                    <p:commandButton value="Send Follow-up" actionListener="#{enquiryManagedBean.saveFollowUp}" ajax="false" />
+
+                             
+                            </p:panel>
+
+                        </p:panelGrid>
                     </div>
                 </div>
             </div>
-        </h:body>
+
+        </h:form>
     </ui:define>
 </ui:composition>

@@ -1,26 +1,24 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
-<html xmlns="http://www.w3.org/1999/xhtml"                                                                                                           
-      xmlns:h="http://xmlns.jcp.org/jsf/html" 
-      xmlns:f="http://xmlns.jcp.org/jsf/core" 
-      xmlns:p="http://primefaces.org/ui">
-    <h:head>
-        <title>Add Recipient</title>
-        <style type="text/css">
-            .gritter-notice-wrapper {
-                left:200px;
-                top: 50px; 
-            }
-        </style>       
-    </h:head>
-    <h:body>
-
-        <h:form>
-            <br/>
-            <p:panel id="panel" header="Reset Password"> 
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/onlineBankingTemplate.xhtml">
+    
+        <ui:define name="content">
+       <h:form>   
+            <div class="ui-g ui-fluid">
+                <div class="ui-g-12 ui-lg-12">
+                    <div class="card card-w-title"> 
+                       
+                      <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+            
+                          <p:panel id="panel" header="Reset Account Password"> 
                 <p:messages />
 
-                <p:panelGrid>
+                <p:panel>
 
                     <p:row>
                         <p:column>
@@ -80,7 +78,7 @@
                             <p:message for="confirmBankAccountPwd" />
                         </p:column>
                     </p:row>
-                </p:panelGrid>
+                </p:panel>
                 <br/>
                 <p:commandButton id="cancelBtn" action="/web/onlineBanking/deposit/customerDepositIndex.xhtml" value="Cancel" update="panel" immediate = "true">
                     <p:confirm header="Cancel" message="Are you sure?" />
@@ -95,7 +93,11 @@
                                  actionListener="#{changeBankAccountPwdManagedBean.submit}" ajax="true"/>
 
             </p:panel>
-        </h:form>
-    </h:body>
-</html>
+                           </p:panelGrid>
+                    </div>
+                </div>
+            </div>
+            </h:form>
+    </ui:define>
+</ui:composition>
 

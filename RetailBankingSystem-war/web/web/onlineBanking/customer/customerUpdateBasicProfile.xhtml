@@ -9,59 +9,67 @@
 
 
     <ui:define name="content">
-    <h:body> 
+
         <h:form>
-           
-            <p:dataList id="customerCurrentBasicProfile" value="#{cRMCustomerManagedBean.customerBasicInfo}" type="definition">
-                <p:panel >
-                    <p:messages />
+            <div class="ui-g ui-fluid">
+                <div class="ui-g-12 ui-lg-12">
+                    <div class="card card-w-title"> 
+                        <p:dataList id="customerCurrentBasicProfile" value="#{cRMCustomerManagedBean.customerBasicInfo}" type="definition">
+                            <p:panel >
+                                <p:messages />
+                                <div align="center">
+                                    <h:panelGrid id="BasicProfile" columns="2" cellpadding="5" styleClass="ui-panelgrid-blank form-group" >
 
-                    <h:panelGrid id="BasicProfile" columns="2" cellpadding="5" >
+                                        <p:outputLabel for="customerNationality"  value="Nationality:" />
+                                        <p:inputText id="customerNationality" value="#{cRMCustomerManagedBean.customerNationality}" required="true" />
 
-                        <p:outputLabel for="customerNationality"  value="Nationality:" />
-                        <p:inputText id="customerNationality" value="#{cRMCustomerManagedBean.customerNationality}" required="true" />
+                                        <p:outputLabel for="customerCountryOfResidence"  value="Country of Residence:" />
+                                        <p:inputText id="customerCountryOfResidence" value="#{cRMCustomerManagedBean.customerCountryOfResidence}" required="true"  />
 
-                        <p:outputLabel for="customerCountryOfResidence"  value="Country of Residence:" />
-                        <p:inputText id="customerCountryOfResidence" value="#{cRMCustomerManagedBean.customerCountryOfResidence}" required="true"  />
+                                        <p:outputLabel for="customerMaritalStatus"  value="Marital Status:" />
+                                        <p:inputText id="customerMaritalStatus" value="#{cRMCustomerManagedBean.customerMaritalStatus}" required="true"  />
 
-                        <p:outputLabel for="customerMaritalStatus"  value="Marital Status:" />
-                        <p:inputText id="customerMaritalStatus" value="#{cRMCustomerManagedBean.customerMaritalStatus}" required="true"  />
+                                        <p:outputLabel for="customerOccupation"  value="Occupation:" />
+                                        <p:inputText id="customerOccupation" value="#{cRMCustomerManagedBean.customerOccupation}" required="true"  />
 
-                        <p:outputLabel for="customerOccupation"  value="Occupation:" />
-                        <p:inputText id="customerOccupation" value="#{cRMCustomerManagedBean.customerOccupation}" required="true"  />
+                                        <p:outputLabel for="customerCompany"  value="Company:" />
 
-                        <p:outputLabel for="customerCompany"  value="Company:" />
+                                        <p:inputText id="customerCompany" value="#{cRMCustomerManagedBean.customerCompany}" required="true"  />
 
-                        <p:inputText id="customerCompany" value="#{cRMCustomerManagedBean.customerCompany}" required="true"  />
+                                        <p:outputLabel for="customerMobileNumber"  value="Mobile Number:" />
+                                        <p:inputText id="customerMobileNumber" value="#{cRMCustomerManagedBean.replacedCustomerMobile}" required="true"  />
 
-                        <p:outputLabel for="customerMobileNumber"  value="Mobile Number:" />
-                        <p:inputText id="customerMobileNumber" value="#{cRMCustomerManagedBean.replacedCustomerMobile}" required="true"  />
+                                        <p:outputLabel for="customerEmailAddress"  value="Email Address:" />
+                                        <p:inputText id="customerEmailAddress" value="#{cRMCustomerManagedBean.replacedCustomerEmail}" required="true"  />
 
-                        <p:outputLabel for="customerEmailAddress"  value="Email Address:" />
-                        <p:inputText id="customerEmailAddress" value="#{cRMCustomerManagedBean.replacedCustomerEmail}" required="true"  />
+                                        <p:outputLabel for="customerStreet"  value="Residential Street Name: " />
+                                        <p:inputText id="customerStreet" value="#{cRMCustomerManagedBean.streetName}" required="true"  />
 
-                        <p:outputLabel for="customerStreet"  value="Residential Street Name: " />
-                        <p:inputText id="customerStreet" value="#{cRMCustomerManagedBean.streetName}" required="true"  />
-                        
-                        <p:outputLabel for="customerUnitNum"  value="Residential Unit No.: " />
-                        <p:inputText id="customerUnitNum" value="#{cRMCustomerManagedBean.unitNum}" required="true"  />
-                        
-                        <p:outputLabel for="customerBlockNum"  value="Residential Block/House No.: " />
-                        <p:inputText id="customerBlockNum" value="#{cRMCustomerManagedBean.blockNum}" required="true"  />
+                                        <p:outputLabel for="customerUnitNum"  value="Residential Unit No.: " />
+                                        <p:inputText id="customerUnitNum" value="#{cRMCustomerManagedBean.unitNum}" required="true"  />
 
-                        <p:outputLabel for="customerPostalCode"  value="Postal Code:" />
-                        <p:inputText id="customerPostalCode" value="#{cRMCustomerManagedBean.customerPostal}" required="true"  />
+                                        <p:outputLabel for="customerBlockNum"  value="Residential Block/House No.: " />
+                                        <p:inputText id="customerBlockNum" value="#{cRMCustomerManagedBean.blockNum}" required="true"  />
 
-                    </h:panelGrid>   
-                </p:panel>
-                <p:commandButton value="Reset" type="reset" />
+                                        <p:outputLabel for="customerPostalCode"  value="Postal Code:" />
+                                        <p:inputText id="customerPostalCode" value="#{cRMCustomerManagedBean.customerPostal}" required="true"  />
 
-                <p:commandButton value="Update" actionListener="#{cRMCustomerManagedBean.updateCustomerBasicProfile}" ajax="false"/>
+                                    </h:panelGrid>  
+                                    
+                                 <h:panelGrid id="BasicProfile2" columns="2" cellpadding="5" styleClass="ui-panelgrid-blank form-group" >
+                                     <p:commandButton value="Reset" type="reset" />
 
-            </p:dataList>
-             
+                            <p:commandButton value="Update" actionListener="#{cRMCustomerManagedBean.updateCustomerBasicProfile}" ajax="false"/>
+                            </h:panelGrid>
+                                </div>
+                            </p:panel>
+                          
+
+                        </p:dataList>
+                    </div>
+                </div>
+            </div>
+
         </h:form>
-
-    </h:body>
     </ui:define>
 </ui:composition>

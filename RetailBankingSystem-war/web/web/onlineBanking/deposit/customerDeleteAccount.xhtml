@@ -9,16 +9,17 @@
 
 
     <ui:define name="content">
-   
-        <h:form>
-            <div class="ui-g">
-                <div class="ui-g-12">
-                    <div class="card"> 
-            <br/>
-            <p:panel id="panel" header="Delete Account"> 
-                <p:messages />
+    <h:form>
+         <div class="ui-g ui-fluid">
+                <div class="ui-g-12 ui-lg-12">
+                    <div class="card card-w-title"> 
+                      <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+            
+                          <p:panel id="panel" header="One of your bank accounts has been deleted"> 
+                
+                              
 
-                <p:panelGrid styleClass="ui-panelgrid-blank form-group">
+             
                     <h:form id="openAccountForm">
                         <h:outputText style="font-weight: bold" value="Status Message: " />
                         <h:outputText value="#{deleteAccountManagedBean.statusMessage}" />
@@ -29,8 +30,9 @@
                         <h:outputText style="font-weight: bold" value="Bank Account Type: "/>
                         <h:outputText value="#{deleteAccountManagedBean.bankAccountType}"/>
                     </h:form>
-                </p:panelGrid>
+                
             </p:panel>
+                          </p:panelGrid>
                   </div>
                 </div>
             </div>

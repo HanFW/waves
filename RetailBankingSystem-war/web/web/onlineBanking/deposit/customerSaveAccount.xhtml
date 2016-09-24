@@ -9,16 +9,17 @@
 
 
     <ui:define name="content">
-        <h:body>
+       
         <h:form>
-            <div class="ui-g">
-                <div class="ui-g-12">
-                    <div class="card"> 
-            <br/>
+           <div class="ui-g ui-fluid">
+                <div class="ui-g-12 ui-lg-12">
+                    <div class="card card-w-title"> 
+                        <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+          
             <p:panel id="panel" header="Save Account"> 
-                <p:messages />
+   
 
-                <p:panelGrid>
+                
                     <h:form id="formMain">
                         <h:outputText style="font-weight: bold;font-size: 20px" value="Attention: " />
                         <h:outputText value="#{saveAccountManagedBean.attention}"/>
@@ -43,13 +44,14 @@
                         <h:outputText value="#{saveAccountManagedBean.bankAccountStatus}"/>
                         <br/>
                     </h:form>
-                </p:panelGrid>
+               
             </p:panel>
+             </p:panelGrid>
                       </div>
                 </div>
             </div>
         </h:form>
-    </h:body>
+
     </ui:define>
 </ui:composition>
 

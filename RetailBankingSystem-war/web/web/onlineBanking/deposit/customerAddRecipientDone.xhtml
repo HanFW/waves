@@ -6,18 +6,18 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/onlineBankingTemplate.xhtml">
+
+
     <ui:define name="content">
-        <h:body>
-
-            <h:form>
-                <div class="ui-g">
-                    <div class="ui-g-12">
-                        <div class="card"> 
-
-                            <br/>
+       <h:form>
+            <div class="ui-g ui-fluid">
+                <div class="ui-g-12 ui-lg-12">
+                    <div class="card card-w-title"> 
+                      <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                        
                             <p:panel header="View My Recipients">
-                                <p:panelGrid styleClass="ui-panelgrid-blank form-group">
-                                    <h:form id="formMain">
+                               
+                                   
                                         <h:outputText style="font-weight: bold" value="Status Message: " />
                                         <h:outputText value="#{addRecipientDoneManagedBean.statusMessage}" />
                                         <br/>
@@ -32,13 +32,13 @@
                                         <br/>
                                         <h:outputText style="font-weight: bold" value="Recipient's Account Type: "/>
                                         <h:outputText value="#{addRecipientDoneManagedBean.payeeAccountType}"/>
-                                    </h:form>
-                                </p:panelGrid>
-                            </p:panel>
-                        </div>
+ 
+                        </p:panel>
+                      </p:panelGrid>
                     </div>
                 </div>
-            </h:form>
-        </h:body>
+            </div>
+
+       </h:form>
     </ui:define>
 </ui:composition>

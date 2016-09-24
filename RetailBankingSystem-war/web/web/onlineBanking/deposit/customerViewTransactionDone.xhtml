@@ -9,52 +9,50 @@
 
 
     <ui:define name="content">
-    <h:body>
-        <h:form>
-            <div class="ui-g">
-                <div class="ui-g-12">
-                    <div class="card"> 
-            <br/>
-            <p:panel header="View Transaction History">
-                <p:dataTable var="accTransaction" value="#{transactionManagedBean.accTransaction}" 
-                             paginator="true" rows="20" emptyMessage="No Transaction Record"
-                             rowsPerPageTemplate="5,10,15,20"
-                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
 
-                    <p:column headerText="Transaction ID">
-                        <h:outputText value="#{accTransaction.transactionId}" /> 
-                    </p:column>
+        <div class="ui-g">
+            <div class="ui-g-12 ui-lg-12">
+                <div class="card card-w-title">     
+                    <p:dataTable var="accTransaction" value="#{transactionManagedBean.accTransaction}" 
+                                 reflow="true" paginator="true" rows="20" emptyMessage="No Transaction Record"
+                                 rowsPerPageTemplate="5,10,15,20"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                        <f:facet name="header">
+                            View My Transaction History
+                        </f:facet>
+                        <p:column headerText="Transaction ID">
+                            <h:outputText value="#{accTransaction.transactionId}" /> 
+                        </p:column>
 
-                    <p:column headerText="Transaction Date">
-                        <h:outputText value="#{accTransaction.transactionDate}" />
-                    </p:column>
+                        <p:column headerText="Transaction Date">
+                            <h:outputText value="#{accTransaction.transactionDate}" />
+                        </p:column>
 
-                    <p:column headerText="Transaction Code"> 
-                        <h:outputText value="#{accTransaction.transactionCode}" />
-                    </p:column>
+                        <p:column headerText="Transaction Code"> 
+                            <h:outputText value="#{accTransaction.transactionCode}" />
+                        </p:column>
 
-                    <p:column headerText="Transaction Ref"> 
-                        <h:outputText value="#{accTransaction.transactionRef}" />
-                    </p:column>
+                        <p:column headerText="Transaction Ref"> 
+                            <h:outputText value="#{accTransaction.transactionRef}" />
+                        </p:column>
 
-                    <p:column headerText="Account Debit(Withdrawal)"> 
-                        <h:outputText value="#{accTransaction.accountDebit}">
-                            <f:convertNumber type="currency" currencyCode="$" minFractionDigits="2" />
-                        </h:outputText>
-                    </p:column>
+                        <p:column headerText="Account Debit(Withdrawal)"> 
+                            <h:outputText value="#{accTransaction.accountDebit}">
+                                <f:convertNumber type="currency" currencyCode="$" minFractionDigits="2" />
+                            </h:outputText>
+                        </p:column>
 
-                    <p:column headerText="Account Credit(Deposit)"> 
-                        <h:outputText value="#{accTransaction.accountCredit}">
-                            <f:convertNumber type="currency" currencyCode="SGD" />
-                        </h:outputText>
-                    </p:column>
+                        <p:column headerText="Account Credit(Deposit)"> 
+                            <h:outputText value="#{accTransaction.accountCredit}">
+                                <f:convertNumber type="currency" currencyCode="SGD" />
+                            </h:outputText>
+                        </p:column>
 
-                </p:dataTable>
-            </p:panel>
-               </div>
+                    </p:dataTable>
+
                 </div>
             </div>
-        </h:form>
-    </h:body>
+        </div>
+
     </ui:define>
 </ui:composition>

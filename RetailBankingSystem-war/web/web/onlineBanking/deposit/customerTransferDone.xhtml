@@ -8,16 +8,16 @@
                 template="/WEB-INF/onlineBankingTemplate.xhtml">
 
 
-    <ui:define name="content">
-    <h:body>
-        <h:form>
-            <div class="ui-g">
-                <div class="ui-g-12">
-                    <div class="card"> 
-            <br/>
+   <ui:define name="content">
+       <h:form>
+            <div class="ui-g ui-fluid">
+                <div class="ui-g-12 ui-lg-12">
+                    <div class="card card-w-title"> 
+                      <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                          
             <p:panel header="Transfer to My Account">
-                <panelGrid>
-                    <h:form id="formMain">
+               
+                  
                         <h:outputText value="#{transferDoneManagedBean.statusMessage}" style="font-size: 24px"/>
                         <br/>
                         <br/>
@@ -63,14 +63,13 @@
                                 <h:outputText value="#{transferDoneManagedBean.transactionId}" />
                             </p:tab>
                         </p:accordionPanel>
-                    </h:form>
-                </panelGrid>
             </p:panel>
-                      </div>
+                  </p:panelGrid>
+                    </div>
                 </div>
             </div>
-        </h:form>
-    </h:body>
+
+       </h:form>
     </ui:define>
 </ui:composition>
 
