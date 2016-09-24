@@ -17,12 +17,12 @@
                             <p:panel >
                                 <p:messages />
                                 <div align='center'>
-                                    <h:panelGrid columns="2" id="matchGrid" cellpadding="5">
+                                    <h:panelGrid columns="2" id="matchGrid" cellpadding="5" styleClass="ui-panelgrid-blank form-group">
 
                                         <p:row>
                                             <div align='center'>
                                                 <p:column>
-                                                    <p:outputLabel for="caseType" style="font-family: Eurostile; font-size:15pt" value="What is it regarding?" />
+                                                    <p:outputLabel for="caseType" style="font-size:15pt" value="What is it regarding?" />
                                                 </p:column>
                                             </div>
                                             <br/>
@@ -61,9 +61,10 @@
                                     </h:panelGrid>
                                 </div>
                             </p:panel>
-
+                            <div align="center">
                             <p:commandButton value="Save" update="@form" actionListener="#{enquiryManagedBean.saveEnquiryCase}" ajax="false" />
-                        </div>
+                            </div>
+                            </div>
                     </div>
                 </div>
             </h:form>

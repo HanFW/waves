@@ -17,10 +17,11 @@
                 <div class="ui-g-12">
                     <div class="card"> 
             <br/>
+            <div algin="center">
             <p:panel id="panel" header="Cash Deposit">
                 <p:messages globalOnly="true"/>
                 
-                <p:panelGrid style="margin-bottom:10px">
+                <p:panelGrid style="margin-bottom:10px" styleClass="ui-panelgrid-blank form-group">
 
                     <p:row>
                         <p:column>
@@ -80,6 +81,7 @@
                     <p:confirm header="Cancel" message="Are you sure?" />
                 </p:commandButton>
 
+              
                 <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
                     <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" action="/web/onlineBanking/deposit/customerDepositIndex.xhtml"/>
                     <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" />
@@ -89,6 +91,7 @@
                                  actionListener="#{cashManagedBean.cashDeposit}" ajax="true" />
             </p:panel>
                         </div>
+                </div>
                 </div>
             </div>
         </h:form>

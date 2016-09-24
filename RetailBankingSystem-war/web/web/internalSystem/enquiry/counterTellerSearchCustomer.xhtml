@@ -1,19 +1,33 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <h:head>
-        <title>Search Customer</title>
-    </h:head>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/onlineBankingTemplate.xhtml">
+
+
+    <ui:define name="content">
+  
     <h:body>
+      <p:panel header="Search Customer">
+
+  
         <h:form>
+            <br/>
+            <br/>
+            <div align="center">
             <p:outputLabel for="customerID"  value="Customer NRIC/Passport:" />
             <p:inputText id="customerID" value="#{employeeRecordEnquiryManagedBean.identificationNum}" />
+            <br/>
+            <br/>
+            <br/>
             <p:commandButton value="Show Customer" actionListener="#{employeeRecordEnquiryManagedBean.retieveCustomerByIdentification}" update="@form"/>
-
-            <p:panelGrid rendered="#{employeeRecordEnquiryManagedBean.visible}">
+            </div>
+            <br/>
+            <br/>
+            <p:panelGrid styleClass="ui-panelgrid-blank form-group" rendered="#{employeeRecordEnquiryManagedBean.visible}">
 
                 <p:row>
                     <p:column colspan="2">
@@ -52,10 +66,13 @@
                         <h:outputText value="#{employeeRecordEnquiryManagedBean.cb.customerOnlineBankingAccountNum}" />
                     </p:column>
                 </p:row>
+                <div align="center">
                 <p:commandButton value="Write Enquiry" actionListener="#{employeeRecordEnquiryManagedBean.helpCustomerRecordEnquiry}"/>
+                </div>
             </p:panelGrid>
             
         </h:form>
+      </p:panel>
     </h:body>
-</html>
-
+   </ui:define>
+</ui:composition>

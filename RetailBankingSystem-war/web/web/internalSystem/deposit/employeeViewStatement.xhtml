@@ -1,9 +1,14 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/onlineBankingTemplate.xhtml">
+
+
+    <ui:define name="content">  
     <h:head>
         <title>View Statement</title>
         <style type="text/css">
@@ -20,7 +25,7 @@
             <p:panel id="panel" header="View Statement">
                 <p:messages globalOnly="true"/>
 
-                <p:panelGrid style="margin-bottom:10px">
+                <p:panelGrid style="margin-bottom:10px" styleClass="ui-panelgrid-blank form-group">
                     <p:row>
                         <p:column>
                             <p:outputLabel for="customerName" style="font-weight: bold" value="Name: " />
@@ -71,5 +76,5 @@
             </p:panel>
         </h:form>
     </h:body>
-</html>
-
+    </ui:define>
+</ui:composition>

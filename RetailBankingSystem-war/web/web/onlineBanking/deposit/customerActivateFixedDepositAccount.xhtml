@@ -20,7 +20,7 @@
             <p:panel id="panel" header="Activate Fixed Deposit Account"> 
                 <p:messages />
 
-                <p:panelGrid>
+                <p:panelGrid styleClass="ui-panelgrid-blank form-group">
                     <p:row>
                         <p:column>
                             <p:outputLabel for="fixedDepositAccountNum" style="font-weight: bold" value="Account: " />
@@ -67,9 +67,10 @@
                     </p:row>
                 </p:panelGrid>
                 <br/>
+                <div align="center">
                 <p:commandButton id="confirmBtn" value="Confirm" update="panel" 
                                  actionListener="#{fixedDepositAccountManagedBean.confirm}" ajax="true"/>
-
+                </div>
             </p:panel>
                     </div>
                 </div>
