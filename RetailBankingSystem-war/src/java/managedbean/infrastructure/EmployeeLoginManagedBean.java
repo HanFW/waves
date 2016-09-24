@@ -76,10 +76,15 @@ public class EmployeeLoginManagedBean implements Serializable {
                 }
                 break;
             case "invalidPassword":
-                message = new FacesMessage(FacesMessage.SEVERITY_INFO, status, "Invalid employee Password/account.");
+                message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Invalid employee Password.", "Invalid employee Password.");
                 context.addMessage(null, message);
                 System.out.println("*** LoginManagedBean: invalid password");
                 break;
+            case "invalidUser":
+                message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Invalid employee Account.", "Invalid employee Account.");
+                context.addMessage(null, message);
+                System.out.println("*** LoginManagedBean: invalid user account");
+                break;    
             default:
                 message = new FacesMessage(FacesMessage.SEVERITY_INFO, status, "Please check your account number.");
                 context.addMessage(null, message);

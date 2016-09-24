@@ -15,7 +15,6 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
@@ -23,13 +22,18 @@ import org.primefaces.event.RowEditEvent;
 import ejb.infrastructure.session.EmployeeAdminSessionBeanLocal;
 import ejb.infrastructure.session.EmployeeEmailSessionBeanLocal;
 import java.io.IOException;
+import static java.time.Clock.system;
+import javax.enterprise.context.RequestScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
 
 /**
  *
  * @author Jingyuan
  */
-@ManagedBean(name = "employeeAccountManagedBean")
-@SessionScoped
+@Named(value = "employeeAccountManagedBean")
+@RequestScoped
 
 public class EmployeeAccountManagedBean implements Serializable {
 
@@ -62,6 +66,8 @@ public class EmployeeAccountManagedBean implements Serializable {
     private List<String> roles;
     private boolean loggedIn;
     private String employeeStatus;
+    
+    
     //    private Set<String> updatedRoles;
 
     /**
@@ -77,8 +83,7 @@ public class EmployeeAccountManagedBean implements Serializable {
      */
     @PostConstruct
     public void init() {
-        // User is available here for the case you'd like to work with it
-////        // directly after bean's construction.
+        
     }
 
     public boolean getLoggedIn() {
@@ -118,21 +123,50 @@ public class EmployeeAccountManagedBean implements Serializable {
             context.addMessage(null, message);
             System.out.println("*** AccountManagedBean: account created");
         }
+        
+//        employeeName=null;
+//        employeeDepartment=null;
+//        employeePosition=null;
+//        employeeNRIC=null;
+//        employeeMobileNum=null;
+//        employeeEmail=null;
+//        selectedRoles=null;
+        
 
     }
-    
 
-
-    public void updateAccountInfo(ActionEvent event) {
-        adminSessionBeanLocal.updateEmployeeAccount(employeeName,
-                employeeDepartment, employeePosition, employeeId, employeeMobileNum.toString(),
-                employeeEmail, selectedRoles);
+    public String getUserName() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        Employee user = (Employee) context.getExternalContext().getSessionMap().get("employee");
+        System.out.println("*** AccountManagedBean: Welcome Message");
+        return user.getEmployeeName();
     }
 
     public List<Employee> getEmployees() {
 
         if (employees == null) {
             employees = adminSessionBeanLocal.getEmployees();;
+        }
+       
+        FacesContext context = FacesContext.getCurrentInstance();
+        Employee findEmployee=(Employee) context.getExternalContext().getSessionMap().get("employee");
+        System.out.println("*** AccountManagedBean: get current system admin "+findEmployee.getEmployeeName());
+        if(employees.contains(findEmployee))
+            employees.remove(findEmployee);
+        
+        for(int i=0;i<employees.size();i++){
+            if(findSystemAdmins(employees.get(i))){
+                System.out.println("*** AccountManagedBean: remove other system admin "+employees.get(i));
+                employees.remove(employees.get(i));
+            }
+        }
+        return employees;
+    }
+
+    public List<Employee> getArchivedEmployees() {
+
+        if (employees == null) {
+            employees = adminSessionBeanLocal.getArchivedEmployees();;
         }
         return employees;
     }
@@ -177,6 +211,8 @@ public class EmployeeAccountManagedBean implements Serializable {
         FacesMessage msg = new FacesMessage("User Account Edited", ((Employee) event.getObject()).getEmployeeName());
 
         FacesContext.getCurrentInstance().addMessage(null, msg);
+//        employee=null;
+        
     }
 
     public void onRowCancel(RowEditEvent event) {
@@ -206,6 +242,8 @@ public class EmployeeAccountManagedBean implements Serializable {
             context.addMessage(null, message);
             System.out.println("*** AccountManagedBean: account deleted");
         }
+        
+//        employee=null;
 
     }
 
@@ -232,6 +270,9 @@ public class EmployeeAccountManagedBean implements Serializable {
             context.addMessage(null, message);
             System.out.println("*** AccountManagedBean: email account invalid");
         }
+        
+//        employeeNRIC=null;
+//        employeeEmail=null;
 
     }
 
@@ -260,7 +301,7 @@ public class EmployeeAccountManagedBean implements Serializable {
     }
 
     public Long getEmployeeId() {
-        System.out.println("*** AccountManagedBean: get employee Id!!!" + employeeId);
+//        System.out.println("*** AccountManagedBean: get employee Id!!!" + employeeId);
         return employeeId;
     }
 
@@ -304,7 +345,7 @@ public class EmployeeAccountManagedBean implements Serializable {
         return employeeMobileNum;
     }
 
-    public void setEmployeeMobileNum(Integer employeeMobileNum) {
+    public void setEmployeeMobileNum(Integer employeeMobileNum) {     
         this.employeeMobileNum = employeeMobileNum;
     }
 
@@ -318,7 +359,7 @@ public class EmployeeAccountManagedBean implements Serializable {
 
     public Employee getEmployee() {
         employee = adminSessionBeanLocal.getEmployeeById(employeeId);
-        System.out.println("*** AccountManagedBean: get employee!!!" + employee.getEmployeeName());
+//        System.out.println("*** AccountManagedBean: get employee!!!" + employee.getEmployeeName());
         return employee;
     }
 
@@ -351,27 +392,21 @@ public class EmployeeAccountManagedBean implements Serializable {
     }
 
     public Set<String> getSelectedRoles() {
-
+        System.out.println("------------ getSelectedRoles: " + selectedRoles);
         return selectedRoles;
     }
 
+    public String getTargetEmployeeDepartment() {
+        employee = adminSessionBeanLocal.getEmployeeById(employeeId);
+        return employee.getEmployeeDepartment();
+//        return targetEmployeeDepartment;
+    }
+
     public void setSelectedRoles(Set<String> selectedRoles) {
-//        adminSessionBeanLocal.setSelectedRoles(employeeId,selectedRoles);
         System.out.println("*** AccountManagedBean - setSelectedRoles");
         this.selectedRoles = selectedRoles;
     }
-//
-//    public Set<String> getUpdatedRoles() {
-//        updatedRoles = selectedRoles;
-//        return updatedRoles;
-//    }
-//
 
-//    public void setUpdatedRoles() {
-//        System.out.println("====== updated roles: " + selectedRoles);
-//        adminSessionBeanLocal.setSelectedRoles(employeeId, selectedRoles);
-//        System.out.println("*** AccountManagedBean - setSelectedRoles");
-//    }
     public boolean hasRoleCounterTeller() {
 
         FacesContext context = FacesContext.getCurrentInstance();
@@ -467,6 +502,13 @@ public class EmployeeAccountManagedBean implements Serializable {
         FacesContext context = FacesContext.getCurrentInstance();
         employee = (Employee) context.getExternalContext().getSessionMap().get("employee");
 
+        Role hasRole = adminSessionBeanLocal.getRoleByName("System Admin");
+        return employee.getRole().contains(hasRole);
+    }
+    
+    public boolean findSystemAdmins(Employee employee) {
+
+       
         Role hasRole = adminSessionBeanLocal.getRoleByName("System Admin");
         return employee.getRole().contains(hasRole);
     }

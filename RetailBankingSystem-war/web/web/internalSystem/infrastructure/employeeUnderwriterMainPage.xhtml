@@ -1,12 +1,26 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
       xmlns:h="http://xmlns.jcp.org/jsf/html">
     <h:head>
-        <title>Facelet Title</title>
+        <title>Underwriter Main Page</title>
     </h:head>
     <h:body>
-        <h1>Welcome to Underwriter Main Page</h1>
+        <h:form>
+            <p:menubar>               
+                <p:submenu label="Manage My Account">
+                    <p:menuitem value="Change Password" actionListener="#{employeeLoginManagedBean.changePassword}" />
+                </p:submenu>
+
+                <p:submenu label="Log Out">
+                    <p:menuitem value="Logout" actionListener="#{employeeLoginManagedBean.doLogOut}" />
+                </p:submenu>
+            </p:menubar>
+
+            <h:outputText value="Welcome #{employeeAccountManagedBean.userName} !"/>
+
+        </h:form>
     </h:body>
 </html>
-

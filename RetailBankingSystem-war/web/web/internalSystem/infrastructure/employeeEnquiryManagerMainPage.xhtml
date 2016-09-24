@@ -8,8 +8,13 @@
         <title>Enquiry Manager Main Page</title>
     </h:head>
     <h:body>
-         <h:form>
+        <h:form>
             <p:menubar>
+                <p:submenu label="Tasks">
+                    <p:menuitem value="Search Enquiry" action="/web/internalSystem/enquiry/counterTellerSearchCaseById.xhtml"/>
+                    <p:menuitem value="View Enquiry" action="/web/internalSystem/enquiry/counterTellerSearchCustomer.xhtml"/>
+                    <p:menuitem value="Forward Enquiry" action="/web/internalSystem/enquiry/counterTellerSearchCustomer.xhtml"/>
+                </p:submenu>
                 <p:submenu label="Manage My Account">
                     <p:menuitem value="Change Password" actionListener="#{employeeLoginManagedBean.changePassword}" />
                 </p:submenu>
@@ -18,11 +23,9 @@
                     <p:menuitem value="Logout" actionListener="#{employeeLoginManagedBean.doLogOut}" />
                 </p:submenu>
             </p:menubar>
-        
-        
-        <p:commandButton value="Search Enquiry" action="/web/internalSystem/enquiry/counterTellerSearchCaseById.xhtml"/>
-        <p:commandButton value="View Enquiry" action="/web/internalSystem/enquiry/counterTellerSearchCustomer.xhtml"/>
-        <p:commandButton value="Forward Enquiry" action="/web/internalSystem/enquiry/counterTellerSearchCustomer.xhtml"/>
+
+            <h:outputText value="Welcome #{employeeAccountManagedBean.userName} !"/>
+
         </h:form>
     </h:body>
 </html>

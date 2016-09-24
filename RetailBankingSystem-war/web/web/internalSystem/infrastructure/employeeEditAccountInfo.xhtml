@@ -25,16 +25,16 @@
         </br>
 
         <h:form id="form">
-            <!--<p:dataList  value="#{employeeAccountManagedBean.employee}" var="employee" >-->
+          
+            <p:messages autoUpdate="true"/>
 
                 <h:panelGrid cellpadding="5" id="userInfo">
-
                     <p:row>
                         <p:column>
                             <p:outputLabel  for="employeeName" value="Name: "/>
                         </p:column>
                         <p:column>
-                            <p:inputText id="employeeName" value="#{employeeAccountManagedBean.employee.employeeName}"/> 
+                            <p:inputText id="employeeName" value="#{systemAdminEditUserAccountManagedBean.targetEmployeeName}"/> 
                         </p:column>
                     </p:row>
 
@@ -43,9 +43,9 @@
                             <p:outputLabel for="employeeDepartment" value="Department:" /> 
                         </p:column>
                         <p:column>
-                            <p:selectOneMenu id="employeeDepartment" value="#{employee.employee.employeeDepartment}" 
+                            <p:selectOneMenu id="employeeDepartment" value="#{systemAdminEditUserAccountManagedBean.targetEmployeeDepartment}"
                                              style="width:125px">
-                                <f:selectItems value="#{employeeAccountManagedBean.departments}" var="department" itemLabel="#{department}" itemValue="#{department}" />
+                                <f:selectItems value="#{systemAdminEditUserAccountManagedBean.departments}" var="department" itemLabel="#{department}" itemValue="#{department}" />
                             </p:selectOneMenu>
                         </p:column>
                     </p:row>
@@ -55,9 +55,9 @@
                             <p:outputLabel for="employeePosition" value="Position:" />
                         </p:column>
                         <p:column>
-                            <p:selectOneMenu id="employeePosition" value="#{employee.employee.employeePosition}" 
+                            <p:selectOneMenu id="employeePosition" value="#{systemAdminEditUserAccountManagedBean.targetEmployeePosition}" 
                                              style="width:125px">
-                                <f:selectItems  value="#{employeeAccountManagedBean.positions}" var="position" itemLabel="#{position}" itemValue="#{position}" />
+                                <f:selectItems  value="#{systemAdminEditUserAccountManagedBean.positions}" var="position" itemLabel="#{position}" itemValue="#{position}" />
                             </p:selectOneMenu>
                         </p:column>
                     </p:row>
@@ -67,7 +67,7 @@
                             <p:outputLabel for="employeeMobileNum" value="Mobile Number:" />
                         </p:column>
                         <p:column>
-                            <p:inputText id="employeeMobileNum" value="#{employeeAccountManagedBean.employee.employeeMobileNum}" />
+                            <p:inputText id="employeeMobileNum" value="#{systemAdminEditUserAccountManagedBean.targetEmployeeMobile}" />
                         </p:column>
                     </p:row>
 
@@ -76,39 +76,29 @@
                             <p:outputLabel for="employeeEmail" value="Email Address:" />
                         </p:column>
                         <p:column>
-                            <p:inputText id="employeeEmail" value="#{employeeAccountManagedBean.employee.employeeEmail}" />
+                            <p:inputText id="employeeEmail" value="#{systemAdminEditUserAccountManagedBean.targetEmployeeEmail}" />
                         </p:column>
                     </p:row>
 
 
                     <p:row>
                         <p:column width="100px">
-                            <h:outputLabel for="role" value="Role:" />
+                            <p:outputLabel for="role" value="Role:" />
                         </p:column>
                         <p:column width="100px">
-                            <p:selectCheckboxMenu id="role" style="margin-left: 40px" value="#{employeeAccountManagedBean.selectedRoles}" label="Select"
+                            <p:selectCheckboxMenu id="role" style="margin-left: 40px" value="#{systemAdminEditUserAccountManagedBean.selectedRoles}" label="Select"
                                                   filter="true" filterMatchMode="startsWith" panelStyle="width:500px">
-                                <f:selectItems value="#{employeeAccountManagedBean.roles}" />
+                                <f:selectItems value="#{systemAdminEditUserAccountManagedBean.roles}" />
                             </p:selectCheckboxMenu>
-                        </p:column>
-                        <p:column>
-                            <p:commandLink process="@this" value="Confirm" action="#{employeeAccountManagedBean.setUpdatedRoles}" update="display">
-                            </p:commandLink>
-                        </p:column>
-                    </p:row>
-
-                    <p:row>
-                        <p:outputPanel id="display" >
-                            <p:dataList value="#{employeeAccountManagedBean.selectedRoles}" var="role">
-                                #{role}
-                            </p:dataList>
-                        </p:outputPanel>
+                        </p:column>                 
                     </p:row>
 
                 </h:panelGrid>
-                <p:commandButton value="Update" actionListener="#{employeeAccountManagedBean.updateAccountInfo}" ajax="false" />
+            <p:commandButton value="Update" actionListener="#{systemAdminEditUserAccountManagedBean.updateAccountInfo}"/>
+            <p:commandButton value="Quit" type="submit" action="/web/internalSystem/infrastructure/employeeUserAccountManagement.xhtml" immediate="true"/>
+            
 
-            <!--</p:dataList>-->
+          
         </h:form>
     </h:body>
 </html>

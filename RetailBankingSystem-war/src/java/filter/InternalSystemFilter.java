@@ -1,6 +1,6 @@
 //package filter;
 //
-////import ejb.infrastructure.entity.Role;
+//import ejb.infrastructure.entity.Role;
 //import java.io.IOException;
 //import javax.servlet.DispatcherType;
 //import javax.servlet.Filter;
@@ -13,7 +13,7 @@
 //import javax.servlet.http.HttpServletRequest;
 //import javax.servlet.http.HttpServletResponse;
 //import javax.servlet.http.HttpSession;
-//
+
 //
 //@WebFilter(filterName = "InternalSystemFilter", urlPatterns = {"/web/internalSystem/*"}, dispatcherTypes = {DispatcherType.REQUEST})
 //
