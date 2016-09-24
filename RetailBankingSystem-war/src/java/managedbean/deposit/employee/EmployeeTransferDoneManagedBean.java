@@ -158,7 +158,13 @@ public class EmployeeTransferDoneManagedBean {
                     activationCheck = transactionSessionBeanLocal.checkAccountActivation(bankAccountTo.getBankAccountNum(), transferAmt.toString());
 
                     if (activationCheck.equals("Initial deposit amount is insufficient.")) {
-                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Initial deposit amount is insufficient.", "Failed"));
+                        if (bankAccountTo.getBankAccountType().equals("Bonus Savings Account")) {
+                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Dear customer, minimum initial deposit amount is S$3000", "Failed"));
+                        } else if (bankAccountTo.getBankAccountType().equals("Basic Savings Account")) {
+                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!Dear customer, minimum initial deposit amount is S$1", "Failed"));
+                        } else if (bankAccountTo.getBankAccountType().equals("Fixed Deposit Account")) {
+                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!Dear customer, minimum initial deposit amount is S$1000", "Failed"));
+                        }
                     } else if (activationCheck.equals("Please contact us at 800 820 8820 or visit our branch.")) {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Please contact us at 800 820 8820 or visit our branch.", "Failed"));
                     } else if (activationCheck.equals("Please declare your deposit period")) {
