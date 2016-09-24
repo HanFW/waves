@@ -71,8 +71,7 @@ public class DepositIndexManagedBean {
     
     private void createBarModel() {
         barModel = initBarModel();
-         
-        barModel.setTitle("Your Quick Summary");
+        
         barModel.setLegendPosition("ne");
          
         Axis xAxis = barModel.getAxis(AxisType.X);

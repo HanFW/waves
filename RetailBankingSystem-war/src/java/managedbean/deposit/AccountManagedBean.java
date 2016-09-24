@@ -732,7 +732,7 @@ public class AccountManagedBean implements Serializable {
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
         customerSignature = ec.getSessionMap().get("customerSignature").toString();
-        
+
         checkIdentificationType();
         checkSalutation();
 
@@ -748,44 +748,50 @@ public class AccountManagedBean implements Serializable {
             isWithdraw = "0";
 
             customerBasicId = customerSessionBean.retrieveCustomerBasicByIC(customerIdentificationNum.toUpperCase()).getCustomerBasicId();
+            CustomerBasic customerBasic = bankAccountSessionLocal.retrieveCustomerBasicById(customerBasicId);
+            Double customerAgeDouble = Double.valueOf(customerBasic.getCustomerAge());
 
-            newInterestId = interestSessionLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw);
-
-            bankAccountBalance = "0";
-            transferDailyLimit = "3000";
-            transferBalance = "3000";
-            bankAccountMinSaving = "";
-            bankAccountDepositPeriod = "None";
-            currentFixedDepositPeriod = "0";
-            fixedDepositStatus = "";
-            statementDateDouble = 0.0;
-
-            if (bankAccountType.equals("Monthly Savings Account")) {
-                bankAccountStatus = "Activated";
-                bankAccountMinSaving = "Insufficient";
+            if (customerAgeDouble < 16) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Eligibility of openning account is 16 years old and above.", "Failed!"));
             } else {
-                bankAccountStatus = "Inactivated";
+
+                newInterestId = interestSessionLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw);
+
+                bankAccountBalance = "0";
+                transferDailyLimit = "3000";
+                transferBalance = "3000";
+                bankAccountMinSaving = "";
+                bankAccountDepositPeriod = "None";
+                currentFixedDepositPeriod = "0";
+                fixedDepositStatus = "";
+                statementDateDouble = 0.0;
+
+                if (bankAccountType.equals("Monthly Savings Account")) {
+                    bankAccountStatus = "Activated";
+                    bankAccountMinSaving = "Insufficient";
+                } else {
+                    bankAccountStatus = "Inactivated";
+                }
+
+                newAccountId = bankAccountSessionLocal.addNewAccount(bankAccountNum, bankAccountPwd, bankAccountType,
+                        bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
+                        bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
+                        statementDateDouble, customerBasicId, newInterestId);
+
+                bankAccount = bankAccountSessionLocal.retrieveBankAccountById(newAccountId);
+                bankAccountSessionLocal.retrieveBankAccountByCusIC(customerIdentificationNum).add(bankAccount);
+
+                statusMessage = "New Account Saved Successfully.";
+
+                ec.getFlash().put("statusMessage", statusMessage);
+                ec.getFlash().put("newAccountId", newAccountId);
+                ec.getFlash().put("newCustomerBasicId", customerBasicId);
+                ec.getFlash().put("bankAccountNum", bankAccountNum);
+                ec.getFlash().put("bankAccountType", bankAccountType);
+                ec.getFlash().put("bankAccountStatus", bankAccountStatus);
+
+                ec.redirect(ec.getRequestContextPath() + "/web/merlionBank/deposit/publicSaveAccount.xhtml?faces-redirect=true");
             }
-
-            newAccountId = bankAccountSessionLocal.addNewAccount(bankAccountNum, bankAccountPwd, bankAccountType,
-                    bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
-                    bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
-                    statementDateDouble, customerBasicId, newInterestId);
-
-            bankAccount = bankAccountSessionLocal.retrieveBankAccountById(newAccountId);
-            bankAccountSessionLocal.retrieveBankAccountByCusIC(customerIdentificationNum).add(bankAccount);
-
-            statusMessage = "New Account Saved Successfully.";
-
-            ec.getFlash().put("statusMessage", statusMessage);
-            ec.getFlash().put("newAccountId", newAccountId);
-            ec.getFlash().put("newCustomerBasicId", customerBasicId);
-            ec.getFlash().put("bankAccountNum", bankAccountNum);
-            ec.getFlash().put("bankAccountType", bankAccountType);
-            ec.getFlash().put("bankAccountStatus", bankAccountStatus);
-
-            ec.redirect(ec.getRequestContextPath() + "/web/merlionBank/deposit/publicSaveAccount.xhtml?faces-redirect=true");
-
         } else if (existingCustomer.equals(
                 "Yes") && !checkExist) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! You don't have Merlion bank account yet.", "Failed!"));
@@ -802,44 +808,50 @@ public class AccountManagedBean implements Serializable {
                     customerAddress, customerPostal, customerOnlineBankingAccountNum,
                     customerOnlineBankingPassword, customerSignature.getBytes());
 
-            dailyInterest = "0";
-            monthlyInterest = "0";
-            isTransfer = "0";
-            isWithdraw = "0";
-            newInterestId = interestSessionLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw);
+            CustomerBasic customerBasic = bankAccountSessionLocal.retrieveCustomerBasicById(newCustomerBasicId);
+            Double customerAgeDouble = Double.valueOf(customerBasic.getCustomerAge());
 
-            bankAccountBalance = "0";
-            transferDailyLimit = "3000";
-            transferBalance = "3000";
-            bankAccountMinSaving = "";
-            bankAccountDepositPeriod = "None";
-            currentFixedDepositPeriod = "0";
-            fixedDepositStatus = "";
-            statementDateDouble = 0.0;
-
-            if (bankAccountType.equals("Monthly Savings Account")) {
-                bankAccountStatus = "Activated";
-                bankAccountMinSaving = "Insufficient";
+            if (customerAgeDouble < 16) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Eligibility of openning account is 16 years old and above.", "Failed!"));
             } else {
-                bankAccountStatus = "Inactivated";
+                dailyInterest = "0";
+                monthlyInterest = "0";
+                isTransfer = "0";
+                isWithdraw = "0";
+                newInterestId = interestSessionLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw);
+
+                bankAccountBalance = "0";
+                transferDailyLimit = "3000";
+                transferBalance = "3000";
+                bankAccountMinSaving = "";
+                bankAccountDepositPeriod = "None";
+                currentFixedDepositPeriod = "0";
+                fixedDepositStatus = "";
+                statementDateDouble = 0.0;
+
+                if (bankAccountType.equals("Monthly Savings Account")) {
+                    bankAccountStatus = "Activated";
+                    bankAccountMinSaving = "Insufficient";
+                } else {
+                    bankAccountStatus = "Inactivated";
+                }
+
+                newAccountId = bankAccountSessionLocal.addNewAccount(bankAccountNum, bankAccountPwd, bankAccountType,
+                        bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
+                        bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
+                        statementDateDouble, newCustomerBasicId, newInterestId);
+
+                statusMessage = "New Account Saved Successfully.";
+
+                ec.getFlash().put("statusMessage", statusMessage);
+                ec.getFlash().put("newAccountId", newAccountId);
+                ec.getFlash().put("newCustomerBasicId", newCustomerBasicId);
+                ec.getFlash().put("bankAccountNum", bankAccountNum);
+                ec.getFlash().put("bankAccountType", bankAccountType);
+                ec.getFlash().put("bankAccountStatus", bankAccountStatus);
+
+                ec.redirect(ec.getRequestContextPath() + "/web/merlionBank/deposit/publicSaveAccount.xhtml?faces-redirect=true");
             }
-
-            newAccountId = bankAccountSessionLocal.addNewAccount(bankAccountNum, bankAccountPwd, bankAccountType,
-                    bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
-                    bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
-                    statementDateDouble, newCustomerBasicId, newInterestId);
-
-            statusMessage = "New Account Saved Successfully.";
-
-            ec.getFlash().put("statusMessage", statusMessage);
-            ec.getFlash().put("newAccountId", newAccountId);
-            ec.getFlash().put("newCustomerBasicId", newCustomerBasicId);
-            ec.getFlash().put("bankAccountNum", bankAccountNum);
-            ec.getFlash().put("bankAccountType", bankAccountType);
-            ec.getFlash().put("bankAccountStatus", bankAccountStatus);
-
-            ec.redirect(ec.getRequestContextPath() + "/web/merlionBank/deposit/publicSaveAccount.xhtml?faces-redirect=true");
-
         } else if (existingCustomer.equals(
                 "No") && checkExist) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! You have Merlion bank account already. Please check.", "Failed!"));

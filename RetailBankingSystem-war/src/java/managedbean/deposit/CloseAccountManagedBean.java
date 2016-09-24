@@ -172,7 +172,6 @@ public class CloseAccountManagedBean {
                 if (!bankAccount.getBankAccountBalance().equals("0")) {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Please withdraw all your money.", "Failed!"));
                 } else {
-
                     bankAccountSessionLocal.deleteAccount(bankAccountNum);
                     statusMessage = "Account has been successfully deleted.";
 
