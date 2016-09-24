@@ -586,10 +586,10 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
 
         bankAccount.setBankAccountPwd(hashedPwd);
     }
-    
+
     @Override
     public void resetDailyTransferLimit() {
-        
+
         Query query = entityManager.createQuery("SELECT a FROM BankAccount a WHERE a.bankAccountStatus = :bankAccountStatus");
         query.setParameter("bankAccountStatus", "Activated");
         List<BankAccount> activatedBankAccounts = query.getResultList();
@@ -597,5 +597,11 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
         for (BankAccount activatedBankAccount : activatedBankAccounts) {
             activatedBankAccount.setTransferBalance(activatedBankAccount.getTransferDailyLimit());
         }
+    }
+
+    @Override
+    public void updateDailyTransferLimit(String bankAccountNum,String dailyTransferLimit) {
+        BankAccount bankAccount = retrieveBankAccountByNum(bankAccountNum);
+        bankAccount.setTransferDailyLimit(dailyTransferLimit);
     }
 }

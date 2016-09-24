@@ -32,4 +32,5 @@ public interface BankAccountSessionBeanLocal {
     public CustomerBasic retrieveCustomerBasicByAccNum (String bankAccountNum);
     public void updatePwd(String bankAccountNum, String bankAccountPwd);
     public void resetDailyTransferLimit();
+    public void updateDailyTransferLimit(String bankAccountNum,String dailyTransferLimit);
 }
