@@ -9,70 +9,70 @@
 
 
     <ui:define name="content">
-  
-    <h:body>
-      <p:panel header="Search Customer">
 
-  
-        <h:form>
-            <br/>
-            <br/>
-            <div align="center">
-            <p:outputLabel for="customerID"  value="Customer NRIC/Passport:" />
-            <p:inputText id="customerID" value="#{employeeRecordEnquiryManagedBean.identificationNum}" />
-            <br/>
-            <br/>
-            <br/>
-            <p:commandButton value="Show Customer" actionListener="#{employeeRecordEnquiryManagedBean.retieveCustomerByIdentification}" update="@form"/>
-            </div>
-            <br/>
-            <br/>
-            <p:panelGrid styleClass="ui-panelgrid-blank form-group" rendered="#{employeeRecordEnquiryManagedBean.visible}">
+        <h:body>
+            <p:panel header="Search Customer">
 
-                <p:row>
-                    <p:column colspan="2">
-                        <h:outputText value="Customer Basic Information" />
-                    </p:column>
-                </p:row>
-                <p:row>
-                    <p:column>
-                        <h:outputText value="Salutation:" />
-                    </p:column>
-                    <p:column>
-                        <h:outputText value="#{employeeRecordEnquiryManagedBean.cb.customerSalutation}" />
-                    </p:column>
-                </p:row>
-                <p:row>
-                    <p:column>
-                        <h:outputText value="Name:" />
-                    </p:column>
-                    <p:column>
-                        <h:outputText value="#{employeeRecordEnquiryManagedBean.cb.customerName}" />
-                    </p:column>
-                </p:row>
-                <p:row>
-                    <p:column>
-                        <h:outputText value="NRIC/Passport:" />
-                    </p:column>
-                    <p:column>
-                        <h:outputText value="#{employeeRecordEnquiryManagedBean.cb.customerIdentificationNum}" />
-                    </p:column>
-                </p:row>
-                <p:row>
-                    <p:column>
-                        <h:outputText value="Customer Online Banking Acc. Num.:" />
-                    </p:column>
-                    <p:column>
-                        <h:outputText value="#{employeeRecordEnquiryManagedBean.cb.customerOnlineBankingAccountNum}" />
-                    </p:column>
-                </p:row>
-                <div align="center">
-                <p:commandButton value="Write Enquiry" actionListener="#{employeeRecordEnquiryManagedBean.helpCustomerRecordEnquiry}"/>
-                <p:commandButton value="Update Customer Profile" actionListener="#{employeeRecordEnquiryManagedBean.helpCustomerChangeBasicInfo}"/>
-            </p:panelGrid>
-            
-        </h:form>
-      </p:panel>
-    </h:body>
-   </ui:define>
+
+                <h:form>
+                    <br/>
+                    <br/>
+                    <div align="center">
+                        <p:outputLabel for="customerID"  value="Customer NRIC/Passport:" />
+                        <p:inputText id="customerID" value="#{employeeRecordEnquiryManagedBean.identificationNum}" />
+                        <br/>
+                        <br/>
+                        <br/>
+                        <p:commandButton value="Show Customer" actionListener="#{employeeRecordEnquiryManagedBean.retieveCustomerByIdentification}" update="@form"/>
+                    </div>
+                    <br/>
+                    <br/>
+                    <p:panelGrid styleClass="ui-panelgrid-blank form-group" rendered="#{employeeRecordEnquiryManagedBean.visible}">
+
+                        <p:row>
+                            <p:column colspan="2">
+                                <h:outputText value="Customer Basic Information" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <h:outputText value="Salutation:" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{employeeRecordEnquiryManagedBean.cb.customerSalutation}" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <h:outputText value="Name:" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{employeeRecordEnquiryManagedBean.cb.customerName}" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <h:outputText value="NRIC/Passport:" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{employeeRecordEnquiryManagedBean.cb.customerIdentificationNum}" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <h:outputText value="Customer Online Banking Acc. Num.:" />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{employeeRecordEnquiryManagedBean.cb.customerOnlineBankingAccountNum}" />
+                            </p:column>
+                        </p:row>
+                        <div align="center">
+                            <p:commandButton value="Write Enquiry" actionListener="#{employeeRecordEnquiryManagedBean.helpCustomerRecordEnquiry}"/>
+                            <p:commandButton value="Update Customer Profile" actionListener="#{employeeRecordEnquiryManagedBean.helpCustomerChangeBasicInfo}"/>
+                    </p:panelGrid>
+
+                </h:form>
+            </p:panel>
+        </h:body>
+    </ui:define>
 </ui:composition>
