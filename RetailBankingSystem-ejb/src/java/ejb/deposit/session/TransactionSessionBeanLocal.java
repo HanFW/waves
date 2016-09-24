@@ -10,7 +10,7 @@ import javax.ejb.Local;
 @Local
 public interface TransactionSessionBeanLocal {
     public Long addNewTransaction(String transactionDate,String transactionCode,String transactionRef,
-            String accountDebit,String accountCredit,Long bankAccountId);
+            String accountDebit,String accountCredit,String transactionDateMilis,Long bankAccountId);
     public String cashDeposit(String bankAccountNum,String depositAmt);
     public BankAccount retrieveBankAccountById(Long bankAccountId);
     public List<AccTransaction> retrieveAccTransactionByBankNum(String bankAccountNum);

@@ -6,7 +6,6 @@
 package ejb.infrastructure.session;
 
 import ejb.common.util.SMTPAuthenticator;
-import ejb.customer.entity.CustomerBasic;
 import ejb.infrastructure.entity.Employee;
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -50,7 +49,7 @@ public class EmployeeEmailSessionBean implements EmployeeEmailSessionBeanLocal {
             query.setParameter("NRIC", employeeNRIC);
             Employee findEmployee = (Employee) query.getSingleResult();
             String emailCase="initialPwd";
-            sendPwdEmail(findEmployee,emailCase);
+            sendPwdEmail(findEmployee,emailCase,employeeEmail);
             return "valid";
         } catch (NoResultException e) {
             return "invalid";
@@ -59,16 +58,17 @@ public class EmployeeEmailSessionBean implements EmployeeEmailSessionBeanLocal {
             return "";
         }
     }
+    
     @Override
-    public String resetPwd(String employeeEmail) {
+    public String resetPwd(String employeeNRIC,String employeeEmail) {
         
         try {
             System.out.println("***SendEmailSessionBean: send resetPwd to " + employeeEmail);
-            Query query = em.createQuery("SELECT e FROM Employee e WHERE e.employeeEmail= :Email");
-            query.setParameter("Email", employeeEmail);
+            Query query = em.createQuery("SELECT e FROM Employee e WHERE e.employeeNRIC= :NRIC");
+            query.setParameter("NRIC", employeeNRIC);
             Employee findEmployee = (Employee) query.getSingleResult();
             String emailCase="resetPwd";
-            sendPwdEmail(findEmployee,emailCase);
+            sendPwdEmail(findEmployee,emailCase,employeeEmail);
             return "valid";
         } catch (NoResultException e) {
             return "invalid";
@@ -113,7 +113,7 @@ public class EmployeeEmailSessionBean implements EmployeeEmailSessionBeanLocal {
 
     }
 
-    private void sendPwdEmail(Employee findEmployee,String emailCase) throws NoSuchAlgorithmException {
+    private void sendPwdEmail(Employee findEmployee,String emailCase,String employeeEmail) throws NoSuchAlgorithmException {
         try {
         Employee employee = findEmployee;
         String password = generatePwd();
@@ -123,7 +123,7 @@ public class EmployeeEmailSessionBean implements EmployeeEmailSessionBeanLocal {
         em.flush();
         String emailServerName = "smtp.gmail.com";
         String emailFromAddress = "Han Fengwei Test Send<merlionbankes05@gmail.com>";
-        String toEmailAddress = "Han Fengwei Test Receive<" + employee.getEmployeeEmail() + ">";
+        String toEmailAddress = "Han Fengwei Test Receive<" + employeeEmail + ">";
         String mailer = "JavaMailer";
         String emailText = "Dear Employee, \n";
         if(emailCase.equals("initialPwd")){
@@ -152,7 +152,7 @@ public class EmployeeEmailSessionBean implements EmployeeEmailSessionBeanLocal {
             if (msg != null) {
                 msg.setFrom(InternetAddress.parse(emailFromAddress, false)[0]);
                 msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmailAddress, false));
-                msg.setSubject("Thank you for using our service! ");;
+                msg.setSubject("Merlion Bank Internal System Service");;
                 msg.setText(emailText);
                 msg.setHeader("X-Mailer", mailer);
                 Date timeStamp = new Date();

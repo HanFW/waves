@@ -2,6 +2,7 @@ package ejb.customer.entity;
 
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.entity.Payee;
+import ejb.deposit.entity.Statement;
 import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -250,6 +251,10 @@ public class CustomerBasic implements Serializable {
 
     public void setEnquiryCase(List<EnquiryCase> enquiryCase) {
         this.enquiryCase = enquiryCase;
+    }
+    
+    public void addNewCase (EnquiryCase ec) {
+        enquiryCase.add(ec);
     }
 
     @Override

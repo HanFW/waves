@@ -13,7 +13,7 @@
             <meta name="apple-mobile-web-app-capable" content="yes" />
             <meta name="theme-color" content="#{guestPreferences.themeColors[guestPreferences.theme]}" />
         </f:facet>
-        <title>Merlion Bank</title>
+        <title>PrimeFaces Ultima</title>
         <h:outputScript name="js/nanoscroller.js" library="ultima-layout" />
         <h:outputScript name="js/layout.js" library="ultima-layout" />
         <h:outputScript name="js/ripple.js" library="ultima-layout" />
@@ -23,11 +23,13 @@
 
     <h:body styleClass="main-body #{guestPreferences.compact ? 'layout-compact' : null}">
         
-        <div class="layout-wrapper #{guestPreferences.menuLayout}">
-            
+        <div class="layout-wrapper menu-layout-static menu-layout-horizontal">
+            <ui:include src="./topbar.xhtml" />
+            <ui:include src="./menu.xhtml" />
             
             <div class="layout-main">
                 <ui:insert name="content"/>
+                
                 <ui:include src="./footer.xhtml" />
             </div>
         </div>

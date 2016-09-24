@@ -7,8 +7,8 @@
     xmlns:pu="http://primefaces.org/ultima">
 
     <div class="topbar clearfix">
-        <div class="topbar-left">            
-            <div class="logo"></div>
+        <div class="topbar-left">
+            <h:link outcome="/web/onlineBanking/deposit/customerDepositIndex.xhtml"><div class="logo"></div>  Merlion Bank</h:link>      
         </div>
         
         <div class="topbar-right">
@@ -20,41 +20,7 @@
                 <i class="material-icons">menu</i>
             </a>
             <ul class="topbar-items fadeInDown animated">
-                <ui:fragment rendered="#{guestPreferences.profileMode == 'overlay'||guestPreferences.menuLayout == 'menu-layout-static menu-layout-horizontal'}">
-                    <li class="profile-item">
-                        <a href="#">                            
-                            <div class="profile-image"></div>
-                            <span class="topbar-item-name">Jane Williams</span>
-                        </a>
-                        
-                        <ul class="ultima-menu animated">
-                            <li role="menuitem">
-                                <a href="#">
-                                    <i class="material-icons">&#xE7FD;</i>
-                                    <span>Profile</span>
-                                </a>
-                            </li>
-                            <li role="menuitem">
-                                <a href="#">
-                                    <i class="material-icons">&#xE32A;</i>
-                                    <span>Privacy</span>
-                                </a>
-                            </li>
-                            <li role="menuitem">
-                                <a href="#">
-                                    <i class="material-icons">&#xE8B9;</i>
-                                    <span>Settings</span>
-                                </a>
-                            </li>
-                            <li role="menuitem">
-                                <a href="#">
-                                    <i class="material-icons">&#xE8AC;</i>
-                                    <span>Logout</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                </ui:fragment>
+             
                 <li>
                     <a href="#">
                         <i class="topbar-icon material-icons">&#xE8B8;</i>

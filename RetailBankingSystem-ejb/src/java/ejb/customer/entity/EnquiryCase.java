@@ -29,12 +29,16 @@ public class EnquiryCase implements Serializable {
     private Long caseId;
     private String caseType;
     private String caseDetail;
-    private List<String> caseFollowUp;
+    private String caseReply;
     private String caseStatus;
     private String onlineBankingAccountNum;
+    private String createdTime;
 
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "enquiryCase")
     private List<Issue> issue;
+
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "enquiryCase")
+    private List<FollowUp> followUp;
 
     @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     private CustomerBasic customerBasic;
@@ -63,14 +67,6 @@ public class EnquiryCase implements Serializable {
         this.caseDetail = caseDetail;
     }
 
-    public List<String> getCaseFollowUp() {
-        return caseFollowUp;
-    }
-
-    public void setCaseFollowUp(List<String> caseFollowUp) {
-        this.caseFollowUp = caseFollowUp;
-    }
-
     public String getCaseStatus() {
         return caseStatus;
     }
@@ -87,6 +83,14 @@ public class EnquiryCase implements Serializable {
         this.issue = issue;
     }
 
+    public List<FollowUp> getFollowUp() {
+        return followUp;
+    }
+
+    public void setFollowUp(List<FollowUp> followUp) {
+        this.followUp = followUp;
+    }
+
     public CustomerBasic getCustomerBasic() {
         return customerBasic;
     }
@@ -101,6 +105,30 @@ public class EnquiryCase implements Serializable {
 
     public void setOnlineBankingAccountNum(String onlineBankingAccountNum) {
         this.onlineBankingAccountNum = onlineBankingAccountNum;
+    }
+
+    public String getCaseReply() {
+        return caseReply;
+    }
+
+    public void setCaseReply(String caseReply) {
+        this.caseReply = caseReply;
+    }
+
+    public String getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(String createdTime) {
+        this.createdTime = createdTime;
+    }
+
+    public void addNewIssue(Issue newIssue) {
+        issue.add(newIssue);
+    }
+
+    public void addNewFollowUp(FollowUp newFollowUp) {
+        followUp.add(newFollowUp);
     }
 
     @Override
@@ -125,7 +153,7 @@ public class EnquiryCase implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.EnquiryCase[ id=" + caseId + " ]";
+        return "EC" + caseId;
     }
 
 }

@@ -27,7 +27,6 @@ public class SaveAccountManagedBean {
         customerBasicId = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("newCustomerBasicId").toString();
         bankAccountNum = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("bankAccountNum").toString();
         bankAccountType = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("bankAccountType").toString();
-        initialDepositAmt = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("initialDepositAmt").toString();
     }
 
     public String getStatusMessage() {

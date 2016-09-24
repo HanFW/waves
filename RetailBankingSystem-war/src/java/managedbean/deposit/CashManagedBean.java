@@ -146,7 +146,7 @@ public class CashManagedBean {
                 ec.getFlash().put("depositAccountNum", depositAccountNum);
                 ec.getFlash().put("depositAmt", depositAmt);
 
-                ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerDepositDone.xhtml?faces-redirect=true");
+                ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/deposit/employeeDepositDone.xhtml?faces-redirect=true");
             } else if (bankAccount.getBankAccountStatus().equals("Inactivated")) {
 
                 activationCheck = transactionSessionLocal.checkAccountActivation(depositAccountNum, depositAmt.toString());
@@ -167,7 +167,7 @@ public class CashManagedBean {
                     ec.getFlash().put("depositAccountNum", depositAccountNum);
                     ec.getFlash().put("depositAmt", depositAmt);
 
-                    ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerDepositDone.xhtml?faces-redirect=true");
+                    ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/deposit/employeeDepositDone.xhtml?faces-redirect=true");
                 }
             }
 
@@ -200,7 +200,7 @@ public class CashManagedBean {
                 ec.getFlash().put("withdrawAccountNum", withdrawAccountNum);
                 ec.getFlash().put("withdrawAmt", withdrawAmt);
 
-                ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerWithdrawDone.xhtml?faces-redirect=true");
+                ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/deposit/employeeWithdrawDone.xhtml?faces-redirect=true");
             } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Your account balance is insufficient.", "Your account balance is insufficient."));
             }

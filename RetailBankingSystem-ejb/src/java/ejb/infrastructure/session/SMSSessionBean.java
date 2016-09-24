@@ -26,16 +26,21 @@ import org.jboss.aerogear.security.otp.api.Base32;
 public class SMSSessionBean implements SMSSessionBeanLocal {
 
     @Override
-    public void sendOTP(String target, String phoneNum) {
+    public String sendOTP(String target, String phoneNum) {
+        System.out.println("-");
+        System.out.println("****** infrastructure/SMSSessionBean: sendOTP() ******");
         String secret = Base32.random();
         Totp totp = new Totp(secret);
-        String strOtp = totp.now(); //427773
-        System.out.println("*************** " + strOtp);
+        String strOtp = totp.now(); 
+        System.out.println("****** infrastructure/SMSSessionBean: sendOTP(): OTP generated");
         String message = "Dear customer, thank you for choosing Merlion Bank! This is your one-time password: " + strOtp;
         sendSMS(message, phoneNum);
+        return strOtp;
     }
     
     private void sendSMS(String message, String toPhoneNum){
+        System.out.println("-");
+        System.out.println("****** infrastructure/SMSSessionBean: sendSMS() ******");
         final String ACCOUNT_SID = "ACd2668f24db04f66798892a6a99af1680";
         final String AUTH_TOKEN = "c029686d79f83924599423aee622994c";
         
@@ -50,7 +55,9 @@ public class SMSSessionBean implements SMSSessionBeanLocal {
         params.add(new BasicNameValuePair("Body", message));
         try {
             Message sms = messageFactory.create(params);
+            System.out.println("****** infrastructure/SMSSessionBean: sendSMS(): OTP SMS sent");
         } catch (TwilioRestException ex) {
+            System.out.println("****** infrastructure/SMSSessionBean: sendSMS(): OTP SMS send failed");
             System.out.println(ex.getErrorMessage());
         }
     }

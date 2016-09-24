@@ -12,13 +12,15 @@
             <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
             <meta name="apple-mobile-web-app-capable" content="yes" />
         </f:facet>
-        <title>PrimeFaces Ultima</title>
-        <h:outputScript name="js/ripple.js" library="ultima-layout" />
+       <!-- Favicon -->
+        <link rel="shortcut icon" href="#{resource['ultima-layout:images/logo.png']}"/>   
+        <title>Bank Anywhere, Anytime</title>
+        <h:outputScript name="/RetailBankingSystem-war/resources/js/ripple.js" library="ultima-layout" />
 
         <!-- Bootstrap core CSS -->
-        <link href="./resources/bootstrap/css/bootstrap.css" rel="stylesheet"/>
+        <link href="/RetailBankingSystem-war/resources/bootstrap/css/bootstrap.css" rel="stylesheet"/>
         <!-- Worthy core CSS file -->
-        <link href="./resources/css/style.css" rel="stylesheet"/>
+        <link href="/RetailBankingSystem-war/resources/css/style.css" rel="stylesheet"/>
 
         <script type="text/javascript">
             $(function () {
@@ -46,7 +48,7 @@
                 <!-- header start -->
                 <!-- ================ --> 
                 <header class="header fixed clearfix navbar navbar-fixed-top">
-                    <div class="container">
+                   
                         <div class="row">
                             <div class="col-md-4">
 
@@ -56,7 +58,7 @@
 
                                     <!-- logo -->
                                     <div class="logo smooth-scroll">
-                                        <a href="#banner"><img id="logo" src="./resources/images/logo.png" alt="Merlion Bank"/></a>
+                                        <a href="#banner"><img id="logo" src="/RetailBankingSystem-war/resources/images/logo.png" alt="Merlion Bank"/></a>
                                     </div>
 
                                     <!-- name-and-slogan -->
@@ -99,13 +101,12 @@
                                                 <div class="collapse navbar-collapse scrollspy smooth-scroll" id="navbar-collapse-1">
                                                     <ul class="nav navbar-nav navbar-right">
                                                         <li class="active"><a href="#banner">Home</a></li>
-                                                        <li><a href="#introduction">Introduction</a></li>
-                                                        <li><a href="#features">Features</a></li>
-                                                        <li><a href="#promotion">Promotion</a></li>
-                                                        <li><a href="#pricing">Pricing</a></li>
-                                                        <li><a href="#video">Video</a></li>
-                                                        <li><p:button outcome="/web/onlineBanking/infrastructure/customerLogin" value="login"/></li>
-         <li><p:button outcome="/web/merlionBank/deposit/publicDepositIndex.xhtml" value="deposit"/></li>
+                                                        <li><h:link outcome="/web/merlionBank/deposit/publicDepositIndex.xhtml">Accounts</h:link></li>
+                                                        <li><a href="#features">Cards</a></li>
+                                                        <li><a href="#promotion">Wealth</a></li>
+                                                        <li><a href="#pricing">Loan</a></li>
+                                                        <li><h:link outcome="/web/onlineBanking/infrastructure/customerLogin">Login</h:link></li>
+                                                 
                                                     </ul>
                                                 </div>
 
@@ -121,7 +122,7 @@
 
                             </div>
                         </div>
-                    </div>
+                   
                 </header>
                 <!-- header end -->
 
@@ -147,8 +148,7 @@
 
 
             <div id="features">
-                <h2>The Ultimate Material Application Template for PrimeFaces</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Esse delectus sit velit, aspernatur voluptates molestiae, enim recusandae. Odit dicta, maiores quas ad nesciunt, illum expedita veritatis illo quam odio id!</p>
+                <h3>Products/Services We Provided</h3>
 
                 <div class="ui-g">
                     <div class="ui-g-12 ui-md-4">
@@ -319,26 +319,26 @@
         <h:outputStylesheet name="css/ripple.css" library="ultima-layout" />
         <h:outputStylesheet name="css/layout-#{guestPreferences.theme}.css" library="ultima-layout" />
         <!-- Jquery and Bootstap core js files -->
-        <script type="text/javascript" src="./resources/plugins/jquery.min.js"></script>
-        <script type="text/javascript" src="./resources/bootstrap/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="/RetailBankingSystem-war/resources/plugins/jquery.min.js"></script>
+        <script type="text/javascript" src="/RetailBankingSystem-war/resources/bootstrap/js/bootstrap.min.js"></script>
 
         <!-- Modernizr javascript -->
-        <script type="text/javascript" src="./resources/plugins/modernizr.js"></script>
+        <script type="text/javascript" src="/RetailBankingSystem-war/resources/plugins/modernizr.js"></script>
 
         <!-- Isotope javascript -->
-        <script type="text/javascript" src="./resources/plugins/isotope/isotope.pkgd.min.js"></script>
+        <script type="text/javascript" src="/RetailBankingSystem-war/resources/plugins/isotope/isotope.pkgd.min.js"></script>
 
         <!-- Backstretch javascript -->
-        <script type="text/javascript" src="./resources/plugins/jquery.backstretch.min.js"></script>
+        <script type="text/javascript" src="/RetailBankingSystem-war/resources/plugins/jquery.backstretch.min.js"></script>
 
         <!-- Appear javascript -->
-        <script type="text/javascript" src="./resources/plugins/jquery.appear.js"></script>
+        <script type="text/javascript" src="/RetailBankingSystem-war/resources/plugins/jquery.appear.js"></script>
 
         <!-- Initialization of Plugins -->
-        <script type="text/javascript" src="./resources/js/template.js"></script>
+        <script type="text/javascript" src="/RetailBankingSystem-war/resources/js/template.js"></script>
 
         <!-- Custom Scripts -->
-        <script type="text/javascript" src="./resources/js/custom.js"></script>
+        <script type="text/javascript" src="/RetailBankingSystem-war/resources/js/custom.js"></script>
     </h:body>
 
 </html>
