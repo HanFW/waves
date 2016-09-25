@@ -21,8 +21,11 @@
                 </p:submenu>
             </p:menubar>
         </h:form>
-        
+
         <h:outputText value="Welcome #{employeeAccountManagedBean.userName} !"/>
+        <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
+        <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
+        <h:outputText value="You have logged in as: Counter Teller"/>
 
         <h:form id="form">           
             <p:growl id="msgs" showDetail="true" />
@@ -52,17 +55,17 @@
                 </p:tab>
                 <p:tab title="Loan">
                     <h:panelGrid columns="2" cellpadding="10">
-                        
+
                     </h:panelGrid>
                 </p:tab>
                 <p:tab title="Card">
                     <h:panelGrid columns="2" cellpadding="10">
-                      
+
                     </h:panelGrid>
                 </p:tab>
                 <p:tab title="Billing and Payment">
                     <h:panelGrid columns="2" cellpadding="10">
-                        
+
                     </h:panelGrid>
                 </p:tab>
             </p:accordionPanel>

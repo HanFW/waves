@@ -9,11 +9,12 @@
     </h:head>
     <h:body>
         <h:outputText value="Welcome " />
-        <h:outputText value="#{employeeAccountManagedBean.userName}" />
-        <h:outputText value="! You have logged in as "/>
+        <h:outputText value="#{employeeAccountManagedBean.userName}!"/>
+        <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
+        <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
+        <h:outputText value="You have logged in as "/>
 
         <h:form>
-            <h:outputText value="Welcome #{employeeAccountManagedBean.userName} !"/>
             
             <p:panel visible="#{employeeAccountManagedBean.hasRoleSystemAdmin()}" style="border: none">
                 <p:row>

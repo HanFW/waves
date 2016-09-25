@@ -79,7 +79,6 @@ public class EmployeeAccountManagedBean implements Serializable {
      * @param event
      * @return
      */
- 
     public void createAccount(ActionEvent event) throws IOException {
 
         FacesMessage message = null;
@@ -102,10 +101,16 @@ public class EmployeeAccountManagedBean implements Serializable {
             context.addMessage(null, message);
             System.out.println("*** AccountManagedBean: account created");
 
-            loggingSessionBeanLocal.createNewLogging("employee", getEmployeeIdViaSessionScope(), "employee creates a new user account for employee "+employeeName,
+            loggingSessionBeanLocal.createNewLogging("employee", getEmployeeIdViaSessionScope(), "employee creates a new user account for employee " + employeeName,
                     "successful", "The employee does not have an existing account");
         }
 
+    }
+
+    public Employee getUserViaSessionMap() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        Employee user = (Employee) context.getExternalContext().getSessionMap().get("employee");
+        return user;
     }
 
     public String getUserName() {
@@ -113,6 +118,17 @@ public class EmployeeAccountManagedBean implements Serializable {
         Employee user = (Employee) context.getExternalContext().getSessionMap().get("employee");
         System.out.println("*** AccountManagedBean: Welcome Message");
         return user.getEmployeeName();
+    }
+
+    public String getUserDepartment() {
+        Employee user = getUserViaSessionMap();
+        return user.getEmployeeDepartment();
+
+    }
+
+    public String getUserPosition() {
+        Employee user = getUserViaSessionMap();
+        return user.getEmployeePosition();
     }
 
     public List<Employee> getEmployees() {
@@ -216,7 +232,7 @@ public class EmployeeAccountManagedBean implements Serializable {
             context.addMessage(null, message);
             System.out.println("*** AccountManagedBean: account deleted");
 
-            loggingSessionBeanLocal.createNewLogging("employee", getEmployeeId(), "System admin archives user account of "+employee.getEmployeeName(),
+            loggingSessionBeanLocal.createNewLogging("employee", getEmployeeId(), "System admin archives user account of " + employee.getEmployeeName(),
                     "successful", null);
         }
 
