@@ -66,8 +66,10 @@
             <h:outputStylesheet name="css/ripple.css" library="ultima-layout" />
             <h:outputStylesheet name="css/layout-#{guestPreferences.theme}.css" library="ultima-layout" />
         </h:form>
+        
+       
         <h:form id="otpForm">
-                <p:dialog header="One-time Password" widgetVar="otpDialog" resizable="false">
+                <p:dialog header="One-time Password" widgetVar="otpDialog" responsive="true">
                     <h:panelGrid id="otpPanel">
                         <p:row>
                             <p:column>
@@ -88,6 +90,9 @@
                         </p:row>
                     </h:panelGrid>
                 </p:dialog>
+       
             </h:form>
+  
+           
     </h:body>
 </html>

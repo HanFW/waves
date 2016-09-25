@@ -1,21 +1,17 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui">
-    <h:head>
-        <title>Fund Transfer</title>
-        <style type="text/css">
-            .gritter-notice-wrapper {
-                left:200px;
-                top: 50px;
-            }
-        </style>
-    </h:head>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/internalSystemTemplate.xhtml">
+
+
+    <ui:define name="content">
     <h:body>
         <h:form id="formMain">
-            <h1>Welcome to Merlion Bank</h1>
+            
             <p:menubar>
                 <p:submenu label="Deposit">
                     <p:menuitem value="Home" url="/web/index.xhtml" />
@@ -101,5 +97,6 @@
             </p:panel>
         </h:form>
     </h:body>
-</html>
+    </ui:define>
+</ui:composition>
 

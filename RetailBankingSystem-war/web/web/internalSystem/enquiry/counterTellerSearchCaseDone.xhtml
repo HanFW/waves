@@ -5,13 +5,11 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
-                template="/WEB-INF/onlineBankingTemplate.xhtml">
+                template="/WEB-INF/internalSystemTemplate.xhtml">
 
 
-    <ui:define name="content">
-    <h:head>
-        <title>View Customer Case</title>
-    </h:head>
+    <ui:define name="content">  
+   
     <h:body>
         <h:form>
             <p:panel header="Enquiry Case ID: #{employeeRecordEnquiryManagedBean.caseId} - created time: #{employeeRecordEnquiryManagedBean.ec.createdTime}" style="margin-bottom:20px">

@@ -15,38 +15,38 @@
                 <div class="ui-g ui-fluid">
                     <div class="ui-g-12 ui-lg-12">
                         <div class="card card-w-title"> 
-<div align="center">
-                            <h2>Please activate your account by entering your new account number and password</h2>
-                            <br/>
+                            <div align="center">
+                                <h2>Please activate your account by entering your new account number and password</h2>
+                                <br/>
 
-                            <p:messages globalOnly="true" showDetail="true" id="activationMessage"/>
-                            
-                             
-                            <p:panelGrid columns="1" styleClass="ui-panelgrid-blank form-group">
-
-                                <p:outputLabel style="font-size:16pt" for="customerAccount" value="New account number: "/>
+                                <p:messages globalOnly="true" showDetail="true" id="activationMessage"/>
 
 
-                                <p:inputText type="text" id="customerAccount" value="#{customerLoginManagedBean.newCustomerAccount}" required="true" requiredMessage="Please create a new account number.">
-                                    <f:validateLength minimum="6" maximum="20" />
-                                </p:inputText>
-                                <p:message for="customerAccount"/>
+                                <p:panelGrid columns="1" styleClass="ui-panelgrid-blank form-group">
+
+                                    <p:outputLabel style="font-size:16pt" for="customerAccount" value="New account number: "/>
 
 
-                                <p:outputLabel style="font-size:16pt" for="customerPassword" value="New password: "/>
+                                    <p:inputText type="text" id="customerAccount" value="#{customerLoginManagedBean.newCustomerAccount}" required="true" requiredMessage="Please create a new account number.">
+                                        <f:validateLength minimum="6" maximum="20" />
+                                    </p:inputText>
+                                    <p:message for="customerAccount"/>
+
+
+                                    <p:outputLabel style="font-size:16pt" for="customerPassword" value="New password: "/>
 
 
 
-                                <p:inputText type="password" id= "customerPassword" value="#{customerLoginManagedBean.newCustomerPassword}" required="true" requiredMessage="Please create a new password." >
-                                    <f:validateLength minimum="6" maximum="20" />
-                                </p:inputText>
-                                <p:message for="customerPassword"/>
+                                    <p:inputText type="password" id= "customerPassword" value="#{customerLoginManagedBean.newCustomerPassword}" required="true" requiredMessage="Please create a new password." >
+                                        <f:validateLength minimum="6" maximum="20" />
+                                    </p:inputText>
+                                    <p:message for="customerPassword"/>
 
 
-                                <p:commandButton value="Submit" type="submit" actionListener="#{customerLoginManagedBean.activateOnlineBankingAccount}" update="activationConfirmation activationForm" style="font-family:Eurostile;font-size:16pt"/>
+                                    <p:commandButton value="Submit" type="submit" actionListener="#{customerLoginManagedBean.activateOnlineBankingAccount}" update="activationConfirmation activationForm" style="font-family:Eurostile;font-size:16pt"/>
 
-                            </p:panelGrid>
-                             </div>
+                                </p:panelGrid>
+                            </div>
 
                         </div>
                     </div>

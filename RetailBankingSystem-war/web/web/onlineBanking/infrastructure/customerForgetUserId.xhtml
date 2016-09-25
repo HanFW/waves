@@ -16,21 +16,31 @@
         <h:outputScript name="js/ripple.js" library="ultima-layout" />
         <h:outputScript name="js/layout.js" library="ultima-layout" />  
     </h:head>
-    <h:body>
+    <h:body styleClass="login-body">  
         <h:form >
-            <p:messages autoUpdate="true" showDetail="false"/>
-            <h:outputText value="For Singaporean/PR, please enter your IC number. For foreigner, please enter your passport number."/>
-                <br/>
-                <p:outputLabel for="identification" value="Your identification number: "/>
-                <br/>
-                <p:inputText type="text" id="identification" value="#{customerLoginManagedBean.customerIdentification}" required="true" requiredMessage="Please enter your identification number."/>
-                <br/>
-                <p:outputLabel for="otp" value="One-time password: "/>
-                <br/>
-                <p:inputText type="password" id="otp" value="#{customerLoginManagedBean.customerOTP}"/>
-                <p:commandButton value="Request OTP" actionListener="#{customerLoginManagedBean.forgetOTP}"/>
-                <br/>
-                <p:commandButton type="submit" value="View User ID" actionListener="#{customerLoginManagedBean.retrieveCustomerAccount}" update="@form"/>
+            <div class="card login-panel ui-fluid">
+                <div class="ui-g">
+                    <div class="ui-g-12">
+                        <p:messages autoUpdate="true" showDetail="false"/>
+                        <h:outputText value="For Singaporean/PR, please enter your IC number. For foreigner, please enter your passport number."/>
+                        <br/>
+                        <h:outputText value="&lt;br /&gt;" escape="false" />
+                        <p:outputLabel for="identification" value="Your identification number: "/>
+                        <br/>
+                        <p:inputText type="text" id="identification" value="#{customerLoginManagedBean.customerIdentification}" required="true" requiredMessage="Please enter your identification number."/>
+                        <br/>
+                        <p:outputLabel for="otp" value="One-time password: "/>
+                        <br/>
+                        <p:inputText type="password" id="otp" value="#{customerLoginManagedBean.customerOTP}"/>
+                        <br/>
+                        <h:outputText value="&lt;br /&gt;" escape="false" />
+                        <p:commandButton value="Request OTP" actionListener="#{customerLoginManagedBean.forgetOTP}"/>
+                        <p:commandButton type="submit" value="View User ID" actionListener="#{customerLoginManagedBean.retrieveCustomerAccount}" update="@form"/>
+                    </div>
+                </div>
+            </div>
+            <h:outputStylesheet name="css/ripple.css" library="ultima-layout" />
+            <h:outputStylesheet name="css/layout-#{guestPreferences.theme}.css" library="ultima-layout" />
         </h:form>
     </h:body>
 </html>

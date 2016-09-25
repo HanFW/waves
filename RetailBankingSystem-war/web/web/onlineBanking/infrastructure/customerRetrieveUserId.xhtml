@@ -1,48 +1,39 @@
-<ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:p="http://primefaces.org/ui"
-                template="/WEB-INF/template.xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
 
-    <ui:define name="title">Panels</ui:define>
-
-    <ui:define name="head">
-        <style type="text/css">
-            .nba-grid {
-                width: 100%;
-                table-layout: fixed;
-                word-wrap: break-word;
-            }
-
-            .ui-scrollpanel-content p:first-child {
-                margin: 0;
-            }
-        </style>
-    </ui:define>
-
-    <ui:define name="content">
     <h:head>
-        <title>Retrieve User ID</title>
+        <f:facet name="first">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+            <meta name="apple-mobile-web-app-capable" content="yes" />
+        </f:facet>
+        <link rel="shortcut icon" href="#{resource['ultima-layout:images/favicon.png']}"/>   
+        <title>Bank Anywhere, Anytime</title>
+        <h:outputScript name="js/ripple.js" library="ultima-layout" />
+        <h:outputScript name="js/layout.js" library="ultima-layout" />  
     </h:head>
-    <h:body>
-        <h:form>
-            <div align="center">
-                <p:panel >
-                    <p>
-                        <p:outputLabel value="User ID: " for="userID" style="font-family:Eurostile;font-size:20pt; "/>
-                        <h:outputText id="userID" value="#{customerLoginManagedBean.customerAccount}" style="font-family:Eurostile;font-size:20pt"/>
+    <h:body styleClass="login-body">  
+        <h:form >
+            <div class="card login-panel ui-fluid">
+                <div class="ui-g">
+                    <div class="ui-g-12">
+
+                        <p>
+                            <p:outputLabel value="User ID: " for="userID" style="font-size:16pt; "/>
+                            <h:outputText id="userID" value="#{customerLoginManagedBean.customerAccount}" style="font-size:16pt"/>
                         </p>
                         <br/>
-                        <p:button outcome="/web/onlineBanking/infrastructure/customerLogin" value="Login" style="font-family:Eurostile;font-size:20pt "/>
-       
-                </p:panel>
+                        <p:button outcome="/web/onlineBanking/infrastructure/customerLogin" value="Login"/>
+                    </div>
+                </div>
             </div>
-            <br/>
-            <br/>
-            <br/>
+            <h:outputStylesheet name="css/ripple.css" library="ultima-layout" />
+            <h:outputStylesheet name="css/layout-#{guestPreferences.theme}.css" library="ultima-layout" />
         </h:form>
     </h:body>
-   </ui:define>
-</ui:composition>
+</html>
 

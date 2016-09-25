@@ -744,6 +744,8 @@ body {
     margin: 0; }
 body.main-body {
     background: url("#{resource['ultima-layout:images/onlineBanking/onlineBanking_templateBG.jpg']}")top right; }
+body.employee-main-body {
+    background: url("#{resource['ultima-layout:images/onlineBanking/onlineBanking_templateBG.jpg']}")top right; }
 body a {
     text-decoration: none; }
 
@@ -768,15 +770,15 @@ body a {
 .layout-wrapper .topbar .logo {
     display: inline-block;
     vertical-align: middle;
-    width: 65px;
-    height: 65px;
-    background: url("#{resource['ultima-layout:images/favicon.png']}") top left no-repeat; }
+    width: 300px;
+    height: 90px;
+    background: url("#{resource['ultima-layout:images/logo2x.png']}") top left no-repeat; }
 .layout-wrapper .topbar .topbar-left {
     font-size: 24px;
     box-sizing: border-box;
     padding: 15px;
     height: 90px;
-    width: 250px;
+    width: 300px;
     background-color: rgba(0, 0, 0, 0.20);
     float: left;
     -webkit-box-shadow: 3px 0 6px rgba(0, 0, 0, 0.3);
@@ -888,7 +890,7 @@ body a {
 .layout-wrapper .layout-menu {
     overflow: auto;
     position: fixed;
-    width: 250px;
+    width: 300px;
     z-index: 99;
     top: 90px;
     height: 100%;
@@ -1280,7 +1282,7 @@ body a {
         -ms-transform: rotate(0deg);
         transform: rotate(0deg); }
     .layout-wrapper.menu-layout-static .layout-menu {
-        margin-left: -265px; }
+        margin-left: -300px; }
     .layout-wrapper.menu-layout-static .layout-main {
         margin-left: 0px; }
     .layout-wrapper.menu-layout-static.layout-menu-static-active .layout-menu {
@@ -1393,8 +1395,11 @@ body a {
         display: block; } }
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
     .layout-wrapper .topbar .logo {
-        background: url("#{resource['ultima-layout:images/favicon.png']}") top left no-repeat;
-        background-size: 65px 65px; } }
+        background: url("#{resource['ultima-layout:images/logo2x.png']}") top left no-repeat;
+        display: inline-block;
+    vertical-align: middle;
+    width: 300px;
+    height: 65px; } }
 body.layout-compact {
     font-size: 16px;
     line-height: 18px;

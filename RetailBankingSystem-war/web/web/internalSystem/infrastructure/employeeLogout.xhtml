@@ -1,18 +1,28 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<ui:composition 
-    xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:p="http://primefaces.org/ui"
-    template="/WEB-INF/onlineBankingTemplate.xhtml">
-       <ui:define name="content">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
     <h:head>
-        <title>Logout</title>
+        <f:facet name="first">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+            <meta name="apple-mobile-web-app-capable" content="yes" />
+        </f:facet>
+        <link rel="shortcut icon" href="#{resource['ultima-layout:images/favicon.png']}"/>   
+        <title>MB Internal System</title>
+        <h:outputScript name="js/ripple.js" library="ultima-layout" />
+        <h:outputScript name="js/layout.js" library="ultima-layout" />  
     </h:head>
-    <h:body>
-        <p:panel>
-        <div align="center">
+    <h:body styleClass="login-body">      
+        
+         <div class="card login-panel ui-fluid">
+                <div class="ui-g">
+                    <div class="ui-g-12">
         <h:form>
             <h3>You have logged out from Merlion Bank Internal System</h3>
             <br/>
@@ -22,9 +32,13 @@
             </p:button>
         </p:row>
         </h:form>
-        </div>
-        </p:panel>
-    </h:body>
-       </ui:define>
-</ui:composition>
+      </div>
+                </div>
+            </div>
 
+            <h:outputStylesheet name="css/ripple.css" library="ultima-layout" />
+            <h:outputStylesheet name="css/layout-#{guestPreferences.theme}.css" library="ultima-layout" />
+         
+        </h:body>
+
+</html>
