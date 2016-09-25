@@ -4,6 +4,7 @@ import ejb.customer.entity.CustomerBasic;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.session.BankAccountSessionBean;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
+import ejb.infrastructure.session.LoggingSessionBeanLocal;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
@@ -24,6 +25,8 @@ import javax.faces.context.FacesContext;
 @RequestScoped
 
 public class ChangeBankAccountPwdManagedBean {
+    @EJB
+    private LoggingSessionBeanLocal loggingSessionBeanLocal;
 
     @EJB
     private BankAccountSessionBeanLocal bankAccountSessionBeanLocal;
@@ -106,6 +109,9 @@ public class ChangeBankAccountPwdManagedBean {
     }
 
     public void submit() {
+        System.out.println("=");
+        System.out.println("====== deposit/ChangeBankAccountPwdManagedBean: submit() ======");
+        CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
         bankAccountNum = handleAccountString(bankAccountNumWithType);
@@ -122,8 +128,10 @@ public class ChangeBankAccountPwdManagedBean {
         if (bankAccount.getBankAccountPwd().equals(hashedPwd)) {
             bankAccountSessionBeanLocal.updatePwd(bankAccountNum, newPassword);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Update Password Successfully!", "Successfully!"));
+            loggingSessionBeanLocal.createNewLogging("customer",customerBasic.getCustomerBasicId(), "change deposit account password","successful",null);
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Your old password is wrong.", "Failed!"));
+            loggingSessionBeanLocal.createNewLogging("customer",customerBasic.getCustomerBasicId(), "change deposit account password","failed","Wrong old password");
         }
     }
 

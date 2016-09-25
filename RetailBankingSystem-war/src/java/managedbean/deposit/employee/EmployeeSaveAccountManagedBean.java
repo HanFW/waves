@@ -38,14 +38,14 @@ public class EmployeeSaveAccountManagedBean {
         }
 
         if (bankAccountStatus.equals("Inactive") && !bankAccountType.equals("Fixed Deposit Account")) {
-            attention = "Dear customer, your bank account is inactive."
+            attention = "Customer bank account is inactive."
                     + "To activate, please deposit/transfer sufficient amount to your account.";
         } else if (bankAccountStatus.equals("Inactive") && bankAccountType.equals("Fixed Deposit Account")) {
-            attention = "Dear customer, you have to declare your fixed deposit period before activating your account."
+            attention = "Customer has to declare your fixed deposit period before activating your account."
                     + "To activate, please deposit/transfer sufficient amount to your account.";
         }
         if (bankAccountType.equals("Monthly Savings Account")) {
-            attention = "Dear customer, minimum monthly saving is S$50.";
+            attention = "Minimum monthly saving is S$50.";
         }
     }
 

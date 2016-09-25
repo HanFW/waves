@@ -14,7 +14,7 @@
         <h:form id="formMain">
             <h1>Welcome to Merlion Bank</h1>
             <p:menubar>
-                <p:submenu label="My Account">
+                <p:submenu label="Deposit">
                     <p:menuitem value="Home" url="/web/index.xhtml" />
                     <p:menuitem value="Open Account" url="/web/internalSystem/deposit/employeeOpenAccount.xhtml" />
                     <p:menuitem value="Close Account" url="/web/internalSystem/deposit/employeeCloseAccount.xhtml" />
@@ -48,7 +48,7 @@
                         </p:column>
                         <p:column>
                             <p:inputText required="true" label="Deposit Amount" requiredMessage="Deposit amount is required." id="depositAmt"
-                                         value="#{cashManagedBean.depositAmt}" converterMessage="Invalid input">
+                                         value="#{employeeCashManagedBean.depositAmt}" converterMessage="Invalid input">
                                 <f:validateDoubleRange minimum="0.0" maximum="99999999.0" />
                             </p:inputText>
                         </p:column>
@@ -63,7 +63,7 @@
                         </p:column>
                         <p:column>
                             <p:inputText required="true" label="Deposit Account Number" requiredMessage="Account number is required." id="depositAccountNum"
-                                         value="#{cashManagedBean.depositAccountNum}">
+                                         value="#{employeeCashManagedBean.depositAccountNum}">
                             </p:inputText>
                         </p:column>
                         <p:column>
@@ -76,7 +76,7 @@
                             <p:outputLabel for="depositAccountPwd" style="font-weight: bold" value="Account Password: " />
                         </p:column>
                         <p:column>
-                            <p:password id="depositAccountPwd" value="#{cashManagedBean.depositAccountPwd}" match="confirmDepositAccountPwd"
+                            <p:password id="depositAccountPwd" value="#{employeeCashManagedBean.depositAccountPwd}" match="confirmDepositAccountPwd"
                                         required="true" requiredMessage="Account password is required."/>
                         </p:column>
                         <p:column>
@@ -89,7 +89,7 @@
                             <p:outputLabel for ="confirmDepositAccountPwd" style="font-weight:bold" value="Confirm Password: " />
                         </p:column>
                         <p:column>
-                            <p:password id="confirmDepositAccountPwd" value="#{cashManagedBean.confirmDepositAccountPwd}" 
+                            <p:password id="confirmDepositAccountPwd" value="#{employeeCashManagedBean.confirmDepositAccountPwd}" 
                                         label="Confirm Password" required="true" />
                         </p:column>
                     </p:row>
@@ -107,7 +107,7 @@
                 </p:confirmDialog>
 
                 <p:commandButton id="depositBtn" value="Deposit" update="panel" 
-                                 actionListener="#{cashManagedBean.cashDeposit}" ajax="true" />
+                                 actionListener="#{employeeCashManagedBean.cashDeposit}" ajax="true" />
             </p:panel>
                         </div>
                 </div>

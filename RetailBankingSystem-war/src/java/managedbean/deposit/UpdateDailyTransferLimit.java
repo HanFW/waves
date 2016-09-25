@@ -3,6 +3,7 @@ package managedbean.deposit;
 import ejb.customer.entity.CustomerBasic;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
+import ejb.infrastructure.session.LoggingSessionBeanLocal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,8 @@ import javax.faces.context.FacesContext;
 @RequestScoped
 
 public class UpdateDailyTransferLimit {
+    @EJB
+    private LoggingSessionBeanLocal loggingSessionBeanLocal;
 
     @EJB
     private BankAccountSessionBeanLocal bankAccountSessionLocal;
@@ -82,10 +85,14 @@ public class UpdateDailyTransferLimit {
     }
 
     public void submit() {
-
+        System.out.println("=");
+        System.out.println("====== deposit/UpdateDailyTransferLimit: submit() ======");
+        CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
+        
         bankAccountNum = handleAccountString(bankAccountNumWithType);
         bankAccountSessionLocal.updateDailyTransferLimit(bankAccountNum, dailyTransferLimit);
 
+        loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "update daily transfer limit", "successful", null);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("You have updated your daily transfer limit successfully.", " Successfully"));
     }
 

@@ -13,11 +13,15 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
+import ejb.infrastructure.session.LoggingSessionBeanLocal;
 
 @Named(value = "fixedDepositAccountManagedBean")
 @RequestScoped
 
 public class FixedDepositAccountManagedBean {
+
+    @EJB
+    private LoggingSessionBeanLocal loggingSessionBeanLocal;
 
     @EJB
     private BankAccountSessionBeanLocal bankAccountSessionLocal;
@@ -72,7 +76,9 @@ public class FixedDepositAccountManagedBean {
     }
 
     public void confirm() {
-
+        System.out.println("=");
+        System.out.println("====== deposit/FixedDepositAccountManagedBean: confirm() ======");
+        CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
         String bankAccountNum = handleAccountString(fixedDepositAccountWithType);
@@ -83,10 +89,13 @@ public class FixedDepositAccountManagedBean {
             if (bankAccount.getBankAccountDepositPeriod().equals("None")) {
                 bankAccountSessionLocal.updateDepositPeriod(bankAccountNum, fixedDepositPeriod);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Successfully!You have successfully declared your fixed deposit period.", "Successfully"));
+                loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "declare fixed deposit period", "successful", null);
             } else {
+                loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "declare fixed deposit period", "failed", "Already declared before");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!You have already declared your fixed deposit period.", "Failed"));
             }
         } else {
+            loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "declare fixed deposit period", "failed", "Service only for fixed deposit account");
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Service only for Fixed Deposit Account.", "Failed"));
         }
     }

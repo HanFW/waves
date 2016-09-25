@@ -63,17 +63,15 @@ public class Permission implements Serializable {
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
-    
-    
+
     public void addRoleToPermission(Role role) {
 
         this.roles.add(role);
     }
 
-    public void deleteEmployeeFromRole(Role role) {
+    public void deleteRoleFromPermission(Role role) {
         this.roles.remove(role);
     }
-    
     
 
     @Override
@@ -100,5 +98,4 @@ public class Permission implements Serializable {
     public String toString() {
         return "ejb.infrastructure.entity.Permission[ id=" + id + " ]";
     }
-
 }

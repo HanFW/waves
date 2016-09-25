@@ -5,6 +5,7 @@ import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.session.BankAccountSessionBean;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
+import ejb.infrastructure.session.LoggingSessionBeanLocal;
 import java.io.Serializable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -25,8 +26,11 @@ import javax.faces.view.ViewScoped;
 @Named(value = "employeeChangePwdDoneManagedBean")
 @ViewScoped
 
-public class EmployeeChangePwdDoneManagedBean implements Serializable{
-    
+public class EmployeeChangePwdDoneManagedBean implements Serializable {
+
+    @EJB
+    private LoggingSessionBeanLocal loggingSessionBeanLocal;
+
     @EJB
     private CRMCustomerSessionBeanLocal customerSessionBeanLocal;
 
@@ -39,7 +43,7 @@ public class EmployeeChangePwdDoneManagedBean implements Serializable{
     private String oldPassword;
     private String newPassword;
     private String confirmPwd;
-    
+
     private String customerIdentificationNum;
 
     private ExternalContext ec;
@@ -51,14 +55,14 @@ public class EmployeeChangePwdDoneManagedBean implements Serializable{
     public void init() {
 
         ec = FacesContext.getCurrentInstance().getExternalContext();
-        
+
         customerIdentificationNum = ec.getSessionMap().get("customerIdentificationNum").toString();
         CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum);
 
-        if (customerBasic.getCustomerBasicId()!=null) {
-            
+        if (customerBasic.getCustomerBasicId() != null) {
+
             List<BankAccount> bankAccounts = bankAccountSessionBeanLocal.retrieveBankAccountByCusIC(customerBasic.getCustomerIdentificationNum());
-            
+
             bankAccountNums = new HashMap<String, String>();
 
             for (int i = 0; i < bankAccounts.size(); i++) {
@@ -124,6 +128,8 @@ public class EmployeeChangePwdDoneManagedBean implements Serializable{
     }
 
     public void submit() {
+        System.out.println("=");
+        System.out.println("====== deposit/EmployeeChangePwdDoneManagedBean: submit() ======");
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
         bankAccountNum = handleAccountString(bankAccountNumWithType);
@@ -141,10 +147,12 @@ public class EmployeeChangePwdDoneManagedBean implements Serializable{
         if (bankAccount.getBankAccountPwd().equals(hashedPwd)) {
             bankAccountSessionBeanLocal.updatePwd(bankAccountNum, newPassword);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Update Password Successfully!", "Successfully!"));
+            loggingSessionBeanLocal.createNewLogging("employee", null, "change deposit account password", "successful", null);
         } else {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Your old password is wrong.", "Failed!"));
+            loggingSessionBeanLocal.createNewLogging("employee", null, "change deposit account password", "failed", "Wrong old password");
         }
-        
+
     }
 
     private String handleAccountString(String bankAccountNumWithType) {

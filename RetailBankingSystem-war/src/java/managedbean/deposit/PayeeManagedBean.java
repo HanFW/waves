@@ -5,7 +5,6 @@ import ejb.customer.entity.CustomerBasic;
 import ejb.deposit.entity.Payee;
 import java.io.IOException;
 import java.io.Serializable;
-import static java.util.Collections.list;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -14,8 +13,8 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
-import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import ejb.deposit.session.PayeeSessionBeanLocal;
+import ejb.infrastructure.session.LoggingSessionBeanLocal;
 
 @Named(value = "payeeManagedBean")
 @RequestScoped
@@ -23,10 +22,10 @@ import ejb.deposit.session.PayeeSessionBeanLocal;
 public class PayeeManagedBean implements Serializable {
 
     @EJB
-    private BankAccountSessionBeanLocal bankAccountSessionLocal;
+    private LoggingSessionBeanLocal loggingSessionBeanLocal;
 
     @EJB
-    private CRMCustomerSessionBeanLocal customerSessionBeanLocal;
+    private BankAccountSessionBeanLocal bankAccountSessionLocal;
 
     @EJB
     private PayeeSessionBeanLocal payeeSessionLocal;
@@ -111,6 +110,8 @@ public class PayeeManagedBean implements Serializable {
     }
 
     public void addPayee() throws IOException {
+        System.out.println("=");
+        System.out.println("====== deposit/PayeeManagedBean: addPayee() ======");
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
         CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
@@ -141,7 +142,7 @@ public class PayeeManagedBean implements Serializable {
                     if (payees.size() >= 20) {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! You already have 20 recipients.", "Failed!"));
                     } else {
-                        
+
                         lastTransactionDate = "";
                         customerBasicId = customerBasic.getCustomerBasicId();
                         newPayeeId = payeeSessionLocal.addNewPayee(payeeName, payeeAccountNum, payeeAccountType, lastTransactionDate, customerBasicId);
@@ -149,6 +150,7 @@ public class PayeeManagedBean implements Serializable {
 
                         customerBasic.getPayee().add(payee);
                         statusMessage = "New Recipient Added Successfully.";
+                        loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "add payee", "successful", null);
 
                         ec.getFlash().put("statusMessage", statusMessage);
                         ec.getFlash().put("newPayeeId", newPayeeId);
@@ -157,7 +159,7 @@ public class PayeeManagedBean implements Serializable {
                         ec.getFlash().put("payeeAccountType", payeeAccountType);
 
                         ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerAddRecipientDone.xhtml?faces-redirect=true");
-                        
+
                     }
                 } else {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Recipient has existed.", "Failed!"));
@@ -177,22 +179,23 @@ public class PayeeManagedBean implements Serializable {
     }
 
     public void deletePayee() throws IOException {
-        System.out.println("delete payee");
+        System.out.println("=");
+        System.out.println("====== deposit/PayeeManagedBean: deletePayee() ======");
+        CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
         ec = FacesContext.getCurrentInstance().getExternalContext();
-        System.out.println(customerPayee);
+
         Payee payee = payeeSessionLocal.retrievePayeeByName(customerPayee.getPayeeAccountNum());
-        System.out.println(payee);
+
         if (payee.getPayeeId() == null) {
-            System.out.println("if");
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Recipient does not exist.", "Failed!"));
         } else {
-            System.out.println("else");
             payeeAccountNum = payee.getPayeeAccountNum();
             payeeAccountType = payee.getPayeeAccountType();
 
             payeeSessionLocal.deletePayee(payeeAccountNum);
-            System.out.println("delete finish");
+
             statusMessage = "Recipient deleted Successfully.";
+            loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "delete payee", "successful", null);
 
             ec.getFlash().put("statusMessage", statusMessage);
             ec.getFlash().put("payeeName", payeeName);

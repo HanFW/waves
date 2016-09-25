@@ -16,118 +16,26 @@
         <h:outputScript name="js/ripple.js" library="ultima-layout" />
         <h:outputScript name="js/layout.js" library="ultima-layout" />  
     </h:head>
-    <h:body styleClass="login-body">
-        <div class="card login-panel ui-fluid">
-            <div class="ui-g">
-                <div class="ui-g-12">
-                    <h:form>
+    <h:body>
 
-
-                        <p:panelGrid >
-
-                            <h3>Are you:</h3>
-                            <p:selectOneRadio id="console" value="#{customerLoginManagedBean.customerNationality}" >
-                                <f:selectItem itemLabel="Singaporean/PR" itemValue="singaporean"/>
-                                <f:selectItem itemLabel="Foreigner" itemValue="foreigner" />
-                                <p:ajax event="change" update=":nricForm :passportForm"/>
-                            </p:selectOneRadio>
-
-                        </p:panelGrid>
-
-                    </h:form>
-
-                    <h:form id="nricForm" >
-                        <p:messages autoUpdate="true" showDetail="true"/>
-                        <p:panel id="nricField" visible="#{customerLoginManagedBean.customerNationality == 'singaporean'}">
-
-                            <p:outputLabel for="nric" value="NRIC: "/>  
-                            <p:inputText type="text" id="nric" value="#{customerLoginManagedBean.customerIdentification}" required="true" requiredMessage="Please enter your identification number."/>
-
-                        </p:panel>
-                        
-                        <h:outputText value="&lt;br /&gt;" escape="false" />
-
-                        <p:panel>
-                            <p:panelGrid rendered="#{customerLoginManagedBean.customerNationality == 'singaporean'}" >
-
-                                <p:outputLabel for="otp" value="One-time passport: "/>
-
-                                <p:panelGrid columns="2" styleClass="ui-panelgrid-blank form-group">
-
-                                    <p:inputText type="password" id="otp" value="#{customerLoginManagedBean.customerOTP}" required="true" requiredMessage="Please enter OTP."/>
-
-
-                                    <p:commandButton value="Request OTP" actionListener="#{customerLoginManagedBean.forgetOTP}"/>
-                                </p:panelGrid>   
-                            </p:panelGrid>
-                        </p:panel>
-
-
-                        <p:panelGrid rendered="#{customerLoginManagedBean.customerNationality == 'singaporean'}">
-                            <p:row>
-                                <br/>
-                                <br/>
-                                <div align="center">
-                                    <p:commandButton type="submit" value="Reset my password" actionListener="#{customerLoginManagedBean.resetCustomerPassword}" update="@form"/>
-                                </div>
-                                <br/>
-                                <br/>
-                            </p:row>
-                        </p:panelGrid>
-                        <p:confirmDialog id="resetConfirmation" message="Your online banking password has been reset successfully and sent to your registered email." header="Password reset successful" severity="info" widgetVar="resetConfirmation" closable="false" style="font-family:Eurostile">
-                        <div align="center">
-                            <p:commandButton value="OK" action="/web/onlineBanking/infrastructure/customerLogin.xhtml?faces-redirect=true"/>
-                        </div>
-                    </p:confirmDialog>
-                    </h:form>
-
-                    <h:form id="passportForm">
-                        <p:panel id="nricField" visible="#{customerLoginManagedBean.customerNationality == 'foreigner'}">
-
-                            <p:outputLabel for="passport" value="Passport: "/>
-                            <p:inputText type="text" id="passport" value="#{customerLoginManagedBean.customerIdentification}" required="true" requiredMessage="Please enter your identification number."/>
-
-                        </p:panel>
-
-
-                       <h:outputText value="&lt;br /&gt;" escape="false" />
-                        <p:panel>
-                            <p:panelGrid rendered="#{customerLoginManagedBean.customerNationality == 'foreigner'}" >
-
-                                <p:outputLabel for="otp" value="One-time passport: "/>
-
-                                <p:panelGrid columns="2" styleClass="ui-panelgrid-blank form-group">
-
-                                    <p:inputText type="password" id="otp" value="#{customerLoginManagedBean.customerOTP}" required="true" requiredMessage="Please enter OTP."/>
-                                    <p:commandButton value="Request OTP" actionListener="#{customerLoginManagedBean.forgetOTP}"/>
-                                </p:panelGrid>   
-                            </p:panelGrid>
-                        </p:panel>
-
-
-
-                        <p:panelGrid rendered="#{customerLoginManagedBean.customerNationality == 'foreigner'}">
-                            <p:row>
-                                <br/>
-                                <br/>
-                                <div align="center">
-                                    <p:commandButton type="submit" value="Reset my password" actionListener="#{customerLoginManagedBean.resetCustomerPassword}" update="@form" style="margin:0 auto;font-family:Eurostile;font-size:15pt"/>
-                                </div>
-                                <br/>
-                                <br/>
-                            </p:row>
-                        </p:panelGrid>
-                   <p:confirmDialog id="resetConfirmation" message="Your online banking password has been reset successfully and sent to your registered email." header="Password reset successful" severity="info" widgetVar="resetConfirmation" closable="false" style="font-family:Eurostile">
-                        <div align="center">
-                            <p:commandButton value="OK" action="/web/onlineBanking/infrastructure/customerLogin.xhtml?faces-redirect=true"/>
-                        </div>
-                    </p:confirmDialog>
-                    </h:form>
-                    <h:outputStylesheet name="css/ripple.css" library="ultima-layout" />
-                    <h:outputStylesheet name="css/layout-#{guestPreferences.theme}.css" library="ultima-layout" />
-                </div>
-            </div>
-        </div>
+        <h:form >
+            <p:messages autoUpdate="true" showDetail="false"/>
+            <h:outputText value="For Singaporean/PR, please enter your IC number. For foreigner, please enter your passport number."/>
+            <br/>
+            <p:outputLabel for="identification" value="Your identification number: "/>
+            <br/>
+            <p:inputText type="text" id="identification" value="#{customerLoginManagedBean.customerIdentification}" required="true" requiredMessage="Please enter your identification number."/>
+            <br/>
+            <p:outputLabel for="otp" value="One-time password: "/>
+            <br/>
+            <p:inputText type="password" id="otp" value="#{customerLoginManagedBean.customerOTP}"/>
+            <p:commandButton value="Request OTP" actionListener="#{customerLoginManagedBean.forgetOTP}"/>
+            <br/>
+            <p:commandButton type="submit" value="Reset my password" actionListener="#{customerLoginManagedBean.resetCustomerPassword}" update="@form"/>
+            <p:confirmDialog id="resetConfirmation" message="Your online banking password has been reset successfully and sent to your registered email." header="Password reset successful" severity="info" widgetVar="resetConfirmation" closable="false" closeOnEscape="false">
+                <p:commandButton value="OK" action="/web/onlineBanking/infrastructure/customerLogin.xhtml?faces-redirect=true"/>
+            </p:confirmDialog>
+        </h:form>
     </h:body>
 </html>
 

@@ -92,4 +92,12 @@ public class MessageSessionBean implements MessageSessionBeanLocal {
 
         return "Successfully deleted!";
     }
+    
+    @Override
+    public void sendMessage(String fromWhere, String messageType, String subject, String receivedDate, String messageContent, Long customerBasicId) {
+        CustomerBasic customerBasic = bankAccountSessionBeanLocal.retrieveCustomerBasicById(customerBasicId);
+
+        MessageBox messageBox = addNewMessage(fromWhere, messageType, subject, receivedDate, messageContent, customerBasicId);
+        customerBasic.getMessageBox().add(messageBox);
+    }
 }

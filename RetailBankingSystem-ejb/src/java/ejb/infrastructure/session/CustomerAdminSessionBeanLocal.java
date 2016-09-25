@@ -6,6 +6,7 @@
 package ejb.infrastructure.session;
 
 import ejb.customer.entity.CustomerBasic;
+import java.util.ArrayList;
 import javax.ejb.Local;
 
 /**
@@ -27,4 +28,10 @@ public interface CustomerAdminSessionBeanLocal {
     public CustomerBasic getCustomerByIdentificationNum(String identificationNum);
             
     public Boolean resetPassword(String identificationNum);
+    
+    public ArrayList<String> checkExistingService(Long customerId);
+    
+    public void deleteOnlineBankingAccount(Long customerId);
+    
+    public void recreateOnlineBankingAccount(Long customerId);
 }

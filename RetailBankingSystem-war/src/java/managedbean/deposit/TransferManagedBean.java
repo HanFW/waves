@@ -17,11 +17,14 @@ import javax.inject.Named;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import ejb.deposit.session.PayeeSessionBeanLocal;
 import ejb.deposit.session.TransactionSessionBeanLocal;
+import ejb.infrastructure.session.LoggingSessionBeanLocal;
 
 @Named(value = "transferManagedBean")
 @RequestScoped
 
 public class TransferManagedBean {
+    @EJB
+    private LoggingSessionBeanLocal loggingSessionBeanLocal;
 
     @EJB
     private PayeeSessionBeanLocal payeeSessionLocal;
@@ -200,6 +203,8 @@ public class TransferManagedBean {
     }
 
     public void toMyAccount() throws IOException {
+        System.out.println("=");
+        System.out.println("====== deposit/TransferManagedBean: toMyAccount() ======");
         fromAccount = handleAccountString(fromBankAccountNumWithType);
         toAccount = handleAccountString(toBankAccountNumWithType);
 
@@ -243,6 +248,7 @@ public class TransferManagedBean {
 
                             newTransactionId = transactionSessionLocal.fundTransfer(fromAccount, toAccount, transferAmt.toString());
                             statusMessage = "Your transaction has been completed.";
+                            loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "transfer to my account", "successful", null);
 
                             fromAccountBalance = bankAccountFrom.getBankAccountBalance();
                             toAccountBalance = bankAccountTo.getBankAccountBalance();
@@ -271,6 +277,7 @@ public class TransferManagedBean {
 
                         newTransactionId = transactionSessionLocal.fundTransfer(fromAccount, toAccount, transferAmt.toString());
                         statusMessage = "Your transaction has been completed.";
+                        loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "transfer to my account", "successful", null);
 
                         fromAccountBalance = bankAccountFrom.getBankAccountBalance();
                         toAccountBalance = bankAccountTo.getBankAccountBalance();
@@ -297,6 +304,10 @@ public class TransferManagedBean {
     }
 
     public void toOthersAccount() throws IOException {
+        System.out.println("=");
+        System.out.println("====== deposit/TransferManagedBean: toOthersAccount() ======");
+        CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
+        
         fromAccount = handleAccountString(fromBankAccountNumWithType);
         toAccount = handleAccountString(toBankAccountNumWithType);
 
@@ -338,6 +349,7 @@ public class TransferManagedBean {
                             payeeSessionLocal.updateLastTransactionDate(toAccount);
 
                             statusMessage = "Your transaction has been completed.";
+                            loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "transfer to other account", "successful", null);
 
                             fromAccountBalance = bankAccountFrom.getBankAccountBalance();
                             toAccountBalance = bankAccountTo.getBankAccountBalance();
@@ -367,6 +379,7 @@ public class TransferManagedBean {
                         payeeSessionLocal.updateLastTransactionDate(toAccount);
 
                         statusMessage = "Your transaction has been completed.";
+                        loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "transfer to other account", "successful", null);
 
                         fromAccountBalance = bankAccountFrom.getBankAccountBalance();
                         toAccountBalance = bankAccountTo.getBankAccountBalance();
@@ -393,6 +406,10 @@ public class TransferManagedBean {
     }
 
     public void oneTimeTransfer() throws IOException {
+        System.out.println("=");
+        System.out.println("====== deposit/TransferManagedBean: oneTimeTransfer() ======");
+        
+        CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
         fromAccount = handleAccountString(fromBankAccountNumWithType);
 
         BankAccount bankAccountFrom = bankAccountSessionLocal.retrieveBankAccountByNum(fromAccount);
@@ -432,6 +449,7 @@ public class TransferManagedBean {
                         if (diffAmt >= 0) {
                             newTransactionId = transactionSessionLocal.fundTransfer(fromAccount, toAccount, transferAmt.toString());
                             statusMessage = "Your transaction has been completed.";
+                            loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "one time transfer", "successful", null);
 
                             fromAccountBalance = bankAccountFrom.getBankAccountBalance();
                             toAccountBalance = bankAccountTo.getBankAccountBalance();
@@ -462,6 +480,7 @@ public class TransferManagedBean {
                     if (diffAmt >= 0) {
                         newTransactionId = transactionSessionLocal.fundTransfer(fromAccount, toAccount, transferAmt.toString());
                         statusMessage = "Your transaction has been completed.";
+                        loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "one time transfer", "successful", null);
 
                         fromAccountBalance = bankAccountFrom.getBankAccountBalance();
                         toAccountBalance = bankAccountTo.getBankAccountBalance();

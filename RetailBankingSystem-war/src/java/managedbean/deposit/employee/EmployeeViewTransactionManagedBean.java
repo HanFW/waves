@@ -58,6 +58,8 @@ public class EmployeeViewTransactionManagedBean {
     }
 
     public void submit() throws IOException {
+        System.out.println("=");
+        System.out.println("====== deposit/EmployeeViewTransactionManagedBean: submit() ======");
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
         CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum.toUpperCase());

@@ -7,6 +7,7 @@ import ejb.deposit.entity.Payee;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import ejb.deposit.session.PayeeSessionBeanLocal;
 import ejb.deposit.session.TransactionSessionBeanLocal;
+import ejb.infrastructure.session.LoggingSessionBeanLocal;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -23,6 +24,8 @@ import javax.faces.context.FacesContext;
 @RequestScoped
 
 public class EmployeeCloseAccountDoneManagedBean {
+    @EJB
+    private LoggingSessionBeanLocal loggingSessionBeanLocal;
     
     @EJB
     private PayeeSessionBeanLocal payeeSessionBeanLocal;
@@ -159,6 +162,9 @@ public class EmployeeCloseAccountDoneManagedBean {
     }
 
     public void deleteAccount() throws IOException {
+        System.out.println("=");
+        System.out.println("====== deposit/EmployeeCloseAccountDoneManagedBean: deleteAccount() ======");
+
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
         bankAccountNum = handleAccountString(bankAccountNumWithType);
@@ -183,6 +189,7 @@ public class EmployeeCloseAccountDoneManagedBean {
 
                     bankAccountSessionBeanLocal.deleteAccount(bankAccountNum);
                     statusMessage = "Account has been successfully deleted.";
+                    loggingSessionBeanLocal.createNewLogging("employee",null, "close account", "successful", null);
 
                     ec.getFlash().put("statusMessage", statusMessage);
                     ec.getFlash().put("bankAccountNum", bankAccountNum);

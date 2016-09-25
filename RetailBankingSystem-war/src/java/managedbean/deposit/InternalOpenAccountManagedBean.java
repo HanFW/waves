@@ -4,6 +4,7 @@ import ejb.customer.entity.CustomerBasic;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import ejb.deposit.session.InterestSessionBeanLocal;
+import ejb.infrastructure.session.MessageSessionBeanLocal;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
@@ -20,6 +21,9 @@ import org.primefaces.event.FlowEvent;
 @RequestScoped
 
 public class InternalOpenAccountManagedBean {
+    
+    @EJB
+    private MessageSessionBeanLocal messageSessionBeanLocal;
 
     @EJB
     private BankAccountSessionBeanLocal bankAccountSessionBeanLocal;
@@ -363,7 +367,7 @@ public class InternalOpenAccountManagedBean {
                         Calendar cal = Calendar.getInstance();
                         receivedDate = cal.getTime();
                         messageContent = "Welcome to Merlion Bank! Please deposit/transfer sufficient fund to your bank account.";
-                        bankAccountSessionBeanLocal.sendMessage("Merlion Bank", "Service", subject, receivedDate.toString(),
+                        messageSessionBeanLocal.sendMessage("Merlion Bank", "Service", subject, receivedDate.toString(),
                                 messageContent, customerBasicId);
 
             ec.getFlash().put("statusMessage", statusMessage);

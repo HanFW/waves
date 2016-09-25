@@ -106,5 +106,14 @@ public class Role implements Serializable {
     public void deleteEmployeeFromRole(Employee employee) {
         this.employee.remove(employee);
     }
+    
+      public void addPermissionToRole(Permission permission) {
+
+        this.permission.add(permission);
+    }
+
+    public void deletePermissionFromRole(Permission permission) {
+        this.permission.remove(permission);
+    }
 
 }

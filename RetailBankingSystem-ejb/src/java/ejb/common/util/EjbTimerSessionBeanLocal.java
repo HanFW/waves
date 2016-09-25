@@ -9,4 +9,6 @@ public interface EjbTimerSessionBeanLocal {
     public void cancelTimer10000MS();
     public void createTimer300000MS();
     public void cancelTimer300000MS();
+    public void createTimer15000MS();
+    public void cancelTimer15000MS();
 }

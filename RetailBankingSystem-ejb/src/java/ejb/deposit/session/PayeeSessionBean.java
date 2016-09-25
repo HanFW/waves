@@ -31,6 +31,8 @@ public class PayeeSessionBean implements PayeeSessionBeanLocal {
     @Override
     public Long addNewPayee(String payeeName, String payeeAccountNum, String payeeAccountType,
             String lastTransactionDate, Long customerBasicId) {
+        System.out.println("*");
+        System.out.println("****** deposit/InterestSessionBean: addNewPayee() ******");
         Payee payee = new Payee();
 
         payee.setPayeeName(payeeName);
@@ -47,6 +49,8 @@ public class PayeeSessionBean implements PayeeSessionBeanLocal {
 
     @Override
     public String deletePayee(String payeeAccountNum) {
+        System.out.println("*");
+        System.out.println("****** deposit/InterestSessionBean: deletePayee() ******");
         Payee payee = retrievePayeeByNum(payeeAccountNum);
 
         entityManager.remove(payee);
@@ -57,17 +61,26 @@ public class PayeeSessionBean implements PayeeSessionBeanLocal {
 
     @Override
     public Payee retrievePayeeById(Long payeeId) {
+        System.out.println("*");
+        System.out.println("****** deposit/InterestSessionBean: retrievePayeeById() ******");
         Payee payee = new Payee();
 
         try {
             Query query = entityManager.createQuery("Select p From Payee p Where p.payeeId=:payeeId");
             query.setParameter("payeeId", payeeId);
-            payee = (Payee) query.getSingleResult();
+
+            if (query.getResultList().isEmpty()) {
+                System.out.println("****** deposit/InterestSessionBean: retrievePayeeById(): invalid payee Id: no result found, return new payee");
+                return new Payee();
+            } else {
+                System.out.println("****** deposit/InterestSessionBean: retrievePayeeById(): valid payee Id: return payee");
+                payee = (Payee) query.getSingleResult();
+            }
         } catch (EntityNotFoundException enfe) {
-            System.out.println("\nEntity not found error: " + enfe.getMessage());
+            System.out.println("****** deposit/InterestSessionBean: retrievePayeeById(): Entity not found error: " + enfe.getMessage());
             return new Payee();
         } catch (NonUniqueResultException nure) {
-            System.out.println("\nNon unique result error: " + nure.getMessage());
+            System.out.println("****** deposit/InterestSessionBean: retrievePayeeById(): Non unique result error: " + nure.getMessage());
         }
 
         return payee;
@@ -75,6 +88,8 @@ public class PayeeSessionBean implements PayeeSessionBeanLocal {
 
     @Override
     public Payee retrievePayeeByName(String payeeName) {
+        System.out.println("*");
+        System.out.println("****** deposit/InterestSessionBean: retrievePayeeByName() ******");
         Payee payee = new Payee();
 
         try {
@@ -82,15 +97,17 @@ public class PayeeSessionBean implements PayeeSessionBeanLocal {
             query.setParameter("payeeName", payeeName);
 
             if (query.getResultList().isEmpty()) {
+                System.out.println("****** deposit/InterestSessionBean: retrievePayeeByName(): invalid payee name: no result found, return new payee");
                 return new Payee();
             } else {
+                System.out.println("****** deposit/InterestSessionBean: retrievePayeeByName(): valid payee name: return payee");
                 payee = (Payee) query.getResultList().get(0);
             }
         } catch (EntityNotFoundException enfe) {
-            System.out.println("\nEntity not found error: " + enfe.getMessage());
+            System.out.println("****** deposit/InterestSessionBean: retrievePayeeByName(): Entity not found error: " + enfe.getMessage());
             return new Payee();
         } catch (NonUniqueResultException nure) {
-            System.out.println("\nNon unique result error: " + nure.getMessage());
+            System.out.println("****** deposit/InterestSessionBean: retrievePayeeByName(): Non unique result error: " + nure.getMessage());
         }
 
         return payee;
@@ -98,6 +115,8 @@ public class PayeeSessionBean implements PayeeSessionBeanLocal {
 
     @Override
     public Payee retrievePayeeByNum(String payeeAccountNum) {
+        System.out.println("*");
+        System.out.println("****** deposit/InterestSessionBean: retrievePayeeByNum() ******");
         Payee payee = new Payee();
 
         try {
@@ -105,15 +124,17 @@ public class PayeeSessionBean implements PayeeSessionBeanLocal {
             query.setParameter("payeeAccountNum", payeeAccountNum);
 
             if (query.getResultList().isEmpty()) {
+                System.out.println("****** deposit/InterestSessionBean: retrievePayeeByNum(): invalid payee account number: no result found, return new payee");
                 return new Payee();
             } else {
+                System.out.println("****** deposit/InterestSessionBean: retrievePayeeByNum(): valid payee account number: return payee");
                 payee = (Payee) query.getResultList().get(0);
             }
         } catch (EntityNotFoundException enfe) {
-            System.out.println("\nEntity not found error: " + enfe.getMessage());
+            System.out.println("****** deposit/InterestSessionBean: retrievePayeeByNum(): Entity not found error: " + enfe.getMessage());
             return new Payee();
         } catch (NonUniqueResultException nure) {
-            System.out.println("\nNon unique result error: " + nure.getMessage());
+            System.out.println("****** deposit/InterestSessionBean: retrievePayeeByNum(): Non unique result error: " + nure.getMessage());
         }
 
         return payee;
@@ -121,33 +142,43 @@ public class PayeeSessionBean implements PayeeSessionBeanLocal {
 
     @Override
     public List<Payee> retrievePayeeByCusId(Long customerBasicId) {
+        System.out.println("*");
+        System.out.println("****** deposit/InterestSessionBean: retrievePayeeByCusId() ******");
         CustomerBasic customerBasic = bankAccountSessionLocal.retrieveCustomerBasicById(customerBasicId);
 
         if (customerBasic.getCustomerBasicId() == null) {
+            System.out.println("****** deposit/InterestSessionBean: retrievePayeeByCusId(): invalid customer Id: no result found, return new payee");
             return new ArrayList<Payee>();
         }
         try {
             Query query = entityManager.createQuery("Select p From Payee p Where p.customerBasic=:customerBasic");
             query.setParameter("customerBasic", customerBasic);
-            return query.getResultList();
+
+            if (query.getResultList().isEmpty()) {
+                System.out.println("****** deposit/InterestSessionBean: retrievePayeeByCusId(): wrong customer Id: no result found, return new payee");
+                return new ArrayList<Payee>();
+            } else {
+                System.out.println("****** deposit/InterestSessionBean: retrievePayeeByCusId(): correct customer Id: return payee");
+                return query.getResultList();
+            }
         } catch (EntityNotFoundException enfe) {
-            System.out.println("\nEntity not found error: " + enfe.getMessage());
+            System.out.println("****** deposit/InterestSessionBean: Entity not found error: " + enfe.getMessage());
             return new ArrayList<Payee>();
         }
     }
 
     @Override
     public void updateLastTransactionDate(String bankAccountNum) {
-        
+
         Payee customerPayee = retrievePayeeByNum(bankAccountNum);
 
         Calendar cal = Calendar.getInstance();
         int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH);
         int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
-        
+
         String lastTransactionDate = dayOfMonth + "-" + (month + 1) + "-" + year;
-        
+
         customerPayee.setLastTransactionDate(lastTransactionDate);
     }
 }

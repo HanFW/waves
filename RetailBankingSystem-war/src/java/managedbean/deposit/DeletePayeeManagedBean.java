@@ -1,5 +1,6 @@
 package managedbean.deposit;
 
+import ejb.customer.entity.CustomerBasic;
 import ejb.deposit.entity.Payee;
 import java.io.IOException;
 import java.io.Serializable;
@@ -10,11 +11,15 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import ejb.deposit.session.PayeeSessionBeanLocal;
+import ejb.infrastructure.session.LoggingSessionBeanLocal;
 
 @Named(value = "deletePayeeManagedBean")
 @RequestScoped
 
-public class DeletePayeeManagedBean implements Serializable{
+public class DeletePayeeManagedBean implements Serializable {
+
+    @EJB
+    private LoggingSessionBeanLocal loggingSessionBeanLocal;
 
     @EJB
     private PayeeSessionBeanLocal payeeSessionLocal;
@@ -62,16 +67,21 @@ public class DeletePayeeManagedBean implements Serializable{
     }
 
     public void deletePayee() throws IOException {
+        System.out.println("=");
+        System.out.println("====== deposit/DeletePayeeManagedBean: deletePayee() ======");
+        CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
         ec = FacesContext.getCurrentInstance().getExternalContext();
-        
+
         Payee payee = payeeSessionLocal.retrievePayeeByNum(payeeAccountNum);
-        
+
         if (payee.getPayeeId() == null) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Recipient does not exist.", "Failed!"));
+            loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "delete recipient", "failed", "Recipient does not exist");
         } else {
             String delete = payeeSessionLocal.deletePayee(payeeAccountNum);
-            
+
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Successfuly! Recipient deleted Successfully.", "Successfuly!"));
+            loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "delete recipient", "successful", null);
         }
     }
 

@@ -7,40 +7,61 @@
     xmlns:p="http://primefaces.org/ui"
     template="/WEB-INF/onlineBankingTemplate.xhtml">
     <ui:define name="content">
-        <h:head>
-            <title>Employee Account Management</title>
-        </h:head>
-        <h:body>
-            <p:panel header="Manage User Account">
+    <h:head>
+        <title>Employee Account Management</title>
+    </h:head>
+    <h:body>
+        <h:form>
+            <p:menubar>
+                <p:submenu label="Task">
+                    <p:menuitem value="Assign Permisison to role" actionListener="#{employeeAssignPermissionManagedBean.AssignPermission}"/>
+                </p:submenu>
+                
+                <p:submenu label="Manage My Account">
+                    <p:menuitem value="Change Password" actionListener="#{employeeLoginManagedBean.changePassword}" />
+                </p:submenu>
 
-                <h:form>
-                    <p:menubar>
-                        <p:submenu label="Manage My Account">
-                            <p:menuitem value="Change Password" actionListener="#{employeeLoginManagedBean.changePassword}" />
-                        </p:submenu>
+                <p:submenu label="Log Out">
+                    <p:menuitem value="Logout" actionListener="#{employeeLoginManagedBean.doLogOut}" />
+                </p:submenu>
+                <p:submenu label="Test">
+                    <p:menuitem value="Search My Customer" actionListener="#{employeeLoginManagedBean.redirectToSearchCustomer}"/>
+                    <p:menuitem value="Update advanced" actionListener="#{employeeLoginManagedBean.redirectToViewCustomer}" />
+                </p:submenu>
+                
+            </p:menubar>
+        </h:form>
 
-                        <p:submenu label="Log Out">
-                            <p:menuitem value="Logout" actionListener="#{employeeLoginManagedBean.doLogOut}" />
-                        </p:submenu>
-                        <p:submenu label="Test">
-                            <p:menuitem value="Search My Customer" actionListener="#{employeeLoginManagedBean.redirectToSearchCustomer}"/>
-                            <p:menuitem value="Update advanced" actionListener="#{employeeLoginManagedBean.redirectToViewCustomer}" />
-                        </p:submenu>
+        <!--<h:outputText value="Welcome !"/>-->
+        <h:form>
 
-                    </p:menubar>
-                </h:form>
+            <p:tabView id='tabview' cache="false" dynamic='true' >
+                <p:tab title="Current Employee" id='currentTab'>
 
-                <h:outputText value="Welcome #{employeeAccountManagedBean.userName} !"/>
-                <h:form>
+                    <p:growl id="msgs" showDetail="true"/>
 
-                    <p:tabView id='tabview' cache="false" dynamic='true' >
-                        <p:tab title="Current Employee" id='currentTab'>
+                    <p:dataTable var="employee" id="userAccountTable" editable="true" value="#{employeeAccountManagedBean.employees}" style="margin-bottom:20px" widgetVar="userAccounts">
+                        <f:facet name="header">
+                            Current Employee
+                        </f:facet>
+                        <p:ajax event="rowEdit" listener="#{employeeAccountManagedBean.onRowEdit}" update="@form"/>
+                        <p:ajax event="rowEditCancel" listener="#{employeeAccountManagedBean.onRowCancel}" update="@form"/>
 
-                            <p:growl id="msgs" showDetail="true"/>
+                        <p:column headerText="Name" style="width:10%">
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText value="#{employee.employeeName}" /></f:facet>
+                                <f:facet name="input"><p:inputText value="#{employee.employeeName}" style="width:100%" label="Name"/></f:facet>
+                            </p:cellEditor>
+                        </p:column>
 
-                            <p:dataTable var="employee" id="userAccountTable" editable="true" value="#{employeeAccountManagedBean.employees}" style="margin-bottom:20px" widgetVar="userAccounts">
-                                <f:facet name="header">
-                                    Current Employee
+                        <p:column headerText="Department" style="width:10%">
+                            <p:cellEditor>
+                                <f:facet name="output"><h:outputText value="#{employee.employeeDepartment}" /></f:facet>
+                                <f:facet name="input">
+                                    <h:selectOneMenu id="employeeDepartment" value="#{employee.employeeDepartment}" 
+                                                     style="width:125px">
+                                        <f:selectItems value="#{employeeAccountManagedBean.departments}" var="department" itemLabel="#{department}" itemValue="#{department}" />
+                                    </h:selectOneMenu>
                                 </f:facet>
                                 <p:ajax event="rowEdit" listener="#{employeeAccountManagedBean.onRowEdit}" update="@form"/>
                                 <p:ajax event="rowEditCancel" listener="#{employeeAccountManagedBean.onRowCancel}" update="@form"/>

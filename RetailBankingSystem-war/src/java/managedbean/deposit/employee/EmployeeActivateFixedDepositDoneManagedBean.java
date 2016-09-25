@@ -4,6 +4,7 @@ import ejb.customer.entity.CustomerBasic;
 import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
+import ejb.infrastructure.session.LoggingSessionBeanLocal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,8 +22,11 @@ import javax.faces.context.FacesContext;
 public class EmployeeActivateFixedDepositDoneManagedBean {
 
     @EJB
+    private LoggingSessionBeanLocal loggingSessionBeanLocal;
+
+    @EJB
     private BankAccountSessionBeanLocal bankAccountSessionLocal;
-    
+
     @EJB
     private CRMCustomerSessionBeanLocal customerSessionBeanLocal;
 
@@ -30,7 +34,7 @@ public class EmployeeActivateFixedDepositDoneManagedBean {
     private String fixedDepositAccountWithType;
     private String fixedDepositPeriod;
     private String customerIdentificationNum;
-    
+
     private ExternalContext ec;
 
     public EmployeeActivateFixedDepositDoneManagedBean() {
@@ -42,7 +46,7 @@ public class EmployeeActivateFixedDepositDoneManagedBean {
 
         customerIdentificationNum = ec.getSessionMap().get("customerIdentificationNum").toString();
         CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum);
-        
+
         List<BankAccount> bankAccounts = bankAccountSessionLocal.retrieveBankAccountByCusIC(customerBasic.getCustomerIdentificationNum());
 
         fixedDepositAccounts = new HashMap<String, String>();
@@ -85,6 +89,8 @@ public class EmployeeActivateFixedDepositDoneManagedBean {
     }
 
     public void confirm() {
+        System.out.println("=");
+        System.out.println("====== deposit/EmployeeActivateFixedDepositDoneManagedBean: confirm() ======");
 
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
@@ -96,10 +102,13 @@ public class EmployeeActivateFixedDepositDoneManagedBean {
             if (bankAccount.getBankAccountDepositPeriod().equals("None")) {
                 bankAccountSessionLocal.updateDepositPeriod(bankAccountNum, fixedDepositPeriod);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Successfully!You have successfully declared your fixed deposit period.", "Successfully"));
+                loggingSessionBeanLocal.createNewLogging("employee", null, "declare fixed deposit period", "successful", null);
             } else {
+                loggingSessionBeanLocal.createNewLogging("employee", null, "declare fixed deposit period", "failed", "Already declared before");
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!You have already declared your fixed deposit period.", "Failed"));
             }
         } else {
+            loggingSessionBeanLocal.createNewLogging("employee", null, "declare fixed deposit period", "failed", "Service only for fixed deposit account");
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Service only for Fixed Deposit Account.", "Failed"));
         }
     }
