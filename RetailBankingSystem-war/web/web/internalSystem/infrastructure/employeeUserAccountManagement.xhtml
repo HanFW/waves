@@ -7,177 +7,158 @@
     xmlns:p="http://primefaces.org/ui"
     template="/WEB-INF/onlineBankingTemplate.xhtml">
     <ui:define name="content">
-    <h:head>
-        <title>Employee Account Management</title>
-    </h:head>
-    <h:body>
-        <h:form>
-            <p:menubar>
-                <p:submenu label="Task">
-                    <p:menuitem value="Assign Permisison to role" actionListener="#{employeeAssignPermissionManagedBean.AssignPermission}"/>
-                </p:submenu>
-                
-                <p:submenu label="Manage My Account">
-                    <p:menuitem value="Change Password" actionListener="#{employeeLoginManagedBean.changePassword}" />
-                </p:submenu>
+        <h:head>
+            <title>Employee Account Management</title>
+        </h:head>
+        <h:body>
+            <h:form>
+                <p:menubar>
+                    <p:submenu label="Task">
+                        <p:menuitem value="Assign Permisison to role" actionListener="#{employeeAssignPermissionManagedBean.AssignPermission}"/>
+                    </p:submenu>
 
-                <p:submenu label="Log Out">
-                    <p:menuitem value="Logout" actionListener="#{employeeLoginManagedBean.doLogOut}" />
-                </p:submenu>
-                <p:submenu label="Test">
-                    <p:menuitem value="Search My Customer" actionListener="#{employeeLoginManagedBean.redirectToSearchCustomer}"/>
-                    <p:menuitem value="Update advanced" actionListener="#{employeeLoginManagedBean.redirectToViewCustomer}" />
-                </p:submenu>
-                
-            </p:menubar>
-        </h:form>
+                    <p:submenu label="Manage My Account">
+                        <p:menuitem value="Change Password" actionListener="#{employeeLoginManagedBean.changePassword}" />
+                    </p:submenu>
 
-        <!--<h:outputText value="Welcome !"/>-->
-        <h:form>
+                    <p:submenu label="Log Out">
+                        <p:menuitem value="Logout" actionListener="#{employeeLoginManagedBean.doLogOut}" />
+                    </p:submenu>
+                    <p:submenu label="Test">
+                        <p:menuitem value="Search My Customer" actionListener="#{employeeLoginManagedBean.redirectToSearchCustomer}"/>
+                        <p:menuitem value="Update advanced" actionListener="#{employeeLoginManagedBean.redirectToViewCustomer}" />
+                    </p:submenu>
 
-            <p:tabView id='tabview' cache="false" dynamic='true' >
-                <p:tab title="Current Employee" id='currentTab'>
+                </p:menubar>
+            </h:form>
 
-                    <p:growl id="msgs" showDetail="true"/>
+            <!--<h:outputText value="Welcome !"/>-->
+            <h:form>
 
-                    <p:dataTable var="employee" id="userAccountTable" editable="true" value="#{employeeAccountManagedBean.employees}" style="margin-bottom:20px" widgetVar="userAccounts">
-                        <f:facet name="header">
-                            Current Employee
-                        </f:facet>
-                        <p:ajax event="rowEdit" listener="#{employeeAccountManagedBean.onRowEdit}" update="@form"/>
-                        <p:ajax event="rowEditCancel" listener="#{employeeAccountManagedBean.onRowCancel}" update="@form"/>
+                <p:tabView id='tabview' cache="false" dynamic='true' >
+                    <p:tab title="Current Employee" id='currentTab'>
 
-                        <p:column headerText="Name" style="width:10%">
-                            <p:cellEditor>
-                                <f:facet name="output"><h:outputText value="#{employee.employeeName}" /></f:facet>
-                                <f:facet name="input"><p:inputText value="#{employee.employeeName}" style="width:100%" label="Name"/></f:facet>
-                            </p:cellEditor>
-                        </p:column>
+                        <p:growl id="msgs" showDetail="true"/>
 
-                        <p:column headerText="Department" style="width:10%">
-                            <p:cellEditor>
-                                <f:facet name="output"><h:outputText value="#{employee.employeeDepartment}" /></f:facet>
-                                <f:facet name="input">
-                                    <h:selectOneMenu id="employeeDepartment" value="#{employee.employeeDepartment}" 
-                                                     style="width:125px">
-                                        <f:selectItems value="#{employeeAccountManagedBean.departments}" var="department" itemLabel="#{department}" itemValue="#{department}" />
-                                    </h:selectOneMenu>
-                                </f:facet>
-                                <p:ajax event="rowEdit" listener="#{employeeAccountManagedBean.onRowEdit}" update="@form"/>
-                                <p:ajax event="rowEditCancel" listener="#{employeeAccountManagedBean.onRowCancel}" update="@form"/>
+                        <p:dataTable var="employee" id="userAccountTable" editable="true" value="#{employeeAccountManagedBean.employees}" style="margin-bottom:20px" widgetVar="userAccounts">
+                            <f:facet name="header">
+                                Current Employee
+                            </f:facet>
+                            <p:ajax event="rowEdit" listener="#{employeeAccountManagedBean.onRowEdit}" update="@form"/>
+                            <p:ajax event="rowEditCancel" listener="#{employeeAccountManagedBean.onRowCancel}" update="@form"/>
 
-                                <p:column headerText="Name" style="width:10%">
-                                    <p:cellEditor>
-                                        <f:facet name="output"><h:outputText value="#{employee.employeeName}" /></f:facet>
-                                        <f:facet name="input"><p:inputText value="#{employee.employeeName}" style="width:100%" label="Name"/></f:facet>
-                                    </p:cellEditor>
-                                </p:column>
+                            <p:column headerText="Name" style="width:10%">
+                                <p:cellEditor>
+                                    <f:facet name="output"><h:outputText value="#{employee.employeeName}" /></f:facet>
+                                    <f:facet name="input"><p:inputText value="#{employee.employeeName}" style="width:100%" label="Name"/></f:facet>
+                                </p:cellEditor>
+                            </p:column>
 
-                                <p:column headerText="Department" style="width:10%">
-                                    <p:cellEditor>
-                                        <f:facet name="output"><h:outputText value="#{employee.employeeDepartment}" /></f:facet>
-                                        <f:facet name="input">
-                                            <h:selectOneMenu id="employeeDepartment" value="#{employee.employeeDepartment}" 
-                                                             style="width:125px">
-                                                <f:selectItems value="#{employeeAccountManagedBean.departments}" var="department" itemLabel="#{department}" itemValue="#{department}" />
-                                            </h:selectOneMenu>
-                                        </f:facet>
-                                    </p:cellEditor>
-                                </p:column>
+                            <p:column headerText="Department" style="width:10%">
+                                <p:cellEditor>
+                                    <f:facet name="output"><h:outputText value="#{employee.employeeDepartment}" /></f:facet>
+                                    <f:facet name="input">
+                                        <h:selectOneMenu id="employeeDepartment" value="#{employee.employeeDepartment}" 
+                                                         style="width:125px">
+                                            <f:selectItems value="#{employeeAccountManagedBean.departments}" var="department" itemLabel="#{department}" itemValue="#{department}" />
+                                        </h:selectOneMenu>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
 
-                                <p:column headerText="Position" style="width:10%">
-                                    <p:cellEditor>
-                                        <f:facet name="output"><h:outputText value="#{employee.employeePosition}" /></f:facet>
-                                        <f:facet name="input">
-                                            <h:selectOneMenu id="employeePosition" value="#{employee.employeePosition}" 
-                                                             style="width:125px">
-                                                <f:selectItems value="#{employeeAccountManagedBean.positions}" var="position" itemLabel="#{position}" itemValue="#{position}" />
-                                            </h:selectOneMenu>
-                                        </f:facet>
-                                    </p:cellEditor>
-                                </p:column>
+                            <p:column headerText="Position" style="width:10%">
+                                <p:cellEditor>
+                                    <f:facet name="output"><h:outputText value="#{employee.employeePosition}" /></f:facet>
+                                    <f:facet name="input">
+                                        <h:selectOneMenu id="employeePosition" value="#{employee.employeePosition}" 
+                                                         style="width:125px">
+                                            <f:selectItems value="#{employeeAccountManagedBean.positions}" var="position" itemLabel="#{position}" itemValue="#{position}" />
+                                        </h:selectOneMenu>
+                                    </f:facet>
+                                </p:cellEditor>
+                            </p:column>
 
-                                <p:column headerText="Mobile Num" style="width:10%">
-                                    <p:cellEditor>
-                                        <f:facet name="output"><h:outputText value="#{employee.employeeMobileNum}" /></f:facet>
-                                        <f:facet name="input"><p:inputText value="#{employee.employeeMobileNum}" style="width:100%"/></f:facet>
-                                    </p:cellEditor>
-                                </p:column>
+                            <p:column headerText="Mobile Num" style="width:10%">
+                                <p:cellEditor>
+                                    <f:facet name="output"><h:outputText value="#{employee.employeeMobileNum}" /></f:facet>
+                                    <f:facet name="input"><p:inputText value="#{employee.employeeMobileNum}" style="width:100%"/></f:facet>
+                                </p:cellEditor>
+                            </p:column>
 
-                                <p:column headerText="Email" style="width:20%">
-                                    <p:cellEditor>
-                                        <f:facet name="output"><h:outputText value="#{employee.employeeEmail}" /></f:facet>
-                                        <f:facet name="input"><p:inputText value="#{employee.employeeEmail}" style="width:100%"/></f:facet>
-                                    </p:cellEditor>
-                                </p:column>
+                            <p:column headerText="Email" style="width:20%">
+                                <p:cellEditor>
+                                    <f:facet name="output"><h:outputText value="#{employee.employeeEmail}" /></f:facet>
+                                    <f:facet name="input"><p:inputText value="#{employee.employeeEmail}" style="width:100%"/></f:facet>
+                                </p:cellEditor>
+                            </p:column>
 
-                                <p:column style="width:4%">
-                                    <p:commandButton action="/web/internalSystem/infrastructure/employeeEditAccountInfo.xhtml" icon="ui-icon-pencil">
-                                        <f:setPropertyActionListener value="#{employee.employeeId}" target="#{systemAdminEditUserAccountManagedBean.employeeId}"/>
-                                    </p:commandButton>
-                                </p:column> 
+                            <p:column style="width:4%">
+                                <p:commandButton action="/web/internalSystem/infrastructure/employeeEditAccountInfo.xhtml" icon="ui-icon-pencil">
+                                    <f:setPropertyActionListener value="#{employee.employeeId}" target="#{systemAdminEditUserAccountManagedBean.employeeId}"/>
+                                </p:commandButton>
+                            </p:column> 
 
-                                <p:column style="width:5%">
-                                    <p:rowEditor/>
-                                </p:column>
+                            <p:column style="width:5%">
+                                <p:rowEditor/>
+                            </p:column>
 
-                                <p:contextMenu for="userAccount2" widgetVar="Menu">   
-                                    <p:menuitem value="Edit Cell" icon="ui-icon-search" onclick="PF('userAccounts').showCellEditor();
-                                    return false;"/>  
-                                    <p:menuitem value="Hide Menu" icon="ui-icon-close" onclick="PF('Menu').hide()"/>  
-                                </p:contextMenu>
+                            <p:contextMenu for="userAccount2" widgetVar="Menu">   
+                                <p:menuitem value="Edit Cell" icon="ui-icon-search" onclick="PF('userAccounts').showCellEditor();
+                                        return false;"/>  
+                                <p:menuitem value="Hide Menu" icon="ui-icon-close" onclick="PF('Menu').hide()"/>  
+                            </p:contextMenu>
 
 
 
-                                <p:column style="width:10%">
-                                    <!--<h:form>-->
+                            <p:column style="width:10%">
+                                <!--<h:form>-->
 
-                                    <p:growl showDetail="true" />
-                                    <p:commandButton id="delete" value="Archive" icon="ui-icon ui-icon-trash" onclick="PF('deleteConfirmMsg').show()">
-                                    </p:commandButton>
-
-
-                                    <p:confirmDialog header="Confirmation" message="Are you sure you want to archive the user account?" showEffect="fade" hideEffect="fade"  widgetVar="deleteConfirmMsg">
-                                        <p:commandButton value="Yes" styleClass="ui-confirmdialog-yes" action="#{employeeAccountManagedBean.deleteAccount(employee)}" oncomplete="PF('deleteConfirmMsg').hide()" update="@form" ajax="false"/>
-                                        <p:commandButton value="No" styleClass="ui-confirmdialog-no" action="#{employeeAccountManagedBean.deleteCancel(employee)}" oncomplete="PF('deleteConfirmMsg').hide()" update="@form"/>
-                                    </p:confirmDialog>
-                                    <!--</h:form>-->
-                                </p:column>
+                                <p:growl showDetail="true" />
+                                <p:commandButton id="delete" value="Archive" icon="ui-icon ui-icon-trash" onclick="PF('deleteConfirmMsg').show()">
+                                </p:commandButton>
 
 
-                            </p:dataTable>
-                            <h:form>
-                                <p:row>
-                                    <p:button outcome="/web/internalSystem/infrastructure/employeeCreateAccount" value="Add">
-                                    </p:button>
-                                </p:row>
-                            </h:form>
+                                <p:confirmDialog header="Confirmation" message="Are you sure you want to archive the user account?" showEffect="fade" hideEffect="fade"  widgetVar="deleteConfirmMsg">
+                                    <p:commandButton value="Yes" styleClass="ui-confirmdialog-yes" action="#{employeeAccountManagedBean.deleteAccount(employee)}" oncomplete="PF('deleteConfirmMsg').hide()" update="@form" ajax="false"/>
+                                    <p:commandButton value="No" styleClass="ui-confirmdialog-no" action="#{employeeAccountManagedBean.deleteCancel(employee)}" oncomplete="PF('deleteConfirmMsg').hide()" update="@form"/>
+                                </p:confirmDialog>
+                                <!--</h:form>-->
+                            </p:column>
 
-                        </p:tab>
-                        <p:tab title="Archived Employee" id='archiveTab'>
-                            <p:dataTable var="employee" id="archivedUserAccountTable" editable="true" value="#{employeeAccountManagedBean.archivedEmployees}" style="margin-bottom:20px" widgetVar="userAccounts">
-                                <f:facet name="header">
-                                    Archived Employee
-                                </f:facet>
-                                <p:column headerText="Name">
-                                    <h:outputText value="#{employee.employeeName}" />
-                                </p:column>
-                                <p:column headerText="Department">
-                                    <h:outputText value="#{employee.employeeDepartment}" />
-                                </p:column>
-                                <p:column headerText="Position">
-                                    <h:outputText value="#{employee.employeePosition}" />
-                                </p:column>
-                                <p:column headerText="Mobile Number">
-                                    <h:outputText value="#{employee.employeeMobileNum}" />
-                                </p:column>
-                                <p:column headerText="Email">
-                                    <h:outputText value="#{employee.employeeEmail}" />
-                                </p:column>
-                            </p:dataTable>
-                        </p:tab>
-                    </p:tabView>
-                </h:form>
+
+                        </p:dataTable>
+                        <h:form>
+                            <p:row>
+                                <p:button outcome="/web/internalSystem/infrastructure/employeeCreateAccount" value="Add">
+                                </p:button>
+                            </p:row>
+                        </h:form>
+
+                    </p:tab>
+                    <p:tab title="Archived Employee" id='archiveTab'>
+                        <p:dataTable var="employee" id="archivedUserAccountTable" editable="true" value="#{employeeAccountManagedBean.archivedEmployees}" style="margin-bottom:20px" widgetVar="userAccounts">
+                            <f:facet name="header">
+                                Archived Employee
+                            </f:facet>
+                            <p:column headerText="Name">
+                                <h:outputText value="#{employee.employeeName}" />
+                            </p:column>
+                            <p:column headerText="Department">
+                                <h:outputText value="#{employee.employeeDepartment}" />
+                            </p:column>
+                            <p:column headerText="Position">
+                                <h:outputText value="#{employee.employeePosition}" />
+                            </p:column>
+                            <p:column headerText="Mobile Number">
+                                <h:outputText value="#{employee.employeeMobileNum}" />
+                            </p:column>
+                            <p:column headerText="Email">
+                                <h:outputText value="#{employee.employeeEmail}" />
+                            </p:column>
+                        </p:dataTable>
+                    </p:tab>
+                </p:tabView>
+            </h:form>
         </h:body>
     </ui:define>
 </ui:composition>

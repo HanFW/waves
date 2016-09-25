@@ -24,7 +24,7 @@
 
                             <div class="card card-w-title">
                                 <p:messages globalOnly="true"/>
-                                
+
                                 <p:outputLabel style="font-size: 20px;font-weight: bold" value="Dear Customer, if you are our existing customer, please login your online banking."/>
                                 <br/>
                                 <p:outputLabel style="font-size: 20px;font-weight: bold" value="After you login, you could apply for opening a new account under 'My Account'."/>
@@ -1042,14 +1042,14 @@
                             <div class="card card-w-title">
                                 <p:messages globalOnly="true" id="messagesFileupload" />
 
-                                
-                                    <p:outputLabel value="Please provide softcopy of your identification (Only gif,jpeg and png)" />
-                                    <br/>
-                                    <p:fileUpload id="fileupload" update="messagesFileupload"
-                                                  value="#{accountManagedBean.file}" mode="advanced" skinSimple="true"
-                                                  sizeLimit="10000000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" 
-                                                  fileUploadListener="#{accountManagedBean.upload}"/>
-                                
+
+                                <p:outputLabel value="Please provide softcopy of your identification (Only gif,jpeg and png)" />
+                                <br/>
+                                <p:fileUpload id="fileupload" update="messagesFileupload"
+                                              value="#{accountManagedBean.file}" mode="advanced" skinSimple="true"
+                                              sizeLimit="10000000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" 
+                                              fileUploadListener="#{accountManagedBean.upload}"/>
+
                                 <br/>
 
                                 <p:outputLabel value="Please provide your signature" />
