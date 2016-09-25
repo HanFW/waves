@@ -7,11 +7,14 @@ package managedbean.infrastructure;
 
 import ejb.customer.entity.CustomerBasic;
 import ejb.infrastructure.session.CustomerAdminSessionBeanLocal;
+import ejb.infrastructure.session.LoggingSessionBeanLocal;
 import java.io.IOException;
 import java.util.ArrayList;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
@@ -23,12 +26,26 @@ import javax.faces.event.ActionEvent;
 @Named(value = "customerDeleteIBAccountManagedBean")
 @RequestScoped
 public class CustomerDeleteIBAccountManagedBean {
+    @EJB
+    private LoggingSessionBeanLocal loggingSessionBeanLocal;
 
     @EJB
     private CustomerAdminSessionBeanLocal customerAdminSessionBeanLocal;
 
     private boolean hasServices;
-
+    private ArrayList<String> displayMessage;
+    
+    @PostConstruct
+    public void init(){
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        CustomerBasic customer = (CustomerBasic) ec.getSessionMap().get("customer");
+        displayMessage = customerAdminSessionBeanLocal.checkExistingService(customer.getCustomerBasicId());
+        if (!displayMessage.isEmpty()) {
+            hasServices = true;
+        }else{
+            hasServices = false;
+        }
+    }
     /**
      * Creates a new instance of CustomerDeleteIBAccountManagedBean
      */
@@ -38,21 +55,13 @@ public class CustomerDeleteIBAccountManagedBean {
     public void deleteIBAccount(ActionEvent event) throws IOException {
         System.out.println("====== infrastructure/CustomerDeleteIBAccountManagedBean: deleteIBAccount() ======");
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        CustomerBasic customer = (CustomerBasic) ec.getSessionMap().get("customer");
+        customerAdminSessionBeanLocal.deleteOnlineBankingAccount(customer.getCustomerBasicId());
+        loggingSessionBeanLocal.createNewLogging("customer", customer.getCustomerBasicId(), "delete online banking account", "successful", null);
         ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/infrastructure/customerLoggedOut.xhtml");
     }
 
-    public String getDisplayMessage() {
-        System.out.println("====== infrastructure/CustomerDeleteIBAccountManagedBean: getDisplayMessage() ======");
-        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-        String displayMessage = "We are still serving you on the following services: \n";
-        CustomerBasic customer = (CustomerBasic) ec.getSessionMap().get("customer");
-        ArrayList services = customerAdminSessionBeanLocal.checkExistingService(Long.getLong("1"));
-        
-        if (services.isEmpty()) {
-            hasServices = false;
-        } else {
-            hasServices = true;
-        }
+    public ArrayList<String> getDisplayMessage() {
         return displayMessage;
     }
 

@@ -135,7 +135,7 @@ public class CustomerLoginManagedBean implements Serializable {
                 } else if (customer.getCustomerStatus().equals("reset")) {
                     System.out.println("====== infrastructure/CustomerLoginManagedBean: verifyLoginOTP(): customer reset password: redirect to reset password page");
                     ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/infrastructure/customerPINReset.xhtml?faces-redirect=true");
-                } else {
+                }else {
                     System.out.println("====== infrastructure/CustomerLoginManagedBean: verifyLoginOTP(): existing customer: redirect to online banking home page");
                     context.getExternalContext().redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerDepositIndex.xhtml?faces-redirect=true");
                 }
@@ -305,7 +305,7 @@ public class CustomerLoginManagedBean implements Serializable {
 
     public void resetCustomerPassword(ActionEvent event) {
         System.out.println("=");
-        System.out.println("====== infrastructure/LoginBean: resetCustomerPassword() ======");
+        System.out.println("====== infrastructure/CustomerLoginManagedBean: resetCustomerPassword() ======");
         FacesMessage message = null;
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext ec = context.getExternalContext();
@@ -318,20 +318,24 @@ public class CustomerLoginManagedBean implements Serializable {
             Clock clock = new Clock(120);
             Totp totp = new Totp(customer.getCustomerOTPSecret(), clock);
             if (totp.verify(customerOTP)) {
-                System.out.println("====== infrastructure/CustomerLoginManagedBean: retrieveCustomerAccount(): customer verified with OTP");
+                System.out.println("====== infrastructure/CustomerLoginManagedBean: resetCustomerPassword(): customer verified with OTP");
                 RequestContext rc = RequestContext.getCurrentInstance();
                 rc.execute("PF('resetConfirmation').show();");
                 Boolean reset = adminSessionBeanLocal.resetPassword(customerIdentification);
                 customerOTP = null;
-                System.out.println("====== infrastructure/CustomerLoginManagedBean: resetPassword(): PIN reset successful");
+                System.out.println("====== infrastructure/CustomerLoginManagedBean: resetCustomerPassword(): PIN reset successful");
                 loggingSessionBeanLocal.createNewLogging("customer", customer.getCustomerBasicId(), "reset online banking PIN", "successful", null);
             } else {
-                System.out.println("====== infrastructure/CustomerLoginManagedBean: retrieveCustomerAccount(): customer entered wrong OTP");
+                System.out.println("====== infrastructure/CustomerLoginManagedBean: resetCustomerPassword(): customer entered wrong OTP");
                 context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "OTP does not match: ", "That is an invalid online banking OTP. Please re-enter."));
                 customerOTP = null;
             }
         }
 
+    }
+    
+    public void deleteIBAccount(){
+        customer = null;
     }
 
     /**

@@ -29,5 +29,9 @@ public interface CustomerAdminSessionBeanLocal {
             
     public Boolean resetPassword(String identificationNum);
     
-    public ArrayList checkExistingService(Long customerId);
+    public ArrayList<String> checkExistingService(Long customerId);
+    
+    public void deleteOnlineBankingAccount(Long customerId);
+    
+    public void recreateOnlineBankingAccount(Long customerId);
 }
