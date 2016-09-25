@@ -3,23 +3,26 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
-                template="/WEB-INF/onlineBankingTemplate.xhtml">
+                template="/WEB-INF/onlineBankingTemplate.xhtml"
+                xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
     <ui:define name="content">
 
         <h:form>
             <div class="ui-g ui-fluid">
                 <div class="ui-g-12 ui-lg-12">
                     <div class="card card-w-title"> 
-                        <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                        <p:panel>
+                            <p:outputLabel value="Welcome "/>
+                            <p:outputLabel value="#{internalOpenAccountManagedBean.customerName}"/>
+                        </p:panel>
 
+                        <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
                             <p:panel id="panel" header="Open a New Bank Account"> 
                                 <p:messages globalOnly="true"/>
 
                                 <h:outputLabel value="Account Details" style="font-weight: bold; font-size: 24px" />
                                 <p:separator/>
                                 <br/>
-
-
                                 <p:row>
                                     <p:column>
                                         <p:outputLabel for="bankAccountType" style="font-weight: bold" value="Account Type: " />
@@ -223,18 +226,15 @@
                                     <h:outputText value="I have also read and agree to the Terms and Conditions Governing Personal Data Protection Act 2012."/>
                                 </h:panelGrid>
                                 <br/>
-
-
-
+                                
                                 <p:commandButton id="saveBtn" value="Open Account" actionListener="#{internalOpenAccountManagedBean.saveAccount}" 
                                                  ajax="true" update="panel"/>
                             </p:panel>
                         </p:panelGrid>
-
                     </div>
                 </div>
             </div>
         </h:form>
-
+        <ezcomp:CCTimeout/>
     </ui:define>
 </ui:composition>

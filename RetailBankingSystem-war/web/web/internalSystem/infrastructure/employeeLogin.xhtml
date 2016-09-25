@@ -34,6 +34,7 @@
                             </p:column>
                         </p:row>
 
+
                         <p:row>
                             <p:column colspan="2">
                                 <div align="center">
@@ -43,11 +44,8 @@
                         </p:row>
 
                         <p:row>
-                            
                             <p:column colspan="2">
-                                <div align="center">
-                                <p:commandLink value="Forget Pasword" type="submit" actionListener="#{employeeLoginManagedBean.forgetPassword}" update="@form"/>
-                                </div>
+                                <p:link value="Forget Pasword" outcome="/web/internalSystem/infrastructure/employeeForgetPassword"/>
                             </p:column>
                             
                         </p:row>

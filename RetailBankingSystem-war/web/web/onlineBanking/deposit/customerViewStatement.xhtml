@@ -5,49 +5,73 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
-                template="/WEB-INF/onlineBankingTemplate.xhtml">
+                template="/WEB-INF/onlineBankingTemplate.xhtml"
+                xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
+    <html>
+        <h:body>
+            <h:form>
+                <p:menubar>
+                    <p:submenu label="Transfer" >
+                        <p:menuitem value="To My Account" url="/web/onlineBanking/deposit/customerToMyAccount.xhtml" />
+                        <p:menuitem value="To Other Merlion Accounts" url="/web/onlineBanking/deposit/customerToOthersAccount.xhtml" />
+                        <p:menuitem value="To Other Merlion Accuonts(One-time)" url="/web/onlineBanking/deposit/customerOneTimeTransfer.xhtml" />
+                        <p:menuitem value="Add Recipient" url="/web/onlineBanking/deposit/customerAddRecipient.xhtml" />
+                        <p:menuitem value="Delete Recipient" url="/web/onlineBanking/deposit/customerDeleteRecipient.xhtml" />
+                        <p:menuitem value="Change Daily Transfer Limit" url="/web/onlineBanking/deposit/customerDailyTransferLimit.xhtml" />
+                    </p:submenu>
 
+                    <p:submenu label="Enquiry">
+                        <p:menuitem value="Write an enquiry" url="/web/onlineBanking/customer/customerEnquiry.xhtml" />
+                    </p:submenu>
 
-    <ui:define name="content">
+                    <p:submenu label="My profile">
+                        <p:menuitem value="Change password" url="/web/onlineBanking/customer/customerChangePIN.xhtml" />
+                        <p:menuitem value="Update basic profile" url="/web/onlineBanking/customer/customerUpdateBasicProfile.xhtml" />
+                    </p:submenu>
 
-        <h:form>
-            <div class="ui-g">
-                <div class="ui-g-12 ui-lg-12">
-                    <div class="card card-w-title">
+                    <p:submenu label="Logout">
+                        <p:menuitem value="Logout" actionListener="#{customerLoginManagedBean.doLogout}"/>
+                    </p:submenu>
+                </p:menubar>
+            </h:form>
 
-                        <p:dataTable var="statement" reflow="true" paginator="true" rows="10"
-                                     value="#{viewStatementManagedBean.statement}"
-                                     emptyMessage="No Statement">
-                            <f:facet name="header">
-                                View My eStatement
-                            </f:facet>
-                            <p:column headerText="Date"> 
-                                <h:outputText value="#{statement.statementDate}" />
-                            </p:column>
+            <h:form>
+                <br/>
+                <p:panel>
+                    <p:outputLabel value="Welcome "/>
+                    <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
+                </p:panel>
 
-                            <p:column headerText="Statemenet Type(s)"> 
-                                <h:outputText value="#{statement.statementType}" />
-                            </p:column>
+                <p:panel header="View My Statement">
+                    <p:messages globalOnly="true" />
 
-                            <p:column headerText="Account Details"> 
-                                <h:outputText value="#{statement.accountDetails}" />
-                            </p:column>
+                    <p:dataTable var="bankAccount" value="#{accountDataTableBean.bankAccount}" 
+                                 paginator="true" rows="10" emptyMessage="No Account" >
 
-                            <p:column headerText="View"> 
-                                <center>
-                                    <p:commandButton ajax="false" process="@this" action="#{viewStatementManagedBean.viewStatement}" icon="ui-icon-document">
-                                        <f:setPropertyActionListener value="#{statement.bankAccount.bankAccountId}" target="#{viewStatementManagedBean.bankAccountId}" />
-                                    </p:commandButton>
-                                </center>
-                            </p:column>
+                        <p:column headerText="Bank Account Type"> 
+                            <p:commandLink process="@this" action="/web/onlineBanking/deposit/customerViewStatementDone.xhtml">
+                                <h:outputText value="#{bankAccount.bankAccountType}" />
+                                <f:setPropertyActionListener value="#{bankAccount.bankAccountNum}" target="#{viewStatementManagedBean.bankAccountNum}" />
+                            </p:commandLink>
+                        </p:column>
 
-                        </p:dataTable>
-                    </div>
-                </div>
-            </div>
+                        <p:column headerText="Bank Account Number" >
+                            <p:commandLink process="@this" action="/web/onlineBanking/deposit/customerViewStatementDone.xhtml" >
+                                <h:outputText value="#{bankAccount.bankAccountNum}" /> 
+                                <f:setPropertyActionListener value="#{bankAccount.bankAccountNum}" target="#{viewStatementManagedBean.bankAccountNum}" />
+                            </p:commandLink>
+                        </p:column>
 
-        </h:form>
+                        <p:column headerText="Balance"> 
+                            <p:commandLink process="@this" action="/web/onlineBanking/deposit/customerViewStatementDone.xhtml" >
+                                <h:outputText value="S$#{bankAccount.bankAccountBalance}" />
+                                <f:setPropertyActionListener value="#{bankAccount.bankAccountNum}" target="#{viewStatementManagedBean.bankAccountNum}" />
+                            </p:commandLink>
+                        </p:column>
 
-    </ui:define>
-</ui:composition>
-
+                    </p:dataTable>
+                </p:panel>
+            </h:form>
+            <ezcomp:CCTimeout/>
+        </h:body>
+    </html>

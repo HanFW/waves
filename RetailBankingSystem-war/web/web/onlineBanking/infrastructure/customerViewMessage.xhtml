@@ -6,9 +6,16 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/onlineBankingTemplate.xhtml">
-
     <ui:define name="content">
-        <h:form>
+    <h:head>
+        <title>View Account</title>
+    </h:head>
+    <h:body>
+        <h:form id="formMain">
+            <h1>Welcome to Merlion Bank</h1>
+            <p:menubar>
+
+    
             <div class="ui-g ui-fluid">
                 <div class="ui-g-12 ui-lg-12">
                     <div class="card card-w-title"> 
@@ -28,9 +35,31 @@
                                 <p:dataTable var="messageBox" value="#{customerViewMessageManagedBean.messageBox}" 
                                              reflow="true" paginator="true" rows="10" emptyMessage="No Message">
 
-                                    <p:column headerText="From"> 
-                                        <h:outputText value="#{messageBox.fromWhere}" />
-                                    </p:column>
+                <p:submenu label="Logout">
+                    <p:menuitem value="Logout" actionListener="#{customerLoginManagedBean.doLogout}"/>
+                </p:submenu>
+            </p:menubar>
+        </h:form>
+        <h:form>
+            <br/>
+            <p:panel>
+                <p:outputLabel value="Welcome "/>
+                <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
+            </p:panel>
+
+            <p:panel header="Message Box">
+                <p:messages/>
+                <h:outputLabel value="Inbox" style="font-weight: bold; font-size: 28px" />
+                <p:separator/>
+                <br/>
+                <h:outputLabel value="Use the Secured Mailbox to view and retrieve your message from the Bank."/>
+                <br/>
+                <br/>
+                <h:outputLabel value="To view our responses to your enquiry, click on the message subject."/>
+                <br/>
+                <br/>
+                <p:dataTable var="messageBox" value="#{customerViewMessageManagedBean.messageBox}" 
+                             paginator="true" rows="10" emptyMessage="No Message">
 
                                     <p:column headerText="Type of Message" >
                                         <h:outputText value="#{messageBox.messageType}" /> 
@@ -64,5 +93,7 @@
             </div>
 
         </h:form>
-    </ui:define>
+        <ezcomp:CCTimeout/>
+    </h:body>
+</ui:define>
 </ui:composition>

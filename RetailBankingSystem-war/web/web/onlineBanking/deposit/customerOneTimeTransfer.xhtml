@@ -3,17 +3,29 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
-                template="/WEB-INF/onlineBankingTemplate.xhtml">
-
+                template="/WEB-INF/onlineBankingTemplate.xhtml"
+                xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
 
     <ui:define name="content">
         <h:form>
             <div class="ui-g ui-fluid">
                 <div class="ui-g-12 ui-lg-12">
                     <div class="card card-w-title"> 
+                        <p:panel>
+                <p:outputLabel value="Welcome "/>
+                <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
+            </p:panel>
                         <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
                             <p:panel id="panel" header="Fund Transfer to Other Merlion Account (One-Time)"> 
-                                <p:messages />
+                                <p:messages globalOnly="true" />
+                                
+                                <p:messages globalOnly="true"/>
+
+                <p:outputLabel style="font-size:20px" value="Important Alert : There have been phone call scams requesting fund transfers." />
+                <br/>
+                <p:outputLabel style="font-size:20px" value="Please do not proceed with this transfer if you are unsure of the recipient or purpose for this transfer."/>
+                <br/>
+                <br/>
 
                                 <p:outputLabel style="font-weight: bold;font-size: 24px" value="To:" />
 
@@ -134,6 +146,6 @@
                 </div>
             </div>
         </h:form>
+        <ezcomp:CCTimeout/>
     </ui:define>
 </ui:composition>
-

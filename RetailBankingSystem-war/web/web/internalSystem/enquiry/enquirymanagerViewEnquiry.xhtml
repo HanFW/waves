@@ -16,6 +16,23 @@
         <div align="center">
         <p:panel>
         <h:form>
+            <p:menubar>
+                <p:submenu label="Home">
+                    <p:menuitem value="Home" url="/web/internalSystem/infrastructure/employeeEnquiryManagerMainPage.xhtml"/>
+                </p:submenu>
+            
+                <p:submenu label="Log Out">
+                    <p:menuitem value="Logout" actionListener="#{employeeLoginManagedBean.doLogOut}" />
+                </p:submenu>
+            </p:menubar>
+        </h:form>
+        
+        <h:outputText value="Welcome #{employeeAccountManagedBean.userName} !"/>
+        <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
+        <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
+        <h:outputText value="You have logged in as: Enquiry Manager"/>
+        
+        <h:form>
             <p:commandButton value="View Pending Enquiry" actionListener="#{enquiryManagerManagedBean.redirectToViewEnquiryDone}"/>
         </h:form>
         </p:panel>

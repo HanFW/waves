@@ -6,6 +6,14 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/onlineBankingTemplate.xhtml">
+    <ui:define name="content">
+    <h:head>
+        <title>View Account</title>
+    </h:head>
+    <h:body>
+        <h:form id="formMain">
+            <h1>Welcome to Merlion Bank</h1>
+            <p:menubar>
 
 
     <ui:define name="content">
@@ -15,6 +23,12 @@
                 <div class="ui-g-12 ui-lg-12">
                     <div class="card card-w-title"> 
                       <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+            <br/>
+            <p:panel>
+                <p:outputLabel value="Welcome "/>
+                <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
+            </p:panel>
+
             <p:panel header="Message Box" id="panel">
                 <h:outputLabel value="My Message" style="font-weight: bold; font-size: 24px" />
                 <p:separator/>

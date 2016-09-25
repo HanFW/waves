@@ -6,38 +6,22 @@
     xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:p="http://primefaces.org/ui"
     template="/WEB-INF/onlineBankingTemplate.xhtml"
-    xmlns:b="http://bootsfaces.net/ui">
+    xmlns:b="http://bootsfaces.net/ui"
+    xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
 
 
     <ui:define name="content">
-<!--        <b:carousel id="parque" style="width:1100px;margin:0 auto;size:" interval="2500" >
-            <b:carouselItem>
-                <img src="http://fm.cnbc.com/applications/cnbc.com/resources/img/editorial/2012/12/28/100343467-retail-online-credit-card-male-gettyp.1910x1000.jpg" alt="ibanking" style='height:500px;width:1200px'/>
-                <b:carouselCaption>
-                    <h3>Because it's your time</h3>
-                    <p> <a style="color:#fff" href="customerLogin.xhtml">"iBanking"</a>, a quick and easy way to enter your bank.</p>
-                </b:carouselCaption>
-            </b:carouselItem>
-            <b:carouselItem>
-                <img src="https://usa.visa.com/support/consumer/debit-cards/_jcr_content/par/cardstack_0/cardStackColumn1/image.img.jpg/1463613832121.jpg" alt="creditcard" style='height:500px;width:1200px' />
-                <b:carouselCaption>
-                    <h3>The BEST CREDIT CARD YOU WILL EVER OWN</h3>
-                    <p> lowest credit interest and highest credit limit</p>
-                </b:carouselCaption>
-            </b:carouselItem>
-            <b:carouselItem>
-                <img src="http://chancehouse21.com/wp-content/uploads/2015/01/housekey.jpg" alt="loan" style='height:500px;width:1200px'/>
-                <b:carouselCaption>
-                    <h3>You have a dream, we will make them come true</h3>
-                    <p>  a quick and easy way to enter your bank.</p>
-                </b:carouselCaption>
-            </b:carouselItem>
-
-        </b:carousel>-->
 
         <h:form>
             <br/>
             <p:panel>
+                <p:outputLabel value="Welcome "/>
+                <p:outputLabel value="#{depositIndexManagedBean.customerName}"/>
+            </p:panel>
+
+            <p:panel>
+                <p:messages globalOnly="true" />
+
                 <p:outputLabel value="Your Quick Summary" style="margin-left: 95px"/>
                 <br/>
                 <br/>
@@ -74,5 +58,6 @@
 
             </p:panel>
         </h:form>
+        <ezcomp:CCTimeOutDemo/>
     </ui:define>
 </ui:composition>

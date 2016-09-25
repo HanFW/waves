@@ -5,15 +5,21 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
-                template="/WEB-INF/onlineBankingTemplate.xhtml">
-
+                template="/WEB-INF/onlineBankingTemplate.xhtml"
+                xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
 
     <ui:define name="content">
 
         <h:form>
+
             <div class="ui-g">
                 <div class="ui-g-12 ui-lg-12">
                     <div class="card card-w-title">
+
+                        <p:panel>
+                            <p:outputLabel value="Welcome "/>
+                            <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
+                        </p:panel>
 
                         <p:dataTable var="payee" value="#{payeeManagedBean.payee}" 
                                      reflow="true" paginator="true" rows="10" emptyMessage="No Recipient">
@@ -45,10 +51,10 @@
 
                         </p:dataTable>
 
-                   </div>
+                    </div>
                 </div>
             </div>
         </h:form>
-
+        <ezcomp:CCTimeout/>
     </ui:define>
 </ui:composition>

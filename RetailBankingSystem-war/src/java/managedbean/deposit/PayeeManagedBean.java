@@ -115,6 +115,7 @@ public class PayeeManagedBean implements Serializable {
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
         CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
+        
         BankAccount bankAccount = bankAccountSessionLocal.retrieveBankAccountByNum(payeeAccountNum);
         boolean payeeExist = false;
 

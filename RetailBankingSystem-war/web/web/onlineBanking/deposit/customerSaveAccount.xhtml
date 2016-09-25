@@ -1,57 +1,62 @@
 <?xml version='1.0' encoding='UTF-8' ?>
+<<<<<<< HEAD
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
-                template="/WEB-INF/onlineBankingTemplate.xhtml">
-
+                template="/WEB-INF/onlineBankingTemplate.xhtml"
+                xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
 
     <ui:define name="content">
-       
+
         <h:form>
-           <div class="ui-g ui-fluid">
+
+            <div class="ui-g ui-fluid">
                 <div class="ui-g-12 ui-lg-12">
                     <div class="card card-w-title"> 
+                        <p:panel>
+                            <p:outputLabel value="Welcome "/>
+                            <p:outputLabel value="#{saveAccountManagedBean.customerName}"/>
+                        </p:panel>
                         <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
-          
-            <p:panel id="panel" header="Save Account"> 
-   
 
-                
-                    <h:form id="formMain">
-                        <h:outputText style="font-weight: bold;font-size: 20px" value="Attention: " />
-                        <h:outputText value="#{saveAccountManagedBean.attention}"/>
-                        <br/>
-                        <br/>
-                        <h:outputText style="font-weight: bold" value="Status Message: " />
-                        <h:outputText value="#{saveAccountManagedBean.statusMessage}" />
-                        <br/>
-                        <h:outputText style="font-weight: bold" value="Bank Account Id: "/>
-                        <h:outputText value="#{saveAccountManagedBean.bankAccountId}"/>
-                        <br/>
-                        <h:outputText style="font-weight: bold" value="Customer basic Id: "/>
-                        <h:outputText value="#{saveAccountManagedBean.customerBasicId}"/>
-                        <br/>
-                        <h:outputText style="font-weight: bold" value="Bank Account Num: "/>
-                        <h:outputText value="#{saveAccountManagedBean.bankAccountNum}"/>
-                        <br/>
-                        <h:outputText style="font-weight: bold" value="Bank Account Type: "/>
-                        <h:outputText value="#{saveAccountManagedBean.bankAccountType}"/>
-                        <br/>
-                        <h:outputText style="font-weight: bold" value="Bank Account Status: "/>
-                        <h:outputText value="#{saveAccountManagedBean.bankAccountStatus}"/>
-                        <br/>
-                    </h:form>
-               
-            </p:panel>
-             </p:panelGrid>
-                      </div>
+                            <p:panel id="panel" header="Save Account"> 
+                                <p:messages globalOnly="true"/>
+
+                                <h:form id="formMain">
+                                    <h:outputText style="font-weight: bold;font-size: 20px" value="Attention: " />
+                                    <h:outputText value="#{saveAccountManagedBean.attention}"/>
+                                    <br/>
+                                    <br/>
+                                    <h:outputText style="font-weight: bold" value="Status Message: " />
+                                    <h:outputText value="#{saveAccountManagedBean.statusMessage}" />
+                                    <br/>
+                                    <h:outputText style="font-weight: bold" value="Bank Account Id: "/>
+                                    <h:outputText value="#{saveAccountManagedBean.bankAccountId}"/>
+                                    <br/>
+                                    <h:outputText style="font-weight: bold" value="Customer basic Id: "/>
+                                    <h:outputText value="#{saveAccountManagedBean.customerBasicId}"/>
+                                    <br/>
+                                    <h:outputText style="font-weight: bold" value="Bank Account Num: "/>
+                                    <h:outputText value="#{saveAccountManagedBean.bankAccountNum}"/>
+                                    <br/>
+                                    <h:outputText style="font-weight: bold" value="Bank Account Type: "/>
+                                    <h:outputText value="#{saveAccountManagedBean.bankAccountType}"/>
+                                    <br/>
+                                    <h:outputText style="font-weight: bold" value="Bank Account Status: "/>
+                                    <h:outputText value="#{saveAccountManagedBean.bankAccountStatus}"/>
+                                    <br/>
+                                </h:form>
+
+                            </p:panel>
+                        </p:panelGrid>
+                    </div>
                 </div>
             </div>
         </h:form>
-
+        <ezcomp:CCTimeout/>
     </ui:define>
 </ui:composition>
 

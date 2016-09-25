@@ -20,6 +20,7 @@ public class SaveAccountManagedBean {
     private String initialDepositAmt;
     private String bankAccountStatus;
     private String attention;
+    private String customerName;
 
     public SaveAccountManagedBean() {
     }
@@ -32,6 +33,7 @@ public class SaveAccountManagedBean {
         bankAccountNum = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("bankAccountNum").toString();
         bankAccountType = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("bankAccountType").toString();
         bankAccountStatus = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("bankAccountStatus").toString();
+        customerName = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("customerName").toString();
 
         if (bankAccountStatus.equals("Inactivated")) {
             bankAccountStatus = "Inactive";
@@ -113,5 +115,13 @@ public class SaveAccountManagedBean {
 
     public void setBankAccountStatus(String bankAccountStatus) {
         this.bankAccountStatus = bankAccountStatus;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
     }
 }

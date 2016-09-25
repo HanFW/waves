@@ -9,17 +9,20 @@
     </h:head>
     <h:body>
         <h:form>
-        <p:menubar>            
+            <p:menubar>            
                 <p:submenu label="Manage My Account">
                     <p:menuitem value="Change Password" actionListener="#{employeeLoginManagedBean.changePassword}" />
                 </p:submenu>               
-                
+
                 <p:submenu label="Log Out">
                     <p:menuitem value="Logout" actionListener="#{employeeLoginManagedBean.doLogOut}" />
                 </p:submenu>                           
             </p:menubar> 
-            
-              <h:outputText value="Welcome #{employeeAccountManagedBean.userName} !"/>
+
+            <h:outputText value="Welcome #{employeeAccountManagedBean.userName} !"/>
+            <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
+            <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
+            <h:outputText value="You have logged in as: Card Department Manager"/>
         </h:form>
     </h:body>
 </html>

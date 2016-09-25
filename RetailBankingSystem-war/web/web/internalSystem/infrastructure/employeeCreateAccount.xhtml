@@ -6,6 +6,33 @@
     xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:p="http://primefaces.org/ui"
     template="/WEB-INF/onlineBankingTemplate.xhtml">
+    <h:head>
+        <title>Employee Account Management</title>
+    </h:head>
+    <h:body>
+        <h:outputText value="Welcome #{employeeAccountManagedBean.userName} !"/>
+        <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
+        <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
+        <h:outputText value="You have logged in as: System Admin"/>
+        
+        <h:form>
+            <h1>Add a New User Account</h1>
+            <p:messages globalOnly="true"/>
+            <p:panelGrid>
+                <p:row>
+                    <p:column>
+                        <p:outputLabel for="employeeName" style="font-weight: bold" value="Name: " />
+                        <p:outputLabel style="font-weight: bold" value="(As per NRIC/Passport): " />
+                    </p:column>
+                    <p:column>
+                        <p:inputText label="Employee Name" id="employeeName"
+                                     value="#{employeeAccountManagedBean.employeeName}">
+                        </p:inputText>
+                    </p:column>
+                    <p:column>
+                        <p:message for="employeeName" />
+                    </p:column>
+                </p:row>
 
 
     <ui:define name="content">
@@ -123,19 +150,26 @@
                             </p:column>
                         </p:row>
 
-                        <p:row>
-                            <h:form>
+                <p:row>
+                    <p:column colspan="2">
+                    <p:outputPanel id="display" style="width:250px;padding-left:5px">
+                        <p:dataList value="#{employeeAccountManagedBean.selectedRoles}" var="role" emptyMessage="No roles selected">
+                            #{role}
+                        </p:dataList>
+                    </p:outputPanel>
+                    <!--</h:form>-->
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
 
-                                <p:column>
-                                    <h:outputLabel for="role" style="font-weight: bold" value="Role:" />
-                                </p:column>
-                                <p:column>
-                                    <p:selectCheckboxMenu id="menu" value="#{employeeAccountManagedBean.selectedRoles}" label="Select"
-                                                          filter="true" filterMatchMode="startsWith" panelStyle="width:250px">
-                                        <f:selectItems value="#{employeeAccountManagedBean.roles}" />
-                                    </p:selectCheckboxMenu>
-                                    <p:commandLink value="Confirm" style="margin-left: 20px" update="display"/>
-                                </p:column>
+            <p:row>
+                <p:column colspan="2">
+                    <p:commandButton type="submit" value="Submit" actionListener="#{employeeAccountManagedBean.createAccount}" update="@form"/>
+                </p:column>
+                <p:column colspan="2">
+                    <p:commandButton value="Quit" type="submit" action="/web/internalSystem/infrastructure/employeeUserAccountManagement.xhtml" immediate="true"/>
+                </p:column>
+            </p:row>
 
                                 <div align="center">
                                     <p:outputPanel  id="display" style="width:250px;padding-left:5px" styleClass="ui-panelgrid-blank form-group"/>

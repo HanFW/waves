@@ -124,6 +124,8 @@ public class EmployeeAssignPermissionManagedBean implements Serializable {
             System.out.println("*** employeeAssignPermissionManagedBena: permission is null");
         }
         employeeAdminSessionBeanLocal.deletePermission(roleName, permission.getPermissionName());
+        
+        context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath()+ "/web/internalSystem/infrastructure/employeeSystemAdminAssignPermission.xhtml");
 
         message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Permission is deleted for the role!", "permission disabled");
         context.addMessage(null, message);
@@ -132,7 +134,7 @@ public class EmployeeAssignPermissionManagedBean implements Serializable {
          loggingSessionBeanLocal.createNewLogging("employee", getEmployeeIdViaSessionScope(),"System admin deletes a permission of role "+roleName,
                 "successful",null);
 
-        permission = null;
+        permissions = null;
 
     }
 
@@ -161,16 +163,18 @@ public class EmployeeAssignPermissionManagedBean implements Serializable {
         this.permissionName = permissionName;
     }
 
-    public void addNewPermissionToRole() {
+    public void addNewPermissionToRole() throws IOException {
         System.out.println("===== AssignPermissionManagedBean: permission name =====" + permissionName);
         System.out.println("===== AssignPermissionManagedBean: role name =====" + roleName);
         employeeAdminSessionBeanLocal.addPermissionToRole(roleName, permissionName);
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath()+ "/web/internalSystem/infrastructure/employeeSystemAdminAssignPermission.xhtml");
         System.out.println("===== AssignPermissionManagedBean: add new permission to role =====");
         
         loggingSessionBeanLocal.createNewLogging("employee", getEmployeeIdViaSessionScope(),"System admin adds a new permission to role "+ roleName,
                 "successful",null);
 
-//        permissionName=null;
+          permissions=null;
     }
 
     public void AssignPermission(ActionEvent event) throws IOException {

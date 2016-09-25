@@ -6,9 +6,10 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/onlineBankingTemplate.xhtml">
-
-
     <ui:define name="content">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
     <h:body>
         
         <h:form id="activationForm">
@@ -59,6 +60,7 @@
                 <p:commandButton action="/web/onlineBanking/deposit/customerDepositIndex.xhtml" value="OK" style="font-family:Eurostile;font-size:16pt"/>
             </p:confirmDialog>
         </h:form>
+        <ezcomp:CCTimeout/>
     </h:body>
 </ui:define>
 </ui:composition>
