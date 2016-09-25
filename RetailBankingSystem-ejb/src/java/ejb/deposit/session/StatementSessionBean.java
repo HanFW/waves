@@ -4,6 +4,7 @@ import ejb.customer.entity.CustomerBasic;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.entity.Statement;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
@@ -27,7 +28,7 @@ public class StatementSessionBean implements StatementSessionBeanLocal {
 
     @Override
     public Long addNewStatement(String statementDate, String statementType, String accountDetails,
-            Long bankAccountId) {
+            Long startTime, Long endTime, Long bankAccountId) {
         System.out.println("*");
         System.out.println("****** deposit/StatementSessionBean: addNewStatement() ******");
 
@@ -36,6 +37,8 @@ public class StatementSessionBean implements StatementSessionBeanLocal {
         statement.setStatementDate(statementDate);
         statement.setStatementType(statementType);
         statement.setAccountDetails(accountDetails);
+        statement.setStartTime(startTime);
+        statement.setEndTime(endTime);
         statement.setBankAccount(bankAccountSessionLocal.retrieveBankAccountById(bankAccountId));
 
         entityManager.persist(statement);
@@ -108,6 +111,13 @@ public class StatementSessionBean implements StatementSessionBeanLocal {
 
         for (BankAccount activatedBankAccount : activatedBankAccounts) {
 
+//            Calendar cal = Calendar.getInstance();
+//            Long startTimeLong = cal.getTimeInMillis() - 30000000;
+//            AccTransaction transaction = activatedBankAccount.getAccTransaction().get(activatedBankAccount.getAccTransaction().size() - 1);
+//            
+//            if (transaction.getTransactionDateMilis() < startTimeLong) {
+//                System.out.println("There will be no statement this month");
+//            } else {
             String bankAccountNum = activatedBankAccount.getBankAccountNum();
             CustomerBasic customerBasic = bankAccountSessionLocal.retrieveCustomerBasicByAccNum(bankAccountNum);
             List<Statement> statemens = activatedBankAccount.getStatement();
@@ -126,8 +136,13 @@ public class StatementSessionBean implements StatementSessionBeanLocal {
             bankAccountNum = activatedBankAccount.getBankAccountNum();
             String bankAccountType = activatedBankAccount.getBankAccountType();
             String accountDetails = customerName + "\n" + bankAccountNum + "\n" + bankAccountType;
+            
+            Calendar cal = Calendar.getInstance();
+            Long endTimeLong = cal.getTimeInMillis();
+            Long startTimeLong = endTimeLong - 300000;
 
-            Long newStatementId = addNewStatement(statementDate, statementType, accountDetails, customerBasic.getCustomerBasicId());
+            Long newStatementId = addNewStatement(statementDate, statementType, accountDetails, 
+                    startTimeLong, endTimeLong, activatedBankAccount.getBankAccountId());
             Statement statement = retrieveStatementById(newStatementId);
 
             statemens.add(statement);

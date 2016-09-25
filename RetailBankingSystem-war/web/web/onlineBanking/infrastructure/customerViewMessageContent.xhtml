@@ -55,6 +55,11 @@
         </h:form>
         <h:form>
             <br/>
+            <p:panel>
+                <p:outputLabel value="Welcome "/>
+                <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
+            </p:panel>
+
             <p:panel header="Message Box" id="panel">
                 <h:outputLabel value="My Message" style="font-weight: bold; font-size: 24px" />
                 <p:separator/>

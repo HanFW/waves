@@ -51,8 +51,13 @@
         </h:form>
         <h:form>
             <br/>
+            <p:panel>
+                <p:outputLabel value="Welcome "/>
+                <p:outputLabel value="#{saveAccountManagedBean.customerName}"/>
+            </p:panel>
+
             <p:panel id="panel" header="Save Account"> 
-                <p:messages />
+                <p:messages globalOnly="true"/>
 
                 <p:panelGrid>
                     <h:form id="formMain">

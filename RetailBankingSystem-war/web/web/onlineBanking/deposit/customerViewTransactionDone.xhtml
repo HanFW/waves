@@ -55,7 +55,14 @@
         </h:form>
         <h:form>
             <br/>
+            <p:panel>
+                <p:outputLabel value="Welcome "/>
+                <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
+            </p:panel>
+
             <p:panel header="View Transaction History">
+                <p:messages globalOnly="true" />
+
                 <p:dataTable var="accTransaction" value="#{transactionManagedBean.accTransaction}" 
                              paginator="true" rows="20" emptyMessage="No Transaction Record"
                              rowsPerPageTemplate="5,10,15,20"

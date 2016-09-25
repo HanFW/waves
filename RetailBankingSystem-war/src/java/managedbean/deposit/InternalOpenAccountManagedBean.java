@@ -376,6 +376,7 @@ public class InternalOpenAccountManagedBean {
             ec.getFlash().put("bankAccountNum", bankAccountNum);
             ec.getFlash().put("bankAccountType", bankAccountType);
             ec.getFlash().put("bankAccountStatus", bankAccountStatus);
+            ec.getFlash().put("customerName", customerName);
 
             ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerSaveAccount.xhtml?faces-redirect=true");
 

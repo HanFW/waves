@@ -1,20 +1,19 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
+<html xmlns="http://www.w3.org/1999/xhtml"                                                                                                           
+      xmlns:h="http://xmlns.jcp.org/jsf/html" 
+      xmlns:f="http://xmlns.jcp.org/jsf/core" 
       xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>Home</title>
+        <title>View eStatement</title>
         <style type="text/css">
             .gritter-notice-wrapper {
                 left:200px;
-                top: 50px;
-            }
-        </style>
-    </h:head>
-    <h:body>
-        <h:form id="formMain">
+                top: 50px; }
+            </style>   
+        </h:head>
+        <h:body>
+            <h:form id="formMain">
             <h1>Welcome to Merlion Bank</h1>
             <p:menubar>
 
@@ -53,38 +52,38 @@
                 </p:submenu>
             </p:menubar>
         </h:form>
+
         <h:form>
-            <br/>
-            <p:panel header="View My Account">
-                <p:messages globalOnly="true" />
-                
-                <p:panel>
-                    <p:outputLabel value="Welcome "/>
-                    <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
-                </p:panel>
-                
-                <p:dataTable var="bankAccount" value="#{accountDataTableBean.bankAccount}" 
-                             paginator="true" rows="10" emptyMessage="No Account" >
+            <p:panel>
+                <p:outputLabel value="Welcome "/>
+                <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
+            </p:panel>
 
-                    <p:column headerText="Bank Account Type"> 
-                        <p:commandLink process="@this" action="/web/onlineBanking/deposit/customerViewTransactionDone.xhtml">
-                            <h:outputText value="#{bankAccount.bankAccountType}" />
-                            <f:setPropertyActionListener value="#{bankAccount.bankAccountNum}" target="#{transactionManagedBean.bankAccountNum}" />
-                        </p:commandLink>
+            <p:panel id="panel" header="View eStatement"> 
+                <p:messages globalOnly="true"/>
+
+                <p:dataTable var="statement" paginator="true" rows="10"
+                             value="#{viewStatementManagedBean.statement}"
+                             emptyMessage="No Statement">
+
+                    <p:column headerText="Date"> 
+                        <h:outputText value="#{statement.statementDate}" />
                     </p:column>
 
-                    <p:column headerText="Bank Account Number" >
-                        <p:commandLink process="@this" action="/web/onlineBanking/deposit/customerViewTransactionDone.xhtml" >
-                            <h:outputText value="#{bankAccount.bankAccountNum}" /> 
-                            <f:setPropertyActionListener value="#{bankAccount.bankAccountNum}" target="#{transactionManagedBean.bankAccountNum}" />
-                        </p:commandLink>
+                    <p:column headerText="Statemenet Type(s)"> 
+                        <h:outputText value="#{statement.statementType}" />
                     </p:column>
 
-                    <p:column headerText="Balance"> 
-                        <p:commandLink process="@this" action="/web/onlineBanking/deposit/customerViewTransactionDone.xhtml" >
-                            <h:outputText value="S$#{bankAccount.bankAccountBalance}" />
-                            <f:setPropertyActionListener value="#{bankAccount.bankAccountNum}" target="#{transactionManagedBean.bankAccountNum}" />
-                        </p:commandLink>
+                    <p:column headerText="Account Details"> 
+                        <h:outputText value="#{statement.accountDetails}" />
+                    </p:column>
+
+                    <p:column headerText="View" style="width: 10%"> 
+                        <center>
+                            <p:commandButton ajax="false" process="@this" action="#{viewStatementDoneManagedBean.viewStatement}" icon="ui-icon-document">
+                                <f:setPropertyActionListener value="#{statement.statementId}" target="#{viewStatementDoneManagedBean.statementId}" />
+                            </p:commandButton>
+                        </center>
                     </p:column>
 
                 </p:dataTable>
@@ -92,3 +91,4 @@
         </h:form>
     </h:body>
 </html>
+

@@ -60,6 +60,13 @@
         <h:form>
             <br/>
             <p:panel>
+                <p:outputLabel value="Welcome "/>
+                <p:outputLabel value="#{depositIndexManagedBean.customerName}"/>
+            </p:panel>
+
+            <p:panel>
+                <p:messages globalOnly="true" />
+
                 <p:outputLabel value="Your Quick Summary" style="margin-left: 95px"/>
                 <br/>
                 <br/>
@@ -93,7 +100,7 @@
                     </p:column>
 
                 </p:dataTable>
-                
+
             </p:panel>
         </h:form>
         <ezcomp:CCTimeOutDemo/>

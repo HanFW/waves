@@ -64,6 +64,11 @@
             </p:ajaxStatus>
         </h:form>
         <h:form>
+            <p:panel>
+                <p:outputLabel value="Welcome "/>
+                <p:outputLabel value="#{internalOpenAccountManagedBean.customerName}"/>
+            </p:panel>
+
             <p:panel id="panel">
                 <p:messages globalOnly="true"/>
 
@@ -71,7 +76,6 @@
                     <h:outputLabel value="Account Details" style="font-weight: bold; font-size: 24px" />
                     <p:separator/>
                     <br/>
-
                     <p:row>
                         <p:column>
                             <p:outputLabel for="bankAccountType" style="font-weight: bold" value="Account Type: " />

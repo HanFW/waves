@@ -15,18 +15,17 @@ public class AddRecipientDoneManagedBean {
     private String payeeName;
     private String payeeAccountNum;
     private String payeeAccountType;
-    
+
     public AddRecipientDoneManagedBean() {
     }
-    
+
     @PostConstruct
-    public void init()
-    {
-         statusMessage = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("statusMessage").toString();
-         newPayeeId = (Long)FacesContext.getCurrentInstance().getExternalContext().getFlash().get("newPayeeId");
-         payeeName = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("payeeName").toString();
-         payeeAccountNum = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("payeeAccountNum").toString();
-         payeeAccountType = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("payeeAccountType").toString();
+    public void init() {
+        statusMessage = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("statusMessage").toString();
+        newPayeeId = (Long) FacesContext.getCurrentInstance().getExternalContext().getFlash().get("newPayeeId");
+        payeeName = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("payeeName").toString();
+        payeeAccountNum = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("payeeAccountNum").toString();
+        payeeAccountType = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("payeeAccountType").toString();
     }
 
     public String getStatusMessage() {
