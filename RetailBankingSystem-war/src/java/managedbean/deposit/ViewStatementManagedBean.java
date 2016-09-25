@@ -1,6 +1,5 @@
 package managedbean.deposit;
 
-import ejb.customer.entity.CustomerBasic;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.entity.Statement;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
@@ -81,17 +80,13 @@ public class ViewStatementManagedBean implements Serializable {
     public List<Statement> getStatement() throws IOException {
 
         ec = FacesContext.getCurrentInstance().getExternalContext();
-
-        CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
+        
         BankAccount bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountByNum(bankAccountNum);
         List<Statement> statement = bankAccount.getStatement();
         
         if (statement.isEmpty()) {
-            loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "view statement", "falied", "invalid account number");
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Your account number is invalid", "Failed!"));
-        } else {
-            loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "view statement", "successful", null);
-        }
+        } 
 
         return statement;
     }
