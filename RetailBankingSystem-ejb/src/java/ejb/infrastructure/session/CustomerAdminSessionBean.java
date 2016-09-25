@@ -5,6 +5,7 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -248,6 +249,11 @@ public class CustomerAdminSessionBean implements CustomerAdminSessionBeanLocal {
             }
             return true;
         }
+    }
+    
+    @Override
+    public ArrayList checkExistingService(Long customerId){
+        return null;
     }
 
     private String md5Hashing(String stringToHash) throws NoSuchAlgorithmException {
