@@ -5,15 +5,16 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:h="http://xmlns.jcp.org/jsf/html">
     <h:head>
-        <title>Enquiry Manager Main Page</title>
+        <title>Deposit Specialist Main Page</title>
     </h:head>
     <h:body>
         <h:form>
             <p:menubar>
+                <p:submenu label="Home">
+                    <p:menuitem value="Home" url="/web/internalSystem/infrastructure/employeeMainPage.xhtml"/>
+                </p:submenu>
                 <p:submenu label="Tasks">
-                    <p:menuitem value="Search Enquiry" action="/web/internalSystem/enquiry/counterTellerSearchCaseById.xhtml"/>
-                    <p:menuitem value="View Enquiry" action="/web/internalSystem/enquiry/counterTellerSearchCustomer.xhtml"/>
-                    <p:menuitem value="Forward Enquiry" action="/web/internalSystem/enquiry/counterTellerSearchCustomer.xhtml"/>
+                    <p:menuitem value="View Enquiry" action="/web/internalSystem/enquiry/depositSpecialistViewPendingIssue.xhtml"/>                   
                 </p:submenu>
                 <p:submenu label="Manage My Account">
                     <p:menuitem value="Change Password" actionListener="#{employeeLoginManagedBean.changePassword}" />

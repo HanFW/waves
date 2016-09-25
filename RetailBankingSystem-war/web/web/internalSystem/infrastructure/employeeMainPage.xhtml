@@ -93,6 +93,41 @@
                 </p:row>
             </p:panel>
             
+             <p:panel visible="#{employeeAccountManagedBean.hasRoleDepositSpecialist()}" style="border: none">
+                <p:row>
+                    <p:button outcome="/web/internalSystem/infrastructure/employeeDepositSpecialistMainPage.xhtml" value="Deposit Specialist">
+                    </p:button>
+                </p:row>
+            </p:panel>
+            
+             <p:panel visible="#{employeeAccountManagedBean.hasRoleLoanSpecialist()}" style="border: none">
+                <p:row>
+                    <p:button outcome="/web/internalSystem/infrastructure/employeeLoanSpecialistMainPage.xhtml" value="Loan Specialist">
+                    </p:button>
+                </p:row>
+            </p:panel>
+            
+             <p:panel visible="#{employeeAccountManagedBean.hasRoleCardSpecialist()}" style="border: none">
+                <p:row>
+                    <p:button outcome="/web/internalSystem/infrastructure/employeeCardSpecialistMainPage.xhtml" value="Card Specialist">
+                    </p:button>
+                </p:row>
+            </p:panel>
+            
+             <p:panel visible="#{employeeAccountManagedBean.hasRoleCEO()}" style="border: none">
+                <p:row>
+                    <p:button outcome="/web/internalSystem/infrastructure/employeeOperationSpecialistMainPage.xhtml" value="Operation Specialist">
+                    </p:button>
+                </p:row>
+            </p:panel>
+            
+             <p:panel visible="#{employeeAccountManagedBean.hasRoleWealthManagementSpecialist()}" style="border: none">
+                <p:row>
+                    <p:button outcome="/web/internalSystem/infrastructure/employeeWealthManagementSpecialistMainPage.xhtml" value="Wealth Management Specialist">
+                    </p:button>
+                </p:row>
+            </p:panel>
+            
             <h:outputText value="Click any of the buttons above to start your work"/>
 
         </h:form>

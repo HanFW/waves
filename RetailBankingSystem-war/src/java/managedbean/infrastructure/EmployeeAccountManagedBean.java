@@ -485,6 +485,46 @@ public class EmployeeAccountManagedBean implements Serializable {
         return employee.getRole().contains(hasRole);
     }
 
+    public boolean hasRoleDepositSpecialist() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        employee = (Employee) context.getExternalContext().getSessionMap().get("employee");
+
+        Role hasRole = adminSessionBeanLocal.getRoleByName("Deposit Specialist");
+        return employee.getRole().contains(hasRole);
+    }
+
+    public boolean hasRoleLoanSpecialist() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        employee = (Employee) context.getExternalContext().getSessionMap().get("employee");
+
+        Role hasRole = adminSessionBeanLocal.getRoleByName("Loan Specialist");
+        return employee.getRole().contains(hasRole);
+    }
+
+    public boolean hasRoleCardSpecialist() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        employee = (Employee) context.getExternalContext().getSessionMap().get("employee");
+
+        Role hasRole = adminSessionBeanLocal.getRoleByName("Card Specialist");
+        return employee.getRole().contains(hasRole);
+    }
+
+    public boolean hasRoleOperationSpecialist() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        employee = (Employee) context.getExternalContext().getSessionMap().get("employee");
+
+        Role hasRole = adminSessionBeanLocal.getRoleByName("Operation Specialist");
+        return employee.getRole().contains(hasRole);
+    }
+
+    public boolean hasRoleWealthManagementSpecialist() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        employee = (Employee) context.getExternalContext().getSessionMap().get("employee");
+
+        Role hasRole = adminSessionBeanLocal.getRoleByName("Wealth Management Specialist");
+        return employee.getRole().contains(hasRole);
+    }
+
     public boolean hasRoleSystemAdmin() {
 
         FacesContext context = FacesContext.getCurrentInstance();
