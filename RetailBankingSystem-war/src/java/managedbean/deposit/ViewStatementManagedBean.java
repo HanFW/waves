@@ -1,37 +1,24 @@
 package managedbean.deposit;
 
-import ejb.deposit.entity.BankAccount;
 import ejb.customer.entity.CustomerBasic;
+import ejb.deposit.entity.BankAccount;
 import ejb.deposit.entity.Statement;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import java.io.IOException;
-import java.io.InputStream;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.inject.Named;
-import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
-import javax.sql.DataSource;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperRunManager;
-import ejb.deposit.session.StatementSessionBeanLocal;
 import ejb.infrastructure.session.LoggingSessionBeanLocal;
-import java.util.ArrayList;
-import java.util.Calendar;
+import java.io.Serializable;
+import java.util.List;
+import javax.enterprise.context.SessionScoped;
 
 @Named(value = "viewStatementManagedBean")
-@RequestScoped
+@SessionScoped
 
-public class ViewStatementManagedBean {
+public class ViewStatementManagedBean implements Serializable {
 
     @EJB
     private LoggingSessionBeanLocal loggingSessionBeanLocal;
@@ -39,16 +26,10 @@ public class ViewStatementManagedBean {
     @EJB
     private BankAccountSessionBeanLocal bankAccountSessionBeanLocal;
 
-    @EJB
-    private StatementSessionBeanLocal statementSessionBeanLocal;
-
-    @Resource(name = "retailBankingSystemDataSource")
-    private DataSource retailBankingSystemDataSource;
-
     private String statementDate;
     private String statementType;
     private String accountDetails;
-    private Long bankAccountId;
+    private String bankAccountNum;
 
     private String customerIdentificationNum;
 
@@ -89,82 +70,29 @@ public class ViewStatementManagedBean {
         this.customerIdentificationNum = customerIdentificationNum;
     }
 
-    public Long getBankAccountId() {
-        return bankAccountId;
+    public String getBankAccountNum() {
+        return bankAccountNum;
     }
 
-    public void setBankAccountId(Long bankAccountId) {
-        this.bankAccountId = bankAccountId;
-    }
-
-    public void viewStatement() throws ClassNotFoundException, IOException, JRException, SQLException {
-
-        System.out.println("=");
-        System.out.println("====== deposit/ViewStatementManagedBean: viewStatement() ======");
-        BankAccount bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountById(bankAccountId);
-
-        Connection connection;
-        Map parameterMap = new HashMap();
-
-        FacesContext ctx = FacesContext.getCurrentInstance();
-
-        HttpServletResponse response = (HttpServletResponse) ctx
-                .getExternalContext().getResponse();
-
-        InputStream reportStream = ctx.getExternalContext()
-                .getResourceAsStream("/E-Statements/myStatement.jasper");
-
-        if (reportStream == null) {
-            System.err.println("********* INputstream is null");
-        } else {
-            System.err.println("********* INputstream is not null");
-        }
-
-        ServletOutputStream servletOutputStream = response.getOutputStream();
-        Class.forName("com.mysql.jdbc.Driver");
-        connection = retailBankingSystemDataSource.getConnection();
-
-        ctx.responseComplete();
-        response.setContentType("application/pdf");
-
-        Calendar cal = Calendar.getInstance();
-        Long startTimeLong = cal.getTimeInMillis() - 30000000;
-        Long endTimeLong = cal.getTimeInMillis();
-
-        Map parameters = new HashMap();
-        parameters.put("bankAccountId", bankAccount.getBankAccountId());
-        parameters.put("startTimeLong", startTimeLong);
-        parameters.put("endTimeLong", endTimeLong);
-
-        JasperRunManager.runReportToPdfStream(reportStream, servletOutputStream, parameterMap, connection);
-
-        connection.close();
-        servletOutputStream.flush();
-        servletOutputStream.close();
+    public void setBankAccountNum(String bankAccountNum) {
+        this.bankAccountNum = bankAccountNum;
     }
 
     public List<Statement> getStatement() throws IOException {
-        System.out.println("=");
-        System.out.println("====== deposit/ViewStatementManagedBean: getStatement() ======");
 
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
         CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
-
-        List<BankAccount> bankAccounts = customerBasic.getBankAccount();
-        List<Statement> statement = new ArrayList();
-
-        for (int i = 0; i < bankAccounts.size(); i++) {
-            statement = statementSessionBeanLocal.retrieveStatementByAccNum(bankAccounts.get(i).getBankAccountNum());
-
-            if (statement.isEmpty()) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Your account number is invalid", "Failed!"));
-            } else {
-                return statement;
-            }
+        BankAccount bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountByNum(bankAccountNum);
+        List<Statement> statement = bankAccount.getStatement();
+        
+        if (statement.isEmpty()) {
+            loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "view statement", "falied", "invalid account number");
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Your account number is invalid", "Failed!"));
+        } else {
+            loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "view statement", "successful", null);
         }
 
-        loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "view statement", "successful", null);
         return statement;
     }
 }
