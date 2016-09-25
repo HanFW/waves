@@ -26,12 +26,12 @@
 
                                     <h:outputLabel for="newPasswordConfirm" value="Confirm New Password: *" />
                                     <p:password id="newPasswordConfirm" value="#{cRMCustomerManagedBean.customerOnlineBankingNewPasswordConfirm}" label="Confirm New Password" required="true" />
-                                   
-                                    
+
+
                                 </h:panelGrid>
-                                 <h:panelGrid columns="1" id="matchGrid2" cellpadding="5" styleClass="ui-panelgrid-blank form-group">
-<p:commandButton value="Save" actionListener="#{cRMCustomerManagedBean.updateOnlineBankingAccountPIN}" ajax="false" />
-                                 </h:panelGrid>
+                                <h:panelGrid columns="1" id="matchGrid2" cellpadding="5" styleClass="ui-panelgrid-blank form-group">
+                                    <p:commandButton value="Save" actionListener="#{cRMCustomerManagedBean.updateOnlineBankingAccountPIN}" ajax="false" />
+                                </h:panelGrid>
                             </div>
                         </p:panel>
                     </div>
