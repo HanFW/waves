@@ -33,9 +33,6 @@ import javax.persistence.NonUniqueResultException;
 public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
 
     @EJB
-    private MessageSessionBeanLocal messageSessionBeanLocal;
-
-    @EJB
     private CRMCustomerSessionBeanLocal customerSessionBeanLocal;
 
     @EJB
@@ -663,8 +660,6 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
 
     @Override
     public void resetDailyTransferLimit() {
-        System.out.println("*");
-        System.out.println("****** deposit/BankAccountSessionBean: resetDailyTransferLimit() ******");
 
         Query query = entityManager.createQuery("SELECT a FROM BankAccount a WHERE a.bankAccountStatus = :bankAccountStatus");
         query.setParameter("bankAccountStatus", "Activated");
