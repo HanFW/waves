@@ -43,13 +43,25 @@
                             </p:column>
                         </p:row>
 
-                        <p:row>
-                            <p:column colspan="2">
-                                <div align="center">
-                                <p:commandButton value="submit" type="submit" actionListener="#{employeeLoginManagedBean.doLogin}" update="@form"/>
-                                </div>
-                            </p:column>
-                        </p:row>
+                    <p:panel header="Login">
+                        <p:messages/>
+                        <p:panelGrid styleClass="ui-panelgrid-blank form-group">
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="employeeAccountNum" value="Account number: "/>
+                                </p:column>
+                                <p:column>
+                                    <p:inputText type="text" id="employeeAccountNum" value="#{employeeLoginManagedBean.employeeAccountNum}" required="true" requiredMessage="Please enter your account number."/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="employeePassword" value="Password: "/>
+                                </p:column>
+                                <p:column>
+                                    <p:inputText type="password" id= "employeePassword" value="#{employeeLoginManagedBean.employeePassword}" required="true" requiredMessage="Please enter your password."/>
+                                </p:column>
+                            </p:row>
 
                         <p:row>
                             

@@ -31,7 +31,7 @@ public class EnquiryCase implements Serializable {
     private String caseDetail;
     private String caseReply;
     private String caseStatus;
-    private String onlineBankingAccountNum;
+//    private String onlineBankingAccountNum;
     private String createdTime;
 
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "enquiryCase")
@@ -40,7 +40,7 @@ public class EnquiryCase implements Serializable {
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "enquiryCase")
     private List<FollowUp> followUp;
 
-    @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER)
     private CustomerBasic customerBasic;
 
     public Long getCaseId() {
@@ -99,13 +99,13 @@ public class EnquiryCase implements Serializable {
         this.customerBasic = customerBasic;
     }
 
-    public String getOnlineBankingAccountNum() {
-        return onlineBankingAccountNum;
-    }
-
-    public void setOnlineBankingAccountNum(String onlineBankingAccountNum) {
-        this.onlineBankingAccountNum = onlineBankingAccountNum;
-    }
+//    public String getOnlineBankingAccountNum() {
+//        return onlineBankingAccountNum;
+//    }
+//
+//    public void setOnlineBankingAccountNum(String onlineBankingAccountNum) {
+//        this.onlineBankingAccountNum = onlineBankingAccountNum;
+//    }
 
     public String getCaseReply() {
         return caseReply;

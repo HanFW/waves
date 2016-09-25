@@ -34,8 +34,8 @@ public class TransferDoneManagedBean {
         transferAmt = "S$" + FacesContext.getCurrentInstance().getExternalContext().getFlash().get("transferAmt").toString();
         fromAccount = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("fromAccount").toString();
         toAccount = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("toAccount").toString();
-        fromBankAccountBalance = "S$"+FacesContext.getCurrentInstance().getExternalContext().getFlash().get("fromAccountBalance").toString();
-        toBankAccountBalance = "S$"+FacesContext.getCurrentInstance().getExternalContext().getFlash().get("toAccountBalance").toString();
+        fromBankAccountBalance = "S$" + FacesContext.getCurrentInstance().getExternalContext().getFlash().get("fromAccountBalance").toString();
+        toBankAccountBalance = "S$" + FacesContext.getCurrentInstance().getExternalContext().getFlash().get("toAccountBalance").toString();
     }
 
     public void show() {

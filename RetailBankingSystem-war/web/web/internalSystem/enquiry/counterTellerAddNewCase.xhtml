@@ -5,13 +5,32 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
+
                 template="/WEB-INF/internalSystemTemplate.xhtml">
 
+  
 
     <ui:define name="content">  
         <h:body>
             <h:form>
-                <div class="ui-g">
+                <h:form>
+            <p:menubar>
+                <p:submenu label="Home">
+                    <p:menuitem value="Home" url="/web/internalSystem/infrastructure/employeeCounterTellerMainPage.xhtml"/>
+                </p:submenu>
+
+                <p:submenu label="Log Out">
+                    <p:menuitem value="Logout" actionListener="#{employeeLoginManagedBean.doLogOut}" />
+                </p:submenu>
+            </p:menubar>
+        </h:form>
+
+        <h:outputText value="Welcome #{employeeAccountManagedBean.userName} !"/>
+        <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
+        <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
+        <h:outputText value="You have logged in as: Counter Teller"/>
+                
+        <div class="ui-g">
                     <div class="ui-g-12">
                         <div class="card">
                             <p:panel>

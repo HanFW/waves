@@ -31,6 +31,7 @@ public class UpdateDailyTransferLimit {
     private String bankAccountNumWithType;
     private String bankAccountNum;
     private String dailyTransferLimit;
+    private String customerName;
 
     public UpdateDailyTransferLimit() {
     }
@@ -41,6 +42,7 @@ public class UpdateDailyTransferLimit {
 
         if (ec.getSessionMap().get("customer") != null) {
             CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
+            customerName = customerBasic.getCustomerName();
 
             List<BankAccount> bankAccounts = bankAccountSessionLocal.retrieveBankAccountByCusIC(customerBasic.getCustomerIdentificationNum());
 
@@ -82,6 +84,14 @@ public class UpdateDailyTransferLimit {
 
     public void setDailyTransferLimit(String dailyTransferLimit) {
         this.dailyTransferLimit = dailyTransferLimit;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
     }
 
     public void submit() {

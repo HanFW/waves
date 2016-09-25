@@ -5,19 +5,35 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
-                template="/WEB-INF/internalSystemTemplate.xhtml">
 
+                template="/WEB-INF/onlineBankingTemplate.xhtml"
+                xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
 
     <ui:define name="content">
-        <h:form>
-            <div class="ui-g ui-fluid">
-                <div class="ui-g-12 ui-lg-12">
-                    <div class="card card-w-title"> 
-                        <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
-                            <p:panel >
-                                <p:messages />
+        
+        <h:body>
+            <h:form>
+                <p:menubar>
+                    <p:submenu label="My Account">
+                        <p:menuitem value="Home" url="/web/onlineBanking/deposit/customerDepositIndex.xhtml" />
+                        <p:menuitem value="Open Account" url="/web/onlineBanking/deposit/customerOpenAccount.xhtml" />
+                        <p:menuitem value="Close Account" url="/web/onlineBanking/deposit/customerCloseAccount.xhtml" />
+                        <p:menuitem value="View Account" url="/web/onlineBanking/deposit/customerViewAccount.xhtml" />
+                        <p:menuitem value="Cash Deposit" url="/web/onlineBanking/deposit/customerCashDeposit.xhtml" />
+                        <p:menuitem value="Cash Withdraw" url="/web/onlineBanking/deposit/customerCashWithdraw.xhtml" />
+                        <p:menuitem value="View Transaction" url="/web/onlineBanking/deposit/customerViewTransaction.xhtml" />
+                        <p:menuitem value="Activate Fixed Deposit Account" url="/web/onlineBanking/deposit/customerActivateFixedDepositAccount.xhtml" />
+                    </p:submenu>
+                </p:menubar>
 
-                              
+                <div class="ui-g ui-fluid">
+                    <div class="ui-g-12 ui-lg-12">
+                        <div class="card card-w-title"> 
+                            <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                <p:panel >
+                                    <p:messages />
+
+
 
                                     <p:row>
                                         <div align="center">
@@ -33,14 +49,16 @@
                                     </p:row>
                                     <p:commandButton value="Send Follow-up" actionListener="#{enquiryManagedBean.saveFollowUp}" ajax="false" />
 
-                             
-                            </p:panel>
 
-                        </p:panelGrid>
+                                </p:panel>
+
+                            </p:panelGrid>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-        </h:form>
+            </h:form>
+            <ezcomp:CCTimeout/>
+        </h:body>
     </ui:define>
 </ui:composition>

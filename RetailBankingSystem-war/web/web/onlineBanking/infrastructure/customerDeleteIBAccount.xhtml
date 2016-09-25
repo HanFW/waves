@@ -1,10 +1,13 @@
+<<<<<<< HEAD
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
-                template="/WEB-INF/onlineBankingTemplate.xhtml">
+                template="/WEB-INF/onlineBankingTemplate.xhtml"
+                 xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
     <ui:define name="content">
+
 
         <h:form>
             <div class="ui-g ui-fluid">
@@ -41,5 +44,6 @@
             </div>
         </h:form>
 
+ <ezcomp:CCTimeout/>
     </ui:define>
 </ui:composition>

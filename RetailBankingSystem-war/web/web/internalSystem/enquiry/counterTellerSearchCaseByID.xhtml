@@ -7,28 +7,42 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/internalSystemTemplate.xhtml">
 
+    <ui:define name="content">
 
-    <ui:define name="content">  
-        
-  <h:body>
-        <p:panel header="Search Customer">
 
-  
-        <h:form>
-            <br/>
-            <br/>
-            <div align="center">
-            <p:outputLabel for="CaseID"  value="Customer Case ID:" />
-            <p:inputText id="CaseID" value="#{employeeRecordEnquiryManagedBean.caseIdStr}" />
-            <br/>
-            <br/>
-            <p:commandButton value="Search" actionListener="#{employeeRecordEnquiryManagedBean.retrieveCaseByCaseRef}" />
-            </div>
-           
-        </h:form>
-        </p:panel>
-    </h:body>
-        
+        <h:body>
+            <p:panel header="Search Customer">
+
+
+                <h:form>
+                    <p:menubar>
+                        <p:submenu label="Home">
+                            <p:menuitem value="Home" url="/web/internalSystem/infrastructure/employeeCounterTellerMainPage.xhtml"/>
+                        </p:submenu>
+
+                        <p:submenu label="Log Out">
+                            <p:menuitem value="Logout" actionListener="#{employeeLoginManagedBean.doLogOut}" />
+                        </p:submenu>
+                    </p:menubar>
+                </h:form>
+
+                <h:outputText value="Welcome #{employeeAccountManagedBean.userName} !"/>
+                <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
+                <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
+                <h:outputText value="You have logged in as: Counter Teller"/>
+
+                <h:form>
+                    <p:outputLabel for="CaseID"  value="Customer Case ID:" />
+                    <p:inputText id="CaseID" value="#{employeeRecordEnquiryManagedBean.caseIdStr}" />
+                    <br/>
+                    <br/>
+                    <p:commandButton value="Search" actionListener="#{employeeRecordEnquiryManagedBean.retrieveCaseByCaseRef}" />
+                    </div>
+
+                </h:form>
+            </p:panel>
+        </h:body>
+
     </ui:define>
 </ui:composition>
 

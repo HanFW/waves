@@ -6,9 +6,11 @@
 package ejb.infrastructure.session;
 
 import ejb.infrastructure.entity.Logging;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -28,5 +30,26 @@ public class LoggingSessionBean implements LoggingSessionBeanLocal {
         log.create(trigger, person, activity, result, remarks);
         em.persist(log);
         em.flush();
+    }
+    
+    @Override
+    public List<Logging> retrieveAllCustomerLogging(){
+        Query query = em.createQuery("SELECT lg FROM Logging lg WHERE lg.logParty = :logParty");
+        query.setParameter("logParty", "customer");
+        return query.getResultList();
+    }
+    
+    @Override
+    public List<Logging> retrieveAllEmployeeLogging(){
+        Query query = em.createQuery("SELECT lg FROM Logging lg WHERE lg.logParty = :logParty");
+        query.setParameter("logParty", "employee");
+        return query.getResultList();
+    }
+    
+    @Override
+    public List<Logging> retrieveAllSystemLogging(){
+        Query query = em.createQuery("SELECT lg FROM Logging lg WHERE lg.logParty = :logParty");
+        query.setParameter("logParty", "system");
+        return query.getResultList();
     }
 }

@@ -5,52 +5,57 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
-                template="/WEB-INF/onlineBankingTemplate.xhtml">
-
-
+                template="/WEB-INF/onlineBankingTemplate.xhtml"
+                xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
     <ui:define name="content">
-        
-        <h:form>
-           <div class="ui-g ui-fluid">
+        <h:form id="formMain">
+            <div class="ui-g ui-fluid">
                 <div class="ui-g-12 ui-lg-12">
                     <div class="card card-w-title"> 
-                      <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
-            <p:panel header="Message Box" id="panel">
-                <h:outputLabel value="My Message" style="font-weight: bold; font-size: 24px" />
-                <p:separator/>
-                <br/>
-                <h:outputText value="From: " style="font-weight: bold"/>
-                <h:outputText value="#{customerViewMessageContentManagedBean.fromWhere}"/>
-                <br/>
-                <h:outputText value="Type of Message: " style="font-weight: bold"/>
-                <h:outputText value="#{customerViewMessageContentManagedBean.messageType}"/>
-                <br/>
-                <h:outputText value="Subject: " style="font-weight: bold"/>
-                <h:outputText value="#{customerViewMessageContentManagedBean.subject}"/>
-                <br/>
-                <h:outputText value="Date: " style="font-weight: bold"/>
-                <h:outputText value="#{customerViewMessageContentManagedBean.receivedDate}"/>
-                <br/>
-                <h:outputText value="Message: " style="font-weight: bold"/>
-                <h:outputText value="#{customerViewMessageContentManagedBean.messageContent}"/>
-                <br/>
-            </p:panel>
+                        <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                            <br/>
+                            <p:panel>
+                                <p:outputLabel value="Welcome "/>
+                                <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
+                            </p:panel>
 
-            <p:commandButton id="backBtn" action="/web/onlineBanking/infrastructure/customerViewMessage.xhtml" 
-                             value="Back" update="panel" immediate = "true">
-                <p:confirm header="Cancel" message="Are you sure?" />
-            </p:commandButton>
+                            <p:panel header="Message Box" id="panel">
+                                <h:outputLabel value="My Message" style="font-weight: bold; font-size: 24px" />
+                                <p:separator/>
+                                <br/>
+                                <h:outputText value="From: " style="font-weight: bold"/>
+                                <h:outputText value="#{customerViewMessageContentManagedBean.fromWhere}"/>
+                                <br/>
+                                <h:outputText value="Type of Message: " style="font-weight: bold"/>
+                                <h:outputText value="#{customerViewMessageContentManagedBean.messageType}"/>
+                                <br/>
+                                <h:outputText value="Subject: " style="font-weight: bold"/>
+                                <h:outputText value="#{customerViewMessageContentManagedBean.subject}"/>
+                                <br/>
+                                <h:outputText value="Date: " style="font-weight: bold"/>
+                                <h:outputText value="#{customerViewMessageContentManagedBean.receivedDate}"/>
+                                <br/>
+                                <h:outputText value="Message: " style="font-weight: bold"/>
+                                <h:outputText value="#{customerViewMessageContentManagedBean.messageContent}"/>
+                                <br/>
+                            </p:panel>
 
-            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" action="/web/onlineBanking/infrastructure/customerViewMessage.xhtml"/>
-                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" />
-            </p:confirmDialog>
-                
-                      </p:panelGrid>
+                            <p:commandButton id="backBtn" action="/web/onlineBanking/infrastructure/customerViewMessage.xhtml" 
+                                             value="Back" update="panel" immediate = "true">
+                                <p:confirm header="Cancel" message="Are you sure?" />
+                            </p:commandButton>
+
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" action="/web/onlineBanking/infrastructure/customerViewMessage.xhtml"/>
+                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" />
+                            </p:confirmDialog>
+
+                        </p:panelGrid>
                     </div>
                 </div>
             </div>
 
-       </h:form>
+        </h:form>
+        <ezcomp:CCTimeout/>
     </ui:define>
 </ui:composition>

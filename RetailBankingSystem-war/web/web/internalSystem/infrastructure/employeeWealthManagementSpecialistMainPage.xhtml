@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <h:head>
+        <title>Enquiry Manager Main Page</title>
+    </h:head>
+    <h:body>
+        <h:form>
+            <p:menubar>
+                <p:submenu label="Home">
+                    <p:menuitem value="Home" url="/web/internalSystem/infrastructure/employeeMainPage.xhtml"/>
+                </p:submenu>
+                <p:submenu label="Tasks">
+                    <p:menuitem value="View Enquiry" action="/web/internalSystem/enquiry/wealthManagementSpecialistViewPendingIssue.xhtml"/>
+                </p:submenu>
+                <p:submenu label="Manage My Account">
+                    <p:menuitem value="Change Password" actionListener="#{employeeLoginManagedBean.changePassword}" />
+                </p:submenu>
+
+                <p:submenu label="Log Out">
+                    <p:menuitem value="Logout" actionListener="#{employeeLoginManagedBean.doLogOut}" />
+                </p:submenu>
+            </p:menubar>
+
+            <h:outputText value="Welcome #{employeeAccountManagedBean.userName} !"/>
+            <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
+            <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
+            <h:outputText value="You have logged in as: Wealth Management Specialist"/>
+
+        </h:form>
+    </h:body>
+</html>

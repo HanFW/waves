@@ -11,11 +11,12 @@
     <ui:define name="content">  
     <h:body>
         <h:outputText value="Welcome " />
-        <h:outputText value="#{employeeAccountManagedBean.userName}" />
-        <h:outputText value="! You have logged in as "/>
+        <h:outputText value="#{employeeAccountManagedBean.userName}!"/>
+        <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
+        <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
+        <h:outputText value="You have logged in as "/>
 
         <h:form>
-            <h:outputText value="Welcome #{employeeAccountManagedBean.userName} !"/>
             
             <p:panel visible="#{employeeAccountManagedBean.hasRoleSystemAdmin()}" style="border: none">
                 <p:row>
@@ -90,6 +91,41 @@
             <p:panel visible="#{employeeAccountManagedBean.hasRoleCEO()}" style="border: none">
                 <p:row>
                     <p:button outcome="/web/internalSystem/infrastructure/employeeCEOMainPage.xhtml" value="Chief Executive Officer">
+                    </p:button>
+                </p:row>
+            </p:panel>
+            
+             <p:panel visible="#{employeeAccountManagedBean.hasRoleDepositSpecialist()}" style="border: none">
+                <p:row>
+                    <p:button outcome="/web/internalSystem/infrastructure/employeeDepositSpecialistMainPage.xhtml" value="Deposit Specialist">
+                    </p:button>
+                </p:row>
+            </p:panel>
+            
+             <p:panel visible="#{employeeAccountManagedBean.hasRoleLoanSpecialist()}" style="border: none">
+                <p:row>
+                    <p:button outcome="/web/internalSystem/infrastructure/employeeLoanSpecialistMainPage.xhtml" value="Loan Specialist">
+                    </p:button>
+                </p:row>
+            </p:panel>
+            
+             <p:panel visible="#{employeeAccountManagedBean.hasRoleCardSpecialist()}" style="border: none">
+                <p:row>
+                    <p:button outcome="/web/internalSystem/infrastructure/employeeCardSpecialistMainPage.xhtml" value="Card Specialist">
+                    </p:button>
+                </p:row>
+            </p:panel>
+            
+             <p:panel visible="#{employeeAccountManagedBean.hasRoleCEO()}" style="border: none">
+                <p:row>
+                    <p:button outcome="/web/internalSystem/infrastructure/employeeOperationSpecialistMainPage.xhtml" value="Operation Specialist">
+                    </p:button>
+                </p:row>
+            </p:panel>
+            
+             <p:panel visible="#{employeeAccountManagedBean.hasRoleWealthManagementSpecialist()}" style="border: none">
+                <p:row>
+                    <p:button outcome="/web/internalSystem/infrastructure/employeeWealthManagementSpecialistMainPage.xhtml" value="Wealth Management Specialist">
                     </p:button>
                 </p:row>
             </p:panel>

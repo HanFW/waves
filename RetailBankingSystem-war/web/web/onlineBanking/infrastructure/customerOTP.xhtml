@@ -4,7 +4,9 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
+
 
     <h:head>
         <f:facet name="first">
@@ -58,5 +60,6 @@
               <h:outputStylesheet name="css/ripple.css" library="ultima-layout" />
             <h:outputStylesheet name="css/layout-#{guestPreferences.theme}.css" library="ultima-layout" />
         </h:form>
+         <ezcomp:CCTimeout/>
     </h:body>
 </html>

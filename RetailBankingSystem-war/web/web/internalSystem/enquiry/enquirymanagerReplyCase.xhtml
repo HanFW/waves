@@ -11,12 +11,55 @@
     <ui:define name="content">  
     <h:body>
         <h:form>
+            <p:menubar>
+                <p:submenu label="Home">
+                    <p:menuitem value="Home" url="/web/internalSystem/infrastructure/employeeEnquiryManagerMainPage.xhtml"/>
+                </p:submenu>
+
+                <p:submenu label="Log Out">
+                    <p:menuitem value="Logout" actionListener="#{employeeLoginManagedBean.doLogOut}" />
+                </p:submenu>
+            </p:menubar>
+        </h:form>
+
+        <h:outputText value="Welcome #{employeeAccountManagedBean.userName} !"/>
+        <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
+        <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
+        <h:outputText value="You have logged in as: Enquiry Manager"/>
+
+        <h:form>
             <p:messages />
             <p:panel id="detail" header="Customer Case Detail">
-                <h:outputText value="Customer Input:   #{enquiryManagerManagedBean.caseDetailById}" /> 
-                <p:panel header="Customer Case Issues">
+                <p:panel>
+                    <h:outputText value="Customer Input:   #{enquiryManagerManagedBean.caseDetailById}" /> 
+                </p:panel>
+                <p:panel>
+                    <p:dataTable var="followUp" value="#{enquiryManagerManagedBean.caseFollowUpById}" 
+                                 paginator="true" rows="10"  selection="#{enquiryManagerManagedBean.selectedFollowUp}"
+                                 rowKey="#{followUp.followUpId}" emptyMessage="No Follow-Up Submitted From Customer">
+                        <f:facet name="header">Customer Case Follow-Up</f:facet>
+                        <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+                        <p:column headerText="Follow-Up ID">
+                            <h:outputText value="#{followUp.followUpId}" />
+                        </p:column>
+
+                        <p:column headerText="Status"> 
+                            <h:outputText value="#{followUp.followUpStatus}" />
+                        </p:column>
+
+                        <p:column headerText="Detail" >
+                            <h:outputText value="#{followUp.followUpDetail}" /> 
+                        </p:column>
+
+                        <p:column headerText="Reply"> 
+                            <h:outputText value="#{followUp.followUpSolution}" />
+                        </p:column>
+                    </p:dataTable>
+                </p:panel>
+                <p:panel>
                     <p:dataTable var="issue" value="#{enquiryManagerManagedBean.caseIssueById}" 
                                  paginator="true" rows="10" emptyMessage="No Issue Sent to Specialists">
+                        <f:facet name="header">Customer Case Issues</f:facet>
                         <p:column headerText="Issue ID">
                             <h:outputText value="#{issue.issueId}" />
                         </p:column>
@@ -24,9 +67,13 @@
                         <p:column headerText="Status"> 
                             <h:outputText value="#{issue.issueStatus}" />
                         </p:column>
-                        
+
                         <p:column headerText="Detail" >
                             <h:outputText value="#{issue.issueProblem}" /> 
+                        </p:column>
+
+                        <p:column headerText="Department" >
+                            <h:outputText value="#{issue.departmentTo}" /> 
                         </p:column>
 
                         <p:column headerText="Reply"> 
@@ -73,7 +120,7 @@
                     <h:outputText value="&lt;br/&gt;" escape="false" />
                     <p:row>
                         <p:selectOneMenu id="departmentTo" value="#{enquiryManagerManagedBean.departmentTo}" 
-                                         style="width:125px">
+                                         style="width:225px">
                             <f:selectItem itemLabel="Please Select Department" itemValue=" " />
                             <f:selectItem itemLabel="Card Department" itemValue="Card" />
                             <f:selectItem itemLabel="Loan Department" itemValue="Loan" />
