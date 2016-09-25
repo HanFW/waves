@@ -7,6 +7,7 @@ package managedbean.infrastructure;
 
 import ejb.infrastructure.entity.Employee;
 import ejb.infrastructure.session.EmployeeAdminSessionBeanLocal;
+import ejb.infrastructure.session.LoggingSessionBeanLocal;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
@@ -27,7 +28,10 @@ import javax.faces.event.ActionEvent;
 public class SystemAdminEditUserAccountManagedBean implements Serializable {
 
     @EJB
-    private EmployeeAdminSessionBeanLocal employeeAdminSessionBeanLocal;
+    private EmployeeAdminSessionBeanLocal employeeAdminSessionBeanLocal;   
+    @EJB
+    private LoggingSessionBeanLocal loggingSessionBeanLocal;
+
 
     private String targetEmployeeName;
     private String targetEmployeeDepartment;
@@ -54,6 +58,9 @@ public class SystemAdminEditUserAccountManagedBean implements Serializable {
             System.err.println("********** sr: " + sr);
         }
         employeeAdminSessionBeanLocal.updateEmployeeAccount(employeeId, targetEmployeeName, targetEmployeeDepartment, targetEmployeePosition, targetEmployeeMobile, targetEmployeeEmail, selectedRoles);
+        loggingSessionBeanLocal.createNewLogging("employee", getEmployeeIdViaSessionScope(),"System admin updates account information of employee "+ targetEmployeeName,
+                "successful",null);
+        
         System.out.println("clear");
         employee=null;
         employeeId=null;
@@ -67,12 +74,8 @@ public class SystemAdminEditUserAccountManagedBean implements Serializable {
         message = new FacesMessage(FacesMessage.SEVERITY_INFO, "User account has been successfully updated!", "account updated");
         context.addMessage(null, message);
         System.out.println("*** AccountManagedBean: account updated");
-//        employee=null;
-//        targetEmployeeName=null;
-//        targetEmployeeDepartment=null;
-//        targetEmployeePosition=null;
-//        targetEmployeeMobile=null;
-//        selectedRoles=null;
+        
+        
 
     }
 
@@ -201,5 +204,12 @@ public class SystemAdminEditUserAccountManagedBean implements Serializable {
             positions = employeeAdminSessionBeanLocal.getEmployeePositions();
         }
         return positions;
+    }
+    
+     public Long getEmployeeIdViaSessionScope() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        Employee employee = (Employee) context.getExternalContext().getSessionMap().get("employee");
+        Long employeeId = employee.getEmployeeId();
+        return employeeId;
     }
 }

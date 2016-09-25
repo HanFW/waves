@@ -10,6 +10,10 @@
     <h:body>
         <h:form>
             <p:menubar>
+                <p:submenu label="Task">
+                    <p:menuitem value="Assign Permisison to role" actionListener="#{employeeAssignPermissionManagedBean.AssignPermission}"/>
+                </p:submenu>
+                
                 <p:submenu label="Manage My Account">
                     <p:menuitem value="Change Password" actionListener="#{employeeLoginManagedBean.changePassword}" />
                 </p:submenu>
@@ -25,7 +29,7 @@
             </p:menubar>
         </h:form>
 
-        <h:outputText value="Welcome #{employeeAccountManagedBean.userName} !"/>
+        <!--<h:outputText value="Welcome !"/>-->
         <h:form>
 
             <p:tabView id='tabview' cache="false" dynamic='true' >
