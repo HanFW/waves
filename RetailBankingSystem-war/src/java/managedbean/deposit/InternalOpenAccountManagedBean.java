@@ -21,7 +21,7 @@ import org.primefaces.event.FlowEvent;
 @RequestScoped
 
 public class InternalOpenAccountManagedBean {
-    
+
     @EJB
     private MessageSessionBeanLocal messageSessionBeanLocal;
 
@@ -67,7 +67,7 @@ public class InternalOpenAccountManagedBean {
     private String subject;
     private Date receivedDate;
     private String messageContent;
-    
+
     public InternalOpenAccountManagedBean() {
     }
 
@@ -344,7 +344,7 @@ public class InternalOpenAccountManagedBean {
             bankAccountDepositPeriod = "None";
             currentFixedDepositPeriod = "0";
             fixedDepositStatus = "";
-            statementDateDouble=0.0;
+            statementDateDouble = 0.0;
 
             if (bankAccountType.equals("Monthly Savings Account")) {
                 bankAccountStatus = "Activated";
@@ -357,18 +357,21 @@ public class InternalOpenAccountManagedBean {
 
             newAccountId = bankAccountSessionBeanLocal.addNewAccount(bankAccountNum, bankAccountPwd, bankAccountType,
                     bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
-                    bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus, 
+                    bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
                     statementDateDouble, customerBasicId, newInterestId);
             bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountById(newAccountId);
 
             statusMessage = "New Account Saved Successfully.";
-            
+
             subject = "Welcome to Merlion Bank";
-                        Calendar cal = Calendar.getInstance();
-                        receivedDate = cal.getTime();
-                        messageContent = "Welcome to Merlion Bank! Please deposit/transfer sufficient fund to your bank account.";
-                        messageSessionBeanLocal.sendMessage("Merlion Bank", "Service", subject, receivedDate.toString(),
-                                messageContent, customerBasicId);
+            Calendar cal = Calendar.getInstance();
+            receivedDate = cal.getTime();
+            messageContent = "Welcome to Merlion Bank! Please deposit/transfer sufficient fund to activate your bank account.\n"
+                    + "For fixed depsit account, please declare your fixed deposit period first before activating your account.\n"
+                    + "Your daily transfer limit is S$3000. You could update your daily transfer limit under 'My Account'.\n"
+                    + "If you have any enquiry, please contact us at 800 820 8820 or you can write an enquiry after you login.\n";
+            messageSessionBeanLocal.sendMessage("Merlion Bank", "Service", subject, receivedDate.toString(),
+                    messageContent, customerBasicId);
 
             ec.getFlash().put("statusMessage", statusMessage);
             ec.getFlash().put("newAccountId", newAccountId);
