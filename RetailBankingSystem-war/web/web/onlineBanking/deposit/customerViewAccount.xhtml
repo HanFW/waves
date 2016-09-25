@@ -34,16 +34,16 @@
                             <p:column headerText="Transfer"> 
                                 <center>
                                     <p:menuButton value="Select One ">
-                                        <p:menuitem value="Transfer To My Account" action="/web/onlineBanking/deposit/customerToMyAccount.xhtml"/>
-                                        <p:menuitem value="Transfer To Other Merlion Accounts" action="/web/onlineBanking/deposit/ToOthersAccount.xhtml"/>
-                                        <p:menuitem value="One-Time Transfer" action="/web/onlineBanking/deposit/OneTimeTransfer.xhtml"/>
+                                        <p:menuitem value="Transfer To My Account" action="/web/onlineBanking/deposit/customerToMyAccount.xhtml?faces-redirect=true"/>
+                                        <p:menuitem value="Transfer To Other Merlion Accounts" action="/web/onlineBanking/deposit/ToOthersAccount.xhtml?faces-redirect=true"/>
+                                        <p:menuitem value="One-Time Transfer" action="/web/onlineBanking/deposit/OneTimeTransfer.xhtml?faces-redirect=true"/>
                                     </p:menuButton>
                                 </center>
                             </p:column>
 
                             <p:column headerText="Statement"> 
                                 <center>
-                                    <p:commandButton process="@this" action="/web/onlineBanking/deposit/customerViewStatement.xhtml" icon="ui-icon-document">
+                                    <p:commandButton process="@this" action="/web/onlineBanking/deposit/customerViewStatement.xhtml?faces-redirect=true" icon="ui-icon-document">
                                     </p:commandButton>
                                 </center>
                             </p:column>

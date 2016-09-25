@@ -5,7 +5,6 @@ import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import java.io.IOException;
 import java.util.Date;
-import java.util.Map;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
@@ -58,6 +57,8 @@ public class EmployeeTransferManagedBean {
     }
 
     public void submit() throws IOException {
+        System.out.println("=");
+        System.out.println("====== deposit/EmployeeTransferManagedBean: submit() ======");
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
         CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum.toUpperCase());

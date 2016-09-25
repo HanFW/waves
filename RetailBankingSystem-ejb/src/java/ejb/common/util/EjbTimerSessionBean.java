@@ -17,10 +17,11 @@ import ejb.deposit.session.StatementSessionBeanLocal;
 @Stateless
 @LocalBean
 
-public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal{
+public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
+
     @EJB
     private StatementSessionBeanLocal statementSessionBeanLocal;
-    
+
     @EJB
     private BankAccountSessionBeanLocal bankAccountSessionLocal;
 
@@ -30,18 +31,20 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal{
     private EntityManager entityManager;
 
     private final String TIMER_NAME_10000MS = "EJB-TIMER-10000MS";
-    private final int TIMER_DURATION_10000MS = 15000;
+    private final int TIMER_DURATION_10000MS = 10000;
+    private final String TIMER_NAME_15000MS = "EJB-TIMER-15000MS";
+    private final int TIMER_DURATION_15000MS = 15000;
     private final String TIMER_NAME_300000MS = "EJB-TIMER-300000MS";
     private final int TIMER_DURATION_300000MS = 300100;
 
     public EjbTimerSessionBean() {
 
     }
-    
+
     public EjbTimerSessionBean(String bankAccountNum) {
-        
+
     }
-    
+
     @Override
     public void createTimer10000MS() {
         TimerService timerService = ctx.getTimerService();
@@ -50,6 +53,16 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal{
                 TIMER_DURATION_10000MS, new String(TIMER_NAME_10000MS));
         System.out.println("{***10000MS Timer created" + String.valueOf(timer10000ms.getTimeRemaining()) + ","
                 + timer10000ms.getInfo().toString());
+    }
+
+    @Override
+    public void createTimer15000MS() {
+        TimerService timerService = ctx.getTimerService();
+
+        Timer timer15000ms = timerService.createTimer(TIMER_DURATION_15000MS,
+                TIMER_DURATION_15000MS, new String(TIMER_NAME_15000MS));
+        System.out.println("{***15000MS Timer created" + String.valueOf(timer15000ms.getTimeRemaining()) + ","
+                + timer15000ms.getInfo().toString());
     }
 
     @Override
@@ -67,18 +80,34 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal{
             }
         }
     }
-    
+
+    @Override
+    public void cancelTimer15000MS() {
+        TimerService timerService = ctx.getTimerService();
+        Collection timers = timerService.getTimers();
+
+        for (Object obj : timers) {
+            Timer timer = (Timer) obj;
+
+            if (timer.getInfo().toString().equals(TIMER_NAME_15000MS));
+            {
+                timer.cancel();
+                System.out.println("*** 15000MS Timer cancelled");
+            }
+        }
+    }
+
     @Override
     public void createTimer300000MS() {
         TimerService timerService = ctx.getTimerService();
 
         Timer timer300000ms = timerService.createTimer(TIMER_DURATION_300000MS,
                 TIMER_DURATION_300000MS, new String(TIMER_NAME_300000MS));
-        
+
         System.out.println("{***300000MS Timer created" + String.valueOf(timer300000ms.getTimeRemaining()) + ","
                 + timer300000ms.getInfo().toString());
     }
-    
+
     @Override
     public void cancelTimer300000MS() {
         TimerService timerService = ctx.getTimerService();
@@ -97,30 +126,33 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal{
 
     @Timeout
     public void handleTimeout(Timer timer) {
-        if (timer.getInfo().toString().equals(TIMER_NAME_10000MS)) 
-        {
+        if (timer.getInfo().toString().equals(TIMER_NAME_10000MS)) {
             handleTimeout_10000ms();
-        } 
-        else if(timer.getInfo().toString().equals(TIMER_NAME_300000MS))
-        {
+        } else if (timer.getInfo().toString().equals(TIMER_NAME_300000MS)) {
             handleTimeout_300000ms();
-        }
-        else {
+        } else if (timer.getInfo().toString().equals(TIMER_NAME_15000MS)) {
+            handleTimeout_15000ms();
+        } else {
             System.out.println("*** Unknown timer timeout: " + timer.getInfo().toString());
         }
     }
 
     private void handleTimeout_10000ms() {
 //        System.out.println("*** 10000MS Timer timeout");
-        
+
         bankAccountSessionLocal.interestAccuring();
-        bankAccountSessionLocal.resetDailyTransferLimit();
     }
-    
+
     private void handleTimeout_300000ms() {
         System.out.println("*** 300000MS Timer timeout");
-        
+
         bankAccountSessionLocal.interestCrediting();
         statementSessionBeanLocal.generateStatement();
+    }
+
+    private void handleTimeout_15000ms() {
+//        System.out.println("*** 10000MS Timer timeout");
+
+        bankAccountSessionLocal.resetDailyTransferLimit();
     }
 }
