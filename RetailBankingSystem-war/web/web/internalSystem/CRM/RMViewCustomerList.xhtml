@@ -25,7 +25,7 @@
                     </p:column>
 
                     <p:column > 
-                        <p:commandButton value="View Advanced Profile" actionListener="#{rMUpdateCustomerAdvancedManagedBean.redirectToViewAdvanced}" ajax="false">
+                        <p:commandButton value="Update Advanced Profile" actionListener="#{rMUpdateCustomerAdvancedManagedBean.redirectToViewAdvanced}" ajax="false">
                             <f:setPropertyActionListener target="#{rMUpdateCustomerAdvancedManagedBean.customerOnlineBankingAccountNum}" value="#{customerAdvanced.customerBasic.customerIdentificationNum}" />
                         </p:commandButton>
                     </p:column>

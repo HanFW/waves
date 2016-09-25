@@ -43,45 +43,6 @@
                     </p:column>
                 </p:dataTable>
             </p:panel>
-
-            <p:panel header="Pending Customer Follow-Ups">
-                <p:dataTable var="followUp" value="#{enquiryManagerManagedBean.pendingFollowUps}" 
-                             paginator="true" rows="10" emptyMessage="No Pending Follow-Ups">
-                    <p:column headerText="Follow-Up ID" >
-                        <h:outputText value="#{followUp.followUpId}" /> 
-                    </p:column>
-
-                    <p:column headerText="Case ID" >
-                        <h:outputText value="#{followUp.enquiryCase.caseId}" /> 
-                    </p:column>
-
-                    <p:column headerText="Created Time">
-                        <h:outputText value="#{followUp.sendTime}" />
-                    </p:column>
-
-                    <p:column headerText="Detail" >
-                        <h:outputText value="#{followUp.followUpDetail}" /> 
-                    </p:column>
-
-                    <p:column headerText="Status"> 
-                        <h:outputText value="#{followUp.followUpStatus}" />
-                    </p:column>
-
-                    <p:column headerText="Issue Created"> 
-                        <h:outputText value="#{enquiryManagerManagedBean.followUpIssueCreated(followUp.followUpId)}" />
-                    </p:column>
-
-                    <p:column headerText="All Issues Replied"> 
-                        <h:outputText value="#{enquiryManagerManagedBean.followUpIssueReplied(followUp.followUpId)}" />
-                    </p:column>
-
-                    <p:column > 
-                        <p:commandButton value="Reply" actionListener="#{enquiryManagerManagedBean.redirectToReplyFollowUp}">
-                            <f:setPropertyActionListener target="#{enquiryManagerManagedBean.followUpId}" value="#{followUp.followUpId}" />
-                        </p:commandButton>
-                    </p:column>
-                </p:dataTable>
-            </p:panel>
         </h:form>
     </h:body>
 </html>

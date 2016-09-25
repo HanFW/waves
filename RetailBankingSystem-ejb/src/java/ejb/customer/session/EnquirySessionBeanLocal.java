@@ -47,19 +47,21 @@ public interface EnquirySessionBeanLocal {
 
     public List<Issue> getCaseIssue(Long caseId);
 
-    public List<Issue> getFollowUpIssue(Long followUpId);
+    public List<FollowUp> getCaseFollowUp(Long caseId);
+//
+//    public List<Issue> getFollowUpIssue(Long followUpId);
 
     public String addNewCase(Long customerId, String type, String detail);
 
-    public String addNewCaseIssue(Long caseId, String departmentTo, String issueProblem);
+    public String addNewCaseIssue(Long caseId, String departmentTo, String issueProblem, List<FollowUp> followUps);
 
-    public String addNewFollowUpIssue(Long followUpId, String departmentTo, String issueProblem);
+//    public String addNewFollowUpIssue(Long followUpId, String departmentTo, String issueProblem);
 
     public String updateStatus(Long caseId, String caseStatus);
 
     public String addFollowUp(Long caseId, String caseFollowUp);
 
-    public String replyCustomerCase(Long caseId, String caseReply);
+    public String replyCustomerCase(Long caseId, String caseReply, List<FollowUp> selectedFollowUp, List<FollowUp> followUps);
 
     public String replyCustomerFollowUp(Long followUpId, String followUpSolution);
 
@@ -67,10 +69,14 @@ public interface EnquirySessionBeanLocal {
 
     public String caseIssueIsCreated(Long caseId);
 
-    public String followUpIssueIsCreated(Long followUpId);
+//    public String followUpIssueIsCreated(Long followUpId);
 
     public String caseIssueAllReplied(Long caseId);
 
-    public String followUpIssueAllReplied(Long followUpId);
+//    public String followUpIssueAllReplied(Long followUpId);
+    
+    public EnquiryCase retrieveEnquiryById(Long caseId);
+    
+    public String deleteCase(Long caseId);
 
 }
