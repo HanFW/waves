@@ -19,6 +19,7 @@ import javax.faces.event.ActionEvent;
 import javax.persistence.Query;
 import ejb.infrastructure.session.CustomerAdminSessionBeanLocal;
 import ejb.infrastructure.session.EmployeeAdminSessionBeanLocal;
+import javax.faces.context.ExternalContext;
 import ejb.infrastructure.session.LoggingSessionBeanLocal;
 
 /**
@@ -159,6 +160,17 @@ public class EmployeeLoginManagedBean implements Serializable {
 
     public void setEmployee(Employee employee) {
         this.employee = employee;
+    }
+    public void redirectToViewCustomer() throws IOException {
+        FacesContext context = FacesContext.getCurrentInstance();
+        ExternalContext ec = context.getExternalContext();
+        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/CRM/RMViewCustomerList.xhtml");
+    }
+    
+    public void redirectToSearchCustomer() throws IOException {
+        FacesContext context = FacesContext.getCurrentInstance();
+        ExternalContext ec = context.getExternalContext();
+        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/CRM/RMSearchCustomer.xhtml");
     }
 
     public boolean isLoggedIn() {

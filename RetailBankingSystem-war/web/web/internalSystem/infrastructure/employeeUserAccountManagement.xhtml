@@ -21,6 +21,11 @@
                 <p:submenu label="Log Out">
                     <p:menuitem value="Logout" actionListener="#{employeeLoginManagedBean.doLogOut}" />
                 </p:submenu>
+                <p:submenu label="Test">
+                    <p:menuitem value="Search My Customer" actionListener="#{employeeLoginManagedBean.redirectToSearchCustomer}"/>
+                    <p:menuitem value="Update advanced" actionListener="#{employeeLoginManagedBean.redirectToViewCustomer}" />
+                </p:submenu>
+                
             </p:menubar>
         </h:form>
 

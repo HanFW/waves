@@ -3,10 +3,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>Home</title>
+        <title>View Account</title>
         <style type="text/css">
             .gritter-notice-wrapper {
                 left:200px;
@@ -29,7 +28,6 @@
                     <p:menuitem value="Activate Fixed Deposit Account" url="/web/onlineBanking/deposit/customerActivateFixedDepositAccount.xhtml" />
                     <p:menuitem value="Change Password" url="/web/onlineBanking/deposit/customerChangeBankAccountPwd.xhtml" />
                     <p:menuitem value="Forgot Password" url="/web/onlineBanking/deposit/customerForgotPassword.xhtml" />
-                    <p:menuitem value="Message Box" url="/web/onlineBanking/infrastructure/customerViewMessage.xhtml" />
                 </p:submenu>
 
                 <p:submenu label="Transfer" >
@@ -43,13 +41,11 @@
 
                 <p:submenu label="Enquiry">
                     <p:menuitem value="Write an enquiry" url="/web/onlineBanking/customer/customerEnquiry.xhtml" />
-                    <p:menuitem value="View Enquiry" url="/web/onlineBanking/customer/CRMCustomerViewEnquiry.xhtml" />
                 </p:submenu>
 
                 <p:submenu label="My profile">
                     <p:menuitem value="Change password" url="/web/onlineBanking/customer/customerChangePIN.xhtml" />
                     <p:menuitem value="Update basic profile" url="/web/onlineBanking/customer/customerUpdateBasicProfile.xhtml" />
-                    <p:menuitem value="Delete account" actionListener="#{customerDeleteIBAccountManagedBean.displayServices}" />
                 </p:submenu>
 
                 <p:submenu label="Logout">
@@ -59,44 +55,36 @@
         </h:form>
         <h:form>
             <br/>
-            <p:panel>
-                <p:outputLabel value="Your Quick Summary" style="margin-left: 95px"/>
-                <br/>
-                <br/>
-                <p:chart type="bar" model="#{depositIndexManagedBean.barModel}" style="height:300px;width: 300px;alignment-adjust: central"/>
-                <br/>
-                <p:outputLabel value="Deposits" style="font-weight: bold; font-size: 24px" />
+            <p:panel header="Message Box" id="panel">
+                <h:outputLabel value="My Message" style="font-weight: bold; font-size: 24px" />
                 <p:separator/>
                 <br/>
-                <p:dataTable var="bankAccount" value="#{depositIndexManagedBean.bankAccount}" 
-                             paginator="true" rows="10" emptyMessage="No Account">
-
-                    <p:column headerText="Bank Account Type"> 
-                        <p:commandLink process="@this" action="/web/onlineBanking/deposit/customerViewTransactionDone.xhtml">
-                            <h:outputText value="#{bankAccount.bankAccountType}" />
-                            <f:setPropertyActionListener value="#{bankAccount.bankAccountNum}" target="#{transactionManagedBean.bankAccountNum}" />
-                        </p:commandLink>
-                    </p:column>
-
-                    <p:column headerText="Bank Account Number" >
-                        <p:commandLink process="@this" action="/web/onlineBanking/deposit/customerViewTransactionDone.xhtml" >
-                            <h:outputText value="#{bankAccount.bankAccountNum}" /> 
-                            <f:setPropertyActionListener value="#{bankAccount.bankAccountNum}" target="#{transactionManagedBean.bankAccountNum}" />
-                        </p:commandLink>
-                    </p:column>
-
-                    <p:column headerText="Balance"> 
-                        <p:commandLink process="@this" action="/web/onlineBanking/deposit/customerViewTransactionDone.xhtml" >
-                            <h:outputText value="S$#{bankAccount.bankAccountBalance}" />
-                            <f:setPropertyActionListener value="#{bankAccount.bankAccountNum}" target="#{transactionManagedBean.bankAccountNum}" />
-                        </p:commandLink>
-                    </p:column>
-
-                </p:dataTable>
-                
+                <h:outputText value="From: " style="font-weight: bold"/>
+                <h:outputText value="#{customerViewMessageContentManagedBean.fromWhere}"/>
+                <br/>
+                <h:outputText value="Type of Message: " style="font-weight: bold"/>
+                <h:outputText value="#{customerViewMessageContentManagedBean.messageType}"/>
+                <br/>
+                <h:outputText value="Subject: " style="font-weight: bold"/>
+                <h:outputText value="#{customerViewMessageContentManagedBean.subject}"/>
+                <br/>
+                <h:outputText value="Date: " style="font-weight: bold"/>
+                <h:outputText value="#{customerViewMessageContentManagedBean.receivedDate}"/>
+                <br/>
+                <h:outputText value="Message: " style="font-weight: bold"/>
+                <h:outputText value="#{customerViewMessageContentManagedBean.messageContent}"/>
+                <br/>
             </p:panel>
+
+            <p:commandButton id="backBtn" action="/web/onlineBanking/infrastructure/customerViewMessage.xhtml" 
+                             value="Back" update="panel" immediate = "true">
+                <p:confirm header="Cancel" message="Are you sure?" />
+            </p:commandButton>
+
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" action="/web/onlineBanking/infrastructure/customerViewMessage.xhtml"/>
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" />
+            </p:confirmDialog>
         </h:form>
-        
-        <ezcomp:CCTimeout/>
     </h:body>
 </html>

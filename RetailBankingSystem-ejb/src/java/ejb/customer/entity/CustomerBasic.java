@@ -1,6 +1,7 @@
 package ejb.customer.entity;
 
 import ejb.deposit.entity.BankAccount;
+import ejb.deposit.entity.MessageBox;
 import ejb.deposit.entity.Payee;
 import java.io.Serializable;
 import javax.persistence.Entity;
@@ -11,6 +12,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.FetchType;
 import java.util.List;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 @Entity
 public class CustomerBasic implements Serializable {
@@ -52,6 +54,12 @@ public class CustomerBasic implements Serializable {
 
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
     private List<EnquiryCase> enquiryCase;
+    
+    @OneToOne(cascade={CascadeType.ALL},fetch=FetchType.EAGER,mappedBy="customerBasic")
+    private CustomerAdvanced customerAdvanced;
+    
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
+    private List<MessageBox> messageBox;
 
     public Long getCustomerBasicId() {
         return customerBasicId;
@@ -265,6 +273,23 @@ public class CustomerBasic implements Serializable {
         this.customerOTPSecret = customerOTPSecret;
     }
 
+    public List<MessageBox> getMessageBox() {
+        return messageBox;
+    }
+
+    public void setMessageBox(List<MessageBox> messageBox) {
+        this.messageBox = messageBox;
+    }
+
+    public CustomerAdvanced getCustomerAdvanced() {
+        return customerAdvanced;
+    }
+
+    public void setCustomerAdvanced(CustomerAdvanced customerAdvanced) {
+        this.customerAdvanced = customerAdvanced;
+    }
+
+    
     @Override
     public int hashCode() {
         int hash = 0;

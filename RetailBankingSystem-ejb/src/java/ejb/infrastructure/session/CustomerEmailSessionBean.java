@@ -39,18 +39,25 @@ public class CustomerEmailSessionBean implements CustomerEmailSessionBeanLocal {
         switch (subject) {
             //deposit: open deposit account
             case "openAccount":
-                emailText += "You have an deposit account opened. ";
+                emailText += "You have a deposit account opened. ";
                 if (actions.get("onlineBanking").equals("yes")) {
                     emailText += "Your online banking account has been successfully created.\n";
-                    emailText += "Account number: " + customer.getCustomerOnlineBankingAccountNum() + "\n";
-                    emailText += "Initial password: " + actions.get("onlineBankingPassword") + "\n";
-                    emailText += "Please go to ??? and activate your online banking account. ";
+                    emailText += "Initial User ID: " + customer.getCustomerOnlineBankingAccountNum() + "\n";
+                    emailText += "Initial PIN: " + actions.get("onlineBankingPassword") + "\n";
+                    emailText += "Please login with your initial User ID and PIN to activate your online banking account.";
                 }
                 break;
             case "resetOnlineBankingPassword":
-                emailText += "Your online banking account password has been reset as follow: \n";
-                emailText += "Initial password: " + actions.get("onlineBankingPassword") + "\n";
-                emailText += "Please go to ??? and activate your online banking account. ";
+                emailText += "Your online banking account PIN has been reset as follow: \n";
+                emailText += "Initial PIN: " + actions.get("onlineBankingPassword") + "\n";
+                emailText += "Please proceed to change your PIN after login.";
+                break;
+            case "recreateIBAccount":
+                emailText += "Your online banking account has been successfully reopened. \n";
+                emailText += "Initial User ID: " + actions.get("userId") + "\n";
+                emailText += "Initial PIN: " + actions.get("pin") + "\n";
+                emailText += "Please login with your initial User ID and PIN to activate your online banking account.";
+                break;
         }
 
         try {
