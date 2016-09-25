@@ -30,7 +30,7 @@ public class Issue implements Serializable {
     private String issueStatus;
     private String createdTime;
     
-    @ManyToOne(cascade={CascadeType.ALL},fetch=FetchType.EAGER)
+    @ManyToOne(cascade={CascadeType.PERSIST},fetch=FetchType.EAGER)
     private EnquiryCase enquiryCase;
     
 //    @ManyToOne(cascade={CascadeType.ALL},fetch=FetchType.EAGER)

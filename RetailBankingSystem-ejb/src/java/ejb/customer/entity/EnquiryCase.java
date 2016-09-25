@@ -40,7 +40,7 @@ public class EnquiryCase implements Serializable {
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "enquiryCase")
     private List<FollowUp> followUp;
 
-    @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER)
     private CustomerBasic customerBasic;
 
     public Long getCaseId() {
