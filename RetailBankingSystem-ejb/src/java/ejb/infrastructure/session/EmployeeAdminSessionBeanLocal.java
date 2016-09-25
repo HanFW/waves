@@ -6,6 +6,7 @@
 package ejb.infrastructure.session;
 
 import ejb.infrastructure.entity.Employee;
+import ejb.infrastructure.entity.Permission;
 import ejb.infrastructure.entity.Role;
 import java.util.List;
 import java.util.Set;
@@ -59,13 +60,19 @@ public interface EmployeeAdminSessionBeanLocal {
     
     public List<String> getRoles();
     
-    public String[] getPermissionList(String roleName);
+    public List<Permission> getPermissionList(String roleName);
+    
+    public String[] getPermissionList1();
     
     public String[] getSelectedPermissionList(Long roleId);
     
     public void setSelectedPermissionList(String roleName,String[] selectedPermission);
     
     public Role getRoleByName(String roleName);
+    
+    public void deletePermission(String roleName,String permissionName);
+    
+    public void addPermissionToRole(String roleName, String permissionName);
     
     
 }
