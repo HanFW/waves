@@ -4,6 +4,7 @@ import ejb.customer.entity.CustomerBasic;
 import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
+import ejb.infrastructure.session.LoggingSessionBeanLocal;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
@@ -21,6 +22,8 @@ import javax.faces.context.FacesContext;
 @RequestScoped
 
 public class ForgotPasswordManagedBean {
+    @EJB
+    private LoggingSessionBeanLocal loggingSessionBeanLocal;
     
     @EJB
     private BankAccountSessionBeanLocal bankAccountSessionBeanLocal;
@@ -122,6 +125,8 @@ public class ForgotPasswordManagedBean {
     }
     
     public void submit() throws IOException {
+        System.out.println("=");
+        System.out.println("====== deposit/ForgotPasswordManagedBean: submit() ======");
         
         ec = FacesContext.getCurrentInstance().getExternalContext();
         
@@ -145,6 +150,7 @@ public class ForgotPasswordManagedBean {
                 ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
                 Map<String, Object> sessionMap = externalContext.getSessionMap();
                 sessionMap.put("bankAccountNum", bankAccountNum);
+                loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "forgot password", "successful", null);
                 
                 ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerForgotPasswordDone.xhtml?faces-redirect=true");
             }

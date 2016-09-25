@@ -4,6 +4,7 @@ import ejb.customer.entity.CustomerBasic;
 import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
+import ejb.infrastructure.session.LoggingSessionBeanLocal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +20,10 @@ import javax.faces.context.FacesContext;
 @RequestScoped
 
 public class EmployeeChangeDailyTransferLimitDone {
+
+    @EJB
+    private LoggingSessionBeanLocal loggingSessionBeanLocal;
+
     @EJB
     private CRMCustomerSessionBeanLocal customerSessionBeanLocal;
 
@@ -42,7 +47,7 @@ public class EmployeeChangeDailyTransferLimitDone {
 
         customerIdentificationNum = ec.getSessionMap().get("customerIdentificationNum").toString();
         CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum);
-        
+
         List<BankAccount> bankAccounts = bankAccountSessionLocal.retrieveBankAccountByCusIC(customerBasic.getCustomerIdentificationNum());
 
         myBankAccounts = new HashMap<String, String>();
@@ -85,10 +90,13 @@ public class EmployeeChangeDailyTransferLimitDone {
     }
 
     public void submit() {
+        System.out.println("=");
+        System.out.println("====== deposit/EmployeeChangeDailyTransferLimitDone: submit() ======");
 
         bankAccountNum = handleAccountString(bankAccountNumWithType);
         bankAccountSessionLocal.updateDailyTransferLimit(bankAccountNum, dailyTransferLimit);
 
+        loggingSessionBeanLocal.createNewLogging("employee", null, "update daily transfer limit", "successful", null);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("You have updated your daily transfer limit successfully.", " Successfully"));
     }
 

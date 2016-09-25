@@ -3,6 +3,7 @@ package managedbean.deposit.employee;
 import ejb.customer.entity.CustomerBasic;
 import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
+import ejb.infrastructure.session.LoggingSessionBeanLocal;
 import java.io.IOException;
 import java.util.Date;
 import java.util.Map;
@@ -17,6 +18,9 @@ import javax.faces.context.FacesContext;
 @RequestScoped
 
 public class EmployeeForgotDepositPwdManagedBean {
+    @EJB
+    private LoggingSessionBeanLocal loggingSessionBeanLocal;
+    
     @EJB
     private CRMCustomerSessionBeanLocal customerSessionBeanLocal;
     
@@ -66,6 +70,8 @@ public class EmployeeForgotDepositPwdManagedBean {
     }
     
     public void submit() throws IOException{
+        System.out.println("=");
+        System.out.println("====== deposit/EmployeeForgotDepositPwdManagedBean: submit() ======");
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
         CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum.toUpperCase());
@@ -86,6 +92,8 @@ public class EmployeeForgotDepositPwdManagedBean {
                 ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
                 Map<String, Object> sessionMap = externalContext.getSessionMap();
                 sessionMap.put("bankAccountNum", bankAccountNum);
+                
+                loggingSessionBeanLocal.createNewLogging("employee", null, "forgot password", "successful", null);
                 
                 ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/deposit/employeeForgotPasswordDone.xhtml?faces-redirect=true");
             }

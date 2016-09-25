@@ -1,15 +1,9 @@
 package managedbean.deposit.employee;
 
-import ejb.customer.entity.CustomerBasic;
-import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import ejb.deposit.session.TransactionSessionBeanLocal;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
@@ -21,9 +15,6 @@ import javax.faces.context.FacesContext;
 @RequestScoped
 
 public class EmployeeTransferDoneManagedBean {
-
-    @EJB
-    private CRMCustomerSessionBeanLocal customerSessionBeanLocal;
 
     @EJB
     private TransactionSessionBeanLocal transactionSessionBeanLocal;
@@ -149,11 +140,11 @@ public class EmployeeTransferDoneManagedBean {
         if (bankAccountFrom.getBankAccountId() == null || bankAccountTo.getBankAccountId() == null) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Your deposit account does not exist.", "Failed!"));
         } else if (bankAccountTo.getBankAccountType().equals("Fixed Deposit Account")) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Dear Customer, you are not allowed transferring fund to a fixed deposit account. ", "Failed!"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Customer is not allowed transferring fund to a fixed deposit account. ", "Failed!"));
         } else {
 
             if (Double.valueOf(bankAccountFrom.getTransferBalance()) < transferAmt) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Dear Customer, your transfer amount has been exceeded your daily transfer limit.", "Failed!"));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Transfer amount has been exceeded your daily transfer limit.", "Failed!"));
             } else {
 
                 if (fromAccount.equals(toAccount)) {
@@ -165,11 +156,11 @@ public class EmployeeTransferDoneManagedBean {
 
                         if (activationCheck.equals("Initial deposit amount is insufficient.")) {
                             if (bankAccountTo.getBankAccountType().equals("Bonus Savings Account")) {
-                                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Dear customer, minimum initial deposit amount is S$3000", "Failed"));
+                                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Minimum initial deposit amount is S$3000", "Failed"));
                             } else if (bankAccountTo.getBankAccountType().equals("Basic Savings Account")) {
-                                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!Dear customer, minimum initial deposit amount is S$1", "Failed"));
+                                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!Minimum initial deposit amount is S$1", "Failed"));
                             } else if (bankAccountTo.getBankAccountType().equals("Fixed Deposit Account")) {
-                                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!Dear customer, minimum initial deposit amount is S$1000", "Failed"));
+                                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!Minimum initial deposit amount is S$1000", "Failed"));
                             }
                         } else if (activationCheck.equals("Please contact us at 800 820 8820 or visit our branch.")) {
                             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Please contact us at 800 820 8820 or visit our branch.", "Failed"));

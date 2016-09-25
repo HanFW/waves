@@ -18,6 +18,8 @@ public class VerifySessionBean implements VerifySessionBeanLocal {
     @Override
     public Long addNewVerify(String customerName,String customerIdentificationType,
             String customerIdentificationNum, String identification) {
+        System.out.println("*");
+        System.out.println("****** deposit/TransactionSessionBean: addNewVerify() ******");
         Verify verify = new Verify();
         
         verify.setCustomerName(customerName);
@@ -33,28 +35,29 @@ public class VerifySessionBean implements VerifySessionBeanLocal {
     
     @Override
     public Verify retrieveVerifyByCusIc(String customerIdentificationNum) {
+        System.out.println("*");
+        System.out.println("****** deposit/TransactionSessionBean: retrieveVerifyByCusIc() ******");
         Verify verify = new Verify();
         
         try{
-            System.out.println("retrieve try");
             Query query = entityManager.createQuery("Select v From Verify v Where v.customerIdentificationNum=:customerIdentificationNum");
             query.setParameter("customerIdentificationNum",customerIdentificationNum);
             
             if(query.getResultList().isEmpty()){
-                System.out.println("retrieve try if");
+                System.out.println("****** deposit/TransactionSessionBean: retrieveVerifyByCusIc(): invalid customer identification number: no result found, return new verify");
                 return new Verify();
             }
             else {
-                System.out.println("retrieve try else");
+                System.out.println("****** deposit/TransactionSessionBean: retrieveVerifyByCusIc(): valid customer identification number: return verify");
                 verify = (Verify)query.getResultList().get(0);
             }
         }
         catch(EntityNotFoundException enfe) {
-            System.out.println("\nEntity not found error: "+enfe.getMessage());
+            System.out.println("****** deposit/TransactionSessionBean: retrieveVerifyByCusIc(): Entity not found error: "+enfe.getMessage());
             return new Verify();
         }
         catch(NonUniqueResultException nure) {
-            System.out.println("\nNon unique result error: "+nure.getMessage());
+            System.out.println("****** deposit/TransactionSessionBean: retrieveVerifyByCusIc(): Non unique result error: "+nure.getMessage());
         }
         
         return verify;

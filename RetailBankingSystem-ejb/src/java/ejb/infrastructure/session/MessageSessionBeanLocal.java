@@ -11,4 +11,5 @@ public interface MessageSessionBeanLocal {
             String receivedDate,String messageContent,Long customerBasicId);
     public MessageBox retrieveMessageBoxById(Long messageBoxId);
     public String deleteMessage(Long messageId);
+    public void sendMessage(String fromWhere, String messageType, String subject, String receivedDate, String messageContent, Long customerBasicId);
 }

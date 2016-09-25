@@ -45,6 +45,8 @@ public class DepositIndexManagedBean {
     }
     
     private BarChartModel initBarModel() {
+        System.out.println("=");
+        System.out.println("====== deposit/DepositIndexManagedBean: initBarModel() ======");
         ec = FacesContext.getCurrentInstance().getExternalContext();
         
         CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");

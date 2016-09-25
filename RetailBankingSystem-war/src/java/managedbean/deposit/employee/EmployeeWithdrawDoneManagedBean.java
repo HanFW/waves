@@ -1,21 +1,21 @@
-package managedbean.deposit;
+package managedbean.deposit.employee;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 
-@Named(value = "withdrawDoneManagedBean")
+@Named(value = "employeeWithdrawDoneManagedBean")
 @RequestScoped
 
-public class WithdrawDoneManagedBean {
+public class EmployeeWithdrawDoneManagedBean {
 
     private String statusMessage;
     private String withdrawAccountNum;
     private String withdrawAmt;
     private String transactionId;
 
-    public WithdrawDoneManagedBean() {
+    public EmployeeWithdrawDoneManagedBean() {
     }
 
     @PostConstruct
