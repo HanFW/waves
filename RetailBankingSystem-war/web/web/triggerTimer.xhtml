@@ -10,25 +10,27 @@
     <h:body>
         <h:form>
             <p:panel id="panel">
+                <p:messages />
+                
                 <p:commandButton process="@this" actionListener="#{triggerTimerManagedBean.createOneDayTimer()}" 
                                  value="Create Timer(One Day)" ajax="true" update="panel"/>
                 <br/>
                 <p:commandButton process="@this" action="#{triggerTimerManagedBean.cancelOneDayTimer()}" 
-                               value="Cancel Timer(One Day)"/>
+                               value="Cancel Timer(One Day)" ajax="true" update="panel"/>
                 <br/>
                 <br/>
                 <p:commandButton process="@this" action="#{triggerTimerManagedBean.createOneMonthTimer()}" 
-                               value="Create Timer(One Month)"/>
+                               value="Create Timer(One Month)" ajax="true" update="panel"/>
                 <br/>
                 <p:commandButton process="@this" action="#{triggerTimerManagedBean.cancelOneMonthTimer()}" 
-                               value="Cancel Timer(One Day)"/>
+                               value="Cancel Timer(One Day)" ajax="true" update="panel"/>
                 <br/>
                 <br/>
                 <p:commandButton process="@this" action="#{triggerTimerManagedBean.createDailyTransferTimer()}" 
-                               value="Create Timer(Daily Transfer Limit)"/>
+                               value="Create Timer(Daily Transfer Limit)" ajax="true" update="panel"/>
                 <br/>
                 <p:commandButton process="@this" action="#{triggerTimerManagedBean.cancelDailyTransferTimer()}" 
-                               value="Cancel Timer(Daily Transfer Limit)"/>
+                               value="Cancel Timer(Daily Transfer Limit)" ajax="true" update="panel"/>
                 <br/>
             </p:panel>
         </h:form>
