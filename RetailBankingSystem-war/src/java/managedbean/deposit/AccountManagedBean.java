@@ -32,6 +32,7 @@ import org.apache.commons.io.IOUtils;
 @ViewScoped
 
 public class AccountManagedBean implements Serializable {
+
     @EJB
     private LoggingSessionBeanLocal loggingSessionBeanLocal;
 
@@ -863,7 +864,7 @@ public class AccountManagedBean implements Serializable {
                         bankAccountSessionLocal.retrieveBankAccountByCusIC(customerIdentificationNum).add(bankAccount);
 
                         statusMessage = "New Account Saved Successfully.";
-                        loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "open account", "successful",null);
+                        loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "open account", "successful", null);
 
                         subject = "Welcome to Merlion Bank";
                         Calendar cal = Calendar.getInstance();
@@ -874,7 +875,7 @@ public class AccountManagedBean implements Serializable {
                                 + "If you have any enquiry, please contact us at 800 820 8820 or you can write an enquiry after you login.\n";
                         messageSessionBeanLocal.sendMessage("Merlion Bank", "Service", subject, receivedDate.toString(),
                                 messageContent, customerBasicId);
-                        loggingSessionBeanLocal.createNewLogging("system", customerBasic.getCustomerBasicId(), "send welcome message", "successful",null);
+                        loggingSessionBeanLocal.createNewLogging("system", customerBasic.getCustomerBasicId(), "send welcome message", "successful", null);
 
                         ec.getFlash().put("statusMessage", statusMessage);
                         ec.getFlash().put("newAccountId", newAccountId);
@@ -936,15 +937,18 @@ public class AccountManagedBean implements Serializable {
                                 statementDateDouble, newCustomerBasicId, newInterestId);
 
                         statusMessage = "New Account Saved Successfully.";
-                        loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "open account", "successful",null);
+                        loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "open account", "successful", null);
 
                         subject = "Welcome to Merlion Bank";
                         Calendar cal = Calendar.getInstance();
                         receivedDate = cal.getTime();
-                        messageContent = "Welcome to Merlion Bank! Please deposit/transfer sufficient fund to your bank account.";
+                        messageContent = "Welcome to Merlion Bank! Please deposit/transfer sufficient fund to your bank account.\n"
+                                + "For fixed depsit account, please declare your fixed deposit period first before activating your account.\n"
+                                + "Your daily transfer limit is S$3000. You could update your daily transfer limit under 'My Account'.\n"
+                                + "If you have any enquiry, please contact us at 800 820 8820 or you can write an enquiry after you login.\n";
                         messageSessionBeanLocal.sendMessage("Merlion Bank", "Service", subject, receivedDate.toString(),
                                 messageContent, newCustomerBasicId);
-                        loggingSessionBeanLocal.createNewLogging("system", customerBasic.getCustomerBasicId(), "send welcome message", "successful",null);
+                        loggingSessionBeanLocal.createNewLogging("system", customerBasic.getCustomerBasicId(), "send welcome message", "successful", null);
 
                         ec.getFlash().put("statusMessage", statusMessage);
                         ec.getFlash().put("newAccountId", newAccountId);
@@ -998,11 +1002,11 @@ public class AccountManagedBean implements Serializable {
                 IOUtils.closeQuietly(input);
                 IOUtils.closeQuietly(output);
             }
-            loggingSessionBeanLocal.createNewLogging("customer",null, "upload softcopy of passport or IC", "successful",null);
+            loggingSessionBeanLocal.createNewLogging("customer", null, "upload softcopy of passport or IC", "successful", null);
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Succesful " + file.getFileName() + " is uploaded.", "");
             FacesContext.getCurrentInstance().addMessage(null, message);
         } else {
-            loggingSessionBeanLocal.createNewLogging("customer",null, "upload softcopy of passport or IC", "failed","file cannot be found");
+            loggingSessionBeanLocal.createNewLogging("customer", null, "upload softcopy of passport or IC", "failed", "file cannot be found");
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cannot find the file, please upload again.", "");
             FacesContext.getCurrentInstance().addMessage(null, message);
         }
