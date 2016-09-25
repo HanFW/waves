@@ -5,16 +5,20 @@
  */
 package ejb.infrastructure.entity;
 
+import ejb.customer.entity.CustomerAdvanced;
 import java.io.Serializable;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -41,6 +45,8 @@ public class Employee implements Serializable {
     @JoinTable(name = "EMPLOYEE_ROLE")
     private Set<Role> role = new HashSet<Role>();
     
+    @OneToMany(cascade={CascadeType.ALL},fetch=FetchType.EAGER,mappedBy="employee")
+    private List<CustomerAdvanced> customerAdvanced;
     public boolean hasRole(Role checkRole){
         return role.contains(checkRole);
     }
@@ -125,6 +131,14 @@ public class Employee implements Serializable {
         this.employeeEmail = employeeEmail;
     }
 
+    public List<CustomerAdvanced> getCustomerAdvanced() {
+        return customerAdvanced;
+    }
+
+    public void setCustomerAdvanced(List<CustomerAdvanced> customerAdvanced) {
+        this.customerAdvanced = customerAdvanced;
+    }
+    
     public String getEmployeeStatus() {
         return employeeStatus;
     }

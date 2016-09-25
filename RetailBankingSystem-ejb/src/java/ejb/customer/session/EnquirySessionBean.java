@@ -44,6 +44,46 @@ public class EnquirySessionBean implements EnquirySessionBeanLocal {
     }
 
     @Override
+    public List<Issue> getAllPendingLoanIssue() {
+        Query query = entityManager.createQuery("SELECT i FROM Issue i WHERE i.departmentTo = :departmentTo AND i.issueStatus = :issueStatus");
+        query.setParameter("departmentTo", "Loan");
+        query.setParameter("issueStatus", "Pending");
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Issue> getAllPendingCardIssue() {
+        Query query = entityManager.createQuery("SELECT i FROM Issue i WHERE i.departmentTo = :departmentTo AND i.issueStatus = :issueStatus");
+        query.setParameter("departmentTo", "Card");
+        query.setParameter("issueStatus", "Pending");
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Issue> getAllPendingDepositIssue() {
+        Query query = entityManager.createQuery("SELECT i FROM Issue i WHERE i.departmentTo = :departmentTo AND i.issueStatus = :issueStatus");
+        query.setParameter("departmentTo", "Deposit");
+        query.setParameter("issueStatus", "Pending");
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Issue> getAllPendingOperationIssue() {
+        Query query = entityManager.createQuery("SELECT i FROM Issue i WHERE i.departmentTo = :departmentTo AND i.issueStatus = :issueStatus");
+        query.setParameter("departmentTo", "Operation");
+        query.setParameter("issueStatus", "Pending");
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Issue> getAllPendingRMIssue() {
+        Query query = entityManager.createQuery("SELECT i FROM Issue i WHERE i.departmentTo = :departmentTo AND i.issueStatus = :issueStatus");
+        query.setParameter("departmentTo", "RM");
+        query.setParameter("issueStatus", "Pending");
+        return query.getResultList();
+    }
+
+    @Override
     public String getCustomerEnquiryDetail(Long caseId) {
         Query query = entityManager.createQuery("SELECT ec FROM EnquiryCase ec WHERE ec.caseId = :caseId");
         query.setParameter("caseId", caseId);
@@ -62,7 +102,16 @@ public class EnquirySessionBean implements EnquirySessionBeanLocal {
     }
 
     @Override
-    public List<Issue> getCaseIssue (Long caseId) {
+    public String getIssueDetail(Long issueId) {
+        Query query = entityManager.createQuery("SELECT i FROM Issue i WHERE i.issueId = :issueId");
+        query.setParameter("issueId", issueId);
+        List resultList = query.getResultList();
+        Issue i = (Issue) resultList.get(0);
+        return i.getIssueProblem();
+    }
+
+    @Override
+    public List<Issue> getCaseIssue(Long caseId) {
         Query query = entityManager.createQuery("SELECT ec FROM EnquiryCase ec WHERE ec.caseId = :caseId");
         query.setParameter("caseId", caseId);
         List resultList = query.getResultList();
@@ -98,7 +147,7 @@ public class EnquirySessionBean implements EnquirySessionBeanLocal {
         query.setParameter("caseId", caseId);
         List resultList = query.getResultList();
         EnquiryCase ec = (EnquiryCase) resultList.get(0);
-        System.out.println("********list size***" + resultList.size() + "//////caseId///" + ec.getCaseId());
+
         return ec;
     }
 
@@ -199,9 +248,14 @@ public class EnquirySessionBean implements EnquirySessionBeanLocal {
     ) {
 
         Issue issue = new Issue();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MMM-dd HH:mm:ss");
+
+        Calendar cal = Calendar.getInstance();
+        String createdTime = sdf.format(cal.getTime());
 
         issue.setDepartmentTo(departmentTo);
         issue.setIssueProblem(issueProblem);
+        issue.setCreatedTime(createdTime);
         issue.setIssueStatus("Pending");
 
         Query query = entityManager.createQuery("SELECT ec FROM EnquiryCase ec WHERE ec.caseId = :caseId");
@@ -227,9 +281,14 @@ public class EnquirySessionBean implements EnquirySessionBeanLocal {
     ) {
 
         Issue issue = new Issue();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MMM-dd HH:mm:ss");
+
+        Calendar cal = Calendar.getInstance();
+        String createdTime = sdf.format(cal.getTime());
 
         issue.setDepartmentTo(departmentTo);
         issue.setIssueProblem(issueProblem);
+        issue.setCreatedTime(createdTime);
         issue.setIssueStatus("Pending");
 
         Query query = entityManager.createQuery("SELECT fu FROM FollowUp fu WHERE fu.followUpId = :followUpId");
@@ -280,6 +339,24 @@ public class EnquirySessionBean implements EnquirySessionBeanLocal {
             FollowUp fu = (FollowUp) resultList.get(0);
             fu.setFollowUpSolution(followUpSolution);
             fu.setFollowUpStatus("Solved");
+
+            entityManager.flush();
+            return "Reply Sent Successful";
+        }
+    }
+
+    @Override
+    public String replyIssue(Long issueId, String issueSolution) {
+        Query query = entityManager.createQuery("SELECT i FROM Issue i WHERE i.issueId = :issueId");
+        query.setParameter("issueId", issueId);
+        List resultList = query.getResultList();
+
+        if (resultList.isEmpty()) {
+            return "Incorrect Issue ID.";
+        } else {
+            Issue is = (Issue) resultList.get(0);
+            is.setIssueSolution(issueSolution);
+            is.setIssueStatus("Solved");
 
             entityManager.flush();
             return "Reply Sent Successful";

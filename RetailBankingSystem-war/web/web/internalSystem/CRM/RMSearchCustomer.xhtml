@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <h:head>
+        <title>View All Customer Advanced Profile</title>
+    </h:head>
+    <h:body>
+        <h:form>
+            <p:dataTable var="customerAdvanced" value="#{rMSearchCustomerAdvancedManagedBean.customerListFromEmployeeId}" paginator="true" rows="10"
+                         paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                         id="customerAdvancedTable" >
+                
+                <p:column headerText="Customer Name" sortBy="#{customerAdvanced.customerBasic.customerName}" filterBy="#{customerAdvanced.customerBasic.customerName}">
+                    <h:outputText value="#{customerAdvanced.customerBasic.customerName}" /> 
+                </p:column>
+
+                <p:column headerText="Gender" sortBy="#{customerAdvanced.customerBasic.customerGender}">
+                    <h:outputText value="#{customerAdvanced.customerBasic.customerGender}" /> 
+                </p:column>
+
+                <p:column headerText="Identification No." filterBy="#{customerAdvanced.customerBasic.customerIdentificationNum}">
+                    <h:outputText value="#{customerAdvanced.customerBasic.customerIdentificationNum}" /> 
+                </p:column>
+                
+                <p:column headerText="Employment Details" sortBy="#{customerAdvanced.customerEmploymentDetails}" filterBy="#{customerAdvanced.customerEmploymentDetails}">
+                    <h:outputText value="#{customerAdvanced.customerEmploymentDetails}" />
+                </p:column>
+                <p:column headerText="Family Info" sortBy="#{customerAdvanced.customerFamilyInfo}" filterBy="#{customerAdvanced.customerFamilyInfo}">
+                    <h:outputText value="#{customerAdvanced.customerFamilyInfo}" />
+                </p:column>
+                <p:column headerText="CreditReport" sortBy="#{customerAdvanced.customerCreditReport}" filterBy="#{customerAdvanced.customerCreditReport}">
+                    <h:outputText value="#{customerAdvanced.customerCreditReport}" />
+                </p:column>
+                <p:column headerText="Financial Risk Rating" sortBy="#{customerAdvanced.customerFinancialRiskRating}" filterBy="#{customerAdvanced.customerFinancialRiskRating}">
+                    <h:outputText value="#{customerAdvanced.customerFinancialRiskRating}" />
+                </p:column>
+                <p:column headerText="Finanacial Goals" sortBy="#{customerAdvanced.customerFinanacialGoals}" filterBy="#{customerAdvanced.customerFinanacialGoals}">
+                    <h:outputText value="#{customerAdvanced.customerFinanacialGoals}"/>
+                </p:column>
+                <p:column headerText="Finanacial Assets" sortBy="#{customerAdvanced.customerFinanacialAssets}" filterBy="#{customerAdvanced.customerFinanacialAssets}">
+                    <h:outputText value="#{customerAdvanced.customerFinanacialAssets}"/>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </h:body>
+</html>
+

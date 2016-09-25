@@ -6,8 +6,8 @@ import ejb.deposit.entity.AccTransaction;
 import ejb.customer.entity.CustomerBasic;
 import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import ejb.deposit.entity.Interest;
-import ejb.infrastructure.session.CustomerAdminSessionBean;
-import ejb.infrastructure.session.CustomerEmailSessionBeanLocal;
+import ejb.deposit.entity.MessageBox;
+import ejb.infrastructure.session.MessageSessionBeanLocal;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -17,13 +17,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.PersistenceContext;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -34,6 +32,8 @@ import javax.persistence.NonUniqueResultException;
 @Stateless
 @LocalBean
 public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
+    @EJB
+    private MessageSessionBeanLocal messageSessionBeanLocal;
 
     @EJB
     private CRMCustomerSessionBeanLocal customerSessionBeanLocal;
@@ -198,7 +198,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
         entityManager.flush();
 
         String onlineBankingAccount = adminSessionBeanLocal.createOnlineBankingAccount(customerBasicId);
-
+        
         return bankAccount.getBankAccountId();
     }
 
@@ -603,5 +603,13 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
     public void updateDailyTransferLimit(String bankAccountNum,String dailyTransferLimit) {
         BankAccount bankAccount = retrieveBankAccountByNum(bankAccountNum);
         bankAccount.setTransferDailyLimit(dailyTransferLimit);
+    }
+    
+    @Override
+    public void sendMessage(String fromWhere,String messageType,String subject,String receivedDate,String messageContent,Long customerBasicId) {
+        CustomerBasic customerBasic = retrieveCustomerBasicById(customerBasicId);
+        
+        MessageBox messageBox = messageSessionBeanLocal.addNewMessage(fromWhere, messageType, subject, receivedDate, messageContent, customerBasicId);
+        customerBasic.getMessageBox().add(messageBox);
     }
 }
