@@ -60,7 +60,7 @@
             </p:panel>
 
             <p:panel id="panel" header="View eStatement"> 
-                <p:messages />
+                <p:messages globalOnly="true"/>
 
                 <p:dataTable var="statement" paginator="true" rows="10"
                              value="#{viewStatementManagedBean.statement}"

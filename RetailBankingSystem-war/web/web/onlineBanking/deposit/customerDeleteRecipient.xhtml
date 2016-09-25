@@ -56,7 +56,7 @@
             </p:panel>
             
             <p:panel id="panel" header="Delete Recipient"> 
-                <p:messages />
+                <p:messages globalOnly="true"/>
 
                 <p:dataTable var="payee" value="#{payeeManagedBean.payee}" 
                              paginator="true" rows="10" emptyMessage="No Recipient">

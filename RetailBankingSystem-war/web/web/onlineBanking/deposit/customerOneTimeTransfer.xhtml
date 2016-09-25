@@ -53,14 +53,20 @@
             <br/>
             <p:panel>
                 <p:outputLabel value="Welcome "/>
-                <p:outputLabel value="#{transferManagedBean.customerName}"/>
+                <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
             </p:panel>
-            
+
             <p:panel id="panel" header="Fund Transfer to Other Merlion Account (One-Time)"> 
-                <p:messages />
+                <p:messages globalOnly="true"/>
+
+                <p:outputLabel style="font-size:20px" value="Important Alert : There have been phone call scams requesting fund transfers." />
+                <br/>
+                <p:outputLabel style="font-size:20px" value="Please do not proceed with this transfer if you are unsure of the recipient or purpose for this transfer."/>
+                <br/>
+                <br/>
 
                 <p:panelGrid style="margin-bottom:10px">
-                    <p:outputLabel style="font-weight: bold" value="To" />
+                    <p:outputLabel style="font-weight: bold;font-size: 20px" value="To" />
                 </p:panelGrid>
                 <br/>
                 <p:panelGrid style="margin-bottom: 10px">
@@ -109,7 +115,7 @@
                 </p:panelGrid>
                 <br/>
                 <p:panelGrid style="margin-bottom:10px">
-                    <p:outputLabel style="font-weight: bold" value="From" />
+                    <p:outputLabel style="font-weight: bold;font-size:20px" value="From" />
                 </p:panelGrid>
                 <br/>
                 <p:panelGrid style="margin-bottom: 10px">

@@ -56,11 +56,17 @@
             <br/>
             <p:panel>
                 <p:outputLabel value="Welcome "/>
-                <p:outputLabel value="#{transferDoneManagedBean.customerName}"/>
+                <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
             </p:panel>
             
             <p:panel header="Transfer to My Account">
                 <p:messages globalOnly="true" />
+                
+                <p:outputLabel style="font-size:20px" value="Important Alert : There have been phone call scams requesting fund transfers." />
+                <br/>
+                <p:outputLabel style="font-size:20px" value="Please do not proceed with this transfer if you are unsure of the recipient or purpose for this transfer."/>
+                <br/>
+                <br/>
 
                 <panelGrid>
                     <h:form id="formMain">
