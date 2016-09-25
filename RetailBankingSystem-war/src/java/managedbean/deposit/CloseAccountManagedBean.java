@@ -7,6 +7,7 @@ import ejb.deposit.entity.Payee;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import ejb.deposit.session.PayeeSessionBeanLocal;
 import ejb.deposit.session.TransactionSessionBeanLocal;
+import ejb.infrastructure.session.LoggingSessionBeanLocal;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -23,6 +24,9 @@ import javax.faces.context.FacesContext;
 @RequestScoped
 
 public class CloseAccountManagedBean {
+
+    @EJB
+    private LoggingSessionBeanLocal loggingSessionBeanLocal;
 
     @EJB
     private PayeeSessionBeanLocal payeeSessionBeanLocal;
@@ -157,6 +161,8 @@ public class CloseAccountManagedBean {
     }
 
     public void deleteAccount() throws IOException {
+        System.out.println("=");
+        System.out.println("====== deposit/CloseAccountManagedBean: deleteAccount() ======");
         ec = FacesContext.getCurrentInstance().getExternalContext();
         CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
 
@@ -179,6 +185,7 @@ public class CloseAccountManagedBean {
                 } else {
                     bankAccountSessionLocal.deleteAccount(bankAccountNum);
                     statusMessage = "Account has been successfully deleted.";
+                    loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "close account", "successful", null);
 
                     ec.getFlash().put("statusMessage", statusMessage);
                     ec.getFlash().put("bankAccountNum", bankAccountNum);
@@ -209,6 +216,7 @@ public class CloseAccountManagedBean {
                     customerSessionBeanLocal.deleteCustomerBasic(customerBasic.getCustomerIdentificationNum());
 
                     statusMessage = "Account has been successfully deleted.";
+                    loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "close account", "successful", null);
 
                     ec.getFlash().put("statusMessage", statusMessage);
                     ec.getFlash().put("bankAccountNum", bankAccountNum);

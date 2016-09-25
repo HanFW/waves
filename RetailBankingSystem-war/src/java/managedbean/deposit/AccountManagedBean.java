@@ -22,6 +22,7 @@ import org.primefaces.model.UploadedFile;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import ejb.deposit.session.InterestSessionBeanLocal;
 import ejb.deposit.session.VerifySessionBeanLocal;
+import ejb.infrastructure.session.LoggingSessionBeanLocal;
 import ejb.infrastructure.session.MessageSessionBeanLocal;
 import java.util.Calendar;
 import javax.faces.view.ViewScoped;
@@ -31,6 +32,8 @@ import org.apache.commons.io.IOUtils;
 @ViewScoped
 
 public class AccountManagedBean implements Serializable {
+    @EJB
+    private LoggingSessionBeanLocal loggingSessionBeanLocal;
 
     @EJB
     private MessageSessionBeanLocal messageSessionBeanLocal;
@@ -783,6 +786,8 @@ public class AccountManagedBean implements Serializable {
     }
 
     public void saveAccount() throws IOException {
+        System.out.println("=");
+        System.out.println("====== deposit/AccountManagedBean: saveAccount() ======");
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
         String customerVerify = "";
@@ -858,13 +863,15 @@ public class AccountManagedBean implements Serializable {
                         bankAccountSessionLocal.retrieveBankAccountByCusIC(customerIdentificationNum).add(bankAccount);
 
                         statusMessage = "New Account Saved Successfully.";
+                        loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "open account", "successful",null);
 
                         subject = "Welcome to Merlion Bank";
                         Calendar cal = Calendar.getInstance();
                         receivedDate = cal.getTime();
                         messageContent = "Welcome to Merlion Bank! Please deposit/transfer sufficient fund to your bank account.";
-                        bankAccountSessionLocal.sendMessage("Merlion Bank", "Service", subject, receivedDate.toString(),
+                        messageSessionBeanLocal.sendMessage("Merlion Bank", "Service", subject, receivedDate.toString(),
                                 messageContent, customerBasicId);
+                        loggingSessionBeanLocal.createNewLogging("system", customerBasic.getCustomerBasicId(), "send welcome message", "successful",null);
 
                         ec.getFlash().put("statusMessage", statusMessage);
                         ec.getFlash().put("newAccountId", newAccountId);
@@ -926,13 +933,15 @@ public class AccountManagedBean implements Serializable {
                                 statementDateDouble, newCustomerBasicId, newInterestId);
 
                         statusMessage = "New Account Saved Successfully.";
+                        loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "open account", "successful",null);
 
                         subject = "Welcome to Merlion Bank";
                         Calendar cal = Calendar.getInstance();
                         receivedDate = cal.getTime();
                         messageContent = "Welcome to Merlion Bank! Please deposit/transfer sufficient fund to your bank account.";
-                        bankAccountSessionLocal.sendMessage("Merlion Bank", "Service", subject, receivedDate.toString(),
+                        messageSessionBeanLocal.sendMessage("Merlion Bank", "Service", subject, receivedDate.toString(),
                                 messageContent, newCustomerBasicId);
+                        loggingSessionBeanLocal.createNewLogging("system", customerBasic.getCustomerBasicId(), "send welcome message", "successful",null);
 
                         ec.getFlash().put("statusMessage", statusMessage);
                         ec.getFlash().put("newAccountId", newAccountId);
@@ -971,7 +980,8 @@ public class AccountManagedBean implements Serializable {
     }
 
     public void upload(FileUploadEvent event) throws IOException {
-
+        System.out.println("=");
+        System.out.println("====== deposit/AccountManagedBean: upload() ======");
         file = event.getFile();
 
         if (file != null) {
@@ -985,10 +995,11 @@ public class AccountManagedBean implements Serializable {
                 IOUtils.closeQuietly(input);
                 IOUtils.closeQuietly(output);
             }
+            loggingSessionBeanLocal.createNewLogging("customer",null, "upload softcopy of passport or IC", "successful",null);
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Succesful " + file.getFileName() + " is uploaded.", "");
             FacesContext.getCurrentInstance().addMessage(null, message);
         } else {
-
+            loggingSessionBeanLocal.createNewLogging("customer",null, "upload softcopy of passport or IC", "failed","file cannot be found");
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cannot find the file, please upload again.", "");
             FacesContext.getCurrentInstance().addMessage(null, message);
         }

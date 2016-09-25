@@ -23,10 +23,12 @@ public class InterestSessionBean implements InterestSessionBeanLocal {
 
     @PersistenceContext
     private EntityManager entityManager;
-    
+
     @Override
     public Long addNewInterest(String dailyInterest, String monthlyInterest, String isTransfer, String isWithdraw) {
 
+        System.out.println("*");
+        System.out.println("****** deposit/InterestSessionBean: addNewInterest() ******");
         Interest interest = new Interest();
 
         interest.setDailyInterest(dailyInterest);
@@ -42,21 +44,26 @@ public class InterestSessionBean implements InterestSessionBeanLocal {
 
     @Override
     public Interest retrieveInterestById(Long interestId) {
+        System.out.println("*");
+        System.out.println("****** deposit/InterestSessionBean: retrieveInterestById() ******");
         Interest interest = new Interest();
 
         try {
             Query query = entityManager.createQuery("Select i From Interest i Where i.interestId=:interestId");
             query.setParameter("interestId", interestId);
+
             if (query.getResultList().isEmpty()) {
+                System.out.println("****** deposit/InterestSessionBean: retrieveInterestById(): invalid interest Id: no result found, return new interest");
                 return new Interest();
             } else {
+                System.out.println("****** deposit/InterestSessionBean: retrieveInterestById(): valid interest Id: return interest");
                 interest = (Interest) query.getSingleResult();
             }
         } catch (EntityNotFoundException enfe) {
-            System.out.println("\nEntity not found error: " + enfe.getMessage());
+            System.out.println("****** deposit/InterestSessionBean: retrieveInterestById(): Entity not found error: " + enfe.getMessage());
             return new Interest();
         } catch (NonUniqueResultException nure) {
-            System.out.println("\nNon unique result error: " + nure.getMessage());
+            System.out.println("****** deposit/InterestSessionBean: retrieveInterestById(): Non unique result error: " + nure.getMessage());
         }
 
         return interest;
@@ -64,22 +71,31 @@ public class InterestSessionBean implements InterestSessionBeanLocal {
 
     @Override
     public Interest retrieveInterestByAccountNum(String bankAccountNum) {
+        System.out.println("*");
+        System.out.println("****** deposit/InterestSessionBean: retrieveInterestByAccountNum() ******");
         BankAccount bankAccount = bankAccountSessionLocal.retrieveBankAccountByNum(bankAccountNum);
         Interest interest = new Interest();
 
-        if (bankAccount == null) {
-            return null;
+        if (bankAccount.getBankAccountId() == null) {
+            System.out.println("****** deposit/InterestSessionBean: retrieveInterestByAccountNum(): invalid bank account number: no result found, return new interest");
+            return new Interest();
         }
         try {
             Query query = entityManager.createQuery("Select i From Interest i Where i.bankAccount=:bankAccount");
             query.setParameter("bankAccount", bankAccount);
-            interest = (Interest) query.getResultList();
-        } catch (EntityNotFoundException enfe) {
-            System.out.println("\nEntity not found error: " + enfe.getMessage());
 
+            if (query.getResultList().isEmpty()) {
+                System.out.println("****** deposit/InterestSessionBean: retrieveInterestByAccountNum(): wrong bank account number: return new interest");
+                return new Interest();
+            } else {
+                System.out.println("****** deposit/InterestSessionBean: retrieveInterestByAccountNum(): correct bank account number: return interest");
+                interest = (Interest) query.getResultList();
+            }
+        } catch (EntityNotFoundException enfe) {
+            System.out.println("****** deposit/InterestSessionBean: retrieveInterestByAccountNum(): Entity not found error: " + enfe.getMessage());
             return null;
         } catch (NonUniqueResultException nure) {
-            System.out.println("\nNon unique result error: " + nure.getMessage());
+            System.out.println("****** deposit/InterestSessionBean: retrieveInterestByAccountNum(): Non unique result error: " + nure.getMessage());
         }
 
         return interest;

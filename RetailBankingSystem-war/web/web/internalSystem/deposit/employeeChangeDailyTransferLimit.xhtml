@@ -5,7 +5,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>View Account</title>
+        <title>Update Daily Transfer Limit</title>
         <style type="text/css">
             .gritter-notice-wrapper {
                 left:200px;
@@ -17,7 +17,7 @@
         <h:form id="formMain">
             <h1>Welcome to Merlion Bank</h1>
             <p:menubar>
-                <p:submenu label="My Account">
+                <p:submenu label="Deposit">
                     <p:menuitem value="Home" url="/web/index.xhtml" />
                     <p:menuitem value="Open Account" url="/web/internalSystem/deposit/employeeOpenAccount.xhtml" />
                     <p:menuitem value="Close Account" url="/web/internalSystem/deposit/employeeCloseAccount.xhtml" />
@@ -37,7 +37,7 @@
 
         <h:form>
             <br/>
-            <p:panel id="panel" header="Change Daily Transfer Limit">
+            <p:panel id="panel" header="Update Daily Transfer Limit">
                 <p:messages globalOnly="true"/>
 
                 <p:panelGrid style="margin-bottom:10px">

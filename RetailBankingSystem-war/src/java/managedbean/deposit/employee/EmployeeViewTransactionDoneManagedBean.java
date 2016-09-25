@@ -5,7 +5,6 @@ import ejb.deposit.session.BankAccountSessionBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
@@ -46,6 +45,8 @@ public class EmployeeViewTransactionDoneManagedBean implements Serializable{
     }
     
     public List<BankAccount> getBankAccount() throws IOException {
+        System.out.println("=");
+        System.out.println("====== deposit/EmployeeViewTransactionDoneManagedBean: getBankAccount() ======");
         ec = FacesContext.getCurrentInstance().getExternalContext();
         
         customerIdentificationNum = ec.getSessionMap().get("customerIdentificationNum").toString();

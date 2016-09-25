@@ -1,7 +1,6 @@
 package ejb.deposit.session;
 
 import ejb.customer.entity.CustomerBasic;
-import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.entity.Statement;
 import java.util.ArrayList;
@@ -23,15 +22,14 @@ public class StatementSessionBean implements StatementSessionBeanLocal {
     @EJB
     private BankAccountSessionBeanLocal bankAccountSessionLocal;
 
-    @EJB
-    private CRMCustomerSessionBeanLocal customerSessionBeanLocal;
-
     @PersistenceContext
     private EntityManager entityManager;
 
     @Override
     public Long addNewStatement(String statementDate, String statementType, String accountDetails,
             Long bankAccountId) {
+        System.out.println("*");
+        System.out.println("****** deposit/StatementSessionBean: addNewStatement() ******");
 
         Statement statement = new Statement();
 
@@ -48,6 +46,8 @@ public class StatementSessionBean implements StatementSessionBeanLocal {
 
     @Override
     public List<Statement> retrieveStatementByAccNum(String bankAccountNum) {
+        System.out.println("*");
+        System.out.println("****** deposit/StatementSessionBean: retrieveStatementByAccNum() ******");
         BankAccount bankAccount = bankAccountSessionLocal.retrieveBankAccountByNum(bankAccountNum);
 
         if (bankAccount.getBankAccountId() == null) {
@@ -56,26 +56,42 @@ public class StatementSessionBean implements StatementSessionBeanLocal {
         try {
             Query query = entityManager.createQuery("Select s From Statement s Where s.bankAccount=:bankAccount");
             query.setParameter("bankAccount", bankAccount);
-            return query.getResultList();
+
+            if (query.getResultList().isEmpty()) {
+                System.out.println("****** deposit/StatementSessionBean: retrieveStatementByAccNum(): invalid bank account number: no result found, return new statement");
+                return new ArrayList<Statement>();
+            } else {
+                System.out.println("****** deposit/StatementSessionBean: retrieveStatementByAccNum(): valid bank account number: return statement");
+                return query.getResultList();
+            }
         } catch (EntityNotFoundException enfe) {
-            System.out.println("\nEntity not found error: " + enfe.getMessage());
+            System.out.println("****** deposit/StatementSessionBean: retrieveStatementByAccNum(): Entity not found error: " + enfe.getMessage());
             return new ArrayList<Statement>();
         }
     }
 
     @Override
     public Statement retrieveStatementById(Long statementId) {
+        System.out.println("*");
+        System.out.println("****** deposit/StatementSessionBean: retrieveStatementById() ******");
         Statement statement = new Statement();
 
         try {
             Query query = entityManager.createQuery("Select s From Statement s Where s.statementId=:statementId");
             query.setParameter("statementId", statementId);
-            statement = (Statement) query.getSingleResult();
+
+            if (query.getResultList().isEmpty()) {
+                System.out.println("****** deposit/StatementSessionBean: retrieveStatementById(): invalid statement Id: no result found, return new statement");
+                return new Statement();
+            } else {
+                System.out.println("****** deposit/StatementSessionBean: retrieveStatementById(): valid statement Id: return statement");
+                statement = (Statement) query.getSingleResult();
+            }
         } catch (EntityNotFoundException enfe) {
-            System.out.println("\nEntity not found error: " + enfe.getMessage());
+            System.out.println("****** deposit/StatementSessionBean: retrieveStatementById(): Entity not found error: " + enfe.getMessage());
             return new Statement();
         } catch (NonUniqueResultException nure) {
-            System.out.println("\nNon unique result error: " + nure.getMessage());
+            System.out.println("****** deposit/StatementSessionBean: retrieveStatementById(): Non unique result error: " + nure.getMessage());
         }
 
         return statement;
@@ -83,13 +99,15 @@ public class StatementSessionBean implements StatementSessionBeanLocal {
 
     @Override
     public void generateStatement() {
+        System.out.println("*");
+        System.out.println("****** deposit/StatementSessionBean: generateStatement() ******");
 
         Query query = entityManager.createQuery("SELECT a FROM BankAccount a WHERE a.bankAccountStatus = :bankAccountStatus");
         query.setParameter("bankAccountStatus", "Activated");
         List<BankAccount> activatedBankAccounts = query.getResultList();
 
         for (BankAccount activatedBankAccount : activatedBankAccounts) {
-            
+
             String bankAccountNum = activatedBankAccount.getBankAccountNum();
             CustomerBasic customerBasic = bankAccountSessionLocal.retrieveCustomerBasicByAccNum(bankAccountNum);
             List<Statement> statemens = activatedBankAccount.getStatement();

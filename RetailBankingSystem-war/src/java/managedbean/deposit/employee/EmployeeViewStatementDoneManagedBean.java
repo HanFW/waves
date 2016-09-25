@@ -25,6 +25,7 @@ import javax.sql.DataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperRunManager;
 import ejb.deposit.session.StatementSessionBeanLocal;
+import ejb.infrastructure.session.LoggingSessionBeanLocal;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -32,6 +33,8 @@ import java.util.Calendar;
 @RequestScoped
 
 public class EmployeeViewStatementDoneManagedBean {
+    @EJB
+    private LoggingSessionBeanLocal loggingSessionBeanLocal;
 
     @EJB
     private CRMCustomerSessionBeanLocal customerSessionBeanLocal;
@@ -98,7 +101,8 @@ public class EmployeeViewStatementDoneManagedBean {
     }
 
     public void viewStatement() throws ClassNotFoundException, IOException, JRException, SQLException {
-        
+        System.out.println("=");
+        System.out.println("====== deposit/EmployeeViewStatementDoneManagedBean: viewStatement() ======");
         BankAccount bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountById(bankAccountId);
 
         Connection connection;
@@ -124,27 +128,28 @@ public class EmployeeViewStatementDoneManagedBean {
 
         ctx.responseComplete();
         response.setContentType("application/pdf");
-        
+
         Calendar cal = Calendar.getInstance();
         Long startTimeLong = 1474615723704l;
         Long endTimeLong = 1474616924103l;
-        
+
         Map parameters = new HashMap();
         parameters.put("bankAccountId", bankAccount.getBankAccountId());
 
         System.err.println("********** Start Jasper");
-        
+
         JasperRunManager.runReportToPdfStream(reportStream, servletOutputStream, parameterMap, connection);
 
         System.err.println("********** End Jasper");
-        
+
         connection.close();
         servletOutputStream.flush();
         servletOutputStream.close();
     }
 
     public List<Statement> getStatement() throws IOException {
-        
+        System.out.println("=");
+        System.out.println("====== deposit/EmployeeViewStatementDoneManagedBean: getStatement() ======");
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
         customerIdentificationNum = ec.getSessionMap().get("customerIdentificationNum").toString();
@@ -162,6 +167,7 @@ public class EmployeeViewStatementDoneManagedBean {
                 return statement;
             }
         }
+        loggingSessionBeanLocal.createNewLogging("employee", null, "view statement", "successful", null);
 
         return statement;
     }

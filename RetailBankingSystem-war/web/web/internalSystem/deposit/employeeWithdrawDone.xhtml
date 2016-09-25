@@ -17,7 +17,7 @@
             <h:form id="formMain">
             <h1>Welcome to Merlion Bank</h1>
             <p:menubar>
-                <p:submenu label="My Account">
+                <p:submenu label="Deposit">
                     <p:menuitem value="Home" url="/web/index.xhtml" />
                     <p:menuitem value="Open Account" url="/web/internalSystem/deposit/employeeOpenAccount.xhtml" />
                     <p:menuitem value="Close Account" url="/web/internalSystem/deposit/employeeCloseAccount.xhtml" />
@@ -43,16 +43,16 @@
 
                     <h:form id="formMain">
                         <h:outputText style="font-weight: bold" value="Transaction Id: "/>
-                        <h:outputText value="#{withdrawDoneManagedBean.transactionId}"/>
+                        <h:outputText value="#{employeeWithdrawDoneManagedBean.transactionId}"/>
                         <br/>
                         <h:outputText style="font-weight: bold" value="Status Message: " />
-                        <h:outputText value="#{withdrawDoneManagedBean.statusMessage}" />
+                        <h:outputText value="#{employeeWithdrawDoneManagedBean.statusMessage}" />
                         <br/>
                         <h:outputText style="font-weight: bold" value="Bank Account Number: "/>
-                        <h:outputText value="#{withdrawDoneManagedBean.withdrawAccountNum}"/>
+                        <h:outputText value="#{employeeWithdrawDoneManagedBean.withdrawAccountNum}"/>
                         <br/>
                         <h:outputText style="font-weight: bold" value="Withdraw Amount: "/>
-                        <h:outputText value="#{withdrawDoneManagedBean.withdrawAmt}"/>
+                        <h:outputText value="#{employeeWithdrawDoneManagedBean.withdrawAmt}"/>
                     </h:form>
                 </p:panelGrid>
             </p:panel>
