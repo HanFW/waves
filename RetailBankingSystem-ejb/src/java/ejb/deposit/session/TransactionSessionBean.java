@@ -264,8 +264,8 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
         Long bankAccountToId = bankAccountTo.getBankAccountId();
 
         String transactionCode = "TRF";
-        String transactionRefFrom = toAccount;
-        String transactionRefTo = fromAccount;
+        String transactionRefFrom = bankAccountTo.getBankAccountType()+"-"+toAccount;
+        String transactionRefTo = bankAccountFrom.getBankAccountType()+"-"+fromAccount;
 
         Calendar cal = Calendar.getInstance();
 //        int year = cal.get(Calendar.YEAR);
