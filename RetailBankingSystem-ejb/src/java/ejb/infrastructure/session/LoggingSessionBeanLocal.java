@@ -5,6 +5,8 @@
  */
 package ejb.infrastructure.session;
 
+import ejb.infrastructure.entity.Logging;
+import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -14,4 +16,7 @@ import javax.ejb.Local;
 @Local
 public interface LoggingSessionBeanLocal {
     public void createNewLogging(String trigger, Long person, String activity, String result, String remarks);
+    public List<Logging> retrieveAllCustomerLogging();
+    public List<Logging> retrieveAllEmployeeLogging();
+    public List<Logging> retrieveAllSystemLogging();
 }
