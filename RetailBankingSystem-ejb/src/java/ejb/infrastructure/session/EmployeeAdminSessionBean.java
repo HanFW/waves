@@ -82,8 +82,8 @@ public class EmployeeAdminSessionBean implements EmployeeAdminSessionBeanLocal {
         roles[14] = "Enquiry Manager";
         roles[15] = "System Admin";
 
-        permissionList1 = new String[23];
-        permissionList1[0] = "View Customer Basic Information";
+        permissionList1 = new String[27];
+        permissionList1[0] = "View Customer Accounts Information";
         permissionList1[1] = "Create Enquiry Case";
         permissionList1[2] = "Add Follow Up Questions";
         permissionList1[3] = "Search Enquiry";
@@ -98,7 +98,7 @@ public class EmployeeAdminSessionBean implements EmployeeAdminSessionBeanLocal {
         permissionList1[12] = "Cash Withdraw";
         permissionList1[13] = "Forward Enquiry To Specialist";
         permissionList1[14] = "Edit Customer Advanced Information";
-        permissionList1[15] = "View Cutsomer Advanced Information";
+        permissionList1[15] = "View Customer Advanced Information";
         permissionList1[16] = "User Account Management";
         permissionList1[17] = "Manage Permissions of Roles";
         permissionList1[18] = "View Deposit Department Issue";
@@ -106,6 +106,10 @@ public class EmployeeAdminSessionBean implements EmployeeAdminSessionBeanLocal {
         permissionList1[20] = "View Loan Department Issue";
         permissionList1[21] = "View Operation Department Issue";
         permissionList1[22] = "View Wealth Management Issue";
+        permissionList1[23] = "Change Deposit Account PassWord";
+        permissionList1[24] = "Retrieve Deposit Account Password";
+        permissionList1[25] = "Activate Fixed Deposit";
+        permissionList1[26] = "Change Daily Transfer Limit";
     }
 
     @Override

@@ -79,7 +79,6 @@ public class EmployeeAccountManagedBean implements Serializable {
      * @param event
      * @return
      */
- 
     public void createAccount(ActionEvent event) throws IOException {
 
         FacesMessage message = null;
@@ -102,10 +101,16 @@ public class EmployeeAccountManagedBean implements Serializable {
             context.addMessage(null, message);
             System.out.println("*** AccountManagedBean: account created");
 
-            loggingSessionBeanLocal.createNewLogging("employee", getEmployeeIdViaSessionScope(), "employee creates a new user account for employee "+employeeName,
+            loggingSessionBeanLocal.createNewLogging("employee", getEmployeeIdViaSessionScope(), "employee creates a new user account for employee " + employeeName,
                     "successful", "The employee does not have an existing account");
         }
 
+    }
+
+    public Employee getUserViaSessionMap() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        Employee user = (Employee) context.getExternalContext().getSessionMap().get("employee");
+        return user;
     }
 
     public String getUserName() {
@@ -113,6 +118,17 @@ public class EmployeeAccountManagedBean implements Serializable {
         Employee user = (Employee) context.getExternalContext().getSessionMap().get("employee");
         System.out.println("*** AccountManagedBean: Welcome Message");
         return user.getEmployeeName();
+    }
+
+    public String getUserDepartment() {
+        Employee user = getUserViaSessionMap();
+        return user.getEmployeeDepartment();
+
+    }
+
+    public String getUserPosition() {
+        Employee user = getUserViaSessionMap();
+        return user.getEmployeePosition();
     }
 
     public List<Employee> getEmployees() {
@@ -195,12 +211,6 @@ public class EmployeeAccountManagedBean implements Serializable {
 
     }
 
-//    public void editUserAccountInfo(ActionEvent event) throws IOException {
-//        System.out.println("*** AccountManagedBean: employee id before redirecting: "+employeeId+" test");
-//        FacesContext context = FacesContext.getCurrentInstance();
-//        context.getExternalContext().redirect("editAccountInfo.xhtml");
-//        System.out.println("*** AccountManagedBean: redirect to edit account page");
-//    }
     public void deleteAccount(Employee employee) throws IOException {
 //        System.out.println("hi");
         FacesMessage message = null;
@@ -216,7 +226,7 @@ public class EmployeeAccountManagedBean implements Serializable {
             context.addMessage(null, message);
             System.out.println("*** AccountManagedBean: account deleted");
 
-            loggingSessionBeanLocal.createNewLogging("employee", getEmployeeId(), "System admin archives user account of "+employee.getEmployeeName(),
+            loggingSessionBeanLocal.createNewLogging("employee", getEmployeeId(), "System admin archives user account of " + employee.getEmployeeName(),
                     "successful", null);
         }
 
@@ -472,6 +482,46 @@ public class EmployeeAccountManagedBean implements Serializable {
         employee = (Employee) context.getExternalContext().getSessionMap().get("employee");
 
         Role hasRole = adminSessionBeanLocal.getRoleByName("CEO");
+        return employee.getRole().contains(hasRole);
+    }
+
+    public boolean hasRoleDepositSpecialist() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        employee = (Employee) context.getExternalContext().getSessionMap().get("employee");
+
+        Role hasRole = adminSessionBeanLocal.getRoleByName("Deposit Specialist");
+        return employee.getRole().contains(hasRole);
+    }
+
+    public boolean hasRoleLoanSpecialist() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        employee = (Employee) context.getExternalContext().getSessionMap().get("employee");
+
+        Role hasRole = adminSessionBeanLocal.getRoleByName("Loan Specialist");
+        return employee.getRole().contains(hasRole);
+    }
+
+    public boolean hasRoleCardSpecialist() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        employee = (Employee) context.getExternalContext().getSessionMap().get("employee");
+
+        Role hasRole = adminSessionBeanLocal.getRoleByName("Card Specialist");
+        return employee.getRole().contains(hasRole);
+    }
+
+    public boolean hasRoleOperationSpecialist() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        employee = (Employee) context.getExternalContext().getSessionMap().get("employee");
+
+        Role hasRole = adminSessionBeanLocal.getRoleByName("Operation Specialist");
+        return employee.getRole().contains(hasRole);
+    }
+
+    public boolean hasRoleWealthManagementSpecialist() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        employee = (Employee) context.getExternalContext().getSessionMap().get("employee");
+
+        Role hasRole = adminSessionBeanLocal.getRoleByName("Wealth Management Specialist");
         return employee.getRole().contains(hasRole);
     }
 

@@ -8,6 +8,11 @@
         <title>Employee Account Management</title>
     </h:head>
     <h:body>
+        <h:outputText value="Welcome #{employeeAccountManagedBean.userName} !"/>
+        <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
+        <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
+        <h:outputText value="You have logged in as: System Admin"/>
+        
         <h:form>
             <h1>Add a New User Account</h1>
             <p:messages globalOnly="true"/>
@@ -131,21 +136,20 @@
                 </p:row>
 
                 <p:row>
+                    <p:column colspan="2">
                     <p:outputPanel id="display" style="width:250px;padding-left:5px">
                         <p:dataList value="#{employeeAccountManagedBean.selectedRoles}" var="role" emptyMessage="No roles selected">
                             #{role}
                         </p:dataList>
                     </p:outputPanel>
                     <!--</h:form>-->
+                    </p:column>
                 </p:row>
             </p:panelGrid>
 
             <p:row>
                 <p:column colspan="2">
                     <p:commandButton type="submit" value="Submit" actionListener="#{employeeAccountManagedBean.createAccount}" update="@form"/>
-                </p:column>
-                <p:column colspan="2">
-                    <p:commandButton style="width:20%" value="Submit and Add Another User Account" type="submit" actionListener="#{employeeAccountManagedBean.createAccount}"/>
                 </p:column>
                 <p:column colspan="2">
                     <p:commandButton value="Quit" type="submit" action="/web/internalSystem/infrastructure/employeeUserAccountManagement.xhtml" immediate="true"/>

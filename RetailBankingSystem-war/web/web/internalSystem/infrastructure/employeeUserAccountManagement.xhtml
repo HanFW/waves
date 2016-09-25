@@ -13,7 +13,7 @@
                 <p:submenu label="Task">
                     <p:menuitem value="Assign Permisison to role" actionListener="#{employeeAssignPermissionManagedBean.AssignPermission}"/>
                 </p:submenu>
-                
+
                 <p:submenu label="Manage My Account">
                     <p:menuitem value="Change Password" actionListener="#{employeeLoginManagedBean.changePassword}" />
                 </p:submenu>
@@ -21,15 +21,15 @@
                 <p:submenu label="Log Out">
                     <p:menuitem value="Logout" actionListener="#{employeeLoginManagedBean.doLogOut}" />
                 </p:submenu>
-                <p:submenu label="Test">
-                    <p:menuitem value="Search My Customer" actionListener="#{employeeLoginManagedBean.redirectToSearchCustomer}"/>
-                    <p:menuitem value="Update advanced" actionListener="#{employeeLoginManagedBean.redirectToViewCustomer}" />
-                </p:submenu>
-                
+
             </p:menubar>
         </h:form>
 
-        <!--<h:outputText value="Welcome !"/>-->
+        <h:outputText value="Welcome #{employeeAccountManagedBean.userName} !"/>
+        <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
+        <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
+        <h:outputText value="You have logged in as: System Admin"/>
+
         <h:form>
 
             <p:tabView id='tabview' cache="false" dynamic='true' >
@@ -93,11 +93,7 @@
                             <p:commandButton action="/web/internalSystem/infrastructure/employeeEditAccountInfo.xhtml" icon="ui-icon-pencil">
                                 <f:setPropertyActionListener value="#{employee.employeeId}" target="#{systemAdminEditUserAccountManagedBean.employeeId}"/>
                             </p:commandButton>
-                        </p:column> 
-
-                        <p:column style="width:5%">
-                            <p:rowEditor/>
-                        </p:column>
+                        </p:column>  
 
                         <p:contextMenu for="userAccount2" widgetVar="Menu">   
                             <p:menuitem value="Edit Cell" icon="ui-icon-search" onclick="PF('userAccounts').showCellEditor();

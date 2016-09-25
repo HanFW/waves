@@ -12,6 +12,9 @@
 
         <h:form>
             <p:menubar>
+                <p:submenu label="Home">
+                    <p:menuitem value="Home" url="/web/internalSystem/infrastructure/employeeMainPage.xhtml"/>
+                </p:submenu>
                 <p:submenu label="Manage My Account">
                     <p:menuitem value="Change Password" actionListener="#{employeeLoginManagedBean.changePassword}" />
                 </p:submenu>
@@ -21,8 +24,11 @@
                 </p:submenu>
             </p:menubar>
         </h:form>
-        
+
         <h:outputText value="Welcome #{employeeAccountManagedBean.userName} !"/>
+        <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
+        <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
+        <h:outputText value="You have logged in as: Counter Teller"/>
 
         <h:form id="form">           
             <p:growl id="msgs" showDetail="true" />
@@ -37,32 +43,37 @@
                         <p:commandButton value="View Enquiry Case" action="/web/internalSystem/enquiry/counterTellerSearchCustomer.xhtml"/>
                         <p:commandButton value="Create Enquiry Case" action="/web/internalSystem/enquiry/counterTellerSearchCustomer.xhtml"/>
                         <p:commandButton value="Search Enquiry" action="/web/internalSystem/enquiry/counterTellerSearchCaseById.xhtml"/>
-                        <p:commandButton value="Add Follow Up Questions" action="/web/internalSystem/enquiry/counterTellerSearchCustomer.xhtml"/>
+                        <p:commandButton value="Update Customer Basic Information" action="/web/internalSystem/enquiry/counterTellerSearchCustomer.xhtml"/>
                     </h:panelGrid>
                 </p:tab>
                 <p:tab title="Deposit">
                     <h:panelGrid columns="2" cellpadding="10">
-                        <p:commandButton value="Deposit Account" action="/web/internalSystem/enquiry/counterTellerSearchCustomer.xhtml"/>
-                        <p:commandButton value="View Transaction History" action="/web/internalSystem/enquiry/counterTellerSearchCustomer.xhtml"/>
-                        <p:commandButton value="View Bank Statement" action="/web/internalSystem/enquiry/counterTellerSearchCustomer.xhtml"/>
-                        <p:commandButton value="Fund Transfer" action="/web/internalSystem/deposit/employeeCashDeposit.xhtml"/>
+                        <p:commandButton value="View Transaction History" action="/web/internalSystem/deposit/employeeViewTransaction.xhtml"/>
+                        <p:commandButton value="View Bank Statement" action="/web/internalSystem/deposit/employeeViewStatement.xhtml"/>
+                        <p:commandButton value="Fund Transfer" action="/web/internalSystem/deposit/employeeTransfer.xhtml"/>
                         <p:commandButton value="Cash Deposit" action="/web/internalSystem/deposit/employeeCashDeposit.xhtml"/>
                         <p:commandButton value="Cash Withdraw" action="/web/internalSystem/deposit/employeeCashWithdraw.xhtml"/>
+                        <p:commandButton value="Open Account" action="/web/internalSystem/deposit/employeeOpenAccount.xhtml"/>
+                        <p:commandButton value="Delete Account" action="/web/internalSystem/deposit/employeeCloseAccount.xhtml"/>
+                        <p:commandButton value="Change Deposit Account Password" action="/web/internalSystem/deposit/employeeChangeBankAccountPwd.xhtml"/>
+                        <p:commandButton value="Retrieve Deposit Account Password" action="/web/internalSystem/deposit/employeeForgotDepositPassword.xhtml"/>
+                        <p:commandButton value="Activate Fixed Deposit" action="/web/internalSystem/deposit/employeeActivateFixedDeposit.xhtml"/>
+                        <p:commandButton value="View Customer Accounts Infornation" action="/web/internalSystem/deposit/employeeViewAccount.xhtml"/>
                     </h:panelGrid>
                 </p:tab>
                 <p:tab title="Loan">
                     <h:panelGrid columns="2" cellpadding="10">
-                        
+
                     </h:panelGrid>
                 </p:tab>
                 <p:tab title="Card">
                     <h:panelGrid columns="2" cellpadding="10">
-                      
+
                     </h:panelGrid>
                 </p:tab>
                 <p:tab title="Billing and Payment">
                     <h:panelGrid columns="2" cellpadding="10">
-                        
+
                     </h:panelGrid>
                 </p:tab>
             </p:accordionPanel>

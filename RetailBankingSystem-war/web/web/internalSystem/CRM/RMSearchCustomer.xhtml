@@ -9,10 +9,27 @@
     </h:head>
     <h:body>
         <h:form>
+            <p:menubar>
+                <p:submenu label="Home">
+                    <p:menuitem value="Home" url="/web/internalSystem/infrastructure/employeeRelationshipManagerMainPage.xhtml"/>
+                </p:submenu>
+
+                <p:submenu label="Log Out">
+                    <p:menuitem value="Logout" actionListener="#{employeeLoginManagedBean.doLogOut}" />
+                </p:submenu>
+            </p:menubar>
+        </h:form>
+
+        <h:outputText value="Welcome #{employeeAccountManagedBean.userName} !"/>
+        <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
+        <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
+        <h:outputText value="You have logged in as: Relationship Manager"/>
+
+        <h:form>
             <p:dataTable var="customerAdvanced" value="#{rMSearchCustomerAdvancedManagedBean.customerListFromEmployeeId}" paginator="true" rows="10"
                          paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
                          id="customerAdvancedTable" >
-                
+
                 <p:column headerText="Customer Name" sortBy="#{customerAdvanced.customerBasic.customerName}" filterBy="#{customerAdvanced.customerBasic.customerName}">
                     <h:outputText value="#{customerAdvanced.customerBasic.customerName}" /> 
                 </p:column>
@@ -24,7 +41,7 @@
                 <p:column headerText="Identification No." filterBy="#{customerAdvanced.customerBasic.customerIdentificationNum}">
                     <h:outputText value="#{customerAdvanced.customerBasic.customerIdentificationNum}" /> 
                 </p:column>
-                
+
                 <p:column headerText="Employment Details" sortBy="#{customerAdvanced.customerEmploymentDetails}" filterBy="#{customerAdvanced.customerEmploymentDetails}">
                     <h:outputText value="#{customerAdvanced.customerEmploymentDetails}" />
                 </p:column>
