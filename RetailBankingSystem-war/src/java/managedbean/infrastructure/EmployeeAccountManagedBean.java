@@ -211,12 +211,6 @@ public class EmployeeAccountManagedBean implements Serializable {
 
     }
 
-//    public void editUserAccountInfo(ActionEvent event) throws IOException {
-//        System.out.println("*** AccountManagedBean: employee id before redirecting: "+employeeId+" test");
-//        FacesContext context = FacesContext.getCurrentInstance();
-//        context.getExternalContext().redirect("editAccountInfo.xhtml");
-//        System.out.println("*** AccountManagedBean: redirect to edit account page");
-//    }
     public void deleteAccount(Employee employee) throws IOException {
 //        System.out.println("hi");
         FacesMessage message = null;

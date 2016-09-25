@@ -97,11 +97,7 @@
                             <p:commandButton action="/web/internalSystem/infrastructure/employeeEditAccountInfo.xhtml" icon="ui-icon-pencil">
                                 <f:setPropertyActionListener value="#{employee.employeeId}" target="#{systemAdminEditUserAccountManagedBean.employeeId}"/>
                             </p:commandButton>
-                        </p:column> 
-
-                        <p:column style="width:5%">
-                            <p:rowEditor/>
-                        </p:column>
+                        </p:column>  
 
                         <p:contextMenu for="userAccount2" widgetVar="Menu">   
                             <p:menuitem value="Edit Cell" icon="ui-icon-search" onclick="PF('userAccounts').showCellEditor();
