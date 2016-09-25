@@ -56,6 +56,13 @@
         <h:form>
             <br/>
             <p:panel header="View My Account">
+                <p:messages globalOnly="true" />
+                
+                <p:panel>
+                    <p:outputLabel value="Welcome "/>
+                    <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
+                </p:panel>
+                
                 <p:dataTable var="bankAccount" value="#{accountDataTableBean.bankAccount}" 
                              paginator="true" rows="10" emptyMessage="No Account" >
 

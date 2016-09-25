@@ -37,6 +37,7 @@ public class ChangeBankAccountPwdManagedBean {
     private String oldPassword;
     private String newPassword;
     private String confirmPwd;
+    private String customerName;
 
     private ExternalContext ec;
 
@@ -50,6 +51,7 @@ public class ChangeBankAccountPwdManagedBean {
 
         if (ec.getSessionMap().get("customer") != null) {
             CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
+            customerName = customerBasic.getCustomerName();
 
             List<BankAccount> bankAccounts = bankAccountSessionBeanLocal.retrieveBankAccountByCusIC(customerBasic.getCustomerIdentificationNum());
             bankAccountNums = new HashMap<String, String>();
@@ -106,6 +108,14 @@ public class ChangeBankAccountPwdManagedBean {
 
     public void setConfirmPwd(String confirmPwd) {
         this.confirmPwd = confirmPwd;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
     }
 
     public void submit() {

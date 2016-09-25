@@ -54,7 +54,14 @@
         </h:form>
         <h:form>
             <br/>
+            <p:panel>
+                <p:outputLabel value="Welcome "/>
+                <p:outputLabel value="#{transferDoneManagedBean.customerName}"/>
+            </p:panel>
+            
             <p:panel header="Transfer to My Account">
+                <p:messages globalOnly="true" />
+
                 <panelGrid>
                     <h:form id="formMain">
                         <h:outputText value="#{transferDoneManagedBean.statusMessage}" style="font-size: 24px"/>

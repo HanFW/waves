@@ -23,6 +23,7 @@ import ejb.infrastructure.session.LoggingSessionBeanLocal;
 @RequestScoped
 
 public class TransferManagedBean {
+
     @EJB
     private LoggingSessionBeanLocal loggingSessionBeanLocal;
 
@@ -49,6 +50,7 @@ public class TransferManagedBean {
     private Long newTransactionId;
     private String fromAccountBalance;
     private String toAccountBalance;
+    private String customerName;
 
     private String statusMessage;
 
@@ -64,6 +66,7 @@ public class TransferManagedBean {
 
         if (ec.getSessionMap().get("customer") != null) {
             CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
+            customerName = customerBasic.getCustomerName();
 
             List<BankAccount> bankAccounts = bankAccountSessionLocal.retrieveBankAccountByCusIC(customerBasic.getCustomerIdentificationNum());
             fromAccounts = new HashMap<String, String>();
@@ -202,6 +205,14 @@ public class TransferManagedBean {
         this.toAccountBalance = toAccountBalance;
     }
 
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
     public void toMyAccount() throws IOException {
         System.out.println("=");
         System.out.println("====== deposit/TransferManagedBean: toMyAccount() ======");
@@ -262,6 +273,7 @@ public class TransferManagedBean {
                             ec.getFlash().put("toAccount", toAccount);
                             ec.getFlash().put("fromAccountBalance", fromAccountBalance);
                             ec.getFlash().put("toAccountBalance", toAccountBalance);
+                            ec.getFlash().put("customerName", customerName);
 
                             ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerTransferDone.xhtml?faces-redirect=true");
                         } else {
@@ -291,6 +303,7 @@ public class TransferManagedBean {
                         ec.getFlash().put("toAccount", toAccount);
                         ec.getFlash().put("fromAccountBalance", fromAccountBalance);
                         ec.getFlash().put("toAccountBalance", toAccountBalance);
+                        ec.getFlash().put("customerName", customerName);
 
                         ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerTransferDone.xhtml?faces-redirect=true");
                     } else {
@@ -307,7 +320,7 @@ public class TransferManagedBean {
         System.out.println("=");
         System.out.println("====== deposit/TransferManagedBean: toOthersAccount() ======");
         CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
-        
+
         fromAccount = handleAccountString(fromBankAccountNumWithType);
         toAccount = handleAccountString(toBankAccountNumWithType);
 
@@ -363,6 +376,7 @@ public class TransferManagedBean {
                             ec.getFlash().put("toAccount", toAccount);
                             ec.getFlash().put("fromAccountBalance", fromAccountBalance);
                             ec.getFlash().put("toAccountBalance", toAccountBalance);
+                            ec.getFlash().put("customerName", customerName);
 
                             ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerTransferDone.xhtml?faces-redirect=true");
                         } else {
@@ -393,6 +407,7 @@ public class TransferManagedBean {
                         ec.getFlash().put("toAccount", toAccount);
                         ec.getFlash().put("fromAccountBalance", fromAccountBalance);
                         ec.getFlash().put("toAccountBalance", toAccountBalance);
+                        ec.getFlash().put("customerName", customerName);
 
                         ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerTransferDone.xhtml?faces-redirect=true");
                     } else {
@@ -408,7 +423,7 @@ public class TransferManagedBean {
     public void oneTimeTransfer() throws IOException {
         System.out.println("=");
         System.out.println("====== deposit/TransferManagedBean: oneTimeTransfer() ======");
-        
+
         CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
         fromAccount = handleAccountString(fromBankAccountNumWithType);
 
@@ -464,6 +479,7 @@ public class TransferManagedBean {
                             ec.getFlash().put("toAccount", toAccount);
                             ec.getFlash().put("fromAccountBalance", fromAccountBalance);
                             ec.getFlash().put("toAccountBalance", toAccountBalance);
+                            ec.getFlash().put("customerName", customerName);
 
                             ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerTransferDone.xhtml?faces-redirect=true");
 
@@ -494,6 +510,7 @@ public class TransferManagedBean {
                         ec.getFlash().put("toAccount", toAccount);
                         ec.getFlash().put("fromAccountBalance", fromAccountBalance);
                         ec.getFlash().put("toAccountBalance", toAccountBalance);
+                        ec.getFlash().put("customerName", customerName);
 
                         ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerTransferDone.xhtml?faces-redirect=true");
                     } else {

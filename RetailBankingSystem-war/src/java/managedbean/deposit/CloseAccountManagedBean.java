@@ -51,6 +51,7 @@ public class CloseAccountManagedBean {
     private String bankAccountPwd;
     private String confirmBankAccountPwd;
     private boolean checkOnlyOneAccount;
+    private String customerName;
 
     private Map<String, String> myBankAccounts = new HashMap<String, String>();
 
@@ -62,6 +63,7 @@ public class CloseAccountManagedBean {
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
         CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
+        customerName = customerBasic.getCustomerName();
 
         List<BankAccount> bankAccounts = bankAccountSessionLocal.retrieveBankAccountByCusIC(customerBasic.getCustomerIdentificationNum());
         myBankAccounts = new HashMap<String, String>();
@@ -160,6 +162,14 @@ public class CloseAccountManagedBean {
         this.checkOnlyOneAccount = checkOnlyOneAccount;
     }
 
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
     public void deleteAccount() throws IOException {
         System.out.println("=");
         System.out.println("====== deposit/CloseAccountManagedBean: deleteAccount() ======");
@@ -190,6 +200,7 @@ public class CloseAccountManagedBean {
                     ec.getFlash().put("statusMessage", statusMessage);
                     ec.getFlash().put("bankAccountNum", bankAccountNum);
                     ec.getFlash().put("bankAccountType", bankAccountType);
+                    ec.getFlash().put("customerName", customerName);
 
                     ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerDeleteAccount.xhtml?faces-redirect=true");
                 }
@@ -221,6 +232,7 @@ public class CloseAccountManagedBean {
                     ec.getFlash().put("statusMessage", statusMessage);
                     ec.getFlash().put("bankAccountNum", bankAccountNum);
                     ec.getFlash().put("bankAccountType", bankAccountType);
+                    ec.getFlash().put("customerName", customerName);
 
                     ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerDeleteAccount.xhtml?faces-redirect=true");
                 }

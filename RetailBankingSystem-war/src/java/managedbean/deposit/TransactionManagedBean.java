@@ -1,5 +1,6 @@
 package managedbean.deposit;
 
+import ejb.customer.entity.CustomerBasic;
 import ejb.deposit.entity.AccTransaction;
 import java.io.IOException;
 import javax.ejb.EJB;
@@ -8,6 +9,7 @@ import java.util.List;
 import javax.faces.context.ExternalContext;
 import ejb.deposit.session.TransactionSessionBeanLocal;
 import ejb.infrastructure.session.LoggingSessionBeanLocal;
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;

@@ -55,7 +55,13 @@
         </h:form>
         <h:form>
             <br/>
+            <p:panel>
+                <p:outputLabel value="Welcome "/>
+                <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
+            </p:panel>
+
             <p:panel header="View My Recipients">
+
                 <panelGrid>
                     <h:form id="formMain">
                         <h:outputText style="font-weight: bold" value="Status Message: " />
