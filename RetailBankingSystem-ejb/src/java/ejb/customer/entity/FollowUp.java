@@ -35,7 +35,7 @@ public class FollowUp implements Serializable {
 //    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "followUp")
 //    private List<Issue> issue;
 
-    @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER)
     private EnquiryCase enquiryCase;
 
     public Long getFollowUpId() {
