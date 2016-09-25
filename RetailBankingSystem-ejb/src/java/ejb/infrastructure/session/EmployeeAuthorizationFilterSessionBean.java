@@ -36,7 +36,7 @@ public class EmployeeAuthorizationFilterSessionBean implements EmployeeAuthoriza
         Set<Role> authorizedRoles = new HashSet();
 
         int i = 0;
-        while (i<23) {
+        while (i<permissions.size()) {
             Permission permission = permissions.get(i);
             String urlList = permission.getUrlList();
             String[] urlArray = urlList.split(",");
