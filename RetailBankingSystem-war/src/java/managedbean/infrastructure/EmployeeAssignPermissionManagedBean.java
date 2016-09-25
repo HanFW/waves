@@ -5,9 +5,11 @@
  */
 package managedbean.infrastructure;
 
+import ejb.infrastructure.entity.Employee;
 import ejb.infrastructure.entity.Permission;
 import ejb.infrastructure.entity.Role;
 import ejb.infrastructure.session.EmployeeAdminSessionBeanLocal;
+import ejb.infrastructure.session.LoggingSessionBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
@@ -32,6 +34,8 @@ public class EmployeeAssignPermissionManagedBean implements Serializable {
      */
     @EJB
     private EmployeeAdminSessionBeanLocal employeeAdminSessionBeanLocal;
+    @EJB
+    private LoggingSessionBeanLocal loggingSessionBeanLocal;
 
     private String roleName;
     private String[] permissionList1;
@@ -124,6 +128,9 @@ public class EmployeeAssignPermissionManagedBean implements Serializable {
         message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Permission is deleted for the role!", "permission disabled");
         context.addMessage(null, message);
         System.out.println("*** employeeAssignPermissionManagedBena: permission deleted");
+        
+         loggingSessionBeanLocal.createNewLogging("employee", getEmployeeIdViaSessionScope(),"System admin deletes a permission of role "+roleName,
+                "successful",null);
 
         permission = null;
 
@@ -159,6 +166,9 @@ public class EmployeeAssignPermissionManagedBean implements Serializable {
         System.out.println("===== AssignPermissionManagedBean: role name =====" + roleName);
         employeeAdminSessionBeanLocal.addPermissionToRole(roleName, permissionName);
         System.out.println("===== AssignPermissionManagedBean: add new permission to role =====");
+        
+        loggingSessionBeanLocal.createNewLogging("employee", getEmployeeIdViaSessionScope(),"System admin adds a new permission to role "+ roleName,
+                "successful",null);
 
 //        permissionName=null;
     }
@@ -167,6 +177,13 @@ public class EmployeeAssignPermissionManagedBean implements Serializable {
         FacesContext context = FacesContext.getCurrentInstance();
         context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/web/internalSystem/infrastructure/employeeSystemAdminAssignPermission.xhtml");
 
+    }
+    
+     public Long getEmployeeIdViaSessionScope() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        Employee employee = (Employee) context.getExternalContext().getSessionMap().get("employee");
+        Long employeeId = employee.getEmployeeId();
+        return employeeId;
     }
 
 }

@@ -5,7 +5,6 @@ package managedbean.infrastructure;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 import ejb.infrastructure.entity.Employee;
 import java.io.IOException;
 import java.io.Serializable;
@@ -20,6 +19,7 @@ import javax.faces.event.ActionEvent;
 import javax.persistence.Query;
 import ejb.infrastructure.session.CustomerAdminSessionBeanLocal;
 import ejb.infrastructure.session.EmployeeAdminSessionBeanLocal;
+import ejb.infrastructure.session.LoggingSessionBeanLocal;
 
 /**
  *
@@ -34,6 +34,9 @@ public class EmployeeLoginManagedBean implements Serializable {
      */
     @EJB
     private EmployeeAdminSessionBeanLocal adminSessionBeanLocal;
+
+    @EJB
+    private LoggingSessionBeanLocal loggingSessionBeanLocal;
 
     private String employeeAccountNum;
     private String employeePassword;
@@ -66,10 +69,13 @@ public class EmployeeLoginManagedBean implements Serializable {
                 context.getExternalContext().getSessionMap().put("employee", getEmployee());
                 loggedIn = true;
                 try {
-                    context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath()+"/web/internalSystem/infrastructure/employeeMainPage.xhtml");
+                    context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/web/internalSystem/infrastructure/employeeMainPage.xhtml");
                     message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Welcome " + employee.getEmployeeName() + " !", "Welcome message");
                     context.addMessage(null, message);
                     System.out.println("*** LoginManagedBean: welcome message");
+
+                    loggingSessionBeanLocal.createNewLogging("employee", getEmployeeId(), "employee logs in to Merlion Bank Internal System",
+                            "successful", "Account is valid and Password is correct");
                 } catch (IOException ex) {
                     Logger.getLogger(EmployeeLoginManagedBean.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -83,7 +89,7 @@ public class EmployeeLoginManagedBean implements Serializable {
                 message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Invalid employee Account.", "Invalid employee Account.");
                 context.addMessage(null, message);
                 System.out.println("*** LoginManagedBean: invalid user account");
-                break;    
+                break;
             default:
                 message = new FacesMessage(FacesMessage.SEVERITY_INFO, status, "Please check your account number.");
                 context.addMessage(null, message);
@@ -100,6 +106,9 @@ public class EmployeeLoginManagedBean implements Serializable {
         System.out.println("***LoginManagedBean: session invalidated");
         try {
             context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/web/internalSystem/infrastructure/employeeLogout.xhtml");
+
+            loggingSessionBeanLocal.createNewLogging("employee", getEmployeeId(), "employee logs out from Merlion Bank System",
+                    "successful", null);
         } catch (IOException ex) {
             Logger.getLogger(EmployeeLoginManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -108,15 +117,23 @@ public class EmployeeLoginManagedBean implements Serializable {
     public void forgetPassword(ActionEvent event) throws IOException {
 
         FacesContext context = FacesContext.getCurrentInstance();
-
         context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/web/internalSystem/infrastructure/employeeForgetPassword.xhtml");
-        
+
+
     }
 
     public void changePassword(ActionEvent event) throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
 
         context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/web/internalSystem/infrastructure/employeeChangePassword.xhtml");
+        
+    }
+
+    public Long getEmployeeId() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        Employee employee = (Employee) context.getExternalContext().getSessionMap().get("employee");
+        Long employeeId = employee.getEmployeeId();
+        return employeeId;
     }
 
     public void setEmployeeAccountNum(String employeeAccountNum) {
