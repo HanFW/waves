@@ -49,7 +49,7 @@
                 <p:submenu label="My profile">
                     <p:menuitem value="Change password" url="/web/onlineBanking/customer/customerChangePIN.xhtml" />
                     <p:menuitem value="Update basic profile" url="/web/onlineBanking/customer/customerUpdateBasicProfile.xhtml" />
-                    <p:menuitem value="Delete account" url="/web/onlineBanking/infrastructure/customerDeleteIBAccount.xhtml" />
+                    <p:menuitem value="Delete account" actionListener="#{customerDeleteIBAccountManagedBean.displayServices}" />
                 </p:submenu>
 
                 <p:submenu label="Logout">
