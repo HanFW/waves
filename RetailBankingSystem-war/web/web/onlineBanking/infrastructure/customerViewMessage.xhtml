@@ -5,95 +5,77 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
-                template="/WEB-INF/onlineBankingTemplate.xhtml">
+                template="/WEB-INF/onlineBankingTemplate.xhtml"
+                xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
     <ui:define name="content">
-    <h:head>
-        <title>View Account</title>
-    </h:head>
-    <h:body>
-        <h:form id="formMain">
-            <h1>Welcome to Merlion Bank</h1>
-            <p:menubar>
+        <h:head>
+            <title>View Account</title>
+        </h:head>
+        <h:body>
+            <h:form id="formMain">
+                <h1>Welcome to Merlion Bank</h1>
 
-    
-            <div class="ui-g ui-fluid">
-                <div class="ui-g-12 ui-lg-12">
-                    <div class="card card-w-title"> 
-                        <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
 
-                            <p:panel header="Message Box">
-
-                                <h:outputLabel value="Inbox" style="font-weight: bold; font-size: 28px" />
-                                <p:separator/>
+                <div class="ui-g ui-fluid">
+                    <div class="ui-g-12 ui-lg-12">
+                        <div class="card card-w-title"> 
+                            <h:form>
                                 <br/>
-                                <h:outputLabel value="Use the Secured Mailbox to view and retrieve your message from the Bank."/>
-                                <br/>
-                                <br/>
-                                <h:outputLabel value="To view our responses to your enquiry, click on the message subject."/>
-                                <br/>
-                                <br/>
-                                <p:dataTable var="messageBox" value="#{customerViewMessageManagedBean.messageBox}" 
-                                             reflow="true" paginator="true" rows="10" emptyMessage="No Message">
+                                <p:panel>
+                                    <p:outputLabel value="Welcome "/>
+                                    <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
+                                </p:panel>
 
-                <p:submenu label="Logout">
-                    <p:menuitem value="Logout" actionListener="#{customerLoginManagedBean.doLogout}"/>
-                </p:submenu>
-            </p:menubar>
-        </h:form>
-        <h:form>
-            <br/>
-            <p:panel>
-                <p:outputLabel value="Welcome "/>
-                <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
-            </p:panel>
+                                <p:panel header="Message Box">
+                                    <p:messages/>
+                                    <h:outputLabel value="Inbox" style="font-weight: bold; font-size: 28px" />
+                                    <p:separator/>
+                                    <br/>
+                                    <h:outputLabel value="Use the Secured Mailbox to view and retrieve your message from the Bank."/>
+                                    <br/>
+                                    <br/>
+                                    <h:outputLabel value="To view our responses to your enquiry, click on the message subject."/>
+                                    <br/>
+                                    <br/>
+                                    <p:dataTable var="messageBox" value="#{customerViewMessageManagedBean.messageBox}" 
+                                                 paginator="true" rows="10" emptyMessage="No Message">
 
-            <p:panel header="Message Box">
-                <p:messages/>
-                <h:outputLabel value="Inbox" style="font-weight: bold; font-size: 28px" />
-                <p:separator/>
-                <br/>
-                <h:outputLabel value="Use the Secured Mailbox to view and retrieve your message from the Bank."/>
-                <br/>
-                <br/>
-                <h:outputLabel value="To view our responses to your enquiry, click on the message subject."/>
-                <br/>
-                <br/>
-                <p:dataTable var="messageBox" value="#{customerViewMessageManagedBean.messageBox}" 
-                             paginator="true" rows="10" emptyMessage="No Message">
+                                        <p:column headerText="From"> 
+                                            <h:outputText value="#{messageBox.fromWhere}" />
+                                        </p:column>
 
-                                    <p:column headerText="Type of Message" >
-                                        <h:outputText value="#{messageBox.messageType}" /> 
-                                    </p:column>
+                                        <p:column headerText="Type of Message" >
+                                            <h:outputText value="#{messageBox.messageType}" /> 
+                                        </p:column>
 
-                                    <p:column headerText="Subject"> 
-                                        <p:commandLink ajax="false" process="@this" action="/web/onlineBanking/infrastructure/customerViewMessageContent.xhtml">
-                                            <h:outputText value="#{messageBox.subject}" />
-                                            <f:setPropertyActionListener value="#{messageBox.messageId}" target="#{customerViewMessageContentManagedBean.messageBoxId}" />
-                                        </p:commandLink>
-                                    </p:column>
+                                        <p:column headerText="Subject"> 
+                                            <p:commandLink ajax="false" process="@this" action="/web/onlineBanking/infrastructure/customerViewMessageContent.xhtml">
+                                                <h:outputText value="#{messageBox.subject}" />
+                                                <f:setPropertyActionListener value="#{messageBox.messageId}" target="#{customerViewMessageContentManagedBean.messageBoxId}" />
+                                            </p:commandLink>
+                                        </p:column>
 
-                                    <p:column headerText="Received Date"> 
-                                        <h:outputText value="#{messageBox.receivedDate}" />
-                                    </p:column>
+                                        <p:column headerText="Received Date"> 
+                                            <h:outputText value="#{messageBox.receivedDate}" />
+                                        </p:column>
 
-                                    <p:column headerText="Delete"> 
-                                        <center>
-                                            <p:commandButton process="@this" action="#{customerViewMessageContentManagedBean.deleteMessage}"
-                                                             icon="ui-icon-trash" ajax="false">
-                                                <f:setPropertyActionListener target="#{customerViewMessageContentManagedBean.messageBoxId}" value="#{messageBox.messageId}" />
-                                            </p:commandButton>
-                                        </center>
-                                    </p:column>
+                                        <p:column headerText="Delete" style="width: 10%"> 
+                                            <center>
+                                                <p:commandButton process="@this" action="#{customerViewMessageContentManagedBean.deleteMessage}"
+                                                                 icon="ui-icon-trash" ajax="false">
+                                                    <f:setPropertyActionListener target="#{customerViewMessageContentManagedBean.messageBoxId}" value="#{messageBox.messageId}" />
+                                                </p:commandButton>
+                                            </center>
+                                        </p:column>
 
-                                </p:dataTable>
-                            </p:panel>
-                        </p:panelGrid>
+                                    </p:dataTable>
+                                </p:panel>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-        </h:form>
-        <ezcomp:CCTimeout/>
-    </h:body>
-</ui:define>
+            </h:form>
+            <ezcomp:CCTimeout/>
+        </h:body>
+    </ui:define>
 </ui:composition>

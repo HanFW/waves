@@ -6,192 +6,146 @@
     xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:p="http://primefaces.org/ui"
     template="/WEB-INF/onlineBankingTemplate.xhtml">
-    <h:head>
-        <title>Employee Account Management</title>
-    </h:head>
-    <h:body>
-        <h:outputText value="Welcome #{employeeAccountManagedBean.userName} !"/>
-        <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
-        <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
-        <h:outputText value="You have logged in as: System Admin"/>
-        
-        <h:form>
-            <h1>Add a New User Account</h1>
-            <p:messages globalOnly="true"/>
-            <p:panelGrid>
-                <p:row>
-                    <p:column>
-                        <p:outputLabel for="employeeName" style="font-weight: bold" value="Name: " />
-                        <p:outputLabel style="font-weight: bold" value="(As per NRIC/Passport): " />
-                    </p:column>
-                    <p:column>
-                        <p:inputText label="Employee Name" id="employeeName"
-                                     value="#{employeeAccountManagedBean.employeeName}">
-                        </p:inputText>
-                    </p:column>
-                    <p:column>
-                        <p:message for="employeeName" />
-                    </p:column>
-                </p:row>
-
-
     <ui:define name="content">
         <h:head>
             <title>Employee Account Management</title>
         </h:head>
         <h:body>
-            <p:panel>
-                <h:form id="formMain">
-                    <h1 style="text-align: center">Add a New User Account</h1>
+            <h:outputText value="Welcome #{employeeAccountManagedBean.userName} !"/>
+            <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
+            <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
+            <h:outputText value="You have logged in as: System Admin"/>
 
-                    <p:messages globalOnly="true"/>
+            <h:form>
+                <h1>Add a New User Account</h1>
+                <p:messages globalOnly="true"/>
 
-                    <p:panelGrid styleClass="ui-panelgrid-blank form-group">
-                        <p:row>
-                            <p:column>
-                                <p:outputLabel for="employeeName" style="font-weight: bold" value="Name: " />
-                                <p:outputLabel style="font-weight: bold" value="(As per NRIC/Passport): " />
-                            </p:column>
-                            <p:column>
-                                <p:inputText label="Employee Name" id="employeeName"
-                                             value="#{employeeAccountManagedBean.employeeName}">
-                                </p:inputText>
-                            </p:column>
-                            <p:column>
-                                <p:message for="employeeName" />
-                            </p:column>
-                        </p:row>
-
-                        <p:row>
-                            <p:column>
-                                <p:outputLabel for="employeeNRIC" style="font-weight: bold" value="NRIC No.: " />
-                            </p:column>
-                            <p:column>
-                                <p:inputText validatorMessage="Please provide a valid NRIC number" label="Employee NRIC" id="employeeNRIC"
-                                             value="#{employeeAccountManagedBean.employeeNRIC}">
-                                    <f:validateLength minimum="9" maximum="9" /> 
-                                </p:inputText>
-                            </p:column>
-                            <p:column>
-                                <p:message for="employeeNRIC" />
-                            </p:column>
-                        </p:row>
-
-                        <p:row>
-                            <p:column>
-                                <p:outputLabel for="employeeDepartment" style="font-weight: bold" value="Department: " />
-                            </p:column>
-                            <p:column>
-                                <p:selectOneMenu id="employeeDepartment" value="#{employeeAccountManagedBean.employeeDepartment}" 
-                                                 style="width:125px">
-                                    <f:selectItem itemLabel="Please Select" itemValue=" " />
-                                    <f:selectItem itemLabel="CEO" itemValue="CEO" />
-                                    <f:selectItem itemLabel="Card Department" itemValue="Card Department" />
-                                    <f:selectItem itemLabel="Loan Department" itemValue="Loan Department" />
-                                    <f:selectItem itemLabel="Sales Department" itemValue="Sales Department" />
-                                    <f:selectItem itemLabel="Operation Department" itemValue="Operation Department" />
-                                </p:selectOneMenu>            
-                            </p:column>
-                            <p:column>
-                                <p:message for="employeeDepartment" />
-                            </p:column>
-                        </p:row>
-
-                        <p:row>
-                            <p:column>
-                                <p:outputLabel for="employeePosition" style="font-weight: bold" value="Position: " />
-                            </p:column>
-                            <p:column>
-                                <p:selectOneMenu id="employeePosition" value="#{employeeAccountManagedBean.employeePosition}" 
-                                                 style="width:125px">
-                                    <f:selectItem itemLabel="Please Select" itemValue=" " />
-                                    <f:selectItem itemLabel="CEO" itemValue="CEO" />
-                                    <f:selectItem itemLabel="Manager" itemValue="Manager" />
-                                    <f:selectItem itemLabel="Officer" itemValue="Officer" />
-                                    <f:selectItem itemLabel="Mortgage Appraiser" itemValue="Mortgage Appraiser" />
-                                    <f:selectItem itemLabel="Underwriter" itemValue="Underwriter" />
-                                    <f:selectItem itemLabel="Relationship Manager" itemValue="Relationship Manager" />
-                                    <f:selectItem itemLabel="Counter Teller" itemValue="Counter Teller" />
-                                    <f:selectItem itemLabel="Call Center Staff" itemValue="Call Center Staff" />
-                                </p:selectOneMenu>
-                                <p:column>
-                                    <p:message for="employeePosition" />
-                                </p:column>
-                            </p:column>
-                        </p:row>
-
-                        <p:row>
-                            <p:column>
-                                <p:outputLabel for="employeeMobileNum" style="font-weight: bold" value="Mobile No.: " />
-                            </p:column>
-                            <p:column>
-                                <p:inputText converterMessage="invalid input" label="Employee Mobile Number" id="employeeMobileNum" validatorMessage="Please provide a valid mobile number"
-                                             value="#{employeeAccountManagedBean.employeeMobileNum}">
-                                    <f:validateLength minimum="8" maximum="8"/>
-                                </p:inputText>
-                            </p:column>
-                            <p:column>
-                                <p:message for="employeeMobileNum" />
-                            </p:column>
-                        </p:row>
-
-                        <p:row>
-                            <p:column>
-                                <p:outputLabel for="employeeEmail" style="font-weight: bold" value="Email: " />
-                            </p:column>
-                            <p:column>
-                                <p:inputText validatorMessage="Please provide a valid email address" label="Employee Email" id="employeeEmail"
-                                             value="#{employeeAccountManagedBean.employeeEmail}">
-                                    <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
-                                </p:inputText>
-                            </p:column>
-                            <p:column>
-                                <p:message for="employeeEmail" />
-                            </p:column>
-                        </p:row>
-
-                <p:row>
-                    <p:column colspan="2">
-                    <p:outputPanel id="display" style="width:250px;padding-left:5px">
-                        <p:dataList value="#{employeeAccountManagedBean.selectedRoles}" var="role" emptyMessage="No roles selected">
-                            #{role}
-                        </p:dataList>
-                    </p:outputPanel>
-                    <!--</h:form>-->
-                    </p:column>
-                </p:row>
-            </p:panelGrid>
-
-            <p:row>
-                <p:column colspan="2">
-                    <p:commandButton type="submit" value="Submit" actionListener="#{employeeAccountManagedBean.createAccount}" update="@form"/>
-                </p:column>
-                <p:column colspan="2">
-                    <p:commandButton value="Quit" type="submit" action="/web/internalSystem/infrastructure/employeeUserAccountManagement.xhtml" immediate="true"/>
-                </p:column>
-            </p:row>
-
-                                <div align="center">
-                                    <p:outputPanel  id="display" style="width:250px;padding-left:5px" styleClass="ui-panelgrid-blank form-group"/>
-                                    <p:dataList value="#{employeeAccountManagedBean.selectedRoles}" var="role" emptyMessage="No roles selected">
-                                        #{role}
-                                    </p:dataList>
-                                </div>
-                            </h:form>
-                        </p:row>
-                    </p:panelGrid>
-
+                <p:panelGrid styleClass="ui-panelgrid-blank form-group">
                     <p:row>
-                        <p:column colspan="2">
-                            <p:commandButton type="submit" value="Submit" actionListener="#{employeeAccountManagedBean.createAccount}" update="@form"/>
+                        <p:column>
+                            <p:outputLabel for="employeeName" style="font-weight: bold" value="Name: " />
+                            <p:outputLabel style="font-weight: bold" value="(As per NRIC/Passport): " />
                         </p:column>
-                        <p:column colspan="2">
-                            <p:commandButton value="Quit" type="submit" action="/web/internalSystem/infrastructure/employeeUserAccountManagement.xhtml" immediate="true"/>
+                        <p:column>
+                            <p:inputText label="Employee Name" id="employeeName"
+                                         value="#{employeeAccountManagedBean.employeeName}">
+                            </p:inputText>
+                        </p:column>
+                        <p:column>
+                            <p:message for="employeeName" />
                         </p:column>
                     </p:row>
 
-                </h:form>
-            </p:panel>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="employeeNRIC" style="font-weight: bold" value="NRIC No.: " />
+                        </p:column>
+                        <p:column>
+                            <p:inputText validatorMessage="Please provide a valid NRIC number" label="Employee NRIC" id="employeeNRIC"
+                                         value="#{employeeAccountManagedBean.employeeNRIC}">
+                                <f:validateLength minimum="9" maximum="9" /> 
+                            </p:inputText>
+                        </p:column>
+                        <p:column>
+                            <p:message for="employeeNRIC" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="employeeDepartment" style="font-weight: bold" value="Department: " />
+                        </p:column>
+                        <p:column>
+                            <p:selectOneMenu id="employeeDepartment" value="#{employeeAccountManagedBean.employeeDepartment}" 
+                                             style="width:125px">
+                                <f:selectItem itemLabel="Please Select" itemValue=" " />
+                                <f:selectItem itemLabel="CEO" itemValue="CEO" />
+                                <f:selectItem itemLabel="Card Department" itemValue="Card Department" />
+                                <f:selectItem itemLabel="Loan Department" itemValue="Loan Department" />
+                                <f:selectItem itemLabel="Sales Department" itemValue="Sales Department" />
+                                <f:selectItem itemLabel="Operation Department" itemValue="Operation Department" />
+                            </p:selectOneMenu>            
+                        </p:column>
+                        <p:column>
+                            <p:message for="employeeDepartment" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="employeePosition" style="font-weight: bold" value="Position: " />
+                        </p:column>
+                        <p:column>
+                            <p:selectOneMenu id="employeePosition" value="#{employeeAccountManagedBean.employeePosition}" 
+                                             style="width:125px">
+                                <f:selectItem itemLabel="Please Select" itemValue=" " />
+                                <f:selectItem itemLabel="CEO" itemValue="CEO" />
+                                <f:selectItem itemLabel="Manager" itemValue="Manager" />
+                                <f:selectItem itemLabel="Officer" itemValue="Officer" />
+                                <f:selectItem itemLabel="Mortgage Appraiser" itemValue="Mortgage Appraiser" />
+                                <f:selectItem itemLabel="Underwriter" itemValue="Underwriter" />
+                                <f:selectItem itemLabel="Relationship Manager" itemValue="Relationship Manager" />
+                                <f:selectItem itemLabel="Counter Teller" itemValue="Counter Teller" />
+                                <f:selectItem itemLabel="Call Center Staff" itemValue="Call Center Staff" />
+                            </p:selectOneMenu>
+                            <p:column>
+                                <p:message for="employeePosition" />
+                            </p:column>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="employeeMobileNum" style="font-weight: bold" value="Mobile No.: " />
+                        </p:column>
+                        <p:column>
+                            <p:inputText converterMessage="invalid input" label="Employee Mobile Number" id="employeeMobileNum" validatorMessage="Please provide a valid mobile number"
+                                         value="#{employeeAccountManagedBean.employeeMobileNum}">
+                                <f:validateLength minimum="8" maximum="8"/>
+                            </p:inputText>
+                        </p:column>
+                        <p:column>
+                            <p:message for="employeeMobileNum" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="employeeEmail" style="font-weight: bold" value="Email: " />
+                        </p:column>
+                        <p:column>
+                            <p:inputText validatorMessage="Please provide a valid email address" label="Employee Email" id="employeeEmail"
+                                         value="#{employeeAccountManagedBean.employeeEmail}">
+                                <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                            </p:inputText>
+                        </p:column>
+                        <p:column>
+                            <p:message for="employeeEmail" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column colspan="2">
+                            <p:outputPanel id="display" style="width:250px;padding-left:5px">
+                                <p:dataList value="#{employeeAccountManagedBean.selectedRoles}" var="role" emptyMessage="No roles selected">
+                                    #{role}
+                                </p:dataList>
+                            </p:outputPanel>
+                            <!--</h:form>-->
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+
+                <p:row>
+                    <p:column colspan="2">
+                        <p:commandButton type="submit" value="Submit" actionListener="#{employeeAccountManagedBean.createAccount}" update="@form"/>
+                    </p:column>
+                    <p:column colspan="2">
+                        <p:commandButton value="Quit" type="submit" action="/web/internalSystem/infrastructure/employeeUserAccountManagement.xhtml" immediate="true"/>
+                    </p:column>
+                </p:row>
+
+            </h:form>
         </h:body>
     </ui:define>
 </ui:composition>

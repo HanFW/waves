@@ -9,105 +9,105 @@
 
 
     <ui:define name="content">
-    <h:head>
-        <title>Manage Customer Case Follow-Up</title>
-    </h:head>
-    <h:body>
-        <h:form>
-            <p:messages />
-            <p:panel id="detail" header="Customer Follow-Up Detail">
-                <h:outputText value="Customer Input:   #{enquiryManagerManagedBean.followUpDetailById}" /> 
-                <p:panel header="Customer Case Issues">
-                    <p:dataTable var="issue" value="#{enquiryManagerManagedBean.followUpIssueById}" 
-                                 paginator="true" rows="10" emptyMessage="No Issue Sent to Specialists">
-                        <p:column headerText="Issue ID">
-                            <h:outputText value="#{issue.issueId}" />
-                        </p:column>
+        <h:head>
+            <title>Manage Customer Case Follow-Up</title>
+        </h:head>
+        <h:body>
+            <h:form>
+                <p:messages />
+                <p:panel id="detail" header="Customer Follow-Up Detail">
+                    <h:outputText value="Customer Input:   #{enquiryManagerManagedBean.followUpDetailById}" /> 
+                    <p:panel header="Customer Case Issues">
+                        <p:dataTable var="issue" value="#{enquiryManagerManagedBean.followUpIssueById}" 
+                                     paginator="true" rows="10" emptyMessage="No Issue Sent to Specialists">
+                            <p:column headerText="Issue ID">
+                                <h:outputText value="#{issue.issueId}" />
+                            </p:column>
 
-                        <p:column headerText="Status"> 
-                            <h:outputText value="#{issue.issueStatus}" />
-                        </p:column>
+                            <p:column headerText="Status"> 
+                                <h:outputText value="#{issue.issueStatus}" />
+                            </p:column>
 
-                        <p:column headerText="Detail" >
-                            <h:outputText value="#{issue.issueProblem}" /> 
-                        </p:column>
+                            <p:column headerText="Detail" >
+                                <h:outputText value="#{issue.issueProblem}" /> 
+                            </p:column>
 
-                        <p:column headerText="Reply"> 
-                            <h:outputText value="#{issue.issueSolution}" />
-                        </p:column>
-                    </p:dataTable>
-                </p:panel>
-            </p:panel>
-            <h:outputText value="&lt;br/&gt;" escape="false" />
-            <p:panel>
-                <p:column>
-                    <h:outputText value="Are you able to answer this enquiry?" /> 
-                    <p:selectOneRadio id="ableToAnswer" value="#{enquiryManagerManagedBean.ableToReply2}">
-                        <f:selectItem itemLabel="Yes" itemValue="Yes" />
-                        <f:selectItem itemLabel="No" itemValue="No" />
-                        <p:ajax event="change" update="panelYes" listener="#{enquiryManagerManagedBean.show3()}"/>
-                        <p:ajax event="change" update="panelNo" listener="#{enquiryManagerManagedBean.show4()}"/>
-                    </p:selectOneRadio>
-                </p:column>
-            </p:panel>
-
-            <p:panel style="border: none;" id="panelYes" visible="#{enquiryManagerManagedBean.visible3}">
-                <p:panel>
-                    <p:row>
-                        <p:outputLabel style="font-weight: bold" value="Reply: " />
-                    </p:row>
-                    <h:outputText value="&lt;br/&gt;" escape="false" />
-                    <p:row>
-                        <p:inputTextarea value="#{enquiryManagerManagedBean.followUpSolution}"  rows="5" cols="30"  autoResize="false" />
-                        <h:outputText value="&lt;br/&gt;" escape="false" />
-                    </p:row>
-                </p:panel>
-                <p:commandButton value="Send" actionListener="#{enquiryManagerManagedBean.replyToFollowUp}"  ajax="false"/>
-            </p:panel>
-
-            <p:panel style="border: none;" id="panelNo" visible="#{enquiryManagerManagedBean.visible4}">
-                <p:panel>
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel style="font-weight: bold" value="Record an issue: " />
-                        </p:column>
-                    </p:row>
-                    <h:outputText value="&lt;br/&gt;" escape="false" />
-                    <p:row>
-                        <p:selectOneMenu id="departmentTo" value="#{enquiryManagerManagedBean.departmentTo}" 
-                                         style="width:125px">
-                            <f:selectItem itemLabel="Please Select Department" itemValue=" " />
-                            <f:selectItem itemLabel="Card Department" itemValue="Card" />
-                            <f:selectItem itemLabel="Loan Department" itemValue="Loan" />
-                            <f:selectItem itemLabel="Deposit Department" itemValue="Deposit" />
-                            <f:selectItem itemLabel="Operation Department" itemValue="Operation" />
-                            <f:selectItem itemLabel="Wealth Management" itemValue="Wealth Management" />
-                        </p:selectOneMenu>
-                    </p:row>
+                            <p:column headerText="Reply"> 
+                                <h:outputText value="#{issue.issueSolution}" />
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
                 </p:panel>
                 <h:outputText value="&lt;br/&gt;" escape="false" />
                 <p:panel>
-                    <p:row>
-                        <p:column>
-                            <p:inputTextarea  value="#{enquiryManagerManagedBean.issueProblem}"  rows="5" cols="30" autoResize="false" />
-                            <h:outputText value="&lt;br/&gt;" escape="false" />
+                    <p:column>
+                        <h:outputText value="Are you able to answer this enquiry?" /> 
+                        <p:selectOneRadio id="ableToAnswer" value="#{enquiryManagerManagedBean.ableToReply2}">
+                            <f:selectItem itemLabel="Yes" itemValue="Yes" />
+                            <f:selectItem itemLabel="No" itemValue="No" />
+                            <p:ajax event="change" update="panelYes" listener="#{enquiryManagerManagedBean.show3()}"/>
+                            <p:ajax event="change" update="panelNo" listener="#{enquiryManagerManagedBean.show4()}"/>
+                        </p:selectOneRadio>
+                    </p:column>
+                </p:panel>
 
-                        </p:column>
-                    </p:row>
+                <p:panel style="border: none;" id="panelYes" visible="#{enquiryManagerManagedBean.visible3}">
+                    <p:panel>
+                        <p:row>
+                            <p:outputLabel style="font-weight: bold" value="Reply: " />
+                        </p:row>
+                        <h:outputText value="&lt;br/&gt;" escape="false" />
+                        <p:row>
+                            <p:inputTextarea value="#{enquiryManagerManagedBean.followUpSolution}"  rows="5" cols="30"  autoResize="false" />
+                            <h:outputText value="&lt;br/&gt;" escape="false" />
+                        </p:row>
+                    </p:panel>
+                    <p:commandButton value="Send" actionListener="#{enquiryManagerManagedBean.replyToFollowUp}"  ajax="false"/>
                 </p:panel>
-                <p:panel>
-                    <p:row>
-                        <p:column>
-                            <p:commandButton value="Send Issue and Record Another" actionListener="#{enquiryManagerManagedBean.addFollowUpIssue}" ajax="false"/>
-                        </p:column>
-                        <p:column>
-                            <p:commandButton value="Send Issue and QUIT" actionListener="#{enquiryManagerManagedBean.saveFollowUpIssue}" ajax="false"/>
-                        </p:column>
-                    </p:row>
+
+                <p:panel style="border: none;" id="panelNo" visible="#{enquiryManagerManagedBean.visible4}">
+                    <p:panel>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel style="font-weight: bold" value="Record an issue: " />
+                            </p:column>
+                        </p:row>
+                        <h:outputText value="&lt;br/&gt;" escape="false" />
+                        <p:row>
+                            <p:selectOneMenu id="departmentTo" value="#{enquiryManagerManagedBean.departmentTo}" 
+                                             style="width:125px">
+                                <f:selectItem itemLabel="Please Select Department" itemValue=" " />
+                                <f:selectItem itemLabel="Card Department" itemValue="Card" />
+                                <f:selectItem itemLabel="Loan Department" itemValue="Loan" />
+                                <f:selectItem itemLabel="Deposit Department" itemValue="Deposit" />
+                                <f:selectItem itemLabel="Operation Department" itemValue="Operation" />
+                                <f:selectItem itemLabel="Wealth Management" itemValue="Wealth Management" />
+                            </p:selectOneMenu>
+                        </p:row>
+                    </p:panel>
+                    <h:outputText value="&lt;br/&gt;" escape="false" />
+                    <p:panel>
+                        <p:row>
+                            <p:column>
+                                <p:inputTextarea  value="#{enquiryManagerManagedBean.issueProblem}"  rows="5" cols="30" autoResize="false" />
+                                <h:outputText value="&lt;br/&gt;" escape="false" />
+
+                            </p:column>
+                        </p:row>
+                    </p:panel>
+                    <p:panel>
+                        <p:row>
+                            <p:column>
+                                <p:commandButton value="Send Issue and Record Another" actionListener="#{enquiryManagerManagedBean.addFollowUpIssue}" ajax="false"/>
+                            </p:column>
+                            <p:column>
+                                <p:commandButton value="Send Issue and QUIT" actionListener="#{enquiryManagerManagedBean.saveFollowUpIssue}" ajax="false"/>
+                            </p:column>
+                        </p:row>
+                    </p:panel>
                 </p:panel>
-            </p:panel>
-        </h:form>
-    </h:body>
+            </h:form>
+        </h:body>
     </ui:define>
 </ui:composition>
 

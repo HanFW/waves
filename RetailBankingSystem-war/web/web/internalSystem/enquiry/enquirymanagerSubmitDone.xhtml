@@ -7,28 +7,28 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/onlineBankingTemplate.xhtml">
     <ui:define name="content">
-    <h:body>
-        <h:form>
-            <p:menubar>
-                <p:submenu label="Home">
-                    <p:menuitem value="Home" url="/web/internalSystem/infrastructure/employeeEnquiryManagerMainPage.xhtml"/>
-                </p:submenu>
-            
-                <p:submenu label="Log Out">
-                    <p:menuitem value="Logout" actionListener="#{employeeLoginManagedBean.doLogOut}" />
-                </p:submenu>
-            </p:menubar>
-        </h:form>
-        
-        
-        <h:outputText value="Welcome #{employeeAccountManagedBean.userName} !"/>
-        <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
-        <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
-        <h:outputText value="You have logged in as: Enquiry Manager"/>
-        
-        <h3>
-            Your Issue/Issues have been sent to relevant department managers. Thank you!
-        </h3>
-    </h:body>
-        </ui:define>
+        <h:body>
+            <h:form>
+                <p:menubar>
+                    <p:submenu label="Home">
+                        <p:menuitem value="Home" url="/web/internalSystem/infrastructure/employeeEnquiryManagerMainPage.xhtml"/>
+                    </p:submenu>
+
+                    <p:submenu label="Log Out">
+                        <p:menuitem value="Logout" actionListener="#{employeeLoginManagedBean.doLogOut}" />
+                    </p:submenu>
+                </p:menubar>
+            </h:form>
+
+
+            <h:outputText value="Welcome #{employeeAccountManagedBean.userName} !"/>
+            <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
+            <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
+            <h:outputText value="You have logged in as: Enquiry Manager"/>
+
+            <h3>
+                Your Issue/Issues have been sent to relevant department managers. Thank you!
+            </h3>
+        </h:body>
+    </ui:define>
 </ui:composition>

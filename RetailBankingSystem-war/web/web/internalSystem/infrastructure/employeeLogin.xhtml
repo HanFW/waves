@@ -6,53 +6,53 @@
     xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:p="http://primefaces.org/ui"
     template="/WEB-INF/onlineBankingTemplate.xhtml">
-       <ui:define name="content">
-    <f:view>
-        <h:head>
-            <title>MBS Bank Internal System</title>
-        </h:head>
-        <h:body>        
-            <h:form id="formMain">
-           
-                <p:panel header="Login">
-                    <p:messages/>
-                    <p:panelGrid styleClass="ui-panelgrid-blank form-group">
-                        <p:row>
-                            <p:column>
-                                <p:outputLabel for="employeeAccountNum" value="Account number: "/>
-                            </p:column>
-                            <p:column>
-                                <p:inputText type="text" id="employeeAccountNum" value="#{employeeLoginManagedBean.employeeAccountNum}" required="true" requiredMessage="Please enter your account number."/>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column>
-                                <p:outputLabel for="employeePassword" value="Password: "/>
-                            </p:column>
-                            <p:column>
-                                <p:inputText type="password" id= "employeePassword" value="#{employeeLoginManagedBean.employeePassword}" required="true" requiredMessage="Please enter your password."/>
-                            </p:column>
-                        </p:row>
+    <ui:define name="content">
+        <f:view>
+            <h:head>
+                <title>MBS Bank Internal System</title>
+            </h:head>
+            <h:body>        
+                <h:form id="formMain">
+
+                    <p:panel header="Login">
+                        <p:messages/>
+                        <p:panelGrid styleClass="ui-panelgrid-blank form-group">
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="employeeAccountNum" value="Account number: "/>
+                                </p:column>
+                                <p:column>
+                                    <p:inputText type="text" id="employeeAccountNum" value="#{employeeLoginManagedBean.employeeAccountNum}" required="true" requiredMessage="Please enter your account number."/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="employeePassword" value="Password: "/>
+                                </p:column>
+                                <p:column>
+                                    <p:inputText type="password" id= "employeePassword" value="#{employeeLoginManagedBean.employeePassword}" required="true" requiredMessage="Please enter your password."/>
+                                </p:column>
+                            </p:row>
 
 
-                        <p:row>
-                            <p:column colspan="2">
-                                <div align="center">
-                                <p:commandButton value="submit" type="submit" actionListener="#{employeeLoginManagedBean.doLogin}" update="@form"/>
-                                </div>
-                            </p:column>
-                        </p:row>
+                            <p:row>
+                                <p:column colspan="2">
+                                    <div align="center">
+                                        <p:commandButton value="submit" type="submit" actionListener="#{employeeLoginManagedBean.doLogin}" update="@form"/>
+                                    </div>
+                                </p:column>
+                            </p:row>
 
-                        <p:row>
-                            <p:column colspan="2">
-                                <p:link value="Forget Pasword" outcome="/web/internalSystem/infrastructure/employeeForgetPassword"/>
-                            </p:column>
-                            
-                        </p:row>
-                    </p:panelGrid>
-                </p:panel>
-            </h:form>
-        </h:body>
-    </f:view>
-</ui:define>
+                            <p:row>
+                                <p:column colspan="2">
+                                    <p:link value="Forget Pasword" outcome="/web/internalSystem/infrastructure/employeeForgetPassword"/>
+                                </p:column>
+
+                            </p:row>
+                        </p:panelGrid>
+                    </p:panel>
+                </h:form>
+            </h:body>
+        </f:view>
+    </ui:define>
 </ui:composition>
