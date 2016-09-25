@@ -1051,7 +1051,7 @@
 
                                 <p:outputLabel value="Please provide your signature" />
                                 <br/>
-                                <p:signature id="input" style="width:80%;height:200px" widgetVar="sig" value="#{signatureViewManagedBean.customerSignature}" 
+                                <p:signature id="input" style="width:300px;height:200px" widgetVar="sig" value="#{signatureViewManagedBean.customerSignature}" 
                                              guideline="true"/>
 
                                 <div style="margin:20px 0">
@@ -1061,7 +1061,7 @@
 
                                 <p:outputPanel id="output">
                                     <h:outputText rendered="#{not empty signatureViewManagedBean.customerSignature}" style="font-size:20px;display:block" value="Your Signature" />
-                                    <p:signature style="width:400px;height:200px;" value="#{signatureViewManagedBean.customerSignature}" readonly="true"
+                                    <p:signature style="width:300px;height:200px;" value="#{signatureViewManagedBean.customerSignature}" readonly="true"
                                                  rendered="#{not empty signatureViewManagedBean.customerSignature}" backgroundColor="#eaeaea" color="#03a9f4"/>
                                 </p:outputPanel>
                                 <!--                    </p:panel>-->
@@ -1158,7 +1158,7 @@
                         </h:panelGrid>
 
                         <p:messages showDetail="true"/>
-                        <p:captcha label="Captcha" />
+                        <p:captcha label="Captcha"/>
                     </p:panel>
 
                     <p:commandButton id="saveBtn" value="Open Account" update="growl"
