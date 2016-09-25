@@ -1,7 +1,6 @@
-package managedbean.deposit;
+package managedbean.deposit.employee;
 
 import ejb.deposit.entity.BankAccount;
-import ejb.deposit.entity.Interest;
 import java.io.IOException;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -11,11 +10,14 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import ejb.deposit.session.TransactionSessionBeanLocal;
+import ejb.infrastructure.session.LoggingSessionBeanLocal;
 
-@Named(value = "cashManagedBean")
+@Named(value = "employeeCashManagedBean")
 @RequestScoped
 
-public class CashManagedBean {
+public class EmployeeCashManagedBean {
+    @EJB
+    private LoggingSessionBeanLocal loggingSessionBeanLocal;
 
     @EJB
     private BankAccountSessionBeanLocal bankAccountSessionLocal;
@@ -42,7 +44,7 @@ public class CashManagedBean {
 
     private BankAccount bankAccount;
 
-    public CashManagedBean() {
+    public EmployeeCashManagedBean() {
     }
 
     public String getDepositModel() {
@@ -134,6 +136,8 @@ public class CashManagedBean {
     }
 
     public void cashDeposit() throws IOException {
+        System.out.println("=");
+        System.out.println("====== deposit/EmployeeCashManagedBean: cashDeposit() ======");
         ec = FacesContext.getCurrentInstance().getExternalContext();
         BankAccount bankAccount = bankAccountSessionLocal.retrieveBankAccountByNum(depositAccountNum);
         String passwordCheck = transactionSessionLocal.checkPassword(depositAccountNum, depositAccountPwd);
@@ -150,6 +154,7 @@ public class CashManagedBean {
                 transactionId = transactionSessionLocal.cashDeposit(depositAccountNum, depositAmt.toString());
 
                 statusMessage = "Cash deposit Successfully!";
+                loggingSessionBeanLocal.createNewLogging("employee", null, "cash deposit","successful",null);
 
                 ec.getFlash().put("statusMessage", statusMessage);
                 ec.getFlash().put("depositAccountNum", depositAccountNum);
@@ -176,6 +181,7 @@ public class CashManagedBean {
                     transactionId = transactionSessionLocal.cashDeposit(depositAccountNum, depositAmt.toString());
 
                     statusMessage = "Cash deposit Successfully!";
+                    loggingSessionBeanLocal.createNewLogging("employee", null, "cash deposit","successful",null);
 
                     ec.getFlash().put("statusMessage", statusMessage);
                     ec.getFlash().put("depositAccountNum", depositAccountNum);
@@ -190,6 +196,8 @@ public class CashManagedBean {
     }
 
     public void cashWithdraw() throws IOException {
+        System.out.println("=");
+        System.out.println("====== deposit/CashManagedBean: cashWithdraw() ======");
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
         BankAccount bankAccount = bankAccountSessionLocal.retrieveBankAccountByNum(withdrawAccountNum);

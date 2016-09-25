@@ -6,7 +6,6 @@ import ejb.deposit.entity.AccTransaction;
 import ejb.customer.entity.CustomerBasic;
 import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import ejb.deposit.entity.Interest;
-import ejb.deposit.entity.MessageBox;
 import ejb.infrastructure.session.MessageSessionBeanLocal;
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -32,6 +31,7 @@ import javax.persistence.NonUniqueResultException;
 @Stateless
 @LocalBean
 public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
+
     @EJB
     private MessageSessionBeanLocal messageSessionBeanLocal;
 
@@ -52,18 +52,26 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
 
     @Override
     public BankAccount retrieveBankAccountById(Long bankAccountId) {
+        System.out.println("*");
+        System.out.println("****** deposit/BankAccountSessionBean: retrieveBankAccountById() ******");
         BankAccount bankAccount = new BankAccount();
 
         try {
             Query query = entityManager.createQuery("Select a From BankAccount a Where a.bankAccountId=:bankAccountId");
             query.setParameter("bankAccountId", bankAccountId);
 
-            bankAccount = (BankAccount) query.getSingleResult();
+            if (query.getResultList().isEmpty()) {
+                System.out.println("****** deposit/BankAccountSessionBean: retrieveBankAccountById(): invalid bank account Id: no result found, return new bank account");
+                return new BankAccount();
+            } else {
+                System.out.println("****** deposit/BankAccountSessionBean: retrieveBankAccountById(): valid bank account Id: return bank account");
+                bankAccount = (BankAccount) query.getSingleResult();
+            }
         } catch (EntityNotFoundException enfe) {
-            System.out.println("\nEntity not found error: " + enfe.getMessage());
+            System.out.println("****** deposit/BankAccountSessionBean: retrieveBankAccountById(): Entity not found error: " + enfe.getMessage());
             return new BankAccount();
         } catch (NonUniqueResultException nure) {
-            System.out.println("\nNon unique result error: " + nure.getMessage());
+            System.out.println("****** deposit/BankAccountSessionBean: retrieveBankAccountById(): Non unique result error: " + nure.getMessage());
         }
 
         return bankAccount;
@@ -71,6 +79,8 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
 
     @Override
     public BankAccount retrieveBankAccountByNum(String bankAccountNum) {
+        System.out.println("*");
+        System.out.println("****** deposit/BankAccountSessionBean: retrieveBankAccountByNum() ******");
         BankAccount bankAccount = new BankAccount();
 
         try {
@@ -78,15 +88,17 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
             query.setParameter("bankAccountNum", bankAccountNum);
 
             if (query.getResultList().isEmpty()) {
+                System.out.println("****** deposit/BankAccountSessionBean: retrieveBankAccountByNum(): invalid bank account number: no result found, return new bank account");
                 return new BankAccount();
             } else {
+                System.out.println("****** deposit/BankAccountSessionBean: retrieveBankAccountByNum(): valid bank account Number: return bank account");
                 bankAccount = (BankAccount) query.getSingleResult();
             }
         } catch (EntityNotFoundException enfe) {
-            System.out.println("\nEntity not found error: " + enfe.getMessage());
+            System.out.println("****** deposit/BankAccountSessionBean: retrieveBankAccountByNum(): Entity not found error: " + enfe.getMessage());
             return new BankAccount();
         } catch (NonUniqueResultException nure) {
-            System.out.println("\nNon unique result error: " + nure.getMessage());
+            System.out.println("****** deposit/BankAccountSessionBean: retrieveBankAccountByNum(): Non unique result error: " + nure.getMessage());
         }
 
         return bankAccount;
@@ -94,34 +106,47 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
 
     @Override
     public List<BankAccount> retrieveBankAccountByCusIC(String customerIdentificationNum) {
+        System.out.println("*");
+        System.out.println("****** deposit/BankAccountSessionBean: retrieveBankAccountByCusIC() ******");
         CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum.toUpperCase());
 
         if (customerBasic.getCustomerBasicId() == null) {
+            System.out.println("****** deposit/BankAccountSessionBean: retrieveBankAccountByCusIC(): invalid customer identification number: no result found, return new bank account");
             return new ArrayList<BankAccount>();
         }
         try {
             Query query = entityManager.createQuery("Select a From BankAccount a Where a.customerBasic=:customerBasic");
             query.setParameter("customerBasic", customerBasic);
+            System.out.println("****** deposit/BankAccountSessionBean: retrieveBankAccountByCusIC(): valid customer identification number: return bank account");
             return query.getResultList();
         } catch (EntityNotFoundException enfe) {
-            System.out.println("\nEntity not found error: " + enfe.getMessage());
+            System.out.println("****** deposit/BankAccountSessionBean: retrieveBankAccountByCusIC(): Entity not found error: " + enfe.getMessage());
             return new ArrayList<BankAccount>();
         }
     }
 
     @Override
     public CustomerBasic retrieveCustomerBasicById(Long customerBasicId) {
+        System.out.println("*");
+        System.out.println("****** deposit/BankAccountSessionBean: retrieveCustomerBasicById() ******");
         CustomerBasic customerBasic = new CustomerBasic();
 
         try {
             Query query = entityManager.createQuery("Select c From CustomerBasic c Where c.customerBasicId=:customerBasicId");
             query.setParameter("customerBasicId", customerBasicId);
-            customerBasic = (CustomerBasic) query.getSingleResult();
+
+            if (query.getResultList().isEmpty()) {
+                System.out.println("****** deposit/BankAccountSessionBean: retrieveCustomerBasicById(): invalid bank account Id: no result found, return new bank account");
+                return new CustomerBasic();
+            } else {
+                System.out.println("****** deposit/BankAccountSessionBean: retrieveCustomerBasicById(): valid bank account Id: return bank account");
+                customerBasic = (CustomerBasic) query.getSingleResult();
+            }
         } catch (EntityNotFoundException enfe) {
-            System.out.println("\nEntity not found error: " + enfe.getMessage());
+            System.out.println("****** deposit/BankAccountSessionBean: retrieveCustomerBasicById(): Entity not found error: " + enfe.getMessage());
             return new CustomerBasic();
         } catch (NonUniqueResultException nure) {
-            System.out.println("\nNon unique result error: " + nure.getMessage());
+            System.out.println("****** deposit/BankAccountSessionBean: retrieveCustomerBasicById(): Non unique result error: " + nure.getMessage());
         }
 
         return customerBasic;
@@ -129,17 +154,26 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
 
     @Override
     public CustomerBasic retrieveCustomerBasicByIC(String customerIdentificationNum) {
+        System.out.println("*");
+        System.out.println("****** deposit/BankAccountSessionBean: retrieveCustomerBasicByIC() ******");
         CustomerBasic customerBasic = new CustomerBasic();
 
         try {
             Query query = entityManager.createQuery("Select c From CustomerBasic c Where c.customerIdentificationNum=:customerIdentificationNum");
             query.setParameter("customerIdentificationNum", customerIdentificationNum.toUpperCase());
-            customerBasic = (CustomerBasic) query.getSingleResult();
+
+            if (query.getResultList().isEmpty()) {
+                System.out.println("****** deposit/BankAccountSessionBean: retrieveCustomerBasicByIC(): invalid customer identification number: no result found, return new customer");
+                return new CustomerBasic();
+            } else {
+                System.out.println("****** deposit/BankAccountSessionBean: retrieveCustomerBasicByIC(): valid customer identification number: return customer");
+                customerBasic = (CustomerBasic) query.getSingleResult();
+            }
         } catch (EntityNotFoundException enfe) {
-            System.out.println("\nEntity not found error: " + enfe.getMessage());
+            System.out.println("****** deposit/BankAccountSessionBean: retrieveCustomerBasicByIC(): Entity not found error: " + enfe.getMessage());
             return new CustomerBasic();
         } catch (NonUniqueResultException nure) {
-            System.out.println("\nNon unique result error: " + nure.getMessage());
+            System.out.println("****** deposit/BankAccountSessionBean: retrieveCustomerBasicByIC(): Non unique result error: " + nure.getMessage());
         }
 
         return customerBasic;
@@ -147,17 +181,25 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
 
     @Override
     public AccTransaction retrieveAccTransactionById(Long transactionId) {
+        System.out.println("*");
+        System.out.println("****** deposit/BankAccountSessionBean: retrieveAccTransactionById() ******");
         AccTransaction accTransaction = new AccTransaction();
 
         try {
             Query query = entityManager.createQuery("Select t From AccTransaction t Where t.transactionId=:transactionId");
             query.setParameter("transactionId", transactionId);
-            accTransaction = (AccTransaction) query.getSingleResult();
+
+            if (query.getResultList().isEmpty()) {
+                System.out.println("****** deposit/BankAccountSessionBean: retrieveAccTransactionById(): invalid transaction Id: no result found, return new transaction");
+            } else {
+                System.out.println("****** deposit/BankAccountSessionBean: retrieveAccTransactionById(): valid transaction Id: return transaction");
+                accTransaction = (AccTransaction) query.getSingleResult();
+            }
         } catch (EntityNotFoundException enfe) {
-            System.out.println("\nEntity not found error: " + enfe.getMessage());
+            System.out.println("****** deposit/BankAccountSessionBean: retrieveAccTransactionById(): Entity not found error: " + enfe.getMessage());
             return new AccTransaction();
         } catch (NonUniqueResultException nure) {
-            System.out.println("\nNon unique result error: " + nure.getMessage());
+            System.out.println("****** deposit/BankAccountSessionBean: retrieveAccTransactionById(): Non unique result error: " + nure.getMessage());
         }
 
         return accTransaction;
@@ -170,6 +212,8 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
             String bankAccountDepositPeriod, String currentFixedDepositPeriod,
             String fixedDepositStatus, Double statementDateDouble, Long customerBasicId, Long interestId) {
 
+        System.out.println("*");
+        System.out.println("****** deposit/BankAccountSessionBean: addNewAccount() ******");
         BankAccount bankAccount = new BankAccount();
         String hashedPwd = "";
 
@@ -198,19 +242,23 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
         entityManager.flush();
 
         String onlineBankingAccount = adminSessionBeanLocal.createOnlineBankingAccount(customerBasicId);
-        
+
         return bankAccount.getBankAccountId();
     }
 
     @Override
     public String deleteAccount(String bankAccountNum) {
+        System.out.println("*");
+        System.out.println("****** deposit/BankAccountSessionBean: deleteAccount() ******");
         Query query = entityManager.createQuery("Select a From BankAccount a Where a.bankAccountNum=:bankAccountNum");
         query.setParameter("bankAccountNum", bankAccountNum);
         List<BankAccount> result = query.getResultList();
 
         if (result.isEmpty()) {
+            System.out.println("****** deposit/BankAccountSessionBean: retrieveAccTransactionById(): invalid bank account number: no result found");
             return "Error! Account does not exist!";
         } else {
+            System.out.println("****** deposit/BankAccountSessionBean: retrieveAccTransactionById(): valid bank account number: delete bank account");
             BankAccount bankAccount = result.get(0);
             entityManager.remove(bankAccount);
 
@@ -343,6 +391,8 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
 
     @Override
     public void interestCrediting() {
+        System.out.println("*");
+        System.out.println("****** deposit/BankAccountSessionBean: interestCrediting() ******");
         DecimalFormat df = new DecimalFormat("#.00");
 
         Query query = entityManager.createQuery("SELECT a FROM BankAccount a WHERE a.bankAccountStatus = :bankAccountStatus");
@@ -438,27 +488,35 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
 
     @Override
     public String checkAccountDuplication(String bankAccountNum) {
+        System.out.println("*");
+        System.out.println("****** deposit/BankAccountSessionBean: checkAccountDuplication() ******");
         BankAccount bankAccount = retrieveBankAccountByNum(bankAccountNum);
 
         if (bankAccount.getBankAccountId() != null) {
+            System.out.println("****** deposit/BankAccountSessionBean: checkAccountDuplication(): account number duplicate");
             return "Duplicated";
         } else {
+            System.out.println("****** deposit/BankAccountSessionBean: checkAccountDuplication(): success");
             return "Success";
         }
     }
 
     @Override
     public String generateBankAccount() {
+        System.out.println("*");
+        System.out.println("****** deposit/BankAccountSessionBean: generateBankAccount() ******");
         String bankAccountNum;
         String status;
         SecureRandom random = new SecureRandom();
 
         bankAccountNum = new BigInteger(23, random).setBit(22).toString(10);
         status = checkAccountDuplication(bankAccountNum);
+        System.out.println("****** deposit/BankAccountSessionBean: generateBankAccount(): generate a bank account number");
 
         while (status.equals("Duplicated")) {
             bankAccountNum = new BigInteger(23, random).setBit(22).toString(10);
             status = checkAccountDuplication(bankAccountNum);
+            System.out.println("****** deposit/BankAccountSessionBean: generateBankAccount(): bank account number duplicate: generate a new bank account number");
         }
 
         return bankAccountNum;
@@ -466,12 +524,16 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
 
     @Override
     public boolean checkExistence(String customerIdentificationNum) {
+        System.out.println("*");
+        System.out.println("****** deposit/BankAccountSessionBean: checkExistence() ******");
         List<BankAccount> bankAccount = retrieveBankAccountByCusIC(customerIdentificationNum.toUpperCase());
 
         if (bankAccount.isEmpty()) {
+            System.out.println("****** deposit/BankAccountSessionBean: checkExistence(): customer identification number invalid: retun false");
             return false;
         }
 
+        System.out.println("****** deposit/BankAccountSessionBean: checkExistence(): customer identification number valid: retun true");
         return true;
     }
 
@@ -486,6 +548,8 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
 
     @Override
     public void updateDepositPeriod(String bankAccountNum, String fixedDepositPeriod) {
+        System.out.println("*");
+        System.out.println("****** deposit/BankAccountSessionBean: updateDepositPeriod() ******");
 
         BankAccount bankAccount = retrieveBankAccountByNum(bankAccountNum);
 
@@ -538,17 +602,23 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
 
     @Override
     public boolean checkOnlyOneAccount(String customerIdentificationNum) {
+        System.out.println("*");
+        System.out.println("****** deposit/BankAccountSessionBean: checkOnlyOneAccount() ******");
         List<BankAccount> bankAccount = retrieveBankAccountByCusIC(customerIdentificationNum.toUpperCase());
 
         if (bankAccount.size() > 1) {
+            System.out.println("****** deposit/BankAccountSessionBean: checkOnlyOneAccount(): more than one bank account: return false");
             return false;
         }
 
+        System.out.println("****** deposit/BankAccountSessionBean: checkOnlyOneAccount(): only one bank account: return true");
         return true;
     }
 
     @Override
     public CustomerBasic retrieveCustomerBasicByAccNum(String bankAccountNum) {
+        System.out.println("*");
+        System.out.println("****** deposit/BankAccountSessionBean: retrieveCustomerBasicByAccNum() ******");
         CustomerBasic customerBasic = new CustomerBasic();
         BankAccount bankAccount = retrieveBankAccountByNum(bankAccountNum);
 
@@ -557,15 +627,17 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
             query.setParameter("bankAccount", bankAccount);
 
             if (query.getResultList().isEmpty()) {
+                System.out.println("****** deposit/BankAccountSessionBean: retrieveCustomerBasicByAccNum(): invalid bank account number: no result found, return new customer");
                 return new CustomerBasic();
             } else {
+                System.out.println("****** deposit/BankAccountSessionBean: retrieveCustomerBasicByAccNum(): valid bank account number: return customer");
                 customerBasic = (CustomerBasic) query.getSingleResult();
             }
         } catch (EntityNotFoundException enfe) {
-            System.out.println("\nEntity not found error: " + enfe.getMessage());
+            System.out.println("****** deposit/BankAccountSessionBean: retrieveCustomerBasicByAccNum(): Entity not found error: " + enfe.getMessage());
             return new CustomerBasic();
         } catch (NonUniqueResultException nure) {
-            System.out.println("\nNon unique result error: " + nure.getMessage());
+            System.out.println("****** deposit/BankAccountSessionBean: retrieveCustomerBasicByAccNum(): Non unique result error: " + nure.getMessage());
         }
 
         return customerBasic;
@@ -573,6 +645,8 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
 
     @Override
     public void updatePwd(String bankAccountNum, String bankAccountPwd) {
+        System.out.println("*");
+        System.out.println("****** deposit/BankAccountSessionBean: updatePwd() ******");
 
         BankAccount bankAccount = retrieveBankAccountByNum(bankAccountNum);
 
@@ -589,6 +663,8 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
 
     @Override
     public void resetDailyTransferLimit() {
+        System.out.println("*");
+        System.out.println("****** deposit/BankAccountSessionBean: resetDailyTransferLimit() ******");
 
         Query query = entityManager.createQuery("SELECT a FROM BankAccount a WHERE a.bankAccountStatus = :bankAccountStatus");
         query.setParameter("bankAccountStatus", "Activated");
@@ -600,16 +676,10 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
     }
 
     @Override
-    public void updateDailyTransferLimit(String bankAccountNum,String dailyTransferLimit) {
+    public void updateDailyTransferLimit(String bankAccountNum, String dailyTransferLimit) {
+        System.out.println("*");
+        System.out.println("****** deposit/BankAccountSessionBean: updateDailyTransferLimit() ******");
         BankAccount bankAccount = retrieveBankAccountByNum(bankAccountNum);
         bankAccount.setTransferDailyLimit(dailyTransferLimit);
-    }
-    
-    @Override
-    public void sendMessage(String fromWhere,String messageType,String subject,String receivedDate,String messageContent,Long customerBasicId) {
-        CustomerBasic customerBasic = retrieveCustomerBasicById(customerBasicId);
-        
-        MessageBox messageBox = messageSessionBeanLocal.addNewMessage(fromWhere, messageType, subject, receivedDate, messageContent, customerBasicId);
-        customerBasic.getMessageBox().add(messageBox);
     }
 }

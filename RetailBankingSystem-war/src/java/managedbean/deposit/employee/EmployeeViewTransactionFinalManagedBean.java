@@ -14,12 +14,13 @@ import javax.faces.context.FacesContext;
 @RequestScoped
 
 public class EmployeeViewTransactionFinalManagedBean {
+
     @EJB
     private TransactionSessionBeanLocal transactionSessionBeanLocal;
-    
+
     private ExternalContext ec;
     private String bankAccountNum;
-    
+
     public EmployeeViewTransactionFinalManagedBean() {
     }
 
@@ -30,14 +31,15 @@ public class EmployeeViewTransactionFinalManagedBean {
     public void setBankAccountNum(String bankAccountNum) {
         this.bankAccountNum = bankAccountNum;
     }
-    
-    public List<AccTransaction> getAccTransaction() throws IOException
-    {
+
+    public List<AccTransaction> getAccTransaction() throws IOException {
+        System.out.println("=");
+        System.out.println("====== deposit/EmployeeViewTransactionFinalManagedBean: getAccTransaction() ======");
         ec = FacesContext.getCurrentInstance().getExternalContext();
-        
+
         List<AccTransaction> accTransaction = transactionSessionBeanLocal.retrieveAccTransactionByBankNum(bankAccountNum);
-        
+
         return accTransaction;
     }
-    
+
 }

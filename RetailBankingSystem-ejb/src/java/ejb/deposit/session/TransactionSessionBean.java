@@ -5,6 +5,7 @@ import ejb.deposit.entity.AccTransaction;
 import ejb.deposit.entity.Interest;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -31,17 +32,26 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
 
     @Override
     public BankAccount retrieveBankAccountById(Long bankAccountId) {
+        System.out.println("*");
+        System.out.println("****** deposit/TransactionSessionBean: retrieveBankAccountById() ******");
         BankAccount bankAccount = new BankAccount();
 
         try {
             Query query = entityManager.createQuery("Select a From BankAccount a Where a.bankAccountId=:bankAccountId");
             query.setParameter("bankAccountId", bankAccountId);
-            bankAccount = (BankAccount) query.getSingleResult();
+
+            if (query.getResultList().isEmpty()) {
+                System.out.println("****** deposit/TransactionSessionBean: retrieveBankAccountById(): invalid bank account Id: no result found, return new bank account");
+                return new BankAccount();
+            } else {
+                System.out.println("****** deposit/TransactionSessionBean: retrieveBankAccountById(): valid bank account Id: return bank account");
+                bankAccount = (BankAccount) query.getSingleResult();
+            }
         } catch (EntityNotFoundException enfe) {
-            System.out.println("\nEntity not found error: " + enfe.getMessage());
+            System.out.println("****** deposit/TransactionSessionBean: retrieveBankAccountById(): Entity not found error: " + enfe.getMessage());
             return new BankAccount();
         } catch (NonUniqueResultException nure) {
-            System.out.println("\nNon unique result error: " + nure.getMessage());
+            System.out.println("****** deposit/TransactionSessionBean: retrieveBankAccountById(): Non unique result error: " + nure.getMessage());
         }
 
         return bankAccount;
@@ -49,17 +59,26 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
 
     @Override
     public BankAccount retrieveBankAccountByNum(String bankAccountNum) {
+        System.out.println("*");
+        System.out.println("****** deposit/TransactionSessionBean: retrieveBankAccountByNum() ******");
         BankAccount bankAccount = new BankAccount();
 
         try {
             Query query = entityManager.createQuery("Select a From BankAccount a Where a.bankAccountNum=:bankAccountNum");
             query.setParameter("bankAccountNum", bankAccountNum);
-            bankAccount = (BankAccount) query.getSingleResult();
+
+            if (query.getResultList().isEmpty()) {
+                System.out.println("****** deposit/TransactionSessionBean: retrieveBankAccountByNum(): invalid bank account number: no result found, return new bank account");
+                return new BankAccount();
+            } else {
+                System.out.println("****** deposit/TransactionSessionBean: retrieveBankAccountByNum(): valid bank account number: return new bank account");
+                bankAccount = (BankAccount) query.getSingleResult();
+            }
         } catch (EntityNotFoundException enfe) {
-            System.out.println("\nEntity not found error: " + enfe.getMessage());
+            System.out.println("****** deposit/TransactionSessionBean: retrieveBankAccountByNum(): Entity not found error: " + enfe.getMessage());
             return new BankAccount();
         } catch (NonUniqueResultException nure) {
-            System.out.println("\nNon unique result error: " + nure.getMessage());
+            System.out.println("****** deposit/TransactionSessionBean: retrieveBankAccountByNum(): Non unique result error: " + nure.getMessage());
         }
 
         return bankAccount;
@@ -67,17 +86,27 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
 
     @Override
     public List<AccTransaction> retrieveAccTransactionByBankNum(String bankAccountNum) {
+        System.out.println("*");
+        System.out.println("****** deposit/TransactionSessionBean: retrieveAccTransactionByBankNum() ******");
         BankAccount bankAccount = bankAccountSessionLocal.retrieveBankAccountByNum(bankAccountNum);
 
         if (bankAccount == null) {
-            return null;
+            System.out.println("****** deposit/TransactionSessionBean: retrieveAccTransactionByBankNum(): invalid bank account number: no result found, return new transaction");
+            return new ArrayList<AccTransaction>();
         }
         try {
             Query query = entityManager.createQuery("Select t From AccTransaction t Where t.bankAccount=:bankAccount");
             query.setParameter("bankAccount", bankAccount);
-            return query.getResultList();
+
+            if (query.getResultList().isEmpty()) {
+                System.out.println("****** deposit/TransactionSessionBean: retrieveAccTransactionByBankNum(): wrong bank account number: no result found, return new transaction");
+                return new ArrayList<AccTransaction>();
+            } else {
+                System.out.println("****** deposit/TransactionSessionBean: retrieveAccTransactionByBankNum(): correct bank account number: return transaction");
+                return query.getResultList();
+            }
         } catch (EntityNotFoundException enfe) {
-            System.out.println("\nEntity not found error: " + enfe.getMessage());
+            System.out.println("****** deposit/TransactionSessionBean: retrieveAccTransactionByBankNum(): Entity not found error: " + enfe.getMessage());
             return null;
         }
     }
@@ -85,6 +114,8 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
     @Override
     public Long addNewTransaction(String transactionDate, String transactionCode, String transactionRef,
             String accountDebit, String accountCredit, Long transactionDateMilis, Long bankAccountId) {
+        System.out.println("*");
+        System.out.println("****** deposit/TransactionSessionBean: addNewTransaction() ******");
         AccTransaction accTransaction = new AccTransaction();
 
         accTransaction.setTransactionDate(transactionDate);
@@ -103,9 +134,11 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
 
     @Override
     public Long cashDeposit(String bankAccountNum, String depositAmt) {
+        System.out.println("*");
+        System.out.println("****** deposit/TransactionSessionBean: cashDeposit() ******");
 
         Long bankAccountId;
-        Long accTransactionId=Long.valueOf(0);
+        Long accTransactionId = Long.valueOf(0);
 
         BankAccount bankAccount = retrieveBankAccountByNum(bankAccountNum);
         bankAccountId = bankAccount.getBankAccountId();
@@ -145,9 +178,11 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
 
     @Override
     public Long cashWithdraw(String bankAccountNum, String withdrawAmt) {
+        System.out.println("*");
+        System.out.println("****** deposit/TransactionSessionBean: cashWithdraw() ******");
 
         Long bankAccountId;
-        Long accTransactionId=Long.valueOf(0);
+        Long accTransactionId = Long.valueOf(0);
 
         BankAccount bankAccount = retrieveBankAccountByNum(bankAccountNum);
         Interest interest = bankAccount.getInterest();
@@ -184,6 +219,8 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
 
     @Override
     public String checkPassword(String bankAccountNum, String bankAccountPwd) {
+        System.out.println("*");
+        System.out.println("****** deposit/TransactionSessionBean: checkPassword() ******");
 
         BankAccount bankAccount = bankAccountSessionLocal.retrieveBankAccountByNum(bankAccountNum);
         String hashedPwd = "";
@@ -195,17 +232,22 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
         }
 
         if (bankAccount.getBankAccountId() == null) {
+            System.out.println("****** deposit/TransactionSessionBean: checkPassword(): invalid bank account number: no result found");
             return "Error! Bank account does not exist!";
         } else {
             if (!hashedPwd.equals(bankAccount.getBankAccountPwd())) {
+                System.out.println("****** deposit/TransactionSessionBean: checkPassword(): bank account password is wrong");
                 return "Password is incorrect!";
             }
         }
+        System.out.println("****** deposit/TransactionSessionBean: checkPassword(): bank account password is correct");
         return "Password is correct!";
     }
 
     @Override
     public Long fundTransfer(String fromAccount, String toAccount, String transferAmt) {
+        System.out.println("*");
+        System.out.println("****** deposit/TransactionSessionBean: fundTransfer() ******");
 
         BankAccount bankAccountFrom = bankAccountSessionLocal.retrieveBankAccountByNum(fromAccount);
         BankAccount bankAccountTo = bankAccountSessionLocal.retrieveBankAccountByNum(toAccount);
@@ -236,7 +278,7 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
                 transferAmt, " ", transactionDateMilis, bankAccountFromId);
         Long toTransactionId = addNewTransaction(cal.getTime().toString(), transactionCode, transactionRefTo,
                 " ", transferAmt, transactionDateMilis, bankAccountToId);
-        
+
         bankAccountFrom.setBankAccountBalance(balanceAccountFrom.toString());
         bankAccountTo.setBankAccountBalance(balanceAccountTo.toString());
         bankAccountFrom.getInterest().setIsTransfer("1");
@@ -247,11 +289,6 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
         return fromTransactionId;
     }
 
-    @Override
-    public void initialDeposit(Long bankAccountId, String initialDepositAmt) {
-        bankAccountSessionLocal.retrieveBankAccountById(bankAccountId).setBankAccountBalance(initialDepositAmt);
-    }
-
     private String md5Hashing(String stringToHash) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("MD5");
         return Arrays.toString(md.digest(stringToHash.getBytes()));
@@ -259,6 +296,8 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
 
     @Override
     public String checkAccountActivation(String bankAccountNum, String initialDepositAmount) {
+        System.out.println("*");
+        System.out.println("****** deposit/TransactionSessionBean: checkAccountActivation() ******");
         BankAccount bankAccount = bankAccountSessionLocal.retrieveBankAccountByNum(bankAccountNum);
         String bankAccountType = bankAccount.getBankAccountType();
 

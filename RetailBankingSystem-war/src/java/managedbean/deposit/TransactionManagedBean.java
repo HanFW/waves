@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.util.List;
 import javax.faces.context.ExternalContext;
 import ejb.deposit.session.TransactionSessionBeanLocal;
+import ejb.infrastructure.session.LoggingSessionBeanLocal;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
@@ -15,6 +16,9 @@ import javax.inject.Named;
 @SessionScoped
 
 public class TransactionManagedBean implements Serializable{
+    @EJB
+    private LoggingSessionBeanLocal loggingSessionBeanLocal;
+    
     @EJB
     private TransactionSessionBeanLocal transactionSessionLocal;
     
@@ -34,6 +38,8 @@ public class TransactionManagedBean implements Serializable{
 
     public List<AccTransaction> getAccTransaction() throws IOException
     {
+        System.out.println("=");
+        System.out.println("====== deposit/TransactionManagedBean: getAccTransaction() ======");
         ec = FacesContext.getCurrentInstance().getExternalContext();
         List<AccTransaction> accTransaction = transactionSessionLocal.retrieveAccTransactionByBankNum(bankAccountNum);
         

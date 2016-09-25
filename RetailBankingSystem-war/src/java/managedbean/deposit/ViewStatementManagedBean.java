@@ -24,6 +24,7 @@ import javax.sql.DataSource;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperRunManager;
 import ejb.deposit.session.StatementSessionBeanLocal;
+import ejb.infrastructure.session.LoggingSessionBeanLocal;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -31,6 +32,9 @@ import java.util.Calendar;
 @RequestScoped
 
 public class ViewStatementManagedBean {
+
+    @EJB
+    private LoggingSessionBeanLocal loggingSessionBeanLocal;
 
     @EJB
     private BankAccountSessionBeanLocal bankAccountSessionBeanLocal;
@@ -95,6 +99,8 @@ public class ViewStatementManagedBean {
 
     public void viewStatement() throws ClassNotFoundException, IOException, JRException, SQLException {
 
+        System.out.println("=");
+        System.out.println("====== deposit/ViewStatementManagedBean: viewStatement() ======");
         BankAccount bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountById(bankAccountId);
 
         Connection connection;
@@ -122,14 +128,14 @@ public class ViewStatementManagedBean {
         response.setContentType("application/pdf");
 
         Calendar cal = Calendar.getInstance();
-        Long startTimeLong = cal.getTimeInMillis()-30000000;
+        Long startTimeLong = cal.getTimeInMillis() - 30000000;
         Long endTimeLong = cal.getTimeInMillis();
 
         Map parameters = new HashMap();
         parameters.put("bankAccountId", bankAccount.getBankAccountId());
         parameters.put("startTimeLong", startTimeLong);
         parameters.put("endTimeLong", endTimeLong);
-        
+
         JasperRunManager.runReportToPdfStream(reportStream, servletOutputStream, parameterMap, connection);
 
         connection.close();
@@ -138,6 +144,8 @@ public class ViewStatementManagedBean {
     }
 
     public List<Statement> getStatement() throws IOException {
+        System.out.println("=");
+        System.out.println("====== deposit/ViewStatementManagedBean: getStatement() ======");
 
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
@@ -156,6 +164,7 @@ public class ViewStatementManagedBean {
             }
         }
 
+        loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "view statement", "successful", null);
         return statement;
     }
 }

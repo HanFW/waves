@@ -50,6 +50,8 @@ public class EmployeeForgotDepositPwdDoneManagedBean {
     }
     
     public void submit() {
+        System.out.println("=");
+        System.out.println("====== deposit/EmployeeForgotDepositPwdDoneManagedBean: submit() ======");
         ec = FacesContext.getCurrentInstance().getExternalContext();
         
         bankAccountNum = ec.getSessionMap().get("bankAccountNum").toString();
