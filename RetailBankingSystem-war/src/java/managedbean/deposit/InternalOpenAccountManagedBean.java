@@ -34,7 +34,6 @@ public class InternalOpenAccountManagedBean {
     private String bankAccountType;
     private String bankAccountPwd;
     private String confirmBankAccountPwd;
-    private String customerName;
     private String customerIdentificationNum;
     private String customerEmail;
     private String customerMobile;
@@ -77,7 +76,6 @@ public class InternalOpenAccountManagedBean {
 
         CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
 
-        customerName = customerBasic.getCustomerName();
         customerIdentificationNum = customerBasic.getCustomerIdentificationNum();
         customerEmail = customerBasic.getCustomerEmail();
         customerMobile = customerBasic.getCustomerMobile();
@@ -105,14 +103,6 @@ public class InternalOpenAccountManagedBean {
 
     public void setConfirmBankAccountPwd(String confirmBankAccountPwd) {
         this.confirmBankAccountPwd = confirmBankAccountPwd;
-    }
-
-    public String getCustomerName() {
-        return customerName;
-    }
-
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
     }
 
     public String getCustomerIdentificationNum() {
@@ -328,14 +318,6 @@ public class InternalOpenAccountManagedBean {
         bankAccountNum = bankAccountSessionBeanLocal.generateBankAccount();
         System.out.println(agreement);
         if (agreement) {
-            System.out.println("if");
-
-            dailyInterest = "0";
-            monthlyInterest = "0";
-            isTransfer = "0";
-            isWithdraw = "0";
-
-            newInterestId = interestSessionBeanLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw);
 
             bankAccountBalance = "0";
             transferDailyLimit = "3000";
@@ -358,7 +340,14 @@ public class InternalOpenAccountManagedBean {
             newAccountId = bankAccountSessionBeanLocal.addNewAccount(bankAccountNum, bankAccountPwd, bankAccountType,
                     bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
                     bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
-                    statementDateDouble, customerBasicId, newInterestId);
+                    statementDateDouble, customerBasicId);
+
+            dailyInterest = "0";
+            monthlyInterest = "0";
+            isTransfer = "0";
+            isWithdraw = "0";
+            newInterestId = interestSessionBeanLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw, newAccountId);
+
             bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountById(newAccountId);
 
             statusMessage = "New Account Saved Successfully.";
@@ -366,10 +355,13 @@ public class InternalOpenAccountManagedBean {
             subject = "Welcome to Merlion Bank";
             Calendar cal = Calendar.getInstance();
             receivedDate = cal.getTime();
-            messageContent = "Welcome to Merlion Bank! Please deposit/transfer sufficient fund to activate your bank account.\n"
-                    + "For fixed depsit account, please declare your fixed deposit period first before activating your account.\n"
-                    + "Your daily transfer limit is S$3000. You could update your daily transfer limit under 'My Account'.\n"
-                    + "If you have any enquiry, please contact us at 800 820 8820 or you can write an enquiry after you login.\n";
+//            messageContent = "Welcome to Merlion Bank! Please deposit/transfer sufficient fund to activate your bank account.\n"
+//                    + "For fixed depsit account, please declare your fixed deposit period first before activating your account.\n"
+//                    + "Your daily transfer limit is S$3000. You could update your daily transfer limit under 'My Account'.\n"
+//                    + "If you have any enquiry, please contact us at 800 820 8820 or you can write an enquiry after you login.\n";
+            messageContent = "Welcome to Merlion Bank! Please deposit/transfer sufficient fund to your bank account.\n"
+                    + "For fixed deposit account, please declare your deposit period before activating your account.\n"
+                    + "Please contact us at 800 820 8820 or write enquiry after you login.\n";
             messageSessionBeanLocal.sendMessage("Merlion Bank", "Service", subject, receivedDate.toString(),
                     messageContent, customerBasicId);
 
@@ -379,7 +371,6 @@ public class InternalOpenAccountManagedBean {
             ec.getFlash().put("bankAccountNum", bankAccountNum);
             ec.getFlash().put("bankAccountType", bankAccountType);
             ec.getFlash().put("bankAccountStatus", bankAccountStatus);
-            ec.getFlash().put("customerName", customerName);
 
             ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerSaveAccount.xhtml?faces-redirect=true");
 

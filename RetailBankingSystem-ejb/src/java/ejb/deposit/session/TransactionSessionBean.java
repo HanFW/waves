@@ -331,4 +331,12 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
 
         return "Activated successfully.";
     }
+    
+    @Override
+    public void deleteAccTransaction(Long transactionId) {
+        AccTransaction transaction = bankAccountSessionLocal.retrieveAccTransactionById(transactionId);
+        
+        entityManager.remove(transaction);
+        entityManager.flush();
+    }
 }

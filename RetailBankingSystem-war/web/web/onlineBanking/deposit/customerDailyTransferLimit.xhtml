@@ -14,11 +14,11 @@
             <div class="ui-g ui-fluid">
                 <div class="ui-g-12 ui-lg-12">
                     <div class="card card-w-title"> 
-                    <p:panel>
+                        <p:panel>
                             <p:outputLabel value="Welcome "/>
-                            <p:outputLabel value="#{fixedDepositAccountManagedBean.customerName}"/>
+                            <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
                         </p:panel>
-                        
+
                         <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
 
                             <p:panel id="panel" header="Activate Fixed Deposit Account"> 

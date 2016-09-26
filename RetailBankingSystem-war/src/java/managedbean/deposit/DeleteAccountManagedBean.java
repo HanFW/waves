@@ -13,7 +13,6 @@ public class DeleteAccountManagedBean {
     private String statusMessage;
     private String bankAccountNum;
     private String bankAccountType;
-    private String customerName;
 
     public DeleteAccountManagedBean() {
     }
@@ -23,7 +22,6 @@ public class DeleteAccountManagedBean {
         statusMessage = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("statusMessage").toString();
         bankAccountNum = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("bankAccountNum").toString();
         bankAccountType = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("bankAccountType").toString();
-        customerName = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("customerName").toString();
     }
 
     public String getStatusMessage() {
@@ -48,13 +46,5 @@ public class DeleteAccountManagedBean {
 
     public void setBankAccountType(String bankAccountType) {
         this.bankAccountType = bankAccountType;
-    }
-
-    public String getCustomerName() {
-        return customerName;
-    }
-
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
     }
 }

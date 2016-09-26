@@ -29,6 +29,7 @@ import org.apache.commons.io.IOUtils;
 @ViewScoped
 
 public class EmployeeOpenAccountManagedBean implements Serializable {
+
     @EJB
     private VerifySessionBeanLocal verifySessionBeanLocal;
 
@@ -764,14 +765,8 @@ public class EmployeeOpenAccountManagedBean implements Serializable {
             dateOfBirth = bankAccountSessionLocal.changeDateFormat(customerDateOfBirth);
 
             if (existingCustomer.equals("Yes") && checkExist && agreement) {
-                dailyInterest = "0";
-                monthlyInterest = "0";
-                isTransfer = "0";
-                isWithdraw = "0";
 
                 customerBasicId = customerSessionBean.retrieveCustomerBasicByIC(customerIdentificationNum.toUpperCase()).getCustomerBasicId();
-
-                newInterestId = interestSessionLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw);
 
                 bankAccountBalance = "0";
                 transferDailyLimit = "3000";
@@ -792,7 +787,13 @@ public class EmployeeOpenAccountManagedBean implements Serializable {
                 newAccountId = bankAccountSessionLocal.addNewAccount(bankAccountNum, bankAccountPwd, bankAccountType,
                         bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
                         bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
-                        statementDateDouble, customerBasicId, newInterestId);
+                        statementDateDouble, customerBasicId);
+
+                dailyInterest = "0";
+                monthlyInterest = "0";
+                isTransfer = "0";
+                isWithdraw = "0";
+                newInterestId = interestSessionLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw, newAccountId);
 
                 bankAccount = bankAccountSessionLocal.retrieveBankAccountById(newAccountId);
                 bankAccountSessionLocal.retrieveBankAccountByCusIC(customerIdentificationNum).add(bankAccount);
@@ -822,12 +823,6 @@ public class EmployeeOpenAccountManagedBean implements Serializable {
                         customerAddress, customerPostal, customerOnlineBankingAccountNum,
                         customerOnlineBankingPassword, customerSignature.getBytes());
 
-                dailyInterest = "0";
-                monthlyInterest = "0";
-                isTransfer = "0";
-                isWithdraw = "0";
-                newInterestId = interestSessionLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw);
-
                 bankAccountBalance = "0";
                 transferDailyLimit = "3000";
                 transferBalance = "3000";
@@ -847,7 +842,13 @@ public class EmployeeOpenAccountManagedBean implements Serializable {
                 newAccountId = bankAccountSessionLocal.addNewAccount(bankAccountNum, bankAccountPwd, bankAccountType,
                         bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
                         bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
-                        statementDateDouble, newCustomerBasicId, newInterestId);
+                        statementDateDouble, newCustomerBasicId);
+
+                dailyInterest = "0";
+                monthlyInterest = "0";
+                isTransfer = "0";
+                isWithdraw = "0";
+                newInterestId = interestSessionLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw, newAccountId);
 
                 statusMessage = "New Account Saved Successfully.";
 
@@ -912,7 +913,7 @@ public class EmployeeOpenAccountManagedBean implements Serializable {
 
     public String customerVerify(String customerName, String customerIdentificationNum, String identification) {
         Verify verify = verifySessionBeanLocal.retrieveVerifyByCusIc(customerIdentificationNum);
-        
+
         if (verify.getVerifyId() == null) {
             return "Verify Failed. Invalid Identification Number";
         } else {

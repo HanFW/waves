@@ -2,6 +2,7 @@ package ejb.customer.session;
 
 import ejb.customer.entity.CustomerAdvanced;
 import ejb.customer.entity.CustomerBasic;
+import ejb.deposit.entity.Payee;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.EntityManager;
@@ -16,12 +17,23 @@ import javax.persistence.Query;
 import java.time.LocalDate;
 import java.time.Period;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
+import ejb.deposit.session.PayeeSessionBeanLocal;
+import ejb.infrastructure.session.MessageSessionBeanLocal;
 import java.util.Arrays;
 
 @Stateless
 @LocalBean
 
 public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
+
+    @EJB
+    private MessageSessionBeanLocal messageSessionBeanLocal;
+
+    @EJB
+    private EnquirySessionBeanLocal enquirySessionBeanLocal;
+
+    @EJB
+    private PayeeSessionBeanLocal payeeSessionBeanLocal;
 
     @EJB
     private BankAccountSessionBeanLocal bankAccountSessionLocal;
@@ -32,12 +44,12 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
     @Override
     public Long addNewCustomerBasic(String customerName, String customerSalutation,
             String customerIdentificationNum, String customerGender,
-            String customerEmail, String customerMobile, String customerDateOfBirth, 
-            String customerNationality,String customerCountryOfResidence, String customerRace, 
-            String customerMaritalStatus,String customerOccupation, String customerCompany, 
-            String customerAddress, String customerPostal,String customerOnlineBankingAccountNum, 
-            String customerOnlineBankingPassword,byte[] customerSignature) {
-        
+            String customerEmail, String customerMobile, String customerDateOfBirth,
+            String customerNationality, String customerCountryOfResidence, String customerRace,
+            String customerMaritalStatus, String customerOccupation, String customerCompany,
+            String customerAddress, String customerPostal, String customerOnlineBankingAccountNum,
+            String customerOnlineBankingPassword, byte[] customerSignature) {
+
         CustomerBasic customerBasic = new CustomerBasic();
 
         customerBasic.setCustomerName(customerName);
@@ -59,7 +71,7 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
         customerBasic.setCustomerOnlineBankingPassword(null);
         customerBasic.setCustomerSignature(customerSignature);
         customerBasic.setCustomerAge(getAge(customerDateOfBirth));
-        
+
         entityManager.persist(customerBasic);
         entityManager.flush();
 
@@ -68,17 +80,52 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
     }
 
     @Override
-    public String deleteCustomerBasic(String customerIdentificationNum){
-        
+    public String deleteCustomerBasic(String customerIdentificationNum) {
+
         CustomerBasic customerBasic = retrieveCustomerBasicByIC(customerIdentificationNum);
-        
+
+        if (!customerBasic.getBankAccount().isEmpty()) {
+            for (int i = customerBasic.getBankAccount().size() - 1; i > 0; i--) {
+                bankAccountSessionLocal.deleteAccount(customerBasic.getBankAccount().get(i).getBankAccountNum());
+            }
+        }
+
+        if (customerBasic.getCustomerAdvanced() != null) {
+            deleteCustomerAdvanced(customerBasic.getCustomerAdvanced().getCustomerAdvancedId());
+        }
+
+        if (!customerBasic.getMessageBox().isEmpty()) {
+            for (int i = customerBasic.getMessageBox().size() - 1; i > 0; i--) {
+                messageSessionBeanLocal.deleteMessage(customerBasic.getMessageBox().get(i).getMessageId());
+            }
+        }
+
+        if (!customerBasic.getPayee()
+                .isEmpty()) {
+            List<Payee> payees = customerBasic.getPayee();
+            String payeeAccountNum = "";
+
+            for (int i = customerBasic.getPayee().size() - 1; i > 0; i--) {
+                payeeAccountNum = payees.get(i).getPayeeAccountNum();
+                payeeSessionBeanLocal.deletePayee(payeeAccountNum);
+            }
+        }
+
+        if (!customerBasic.getEnquiryCase().isEmpty()) {
+            for (int j = customerBasic.getEnquiryCase().size() - 1; j > 0; j--) {
+                enquirySessionBeanLocal.deleteCase(customerBasic.getEnquiryCase().get(j).getCaseId());
+            }
+        }
+
         entityManager.remove(customerBasic);
+
         entityManager.flush();
-        
+
         return "Delete Customer Successfully";
     }
 
-    private CustomerBasic getCustomer(String onlineBankingAccountNum) {
+    private CustomerBasic
+            getCustomer(String onlineBankingAccountNum) {
         CustomerBasic customer = entityManager.find(CustomerBasic.class, onlineBankingAccountNum);
         return customer;
     }
@@ -146,8 +193,8 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
         query.setParameter("inCustomer", customer);
         return query.getResultList();
     }
-    
-    @Override 
+
+    @Override
     public CustomerAdvanced getCustomerAdvancedByAccNum(String onlineBankingAccountNum) {
         Query query = entityManager.createQuery("SELECT ca FROM CustomerAdvanced ca WHERE ca.customerOnlineBankingAccountNum = :onlineBankingAccountNum");
         query.setParameter("onlineBankingAccountNum", onlineBankingAccountNum);
@@ -256,5 +303,36 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
         }
 
         return customerBasic;
+    }
+
+    @Override
+    public CustomerAdvanced retrieveCustomerAdvancedByAdId(Long customerAdvancedId) {
+        CustomerAdvanced customerAdvanced = new CustomerAdvanced();
+
+        try {
+            Query query = entityManager.createQuery("Select ca From CustomerAdvanced ca Where ca.customerAdvancedId=:customerAdvancedId");
+            query.setParameter("customerAdvancedId", customerAdvancedId);
+
+            if (query.getResultList().isEmpty()) {
+                return new CustomerAdvanced();
+            } else {
+                customerAdvanced = (CustomerAdvanced) query.getResultList().get(0);
+            }
+        } catch (EntityNotFoundException enfe) {
+            System.out.println("\nEntity not found error: " + enfe.getMessage());
+            return new CustomerAdvanced();
+        } catch (NonUniqueResultException nure) {
+            System.out.println("\nNon unique result error: " + nure.getMessage());
+        }
+
+        return customerAdvanced;
+    }
+
+    @Override
+    public void deleteCustomerAdvanced(Long customerAdvancedId) {
+        CustomerAdvanced customerAdvanced = retrieveCustomerAdvancedByAdId(customerAdvancedId);
+
+        entityManager.remove(customerAdvanced);
+        entityManager.flush();
     }
 }

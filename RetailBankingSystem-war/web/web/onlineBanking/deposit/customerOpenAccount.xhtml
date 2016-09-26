@@ -13,7 +13,7 @@
                     <div class="card card-w-title"> 
                         <p:panel>
                             <p:outputLabel value="Welcome "/>
-                            <p:outputLabel value="#{internalOpenAccountManagedBean.customerName}"/>
+                            <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
                         </p:panel>
 
                         <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
@@ -71,9 +71,6 @@
                                         <p:message for="confirmBankAccountPwd" />
                                     </p:column>
                                 </p:row>
-
-
-
 
                                 <br/>
                                 <h:outputLabel value="My Details" style="font-weight: bold; font-size: 24px" />
@@ -226,7 +223,7 @@
                                     <h:outputText value="I have also read and agree to the Terms and Conditions Governing Personal Data Protection Act 2012."/>
                                 </h:panelGrid>
                                 <br/>
-                                
+
                                 <p:commandButton id="saveBtn" value="Open Account" actionListener="#{internalOpenAccountManagedBean.saveAccount}" 
                                                  ajax="true" update="panel"/>
                             </p:panel>
@@ -234,6 +231,7 @@
                     </div>
                 </div>
             </div>
+
         </h:form>
         <ezcomp:CCTimeout/>
     </ui:define>

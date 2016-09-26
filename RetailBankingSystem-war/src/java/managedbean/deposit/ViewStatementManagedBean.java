@@ -1,6 +1,5 @@
 package managedbean.deposit;
 
-import ejb.customer.entity.CustomerBasic;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.entity.Statement;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
@@ -13,7 +12,6 @@ import javax.faces.context.FacesContext;
 import ejb.infrastructure.session.LoggingSessionBeanLocal;
 import java.io.Serializable;
 import java.util.List;
-import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 
 @Named(value = "viewStatementManagedBean")
