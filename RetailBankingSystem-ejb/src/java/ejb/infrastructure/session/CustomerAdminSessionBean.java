@@ -1,10 +1,12 @@
 package ejb.infrastructure.session;
 
 import ejb.customer.entity.CustomerBasic;
+import ejb.deposit.entity.BankAccount;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -98,9 +100,9 @@ public class CustomerAdminSessionBean implements CustomerAdminSessionBeanLocal {
         System.out.println("*");
         System.out.println("****** infrastructure/CustomerAdminSessionBean: generateAccountNumber() ******");
         SecureRandom random = new SecureRandom();
-        String accountNumber = new BigInteger(25, random).toString();
+        String accountNumber = new BigInteger(26, random).toString();
         while (getCustomerByOnlineBankingAccount(accountNumber) != null) {
-            accountNumber = new BigInteger(25, random).toString();
+            accountNumber = new BigInteger(26, random).toString();
         }
         System.out.println("****** infrastructure/CustomerAdminSessionBean: generateAccountNumber(): online banking account user ID generated");
         return accountNumber;
@@ -248,6 +250,56 @@ public class CustomerAdminSessionBean implements CustomerAdminSessionBeanLocal {
             }
             return true;
         }
+    }
+
+    @Override
+    public ArrayList<String> checkExistingService(Long customerId) {
+        System.out.println("*");
+        System.out.println("****** infrastructure/CustomerAdminSessionBean: checkExistingService() ******");
+
+        ArrayList<String> services = new ArrayList();
+        CustomerBasic customer = em.find(CustomerBasic.class, customerId);
+        List<BankAccount> account = customer.getBankAccount();
+        String service;
+        for (int i = 0; i < account.size(); i++) {
+            service = account.get(i).getBankAccountType() + "  " + account.get(i).getBankAccountNum();
+            services.add(service);
+        }
+        return services;
+    }
+
+    @Override
+    public void deleteOnlineBankingAccount(Long customerId) {
+        CustomerBasic customer = em.find(CustomerBasic.class, customerId);
+        customer.setCustomerOnlineBankingAccountNum(null);
+        customer.setCustomerOnlineBankingPassword(null);
+        customer.setCustomerStatus("deleteIBAccount");
+        em.flush();
+    }
+
+    @Override
+    public void recreateOnlineBankingAccount(Long customerId) {
+        System.out.println("*");
+        System.out.println("****** infrastructure/CustomerAdminSessionBean: recreateOnlineBankingAccount() ******");
+        String userId = generateAccountNumber();
+        String pin = generatePassword();
+        String hashedPIN = pin;
+        
+        CustomerBasic customer = em.find(CustomerBasic.class, customerId);
+        try {
+            hashedPIN = md5Hashing(pin + customer.getCustomerIdentificationNum().substring(0, 3));
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(CustomerAdminSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        customer.setCustomerOnlineBankingAccountNum(userId);
+        customer.setCustomerOnlineBankingPassword(hashedPIN);
+        customer.setCustomerStatus("new");
+        em.flush();
+        
+        Map emailActions = new HashMap();
+        emailActions.put("userId", userId);
+        emailActions.put("pin", pin);
+        customerEmailSessionBeanLocal.sendEmail(customer, "recreateIBAccount", emailActions);
     }
 
     private String md5Hashing(String stringToHash) throws NoSuchAlgorithmException {

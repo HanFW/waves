@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package managedbean.customer;
 
 import ejb.customer.entity.EnquiryCase;
@@ -19,12 +14,9 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
-/**
- *
- * @author aaa
- */
 @Named(value = "enquiryManagerManagedBean")
 @SessionScoped
+
 public class EnquiryManagerManagedBean implements Serializable {
 
     @EJB
@@ -36,6 +28,8 @@ public class EnquiryManagerManagedBean implements Serializable {
     private String followUpSolution;
     private String departmentTo;
     private String issueProblem;
+    private List<FollowUp> selectedFollowUp;
+    private List<FollowUp> followUps;
 
     private String ableToReply = " ";
     private String ableToReply2 = " ";
@@ -45,7 +39,6 @@ public class EnquiryManagerManagedBean implements Serializable {
     private boolean visible3;
     private boolean visible4;
 
-    private ExternalContext ec;
 
     public EnquiryManagerManagedBean() {
     }
@@ -146,6 +139,22 @@ public class EnquiryManagerManagedBean implements Serializable {
         this.visible4 = visible4;
     }
 
+    public List<FollowUp> getSelectedFollowUp() {
+        return selectedFollowUp;
+    }
+
+    public void setSelectedFollowUp(List<FollowUp> selectedFollowUp) {
+        this.selectedFollowUp = selectedFollowUp;
+    }
+
+    public List<FollowUp> getFollowUps() {
+        return followUps;
+    }
+
+    public void setFollowUps(List<FollowUp> followUps) {
+        this.followUps = followUps;
+    }
+
     public List<EnquiryCase> getPendingCases() {
 
         List<EnquiryCase> enquiryCases = enquirySessionBeanLocal.getAllPendingCustomerEnquiry();
@@ -153,52 +162,55 @@ public class EnquiryManagerManagedBean implements Serializable {
         return enquiryCases;
     }
 
-    public List<FollowUp> getPendingFollowUps() {
-
-        List<FollowUp> followUps = enquirySessionBeanLocal.getAllPendingCustomerFollowUp();
-
-        return followUps;
-    }
-
     public String getCaseDetailById() {
         return enquirySessionBeanLocal.getCustomerEnquiryDetail(caseId);
     }
 
-    public String getFollowUpDetailById() {
-        return enquirySessionBeanLocal.getCustomerFollowUpDetail(followUpId);
-    }
+//    public String getFollowUpDetailById() {
+//        return enquirySessionBeanLocal.getCustomerFollowUpDetail(followUpId);
+//    }
 
     public List<Issue> getCaseIssueById() {
         return enquirySessionBeanLocal.getCaseIssue(caseId);
     }
 
-    public List<Issue> getFollowUpIssueById() {
-        return enquirySessionBeanLocal.getFollowUpIssue(followUpId);
+    public List<FollowUp> getCaseFollowUpById() {
+        followUps = enquirySessionBeanLocal.getCaseFollowUp(caseId);
+        return followUps;
     }
+//
+//    public List<Issue> getFollowUpIssueById() {
+//        return enquirySessionBeanLocal.getFollowUpIssue(followUpId);
+//    }
 
     public void replyToCase() throws IOException {
-        ec = FacesContext.getCurrentInstance().getExternalContext();
+        String msg;
+        msg = enquirySessionBeanLocal.replyCustomerCase(caseId, caseReply, selectedFollowUp, followUps);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg, " "));
 
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(enquirySessionBeanLocal.replyCustomerCase(caseId, caseReply), " "));
-        caseId = null;
-        caseReply = null;
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext ec = context.getExternalContext();
-        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/enquirymanagerReplyCaseDone.xhtml");
+        if (msg == "1") {
+            caseId = null;
+            caseReply = null;
+            selectedFollowUp = null;
+            followUps = null;
+            ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/enquirymanagerReplyCaseDone.xhtml");
+        }
     }
 
-    public void replyToFollowUp() throws IOException {
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(enquirySessionBeanLocal.replyCustomerFollowUp(followUpId, followUpSolution), " "));
-        followUpId = null;
-        followUpSolution = null;
-        FacesContext context = FacesContext.getCurrentInstance();
-        ExternalContext ec = context.getExternalContext();
-        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/enquirymanagerReplyCaseDone.xhtml");
-    }
-
+//    public void replyToFollowUp() throws IOException {
+//        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(enquirySessionBeanLocal.replyCustomerFollowUp(followUpId, followUpSolution), " "));
+//        followUpId = null;
+//        followUpSolution = null;
+//        FacesContext context = FacesContext.getCurrentInstance();
+//        ExternalContext ec = context.getExternalContext();
+//        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/enquirymanagerReplyCaseDone.xhtml");
+//    }
     public void addIssue() throws IOException {
+        System.out.println("addIssue");
         FacesContext context = FacesContext.getCurrentInstance();
-        context.addMessage(null, new FacesMessage(enquirySessionBeanLocal.addNewCaseIssue(caseId, departmentTo, issueProblem), " "));
+        context.addMessage(null, new FacesMessage(enquirySessionBeanLocal.addNewCaseIssue(caseId, departmentTo, issueProblem, followUps), " "));
         departmentTo = null;
         issueProblem = null;
     }
@@ -206,30 +218,29 @@ public class EnquiryManagerManagedBean implements Serializable {
     public void saveIssue() throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext ec = context.getExternalContext();
-        context.addMessage(null, new FacesMessage(enquirySessionBeanLocal.addNewCaseIssue(caseId, departmentTo, issueProblem), " "));
+        context.addMessage(null, new FacesMessage(enquirySessionBeanLocal.addNewCaseIssue(caseId, departmentTo, issueProblem, followUps), " "));
         caseId = null;
         departmentTo = null;
         issueProblem = null;
+        followUps = null;
         ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/enquirymanagerSubmitDone.xhtml");
     }
 
-    public void addFollowUpIssue() throws IOException {
-        FacesContext context = FacesContext.getCurrentInstance();
-        context.addMessage(null, new FacesMessage(enquirySessionBeanLocal.addNewFollowUpIssue(followUpId, departmentTo, issueProblem), " "));
-        departmentTo = null;
-        issueProblem = null;
-    }
-
-    public void saveFollowUpIssue() throws IOException {
-        FacesContext context = FacesContext.getCurrentInstance();
-        ExternalContext ec = context.getExternalContext();
-        context.addMessage(null, new FacesMessage(enquirySessionBeanLocal.addNewFollowUpIssue(followUpId, departmentTo, issueProblem), " "));
-        followUpId = null;
-        departmentTo = null;
-        issueProblem = null;
-        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/enquirymanagerSubmitDone.xhtml");
-    }
-
+//    public void addFollowUpIssue() throws IOException {
+//        FacesContext context = FacesContext.getCurrentInstance();
+//        context.addMessage(null, new FacesMessage(enquirySessionBeanLocal.addNewFollowUpIssue(followUpId, departmentTo, issueProblem), " "));
+//        departmentTo = null;
+//        issueProblem = null;
+//    }
+//    public void saveFollowUpIssue() throws IOException {
+//        FacesContext context = FacesContext.getCurrentInstance();
+//        ExternalContext ec = context.getExternalContext();
+//        context.addMessage(null, new FacesMessage(enquirySessionBeanLocal.addNewFollowUpIssue(followUpId, departmentTo, issueProblem), " "));
+//        followUpId = null;
+//        departmentTo = null;
+//        issueProblem = null;
+//        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/enquirymanagerSubmitDone.xhtml");
+//    }
     public void redirectToViewEnquiryDone() throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext ec = context.getExternalContext();
@@ -252,17 +263,17 @@ public class EnquiryManagerManagedBean implements Serializable {
         return enquirySessionBeanLocal.caseIssueIsCreated(caseId);
     }
 
-    public String followUpIssueCreated(Long followUpId) {
-        return enquirySessionBeanLocal.followUpIssueIsCreated(followUpId);
-    }
+//    public String followUpIssueCreated(Long followUpId) {
+//        return enquirySessionBeanLocal.followUpIssueIsCreated(followUpId);
+//    }
 
     public String caseIssueReplied(Long caseId) {
         return enquirySessionBeanLocal.caseIssueAllReplied(caseId);
     }
-
-    public String followUpIssueReplied(Long followUpId) {
-        return enquirySessionBeanLocal.followUpIssueAllReplied(followUpId);
-    }
+//
+//    public String followUpIssueReplied(Long followUpId) {
+//        return enquirySessionBeanLocal.followUpIssueAllReplied(followUpId);
+//    }
 
     public void show1() {
 

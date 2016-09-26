@@ -1,0 +1,37 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
+    <h:head>
+        <title>Delete Account</title>
+    </h:head>
+    <h:body>
+        <h:form>
+            <p:panel>
+                <p:outputLabel rendered="#{customerDeleteIBAccountManagedBean.hasServices}" value="We are still serving you on the following services: "/>
+                <p:dataList rendered="#{customerDeleteIBAccountManagedBean.hasServices}" value="#{customerDeleteIBAccountManagedBean.displayMessage}" var="service">
+                    <h:outputText value="#{service}"/>
+                </p:dataList>
+                <p:separator/>
+                <h:outputText value="Merlion online banking serves as a way to help you manage your wealth."/>
+                <br/>
+                <h:outputText value="Are you sure you want to delete your online banking account?"/>
+                <br/>
+                <p:commandButton value="Delete anyway" onclick="PF('confirmationDialog').show();"/>
+            </p:panel>
+            <p:dialog widgetVar="confirmationDialog" header="Delete confirmation">
+                <h:outputText value="After deleting your online banking account, you will automatically log out. "/>
+                <br/>
+                <h:outputText value="Are you sure you want to delete your online banking account?"/>
+                <br/>
+                <p:commandButton value="Yes" actionListener="#{customerDeleteIBAccountManagedBean.deleteIBAccount}"/>
+                <p:commandButton value="No" onclick="PF('confirmationDialog').hide();"/>
+            </p:dialog>
+        </h:form>
+        <ezcomp:CCTimeout/>
+    </h:body>
+</html>
+

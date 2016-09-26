@@ -32,10 +32,10 @@ public class FollowUp implements Serializable {
     private String followUpStatus;
     private String sendTime;
 
-    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "followUp")
-    private List<Issue> issue;
+//    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "followUp")
+//    private List<Issue> issue;
 
-    @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER)
     private EnquiryCase enquiryCase;
 
     public Long getFollowUpId() {
@@ -70,13 +70,13 @@ public class FollowUp implements Serializable {
         this.followUpStatus = followUpStatus;
     }
 
-    public List<Issue> getIssue() {
-        return issue;
-    }
-
-    public void setIssue(List<Issue> issue) {
-        this.issue = issue;
-    }
+//    public List<Issue> getIssue() {
+//        return issue;
+//    }
+//
+//    public void setIssue(List<Issue> issue) {
+//        this.issue = issue;
+//    }
 
     public EnquiryCase getEnquiryCase() {
         return enquiryCase;
@@ -94,9 +94,9 @@ public class FollowUp implements Serializable {
         this.sendTime = sendTime;
     }
 
-    public void addNewIssue(Issue newIssue) {
-        issue.add(newIssue);
-    }
+//    public void addNewIssue(Issue newIssue) {
+//        issue.add(newIssue);
+//    }
 
     @Override
     public int hashCode() {

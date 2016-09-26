@@ -8,11 +8,14 @@
         <title>Employee Main Page</title>
     </h:head>
     <h:body>
-        <!--        <h1>Welcome to Merlion Bank Internal System</h1>-->
-        <p:notificationBar position="top" effect="slide" styleClass="top" widgetVar="bar">
-            <h:outputText value="Welcome!" style="font-size:36px;" />
-        </p:notificationBar>
+        <h:outputText value="Welcome " />
+        <h:outputText value="#{employeeAccountManagedBean.userName}!"/>
+        <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
+        <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
+        <h:outputText value="You have logged in as "/>
+
         <h:form>
+            
             <p:panel visible="#{employeeAccountManagedBean.hasRoleSystemAdmin()}" style="border: none">
                 <p:row>
                     <p:button outcome="/web/internalSystem/infrastructure/employeeUserAccountManagement.xhtml" value="System Administrator">
@@ -57,7 +60,7 @@
 
             <p:panel visible="#{employeeAccountManagedBean.hasRoleLoanOfficer()}" style="border: none">
                 <p:row>
-                    <p:button outcome="/web/internalSystem/infrastructure/employeeLoanOfficerMainPage.xhtml" value="Loan Department Manager">
+                    <p:button outcome="/web/internalSystem/infrastructure/employeeLoanOfficerMainPage.xhtml" value="Loan Officer">
                     </p:button>
                 </p:row>
             </p:panel>
@@ -71,7 +74,7 @@
 
             <p:panel visible="#{employeeAccountManagedBean.hasRoleSalesDepartmentManager()}" style="border: none">
                 <p:row>
-                    <p:button outcome="/web/internalSystem/infrastructure/employeeSalesDepartmentManagerMainPage.xhtml" value="SalesDepartmentManager">
+                    <p:button outcome="/web/internalSystem/infrastructure/employeeSalesDepartmentManagerMainPage.xhtml" value="Sales Department Manager">
                     </p:button>
                 </p:row>
             </p:panel>
@@ -89,6 +92,43 @@
                     </p:button>
                 </p:row>
             </p:panel>
+            
+             <p:panel visible="#{employeeAccountManagedBean.hasRoleDepositSpecialist()}" style="border: none">
+                <p:row>
+                    <p:button outcome="/web/internalSystem/infrastructure/employeeDepositSpecialistMainPage.xhtml" value="Deposit Specialist">
+                    </p:button>
+                </p:row>
+            </p:panel>
+            
+             <p:panel visible="#{employeeAccountManagedBean.hasRoleLoanSpecialist()}" style="border: none">
+                <p:row>
+                    <p:button outcome="/web/internalSystem/infrastructure/employeeLoanSpecialistMainPage.xhtml" value="Loan Specialist">
+                    </p:button>
+                </p:row>
+            </p:panel>
+            
+             <p:panel visible="#{employeeAccountManagedBean.hasRoleCardSpecialist()}" style="border: none">
+                <p:row>
+                    <p:button outcome="/web/internalSystem/infrastructure/employeeCardSpecialistMainPage.xhtml" value="Card Specialist">
+                    </p:button>
+                </p:row>
+            </p:panel>
+            
+             <p:panel visible="#{employeeAccountManagedBean.hasRoleCEO()}" style="border: none">
+                <p:row>
+                    <p:button outcome="/web/internalSystem/infrastructure/employeeOperationSpecialistMainPage.xhtml" value="Operation Specialist">
+                    </p:button>
+                </p:row>
+            </p:panel>
+            
+             <p:panel visible="#{employeeAccountManagedBean.hasRoleWealthManagementSpecialist()}" style="border: none">
+                <p:row>
+                    <p:button outcome="/web/internalSystem/infrastructure/employeeWealthManagementSpecialistMainPage.xhtml" value="Wealth Management Specialist">
+                    </p:button>
+                </p:row>
+            </p:panel>
+            
+            <h:outputText value="Click any of the buttons above to start your work"/>
 
         </h:form>
     </h:body>

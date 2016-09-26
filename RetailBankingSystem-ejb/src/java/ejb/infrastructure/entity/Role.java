@@ -28,9 +28,13 @@ public class Role implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long roleId;
     private String roleName;
-   
+
     @ManyToMany(cascade = {CascadeType.ALL}, mappedBy = "role")
     private Set<Employee> employee = new HashSet<Employee>();
+
+    @ManyToMany(cascade = {CascadeType.PERSIST})
+    @JoinTable(name = "ROLE_PERMISSION")
+    private Set<Permission> permission = new HashSet<Permission>();
 
     public Long getRoleId() {
         return roleId;
@@ -60,6 +64,15 @@ public class Role implements Serializable {
         this.roleId = id;
     }
 
+    public Set<Permission> getPermissions() {
+        return permission;
+    }
+
+    public void setPermissions(Set<Permission> permissions) {
+        this.permission = permissions;
+    }
+    
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -83,6 +96,24 @@ public class Role implements Serializable {
     @Override
     public String toString() {
         return "entity.Role[ id=" + roleId + " ]";
+    }
+
+    public void addEmployeeToRole(Employee employee) {
+
+        this.employee.add(employee);
+    }
+
+    public void deleteEmployeeFromRole(Employee employee) {
+        this.employee.remove(employee);
+    }
+    
+      public void addPermissionToRole(Permission permission) {
+
+        this.permission.add(permission);
+    }
+
+    public void deletePermissionFromRole(Permission permission) {
+        this.permission.remove(permission);
     }
 
 }

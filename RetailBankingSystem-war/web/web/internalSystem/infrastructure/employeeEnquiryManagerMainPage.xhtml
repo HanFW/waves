@@ -8,8 +8,16 @@
         <title>Enquiry Manager Main Page</title>
     </h:head>
     <h:body>
-         <h:form>
+        <h:form>
             <p:menubar>
+                <p:submenu label="Home">
+                    <p:menuitem value="Home" url="/web/internalSystem/infrastructure/employeeMainPage.xhtml"/>
+                </p:submenu>
+                <p:submenu label="Tasks">
+                    <p:menuitem value="Search Enquiry" action="/web/internalSystem/enquiry/counterTellerSearchCustomer.xhtml"/>
+                    <p:menuitem value="View Enquiry" action="/web/internalSystem/enquiry/enquiryManagerViewEnquiry.xhtml"/>
+                    <p:menuitem value="Forward Enquiry" action="/web/internalSystem/enquiry/enquiryManagerReplyCase.xhtml"/>
+                </p:submenu>
                 <p:submenu label="Manage My Account">
                     <p:menuitem value="Change Password" actionListener="#{employeeLoginManagedBean.changePassword}" />
                 </p:submenu>
@@ -18,11 +26,12 @@
                     <p:menuitem value="Logout" actionListener="#{employeeLoginManagedBean.doLogOut}" />
                 </p:submenu>
             </p:menubar>
-        
-        
-        <p:commandButton value="Search Enquiry" action="/web/internalSystem/enquiry/counterTellerSearchCaseById.xhtml"/>
-        <p:commandButton value="View Enquiry" action="/web/internalSystem/enquiry/counterTellerSearchCustomer.xhtml"/>
-        <p:commandButton value="Forward Enquiry" action="/web/internalSystem/enquiry/counterTellerSearchCustomer.xhtml"/>
+
+            <h:outputText value="Welcome #{employeeAccountManagedBean.userName} !"/>
+            <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
+            <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
+            <h:outputText value="You have logged in as: Enquiry Manager"/>
+
         </h:form>
     </h:body>
 </html>

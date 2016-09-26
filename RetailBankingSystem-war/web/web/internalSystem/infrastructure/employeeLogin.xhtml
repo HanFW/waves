@@ -31,27 +31,24 @@
                             </p:column>
                         </p:row>
 
+
                         <p:row>
                             <p:column colspan="2">
                                 <p:commandButton value="submit" type="submit" actionListener="#{employeeLoginManagedBean.doLogin}" update="@form"/>
                             </p:column>
                         </p:row>
-                        
-                         <p:row>
+
+                        <p:row>
                             <p:column colspan="2">
-                                <p:commandLink value="Forget Pasword" type="submit" actionListener="#{employeeLoginManagedBean.forgetPassword}" update="@form"/>
+                                <p:link value="Forget Pasword" outcome="/web/internalSystem/infrastructure/employeeForgetPassword"/>
                             </p:column>
                         </p:row>
 
                     </p:panelGrid>
-                  
+
                 </p:panel>
-
-
-
             </h:form>
-            
-              
+
         </h:body>
     </f:view>
 </html>

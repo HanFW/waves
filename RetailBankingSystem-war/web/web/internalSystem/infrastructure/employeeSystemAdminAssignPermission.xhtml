@@ -1,0 +1,116 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <h:head>
+        <title>Employee Account Management</title>
+    </h:head>
+    <h:body>
+
+        <h:form>
+            <p:menubar>
+
+                <p:submenu label="Home">
+                    <p:menuitem value="Home" action="/web/internalSystem/infrastructure/employeeUserAccountManagement.xhtml"/>
+                </p:submenu>
+
+                <p:submenu label="Manage My Account">
+                    <p:menuitem value="Change Password" actionListener="#{employeeLoginManagedBean.changePassword}" />
+                </p:submenu>
+
+                <p:submenu label="Log Out">
+                    <p:menuitem value="Logout" actionListener="#{employeeLoginManagedBean.doLogOut}" />
+                </p:submenu>
+            </p:menubar>
+        </h:form>
+
+        <h:outputText value="Welcome #{employeeAccountManagedBean.userName} !"/>
+        <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
+        <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
+        <h:outputText value="You have logged in as: System Admin"/>
+
+        <h:form>
+            <p:row>
+                <p:column>
+                    <p:outputLabel for="employeeRole" style="font-weight: bold" value="Role: " />
+                </p:column>
+                <p:column>
+                    <h:selectOneMenu id="employeeRole" value="#{employeeAssignPermissionManagedBean.roleName}" 
+                                     style="width:125px">
+                        <f:selectItem itemLabel="Please Select" itemValue=" " />
+                        <f:selectItem itemLabel="CEO" itemValue="CEO" />
+                        <f:selectItem itemLabel="Loan Officer" itemValue="Loan Officer" />
+                        <f:selectItem itemLabel="Call Center Staff" itemValue="Call Center Staff" />
+                        <f:selectItem itemLabel="Mortgage Appraiser" itemValue="Mortgage Appraiser" />
+                        <f:selectItem itemLabel="Underwriter" itemValue="Underwriter" />
+                        <f:selectItem itemLabel="Relationship Manager" itemValue="Relationship Manager" />
+                        <f:selectItem itemLabel="Counter Teller" itemValue="Counter Teller" />
+                        <f:selectItem itemLabel="Sales Department Manager" itemValue="Sales Department Manager" />
+                        <f:selectItem itemLabel="Card Department Manager" itemValue="Card Department Manager"/>
+                        <f:selectItem itemLabel="Enquiry Manager" itemValue="Enquiry Manager"/>
+                        <f:selectItem itemLabel="Deposit Specialist" itemValue="Deposit Specialist"/>
+                        <f:selectItem itemLabel="Card Specialist" itemValue="Card Specialist"/>
+                        <f:selectItem itemLabel="Operation Specialist" itemValue="Operation Specialist"/>
+                        <f:selectItem itemLabel="Loan Specialist" itemValue="Loan Specialist"/>
+                        <f:selectItem itemLabel="Wealth Department Specialist" itemValue="Wealth Department Specialist"/>        
+                    </h:selectOneMenu>
+                </p:column>
+
+                <p:column>
+                    <p:commandButton type="submit" value="Confirm" update="permissionTable" actionListener="#{employeeAssignPermissionManagedBean.getListOfPermissions}" ajax="false"/>                 
+                </p:column>
+            </p:row>
+        </h:form>
+
+        <h:form id="table">
+            <p:dataTable id="permissionTable" var="permission" value="#{employeeAssignPermissionManagedBean.permissions}" rendered="#{employeeAssignPermissionManagedBean.visible}" widgetVar="theWidget">
+                <f:facet name="header">
+                    Current Permissions 
+                </f:facet>
+                <p:column headerText="Permission" style="width:10%">
+                    <h:outputText value="#{permission.permissionName}" />
+                </p:column>
+
+                <p:column style="width:10%">
+                    <p:growl showDetail="true" />
+                    <p:commandButton id="delete" value="Delete" icon="ui-icon ui-icon-trash" action="#{employeeAssignPermissionManagedBean.deletePermission(permission)}" ajax="false" oncomplete="PF('theWidget').show()">
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+
+        </h:form>
+
+
+
+
+
+        <h:form>
+            <p:row>
+                <p:commandButton value="Add Permission" type="button" onclick="PF('dlg1').show();" />
+            </p:row>
+            <p:dialog header="Add a New Permission" widgetVar="dlg1" minHeight="40">
+                <p:row>
+                    <p:column>
+                        <p:outputLabel for="rolePermission" style="font-weight: bold" value="Permission: " />
+                    </p:column>
+                    <p:column>
+                        <h:selectOneMenu id="rolePermission" value="#{employeeAssignPermissionManagedBean.permissionName}" 
+                                         style="width:125px">
+                            <f:selectItems value="#{employeeAssignPermissionManagedBean.permissionList1}" var="permission" itemLabel="#{permission}" itemValue="#{permissionName}" />
+                        </h:selectOneMenu>
+                    </p:column>
+                    <p:column>
+                        <p:commandButton type="submit" value="Add" update="PermissionTable" actionListener="#{employeeAssignPermissionManagedBean.addNewPermissionToRole}" ajax="false"/>                 
+                    </p:column>                        
+                </p:row>
+            </p:dialog>
+        </h:form>
+
+
+    </h:body>
+</html>
+
+
+

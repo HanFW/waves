@@ -10,21 +10,22 @@ import ejb.customer.entity.EnquiryCase;
 import ejb.customer.entity.FollowUp;
 import ejb.customer.entity.Issue;
 import javax.ejb.Stateless;
-import javax.ejb.LocalBean;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
+import javax.ejb.EJB;
+import javax.persistence.EntityNotFoundException;
+import javax.persistence.NonUniqueResultException;
 
 import javax.persistence.Query;
 
-/**
- *
- * @author aaa
- */
 @Stateless
 public class EnquirySessionBean implements EnquirySessionBeanLocal {
+
+    @EJB
+    private IssueSessionBeanLocal issueSessionBeanLocal;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -38,8 +39,48 @@ public class EnquirySessionBean implements EnquirySessionBeanLocal {
 
     @Override
     public List<EnquiryCase> getAllPendingCustomerEnquiry() {
-        Query query = entityManager.createQuery("SELECT ec FROM EnquiryCase ec WHERE ec.caseStatus = :caseStatus");
-        query.setParameter("caseStatus", "Pending");
+        Query query = entityManager.createQuery("SELECT ec FROM EnquiryCase ec WHERE ec.caseStatus != :caseStatus");
+        query.setParameter("caseStatus", "Solved");
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Issue> getAllPendingLoanIssue() {
+        Query query = entityManager.createQuery("SELECT i FROM Issue i WHERE i.departmentTo = :departmentTo AND i.issueStatus = :issueStatus");
+        query.setParameter("departmentTo", "Loan");
+        query.setParameter("issueStatus", "Pending");
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Issue> getAllPendingCardIssue() {
+        Query query = entityManager.createQuery("SELECT i FROM Issue i WHERE i.departmentTo = :departmentTo AND i.issueStatus = :issueStatus");
+        query.setParameter("departmentTo", "Card");
+        query.setParameter("issueStatus", "Pending");
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Issue> getAllPendingDepositIssue() {
+        Query query = entityManager.createQuery("SELECT i FROM Issue i WHERE i.departmentTo = :departmentTo AND i.issueStatus = :issueStatus");
+        query.setParameter("departmentTo", "Deposit");
+        query.setParameter("issueStatus", "Pending");
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Issue> getAllPendingOperationIssue() {
+        Query query = entityManager.createQuery("SELECT i FROM Issue i WHERE i.departmentTo = :departmentTo AND i.issueStatus = :issueStatus");
+        query.setParameter("departmentTo", "Operation");
+        query.setParameter("issueStatus", "Pending");
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Issue> getAllPendingRMIssue() {
+        Query query = entityManager.createQuery("SELECT i FROM Issue i WHERE i.departmentTo = :departmentTo AND i.issueStatus = :issueStatus");
+        query.setParameter("departmentTo", "RM");
+        query.setParameter("issueStatus", "Pending");
         return query.getResultList();
     }
 
@@ -62,7 +103,16 @@ public class EnquirySessionBean implements EnquirySessionBeanLocal {
     }
 
     @Override
-    public List<Issue> getCaseIssue (Long caseId) {
+    public String getIssueDetail(Long issueId) {
+        Query query = entityManager.createQuery("SELECT i FROM Issue i WHERE i.issueId = :issueId");
+        query.setParameter("issueId", issueId);
+        List resultList = query.getResultList();
+        Issue i = (Issue) resultList.get(0);
+        return i.getIssueProblem();
+    }
+
+    @Override
+    public List<Issue> getCaseIssue(Long caseId) {
         Query query = entityManager.createQuery("SELECT ec FROM EnquiryCase ec WHERE ec.caseId = :caseId");
         query.setParameter("caseId", caseId);
         List resultList = query.getResultList();
@@ -71,14 +121,22 @@ public class EnquirySessionBean implements EnquirySessionBeanLocal {
     }
 
     @Override
-    public List<Issue> getFollowUpIssue(Long followUpId) {
-        Query query = entityManager.createQuery("SELECT fu FROM FollowUp fu WHERE fu.followUpId = :followUpId");
-        query.setParameter("followUpId", followUpId);
+    public List<FollowUp> getCaseFollowUp(Long caseId) {
+        Query query = entityManager.createQuery("SELECT ec FROM EnquiryCase ec WHERE ec.caseId = :caseId");
+        query.setParameter("caseId", caseId);
         List resultList = query.getResultList();
-        FollowUp fu = (FollowUp) resultList.get(0);
-        return fu.getIssue();
+        EnquiryCase ec = (EnquiryCase) resultList.get(0);
+        return ec.getFollowUp();
     }
 
+//    @Override
+//    public List<Issue> getFollowUpIssue(Long followUpId) {
+//        Query query = entityManager.createQuery("SELECT fu FROM FollowUp fu WHERE fu.followUpId = :followUpId");
+//        query.setParameter("followUpId", followUpId);
+//        List resultList = query.getResultList();
+//        FollowUp fu = (FollowUp) resultList.get(0);
+//        return fu.getIssue();
+//    }
     @Override
     public List<FollowUp> getAllPendingCustomerFollowUp() {
         Query query = entityManager.createQuery("SELECT fu FROM FollowUp fu WHERE fu.followUpStatus = :followUpStatus");
@@ -98,8 +156,18 @@ public class EnquirySessionBean implements EnquirySessionBeanLocal {
         query.setParameter("caseId", caseId);
         List resultList = query.getResultList();
         EnquiryCase ec = (EnquiryCase) resultList.get(0);
-        System.out.println("********list size***" + resultList.size() + "//////caseId///" + ec.getCaseId());
+
         return ec;
+    }
+
+    @Override
+    public String deleteCase(Long caseId) {
+        EnquiryCase ec = getEnquiryByCaseId(caseId);
+
+        entityManager.remove(ec);
+        entityManager.flush();
+
+        return "Successfully deleted!";
     }
 
     @Override
@@ -111,8 +179,7 @@ public class EnquirySessionBean implements EnquirySessionBeanLocal {
     }
 
     @Override
-    public String addNewCase(Long customerId, String type, String detail
-    ) {
+    public String addNewCase(Long customerId, String type, String detail) {
 
         EnquiryCase enquiryCase = new EnquiryCase();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MMM-dd HH:mm:ss");
@@ -129,15 +196,20 @@ public class EnquirySessionBean implements EnquirySessionBeanLocal {
         Query query = entityManager.createQuery("SELECT cb FROM CustomerBasic cb WHERE cb.customerBasicId = :customerId");
         query.setParameter("customerId", customerId);
         List customerBasics = query.getResultList();
+
         if (customerBasics.isEmpty()) {
             return "No Customer is detected";
         } else {
             CustomerBasic customerBasic = (CustomerBasic) customerBasics.get(0);
             enquiryCase.setCustomerBasic(customerBasic);
-            customerBasic.addNewCase(enquiryCase);
+            customerBasic.getEnquiryCase().add(enquiryCase);
 
-            entityManager.persist(enquiryCase);
-            entityManager.flush();
+//            customerBasic.addNewCase(enquiryCase);
+//            entityManager.persist(enquiryCase);
+//            entityManager.flush();
+            query = entityManager.createQuery("SELECT cb FROM CustomerBasic cb WHERE cb.customerIdentificationNum = :customerIdentificationNum");
+            query.setParameter("customerIdentificationNum", customerBasic.getCustomerIdentificationNum());
+            System.out.println("@@@@@@@@" + query.getResultList().size());
 
             return "Enquiry sent successfully";
         }
@@ -184,25 +256,28 @@ public class EnquirySessionBean implements EnquirySessionBeanLocal {
             followUp.setFollowUpDetail(caseFollowUp);
             followUp.setSendTime(sendTime);
             followUp.setFollowUpStatus("Pending");
+            ec.setCaseStatus("Pending");
             followUp.setFollowUpSolution("Dear Customer, thank you for your enquiry. We will get back to you soon!");
             followUp.setEnquiryCase(ec);
-            ec.addNewFollowUp(followUp);
+            ec.getFollowUp().add(followUp);
 
-            entityManager.persist(followUp);
-            entityManager.flush();
+//            ec.addNewFollowUp(followUp);
+//            entityManager.persist(followUp);
+//            entityManager.flush();
             return "Sent Successful";
         }
     }
 
     @Override
-    public String addNewCaseIssue(Long caseId, String departmentTo, String issueProblem
-    ) {
-
-        Issue issue = new Issue();
-
-        issue.setDepartmentTo(departmentTo);
-        issue.setIssueProblem(issueProblem);
-        issue.setIssueStatus("Pending");
+    public String addNewCaseIssue(Long caseId, String departmentTo, String issueProblem, List<FollowUp> followUps) {
+        for (int i = 0; i < followUps.size(); i++) {
+            if (followUps.get(i).getFollowUpStatus() == "Pending") {
+                followUps.get(i).setFollowUpStatus("Waiting for Specialist's Reply");
+            }
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MMM-dd HH:mm:ss");
+        Calendar cal = Calendar.getInstance();
+        String createdTime = sdf.format(cal.getTime());
 
         Query query = entityManager.createQuery("SELECT ec FROM EnquiryCase ec WHERE ec.caseId = :caseId");
         query.setParameter("caseId", caseId);
@@ -212,64 +287,103 @@ public class EnquirySessionBean implements EnquirySessionBeanLocal {
             return "Invalid Case ID";
         } else {
             EnquiryCase ec = (EnquiryCase) resultList.get(0);
-            issue.setEnquiryCase(ec);
-            ec.addNewIssue(issue);
+            Issue issue = issueSessionBeanLocal.addNewIssue(departmentTo, issueProblem, createdTime, "Pending", caseId);
+            ec.getIssue().add(issue);
+//            Issue issue = new Issue();
+//            issue.setDepartmentTo(departmentTo);
+//            issue.setIssueProblem(issueProblem);
+//            issue.setCreatedTime(createdTime);
+//            issue.setIssueStatus("Pending");
+//            issue.setEnquiryCase(ec);
+//            ec.addNewIssue(issue);
 
-            entityManager.persist(issue);
-            entityManager.flush();
-
-            return "Issue sent successfully. You can now edit your next issue.";
-        }
-    }
-
-    @Override
-    public String addNewFollowUpIssue(Long followUpId, String departmentTo, String issueProblem
-    ) {
-
-        Issue issue = new Issue();
-
-        issue.setDepartmentTo(departmentTo);
-        issue.setIssueProblem(issueProblem);
-        issue.setIssueStatus("Pending");
-
-        Query query = entityManager.createQuery("SELECT fu FROM FollowUp fu WHERE fu.followUpId = :followUpId");
-        query.setParameter("followUpId", followUpId);
-        List resultList = query.getResultList();
-
-        if (resultList.isEmpty()) {
-            return "Invalid FollowUp ID";
-        } else {
-            FollowUp fu = (FollowUp) resultList.get(0);
-            issue.setFollowUp(fu);
-            fu.addNewIssue(issue);
-
-            entityManager.persist(issue);
-            entityManager.flush();
+            ec.setFollowUp(followUps);
 
             return "Issue sent successfully. You can now edit your next issue.";
         }
     }
 
+//    @Override
+//    public String addNewFollowUpIssue(Long followUpId, String departmentTo, String issueProblem
+//    ) {
+//
+//        Issue issue = new Issue();
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MMM-dd HH:mm:ss");
+//
+//        Calendar cal = Calendar.getInstance();
+//        String createdTime = sdf.format(cal.getTime());
+//
+//        issue.setDepartmentTo(departmentTo);
+//        issue.setIssueProblem(issueProblem);
+//        issue.setCreatedTime(createdTime);
+//        issue.setIssueStatus("Pending");
+//
+//        Query query = entityManager.createQuery("SELECT fu FROM FollowUp fu WHERE fu.followUpId = :followUpId");
+//        query.setParameter("followUpId", followUpId);
+//        List resultList = query.getResultList();
+//
+//        if (resultList.isEmpty()) {
+//            return "Invalid FollowUp ID";
+//        } else {
+//            FollowUp fu = (FollowUp) resultList.get(0);
+//            issue.setFollowUp(fu);
+//            fu.addNewIssue(issue);
+//
+//            entityManager.persist(issue);
+//            entityManager.flush();
+//
+//            return "Issue sent successfully. You can now edit your next issue.";
+//        }
+//    }
     @Override
-    public String replyCustomerCase(Long caseId, String caseReply
+    public String replyCustomerCase(Long caseId, String caseReply, List<FollowUp> selectedFollowUp, List<FollowUp> followUps
     ) {
         Query query = entityManager.createQuery("SELECT ec FROM EnquiryCase ec WHERE ec.caseId = :caseId");
         query.setParameter("caseId", caseId);
         List resultList = query.getResultList();
         if (resultList.isEmpty()) {
-            return "Incorrect Case ID.";
+            return "Incorrect Case ID";
         } else {
-            EnquiryCase ec = (EnquiryCase) resultList.get(0);
-            ec.setCaseReply(caseReply);
-            ec.setCaseStatus("Solved");
+            if (selectedFollowUp.isEmpty() && !followUps.isEmpty()) {
+                return "Please select the follow-ups you wish to reply";
+            } else {
+                for (int i = 0; i < selectedFollowUp.size(); i++) {
+                    query = entityManager.createQuery("SELECT fu FROM FollowUp fu WHERE fu.followUpId = :followUpId");
+                    query.setParameter("followUpId", selectedFollowUp.get(i).getFollowUpId());
+                    List resultList2 = query.getResultList();
+                    FollowUp fu = (FollowUp) resultList2.get(0);
+                    fu.setFollowUpStatus("Solved");
+                    fu.setFollowUpSolution(caseReply);
 
-            entityManager.flush();
-            return "Reply Sent Successful";
+                    entityManager.flush();
+                }
+                EnquiryCase ec = (EnquiryCase) resultList.get(0);
+                ec.setCaseReply(caseReply);
+                if (followUps.size() == 0) {
+                    ec.setCaseStatus("Solved");
+                } else {
+                    for (int a = 0; a < followUps.size(); a++) {
+                        System.out.println("////////status/////" + followUps.get(a).getFollowUpStatus());
+                        query = entityManager.createQuery("SELECT fu FROM FollowUp fu WHERE fu.followUpId = :followUpId");
+                        query.setParameter("followUpId", followUps.get(a).getFollowUpId());
+                        List resultList3 = query.getResultList();
+                        FollowUp f = (FollowUp) resultList3.get(0);
+                        if (!f.getFollowUpStatus().equalsIgnoreCase("Solved")) {
+                            ec.setCaseStatus("In Progress");
+                            break;
+                        } else {
+                            ec.setCaseStatus("Solved");
+                        }
+                    }
+                }
+                return "1";
+            }
         }
     }
 
     @Override
-    public String replyCustomerFollowUp(Long followUpId, String followUpSolution) {
+    public String replyCustomerFollowUp(Long followUpId, String followUpSolution
+    ) {
         Query query = entityManager.createQuery("SELECT fu FROM FollowUp fu WHERE fu.followUpId = :followUpId");
         query.setParameter("followUpId", followUpId);
         List resultList = query.getResultList();
@@ -287,7 +401,27 @@ public class EnquirySessionBean implements EnquirySessionBeanLocal {
     }
 
     @Override
-    public String caseIssueIsCreated(Long caseId) {
+    public String replyIssue(Long issueId, String issueSolution
+    ) {
+        Query query = entityManager.createQuery("SELECT i FROM Issue i WHERE i.issueId = :issueId");
+        query.setParameter("issueId", issueId);
+        List resultList = query.getResultList();
+
+        if (resultList.isEmpty()) {
+            return "Incorrect Issue ID.";
+        } else {
+            Issue is = (Issue) resultList.get(0);
+            is.setIssueSolution(issueSolution);
+            is.setIssueStatus("Solved");
+
+            entityManager.flush();
+            return "Reply Sent Successful";
+        }
+    }
+
+    @Override
+    public String caseIssueIsCreated(Long caseId
+    ) {
         Query query = entityManager.createQuery("SELECT ec FROM EnquiryCase ec WHERE ec.caseId = :caseId");
         query.setParameter("caseId", caseId);
         List resultList = query.getResultList();
@@ -300,22 +434,23 @@ public class EnquirySessionBean implements EnquirySessionBeanLocal {
         }
     }
 
+//    @Override
+//    public String followUpIssueIsCreated(Long followUpId
+//    ) {
+//        Query query = entityManager.createQuery("SELECT fu FROM FollowUp fu WHERE fu.followUpId = :followUpId");
+//        query.setParameter("followUpId", followUpId);
+//        List resultList = query.getResultList();
+//        FollowUp fu = (FollowUp) resultList.get(0);
+//        List issueList = fu.getIssue();
+//        if (issueList.isEmpty()) {
+//            return "No";
+//        } else {
+//            return "Yes";
+//        }
+//    }
     @Override
-    public String followUpIssueIsCreated(Long followUpId) {
-        Query query = entityManager.createQuery("SELECT fu FROM FollowUp fu WHERE fu.followUpId = :followUpId");
-        query.setParameter("followUpId", followUpId);
-        List resultList = query.getResultList();
-        FollowUp fu = (FollowUp) resultList.get(0);
-        List issueList = fu.getIssue();
-        if (issueList.isEmpty()) {
-            return "No";
-        } else {
-            return "Yes";
-        }
-    }
-
-    @Override
-    public String caseIssueAllReplied(Long caseId) {
+    public String caseIssueAllReplied(Long caseId
+    ) {
         Query query = entityManager.createQuery("SELECT ec FROM EnquiryCase ec WHERE ec.caseId = :caseId");
         query.setParameter("caseId", caseId);
         List resultList = query.getResultList();
@@ -333,23 +468,45 @@ public class EnquirySessionBean implements EnquirySessionBeanLocal {
         return result;
     }
 
+//    @Override
+//    public String followUpIssueAllReplied(Long followUpId
+//    ) {
+//        Query query = entityManager.createQuery("SELECT fu FROM FollowUp fu WHERE fu.followUpId = :followUpId");
+//        query.setParameter("followUpId", followUpId);
+//        List resultList = query.getResultList();
+//        FollowUp fu = (FollowUp) resultList.get(0);
+//        List<Issue> issueList = fu.getIssue();
+//        String result = "N/A";
+//        for (int i = 0; i < issueList.size(); i++) {
+//            if (issueList.get(i).getIssueStatus().equals("Pending")) {
+//                result = "No";
+//                break;
+//            } else {
+//                result = "Yes";
+//            }
+//        }
+//        return result;
+//    }
     @Override
-    public String followUpIssueAllReplied(Long followUpId) {
-        Query query = entityManager.createQuery("SELECT fu FROM FollowUp fu WHERE fu.followUpId = :followUpId");
-        query.setParameter("followUpId", followUpId);
-        List resultList = query.getResultList();
-        FollowUp fu = (FollowUp) resultList.get(0);
-        List<Issue> issueList = fu.getIssue();
-        String result = "N/A";
-        for (int i = 0; i < issueList.size(); i++) {
-            if (issueList.get(i).getIssueStatus().equals("Pending")) {
-                result = "No";
-                break;
+    public EnquiryCase retrieveEnquiryById(Long caseId) {
+        EnquiryCase enquiryCase = new EnquiryCase();
+
+        try {
+            Query query = entityManager.createQuery("Select e From EnquiryCase e Where e.caseId=:caseId");
+            query.setParameter("caseId", caseId);
+            if (query.getResultList().isEmpty()) {
+                return new EnquiryCase();
             } else {
-                result = "Yes";
+                enquiryCase = (EnquiryCase) query.getSingleResult();
             }
+        } catch (EntityNotFoundException enfe) {
+            System.out.println("\nEntity not found error: " + enfe.getMessage());
+            return new EnquiryCase();
+        } catch (NonUniqueResultException nure) {
+            System.out.println("\nNon unique result error: " + nure.getMessage());
         }
-        return result;
+
+        return enquiryCase;
     }
 
 }

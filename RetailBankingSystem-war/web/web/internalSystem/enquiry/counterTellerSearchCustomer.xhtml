@@ -9,6 +9,23 @@
     </h:head>
     <h:body>
         <h:form>
+            <p:menubar>
+                <p:submenu label="Home">
+                    <p:menuitem value="Home" url="/web/internalSystem/infrastructure/employeeCounterTellerMainPage.xhtml"/>
+                </p:submenu>
+
+                <p:submenu label="Log Out">
+                    <p:menuitem value="Logout" actionListener="#{employeeLoginManagedBean.doLogOut}" />
+                </p:submenu>
+            </p:menubar>
+        </h:form>
+
+        <h:outputText value="Welcome #{employeeAccountManagedBean.userName} !"/>
+        <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
+        <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
+        <h:outputText value="You have logged in as: Counter Teller"/>
+
+        <h:form>
             <p:outputLabel for="customerID"  value="Customer NRIC/Passport:" />
             <p:inputText id="customerID" value="#{employeeRecordEnquiryManagedBean.identificationNum}" />
             <p:commandButton value="Show Customer" actionListener="#{employeeRecordEnquiryManagedBean.retieveCustomerByIdentification}" update="@form"/>
@@ -53,8 +70,9 @@
                     </p:column>
                 </p:row>
                 <p:commandButton value="Write Enquiry" actionListener="#{employeeRecordEnquiryManagedBean.helpCustomerRecordEnquiry}"/>
+                <p:commandButton value="Update Customer Profile" actionListener="#{employeeRecordEnquiryManagedBean.helpCustomerChangeBasicInfo}"/>
             </p:panelGrid>
-            
+
         </h:form>
     </h:body>
 </html>

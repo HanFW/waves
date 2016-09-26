@@ -6,6 +6,7 @@
 package ejb.infrastructure.session;
 
 import ejb.infrastructure.entity.Employee;
+import ejb.infrastructure.entity.Permission;
 import ejb.infrastructure.entity.Role;
 import java.util.List;
 import java.util.Set;
@@ -28,9 +29,11 @@ public interface EmployeeAdminSessionBeanLocal {
     String employeePosition, String employeeNRIC, String employeeMobileNum, String employeeEmail,
     Set<String> roles);
     
-    public void updateEmployeeAccount(String employeeName, String employeeDepartment,
-    String employeePosition, Long employeeId, String employeeMobileNum, String employeeEmail,
-    Set<String> roles);
+//    public void updateEmployeeAccount(String employeeName, String employeeDepartment,
+//    String employeePosition, Long employeeId, String employeeMobileNum, String employeeEmail,
+//    Set<String> roles);
+    
+    public void updateEmployeeAccount(Long id, String name, String department, String position, String mobile, String email, Set<String> roles);
     
     public Set<String> getSelectedRoles(Long employeeId);
     
@@ -39,6 +42,10 @@ public interface EmployeeAdminSessionBeanLocal {
     public List<Employee> filterAccountByDepartment(String employeeDepartment);
     
     public List<Employee> getEmployees();
+    
+    public List<Role> getAllRoles();
+    
+    public List<Employee> getArchivedEmployees();
     
     public Employee getEmployeeById(Long employeeId);
     
@@ -53,6 +60,19 @@ public interface EmployeeAdminSessionBeanLocal {
     
     public List<String> getRoles();
     
+    public List<Permission> getPermissionList(String roleName);
+    
+    public String[] getPermissionList1();
+    
+    public String[] getSelectedPermissionList(Long roleId);
+    
+    public void setSelectedPermissionList(String roleName,String[] selectedPermission);
+    
     public Role getRoleByName(String roleName);
+    
+    public void deletePermission(String roleName,String permissionName);
+    
+    public void addPermissionToRole(String roleName, String permissionName);
+    
     
 }

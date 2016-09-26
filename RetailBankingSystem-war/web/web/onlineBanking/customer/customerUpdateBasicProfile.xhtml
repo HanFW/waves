@@ -1,7 +1,8 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
 <html xmlns="http://www.w3.org/1999/xhtml"                                                                                                                     
-      xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:p="http://primefaces.org/ui">
+      xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:p="http://primefaces.org/ui"
+      xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
     <h:head>
         <title>Customer Update Basic Profile</title>
         <style type="text/css">
@@ -68,7 +69,6 @@
                         <p:inputText id="customerOccupation" value="#{cRMCustomerManagedBean.customerOccupation}" required="true"  />
 
                         <p:outputLabel for="customerCompany"  value="Company:" />
-
                         <p:inputText id="customerCompany" value="#{cRMCustomerManagedBean.customerCompany}" required="true"  />
 
                         <p:outputLabel for="customerMobileNumber"  value="Mobile Number:" />
@@ -77,8 +77,14 @@
                         <p:outputLabel for="customerEmailAddress"  value="Email Address:" />
                         <p:inputText id="customerEmailAddress" value="#{cRMCustomerManagedBean.replacedCustomerEmail}" required="true"  />
 
-                        <p:outputLabel for="customerAddress"  value="Address:" />
-                        <p:inputText id="customerAddress" value="#{cRMCustomerManagedBean.customerAddress}" required="true"  />
+                        <p:outputLabel for="customerStreet"  value="Residential Street Name: " />
+                        <p:inputText id="customerStreet" value="#{cRMCustomerManagedBean.streetName}" required="true"  />
+                        
+                        <p:outputLabel for="customerUnitNum"  value="Residential Unit No.: " />
+                        <p:inputText id="customerUnitNum" value="#{cRMCustomerManagedBean.unitNum}" required="true"  />
+                        
+                        <p:outputLabel for="customerBlockNum"  value="Residential Block/House No.: " />
+                        <p:inputText id="customerBlockNum" value="#{cRMCustomerManagedBean.blockNum}" required="true"  />
 
                         <p:outputLabel for="customerPostalCode"  value="Postal Code:" />
                         <p:inputText id="customerPostalCode" value="#{cRMCustomerManagedBean.customerPostal}" required="true"  />
@@ -91,6 +97,6 @@
 
             </p:dataList>
         </h:form>
-
+        <ezcomp:CCTimeout/>
     </h:body>
 </html>
