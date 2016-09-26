@@ -20,7 +20,7 @@ public class Interest implements Serializable {
     private String isTransfer;
     private String isWithdraw;
 
-    @OneToOne(cascade={CascadeType.ALL},fetch=FetchType.EAGER,mappedBy="interest")
+    @OneToOne(cascade={CascadeType.PERSIST},fetch=FetchType.EAGER)
     private BankAccount bankAccount;
     
     public Long getInterestId() {

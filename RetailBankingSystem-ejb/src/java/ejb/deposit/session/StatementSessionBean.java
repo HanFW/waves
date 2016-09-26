@@ -184,4 +184,12 @@ public class StatementSessionBean implements StatementSessionBeanLocal {
 
         return statementDate;
     }
+    
+    @Override
+    public void deleteStatement (Long statementId) {
+        Statement statement = retrieveStatementById(statementId);
+        
+        entityManager.remove(statement);
+        entityManager.flush();
+    }
 }

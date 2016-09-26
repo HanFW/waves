@@ -3,9 +3,7 @@ package managedbean.deposit;
 import ejb.customer.entity.CustomerBasic;
 import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import ejb.deposit.entity.BankAccount;
-import ejb.deposit.entity.Payee;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
-import ejb.deposit.session.PayeeSessionBeanLocal;
 import ejb.deposit.session.TransactionSessionBeanLocal;
 import ejb.infrastructure.session.LoggingSessionBeanLocal;
 import java.io.IOException;
@@ -27,9 +25,6 @@ public class CloseAccountManagedBean {
 
     @EJB
     private LoggingSessionBeanLocal loggingSessionBeanLocal;
-
-    @EJB
-    private PayeeSessionBeanLocal payeeSessionBeanLocal;
 
     @EJB
     private TransactionSessionBeanLocal transactionSessionLocal;
@@ -63,7 +58,6 @@ public class CloseAccountManagedBean {
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
         CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
-        customerName = customerBasic.getCustomerName();
 
         List<BankAccount> bankAccounts = bankAccountSessionLocal.retrieveBankAccountByCusIC(customerBasic.getCustomerIdentificationNum());
         myBankAccounts = new HashMap<String, String>();
@@ -161,16 +155,9 @@ public class CloseAccountManagedBean {
     public void setCheckOnlyOneAccount(boolean checkOnlyOneAccount) {
         this.checkOnlyOneAccount = checkOnlyOneAccount;
     }
-
-    public String getCustomerName() {
-        return customerName;
-    }
-
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
-    }
-
+    
     public void deleteAccount() throws IOException {
+        
         System.out.println("=");
         System.out.println("====== deposit/CloseAccountManagedBean: deleteAccount() ======");
         ec = FacesContext.getCurrentInstance().getExternalContext();
@@ -193,6 +180,7 @@ public class CloseAccountManagedBean {
                 if (!bankAccount.getBankAccountBalance().equals("0")) {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Please withdraw all your money.", "Failed!"));
                 } else {
+
                     bankAccountSessionLocal.deleteAccount(bankAccountNum);
                     statusMessage = "Account has been successfully deleted.";
                     loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "close account", "successful", null);
@@ -200,7 +188,6 @@ public class CloseAccountManagedBean {
                     ec.getFlash().put("statusMessage", statusMessage);
                     ec.getFlash().put("bankAccountNum", bankAccountNum);
                     ec.getFlash().put("bankAccountType", bankAccountType);
-                    ec.getFlash().put("customerName", customerName);
 
                     ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerDeleteAccount.xhtml?faces-redirect=true");
                 }
@@ -213,17 +200,6 @@ public class CloseAccountManagedBean {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Please withdraw all your money.", "Failed!"));
                 } else {
 
-                    if (!customerBasic.getPayee().isEmpty()) {
-                        List<Payee> payees = customerBasic.getPayee();
-                        String payeeAccountNum = "";
-
-                        for (int i = customerBasic.getPayee().size() - 1; i >= 0; i--) {
-                            payeeAccountNum = payees.get(i).getPayeeAccountNum();
-                            payeeSessionBeanLocal.deletePayee(payeeAccountNum);
-                        }
-                    }
-
-                    bankAccountSessionLocal.deleteAccount(bankAccountNum);
                     customerSessionBeanLocal.deleteCustomerBasic(customerBasic.getCustomerIdentificationNum());
 
                     statusMessage = "Account has been successfully deleted.";
@@ -232,7 +208,6 @@ public class CloseAccountManagedBean {
                     ec.getFlash().put("statusMessage", statusMessage);
                     ec.getFlash().put("bankAccountNum", bankAccountNum);
                     ec.getFlash().put("bankAccountType", bankAccountType);
-                    ec.getFlash().put("customerName", customerName);
 
                     ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerDeleteAccount.xhtml?faces-redirect=true");
                 }

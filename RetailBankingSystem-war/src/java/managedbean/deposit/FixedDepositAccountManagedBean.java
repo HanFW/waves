@@ -29,7 +29,6 @@ public class FixedDepositAccountManagedBean {
     private Map<String, String> fixedDepositAccounts = new HashMap<String, String>();
     private String fixedDepositAccountWithType;
     private String fixedDepositPeriod;
-    private String customerName;
     private ExternalContext ec;
 
     public FixedDepositAccountManagedBean() {
@@ -41,7 +40,6 @@ public class FixedDepositAccountManagedBean {
 
         if (ec.getSessionMap().get("customer") != null) {
             CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
-            customerName = customerBasic.getCustomerName();
 
             List<BankAccount> bankAccounts = bankAccountSessionLocal.retrieveBankAccountByCusIC(customerBasic.getCustomerIdentificationNum());
 
@@ -75,14 +73,6 @@ public class FixedDepositAccountManagedBean {
 
     public void setFixedDepositPeriod(String fixedDepositPeriod) {
         this.fixedDepositPeriod = fixedDepositPeriod;
-    }
-
-    public String getCustomerName() {
-        return customerName;
-    }
-
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
     }
 
     public void confirm() {

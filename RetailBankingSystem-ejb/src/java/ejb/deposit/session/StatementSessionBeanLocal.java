@@ -13,4 +13,5 @@ public interface StatementSessionBeanLocal {
     public Statement retrieveStatementById(Long statementId);
     public List<Statement> retrieveStatementByAccNum(String bankAccountNum);
     public void generateStatement();
+    public void deleteStatement (Long statementId);
 }

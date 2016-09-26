@@ -5,7 +5,9 @@ import javax.ejb.Local;
 
 @Local
 public interface InterestSessionBeanLocal {
-    public Long addNewInterest(String dailyInterest,String monthlyInterest,String isTransfer,String isWithdraw);
+    public Long addNewInterest(String dailyInterest,String monthlyInterest,String isTransfer,
+            String isWithdraw, Long bankAccountId);
     public Interest retrieveInterestById(Long interestId);
     public Interest retrieveInterestByAccountNum(String bankAccountNum);
+    public void deleteInterest(Long interestId);
 }

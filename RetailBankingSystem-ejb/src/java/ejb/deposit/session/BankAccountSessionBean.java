@@ -33,6 +33,9 @@ import javax.persistence.NonUniqueResultException;
 public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
 
     @EJB
+    private StatementSessionBeanLocal statementSessionBeanLocal;
+
+    @EJB
     private CRMCustomerSessionBeanLocal customerSessionBeanLocal;
 
     @EJB
@@ -207,7 +210,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
             String bankAccountType, String bankAccountBalance, String transferDailyLimit,
             String transferBalance, String bankAccountStatus, String bankAccountMinSaving,
             String bankAccountDepositPeriod, String currentFixedDepositPeriod,
-            String fixedDepositStatus, Double statementDateDouble, Long customerBasicId, Long interestId) {
+            String fixedDepositStatus, Double statementDateDouble, Long customerBasicId) {
 
         System.out.println("*");
         System.out.println("****** deposit/BankAccountSessionBean: addNewAccount() ******");
@@ -233,7 +236,6 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
         bankAccount.setFixedDepositStatus(fixedDepositStatus);
         bankAccount.setStatementDateDouble(statementDateDouble);
         bankAccount.setCustomerBasic(retrieveCustomerBasicById(customerBasicId));
-        bankAccount.setInterest(interestSessionLocal.retrieveInterestById(interestId));
 
         entityManager.persist(bankAccount);
         entityManager.flush();
@@ -247,20 +249,29 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
     public String deleteAccount(String bankAccountNum) {
         System.out.println("*");
         System.out.println("****** deposit/BankAccountSessionBean: deleteAccount() ******");
-        Query query = entityManager.createQuery("Select a From BankAccount a Where a.bankAccountNum=:bankAccountNum");
-        query.setParameter("bankAccountNum", bankAccountNum);
-        List<BankAccount> result = query.getResultList();
 
-        if (result.isEmpty()) {
-            System.out.println("****** deposit/BankAccountSessionBean: retrieveAccTransactionById(): invalid bank account number: no result found");
-            return "Error! Account does not exist!";
-        } else {
-            System.out.println("****** deposit/BankAccountSessionBean: retrieveAccTransactionById(): valid bank account number: delete bank account");
-            BankAccount bankAccount = result.get(0);
-            entityManager.remove(bankAccount);
+        BankAccount bankAccount = retrieveBankAccountByNum(bankAccountNum);
 
-            return "Successfully deleted!";
+        if (!bankAccount.getStatement().isEmpty()) {
+            for (int j = bankAccount.getStatement().size() - 1; j > 0; j--) {
+                statementSessionBeanLocal.deleteStatement(bankAccount.getStatement().get(j).getStatementId());
+            }
         }
+
+        if (!bankAccount.getAccTransaction().isEmpty()) {
+            for (int i = bankAccount.getAccTransaction().size() - 1; i > 0; i--) {
+                transactionSessionLocal.deleteAccTransaction(bankAccount.getAccTransaction().get(i).getTransactionId());
+            }
+        }
+
+        if (bankAccount.getInterest() != null) {
+            interestSessionLocal.deleteInterest(bankAccount.getInterest().getInterestId());
+        }
+
+        entityManager.remove(bankAccount);
+        entityManager.flush();
+
+        return "Successfully deleted!";
     }
 
     @Override

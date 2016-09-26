@@ -25,6 +25,9 @@ import javax.persistence.Query;
 public class EnquirySessionBean implements EnquirySessionBeanLocal {
 
     @EJB
+    private FollowUpSessionBeanLocal followUpSessionBeanLocal;
+
+    @EJB
     private IssueSessionBeanLocal issueSessionBeanLocal;
 
     @PersistenceContext
@@ -163,6 +166,17 @@ public class EnquirySessionBean implements EnquirySessionBeanLocal {
     @Override
     public String deleteCase(Long caseId) {
         EnquiryCase ec = getEnquiryByCaseId(caseId);
+
+        if (!ec.getIssue().isEmpty()) {
+            for (int i = ec.getIssue().size() - 1; i > 0; i--) {
+                issueSessionBeanLocal.deleteIssue(ec.getIssue().get(i).getIssueId());
+            }
+        }
+        if (!ec.getFollowUp().isEmpty()) {
+            for (int j = ec.getFollowUp().size() - 1; j > 0; j--) {
+                followUpSessionBeanLocal.deleteFollowUp(ec.getFollowUp().get(j).getFollowUpId());
+            }
+        }
 
         entityManager.remove(ec);
         entityManager.flush();

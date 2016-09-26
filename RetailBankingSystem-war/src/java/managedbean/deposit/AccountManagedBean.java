@@ -825,10 +825,6 @@ public class AccountManagedBean implements Serializable {
                 dateOfBirth = bankAccountSessionLocal.changeDateFormat(customerDateOfBirth);
 
                 if (existingCustomer.equals("Yes") && checkExist && agreement) {
-                    dailyInterest = "0";
-                    monthlyInterest = "0";
-                    isTransfer = "0";
-                    isWithdraw = "0";
 
                     customerBasicId = customerSessionBean.retrieveCustomerBasicByIC(customerIdentificationNum.toUpperCase()).getCustomerBasicId();
                     CustomerBasic customerBasic = bankAccountSessionLocal.retrieveCustomerBasicById(customerBasicId);
@@ -837,8 +833,6 @@ public class AccountManagedBean implements Serializable {
                     if (customerAgeDouble < 16) {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Eligibility of openning account is 16 years old and above.", "Failed!"));
                     } else {
-
-                        newInterestId = interestSessionLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw);
 
                         bankAccountBalance = "0";
                         transferDailyLimit = "3000";
@@ -855,10 +849,17 @@ public class AccountManagedBean implements Serializable {
                         } else {
                             bankAccountStatus = "Inactivated";
                         }
+
                         newAccountId = bankAccountSessionLocal.addNewAccount(bankAccountNum, bankAccountPwd, bankAccountType,
                                 bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
                                 bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
-                                statementDateDouble, customerBasicId, newInterestId);
+                                statementDateDouble, customerBasicId);
+
+                        dailyInterest = "0";
+                        monthlyInterest = "0";
+                        isTransfer = "0";
+                        isWithdraw = "0";
+                        newInterestId = interestSessionLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw, newAccountId);
 
                         bankAccount = bankAccountSessionLocal.retrieveBankAccountById(newAccountId);
                         bankAccountSessionLocal.retrieveBankAccountByCusIC(customerIdentificationNum).add(bankAccount);
@@ -908,11 +909,6 @@ public class AccountManagedBean implements Serializable {
                     if (customerAgeDouble < 16) {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Eligibility of openning account is 16 years old and above.", "Failed!"));
                     } else {
-                        dailyInterest = "0";
-                        monthlyInterest = "0";
-                        isTransfer = "0";
-                        isWithdraw = "0";
-                        newInterestId = interestSessionLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw);
 
                         bankAccountBalance = "0";
                         transferDailyLimit = "3000";
@@ -933,7 +929,13 @@ public class AccountManagedBean implements Serializable {
                         newAccountId = bankAccountSessionLocal.addNewAccount(bankAccountNum, bankAccountPwd, bankAccountType,
                                 bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
                                 bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
-                                statementDateDouble, newCustomerBasicId, newInterestId);
+                                statementDateDouble, newCustomerBasicId);
+
+                        dailyInterest = "0";
+                        monthlyInterest = "0";
+                        isTransfer = "0";
+                        isWithdraw = "0";
+                        newInterestId = interestSessionLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw, newAccountId);
 
                         statusMessage = "New Account Saved Successfully.";
                         loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "open account", "successful", null);
