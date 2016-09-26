@@ -10,6 +10,10 @@
             <div class="ui-g ui-fluid">
                 <div class="ui-g-12 ui-lg-12">
                     <div class="card card-w-title"> 
+                         <p:panel>
+                            <p:outputLabel value="Welcome "/>
+                            <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
+                        </p:panel>
                         <p:panel>
                             <p:messages autoUpdate="true" showDetail="true"/>
                             <h:outputText value="For Singaporean/PR, please enter your IC number. For foreigner, please enter your passport number."/>

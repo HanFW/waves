@@ -7,34 +7,9 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/onlineBankingTemplate.xhtml"
                 xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
-    <html>
+   <ui:define name="content">
         <h:body>
-            <h:form>
-                <p:menubar>
-                    <p:submenu label="Transfer" >
-                        <p:menuitem value="To My Account" url="/web/onlineBanking/deposit/customerToMyAccount.xhtml" />
-                        <p:menuitem value="To Other Merlion Accounts" url="/web/onlineBanking/deposit/customerToOthersAccount.xhtml" />
-                        <p:menuitem value="To Other Merlion Accuonts(One-time)" url="/web/onlineBanking/deposit/customerOneTimeTransfer.xhtml" />
-                        <p:menuitem value="Add Recipient" url="/web/onlineBanking/deposit/customerAddRecipient.xhtml" />
-                        <p:menuitem value="Delete Recipient" url="/web/onlineBanking/deposit/customerDeleteRecipient.xhtml" />
-                        <p:menuitem value="Change Daily Transfer Limit" url="/web/onlineBanking/deposit/customerDailyTransferLimit.xhtml" />
-                    </p:submenu>
-
-                    <p:submenu label="Enquiry">
-                        <p:menuitem value="Write an enquiry" url="/web/onlineBanking/customer/customerEnquiry.xhtml" />
-                    </p:submenu>
-
-                    <p:submenu label="My profile">
-                        <p:menuitem value="Change password" url="/web/onlineBanking/customer/customerChangePIN.xhtml" />
-                        <p:menuitem value="Update basic profile" url="/web/onlineBanking/customer/customerUpdateBasicProfile.xhtml" />
-                    </p:submenu>
-
-                    <p:submenu label="Logout">
-                        <p:menuitem value="Logout" actionListener="#{customerLoginManagedBean.doLogout}"/>
-                    </p:submenu>
-                </p:menubar>
-            </h:form>
-
+   
             <h:form>
                 <br/>
                 <p:panel>
@@ -74,4 +49,5 @@
             </h:form>
             <ezcomp:CCTimeout/>
         </h:body>
-    </html>
+    </ui:define>
+</ui:composition>
