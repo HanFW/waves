@@ -112,10 +112,13 @@ public class StatementSessionBean implements StatementSessionBeanLocal {
         for (BankAccount activatedBankAccount : activatedBankAccounts) {
 
 //            Calendar cal = Calendar.getInstance();
-//            Long startTimeLong = cal.getTimeInMillis() - 30000000;
+//            Long currentTime = cal.getTimeInMillis();
+//            Long previousTime = currentTime - 300000;
+//
 //            AccTransaction transaction = activatedBankAccount.getAccTransaction().get(activatedBankAccount.getAccTransaction().size() - 1);
+//            System.out.println(transaction.getTransactionDateMilis());
 //            
-//            if (transaction.getTransactionDateMilis() < startTimeLong) {
+//            if (transaction.getTransactionDateMilis() < previousTime) {
 //                System.out.println("There will be no statement this month");
 //            } else {
             String bankAccountNum = activatedBankAccount.getBankAccountNum();
@@ -136,12 +139,12 @@ public class StatementSessionBean implements StatementSessionBeanLocal {
             bankAccountNum = activatedBankAccount.getBankAccountNum();
             String bankAccountType = activatedBankAccount.getBankAccountType();
             String accountDetails = customerName + "\n" + bankAccountNum + "\n" + bankAccountType;
-            
+
             Calendar cal = Calendar.getInstance();
             Long endTimeLong = cal.getTimeInMillis();
             Long startTimeLong = endTimeLong - 300000;
 
-            Long newStatementId = addNewStatement(statementDate, statementType, accountDetails, 
+            Long newStatementId = addNewStatement(statementDate, statementType, accountDetails,
                     startTimeLong, endTimeLong, activatedBankAccount.getBankAccountId());
             Statement statement = retrieveStatementById(newStatementId);
 
