@@ -10,10 +10,6 @@
     <h:body>
         <h:form>
             <p:menubar>
-                <p:submenu label="Task">
-                    <p:menuitem value="Assign Permisison to role" actionListener="#{employeeAssignPermissionManagedBean.AssignPermission}"/>
-                </p:submenu>
-
                 <p:submenu label="Manage My Account">
                     <p:menuitem value="Change Password" actionListener="#{employeeLoginManagedBean.changePassword}" />
                 </p:submenu>
@@ -21,21 +17,16 @@
                 <p:submenu label="Log Out">
                     <p:menuitem value="Logout" actionListener="#{employeeLoginManagedBean.doLogOut}" />
                 </p:submenu>
-
             </p:menubar>
         </h:form>
 
-        <h:outputText value="Welcome #{employeeAccountManagedBean.userName} !"/>
-        <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
-        <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
-        <h:outputText value="You have logged in as: System Admin"/>
-
+ 
         <h:form>
-
+            <p:growl showDetail="true" autoUpdate="true"/>
             <p:tabView id='tabview' cache="false" dynamic='true' >
                 <p:tab title="Current Employee" id='currentTab'>
 
-                    <p:growl id="msgs" showDetail="true"/>
+
 
                     <p:dataTable var="employee" id="userAccountTable" editable="true" value="#{employeeAccountManagedBean.employees}" style="margin-bottom:20px" widgetVar="userAccounts">
                         <f:facet name="header">
@@ -93,7 +84,11 @@
                             <p:commandButton action="/web/internalSystem/infrastructure/employeeEditAccountInfo.xhtml" icon="ui-icon-pencil">
                                 <f:setPropertyActionListener value="#{employee.employeeId}" target="#{systemAdminEditUserAccountManagedBean.employeeId}"/>
                             </p:commandButton>
-                        </p:column>  
+                        </p:column> 
+
+                        <p:column style="width:5%">
+                            <p:rowEditor/>
+                        </p:column>
 
                         <p:contextMenu for="userAccount2" widgetVar="Menu">   
                             <p:menuitem value="Edit Cell" icon="ui-icon-search" onclick="PF('userAccounts').showCellEditor();
@@ -101,33 +96,27 @@
                             <p:menuitem value="Hide Menu" icon="ui-icon-close" onclick="PF('Menu').hide()"/>  
                         </p:contextMenu>
 
-
-
                         <p:column style="width:10%">
-                            <!--<h:form>-->
-
-                            <p:growl showDetail="true" />
                             <p:commandButton id="delete" value="Archive" icon="ui-icon ui-icon-trash" onclick="PF('deleteConfirmMsg').show()">
                             </p:commandButton>
-
-
-                            <p:confirmDialog header="Confirmation" message="Are you sure you want to archive the user account?" showEffect="fade" hideEffect="fade"  widgetVar="deleteConfirmMsg">
-                                <p:commandButton value="Yes" styleClass="ui-confirmdialog-yes" action="#{employeeAccountManagedBean.deleteAccount(employee)}" oncomplete="PF('deleteConfirmMsg').hide()" update="@form" ajax="false"/>
-                                <p:commandButton value="No" styleClass="ui-confirmdialog-no" action="#{employeeAccountManagedBean.deleteCancel(employee)}" oncomplete="PF('deleteConfirmMsg').hide()" update="@form"/>
-                            </p:confirmDialog>
-                            <!--</h:form>-->
                         </p:column>
 
-
                     </p:dataTable>
-                    <h:form>
-                        <p:row>
-                            <p:button outcome="/web/internalSystem/infrastructure/employeeCreateAccount" value="Add">
-                            </p:button>
-                        </p:row>
-                    </h:form>
+
+
+                    <p:confirmDialog header="Confirmation" message="Are you sure you want to archive the user account?" widgetVar="deleteConfirmMsg">
+                        <p:commandButton value="Yes" styleClass="ui-confirmdialog-yes" action="#{employeeAccountManagedBean.deleteAccount(employee)}" oncomplete="PF('deleteConfirmMsg').hide()" update="userAccountTable"/>
+                        <p:commandButton value="No" styleClass="ui-confirmdialog-no" action="#{employeeAccountManagedBean.deleteCancel(employee)}" oncomplete="PF('deleteConfirmMsg').hide()"/>
+                    </p:confirmDialog>
+
+
+                    <p:row>
+                        <p:button outcome="/web/internalSystem/infrastructure/employeeCreateAccount" value="Add">
+                        </p:button>
+                    </p:row>
 
                 </p:tab>
+
                 <p:tab title="Archived Employee" id='archiveTab'>
                     <p:dataTable var="employee" id="archivedUserAccountTable" editable="true" value="#{employeeAccountManagedBean.archivedEmployees}" style="margin-bottom:20px" widgetVar="userAccounts">
                         <f:facet name="header">

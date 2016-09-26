@@ -101,8 +101,7 @@ public class EmployeeAccountManagedBean implements Serializable {
             context.addMessage(null, message);
             System.out.println("*** AccountManagedBean: account created");
 
-            loggingSessionBeanLocal.createNewLogging("employee", getEmployeeIdViaSessionScope(), "employee creates a new user account for employee " + employeeName,
-                    "successful", "The employee does not have an existing account");
+         
         }
 
     }
@@ -138,18 +137,19 @@ public class EmployeeAccountManagedBean implements Serializable {
         }
 
         FacesContext context = FacesContext.getCurrentInstance();
-        Employee findEmployee = (Employee) context.getExternalContext().getSessionMap().get("employee");
-        System.out.println("*** AccountManagedBean: get current system admin " + findEmployee.getEmployeeName());
-        if (employees.contains(findEmployee)) {
-            employees.remove(findEmployee);
-        }
-
-        for (int i = 0; i < employees.size(); i++) {
-            if (findSystemAdmins(employees.get(i))) {
-                System.out.println("*** AccountManagedBean: remove other system admin " + employees.get(i));
-                employees.remove(employees.get(i));
-            }
-        }
+//        Employee findEmployee = (Employee) context.getExternalContext().getSessionMap().get("employee");
+//        System.out.println("*** AccountManagedBean: get current system admin " + findEmployee.getEmployeeName());
+//        if (employees.contains(findEmployee)) {
+//            employees.remove(findEmployee);
+//        }
+//
+//        for (int i = 0; i < employees.size(); i++) {
+//            if (findSystemAdmins(employees.get(i))) {
+//                System.out.println("*** AccountManagedBean: remove other system admin " + employees.get(i));
+//                employees.remove(employees.get(i));
+//            }
+//        }
+        System.out.println("===== AcocuntManagedBean: get current employees ====="+employees);
         return employees;
     }
 
@@ -216,8 +216,10 @@ public class EmployeeAccountManagedBean implements Serializable {
         FacesMessage message = null;
         FacesContext context = FacesContext.getCurrentInstance();
 
-        System.out.println("===== AcocuntManagedBean: deleteAccount =====");
+        System.out.println("===== AcocuntManagedBean: deleteAccount - employee=====" +employee.getEmployeeName());
         String msg = adminSessionBeanLocal.deleteEmployee(employee);
+        employees=adminSessionBeanLocal.getEmployees();
+        System.out.println("===== AcocuntManagedBean: get employees ====="+employees);
 
         if (msg.equals("success")) {
 
@@ -231,6 +233,8 @@ public class EmployeeAccountManagedBean implements Serializable {
         }
 
     }
+    
+    
 
     public void deleteCancel(Employee employee) {
 //        System.out.println("hi jojo");
@@ -274,8 +278,8 @@ public class EmployeeAccountManagedBean implements Serializable {
             context.addMessage(null, message);
             System.out.println("*** AccountManagedBean: password has been changed");
 
-            loggingSessionBeanLocal.createNewLogging("employee", getEmployeeIdViaSessionScope(), "employee changes password of his user account",
-                    "successful", "old password input is correct");
+//            loggingSessionBeanLocal.createNewLogging("employee", getEmployeeIdViaSessionScope(), "employee changes password of his user account",
+//                    "successful", "old password input is correct");
 
         } else if (msg.equals("invalid")) {
             message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Password invalid!", "Password invalid!");
@@ -289,11 +293,12 @@ public class EmployeeAccountManagedBean implements Serializable {
     }
 
     public Long getEmployeeId() {
-//        System.out.println("*** AccountManagedBean: get employee Id!!!" + employeeId);
+        System.out.println("*** AccountManagedBean: get employee Id!!!" + employeeId);
         return employeeId;
     }
 
     public void setEmployeeId(Long employeeId) {
+        System.out.println("===== AcocuntManagedBean: set employee Id!! ====="+employeeId);
         this.employeeId = employeeId;
     }
 
@@ -346,8 +351,8 @@ public class EmployeeAccountManagedBean implements Serializable {
     }
 
     public Employee getEmployee() {
-        employee = adminSessionBeanLocal.getEmployeeById(employeeId);
-//        System.out.println("*** AccountManagedBean: get employee!!!" + employee.getEmployeeName());
+       
+        System.out.println("*** AccountManagedBean: get employee by Id!!!" + employee.getEmployeeName());
         return employee;
     }
 

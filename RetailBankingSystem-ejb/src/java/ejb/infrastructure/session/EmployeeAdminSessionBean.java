@@ -80,7 +80,7 @@ public class EmployeeAdminSessionBean implements EmployeeAdminSessionBeanLocal {
         roles[12] = "Operation Specialist";
         roles[13] = "Wealth Management Specialist";
         roles[14] = "Enquiry Manager";
-        roles[15] = "System Admin";
+        roles[15]="System Admin";
 
         permissionList1 = new String[27];
         permissionList1[0] = "View Customer Accounts Information";
@@ -195,7 +195,7 @@ public class EmployeeAdminSessionBean implements EmployeeAdminSessionBeanLocal {
                         role.addEmployeeToRole(employee);
                     }
                     em.flush();
-                    System.out.println("~~~~~adminSessionBean print role get employees " + role.getEmployee());
+//                    System.out.println("~~~~~adminSessionBean print role get employees " + role.getEmployee());
 
                 }
 
@@ -591,11 +591,11 @@ public class EmployeeAdminSessionBean implements EmployeeAdminSessionBeanLocal {
     }
 
     @Override
-    public void deletePermission(String roleName,String permissionName) {
+    public void deletePermission(String roleName, String permissionName) {
         System.out.println("*** adminSessionBean: Display all permissions of " + roleName);
-        Role role=getRoleByName(roleName);
-        Permission permission=getPermissionByName(permissionName);
-        
+        Role role = getRoleByName(roleName);
+        Permission permission = getPermissionByName(permissionName);
+
         role.deletePermissionFromRole(permission);
         permission.deleteRoleFromPermission(role);
         em.flush();
@@ -603,14 +603,12 @@ public class EmployeeAdminSessionBean implements EmployeeAdminSessionBeanLocal {
 
     @Override
     public void addPermissionToRole(String roleName, String permissionName) {
-        Role role=getRoleByName(roleName);
-        Permission permission=getPermissionByName(permissionName);
-        
+        Role role = getRoleByName(roleName);
+        Permission permission = getPermissionByName(permissionName);
+
         role.addPermissionToRole(permission);
         permission.addRoleToPermission(role);
         em.flush();
     }
-
-   
 
 }
