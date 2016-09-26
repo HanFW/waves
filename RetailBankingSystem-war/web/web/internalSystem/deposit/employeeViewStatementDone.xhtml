@@ -1,0 +1,85 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>View Statement</title>
+        <style type="text/css">
+            .gritter-notice-wrapper {
+                left:200px;
+                top: 50px; 
+            }
+        </style>   
+    </h:head>
+    <h:body>
+        <h:form>
+            <p:menubar>
+                <p:submenu label="Home">
+                    <p:menuitem value="Home" url="/web/internalSystem/infrastructure/employeeCounterTellerMainPage.xhtml"/>
+                </p:submenu>
+
+                <p:submenu label="Log Out">
+                    <p:menuitem value="Logout" actionListener="#{employeeLoginManagedBean.doLogOut}" />
+                </p:submenu>
+            </p:menubar>
+        </h:form>
+
+        <h:outputText value="Welcome #{employeeAccountManagedBean.userName} !"/>
+        <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
+        <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
+        <h:outputText value="You have logged in as: Counter Teller"/>
+
+        <h:form id="formMain">
+            <h1>Welcome to Merlion Bank</h1>
+            <p:menubar>
+                <p:submenu label="Deposit">
+                    <p:menuitem value="Home" url="/web/index.xhtml" />
+                    <p:menuitem value="Open Account" url="/web/internalSystem/deposit/employeeOpenAccount.xhtml" />
+                    <p:menuitem value="Close Account" url="/web/internalSystem/deposit/employeeCloseAccount.xhtml" />
+                    <p:menuitem value="Cash Deposit" url="/web/internalSystem/deposit/employeeCashDeposit.xhtml" />
+                    <p:menuitem value="Cash Withdraw" url="/web/internalSystem/deposit/employeeCashWithdraw.xhtml" />
+                    <p:menuitem value="Fund Transfer" url="/web/internalSystem/deposit/employeeTransfer.xhtml" />
+                    <p:menuitem value="View Account" url="/web/internalSystem/deposit/employeeViewAccount.xhtml" />
+                    <p:menuitem value="View Transaction" url="/web/internalSystem/deposit/employeeViewTransaction.xhtml" />
+                    <p:menuitem value="View Statement" url="/web/internalSystem/deposit/employeeViewStatement.xhtml" />
+                    <p:menuitem value="Change Deposit Account Password" url="/web/internalSystem/deposit/employeeChangeBankAccountPwd.xhtml" />
+                    <p:menuitem value="Forgot Deposit Account Password" url="/web/internalSystem/deposit/employeeForgotDepositPassword.xhtml" />
+                    <p:menuitem value="Activate Fixed Deposit Account" url="/web/internalSystem/deposit/employeeActivateFixedDeposit.xhtml" />
+                    <p:menuitem value="Change Daily Transfer Limit" url="/web/internalSystem/deposit/employeeChangeDailyTransferLimit.xhtml" />
+                </p:submenu>
+            </p:menubar>
+        </h:form>
+        <h:form>
+            <br/>
+            <p:panel header="View My Statement">
+                <p:dataTable var="bankAccount" value="#{employeeViewAccountStatementManagedBean.bankAccount}" 
+                             paginator="true" rows="10" emptyMessage="No Account" >
+
+                    <p:column headerText="Bank Account Type"> 
+                        <p:commandLink process="@this" action="/web/internalSystem/deposit/employeeViewStatementFinish.xhtml">
+                            <h:outputText value="#{bankAccount.bankAccountType}" />
+                            <f:setPropertyActionListener value="#{bankAccount.bankAccountNum}" target="#{employeeViewStatementDoneManagedBean.bankAccountNum}" />
+                        </p:commandLink>
+                    </p:column>
+
+                    <p:column headerText="Bank Account Number" >
+                        <p:commandLink process="@this" action="/web/internalSystem/deposit/employeeViewStatementFinish.xhtml" >
+                            <h:outputText value="#{bankAccount.bankAccountNum}" /> 
+                            <f:setPropertyActionListener value="#{bankAccount.bankAccountNum}" target="#{employeeViewStatementDoneManagedBean.bankAccountNum}" />
+                        </p:commandLink>
+                    </p:column>
+
+                    <p:column headerText="Balance"> 
+                        <p:commandLink process="@this" action="/web/internalSystem/deposit/employeeViewStatementFinish.xhtml" >
+                            <h:outputText value="S$#{bankAccount.bankAccountBalance}" />
+                            <f:setPropertyActionListener value="#{bankAccount.bankAccountNum}" target="#{employeeViewStatementDoneManagedBean.bankAccountNum}" />
+                        </p:commandLink>
+                    </p:column>
+
+                </p:dataTable>
+            </p:panel>
+        </h:form>
+    </h:body>
+</html>

@@ -101,8 +101,8 @@ public class EmployeeAccountManagedBean implements Serializable {
             context.addMessage(null, message);
             System.out.println("*** AccountManagedBean: account created");
 
-            loggingSessionBeanLocal.createNewLogging("employee", getEmployeeIdViaSessionScope(), "employee creates a new user account for employee " + employeeName,
-                    "successful", "The employee does not have an existing account");
+//            loggingSessionBeanLocal.createNewLogging("employee", getEmployeeIdViaSessionScope(), "employee creates a new user account for employee " + employeeName,
+//                    "successful", "The employee does not have an existing account");
         }
 
     }
@@ -139,7 +139,7 @@ public class EmployeeAccountManagedBean implements Serializable {
 
         FacesContext context = FacesContext.getCurrentInstance();
         Employee findEmployee = (Employee) context.getExternalContext().getSessionMap().get("employee");
-//        System.out.println("*** AccountManagedBean: get current system admin " + findEmployee.getEmployeeName());
+        System.out.println("*** AccountManagedBean: get current system admin " + findEmployee.getEmployeeName());
         if (employees.contains(findEmployee)) {
             employees.remove(findEmployee);
         }
