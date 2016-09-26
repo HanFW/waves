@@ -33,7 +33,6 @@ public class SaveAccountManagedBean {
         bankAccountNum = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("bankAccountNum").toString();
         bankAccountType = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("bankAccountType").toString();
         bankAccountStatus = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("bankAccountStatus").toString();
-        customerName = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("customerName").toString();
 
         if (bankAccountStatus.equals("Inactivated")) {
             bankAccountStatus = "Inactive";

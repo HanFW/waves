@@ -366,10 +366,13 @@ public class InternalOpenAccountManagedBean {
             subject = "Welcome to Merlion Bank";
             Calendar cal = Calendar.getInstance();
             receivedDate = cal.getTime();
-            messageContent = "Welcome to Merlion Bank! Please deposit/transfer sufficient fund to activate your bank account.\n"
-                    + "For fixed depsit account, please declare your fixed deposit period first before activating your account.\n"
-                    + "Your daily transfer limit is S$3000. You could update your daily transfer limit under 'My Account'.\n"
-                    + "If you have any enquiry, please contact us at 800 820 8820 or you can write an enquiry after you login.\n";
+//            messageContent = "Welcome to Merlion Bank! Please deposit/transfer sufficient fund to activate your bank account.\n"
+//                    + "For fixed depsit account, please declare your fixed deposit period first before activating your account.\n"
+//                    + "Your daily transfer limit is S$3000. You could update your daily transfer limit under 'My Account'.\n"
+//                    + "If you have any enquiry, please contact us at 800 820 8820 or you can write an enquiry after you login.\n";
+            messageContent = "Welcome to Merlion Bank! Please deposit/transfer sufficient fund to your bank account.\n"
+                                + "For fixed deposit account, please declare your deposit period before activating your account.\n"
+                                + "Please contact us at 800 820 8820 or write enquiry after you login.\n";
             messageSessionBeanLocal.sendMessage("Merlion Bank", "Service", subject, receivedDate.toString(),
                     messageContent, customerBasicId);
 
