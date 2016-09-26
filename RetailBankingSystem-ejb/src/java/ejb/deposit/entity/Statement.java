@@ -22,7 +22,7 @@ public class Statement implements Serializable {
     private Long startTime;
     private Long endTime;
     
-    @ManyToOne(cascade={CascadeType.ALL},fetch=FetchType.EAGER)
+    @ManyToOne(cascade={CascadeType.PERSIST},fetch=FetchType.EAGER)
     private BankAccount bankAccount;
 
     public Long getStatementId() {

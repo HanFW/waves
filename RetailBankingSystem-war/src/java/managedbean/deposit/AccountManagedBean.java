@@ -825,10 +825,6 @@ public class AccountManagedBean implements Serializable {
                 dateOfBirth = bankAccountSessionLocal.changeDateFormat(customerDateOfBirth);
 
                 if (existingCustomer.equals("Yes") && checkExist && agreement) {
-                    dailyInterest = "0";
-                    monthlyInterest = "0";
-                    isTransfer = "0";
-                    isWithdraw = "0";
 
                     customerBasicId = customerSessionBean.retrieveCustomerBasicByIC(customerIdentificationNum.toUpperCase()).getCustomerBasicId();
                     CustomerBasic customerBasic = bankAccountSessionLocal.retrieveCustomerBasicById(customerBasicId);
@@ -837,8 +833,6 @@ public class AccountManagedBean implements Serializable {
                     if (customerAgeDouble < 16) {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Eligibility of openning account is 16 years old and above.", "Failed!"));
                     } else {
-
-                        newInterestId = interestSessionLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw);
 
                         bankAccountBalance = "0";
                         transferDailyLimit = "3000";
@@ -855,10 +849,17 @@ public class AccountManagedBean implements Serializable {
                         } else {
                             bankAccountStatus = "Inactivated";
                         }
+
                         newAccountId = bankAccountSessionLocal.addNewAccount(bankAccountNum, bankAccountPwd, bankAccountType,
                                 bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
                                 bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
-                                statementDateDouble, customerBasicId, newInterestId);
+                                statementDateDouble, customerBasicId);
+
+                        dailyInterest = "0";
+                        monthlyInterest = "0";
+                        isTransfer = "0";
+                        isWithdraw = "0";
+                        newInterestId = interestSessionLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw, newAccountId);
 
                         bankAccount = bankAccountSessionLocal.retrieveBankAccountById(newAccountId);
                         bankAccountSessionLocal.retrieveBankAccountByCusIC(customerIdentificationNum).add(bankAccount);
@@ -869,10 +870,9 @@ public class AccountManagedBean implements Serializable {
                         subject = "Welcome to Merlion Bank";
                         Calendar cal = Calendar.getInstance();
                         receivedDate = cal.getTime();
-                        messageContent = "Welcome to Merlion Bank! Please deposit/transfer sufficient fund to activate your bank account.\n "
-                                + "For fixed depsit account, please declare your fixed deposit period first before activating your account.\n"
-                                + "Your daily transfer limit is S$3000. You could update your daily transfer limit under 'My Account'.\n"
-                                + "If you have any enquiry, please contact us at 800 820 8820 or you can write an enquiry after you login.\n";
+                        messageContent = "Welcome to Merlion Bank! Please deposit/transfer sufficient fund to your bank account.\n"
+                                + "For fixed deposit account, please declare your deposit period before activating your account.\n"
+                                + "Please contact us at 800 820 8820 or write enquiry after you login.\n";
                         messageSessionBeanLocal.sendMessage("Merlion Bank", "Service", subject, receivedDate.toString(),
                                 messageContent, customerBasicId);
                         loggingSessionBeanLocal.createNewLogging("system", customerBasic.getCustomerBasicId(), "send welcome message", "successful", null);
@@ -909,11 +909,6 @@ public class AccountManagedBean implements Serializable {
                     if (customerAgeDouble < 16) {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Eligibility of openning account is 16 years old and above.", "Failed!"));
                     } else {
-                        dailyInterest = "0";
-                        monthlyInterest = "0";
-                        isTransfer = "0";
-                        isWithdraw = "0";
-                        newInterestId = interestSessionLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw);
 
                         bankAccountBalance = "0";
                         transferDailyLimit = "3000";
@@ -934,7 +929,13 @@ public class AccountManagedBean implements Serializable {
                         newAccountId = bankAccountSessionLocal.addNewAccount(bankAccountNum, bankAccountPwd, bankAccountType,
                                 bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
                                 bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
-                                statementDateDouble, newCustomerBasicId, newInterestId);
+                                statementDateDouble, newCustomerBasicId);
+
+                        dailyInterest = "0";
+                        monthlyInterest = "0";
+                        isTransfer = "0";
+                        isWithdraw = "0";
+                        newInterestId = interestSessionLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw, newAccountId);
 
                         statusMessage = "New Account Saved Successfully.";
                         loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "open account", "successful", null);
@@ -943,9 +944,8 @@ public class AccountManagedBean implements Serializable {
                         Calendar cal = Calendar.getInstance();
                         receivedDate = cal.getTime();
                         messageContent = "Welcome to Merlion Bank! Please deposit/transfer sufficient fund to your bank account.\n"
-                                + "For fixed depsit account, please declare your fixed deposit period first before activating your account.\n"
-                                + "Your daily transfer limit is S$3000. You could update your daily transfer limit under 'My Account'.\n"
-                                + "If you have any enquiry, please contact us at 800 820 8820 or you can write an enquiry after you login.\n";
+                                + "For fixed deposit account, please declare your deposit period before activating your account.\n"
+                                + "Please contact us at 800 820 8820 or write enquiry after you login.\n";
                         messageSessionBeanLocal.sendMessage("Merlion Bank", "Service", subject, receivedDate.toString(),
                                 messageContent, newCustomerBasicId);
                         loggingSessionBeanLocal.createNewLogging("system", customerBasic.getCustomerBasicId(), "send welcome message", "successful", null);

@@ -47,6 +47,7 @@ public class Employee implements Serializable {
     
     @OneToMany(cascade={CascadeType.ALL},fetch=FetchType.EAGER,mappedBy="employee")
     private List<CustomerAdvanced> customerAdvanced;
+    
     public boolean hasRole(Role checkRole){
         return role.contains(checkRole);
     }

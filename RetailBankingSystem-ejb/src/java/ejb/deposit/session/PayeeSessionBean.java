@@ -32,7 +32,7 @@ public class PayeeSessionBean implements PayeeSessionBeanLocal {
     public Long addNewPayee(String payeeName, String payeeAccountNum, String payeeAccountType,
             String lastTransactionDate, Long customerBasicId) {
         System.out.println("*");
-        System.out.println("****** deposit/InterestSessionBean: addNewPayee() ******");
+        System.out.println("****** deposit/PayeeSessionBean: addNewPayee() ******");
         Payee payee = new Payee();
 
         payee.setPayeeName(payeeName);
@@ -50,7 +50,7 @@ public class PayeeSessionBean implements PayeeSessionBeanLocal {
     @Override
     public String deletePayee(String payeeAccountNum) {
         System.out.println("*");
-        System.out.println("****** deposit/InterestSessionBean: deletePayee() ******");
+        System.out.println("****** deposit/PayeeSessionBean: deletePayee() ******");
         Payee payee = retrievePayeeByNum(payeeAccountNum);
 
         entityManager.remove(payee);
@@ -62,7 +62,7 @@ public class PayeeSessionBean implements PayeeSessionBeanLocal {
     @Override
     public Payee retrievePayeeById(Long payeeId) {
         System.out.println("*");
-        System.out.println("****** deposit/InterestSessionBean: retrievePayeeById() ******");
+        System.out.println("****** deposit/PayeeSessionBean: retrievePayeeById() ******");
         Payee payee = new Payee();
 
         try {
@@ -70,17 +70,17 @@ public class PayeeSessionBean implements PayeeSessionBeanLocal {
             query.setParameter("payeeId", payeeId);
 
             if (query.getResultList().isEmpty()) {
-                System.out.println("****** deposit/InterestSessionBean: retrievePayeeById(): invalid payee Id: no result found, return new payee");
+                System.out.println("****** deposit/PayeeSessionBean: retrievePayeeById(): invalid payee Id: no result found, return new payee");
                 return new Payee();
             } else {
-                System.out.println("****** deposit/InterestSessionBean: retrievePayeeById(): valid payee Id: return payee");
+                System.out.println("****** deposit/PayeeSessionBean: retrievePayeeById(): valid payee Id: return payee");
                 payee = (Payee) query.getSingleResult();
             }
         } catch (EntityNotFoundException enfe) {
-            System.out.println("****** deposit/InterestSessionBean: retrievePayeeById(): Entity not found error: " + enfe.getMessage());
+            System.out.println("****** deposit/PayeeSessionBean: retrievePayeeById(): Entity not found error: " + enfe.getMessage());
             return new Payee();
         } catch (NonUniqueResultException nure) {
-            System.out.println("****** deposit/InterestSessionBean: retrievePayeeById(): Non unique result error: " + nure.getMessage());
+            System.out.println("****** deposit/PayeeSessionBean: retrievePayeeById(): Non unique result error: " + nure.getMessage());
         }
 
         return payee;
@@ -89,7 +89,7 @@ public class PayeeSessionBean implements PayeeSessionBeanLocal {
     @Override
     public Payee retrievePayeeByName(String payeeName) {
         System.out.println("*");
-        System.out.println("****** deposit/InterestSessionBean: retrievePayeeByName() ******");
+        System.out.println("****** deposit/PayeeSessionBean: retrievePayeeByName() ******");
         Payee payee = new Payee();
 
         try {
@@ -97,17 +97,17 @@ public class PayeeSessionBean implements PayeeSessionBeanLocal {
             query.setParameter("payeeName", payeeName);
 
             if (query.getResultList().isEmpty()) {
-                System.out.println("****** deposit/InterestSessionBean: retrievePayeeByName(): invalid payee name: no result found, return new payee");
+                System.out.println("****** deposit/PayeeSessionBean: retrievePayeeByName(): invalid payee name: no result found, return new payee");
                 return new Payee();
             } else {
-                System.out.println("****** deposit/InterestSessionBean: retrievePayeeByName(): valid payee name: return payee");
+                System.out.println("****** deposit/PayeeSessionBean: retrievePayeeByName(): valid payee name: return payee");
                 payee = (Payee) query.getResultList().get(0);
             }
         } catch (EntityNotFoundException enfe) {
-            System.out.println("****** deposit/InterestSessionBean: retrievePayeeByName(): Entity not found error: " + enfe.getMessage());
+            System.out.println("****** deposit/PayeeSessionBean: retrievePayeeByName(): Entity not found error: " + enfe.getMessage());
             return new Payee();
         } catch (NonUniqueResultException nure) {
-            System.out.println("****** deposit/InterestSessionBean: retrievePayeeByName(): Non unique result error: " + nure.getMessage());
+            System.out.println("****** deposit/PayeeSessionBean: retrievePayeeByName(): Non unique result error: " + nure.getMessage());
         }
 
         return payee;
@@ -116,7 +116,7 @@ public class PayeeSessionBean implements PayeeSessionBeanLocal {
     @Override
     public Payee retrievePayeeByNum(String payeeAccountNum) {
         System.out.println("*");
-        System.out.println("****** deposit/InterestSessionBean: retrievePayeeByNum() ******");
+        System.out.println("****** deposit/PayeeSessionBean: retrievePayeeByNum() ******");
         Payee payee = new Payee();
 
         try {
@@ -124,17 +124,17 @@ public class PayeeSessionBean implements PayeeSessionBeanLocal {
             query.setParameter("payeeAccountNum", payeeAccountNum);
 
             if (query.getResultList().isEmpty()) {
-                System.out.println("****** deposit/InterestSessionBean: retrievePayeeByNum(): invalid payee account number: no result found, return new payee");
+                System.out.println("****** deposit/PayeeSessionBean: retrievePayeeByNum(): invalid payee account number: no result found, return new payee");
                 return new Payee();
             } else {
-                System.out.println("****** deposit/InterestSessionBean: retrievePayeeByNum(): valid payee account number: return payee");
+                System.out.println("****** deposit/PayeeSessionBean: retrievePayeeByNum(): valid payee account number: return payee");
                 payee = (Payee) query.getResultList().get(0);
             }
         } catch (EntityNotFoundException enfe) {
-            System.out.println("****** deposit/InterestSessionBean: retrievePayeeByNum(): Entity not found error: " + enfe.getMessage());
+            System.out.println("****** deposit/PayeeSessionBean: retrievePayeeByNum(): Entity not found error: " + enfe.getMessage());
             return new Payee();
         } catch (NonUniqueResultException nure) {
-            System.out.println("****** deposit/InterestSessionBean: retrievePayeeByNum(): Non unique result error: " + nure.getMessage());
+            System.out.println("****** deposit/PayeeSessionBean: retrievePayeeByNum(): Non unique result error: " + nure.getMessage());
         }
 
         return payee;
@@ -143,11 +143,11 @@ public class PayeeSessionBean implements PayeeSessionBeanLocal {
     @Override
     public List<Payee> retrievePayeeByCusId(Long customerBasicId) {
         System.out.println("*");
-        System.out.println("****** deposit/InterestSessionBean: retrievePayeeByCusId() ******");
+        System.out.println("****** deposit/PayeeSessionBean: retrievePayeeByCusId() ******");
         CustomerBasic customerBasic = bankAccountSessionLocal.retrieveCustomerBasicById(customerBasicId);
 
         if (customerBasic.getCustomerBasicId() == null) {
-            System.out.println("****** deposit/InterestSessionBean: retrievePayeeByCusId(): invalid customer Id: no result found, return new payee");
+            System.out.println("****** deposit/PayeeSessionBean: retrievePayeeByCusId(): invalid customer Id: no result found, return new payee");
             return new ArrayList<Payee>();
         }
         try {
@@ -155,14 +155,14 @@ public class PayeeSessionBean implements PayeeSessionBeanLocal {
             query.setParameter("customerBasic", customerBasic);
 
             if (query.getResultList().isEmpty()) {
-                System.out.println("****** deposit/InterestSessionBean: retrievePayeeByCusId(): wrong customer Id: no result found, return new payee");
+                System.out.println("****** deposit/PayeeSessionBean: retrievePayeeByCusId(): wrong customer Id: no result found, return new payee");
                 return new ArrayList<Payee>();
             } else {
-                System.out.println("****** deposit/InterestSessionBean: retrievePayeeByCusId(): correct customer Id: return payee");
+                System.out.println("****** deposit/PayeeSessionBean: retrievePayeeByCusId(): correct customer Id: return payee");
                 return query.getResultList();
             }
         } catch (EntityNotFoundException enfe) {
-            System.out.println("****** deposit/InterestSessionBean: Entity not found error: " + enfe.getMessage());
+            System.out.println("****** deposit/PayeeSessionBean: Entity not found error: " + enfe.getMessage());
             return new ArrayList<Payee>();
         }
     }

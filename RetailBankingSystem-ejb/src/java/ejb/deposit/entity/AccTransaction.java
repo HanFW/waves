@@ -23,7 +23,7 @@ public class AccTransaction implements Serializable {
     private String accountCredit;
     private Long transactionDateMilis;
     
-    @ManyToOne(cascade={CascadeType.ALL},fetch=FetchType.EAGER)
+    @ManyToOne(cascade={CascadeType.PERSIST},fetch=FetchType.EAGER)
     private BankAccount bankAccount;
     
     public Long getTransactionId() {

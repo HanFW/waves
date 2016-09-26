@@ -28,7 +28,6 @@ public class DepositIndexManagedBean {
 
     private ExternalContext ec;
     private BarChartModel barModel;
-    private String customerName;
 
     public DepositIndexManagedBean() {
     }
@@ -46,21 +45,12 @@ public class DepositIndexManagedBean {
         this.barModel = barModel;
     }
 
-    public String getCustomerName() {
-        return customerName;
-    }
-
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
-    }
-
     private BarChartModel initBarModel() {
         System.out.println("=");
         System.out.println("====== deposit/DepositIndexManagedBean: initBarModel() ======");
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
         CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
-        customerName = customerBasic.getCustomerName();
         List<BankAccount> bankAccounts = customerBasic.getBankAccount();
         Double totalBalance = 0.0;
 
@@ -98,7 +88,6 @@ public class DepositIndexManagedBean {
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
         CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
-        customerName = customerBasic.getCustomerName();
         String customerIC = customerBasic.getCustomerIdentificationNum();
 
         List<BankAccount> bankAccount = bankAccountSessionLocal.retrieveBankAccountByCusIC(customerIC.toUpperCase());
