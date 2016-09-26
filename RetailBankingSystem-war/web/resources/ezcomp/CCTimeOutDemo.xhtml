@@ -21,6 +21,7 @@
                 </p:confirmDialog>
                 <p:idleMonitor timeout="5000">
                     <p:ajax event="idle" oncomplete="PF('timeoutPoll').start();PF('timeoutDialog').show();"/>
+                    <p:ajax event="active" oncomplete="PF('timeoutPoll').stop();"/>
                 </p:idleMonitor>
             </h:form>
         </f:view>
