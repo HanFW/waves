@@ -73,8 +73,6 @@ public class EmployeeLoginManagedBean implements Serializable {
                     context.addMessage(null, message);
                     System.out.println("*** LoginManagedBean: welcome message");
 
-                    loggingSessionBeanLocal.createNewLogging("employee", getEmployeeId(), "employee logs in to Merlion Bank Internal System",
-                            "successful", "Account is valid and Password is correct");
                 } catch (IOException ex) {
                     Logger.getLogger(EmployeeLoginManagedBean.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -106,8 +104,6 @@ public class EmployeeLoginManagedBean implements Serializable {
         try {
             context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/web/internalSystem/infrastructure/employeeLogout.xhtml");
 
-            loggingSessionBeanLocal.createNewLogging("employee", getEmployeeId(), "employee logs out from Merlion Bank System",
-                    "successful", null);
         } catch (IOException ex) {
             Logger.getLogger(EmployeeLoginManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         }
