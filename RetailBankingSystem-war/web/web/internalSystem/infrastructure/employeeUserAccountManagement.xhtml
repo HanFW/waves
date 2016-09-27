@@ -139,7 +139,7 @@
 
                                     </p:tab>
                                     <p:tab title="Archived Employee" id='archiveTab'>
-                                        <p:dataTable var="employee" id="archivedUserAccountTable" editable="true" value="#{employeeAccountManagedBean.archivedEmployees}" style="margin-bottom:20px" widgetVar="userAccounts">
+                                        <p:dataTable var="employee" id="archivedUserAccountTable" editable="true" value="#{employeeDisplayArchivedEmployeesManagedBean.archivedEmployees}" style="margin-bottom:20px" widgetVar="userAccounts">
                                             <f:facet name="header">
                                                 Archived Employee
                                             </f:facet>
@@ -170,4 +170,3 @@
         </h:body>
     </ui:define>
 </ui:composition>
-

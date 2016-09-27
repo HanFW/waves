@@ -14,13 +14,14 @@
     <cc:implementation>
         <f:view>
             <h:form>
-                <p:poll interval="600" oncomplete="PF('timeoutDialog').show();"/>
+                <p:poll widgetVar="timeoutPoll" interval="600" listener="#{customerLoginManagedBean.timeoutLogout}" autoStart="false"/>
                 <p:confirmDialog widgetVar="timeoutDialog" header="Session Timeout" message="Your session will be terminated soon. Do you still want to continue?">
                     <p:commandButton value="Logout" actionListener="#{customerLoginManagedBean.doLogout}"/>
                     <p:commandButton value="Continue" onclick="PF('timeoutDialog').hide();"/>
                 </p:confirmDialog>
                 <p:idleMonitor timeout="900000">
-                    <p:ajax event="idle" listener="#{customerLoginManagedBean.timeoutLogout}"/>
+                    <p:ajax event="idle" oncomplete="PF('timeoutPoll').start();PF('timeoutDialog').show();"/>
+                    <p:ajax event="active" oncomplete="PF('timeoutPoll').stop();"/>
                 </p:idleMonitor>
             </h:form>
         </f:view>
