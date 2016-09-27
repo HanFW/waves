@@ -7,3 +7,8 @@
 /RetailBankingSystem-war/build/
 /RetailBankingSystem-war/dist/
 /dist/
+/nbproject/private/
+/RetailBankingSystem-war/nbproject/private/
+/RetailBankingSystem-ejb/nbproject/private/
+/RetailBankingSystem-ejb/build/
+/build/

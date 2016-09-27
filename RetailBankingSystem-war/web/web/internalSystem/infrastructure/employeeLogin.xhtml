@@ -1,55 +1,65 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <f:view>
-        <h:head>
-            <title>MBS Bank Internal System</title>
-        </h:head>
-        <h:body>        
-            <h:form id="formMain">
-                <h1>Welcome to Merlion Bank Internal System</h1>
-                <p:panel header="Login">
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <h:head>
+        <f:facet name="first">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+            <meta name="apple-mobile-web-app-capable" content="yes" />
+        </f:facet>
+        <link rel="shortcut icon" href="#{resource['ultima-layout:images/favicon.png']}"/>   
+        <title>MB Internal System</title>
+        <h:outputScript name="js/ripple.js" library="ultima-layout" />
+        <h:outputScript name="js/layout.js" library="ultima-layout" />  
+    </h:head>
+    <h:body styleClass="login-body">        
+        <h:form id="formMain">
+            <div class="card login-panel ui-fluid">
+                <div class="ui-g">
+                    <div class="ui-g-12">
+                        <p:graphicImage name="images/login/logo.png" library="ultima-layout" style="width:100px;height:100px" />
+                        <br/>
+                        <label style="font-family: Eurostile;font-size:16px; color:#022A5A">Welcome to MB Internal System!</label>
+                    </div>
                     <p:messages/>
-                    <p:panelGrid>
-                        <p:row>
-                            <p:column>
-                                <p:outputLabel for="employeeAccountNum" value="Account number: "/>
-                            </p:column>
-                            <p:column>
-                                <p:inputText type="text" id="employeeAccountNum" value="#{employeeLoginManagedBean.employeeAccountNum}" required="true" requiredMessage="Please enter your account number."/>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column>
-                                <p:outputLabel for="employeePassword" value="Password: "/>
-                            </p:column>
-                            <p:column>
-                                <p:inputText type="password" id= "employeePassword" value="#{employeeLoginManagedBean.employeePassword}" required="true" requiredMessage="Please enter your password."/>
-                            </p:column>
-                        </p:row>
+
+                    <h:panelGrid columns="2" id="matchGrid" cellpadding="5" styleClass="ui-panelgrid-blank form-group">
 
 
-                        <p:row>
-                            <p:column colspan="2">
-                                <p:commandButton value="submit" type="submit" actionListener="#{employeeLoginManagedBean.doLogin}" update="@form"/>
-                            </p:column>
-                        </p:row>
+                        <p:outputLabel for="employeeAccountNum" value="Account number: "/>
 
-                        <p:row>
-                            <p:column colspan="2">
-                                <p:link value="Forget Pasword" outcome="/web/internalSystem/infrastructure/employeeForgetPassword"/>
-                            </p:column>
-                        </p:row>
+                        <p:inputText type="text" id="employeeAccountNum" value="#{employeeLoginManagedBean.employeeAccountNum}" required="true" requiredMessage="Please enter your account number."/>
 
-                    </p:panelGrid>
+                        <p:outputLabel for="employeePassword" value="Password: "/>
 
-                </p:panel>
-            </h:form>
+                        <p:inputText type="password" id= "employeePassword" value="#{employeeLoginManagedBean.employeePassword}" required="true" requiredMessage="Please enter your password."/>
 
-        </h:body>
-    </f:view>
+
+                        <p:commandButton value="Login" type="submit" actionListener="#{employeeLoginManagedBean.doLogin}" update="@form"/>
+
+
+
+                        <p:link value="Forget Pasword" outcome="/web/internalSystem/infrastructure/employeeForgetPassword"/>
+
+
+                    </h:panelGrid>
+
+                </div>
+            </div>
+
+            <h:outputStylesheet name="css/ripple.css" library="ultima-layout" />
+            <h:outputStylesheet name="css/layout-#{guestPreferences.theme}.css" library="ultima-layout" />
+
+
+        </h:form>
+
+    </h:body>
+
 </html>
 

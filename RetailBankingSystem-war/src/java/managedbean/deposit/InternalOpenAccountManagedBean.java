@@ -66,6 +66,7 @@ public class InternalOpenAccountManagedBean {
     private String subject;
     private Date receivedDate;
     private String messageContent;
+    private String customerName;
 
     public InternalOpenAccountManagedBean() {
     }
@@ -307,6 +308,14 @@ public class InternalOpenAccountManagedBean {
 
     public void setMessageContent(String messageContent) {
         this.messageContent = messageContent;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
     }
 
     public void saveAccount() throws IOException {

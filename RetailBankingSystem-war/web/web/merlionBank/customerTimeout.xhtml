@@ -3,46 +3,46 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
-                template="/WEB-INF/template.xhtml">
+                template="/WEB-INF/merlionBankTemplate.xhtml">
                 
-    <ui:define name="title">Forms</ui:define>
+    
                 
     <ui:define name="content">
-    
-        <div class="ui-g ui-fluid">
-            <div class="ui-g-12 ui-lg-6">
-                <!-- Left Side -->
-                <div class="card card-w-title">
-    <h:head>
-        <title>Session Timeout</title>
-    </h:head>
+
     
     <h:body>
-        <div align="center">
-        <p:panel>
+        <h:form>
+            
+        <div class="ui-g ui-fluid">
+            <div class="ui-g-12 ui-lg-12">
+                <!-- Left Side -->
+                <div class="card card-w-title">
+  
+       
         <div align="center">
             <h3> Your session has expired. Please log in again if you want to continue online banking services. </h3>
         <br/>
         <br/>
 
+        
+        <h:panelGrid columns="2" cellpadding="5" styleClass="ui-panelgrid-blank form-group">  
         <p:button outcome="/web/index" value="Main Page" />
-        <br/>
-        <br/>
+        
         <p:button outcome="/web/onlineBanking/infrastructure/customerLogin" value="Online Banking" />
-        </div>
-        </p:panel>
-        </div>
-
-    
-    </h:body>
-         
+        </h:panelGrid>
+                 
                    
                    
 
                 </div>
             </div>
         </div>
-        
+     </div>
+           </h:form>
+
+    
+    </h:body>
+
  
     </ui:define>
 

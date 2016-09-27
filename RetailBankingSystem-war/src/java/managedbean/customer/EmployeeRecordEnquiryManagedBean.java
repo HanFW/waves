@@ -409,7 +409,7 @@ public class EmployeeRecordEnquiryManagedBean implements Serializable {
     public void helpCustomerChangeBasicInfo() throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext ec = context.getExternalContext();
-        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/counterTellerUpdateCustomerBasic.xhtml");
+        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/CRM/counterTellerUpdateCustomerBasic.xhtml");
         visible = false;
     }
 
