@@ -41,4 +41,5 @@ public interface CRMCustomerSessionBeanLocal {
     public CustomerAdvanced retrieveCustomerAdvancedByAdId(Long customerAdvancedId);
 
     public void deleteCustomerAdvanced(Long customerAdvancedId);
+    public CustomerAdvanced getCustomerAdvancedById(Long id);
 }

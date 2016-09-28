@@ -36,6 +36,7 @@ public class RMUpdateCustomerAdvancedManagedBean implements Serializable {
     private CustomerAdvanced customerAdvanced;
 
     private String customerOnlineBankingAccountNum;
+    private Long customerAdvancedId;
 
     private String customerEmploymentDetails;
     private String customerFamilyInfo;
@@ -73,10 +74,18 @@ public class RMUpdateCustomerAdvancedManagedBean implements Serializable {
 
     public String getCustomerEmploymentDetails() {
         if (customerEmploymentDetails == null) {
-            customerAdvanced = customerSessionBeanLocal.getCustomerAdvancedByAccNum(customerOnlineBankingAccountNum);
+            customerAdvanced = customerSessionBeanLocal.retrieveCustomerAdvancedByAdId(customerAdvancedId);
         }
         customerEmploymentDetails = customerAdvanced.getCustomerEmploymentDetails();
         return customerEmploymentDetails;
+    }
+
+    public Long getCustomerAdvancedId() {
+        return customerAdvancedId;
+    }
+
+    public void setCustomerAdvancedId(Long customerAdvancedId) {
+        this.customerAdvancedId = customerAdvancedId;
     }
 
     public void setCustomerEmploymentDetails(String customerEmploymentDetails) {
@@ -85,7 +94,7 @@ public class RMUpdateCustomerAdvancedManagedBean implements Serializable {
 
     public String getCustomerFamilyInfo() {
         if (customerFamilyInfo == null) {
-            customerAdvanced = customerSessionBeanLocal.getCustomerAdvancedByAccNum(customerOnlineBankingAccountNum);
+            customerAdvanced = customerSessionBeanLocal.retrieveCustomerAdvancedByAdId(customerAdvancedId);
         }
         customerFamilyInfo = customerAdvanced.getCustomerFamilyInfo();
         return customerFamilyInfo;
@@ -97,7 +106,7 @@ public class RMUpdateCustomerAdvancedManagedBean implements Serializable {
 
     public String getCustomerCreditReport() {
         if (customerCreditReport == null) {
-            customerAdvanced = customerSessionBeanLocal.getCustomerAdvancedByAccNum(customerOnlineBankingAccountNum);
+            customerAdvanced = customerSessionBeanLocal.retrieveCustomerAdvancedByAdId(customerAdvancedId);
         }
         customerCreditReport = customerAdvanced.getCustomerCreditReport();
         return customerCreditReport;
@@ -109,7 +118,7 @@ public class RMUpdateCustomerAdvancedManagedBean implements Serializable {
 
     public String getCustomerFinancialRiskRating() {
         if (customerFinancialRiskRating == null) {
-            customerAdvanced = customerSessionBeanLocal.getCustomerAdvancedByAccNum(customerOnlineBankingAccountNum);
+            customerAdvanced = customerSessionBeanLocal.retrieveCustomerAdvancedByAdId(customerAdvancedId);
         }
         customerFinancialRiskRating = customerAdvanced.getCustomerFinancialRiskRating();
         return customerFinancialRiskRating;
@@ -121,7 +130,7 @@ public class RMUpdateCustomerAdvancedManagedBean implements Serializable {
 
     public String getCustomerFinanacialGoals() {
         if (customerFinanacialGoals == null) {
-            customerAdvanced = customerSessionBeanLocal.getCustomerAdvancedByAccNum(customerOnlineBankingAccountNum);
+            customerAdvanced = customerSessionBeanLocal.retrieveCustomerAdvancedByAdId(customerAdvancedId);
         }
         customerFinanacialGoals = customerAdvanced.getCustomerFinanacialGoals();
         return customerFinanacialGoals;
@@ -133,7 +142,7 @@ public class RMUpdateCustomerAdvancedManagedBean implements Serializable {
 
     public String getCustomerFinanacialAssets() {
         if (customerFinanacialAssets == null) {
-            customerAdvanced = customerSessionBeanLocal.getCustomerAdvancedByAccNum(customerOnlineBankingAccountNum);
+            customerAdvanced = customerSessionBeanLocal.retrieveCustomerAdvancedByAdId(customerAdvancedId);
         }
         customerFinanacialAssets = customerAdvanced.getCustomerFinanacialAssets();
         return customerFinanacialAssets;
@@ -168,7 +177,7 @@ public class RMUpdateCustomerAdvancedManagedBean implements Serializable {
 
     public CustomerAdvanced getCustomerAdvancedInfo() {
 
-        customerAdvanced = customerSessionBeanLocal.getCustomerAdvancedByAccNum(customerOnlineBankingAccountNum);
+        customerAdvanced = customerSessionBeanLocal.retrieveCustomerAdvancedByAdId(customerAdvancedId);
 
         return customerAdvanced;
 

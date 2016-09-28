@@ -199,7 +199,21 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
         Query query = entityManager.createQuery("SELECT ca FROM CustomerAdvanced ca WHERE ca.customerOnlineBankingAccountNum = :onlineBankingAccountNum");
         query.setParameter("onlineBankingAccountNum", onlineBankingAccountNum);
         List resultList = query.getResultList();
-        CustomerAdvanced ca = (CustomerAdvanced) resultList.get(0);
+        System.out.println("%%%%%" + resultList.isEmpty());
+        if (resultList.isEmpty()) {
+            return null;
+        } else {
+            CustomerAdvanced ca = (CustomerAdvanced) resultList.get(0);
+            return ca;
+        }
+    }
+    
+    @Override
+    public CustomerAdvanced getCustomerAdvancedById(Long id) {
+        
+        CustomerAdvanced ca = entityManager.find(CustomerAdvanced.class, id);
+        
+        System.out.println("%%%%%" + ca);
         return ca;
     }
 

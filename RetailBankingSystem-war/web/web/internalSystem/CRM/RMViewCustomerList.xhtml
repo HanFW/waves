@@ -54,7 +54,7 @@
 
                                         <p:column > 
                                             <p:commandButton value="Update Advanced Profile" actionListener="#{rMUpdateCustomerAdvancedManagedBean.redirectToViewAdvanced}" ajax="false">
-                                                <f:setPropertyActionListener target="#{rMUpdateCustomerAdvancedManagedBean.customerOnlineBankingAccountNum}" value="#{customerAdvanced.customerBasic.customerIdentificationNum}" />
+                                                <f:setPropertyActionListener target="#{rMUpdateCustomerAdvancedManagedBean.customerAdvancedId}" value="#{customerAdvanced.customerAdvancedId}" />
                                             </p:commandButton>
                                         </p:column>
                                     </p:dataTable>
