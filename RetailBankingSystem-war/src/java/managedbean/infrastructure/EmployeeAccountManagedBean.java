@@ -55,7 +55,6 @@ public class EmployeeAccountManagedBean implements Serializable {
     private List<String> roles;
     private String employeeStatus;
 
-    //    private Set<String> updatedRoles;
     /**
      * Creates a new instance of loginManagedBean
      */

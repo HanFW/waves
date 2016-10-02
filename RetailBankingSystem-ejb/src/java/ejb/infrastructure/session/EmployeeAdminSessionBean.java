@@ -152,6 +152,7 @@ public class EmployeeAdminSessionBean implements EmployeeAdminSessionBeanLocal {
             employee.setEmployeeMobileNum(employeeMobileNum);
             employee.setEmployeeEmail(employeeEmail);
             employee.setEmployeeStatus("true");
+            employee.setLogInStatus("true");
             em.persist(employee);
 
             //generate employee account number

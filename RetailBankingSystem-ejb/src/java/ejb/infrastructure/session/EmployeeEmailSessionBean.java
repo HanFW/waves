@@ -63,6 +63,7 @@ public class EmployeeEmailSessionBean implements EmployeeEmailSessionBeanLocal {
         try {
             System.out.println("***SendEmailSessionBean: send resetPwd to " + employeeEmail);
             Employee findEmployee = findEmployeeByNRIC(employeeNRIC);
+            findEmployee.setLogInStatus("true");
             String emailCase = "resetPwd";
             sendPwdEmail(findEmployee, emailCase, employeeEmail);
             return "valid";
@@ -95,6 +96,7 @@ public class EmployeeEmailSessionBean implements EmployeeEmailSessionBeanLocal {
                 } else {
                     String hashedNewPassword = md5Hashing(newPassword + employee.getEmployeeNRIC().substring(0, 3));
                     employee.setEmployeePassword(hashedNewPassword);
+                    employee.setLogInStatus("false");
                     System.out.println("***SendEmailSessionBean: " + employee.getEmployeeId());
                     System.out.println("***SendEmailSessionBean: newPassword " + newPassword);
                     em.flush();
