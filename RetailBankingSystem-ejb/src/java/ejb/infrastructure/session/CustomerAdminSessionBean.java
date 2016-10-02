@@ -59,6 +59,7 @@ public class CustomerAdminSessionBean implements CustomerAdminSessionBeanLocal {
                 hashedPassword = md5Hashing(password + customer.getCustomerIdentificationNum().substring(0, 3));
                 customer.setCustomerOnlineBankingPassword(hashedPassword);
                 customer.setCustomerStatus("new");
+                customer.setCustomerOnlineBankingAccountLocked("no");
                 customer.setCustomerOTPSecret(secret);
                 em.flush();
                 System.out.println("****** infrastructure/CustomerAdminSessionBean: createOnlineBankingAccount(): new online banking account created");
@@ -151,7 +152,10 @@ public class CustomerAdminSessionBean implements CustomerAdminSessionBeanLocal {
             System.out.println("****** infrastructure/CustomerAdminSessionBean: login(): customer login account: " + thisCustomer.getCustomerOnlineBankingAccountNum());
         }
 
-        if (thisCustomer.getCustomerOnlineBankingPassword().equals(password)) {
+        if (thisCustomer.getCustomerOnlineBankingAccountLocked().equals("yes")) {
+            System.out.println("****** infrastructure/CustomerAdminSessionBean: login(): online banking account locked");
+            return "locked";
+        } else if (thisCustomer.getCustomerOnlineBankingPassword().equals(password)) {
             System.out.println("****** infrastructure/CustomerAdminSessionBean: login(): login successful");
             return "loggedIn";
         } else {
@@ -176,6 +180,7 @@ public class CustomerAdminSessionBean implements CustomerAdminSessionBeanLocal {
         }
     }
 
+    // activate online banking account when customer first log in
     @Override
     public String updateOnlineBankingAccount(String accountNum, String password, Long customerId) {
         System.out.println("*");
@@ -274,6 +279,7 @@ public class CustomerAdminSessionBean implements CustomerAdminSessionBeanLocal {
         customer.setCustomerOnlineBankingAccountNum(null);
         customer.setCustomerOnlineBankingPassword(null);
         customer.setCustomerStatus("deleteIBAccount");
+        customer.setCustomerOnlineBankingAccountLocked(null);
         em.flush();
     }
 
@@ -284,7 +290,7 @@ public class CustomerAdminSessionBean implements CustomerAdminSessionBeanLocal {
         String userId = generateAccountNumber();
         String pin = generatePassword();
         String hashedPIN = pin;
-        
+
         CustomerBasic customer = em.find(CustomerBasic.class, customerId);
         try {
             hashedPIN = md5Hashing(pin + customer.getCustomerIdentificationNum().substring(0, 3));
@@ -294,12 +300,22 @@ public class CustomerAdminSessionBean implements CustomerAdminSessionBeanLocal {
         customer.setCustomerOnlineBankingAccountNum(userId);
         customer.setCustomerOnlineBankingPassword(hashedPIN);
         customer.setCustomerStatus("new");
+        customer.setCustomerOnlineBankingAccountLocked("no");
         em.flush();
-        
+
         Map emailActions = new HashMap();
         emailActions.put("userId", userId);
         emailActions.put("pin", pin);
         customerEmailSessionBeanLocal.sendEmail(customer, "recreateIBAccount", emailActions);
+    }
+    
+    @Override
+    public void lockCustomerOnlineBankingAccount(Long customerId){
+        System.out.println("*");
+        System.out.println("****** infrastructure/CustomerAdminSessionBean: lockCustomerOnlineBankingAccount() ******");
+        CustomerBasic customer = em.find(CustomerBasic.class, customerId);
+        customer.setCustomerOnlineBankingAccountLocked("yes");
+        em.flush();
     }
 
     private String md5Hashing(String stringToHash) throws NoSuchAlgorithmException {
