@@ -7,10 +7,12 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 import javax.ejb.EJB;
+import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 
 @Named(value = "systemAdminEditUserAccountManagedBean")
@@ -21,9 +23,6 @@ public class SystemAdminEditUserAccountManagedBean implements Serializable {
     @EJB
     private EmployeeAdminSessionBeanLocal employeeAdminSessionBeanLocal;
     
-    @EJB
-    private LoggingSessionBeanLocal loggingSessionBeanLocal;
-
     private String targetEmployeeName;
     private String targetEmployeeDepartment;
     private String targetEmployeePosition;
@@ -41,20 +40,7 @@ public class SystemAdminEditUserAccountManagedBean implements Serializable {
     /**
      * Creates a new instance of SystemAdminEditUserAccountManagedBean
      */
-//    @PostConstruct
-//    public void init() {
-////        if (employeeId == null) {
-////            System.out.println("null");
-////        } else {
-////            System.out.println("not null");
-////        }
-//        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-//        Map<String, Object> sessionMap = externalContext.getSessionMap();
-//        sessionMap.put("employeeId", employeeId);
-//    }
     public void updateAccountInfo() {
-//        ec = FacesContext.getCurrentInstance().getExternalContext();
-//        employeeId = (Long) ec.getSessionMap().get("employeeId");
         System.out.println("edit");
         System.out.println(employeeId);
         FacesMessage message = null;
@@ -88,23 +74,10 @@ public class SystemAdminEditUserAccountManagedBean implements Serializable {
     }
 
     public String getTargetEmployeeName() {
-//        ec = FacesContext.getCurrentInstance().getExternalContext();
-//        employeeId = (Long) ec.getSessionMap().get("employeeId");
 
-//        targetEmployeeName = null;
-//        System.out.println(employeeId);
-////        if (targetEmployeeName == null) {
-//            if (employee == null) {
-//                System.out.println("if");
-//                employee = employeeAdminSessionBeanLocal.getEmployeeById(employeeId);
-//                System.out.println(employee);
-//            } else {
-//                System.out.println("else");
         employee = employeeAdminSessionBeanLocal.getEmployeeById(employeeId);
         targetEmployeeName = employee.getEmployeeName();
        
-//            }
-//        }
         return targetEmployeeName;
     }
 
@@ -113,8 +86,6 @@ public class SystemAdminEditUserAccountManagedBean implements Serializable {
     }
 
     public String getTargetEmployeeDepartment() {
-//        ec = FacesContext.getCurrentInstance().getExternalContext();
-//        employeeId = (Long) ec.getSessionMap().get("employeeId");
 
         employee = employeeAdminSessionBeanLocal.getEmployeeById(employeeId);
         targetEmployeeDepartment = employee.getEmployeeDepartment();
@@ -127,8 +98,6 @@ public class SystemAdminEditUserAccountManagedBean implements Serializable {
     }
 
     public String getTargetEmployeePosition() {
-//        ec = FacesContext.getCurrentInstance().getExternalContext();
-//        employeeId = (Long) ec.getSessionMap().get("employeeId");
 
         employee = employeeAdminSessionBeanLocal.getEmployeeById(employeeId);
         targetEmployeePosition = employee.getEmployeePosition();
@@ -141,8 +110,6 @@ public class SystemAdminEditUserAccountManagedBean implements Serializable {
     }
 
     public String getTargetEmployeeMobile() {
-//        ec = FacesContext.getCurrentInstance().getExternalContext();
-//        employeeId = (Long) ec.getSessionMap().get("employeeId");
         System.out.println("get");
 //        if (targetEmployeeMobile == null) {
         employee = employeeAdminSessionBeanLocal.getEmployeeById(employeeId);
@@ -158,8 +125,6 @@ public class SystemAdminEditUserAccountManagedBean implements Serializable {
     }
 
     public String getTargetEmployeeEmail() {
-//        ec = FacesContext.getCurrentInstance().getExternalContext();
-//        employeeId = (Long) ec.getSessionMap().get("employeeId");
 
         employee = employeeAdminSessionBeanLocal.getEmployeeById(employeeId);
         targetEmployeeEmail = employee.getEmployeeEmail();
@@ -172,8 +137,6 @@ public class SystemAdminEditUserAccountManagedBean implements Serializable {
     }
 
     public Set<String> getSelectedRoles() {
-//        ec = FacesContext.getCurrentInstance().getExternalContext();
-//        employeeId = (Long) ec.getSessionMap().get("employeeId");
         if (selectedRoles == null && employeeId != null) {
             selectedRoles = employeeAdminSessionBeanLocal.getSelectedRoles(employeeId);
         }
@@ -209,6 +172,7 @@ public class SystemAdminEditUserAccountManagedBean implements Serializable {
     }
 
     public void setEmployeeId(Long employeeId) {
+        System.out.println("***** SystemAdminEditAccountManagedBean set employee id" + employeeId);
         this.employeeId = employeeId;
     }
 

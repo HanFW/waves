@@ -11,22 +11,13 @@ import ejb.infrastructure.entity.Role;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
-import org.primefaces.event.RowEditEvent;
 import ejb.infrastructure.session.EmployeeAdminSessionBeanLocal;
 import ejb.infrastructure.session.EmployeeEmailSessionBeanLocal;
 import ejb.infrastructure.session.LoggingSessionBeanLocal;
-import java.io.IOException;
-import static java.time.Clock.system;
 import javax.enterprise.context.RequestScoped;
-import javax.faces.context.ExternalContext;
-import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
 /**
@@ -61,9 +52,7 @@ public class EmployeeAccountManagedBean implements Serializable {
     private List<String> departments;
     private List<String> positions;
     private Set<Role> role;
-    private Set<String> selectedRoles;
     private List<String> roles;
-    private boolean loggedIn;
     private String employeeStatus;
 
     //    private Set<String> updatedRoles;
@@ -117,19 +106,14 @@ public class EmployeeAccountManagedBean implements Serializable {
         }
         return roles;
     }
-
-
-
-
+    
     public void deleteCancel(Employee employee) {
 
         System.out.println("===== AcocuntManagedBean: deleteCancel =====");
         FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Archive Action Cancelled", "Archive Action Cancelled");
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
-
     
-
     public Long getEmployeeId() {
         System.out.println("*** AccountManagedBean: get employee Id!!!" + employeeId);
         return employeeId;
@@ -207,21 +191,11 @@ public class EmployeeAccountManagedBean implements Serializable {
         this.role = role;
     }
 
-//    public Set<String> getSelectedRoles() {
-//        System.out.println("------------ getSelectedRoles: " + selectedRoles);
-//        return selectedRoles;
-//    }
 
     public String getTargetEmployeeDepartment() {
         employee = adminSessionBeanLocal.getEmployeeById(employeeId);
         return employee.getEmployeeDepartment();
-//        return targetEmployeeDepartment;
     }
-//
-//    public void setSelectedRoles(Set<String> selectedRoles) {
-//        System.out.println("*** AccountManagedBean - setSelectedRoles");
-//        this.selectedRoles = selectedRoles;
-//    }
 
     public boolean hasRoleCounterTeller() {
 
