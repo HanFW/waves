@@ -78,31 +78,7 @@ public class EmployeeAccountManagedBean implements Serializable {
      * @param event
      * @return
      */
-//    public void createAccount(ActionEvent event) throws IOException {
-//
-//        FacesMessage message = null;
-//        FacesContext context = FacesContext.getCurrentInstance();
-//
-//        String newEmployee = adminSessionBeanLocal.createEmployeeAccount(employeeName,
-//                employeeDepartment, employeePosition, employeeNRIC, employeeMobileNum.toString(),
-//                employeeEmail, selectedRoles);
-//
-//        sendEmailSessionBeanLocal.initialPwd(employeeNRIC, employeeEmail);
-//
-//        if (newEmployee.equals("existing account")) {
-//
-//            message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error! Account Existed", "Error!The employee account has already Existed");
-//            context.addMessage(null, message);
-//            System.out.println("*** AccountManagedBean: account existed");
-//        } else {
-//
-//            message = new FacesMessage(FacesMessage.SEVERITY_INFO, "A new employee account has been successfully created", "Account created.");
-//            context.addMessage(null, message);
-//            System.out.println("*** AccountManagedBean: account created");
-//
-//        }
-//
-//    }
+
 
     public List<Employee> getEmployees() {
 
@@ -143,28 +119,7 @@ public class EmployeeAccountManagedBean implements Serializable {
     }
 
 
-    public void deleteAccount(Employee employee) throws IOException {
-//        System.out.println("hi");
-        System.out.println("delete account");
-        System.out.println(employee);
-        FacesMessage message = null;
-        FacesContext context = FacesContext.getCurrentInstance();
 
-        System.out.println("===== AcocuntManagedBean: deleteAccount - employee=====" + employee.getEmployeeName());
-        String msg = adminSessionBeanLocal.deleteEmployee(employee);
-        employees = adminSessionBeanLocal.getEmployees();
-        System.out.println("===== AcocuntManagedBean: get employees =====" + employees);
-
-        if (msg.equals("success")) {
-
-            context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/web/internalSystem/infrastructure/employeeUserAccountManagement.xhtml");
-            message = new FacesMessage(FacesMessage.SEVERITY_INFO, "User Account ARchived!", "User account has been successfully archived");
-            context.addMessage(null, message);
-            System.out.println("*** AccountManagedBean: account deleted");
-
-        }
-
-    }
 
     public void deleteCancel(Employee employee) {
 
