@@ -13,7 +13,7 @@
             <h:form>
                 <p:menubar>
                     <p:submenu label="Home">
-                        <p:menuitem value="Home" action="userAccountManagement.xhtml"/>
+                        <p:menuitem value="Home" action="userAccountManagement.xhtml?faces-redirect=true"/>
                     </p:submenu>
 
                     <p:submenu label="Log Out">
@@ -74,7 +74,7 @@
                                                 <f:selectItems value="#{systemAdminEditUserAccountManagedBean.roles}" />
                                             </p:selectCheckboxMenu>
                                 
-                                <p:commandButton value="Return" type="submit" action="/web/internalSystem/infrastructure/employeeUserAccountManagement.xhtml" immediate="true"/>
+                                <p:commandButton value="Return" type="submit" action="/web/internalSystem/infrastructure/employeeUserAccountManagement.xhtml?faces-redirect=true" immediate="true"/>
                             <p:commandButton value="Update" actionListener="#{systemAdminEditUserAccountManagedBean.updateAccountInfo}"/>
                                 
                                 </h:panelGrid>

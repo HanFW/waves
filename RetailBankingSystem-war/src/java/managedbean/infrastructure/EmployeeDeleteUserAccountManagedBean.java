@@ -53,7 +53,7 @@ public class EmployeeDeleteUserAccountManagedBean {
 
         if (msg.equals("success")) {
 
-            context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/web/internalSystem/infrastructure/employeeUserAccountManagement.xhtml");
+            context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/web/internalSystem/infrastructure/employeeUserAccountManagement.xhtml?faces-redirect=true");
             message = new FacesMessage(FacesMessage.SEVERITY_INFO, "User Account ARchived!", "User account has been successfully archived");
             context.addMessage(null, message);
             System.out.println("*** AccountManagedBean: account deleted");

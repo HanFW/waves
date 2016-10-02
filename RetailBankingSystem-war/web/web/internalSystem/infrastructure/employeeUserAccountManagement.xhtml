@@ -11,9 +11,13 @@
         <h:body>
             <h:form>
                 <p:menubar>
+                     <p:submenu label="Home">
+                        <p:menuitem value="Home" action="/web/internalSystem/infrastructure/employeeMainPage.xhtml?faces-redirect=true"/>
+                    </p:submenu>
+                    
                     <p:submenu label="Task">
-                        <p:menuitem value="View Logging" url="/web/internalSystem/infrastructure/employeeViewLogging.xhtml"/>
-                        <p:menuitem value="Assign Permisison to role" url="/web/internalSystem/infrastructure/employeeSystemAdminAssignPermission.xhtml"/>
+                        <p:menuitem value="View Logging" url="/web/internalSystem/infrastructure/employeeViewLogging.xhtml?faces-redirect=true"/>
+                        <p:menuitem value="Assign Permisison to role" url="/web/internalSystem/infrastructure/employeeSystemAdminAssignPermission.xhtml?faces-redirect=true"/>
                     </p:submenu>
 
                     <p:submenu label="Manage My Account">
@@ -100,7 +104,7 @@
                                             </p:column>
 
                                             <p:column style="width:4%">
-                                                <p:commandButton action="/web/internalSystem/infrastructure/employeeEditAccountInfo.xhtml" icon="ui-icon-pencil">
+                                                <p:commandButton action="/web/internalSystem/infrastructure/employeeEditAccountInfo.xhtml?faces-redirect=true" icon="ui-icon-pencil">
                                                     <f:setPropertyActionListener value="#{employee.employeeId}" target="#{systemAdminEditUserAccountManagedBean.employeeId}"/>
                                                 </p:commandButton>
                                             </p:column>  
