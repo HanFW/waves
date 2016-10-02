@@ -49,6 +49,7 @@ public class EmployeeAccountManagedBean implements Serializable {
     private Employee employee;
    
     private List<Employee> employees;
+    private List<Employee> filteredEmployees;
     private List<String> departments;
     private List<String> positions;
     private Set<Role> role;
@@ -190,6 +191,13 @@ public class EmployeeAccountManagedBean implements Serializable {
         this.role = role;
     }
 
+    public List<Employee> getFilteredEmployees() {
+        return filteredEmployees;
+    }
+
+    public void setFilteredEmployees(List<Employee> filteredEmployees) {
+        this.filteredEmployees = filteredEmployees;
+    }
 
     public String getTargetEmployeeDepartment() {
         employee = adminSessionBeanLocal.getEmployeeById(employeeId);
