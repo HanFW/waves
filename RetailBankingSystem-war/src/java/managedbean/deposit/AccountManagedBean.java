@@ -1027,4 +1027,91 @@ public class AccountManagedBean implements Serializable {
             }
         }
     }
+
+    public void openAccountOneClick() throws IOException{
+
+        ec = FacesContext.getCurrentInstance().getExternalContext();
+        
+        //Customer Details
+        customerName = "Dai HaiLiang";
+        customerSalutation = "Mr";
+        customerIdentificationNum = "G12345678";
+        customerGender = "Male";
+        customerEmail = "yongxue0701@gmail.com";
+        customerMobile = 84819970;
+        dateOfBirth = "01/Jul/1993";
+        customerNationality = "Chinese";
+        customerCountryOfResidence = "Singapore";
+        customerRace = "Chinese";
+        customerMaritalStatus = "Single";
+        customerOccupation = "Student";
+        customerCompany = "NUS";
+        customerAddress = "PGP" + ", " + "BLK24" + ", " + "#04-G" + ", " + "118429";
+        customerPostal = "118429";
+        customerOnlineBankingAccountNum = "123456789";
+        customerOnlineBankingPassword = "123456789";
+        customerSignature = "1234";
+
+        newCustomerBasicId = customerSessionBean.addNewCustomerBasic(customerName,
+                customerSalutation, customerIdentificationNum.toUpperCase(),
+                customerGender, customerEmail, customerMobile.toString(), dateOfBirth,
+                customerNationality, customerCountryOfResidence, customerRace,
+                customerMaritalStatus, customerOccupation, customerCompany,
+                customerAddress, customerPostal, customerOnlineBankingAccountNum,
+                customerOnlineBankingPassword, customerSignature.getBytes());
+
+        //Bank Account Details
+        bankAccountNum = bankAccountSessionLocal.generateBankAccount();
+        bankAccountPwd = "123456";
+        bankAccountType="Bonus Savings Account";
+        bankAccountBalance = "0";
+        transferDailyLimit = "3000";
+        transferBalance = "3000";
+        bankAccountMinSaving = "";
+        bankAccountDepositPeriod = "None";
+        currentFixedDepositPeriod = "0";
+        fixedDepositStatus = "";
+        statementDateDouble = 0.0;
+
+        if (bankAccountType.equals("Monthly Savings Account")) {
+            bankAccountStatus = "Activated";
+            bankAccountMinSaving = "Insufficient";
+        } else {
+            bankAccountStatus = "Inactivated";
+        }
+
+        newAccountId = bankAccountSessionLocal.addNewAccount(bankAccountNum, bankAccountPwd, bankAccountType,
+                bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
+                bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
+                statementDateDouble, newCustomerBasicId);
+
+        
+        //Interest Details
+        dailyInterest = "0";
+        monthlyInterest = "0";
+        isTransfer = "0";
+        isWithdraw = "0";
+        
+        newInterestId = interestSessionLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw, newAccountId);
+
+        statusMessage = "New Account Saved Successfully.";
+
+        subject = "Welcome to Merlion Bank";
+        Calendar cal = Calendar.getInstance();
+        receivedDate = cal.getTime();
+        messageContent = "Welcome to Merlion Bank! Please deposit/transfer sufficient fund to your bank account.\n"
+                + "For fixed deposit account, please declare your deposit period before activating your account.\n"
+                + "Please contact us at 800 820 8820 or write enquiry after you login.\n";
+        messageSessionBeanLocal.sendMessage("Merlion Bank", "Service", subject, receivedDate.toString(),
+                messageContent, newCustomerBasicId);
+
+        ec.getFlash().put("statusMessage", statusMessage);
+        ec.getFlash().put("newAccountId", newAccountId);
+        ec.getFlash().put("newCustomerBasicId", newCustomerBasicId);
+        ec.getFlash().put("bankAccountNum", bankAccountNum);
+        ec.getFlash().put("bankAccountType", bankAccountType);
+        ec.getFlash().put("bankAccountStatus", bankAccountStatus);
+
+        ec.redirect(ec.getRequestContextPath() + "/web/merlionBank/deposit/publicSaveAccount.xhtml?faces-redirect=true");
+    }
 }
