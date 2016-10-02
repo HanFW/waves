@@ -709,4 +709,41 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
             }
         }
     }
+
+    @Override
+    public Long addNewAccountOneTime(String bankAccountNum, String bankAccountPwd,
+            String bankAccountType, String bankAccountBalance, String transferDailyLimit,
+            String transferBalance, String bankAccountStatus, String bankAccountMinSaving,
+            String bankAccountDepositPeriod, String currentFixedDepositPeriod,
+            String fixedDepositStatus, Double statementDateDouble, Long customerBasicId
+    ) {
+
+        BankAccount bankAccount = new BankAccount();
+        String hashedPwd = "";
+
+        try {
+            hashedPwd = md5Hashing(bankAccountPwd);
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(BankAccountSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        bankAccount.setBankAccountNum(bankAccountNum);
+        bankAccount.setBankAccountPwd(hashedPwd);
+        bankAccount.setBankAccountTyep(bankAccountType);
+        bankAccount.setBankAccountBalance(bankAccountBalance);
+        bankAccount.setTransferDailyLimit(transferDailyLimit);
+        bankAccount.setTransferBalance(transferBalance);
+        bankAccount.setBankAccountStatus(bankAccountStatus);
+        bankAccount.setBankAccountMinSaving(bankAccountMinSaving);
+        bankAccount.setBankAccountDepositPeriod(bankAccountDepositPeriod);
+        bankAccount.setCurrentFixedDepositPeriod(currentFixedDepositPeriod);
+        bankAccount.setFixedDepositStatus(fixedDepositStatus);
+        bankAccount.setStatementDateDouble(statementDateDouble);
+        bankAccount.setCustomerBasic(retrieveCustomerBasicById(customerBasicId));
+
+        entityManager.persist(bankAccount);
+        entityManager.flush();
+
+        return bankAccount.getBankAccountId();
+    }
 }

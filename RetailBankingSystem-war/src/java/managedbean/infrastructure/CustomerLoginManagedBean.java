@@ -125,6 +125,7 @@ public class CustomerLoginManagedBean implements Serializable {
             Totp totp = new Totp(customer.getCustomerOTPSecret(), clock);
             if (totp.verify(customerOTP)) {
                 System.out.println("====== infrastructure/CustomerLoginManagedBean: verifyLoginOTP(): customer verified with OTP");
+                ec.setSessionMaxInactiveInterval(-1);
                 ec.getSessionMap().put("customer", getCustomer());
                 loggingSessionBeanLocal.createNewLogging("customer", customer.getCustomerBasicId(), "login to online banking", "successful", null);
                 customerOTP = null;

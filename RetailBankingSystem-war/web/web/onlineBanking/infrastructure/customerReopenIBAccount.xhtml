@@ -1,33 +1,46 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <h:head>
-        <title>Facelet Title</title>
-    </h:head>
-    <h:body>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/onlineBankingTemplate.xhtml">
+    <ui:define name="content">
+
         <h:form>
-            <p:panel>
-                <p:messages autoUpdate="true" showDetail="true"/>
-                <h:outputText value="For Singaporean/PR, please enter your IC number. For foreigner, please enter your passport number."/>
-                <br/>
-                <p:outputLabel for="identification" value="Your identification number: "/>
-                <br/>
-                <p:inputText type="text" id="identification" value="#{customerReopenIBAccountManagedBean.customerIdentification}" required="true" requiredMessage="Please enter your identification number."/>
-                <br/>
-                <p:outputLabel for="otp" value="One-time password: "/>
-                <br/>
-                <p:inputText type="password" id="otp" value="#{customerReopenIBAccountManagedBean.customerOTP}"/>
-                <p:commandButton value="Request OTP" actionListener="#{customerReopenIBAccountManagedBean.sendOTP}"/>
-                <br/>
-                <p:commandButton type="submit" value="Reopen online banking account" actionListener="#{customerReopenIBAccountManagedBean.recreateIBAccount}" update="@form"/>
-            </p:panel>
-            <p:confirmDialog id="recreateConfirmation" message="Your online banking account has been reopened successfully. Please log in to online banking account with initial user ID and PIN sent to your registered email." header="Online banking account reopened successful" severity="info" widgetVar="recreateConfirmation" closable="false" closeOnEscape="false">
-                <p:commandButton value="OK" action="/web/onlineBanking/infrastructure/customerLogin.xhtml?faces-redirect=true"/>
-            </p:confirmDialog>
+            <div class="ui-g ui-fluid">
+                <div class="ui-g-12 ui-lg-12">
+                    <div class="card card-w-title"> 
+                         <p:panel>
+                            <p:outputLabel value="Welcome "/>
+                            <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
+                        </p:panel>
+                        <p:panel>
+                            <p:messages autoUpdate="true" showDetail="true"/>
+                            <h:outputText value="For Singaporean/PR, please enter your IC number. For foreigner, please enter your passport number."/>
+                             <br/>
+                             <h:outputText value="&lt;br /&gt;" escape="false" />
+                            <p:outputLabel for="identification" value="Your identification number: "/>
+                            <br/>
+                            <p:inputText type="text" id="identification" value="#{customerReopenIBAccountManagedBean.customerIdentification}" required="true" requiredMessage="Please enter your identification number."/>
+                            <br/>
+                            <p:outputLabel for="otp" value="One-time password: "/>
+                            <br/>
+                            <p:inputText type="password" id="otp" value="#{customerReopenIBAccountManagedBean.customerOTP}"/>
+                                <br/>
+                             <h:outputText value="&lt;br /&gt;" escape="false" />
+                            <p:commandButton value="Request OTP" actionListener="#{customerReopenIBAccountManagedBean.sendOTP}"/>
+                            <br/>
+                             <h:outputText value="&lt;br /&gt;" escape="false" />
+                            <p:commandButton type="submit" value="Reopen online banking account" actionListener="#{customerReopenIBAccountManagedBean.recreateIBAccount}" update="@form"/>
+                        </p:panel>
+                        <p:confirmDialog id="recreateConfirmation" message="Your online banking account has been reopened successfully. Please log in to online banking account with initial user ID and PIN sent to your registered email." header="Online banking account reopened successful" severity="info" widgetVar="recreateConfirmation" closable="false" closeOnEscape="false">  
+                            <p:commandButton value="OK" action="/web/onlineBanking/infrastructure/customerLogin.xhtml?faces-redirect=true"/>
+                        </p:confirmDialog>
+                    </div>
+                </div>
+            </div>
         </h:form>
-    </h:body>
-</html>
+
+    </ui:define>
+</ui:composition>
 

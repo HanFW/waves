@@ -1,126 +1,105 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core" 
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
-    <h:head>
-        <title>My Enquiries</title>
-    </h:head>
-    <h:body>
-        <h:form>
-            <p:menubar>
-                <p:submenu label="My Account">
-                    <p:menuitem value="Home" url="/web/onlineBanking/deposit/customerDepositIndex.xhtml" />
-                    <p:menuitem value="Open Account" url="/web/onlineBanking/deposit/customerOpenAccount.xhtml" />
-                    <p:menuitem value="Close Account" url="/web/onlineBanking/deposit/customerCloseAccount.xhtml" />
-                    <p:menuitem value="View Account" url="/web/onlineBanking/deposit/customerViewAccount.xhtml" />
-                    <p:menuitem value="Cash Deposit" url="/web/onlineBanking/deposit/customerCashDeposit.xhtml" />
-                    <p:menuitem value="Cash Withdraw" url="/web/onlineBanking/deposit/customerCashWithdraw.xhtml" />
-                    <p:menuitem value="View Transaction" url="/web/onlineBanking/deposit/customerViewTransaction.xhtml" />
-                    <p:menuitem value="Activate Fixed Deposit Account" url="/web/onlineBanking/deposit/customerActivateFixedDepositAccount.xhtml" />
-                </p:submenu>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/onlineBankingTemplate.xhtml"
+                xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
+    <ui:define name="content">  
+       
+        <h:body>
+            <h:form>
 
-                <p:submenu label="Transfer" >
-                    <p:menuitem value="To My Account" url="/web/onlineBanking/deposit/customerToMyAccount.xhtml" />
-                    <p:menuitem value="To Other Merlion Accounts" url="/web/onlineBanking/deposit/customerToOthersAccount.xhtml" />
-                    <p:menuitem value="To Other Merlion Accuonts(One-time)" url="/web/onlineBanking/deposit/customerOneTimeTransfer.xhtml" />
-                    <p:menuitem value="Add Recipient" url="/web/onlineBanking/deposit/customerAddRecipient.xhtml" />
-                    <p:menuitem value="Delete Recipient" url="/web/onlineBanking/deposit/customerDeleteRecipient.xhtml" />
-                    <p:menuitem value="Change Daily Transfer Limit" url="/web/onlineBanking/deposit/customerDailyTransferLimit.xhtml" />
-                </p:submenu>
 
-                <p:submenu label="Enquiry">
-                    <p:menuitem value="Write an enquiry" url="/web/onlineBanking/customer/customerEnquiry.xhtml" />
-                </p:submenu>
-
-                <p:submenu label="My profile">
-                    <p:menuitem value="Change password" url="/web/onlineBanking/customer/customerChangePIN.xhtml" />
-                    <p:menuitem value="Update basic profile" url="/web/onlineBanking/customer/customerUpdateBasicProfile.xhtml" />
-                </p:submenu>
-
-                <p:submenu label="Logout">
-                    <p:menuitem value="Logout" actionListener="#{customerLoginManagedBean.doLogout}"/>
-                </p:submenu>
-            </p:menubar>
-        </h:form>
-        <h:form>
-
-            <p:panel header="View My Enquiry">
-
-                <p:accordionPanel value="#{enquiryManagedBean.enquiryCase}" var="enquiryCase">
-                    <p:tab title="Enquiry Case ID: #{enquiryCase.caseId} - created time: #{enquiryCase.createdTime}">
-                        <h:panelGrid cellpadding="5">
+                <div class="ui-g ui-fluid">
+                    <div class="ui-g-12 ui-lg-12">
+                        <div class="card card-w-title"> 
                             <p:panel>
-                                <p:row>
-                                    <p:column colspan="2">
-                                        <h:outputText value="Detail:   " style="font-weight: bold" />
-                                    </p:column>
-                                    <p:column>
-                                        <h:outputText value="#{enquiryCase.caseDetail}" />
-                                    </p:column>
-                                </p:row>
-                                <h:outputText value="&lt;br/&gt;" escape="false" />
-                                <p:row>
-                                    <p:column colspan="2">
-                                        <h:outputText value="Status:  " style="font-weight: bold" />
-                                    </p:column>
-                                   
-                                    <p:column>
-                                        <h:outputText value="#{enquiryCase.caseStatus}" />
-                                    </p:column>
-                                </p:row>
-                                <h:outputText value="&lt;br/&gt;" escape="false" />
-                                <p:row>
-                                    <p:column colspan="2">
-                                        <h:outputText value="Reply:   " style="font-weight: bold" />
-                                    </p:column>
-                                    <p:column>
-                                        <h:outputText value="#{enquiryCase.caseReply}" />
-                                    </p:column>
-                                </p:row>
-                            </p:panel>
-                            
-                            <p:row>
-                            <p:panel header="My Follow-up Questions">
-                                <p:dataTable var="followUp" value="#{enquiryCase.followUp}" 
-                                             paginator="true" rows="10" emptyMessage="No Follow-up Questions">
-                                    <p:column headerText="Follow Up ID">
-                                        <h:outputText value="#{followUp.followUpId}" />
-                                    </p:column>
-                                    <p:column headerText="Created Time">
-                                        <h:outputText value="#{followUp.sendTime}" />
-                                    </p:column>
+                            <p:outputLabel value="Welcome "/>
+                            <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
+                        </p:panel>
+                            <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                                <p:panel header="View My Enquiry">
 
-                                    <p:column headerText="Detail" >
-                                        <h:outputText value="#{followUp.followUpDetail}" /> 
-                                    </p:column>
+                                    <p:accordionPanel value="#{enquiryManagedBean.enquiryCase}" var="enquiryCase">
+                                        <p:tab title="Enquiry Case ID: #{enquiryCase.caseId} - created time: #{enquiryCase.createdTime}">
+                                            <h:panelGrid cellpadding="5">
+                                                <p:panel>
+                                                    <p:row>
+                                                        <p:column colspan="2">
+                                                            <h:outputText value="Detail:   " style="font-weight: bold" />
+                                                        </p:column>
+                                                        <p:column>
+                                                            <h:outputText value="#{enquiryCase.caseDetail}" />
+                                                        </p:column>
+                                                    </p:row>
+                                                    <h:outputText value="&lt;br/&gt;" escape="false" />
+                                                    <p:row>
+                                                        <p:column colspan="2">
+                                                            <h:outputText value="Status:  " style="font-weight: bold" />
+                                                        </p:column>
 
-                                    <p:column headerText="Status"> 
-                                        <h:outputText value="#{followUp.followUpStatus}" />
-                                    </p:column>
+                                                        <p:column>
+                                                            <h:outputText value="#{enquiryCase.caseStatus}" />
+                                                        </p:column>
+                                                    </p:row>
+                                                    <h:outputText value="&lt;br/&gt;" escape="false" />
+                                                    <p:row>
+                                                        <p:column colspan="2">
+                                                            <h:outputText value="Reply:   " style="font-weight: bold" />
+                                                        </p:column>
+                                                        <p:column>
+                                                            <h:outputText value="#{enquiryCase.caseReply}" />
+                                                        </p:column>
+                                                    </p:row>
+                                                </p:panel>
 
-                                    <p:column headerText="Reply"> 
-                                        <h:outputText value="#{followUp.followUpSolution}" />
-                                    </p:column>
-                                </p:dataTable>
-                            </p:panel>
-                            </p:row>
+                                                <p:row>
+                                                    <p:panel header="My Follow-up Questions">
+                                                        <p:dataTable var="followUp" value="#{enquiryCase.followUp}" 
+                                                                     reflow="true" paginator="true" rows="10" emptyMessage="No Follow-up Questions">
+                                                            <p:column headerText="Follow Up ID">
+                                                                <h:outputText value="#{followUp.followUpId}" />
+                                                            </p:column>
+                                                            <p:column headerText="Created Time">
+                                                                <h:outputText value="#{followUp.sendTime}" />
+                                                            </p:column>
 
-                            <p:row>
-                                <p:column colspan="2">
-                                    <p:commandButton value="Add Follow Up Question" action="CRMCustomerAddFollowUP.xhtml" ajax="true">
-                                        <f:setPropertyActionListener target="#{enquiryManagedBean.caseId}" value="#{enquiryCase.caseId}" />
-                                    </p:commandButton>
-                                </p:column>
-                            </p:row>
-                        </h:panelGrid>
-                    </p:tab>
-                </p:accordionPanel>
-            </p:panel>
-        </h:form>
-        <ezcomp:CCTimeout/>
-    </h:body>
-</html>
+                                                            <p:column headerText="Detail" >
+                                                                <h:outputText value="#{followUp.followUpDetail}" /> 
+                                                            </p:column>
 
+                                                            <p:column headerText="Status"> 
+                                                                <h:outputText value="#{followUp.followUpStatus}" />
+                                                            </p:column>
+
+                                                            <p:column headerText="Reply"> 
+                                                                <h:outputText value="#{followUp.followUpSolution}" />
+                                                            </p:column>
+                                                        </p:dataTable>
+                                                    </p:panel>
+                                                </p:row>
+
+                                                <p:row>
+                                                    <p:column colspan="2">
+                                                        <p:commandButton value="Add Follow Up Question" action="CRMCustomerAddFollowUP.xhtml" ajax="true">
+                                                            <f:setPropertyActionListener target="#{enquiryManagedBean.caseId}" value="#{enquiryCase.caseId}" />
+                                                        </p:commandButton>
+                                                    </p:column>
+                                                </p:row>
+                                            </h:panelGrid>
+                                        </p:tab>
+                                    </p:accordionPanel>
+                                </p:panel>
+                            </p:panelGrid>
+                        </div>
+                    </div>
+                </div>
+
+            </h:form>
+            <ezcomp:CCTimeout/>
+        </h:body>
+    </ui:define>
+</ui:composition>

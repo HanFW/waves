@@ -1,126 +1,80 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
-    <h:head>
-        <title>Transfer to My Account</title>
-        <style type="text/css">
-            .gritter-notice-wrapper {
-                left:200px;
-                top: 50px;
-            }
-        </style>
-    </h:head>
-    <h:body>
-        <h:form id="formMain">
-            <h1>Welcome to Merlion Bank</h1>
-            <p:menubar>
-                <p:submenu label="My Account">
-                    <p:menuitem value="Home" url="/web/onlineBanking/deposit/customerDepositIndex.xhtml" />
-                    <p:menuitem value="Open Account" url="/web/onlineBanking/deposit/customerOpenAccount.xhtml" />
-                    <p:menuitem value="Close Account" url="/web/onlineBanking/deposit/customerCloseAccount.xhtml" />
-                    <p:menuitem value="View Account" url="/web/onlineBanking/deposit/customerViewAccount.xhtml" />
-                    <p:menuitem value="View Transaction" url="/web/onlineBanking/deposit/customerViewTransaction.xhtml" />
-                    <p:menuitem value="View Statement" url="/web/onlineBanking/deposit/customerViewStatement.xhtml" />
-                    <p:menuitem value="Activate Fixed Deposit Account" url="/web/onlineBanking/deposit/customerActivateFixedDepositAccount.xhtml" />
-                    <p:menuitem value="Change Password" url="/web/onlineBanking/deposit/customerChangeBankAccountPwd.xhtml" />
-                    <p:menuitem value="Forgot Password" url="/web/onlineBanking/deposit/customerForgotPassword.xhtml" />
-                </p:submenu>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/onlineBankingTemplate.xhtml"
+                xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
 
-                <p:submenu label="Transfer" >
-                    <p:menuitem value="To My Account" url="/web/onlineBanking/deposit/customerToMyAccount.xhtml" />
-                    <p:menuitem value="To Other Merlion Accounts" url="/web/onlineBanking/deposit/customerToOthersAccount.xhtml" />
-                    <p:menuitem value="To Other Merlion Accuonts(One-time)" url="/web/onlineBanking/deposit/customerOneTimeTransfer.xhtml" />
-                    <p:menuitem value="Add Recipient" url="/web/onlineBanking/deposit/customerAddRecipient.xhtml" />
-                    <p:menuitem value="Delete Recipient" url="/web/onlineBanking/deposit/customerDeleteRecipient.xhtml" />
-                    <p:menuitem value="Change Daily Transfer Limit" url="/web/onlineBanking/deposit/customerDailyTransferLimit.xhtml" />
-                </p:submenu>
-
-                <p:submenu label="Enquiry">
-                    <p:menuitem value="Write an enquiry" url="/web/onlineBanking/customer/customerEnquiry.xhtml" />
-                </p:submenu>
-
-                <p:submenu label="My profile">
-                    <p:menuitem value="Change password" url="/web/onlineBanking/customer/customerChangePIN.xhtml" />
-                    <p:menuitem value="Update basic profile" url="/web/onlineBanking/customer/customerUpdateBasicProfile.xhtml" />
-                </p:submenu>
-
-                <p:submenu label="Logout">
-                    <p:menuitem value="Logout" actionListener="#{customerLoginManagedBean.doLogout}"/>
-                </p:submenu>
-            </p:menubar>
-        </h:form>
+    <ui:define name="content">
         <h:form>
-            <br/>
-            <p:panel>
-                <p:outputLabel value="Welcome "/>
-                <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
-            </p:panel>
-            
-            <p:panel header="Transfer to My Account">
-                <p:messages globalOnly="true" />
-                
-                <p:outputLabel style="font-size:20px" value="Important Alert : There have been phone call scams requesting fund transfers." />
-                <br/>
-                <p:outputLabel style="font-size:20px" value="Please do not proceed with this transfer if you are unsure of the recipient or purpose for this transfer."/>
-                <br/>
-                <br/>
+            <div class="ui-g ui-fluid">
+                <div class="ui-g-12 ui-lg-12">
+                    <div class="card card-w-title"> 
+                        <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
 
-                <panelGrid>
-                    <h:form id="formMain">
-                        <h:outputText value="#{transferDoneManagedBean.statusMessage}" style="font-size: 24px"/>
-                        <br/>
-                        <br/>
-                        <br/>
-                        <h:outputText style="font-weight: bold" value="Please note this transaction reference number
-                                      for your records: " />
-                        <h:outputText value="#{transferDoneManagedBean.transactionId}" />
-                        <br/>
-                        <h:outputText style="font-weight: bold" value="To Account Number: "/>
-                        <h:outputText value="#{transferDoneManagedBean.toBankAccountNumWithType}"/>
-                        <br/>
-                        <h:outputText style="font-weight: bold" value="Transfer Amount: "/>
-                        <h:outputText value="#{transferDoneManagedBean.transferAmt}"/>
-                        <br/>
-                        <br/>
-                        <p:accordionPanel activeIndex="-1" style="">
-                            <p:tab title="View Transaction Details">
-                                <h:outputText value="From" style="font-size: 24px" />
-                                <p:separator />
+                            <p:panel>
+                                <p:outputLabel value="Welcome "/>
+                                <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
+                            </p:panel>
+                            <p:panel header="Transfer to My Account">
+
+                                <h:outputText value="#{transferDoneManagedBean.statusMessage}" style="font-size: 24px"/>
                                 <br/>
                                 <br/>
-                                <h:outputText style="font-weight: bold" value="Account Number: "/>
-                                <h:outputText value="#{transferDoneManagedBean.fromBankAccountNumWithType}"/>
                                 <br/>
-                                <h:outputText style="font-weight: bold" value="Lastest Account Balance: "/>
-                                <h:outputText value="#{transferDoneManagedBean.fromBankAccountBalance}"/>
+                                <h:outputText style="font-weight: bold" value="Please note this transaction reference number
+                                              for your records: " />
+                                <h:outputText value="#{transferDoneManagedBean.transactionId}" />
                                 <br/>
-                                <br/>
-                                <h:outputText value="To" style="font-size: 24px" />
-                                <p:separator />
-                                <br/>
-                                <br/>
-                                <h:outputText style="font-weight: bold" value="Account Number: "/>
+                                <h:outputText style="font-weight: bold" value="To Account Number: "/>
                                 <h:outputText value="#{transferDoneManagedBean.toBankAccountNumWithType}"/>
-                                <br/>
-                                <h:outputText style="font-weight: bold" value="Lastest Account Balance: "/>
-                                <h:outputText value="#{transferDoneManagedBean.toBankAccountBalance}"/>
                                 <br/>
                                 <h:outputText style="font-weight: bold" value="Transfer Amount: "/>
                                 <h:outputText value="#{transferDoneManagedBean.transferAmt}"/>
                                 <br/>
-                                <h:outputText style="font-weight: bold" value="Transaction Reference Number: "/>
-                                <h:outputText value="#{transferDoneManagedBean.transactionId}" />
-                            </p:tab>
-                        </p:accordionPanel>
-                    </h:form>
-                </panelGrid>
-            </p:panel>
+                                <br/>
+                                <p:accordionPanel activeIndex="-1" style="">
+                                    <p:tab title="View Transaction Details">
+                                        <h:outputText value="From" style="font-size: 24px" />
+                                        <p:separator />
+                                        <br/>
+                                        <br/>
+                                        <h:outputText style="font-weight: bold" value="Account Number: "/>
+                                        <h:outputText value="#{transferDoneManagedBean.fromBankAccountNumWithType}"/>
+                                        <br/>
+                                        <h:outputText style="font-weight: bold" value="Lastest Account Balance: "/>
+                                        <h:outputText value="#{transferDoneManagedBean.fromBankAccountBalance}"/>
+                                        <br/>
+                                        <br/>
+                                        <h:outputText value="To" style="font-size: 24px" />
+                                        <p:separator />
+                                        <br/>
+                                        <br/>
+                                        <h:outputText style="font-weight: bold" value="Account Number: "/>
+                                        <h:outputText value="#{transferDoneManagedBean.toBankAccountNumWithType}"/>
+                                        <br/>
+                                        <h:outputText style="font-weight: bold" value="Lastest Account Balance: "/>
+                                        <h:outputText value="#{transferDoneManagedBean.toBankAccountBalance}"/>
+                                        <br/>
+                                        <h:outputText style="font-weight: bold" value="Transfer Amount: "/>
+                                        <h:outputText value="#{transferDoneManagedBean.transferAmt}"/>
+                                        <br/>
+                                        <h:outputText style="font-weight: bold" value="Transaction Reference Number: "/>
+                                        <h:outputText value="#{transferDoneManagedBean.transactionId}" />
+                                    </p:tab>
+                                </p:accordionPanel>
+                            </p:panel>
+
+                        </p:panelGrid>
+                    </div>
+                </div>
+            </div>
         </h:form>
         <ezcomp:CCTimeout/>
-    </h:body>
-</html>
+    </ui:define>
+</ui:composition>
+
 

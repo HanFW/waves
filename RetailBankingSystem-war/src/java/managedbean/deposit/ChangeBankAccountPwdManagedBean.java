@@ -37,6 +37,7 @@ public class ChangeBankAccountPwdManagedBean {
     private String oldPassword;
     private String newPassword;
     private String confirmPwd;
+    private String customernName;
 
     private ExternalContext ec;
 
@@ -106,6 +107,14 @@ public class ChangeBankAccountPwdManagedBean {
 
     public void setConfirmPwd(String confirmPwd) {
         this.confirmPwd = confirmPwd;
+    }
+
+    public String getCustomernName() {
+        return customernName;
+    }
+
+    public void setCustomernName(String customernName) {
+        this.customernName = customernName;
     }
 
     public void submit() {

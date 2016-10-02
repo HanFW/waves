@@ -1,28 +1,37 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
-    <h:head>
-        <title>Delete Account</title>
-    </h:head>
-    <h:body>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/onlineBankingTemplate.xhtml"
+                 xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
+    <ui:define name="content">
+
+
         <h:form>
+            <div class="ui-g ui-fluid">
+                <div class="ui-g-12 ui-lg-12">
+                    <div class="card card-w-title"> 
+                        <p:panel>
+                            <p:outputLabel value="Welcome "/>
+                            <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
+                        </p:panel> 
+       
             <p:panel>
                 <p:outputLabel rendered="#{customerDeleteIBAccountManagedBean.hasServices}" value="We are still serving you on the following services: "/>
                 <p:dataList rendered="#{customerDeleteIBAccountManagedBean.hasServices}" value="#{customerDeleteIBAccountManagedBean.displayMessage}" var="service">
                     <h:outputText value="#{service}"/>
                 </p:dataList>
-                <p:separator/>
+                <div align="center">
                 <h:outputText value="Merlion online banking serves as a way to help you manage your wealth."/>
                 <br/>
                 <h:outputText value="Are you sure you want to delete your online banking account?"/>
                 <br/>
+                 </div>
+                 <h:outputText value="&lt;br /&gt;" escape="false" />
                 <p:commandButton value="Delete anyway" onclick="PF('confirmationDialog').show();"/>
             </p:panel>
-            <p:dialog widgetVar="confirmationDialog" header="Delete confirmation">
+            <p:dialog widgetVar="confirmationDialog" header="Delete confirmation" responsive="true">
                 <h:outputText value="After deleting your online banking account, you will automatically log out. "/>
                 <br/>
                 <h:outputText value="Are you sure you want to delete your online banking account?"/>
@@ -30,8 +39,13 @@
                 <p:commandButton value="Yes" actionListener="#{customerDeleteIBAccountManagedBean.deleteIBAccount}"/>
                 <p:commandButton value="No" onclick="PF('confirmationDialog').hide();"/>
             </p:dialog>
+        
+ 
+                    </div>
+                </div>
+            </div>
         </h:form>
-        <ezcomp:CCTimeout/>
-    </h:body>
-</html>
 
+ <ezcomp:CCTimeout/>
+    </ui:define>
+</ui:composition>

@@ -1,290 +1,238 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
-    <h:head>
-        <title>Home</title>
-        <style type="text/css">
-            .gritter-notice-wrapper {
-                left:200px;
-                top: 50px;
-            }
-        </style>
-    </h:head>
-    <h:body>
-        <h:form id="formMain">
-            <h1>Welcome to Merlion Bank</h1>
-            <p:menubar>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/onlineBankingTemplate.xhtml"
+                xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
+    <ui:define name="content">
 
-                <p:submenu label="My Account">
-                    <p:menuitem value="Home" url="/web/onlineBanking/deposit/customerDepositIndex.xhtml" />
-                    <p:menuitem value="Open Account" url="/web/onlineBanking/deposit/customerOpenAccount.xhtml" />
-                    <p:menuitem value="Close Account" url="/web/onlineBanking/deposit/customerCloseAccount.xhtml" />
-                    <p:menuitem value="View Account" url="/web/onlineBanking/deposit/customerViewAccount.xhtml" />
-                    <p:menuitem value="View Transaction" url="/web/onlineBanking/deposit/customerViewTransaction.xhtml" />
-                    <p:menuitem value="View Statement" url="/web/onlineBanking/deposit/customerViewStatement.xhtml" />
-                    <p:menuitem value="Activate Fixed Deposit Account" url="/web/onlineBanking/deposit/customerActivateFixedDepositAccount.xhtml" />
-                    <p:menuitem value="Change Password" url="/web/onlineBanking/deposit/customerChangeBankAccountPwd.xhtml" />
-                    <p:menuitem value="Forgot Password" url="/web/onlineBanking/deposit/customerForgotPassword.xhtml" />
-                </p:submenu>
-
-                <p:submenu label="Transfer" >
-                    <p:menuitem value="To My Account" url="/web/onlineBanking/deposit/customerToMyAccount.xhtml" />
-                    <p:menuitem value="To Other Merlion Accounts" url="/web/onlineBanking/deposit/customerToOthersAccount.xhtml" />
-                    <p:menuitem value="To Other Merlion Accuonts(One-time)" url="/web/onlineBanking/deposit/customerOneTimeTransfer.xhtml" />
-                    <p:menuitem value="Add Recipient" url="/web/onlineBanking/deposit/customerAddRecipient.xhtml" />
-                    <p:menuitem value="Delete Recipient" url="/web/onlineBanking/deposit/customerDeleteRecipient.xhtml" />
-                    <p:menuitem value="Change Daily Transfer Limit" url="/web/onlineBanking/deposit/customerDailyTransferLimit.xhtml" />
-                </p:submenu>
-
-                <p:submenu label="Enquiry">
-                    <p:menuitem value="Write an enquiry" url="/web/onlineBanking/customer/customerEnquiry.xhtml" />
-                </p:submenu>
-
-                <p:submenu label="My profile">
-                    <p:menuitem value="Change password" url="/web/onlineBanking/customer/customerChangePIN.xhtml" />
-                    <p:menuitem value="Update basic profile" url="/web/onlineBanking/customer/customerUpdateBasicProfile.xhtml" />
-                </p:submenu>
-
-                <p:submenu label="Logout">
-                    <p:menuitem value="Logout" actionListener="#{customerLoginManagedBean.doLogout}"/>
-                </p:submenu>
-            </p:menubar>
-            <br/>
-
-            <p:ajaxStatus style="width:16px;height:16px;">
-                <f:facet name="start">
-                    <h:graphicImage value="/resources/images/spinner.gif" />
-                </f:facet>
-                <f:facet name="complete">
-                    <h:outputText value="" />
-                </f:facet>
-            </p:ajaxStatus>
-        </h:form>
         <h:form>
-            <p:panel>
-                <p:outputLabel value="Welcome "/>
-                <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
-            </p:panel>
+            <div class="ui-g ui-fluid">
+                <div class="ui-g-12 ui-lg-12">
+                    <div class="card card-w-title"> 
+                        <p:panel>
+                            <p:outputLabel value="Welcome "/>
+                            <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
+                        </p:panel>
 
-            <p:panel id="panel">
-                <p:messages globalOnly="true"/>
+                        <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                            <p:panel id="panel" header="Open a New Bank Account"> 
+                                <p:messages globalOnly="true"/>
 
-                <p:panelGrid style="margin-bottom:10px">
-                    <h:outputLabel value="Account Details" style="font-weight: bold; font-size: 24px" />
-                    <p:separator/>
-                    <br/>
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel for="bankAccountType" style="font-weight: bold" value="Account Type: " />
-                        </p:column>
-                        <p:column>
-                            <p:selectOneMenu id="bankAccountType" value="#{internalOpenAccountManagedBean.bankAccountType}" 
-                                             style="width:125px" required="true" requiredMessage="Required Field">
-                                <f:selectItem itemLabel="Please Select" itemValue="" noSelectionOption="true"/>
-                                <f:selectItem itemLabel="Monthly Savings Account" itemValue="Monthly Savings Account" />
-                                <f:selectItem itemLabel="Bonus Savings Account" itemValue="Bonus Savings Account" />
-                                <f:selectItem itemLabel="Basic Savings Account" itemValue="Basic Savings Account" />
-                                <f:selectItem itemLabel="Fixed Deposit Account" itemValue="Fixed Deposit Account" />
-                            </p:selectOneMenu>
-                        </p:column>
-                        <p:column>
-                            <p:message for="bankAccountType" />
-                        </p:column>
-                    </p:row>
+                                <h:outputLabel value="Account Details" style="font-weight: bold; font-size: 24px" />
+                                <p:separator/>
+                                <br/>
+                                <p:row>
+                                    <p:column>
+                                        <p:outputLabel for="bankAccountType" style="font-weight: bold" value="Account Type: " />
+                                    </p:column>
+                                    <p:column>
+                                        <p:selectOneMenu id="bankAccountType" value="#{internalOpenAccountManagedBean.bankAccountType}" 
+                                                         required="true" requiredMessage="Required Field">
+                                            <f:selectItem itemLabel="Please Select" itemValue="" noSelectionOption="true"/>
+                                            <f:selectItem itemLabel="Monthly Savings Account" itemValue="Monthly Savings Account" />
+                                            <f:selectItem itemLabel="Bonus Savings Account" itemValue="Bonus Savings Account" />
+                                            <f:selectItem itemLabel="Basic Savings Account" itemValue="Basic Savings Account" />
+                                            <f:selectItem itemLabel="Fixed Deposit Account" itemValue="Fixed Deposit Account" />
+                                        </p:selectOneMenu>
+                                    </p:column>
+                                    <p:column>
+                                        <p:message for="bankAccountType" />
+                                    </p:column>
+                                </p:row>
 
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel for="bankAccountPwd" style="font-weight: bold" value="Account Password: " />
-                        </p:column>
-                        <p:column>
-                            <p:password id="bankAccountPwd" value="#{internalOpenAccountManagedBean.bankAccountPwd}" match="confirmBankAccountPwd" 
-                                        required="true" requiredMessage="Required Field">
-                                <f:validateLength minimum="6" maximum="6" />
-                            </p:password>
-                        </p:column>
-                        <p:column>
-                            <p:message for="bankAccountPwd" />
-                        </p:column>
-                    </p:row>   
+                                <p:row>
+                                    <p:column>
+                                        <p:outputLabel for="bankAccountPwd" style="font-weight: bold" value="Account Password: " />
+                                    </p:column>
+                                    <p:column>
+                                        <p:password id="bankAccountPwd" value="#{internalOpenAccountManagedBean.bankAccountPwd}" match="confirmBankAccountPwd" 
+                                                    required="true" requiredMessage="Required Field">
+                                            <f:validateLength minimum="6" maximum="6" />
+                                        </p:password>
+                                    </p:column>
+                                    <p:column>
+                                        <p:message for="bankAccountPwd" />
+                                    </p:column>
+                                </p:row>   
 
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel for ="confirmBankAccountPwd" style="font-weight:bold" value="Confirm Password: " />
-                        </p:column>
-                        <p:column>
-                            <p:password id="confirmBankAccountPwd" value="#{internalOpenAccountManagedBean.confirmBankAccountPwd}" 
-                                        label="Confirm Password" maxlength="6" required="true" requiredMessage="Required Field">
-                                <f:validateLength minimum="6" maximum="6" />
-                            </p:password>
-                        </p:column>
-                        <p:column>
-                            <p:message for="confirmBankAccountPwd" />
-                        </p:column>
-                    </p:row>
+                                <p:row>
+                                    <p:column>
+                                        <p:outputLabel for ="confirmBankAccountPwd" style="font-weight:bold" value="Confirm Password: " />
+                                    </p:column>
+                                    <p:column>
+                                        <p:password id="confirmBankAccountPwd" value="#{internalOpenAccountManagedBean.confirmBankAccountPwd}" 
+                                                    label="Confirm Password" maxlength="6" required="true" requiredMessage="Required Field">
+                                            <f:validateLength minimum="6" maximum="6" />
+                                        </p:password>
+                                    </p:column>
+                                    <p:column>
+                                        <p:message for="confirmBankAccountPwd" />
+                                    </p:column>
+                                </p:row>
 
-                </p:panelGrid>
+                                <br/>
+                                <h:outputLabel value="My Details" style="font-weight: bold; font-size: 24px" />
+                                <p:separator/>
+                                <br/>
+                                <h:outputText value="Name: "  style="font-weight: bold"/>
+                                <h:outputText value="#{internalOpenAccountManagedBean.customerName}" />
+                                <br/>
+                                <br/>
+                                <h:outputText value="Identification Number: " style="font-weight: bold"/>
+                                <h:outputText value="#{internalOpenAccountManagedBean.customerIdentificationNum}" />
+                                <br/>
+                                <br/>
+                                <h:outputText value="Email: " style="font-weight: bold"/>
+                                <h:outputText value="#{internalOpenAccountManagedBean.customerEmail}"/>
+                                <br/>
+                                <br/>
+                                <h:outputText value="Mobile: " style="font-weight: bold"/>
+                                <h:outputText value="#{internalOpenAccountManagedBean.customerMobile}"/>
+                                <br/>
+                                <p:panelGrid>
+                                    <h3>
+                                        Introduction of various bank account types: 
+                                    </h3>
+                                    <h:outputText value="(a) Monthly Savings Account"/>
+                                    <br/>
+                                    <h:outputText value="- Initial Deposit: S$0  Monthly Minimum Saving: S$50" style="margin-left:28px"/>
+                                    <br/>
+                                    <h:outputText value="- Basic Interest Rate: 0.05%  Bonus Interest Rate: 0.35%" style="margin-left:28px"/>
+                                    <br/>
+                                    <h:outputText value="- Bonus Interest Rate Criteria" style="margin-left:28px"/>
+                                    <br/>
+                                    <h:outputText value="· No withdrawal during this month" style="margin-left:40px"/>
+                                    <br/>
+                                    <h:outputText value="· No transfer to others' account during this month" style="margin-left:40px"/>
+                                    <br/>
+                                    <h:outputText value="· Monthly Minimum Saving S$50" style="margin-left:40px"/>
+                                    <br/>
+                                    <br/>
+                                    <h:outputText value="(b) Basic Savings Account"/>
+                                    <br/>
+                                    <h:outputText value="- Initial Deposit: S$1  Basic Interest Rate: 0.05%" style="margin-left:28px"/>
+                                    <br/>
+                                    <br/>
+                                    <h:outputText value="(c) Bonus Savings Account"/>
+                                    <br/>
+                                    <h:outputText value="- Initial Deposit: S$3000" style="margin-left:28px"/> 
+                                    <br/>
+                                    <h:outputText value="- Basic Interest Rate: 0.05%  Bonus Interest Rate: 0.75%" style="margin-left:28px"/>
+                                    <br/>
+                                    <h:outputText value="- Bonus Interest Rate Criteria" style="margin-left:28px"/>
+                                    <br/>
+                                    <h:outputText value="· No withdrawal during this month" style="margin-left:40px"/>
+                                    <br/>
+                                    <h:outputText value="· No transfer to others' account during this month" style="margin-left:40px"/>
+                                    <br/>
+                                    <br/>
+                                    <h:outputText value="(d) Fixed Deposit Account"/>
+                                    <br/>
+                                    <h:outputText value="- Initial Deposit: S$1000" style="margin-left:28px"/>
+                                    <br/>
+                                </p:panelGrid>
+                                <br/>
+                                <p:panelGrid>
 
-                <br/>
-                <h:outputLabel value="My Details" style="font-weight: bold; font-size: 24px" />
-                <p:separator/>
-                <br/>
-                <h:outputText value="Name: "  style="font-weight: bold"/>
-                <h:outputText value="#{internalOpenAccountManagedBean.customerName}" />
-                <br/>
-                <br/>
-                <h:outputText value="Identification Number: " style="font-weight: bold"/>
-                <h:outputText value="#{internalOpenAccountManagedBean.customerIdentificationNum}" />
-                <br/>
-                <br/>
-                <h:outputText value="Email: " style="font-weight: bold"/>
-                <h:outputText value="#{internalOpenAccountManagedBean.customerEmail}"/>
-                <br/>
-                <br/>
-                <h:outputText value="Mobile: " style="font-weight: bold"/>
-                <h:outputText value="#{internalOpenAccountManagedBean.customerMobile}"/>
-                <br/>
-                <p:panelGrid>
-                    <h3>
-                        Introduction of various bank account types: 
-                    </h3>
-                    <h:outputText value="(a) Monthly Savings Account"/>
-                    <br/>
-                    <h:outputText value="- Initial Deposit: S$0  Monthly Minimum Saving: S$50" style="margin-left:28px"/>
-                    <br/>
-                    <h:outputText value="- Basic Interest Rate: 0.05%  Bonus Interest Rate: 0.35%" style="margin-left:28px"/>
-                    <br/>
-                    <h:outputText value="- Bonus Interest Rate Criteria" style="margin-left:28px"/>
-                    <br/>
-                    <h:outputText value="· No withdrawal during this month" style="margin-left:40px"/>
-                    <br/>
-                    <h:outputText value="· No transfer to others' account during this month" style="margin-left:40px"/>
-                    <br/>
-                    <h:outputText value="· Monthly Minimum Saving S$50" style="margin-left:40px"/>
-                    <br/>
-                    <br/>
-                    <h:outputText value="(b) Basic Savings Account"/>
-                    <br/>
-                    <h:outputText value="- Initial Deposit: S$1  Basic Interest Rate: 0.05%" style="margin-left:28px"/>
-                    <br/>
-                    <br/>
-                    <h:outputText value="(c) Bonus Savings Account"/>
-                    <br/>
-                    <h:outputText value="- Initial Deposit: S$3000" style="margin-left:28px"/> 
-                    <br/>
-                    <h:outputText value="- Basic Interest Rate: 0.05%  Bonus Interest Rate: 0.75%" style="margin-left:28px"/>
-                    <br/>
-                    <h:outputText value="- Bonus Interest Rate Criteria" style="margin-left:28px"/>
-                    <br/>
-                    <h:outputText value="· No withdrawal during this month" style="margin-left:40px"/>
-                    <br/>
-                    <h:outputText value="· No transfer to others' account during this month" style="margin-left:40px"/>
-                    <br/>
-                    <br/>
-                    <h:outputText value="(d) Fixed Deposit Account"/>
-                    <br/>
-                    <h:outputText value="- Initial Deposit: S$1000" style="margin-left:28px"/>
-                    <br/>
-                </p:panelGrid>
-                <br/>
-                <p:panelGrid>
+                                    <p:row>
+                                        <p:column>
+                                            <p:outputLabel style="font-weight: bold" value="Deposit Period(Month)" />
+                                        </p:column>
 
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel style="font-weight: bold" value="Deposit Period(Month)" />
-                        </p:column>
+                                        <p:column>
+                                            <p:outputLabel value="1 - 2" />
+                                        </p:column>
 
-                        <p:column>
-                            <p:outputLabel value="1 - 2" />
-                        </p:column>
+                                        <p:column>
+                                            <p:outputLabel value="3 - 5" />
+                                        </p:column>
 
-                        <p:column>
-                            <p:outputLabel value="3 - 5" />
-                        </p:column>
+                                        <p:column>
+                                            <p:outputLabel value="6 - 8" />
+                                        </p:column>
 
-                        <p:column>
-                            <p:outputLabel value="6 - 8" />
-                        </p:column>
+                                        <p:column>
+                                            <p:outputLabel value="9 - 11" />
+                                        </p:column>
 
-                        <p:column>
-                            <p:outputLabel value="9 - 11" />
-                        </p:column>
+                                        <p:column>
+                                            <p:outputLabel value="12"/>
+                                        </p:column>
 
-                        <p:column>
-                            <p:outputLabel value="12"/>
-                        </p:column>
+                                        <p:column>
+                                            <p:outputLabel value="18"/>
+                                        </p:column>
 
-                        <p:column>
-                            <p:outputLabel value="18"/>
-                        </p:column>
+                                        <p:column>
+                                            <p:outputLabel value="24"/>
+                                        </p:column>
 
-                        <p:column>
-                            <p:outputLabel value="24"/>
-                        </p:column>
+                                        <p:column>
+                                            <p:outputLabel value="36"/>
+                                        </p:column>
+                                    </p:row>
 
-                        <p:column>
-                            <p:outputLabel value="36"/>
-                        </p:column>
-                    </p:row>
+                                    <p:row>
+                                        <p:column>
+                                            <p:outputLabel style="font-weight: bold" value="Interest Rate" />
+                                        </p:column>
 
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel style="font-weight: bold" value="Interest Rate" />
-                        </p:column>
+                                        <p:column>
+                                            <p:outputLabel value="0.05%" />
+                                        </p:column>
 
-                        <p:column>
-                            <p:outputLabel value="0.05%" />
-                        </p:column>
+                                        <p:column>
+                                            <p:outputLabel value="0.1%" />
+                                        </p:column>
 
-                        <p:column>
-                            <p:outputLabel value="0.1%" />
-                        </p:column>
+                                        <p:column>
+                                            <p:outputLabel value="0.15%" />
+                                        </p:column>
 
-                        <p:column>
-                            <p:outputLabel value="0.15%" />
-                        </p:column>
+                                        <p:column>
+                                            <p:outputLabel value="0.2%" />
+                                        </p:column>
 
-                        <p:column>
-                            <p:outputLabel value="0.2%" />
-                        </p:column>
+                                        <p:column>
+                                            <p:outputLabel value="0.25%" />
+                                        </p:column>
 
-                        <p:column>
-                            <p:outputLabel value="0.25%" />
-                        </p:column>
+                                        <p:column>
+                                            <p:outputLabel value="0.5%" />
+                                        </p:column>
 
-                        <p:column>
-                            <p:outputLabel value="0.5%" />
-                        </p:column>
+                                        <p:column>
+                                            <p:outputLabel value="0.55%" />
+                                        </p:column>
 
-                        <p:column>
-                            <p:outputLabel value="0.55%" />
-                        </p:column>
+                                        <p:column>
+                                            <p:outputLabel value="0.65%" />
+                                        </p:column>
+                                    </p:row>
 
-                        <p:column>
-                            <p:outputLabel value="0.65%" />
-                        </p:column>
-                    </p:row>
+                                </p:panelGrid>
+                                <br/>
+                                <br/>
+                                <h:panelGrid columns="2" style="margin-bottom:10px">
+                                    <p:selectBooleanCheckbox id = "agreement" value="#{internalOpenAccountManagedBean.agreement}" 
+                                                             style="margin-top:5px"/>
+                                    <h:outputText value="I have read and agree to the terms of Customer Declaration and Confirmation." />
+                                    <br/>
+                                    <h:outputText value="I have also read and agree to the Terms and Conditions Governing Personal Data Protection Act 2012."/>
+                                </h:panelGrid>
+                                <br/>
 
-                </p:panelGrid>
-                <br/>
-                <br/>
-                <h:panelGrid columns="2" style="margin-bottom:10px">
-                    <p:selectBooleanCheckbox id = "agreement" value="#{internalOpenAccountManagedBean.agreement}" 
-                                             style="margin-top:5px"/>
-                    <h:outputText value="I have read and agree to the terms of Customer Declaration and Confirmation." />
-                    <br/>
-                    <h:outputText value="I have also read and agree to the Terms and Conditions Governing Personal Data Protection Act 2012."/>
-                </h:panelGrid>
-                <br/>
-                <p:commandButton id="saveBtn" value="Open Account" actionListener="#{internalOpenAccountManagedBean.saveAccount}" 
-                                 ajax="true" update="panel"/>
+                                <p:commandButton id="saveBtn" value="Open Account" actionListener="#{internalOpenAccountManagedBean.saveAccount}" 
+                                                 ajax="true" update="panel"/>
+                            </p:panel>
+                        </p:panelGrid>
+                    </div>
+                </div>
+            </div>
 
-            </p:panel>
         </h:form>
         <ezcomp:CCTimeout/>
-    </h:body>
-</html>
-
+    </ui:define>
+</ui:composition>

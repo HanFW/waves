@@ -1,0 +1,70 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:pu="http://primefaces.org/ultima">
+
+    <div class="topbar clearfix">
+        <div class="topbar-left">
+            <h:link outcome="/web/onlineBanking/deposit/customerDepositIndex.xhtml"><div class="logo"></div></h:link>      
+        </div>
+        
+        <div class="topbar-right">
+            <a id="menu-button" href="#">
+                <i></i>
+            </a>
+            
+            <a id="topbar-menu-button" href="#">
+                <i class="material-icons">menu</i>
+            </a>
+            <ul class="topbar-items fadeInDown animated">
+             
+
+                
+                <li>
+                    <a href="#">
+                        <i class="topbar-icon material-icons">&#xE315;</i>
+                       
+                        <span class="topbar-item-name">Logout</span>
+                    </a>
+                    <ul class="ultima-menu animated">
+                        <li role="menuitem">
+                            
+                            <p:commandButton value="Logout" actionListener="#{customerLoginManagedBean.doLogout}" styleClass="secondary"/>
+                        </li>
+                   
+                    </ul>
+                </li>
+                
+                <li>
+                    <a href="#">
+                        <i class="topbar-icon material-icons animated swing">&#xE0C9;</i>
+                        <span class="topbar-badge animated rubberBand">6</span>
+                        <span class="topbar-item-name">Messages</span>
+                    </a>
+                    <ul class="ultima-menu animated">
+                        <li role="menuitem">
+                            
+                                <span> <h:link outcome="/web/onlineBanking/infrastructure/customerViewMessage.xhtml">Check your message box</h:link></span>
+                           
+                        </li>
+                    
+              
+                    </ul>
+                </li>
+                
+                <li class="search-item">
+                    <h:panelGroup styleClass="md-inputfield">
+                        <p:inputText />
+                        <label>Search</label>
+                        <i class="topbar-icon material-icons">&#xE8B6;</i>
+                    </h:panelGroup>
+                    
+                </li>
+            </ul>
+        </div>
+    </div>
+
+</ui:composition>

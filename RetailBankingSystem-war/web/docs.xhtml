@@ -1,0 +1,187 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">Documentation</ui:define>
+    
+    <ui:define name="head">
+        <style type="text/css">
+            .docs h1 {
+                margin-top: 30px;
+            }
+            
+            .docs pre {
+                font-family: monospace;
+                background-color: #0C2238;
+                color: #dddddd;
+                padding: 1em;
+                font-size: 14px;
+                border-radius: 3px;
+                overflow: auto;
+            }
+        </style>
+    </ui:define>
+
+    <ui:define name="content">
+    
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <div class="card docs">
+                    <h1>Layout</h1>
+                    <p>Ultima provides a main template.xhtml and additional <i>topbar</i>, <i>menu</i> and <i>footer</i> fragments for the base layout. 
+                        These xhtml files must be placed under WEB-INF folder and client pages should reference the template.xhtml as their template. 
+                        Provided empty-page.xhtml is a sample content page using the main template.xhtml that defines "content" as the main ui:define placeholder.</p>
+                    
+                    <p>Other required resources are the css, js and images that are located inside resources/ultima-layout folder, simply copy the ultima-layout folder to your %WEB-APP-FOLDER%/resources folder 
+                        so that final path would be %WEB-APP-FOLDER%/resources/ultima-layout/. Please refer to demo app or maven project of the demo app as the reference.</p>
+                    
+                    <h1>Size</h1>
+                    <p>Ultima comes in two sizes, default is closer to the material design specification with bigger fonts and paddings whereas the alternative compact size
+                    shrinks the dimensions of the UI elements. To activate the compact mode add "layout-compact" style class to the h:body element at template.xhtml.</p>
+                    
+                    <h1>Theme</h1>    
+                    <p>Ultima provides 10 PrimeFaces themes out of the box, setup of a theme simple as defining primefaces.THEME context parameter in web.xml such as "primefaces-ultima-indigo". Full list of 
+                    available themes are;</p>
+                    
+                    <ul>
+                        <li>primefaces-ultima-blue</li>
+                        <li>primefaces-ultima-blue-grey</li>
+                        <li>primefaces-ultima-brown</li>
+                        <li>primefaces-ultima-cyan</li>
+                        <li>primefaces-ultima-green</li>
+                        <li>primefaces-ultima-grey</li>
+                        <li>primefaces-ultima-indigo</li>
+                        <li>primefaces-ultima-purple-amber</li>
+                        <li>primefaces-ultima-purple-cyan</li>
+                        <li>primefaces-ultima-teal</li>
+                    </ul>
+                    
+                    <p>A custom theme can be developed by the following steps.</p>
+                    <ul>
+                        <li>Choose a custom theme name such as primefaces-ultima-myown.</li>
+                        <li>Create a folder named primefaces-ultima-myown and place an empty theme.scss inside</li>
+                        <li>Copy the sass folder from the distribution to your application.</li>
+                        <li>Define the variables listed below and import the <i>/sass/theme/_theme.scss</i> file.</li>
+                        <li>Build the scss to generate css</li>
+                        <li>Set primefaces.THEME context parameter as <i>ultima-myown</i></li>
+                        <li>Either bundle the css in a jar file or serve from webapp/resources/primefaces-ultima-myown folder</li>
+                    </ul>
+                    
+                    <p>Here are the variables required to create a theme, you may need to change the last line according to the 
+                        relative path of the sass folder in your application.</p>
+                        
+<pre>
+$primaryColor: #009688;
+$primaryDarkColor: #00695C;
+$primaryLightColor: #80CBC4;
+$accentColor: #CDDC39;
+$accentDarkColor: #9E9D24;
+$accentLightColor: #E6EE9C;
+$accentTextColor: #212121;
+
+@import '../sass/theme/_theme';
+</pre> 
+                        
+                    <p> An example sass command to compile the css would be;</p>
+                        
+<pre>
+sass src/main/webapp/resources/primefaces-ultima-myown/theme.scss src/main/webapp/resources/primefaces-ultima-myown/theme.css  --sourcemap=none
+</pre> 
+
+                    <p>Watch mode is handy to avoid compiling everytime when a change is made, instead use the following command
+                    so that sass generates the file whenever you make a customization. This builds all css files whenever a change is made to any scss file.</p>
+<pre>
+sass -w src/main/webapp/resources/ --sourcemap=none
+</pre> 
+
+                    <p>Same can also be applied to layout itself;</p>
+                    <ul>
+                        <li>Choose a layout name such as layout-myown.</li>
+                        <li>Create an empty file named layout-myown.scss inside resources/ultima-layout/css folder.</li>
+                        <li>Define the variables listed below and import the <i>/sass/layout/_layout.scss</i> file.</li>
+                        <li>Build the scss to generate css</li>
+                        <li>Serve the css by importing it using a link tag or h:outputStylesheet.</li>
+                    </ul>
+                    
+                    <p>Here are the variables required to create a layout, you may need to change the last line according to the 
+                        relative path of the sass folder in your application.</p>
+                    
+<pre>
+$primaryColor: #03A9F4;
+$primaryDarkColor: #0277BD;
+$primaryLightColor: #81D4FA;
+$accentColor: #FFC107;
+$accentDarkColor: #FF8F00;
+$accentLightColor: #FFE082;
+$accentTextColor: #212121;
+
+@import '/../sass/layout/_layout';
+</pre> 
+                    
+                    <p>For both cases, several .scss files such as _layout.scss, _theme.scss or _variables.scss has to be present relative to your scss files, these are available inside the sass folder in the distribution.</p>
+                                            
+                    <h1>Menu</h1>    
+                    <p>Menu is a regular JSF component that supports PrimeFaces MenuModel API allowing both declarative and programmatic approaches. 
+                    State is saved via a cookie and to remove it define a widgetVar to the menu and call PF('yourwidgetvar').clearMenuState(). To use the menu
+                    add the primefaces-ultima-{version}.jar to your classpath and import the http://primefaces.org/ultima namespace.</p>
+<pre>
+xmlns:pu="http://primefaces.org/ultima">
+
+&lt;pu:menu&gt;
+&lt;/pu:menu&gt;
+</pre>  
+                    <p>Menu has 3 modes, static, overlay and horizontal. Layout wrapper element in template.xhtml is used to define which mode to use by adding specific classes. List
+                    below indicates the style classes for each mode.</p>
+                    <ul>
+                        <li>Static: "layout-wrapper menu-layout-static"</li>
+                        <li>Overlay: "layout-wrapper menu-layout-overlay"</li>
+                        <li>Horizontal: "layout-wrapper menu-layout-static menu-layout-horizontal"</li>
+                    </ul>
+                    
+                    <p>For example to create a horizontal menu, the div element should be in following form;</p>
+<pre>
+&lt;div class="layout-wrapper menu-layout-static menu-layout-horizontal"&gt;
+    &lt;ui:include src="./topbar.xhtml" /&gt;
+    &lt;ui:include src="./menu.xhtml" /&gt;
+    
+    &lt;div class="layout-main"&gt;
+        &lt;ui:insert name="content"/&gt;
+        
+        &lt;ui:include src="./footer.xhtml" /&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</pre>            
+
+                    <p>It is also possible to leave the choice to the user by keeping the preference at a bean and usign an EL expression to bind it so that user can switch between modes. Sample
+                    application has an example implementation of such use case.</p>          
+<pre>
+&lt;div class="layout-wrapper #{guestPreferences.menuLayout}"&gt;
+
+&lt;/div&gt;
+</pre>  
+                    
+                    <h1>Profile Modes</h1>
+                    <p>There are two possible locations for the user profile menu, first version is inline located inside the main menu and second option is the topbar menu. For inline mode,
+                    profile content should be placed above the &lt;pu:menu /&gt;component and for inline mode content goes in topbar-items list. The sample demo application provides examples for
+                    both cases and even takes it to the next step by making it dynamic with an EL expression.</p>
+                        
+                    <h1>Utilities</h1>
+                    <p>Ultima provides various helper features such as material iconset compatible with PrimeFaces components and helper classes. Visit <h:link outcome="utils">Utils</h:link> page for details.</p>
+                    
+                    <h1>Ripple Effect</h1>
+                    <p>Various elements display a ripple element on mousedown event, if you prefer to remove this effect, simply remove the ripple.js and ripple.css files from template.xhtml.</p>
+                                
+                    <h1>Grid CSS</h1>
+                    <p>Ultima uses new PrimeFaces Grid CSS (ui-g-*) throughout the samples, we strongly suggest using Grid CSS as your layout framework as it is well tested and supported by PrimeFaces. Grid CSS 
+                    is automatically included on newer versions however if your PrimeFaces version is older than 5.3.14, add the provided grid.css file under /ultima-layout/css/ folder to your template manually.</p>            
+                
+                </div>
+            </div>
+        </div>
+        
+    </ui:define>
+
+</ui:composition>
