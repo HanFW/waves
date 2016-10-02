@@ -2,8 +2,6 @@ package ejb.deposit.session;
 
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.entity.Interest;
-import java.util.Calendar;
-import java.util.Date;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
