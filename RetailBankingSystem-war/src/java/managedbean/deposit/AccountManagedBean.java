@@ -134,6 +134,9 @@ public class AccountManagedBean implements Serializable {
     private Date receivedDate;
     private String messageContent;
 
+    private Long accountId;
+    private Long interestId;
+
 //    private boolean singaporePROutputRender = false;
 //    private boolean singaporeNRICOutputRender = false;
 //    private boolean NRICOutputRender = false;
@@ -786,6 +789,22 @@ public class AccountManagedBean implements Serializable {
         this.messageContent = messageContent;
     }
 
+    public Long getAccountId() {
+        return accountId;
+    }
+
+    public void setAccountId(Long accountId) {
+        this.accountId = accountId;
+    }
+
+    public Long getInterestId() {
+        return interestId;
+    }
+
+    public void setInterestId(Long interestId) {
+        this.interestId = interestId;
+    }
+
     public void saveAccount() throws IOException {
         System.out.println("=");
         System.out.println("====== deposit/AccountManagedBean: saveAccount() ======");
@@ -835,8 +854,8 @@ public class AccountManagedBean implements Serializable {
                     } else {
 
                         bankAccountBalance = "0";
-                        transferDailyLimit = "3000";
-                        transferBalance = "3000";
+                        transferDailyLimit = "3000.0";
+                        transferBalance = "3000.0";
                         bankAccountMinSaving = "";
                         bankAccountDepositPeriod = "None";
                         currentFixedDepositPeriod = "0";
@@ -911,8 +930,8 @@ public class AccountManagedBean implements Serializable {
                     } else {
 
                         bankAccountBalance = "0";
-                        transferDailyLimit = "3000";
-                        transferBalance = "3000";
+                        transferDailyLimit = "3000.0";
+                        transferBalance = "3000.0";
                         bankAccountMinSaving = "";
                         bankAccountDepositPeriod = "None";
                         currentFixedDepositPeriod = "0";
@@ -1028,10 +1047,10 @@ public class AccountManagedBean implements Serializable {
         }
     }
 
-    public void openAccountOneClick() throws IOException{
+    public void openAccountOneClick() throws IOException {
 
         ec = FacesContext.getCurrentInstance().getExternalContext();
-        
+
         //Customer Details
         customerName = "Dai HaiLiang";
         customerSalutation = "Mr";
@@ -1052,7 +1071,7 @@ public class AccountManagedBean implements Serializable {
         customerOnlineBankingPassword = "123456789";
         customerSignature = "1234";
 
-        newCustomerBasicId = customerSessionBean.addNewCustomerBasic(customerName,
+        newCustomerBasicId = customerSessionBean.addNewCustomerOneTime(customerName,
                 customerSalutation, customerIdentificationNum.toUpperCase(),
                 customerGender, customerEmail, customerMobile.toString(), dateOfBirth,
                 customerNationality, customerCountryOfResidence, customerRace,
@@ -1060,39 +1079,53 @@ public class AccountManagedBean implements Serializable {
                 customerAddress, customerPostal, customerOnlineBankingAccountNum,
                 customerOnlineBankingPassword, customerSignature.getBytes());
 
+        customerBasicId = customerSessionBean.addNewCustomerOneTime("Han FengWei",
+                "Ms", "G11223344".toUpperCase(),
+                "Female", "yongxue0701@gmail.com", "84819970", "02/Jul/1993",
+                customerNationality, customerCountryOfResidence, customerRace,
+                customerMaritalStatus, customerOccupation, customerCompany,
+                customerAddress, customerPostal, "11223344",
+                "11223344", customerSignature.getBytes());
+
         //Bank Account Details
         bankAccountNum = bankAccountSessionLocal.generateBankAccount();
         bankAccountPwd = "123456";
-        bankAccountType="Bonus Savings Account";
-        bankAccountBalance = "0";
-        transferDailyLimit = "3000";
-        transferBalance = "3000";
+        bankAccountType = "Bonus Savings Account";
+        bankAccountBalance = "10000";
+        transferDailyLimit = "3000.0";
+        transferBalance = "3000.0";
         bankAccountMinSaving = "";
         bankAccountDepositPeriod = "None";
         currentFixedDepositPeriod = "0";
         fixedDepositStatus = "";
         statementDateDouble = 0.0;
+        bankAccountStatus = "Activated";
+//        if (bankAccountType.equals("Monthly Savings Account")) {
+//            bankAccountStatus = "Activated";
+//            bankAccountMinSaving = "Insufficient";
+//        } else {
+//            bankAccountStatus = "Inactivated";
+//        }
 
-        if (bankAccountType.equals("Monthly Savings Account")) {
-            bankAccountStatus = "Activated";
-            bankAccountMinSaving = "Insufficient";
-        } else {
-            bankAccountStatus = "Inactivated";
-        }
-
-        newAccountId = bankAccountSessionLocal.addNewAccount(bankAccountNum, bankAccountPwd, bankAccountType,
+        newAccountId = bankAccountSessionLocal.addNewAccountOneTime(bankAccountNum, bankAccountPwd, bankAccountType,
                 bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
                 bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
                 statementDateDouble, newCustomerBasicId);
 
-        
+        accountId = bankAccountSessionLocal.addNewAccountOneTime(bankAccountSessionLocal.generateBankAccount(),
+                bankAccountPwd, "Basic Savings Account",
+                bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
+                bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
+                statementDateDouble, customerBasicId);
+
         //Interest Details
         dailyInterest = "0";
         monthlyInterest = "0";
         isTransfer = "0";
         isWithdraw = "0";
-        
+
         newInterestId = interestSessionLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw, newAccountId);
+        interestId = interestSessionLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw, accountId);
 
         statusMessage = "New Account Saved Successfully.";
 
@@ -1104,6 +1137,8 @@ public class AccountManagedBean implements Serializable {
                 + "Please contact us at 800 820 8820 or write enquiry after you login.\n";
         messageSessionBeanLocal.sendMessage("Merlion Bank", "Service", subject, receivedDate.toString(),
                 messageContent, newCustomerBasicId);
+        messageSessionBeanLocal.sendMessage("Merlion Bank", "Service", subject, receivedDate.toString(),
+                messageContent, customerBasicId);
 
         ec.getFlash().put("statusMessage", statusMessage);
         ec.getFlash().put("newAccountId", newAccountId);
