@@ -9,6 +9,7 @@ import ejb.infrastructure.entity.Employee;
 import ejb.infrastructure.session.EmployeeAdminSessionBeanLocal;
 import ejb.infrastructure.session.EmployeeEmailSessionBeanLocal;
 import java.io.IOException;
+import java.util.List;
 import java.util.Set;
 import javax.ejb.EJB;
 import javax.inject.Named;
@@ -38,6 +39,7 @@ public class EmployeeCreateUserAccountManagedBean {
     private Integer employeeMobileNum;
     private String employeeEmail;
     private Set<String> selectedRoles;
+    private List<String> roles;
 
     /**
      * Creates a new instance of EmployeeCreateUserAccountManagedBean
@@ -133,6 +135,14 @@ public class EmployeeCreateUserAccountManagedBean {
 
     public void setSelectedRoles(Set<String> selectedRoles) {
         this.selectedRoles = selectedRoles;
+    }
+    
+     public List<String> getRoles() {
+
+        if (roles == null) {
+            roles = adminSessionBeanLocal.getRoles();
+        }
+        return roles;
     }
     
     
