@@ -50,6 +50,10 @@ public class TransferManagedBean {
     private Long newTransactionId;
     private String fromAccountBalance;
     private String toAccountBalance;
+    private String fromAccountDefaultTransferLimit;
+    private String fromAccountRemainingTransferLimit;
+
+    private boolean dailyTransferRender = false;
 
     private String statusMessage;
 
@@ -81,6 +85,10 @@ public class TransferManagedBean {
                 customerPayees.put(payees.get(j).getPayeeAccountType() + "-" + payees.get(j).getPayeeAccountNum() + "-" + payees.get(j).getPayeeName(), payees.get(j).getPayeeAccountType() + "-" + payees.get(j).getPayeeAccountNum() + "-" + payees.get(j).getPayeeName());
             }
         }
+    }
+
+    public void show() {
+        dailyTransferRender = true;
     }
 
     public String getFromAccount() {
@@ -203,6 +211,48 @@ public class TransferManagedBean {
         this.toAccountBalance = toAccountBalance;
     }
 
+    public boolean isDailyTransferRender() {
+        return dailyTransferRender;
+    }
+
+    public void setDailyTransferRender(boolean dailyTransferRender) {
+        this.dailyTransferRender = dailyTransferRender;
+    }
+
+    public String getFromAccountDefaultTransferLimit() {
+
+        if (fromBankAccountNumWithType != null) {
+            fromAccount = handleAccountString(fromBankAccountNumWithType);
+            BankAccount bankAccountFrom = bankAccountSessionLocal.retrieveBankAccountByNum(fromAccount);
+            fromAccountDefaultTransferLimit = bankAccountFrom.getTransferDailyLimit();
+        } else {
+            fromAccountDefaultTransferLimit = "3000.0";
+        }
+        
+        return fromAccountDefaultTransferLimit;
+    }
+
+    public void setFromAccountDefaultTransferLimit(String fromAccountDefaultTransferLimit) {
+        this.fromAccountDefaultTransferLimit = fromAccountDefaultTransferLimit;
+    }
+
+    public String getFromAccountRemainingTransferLimit() {
+
+        if (fromBankAccountNumWithType != null) {
+            fromAccount = handleAccountString(fromBankAccountNumWithType);
+            BankAccount bankAccountFrom = bankAccountSessionLocal.retrieveBankAccountByNum(fromAccount);
+            fromAccountRemainingTransferLimit = bankAccountFrom.getTransferBalance();
+        } else {
+            fromAccountRemainingTransferLimit = "3000.0";
+        }
+
+        return fromAccountRemainingTransferLimit;
+    }
+
+    public void setFromAccountRemainingTransferLimit(String fromAccountRemainingTransferLimit) {
+        this.fromAccountRemainingTransferLimit = fromAccountRemainingTransferLimit;
+    }
+
     public void toMyAccount() throws IOException {
         System.out.println("=");
         System.out.println("====== deposit/TransferManagedBean: toMyAccount() ======");
@@ -219,7 +269,7 @@ public class TransferManagedBean {
 
         if (Double.valueOf(bankAccountFrom.getTransferBalance()) < transferAmt) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Dear Customer, your transfer amount has been exceeded your daily transfer limit. "
-                    +"You remaining daily limit is S$"+bankAccountFrom.getTransferBalance(), "Failed!"));
+                    + "You remaining daily limit is S$" + bankAccountFrom.getTransferBalance(), "Failed!"));
         } else if (bankAccountTo.getBankAccountType().equals("Fixed Deposit Account")) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Dear Customer, you are not allowed transferring fund to a fixed deposit account. ", "Failed!"));
         } else {
@@ -320,7 +370,7 @@ public class TransferManagedBean {
 
         if (Double.valueOf(bankAccountFrom.getTransferBalance()) < transferAmt) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Dear Customer, your transfer amount has been exceeded your daily transfer limit. "
-                    +"You remaining daily limit is S$"+bankAccountFrom.getTransferBalance(), "Failed!"));
+                    + "You remaining daily limit is S$" + bankAccountFrom.getTransferBalance(), "Failed!"));
         } else if (bankAccountTo.getBankAccountType().equals("Fixed Deposit Account")) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Dear Customer, you are not allowed transferring fund to a fixed deposit account. ", "Failed!"));
         } else {
@@ -378,6 +428,12 @@ public class TransferManagedBean {
                     Double diffAmt = Double.valueOf(bankAccountFrom.getBankAccountBalance()) - transferAmt;
 
                     if (diffAmt >= 0) {
+                        if (fromAccount == null) {
+                            System.out.println("from account is null");
+                        }
+                        if (toAccount == null) {
+                            System.out.println("to account is null");
+                        }
                         newTransactionId = transactionSessionLocal.fundTransfer(fromAccount, toAccount, transferAmt.toString());
                         payeeSessionLocal.updateLastTransactionDate(toAccount);
 
@@ -422,7 +478,7 @@ public class TransferManagedBean {
 
         if (Double.valueOf(bankAccountFrom.getTransferBalance()) < transferAmt) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Dear Customer, your transfer amount has been exceeded your daily transfer limit. "
-                    +"You remaining daily limit is S$"+bankAccountFrom.getTransferBalance(), "Failed!"));
+                    + "You remaining daily limit is S$" + bankAccountFrom.getTransferBalance(), "Failed!"));
         } else if (bankAccountTo.getBankAccountType().equals("Fixed Deposit Account")) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Dear Customer, you are not allowed transferring fund to a fixed deposit account. ", "Failed!"));
         } else {

@@ -6,7 +6,6 @@ import ejb.deposit.entity.AccTransaction;
 import ejb.customer.entity.CustomerBasic;
 import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import ejb.deposit.entity.Interest;
-import ejb.infrastructure.session.MessageSessionBeanLocal;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -687,5 +686,41 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
         System.out.println("****** deposit/BankAccountSessionBean: updateDailyTransferLimit() ******");
         BankAccount bankAccount = retrieveBankAccountByNum(bankAccountNum);
         bankAccount.setTransferDailyLimit(dailyTransferLimit);
+    }
+    
+    @Override
+    public Long addNewAccountOneTime(String bankAccountNum, String bankAccountPwd,
+            String bankAccountType, String bankAccountBalance, String transferDailyLimit,
+            String transferBalance, String bankAccountStatus, String bankAccountMinSaving,
+            String bankAccountDepositPeriod, String currentFixedDepositPeriod,
+            String fixedDepositStatus, Double statementDateDouble, Long customerBasicId) {
+
+        BankAccount bankAccount = new BankAccount();
+        String hashedPwd = "";
+
+        try {
+            hashedPwd = md5Hashing(bankAccountPwd);
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(BankAccountSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        bankAccount.setBankAccountNum(bankAccountNum);
+        bankAccount.setBankAccountPwd(hashedPwd);
+        bankAccount.setBankAccountTyep(bankAccountType);
+        bankAccount.setBankAccountBalance(bankAccountBalance);
+        bankAccount.setTransferDailyLimit(transferDailyLimit);
+        bankAccount.setTransferBalance(transferBalance);
+        bankAccount.setBankAccountStatus(bankAccountStatus);
+        bankAccount.setBankAccountMinSaving(bankAccountMinSaving);
+        bankAccount.setBankAccountDepositPeriod(bankAccountDepositPeriod);
+        bankAccount.setCurrentFixedDepositPeriod(currentFixedDepositPeriod);
+        bankAccount.setFixedDepositStatus(fixedDepositStatus);
+        bankAccount.setStatementDateDouble(statementDateDouble);
+        bankAccount.setCustomerBasic(retrieveCustomerBasicById(customerBasicId));
+
+        entityManager.persist(bankAccount);
+        entityManager.flush();
+
+        return bankAccount.getBankAccountId();
     }
 }
