@@ -105,7 +105,7 @@ public class CustomerLoginManagedBean implements Serializable {
                     message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid password: ", "Please enter your password again.");
                     context.addMessage(null, message);
                     loginAttempts++;
-                    if(loginAttempts >= 5){
+                    if (loginAttempts >= 5) {
                         adminSessionBeanLocal.lockCustomerOnlineBankingAccount(customer.getCustomerBasicId());
                     }
                     System.out.println("====== infrastructure/CustomerLoginManagedBean: doLogin(): login failed: invalid password. login attepts: " + loginAttempts);
@@ -447,8 +447,73 @@ public class CustomerLoginManagedBean implements Serializable {
         this.customerOTP = customerOTP;
     }
 
-    public void doLoginFast(ActionEvent event) {
+    public void doLoginFast(ActionEvent event) throws NoSuchAlgorithmException, IOException {
+        System.out.println("=");
+        System.out.println("====== infrastructure/CustomerLoginManagedBean: doLogin() ======");
+
+        FacesMessage message = null;
+        FacesContext context = FacesContext.getCurrentInstance();
+        ExternalContext ec = context.getExternalContext();
+        //retrieve customer by user ID
+        customer = adminSessionBeanLocal.getCustomerByOnlineBankingAccount(customerAccount);
+
+        if (customer == null) {
+            //if no customer found in database
+            message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid account number: ", "Please check your account number.");
+            context.addMessage(null, message);
+            customerPassword = null;
+            System.out.println("====== infrastructure/CustomerLoginManagedBean: doLogin(): login failed: invalid account number");
+        } else {
+            //found customer by userID
+            //encrypt the customerPassword first
+            customerPassword = md5Hashing(customerPassword + customer.getCustomerIdentificationNum().substring(0, 3));
+            String status = adminSessionBeanLocal.login(customerAccount, customerPassword);
+
+            switch (status) {
+                case "locked":
+                    message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "For your safety, your online banking account has been temporarily locked.", "To unlock your account, please contact our customer service at 800-820-8820.");
+                    context.addMessage(null, message);
+                    customerPassword = null;
+                    customer = null;
+                    break;
+                case "loggedIn":
+                    customerAccount = null;
+                    customerPassword = null;
+                    ec.setSessionMaxInactiveInterval(-1);
+                    ec.getSessionMap().put("customer", getCustomer());
+                    loggingSessionBeanLocal.createNewLogging("customer", customer.getCustomerBasicId(), "login to online banking", "successful", null);
+                    
+                    System.out.println("====== infrastructure/CustomerLoginManagedBean: doLogin(): login userID and PIN correct");
+                    if (customer.getCustomerStatus().equals("new")) {
+                        System.out.println("====== infrastructure/CustomerLoginManagedBean: verifyLoginOTP(): new customer: redirect to activation page");
+                        ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/infrastructure/customerUserIdActivation.xhtml?faces-redirect=true");
+                    } else if (customer.getCustomerStatus().equals("reset")) {
+                        System.out.println("====== infrastructure/CustomerLoginManagedBean: verifyLoginOTP(): customer reset password: redirect to reset password page");
+                        ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/infrastructure/customerPINReset.xhtml?faces-redirect=true");
+                    } else {
+                        System.out.println("====== infrastructure/CustomerLoginManagedBean: verifyLoginOTP(): existing customer: redirect to online banking home page");
+                        context.getExternalContext().redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerDepositIndex.xhtml?faces-redirect=true");
+                    }
+                    break;
+                case "invalidPassword":
+                    customerPassword = null;
+                    message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid password: ", "Please enter your password again.");
+                    context.addMessage(null, message);
+                    loginAttempts++;
+                    if (loginAttempts >= 5) {
+                        adminSessionBeanLocal.lockCustomerOnlineBankingAccount(customer.getCustomerBasicId());
+                    }
+                    System.out.println("====== infrastructure/CustomerLoginManagedBean: doLogin(): login failed: invalid password. login attepts: " + loginAttempts);
+                    break;
+                default:
+                    message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid account: ", "Please check your account number.");
+                    context.addMessage(null, message);
+                    customerAccount = null;
+                    customerPassword = null;
+                    System.out.println("====== infrastructure/CustomerLoginManagedBean: doLogin(): login failed: invalid account");
+                    break;
+            }
+        }
 
     }
-
 }
