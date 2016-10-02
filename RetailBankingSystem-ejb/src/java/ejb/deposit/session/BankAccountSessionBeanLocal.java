@@ -33,4 +33,5 @@ public interface BankAccountSessionBeanLocal {
     public void updatePwd(String bankAccountNum, String bankAccountPwd);
     public void resetDailyTransferLimit();
     public void updateDailyTransferLimit(String bankAccountNum,String dailyTransferLimit);
+    public void autoCloseAccount();
 }

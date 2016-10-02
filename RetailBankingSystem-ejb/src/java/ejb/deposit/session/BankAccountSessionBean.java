@@ -1,12 +1,12 @@
 package ejb.deposit.session;
 
+import ejb.customer.entity.CustomerAdvanced;
 import ejb.infrastructure.session.CustomerAdminSessionBeanLocal;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.entity.AccTransaction;
 import ejb.customer.entity.CustomerBasic;
 import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import ejb.deposit.entity.Interest;
-import ejb.infrastructure.session.MessageSessionBeanLocal;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -687,5 +687,26 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
         System.out.println("****** deposit/BankAccountSessionBean: updateDailyTransferLimit() ******");
         BankAccount bankAccount = retrieveBankAccountByNum(bankAccountNum);
         bankAccount.setTransferDailyLimit(dailyTransferLimit);
+    }
+
+    @Override
+    public void autoCloseAccount() {
+        System.out.println("*");
+        System.out.println("****** deposit/BankAccountSessionBean: autoCloseAccount() ******");
+
+        Query query = entityManager.createQuery("SELECT a FROM BankAccount a WHERE a.bankAccountStatus = :bankAccountStatus");
+        query.setParameter("bankAccountStatus", "Inactivated");
+        List<BankAccount> inActivatedBankAccounts = query.getResultList();
+
+        for (BankAccount inActivatedBankAccount : inActivatedBankAccounts) {
+            CustomerBasic customerBasic = retrieveCustomerBasicByAccNum(inActivatedBankAccount.getBankAccountNum());
+
+            if (customerBasic.getBankAccount().size() > 1) {
+                deleteAccount(inActivatedBankAccount.getBankAccountNum());
+            } else if (customerBasic.getBankAccount().size() == 1) {
+                deleteAccount(inActivatedBankAccount.getBankAccountNum());
+                customerSessionBeanLocal.deleteCustomerBasic(customerBasic.getCustomerIdentificationNum());
+            }
+        }
     }
 }
