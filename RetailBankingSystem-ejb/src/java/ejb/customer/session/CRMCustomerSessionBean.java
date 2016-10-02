@@ -396,6 +396,7 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
         customerBasic.setCustomerAge(getAge(customerDateOfBirth));
         customerBasic.setCustomerOTPSecret(secret);
         customerBasic.setCustomerStatus("new");
+        customerBasic.setCustomerOnlineBankingAccountLocked("no");
 
         entityManager.persist(customerBasic);
         entityManager.flush();
