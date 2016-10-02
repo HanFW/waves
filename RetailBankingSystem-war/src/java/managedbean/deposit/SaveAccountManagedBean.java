@@ -20,6 +20,7 @@ public class SaveAccountManagedBean {
     private String initialDepositAmt;
     private String bankAccountStatus;
     private String attention;
+    private String customerName;
 
     public SaveAccountManagedBean() {
     }
@@ -113,5 +114,13 @@ public class SaveAccountManagedBean {
 
     public void setBankAccountStatus(String bankAccountStatus) {
         this.bankAccountStatus = bankAccountStatus;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
     }
 }

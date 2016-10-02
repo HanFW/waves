@@ -8,8 +8,10 @@ import javax.ejb.Local;
 @Local
 public interface StatementSessionBeanLocal {
     
-    public Long addNewStatement(String statementDate, String statementType, String accountDetails,Long customerBasicId);
+    public Long addNewStatement(String statementDate, String statementType, String accountDetails, 
+            Long startTime, Long endTime, Long customerBasicId);
     public Statement retrieveStatementById(Long statementId);
     public List<Statement> retrieveStatementByAccNum(String bankAccountNum);
     public void generateStatement();
+    public void deleteStatement (Long statementId);
 }

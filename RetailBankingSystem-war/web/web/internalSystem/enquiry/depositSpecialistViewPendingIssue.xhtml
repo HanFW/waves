@@ -1,12 +1,12 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core" 
-      xmlns:p="http://primefaces.org/ui">
-    <h:head>
-        <title>View Pending Issue</title>
-    </h:head>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/internalSystemTemplate.xhtml">
+
+    <ui:define name="content">
     <h:body>
         <h:form>
             <p:menubar>
@@ -20,12 +20,21 @@
             </p:menubar>
         </h:form>
 
-        <h:outputText value="Welcome #{employeeAccountManagedBean.userName} !"/>
-        <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
-        <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
-        <h:outputText value="You have logged in as: Deposit Specialist"/>
-
-        <h:form>
+         <h:form>
+            <div class="ui-g ui-fluid">
+                    <div class="ui-g-12 ui-lg-12">
+                        <div class="card card-w-title"> 
+                            <div align="center">
+                                <h:outputText value="Welcome " />
+                                <h:outputText value="#{employeeAccountManagedBean.userName}!"/>
+                                <br/>
+                                <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
+                                <br/>
+                                <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
+                                <br/>
+                                <h:outputText value="You have logged in as: Deposit Specialist"/>
+                                <br/>
+                                <br/>
             <p:panel header="Pending Issue">
                 <p:dataTable var="issue" value="#{specialistReplyIssueManagedBean.depositPendingIssue}" 
                              paginator="true" rows="10" emptyMessage="No Pending Issue">
@@ -56,7 +65,12 @@
                     </p:column>
                 </p:dataTable>
             </p:panel>
+                                   </div>
+                        </div>
+                    </div>
+                </div>
         </h:form>
     </h:body>
-</html>
+    </ui:define>
+</ui:composition>
 

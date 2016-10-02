@@ -28,13 +28,18 @@ public interface CRMCustomerSessionBeanLocal {
 
     public Long addNewCustomerBasic(String customerName, String customerSalutation,
             String customerIdentificationNum, String customerGender,
-            String customerEmail, String customerMobile, String customerDateOfBirth, 
-            String customerNationality,String customerCountryOfResidence, String customerRace, 
-            String customerMaritalStatus,String customerOccupation, String customerCompany, 
-            String customerAddress, String customerPostal,String customerOnlineBankingAccountNum, 
-            String customerOnlineBankingPassword,byte[] customerSignature);
+            String customerEmail, String customerMobile, String customerDateOfBirth,
+            String customerNationality, String customerCountryOfResidence, String customerRace,
+            String customerMaritalStatus, String customerOccupation, String customerCompany,
+            String customerAddress, String customerPostal, String customerOnlineBankingAccountNum,
+            String customerOnlineBankingPassword, byte[] customerSignature);
 
     public String deleteCustomerBasic(String customerIdentificationNum);
 
     public CustomerBasic retrieveCustomerBasicByIC(String customerIdentificationNum);
+
+    public CustomerAdvanced retrieveCustomerAdvancedByAdId(Long customerAdvancedId);
+
+    public void deleteCustomerAdvanced(Long customerAdvancedId);
+    public CustomerAdvanced getCustomerAdvancedById(Long id);
 }

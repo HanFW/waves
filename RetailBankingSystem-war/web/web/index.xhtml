@@ -1,45 +1,278 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
+
     <h:head>
-        <title>Facelet Title</title>
+        <f:facet name="first">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+            <meta name="apple-mobile-web-app-capable" content="yes" />
+        </f:facet>
+        <!-- Favicon -->
+        <link rel="shortcut icon" href="#{resource['ultima-layout:images/favicon.png']}"/>   
+        <title>Bank Anywhere, Anytime</title>
+        <h:outputScript name="js/ripple.js" library="ultima-layout" />
+        <script type="text/javascript">
+            $(function () {
+                $('#menu-button').on('click', function (e) {
+                    var menu = $('#menu');
+                    if (menu.hasClass('lmenu-active')) {
+                        menu.addClass('fadeOutUp');
+
+                        setTimeout(function () {
+                            menu.removeClass('fadeOutUp fadeInDown lmenu-active');
+                        }, 500);
+                    }
+                    else {
+                        menu.addClass('lmenu-active fadeInDown');
+                    }
+                    e.preventDefault();
+                });
+            });
+        </script>
     </h:head>
-    <h:body>
-        <h:form>
-            <p:menubar>
-                <p:submenu label="Home">
-                    <p:menuitem value="Home" url="/web/index.xhtml" />
-                </p:submenu>
 
-                <p:submenu label="Account">
-                    <p:menuitem value="Home" url="/web/merlionBank/deposit/publicDepositIndex.xhtml" />
-                    <p:menuitem value="Open Account" url="/web/merlionBank/deposit/publicOpenAccount.xhtml" />
-                </p:submenu>
+    <h:body styleClass="landing-body">
+        <div class="landing-wrapper">
+            <div id="header">
+                <div class="header-top clearfix">
+                    <span class="logo"></span>
 
-                <p:submenu label="Login">
-                    <p:menuitem value="Login" url="/web/onlineBanking/infrastructure/customerLogin.xhtml"/>
-                </p:submenu>
+                    <a id="menu-button" href="#">
+                        <span class="fa fa-bars"></span>
+                    </a>
+                    <ul id="menu" class="animated">
+                        <li><a href="#"><i class="ui-icon ui-icon-home"></i><span>Home</span></a></li>
+                        <li><a href="#promotion"><i class="ui-icon ui-icon-account-balance"></i><span>Bank</span></a></li>
+                        <li><a href="#MBcards"><i class="ui-icon ui-icon-payment"></i><span>Cards</span></a></li>
+                        <li><a href="#features"><i class="ui-icon ui-icon-trending-up"></i><span>Wealth</span></a></li>
+                        <li><a href="#features"><i class="ui-icon ui-icon-attach-money"></i><span>Loan</span></a></li>
+                        <li><h:link outcome="/web/onlineBanking/infrastructure/customerLogin"><i class="ui-icon ui-icon-account-box"></i><span>Login</span></h:link></li>
+                    </ul>
+                </div>
 
-                <p:submenu label="Employee">
-                    <p:menuitem value="Employee Login" url="/web/internalSystem/infrastructure/employeeLogin.xhtml"/>
-                    <p:menuitem value="Open Account" url="/web/internalSystem/deposit/employeeOpenAccount.xhtml" />
-                    <p:menuitem value="Close Account" url="/web/internalSystem/deposit/employeeCloseAccount.xhtml" />
-                    <p:menuitem value="Cash Deposit" url="/web/internalSystem/deposit/employeeCashDeposit.xhtml"/>
-                    <p:menuitem value="Cash Withdraw" url="/web/internalSystem/deposit/employeeCashWithdraw.xhtml"/>
-                    <p:menuitem value="Fund Transfer" url="/web/internalSystem/deposit/employeeTransfer.xhtml" />
-                    <p:menuitem value="View Account" url="/web/internalSystem/deposit/employeeViewAccount.xhtml" />
-                    <p:menuitem value="View Transaction" url="/web/internalSystem/deposit/employeeViewTransaction.xhtml" />
-                    <p:menuitem value="View Statement" url="/web/internalSystem/deposit/employeeViewStatement.xhtml" />
-                    <p:menuitem value="Change Deposit Account Password" url="/web/internalSystem/deposit/employeeChangeBankAccountPwd.xhtml" />
-                    <p:menuitem value="Forgot Deposit Account Password" url="/web/internalSystem/deposit/employeeForgotDepositPassword.xhtml" />
-                    <p:menuitem value="Activate Fixed Deposit Account" url="/web/internalSystem/deposit/employeeActivateFixedDeposit.xhtml" />
-                    <p:menuitem value="Change Daily Transfer Limit" url="/web/internalSystem/deposit/employeeChangeDailyTransferLimit.xhtml" />
-                </p:submenu>
+                <div class="header-content clearfix">
+                    <h1><span>Welcome to Merlion Bank</span></h1>
+                    <h2>We are proud to be the one and only direct bank in Singapore.</h2>
+                    <h2>Now, your bank is at your fingertip.</h2>
 
-            </p:menubar>
-        </h:form>
+                </div>
+            </div>
+
+            <div id="MBcards">
+                <h2>Cards</h2>
+                <!--                <p>Enjoy your bank at home!</p>-->
+
+                <div class="ui-g">
+                    <!--                    <div class="ui-g-12 ui-md-4 pricing-box pricing-basic">
+                                            <div class="card">
+                    
+                                                <div class="pricing-header">
+                                                    <div class="MBcards1">
+                                                    </div>
+                                                </div>
+                                                <div class="pricing-content">
+                                                    <p:commandButton onclick="PF('CardsIntro1').show();" value="Featured Cards" styleClass="theme-btn"/>
+                                                    <p:commandButton value="Monthly Savings Account" type="button" onclick="PF('dlg1').show();" styleClass="NavyButton" style="width:100%"/>
+                                                                                    <h3>Monthly Savings Account</h3>
+                                                </div>
+                    
+                                            </div>
+                                        </div>-->
+                    <div class="ui-g-12 ui-md-4 pricing-box pricing-standard">
+                        <div class="card">
+                            <div class="pricing-header">
+                                <div class="MBcards2">
+
+                                </div>
+                            </div>
+                            <div class="pricing-content">
+                                <p:commandButton onclick="PF('CardsIntro2').show();" value="Debit Cards" styleClass="theme-btn"/>
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="ui-g-12 ui-md-4 pricing-box pricing-professional">
+                        <div class="card">
+                            <div class="pricing-header MBcards3">
+
+
+
+                            </div>
+                            <div class="pricing-content">
+                                <p:commandButton onclick="PF('CardsIntro3').show();" value="Credit Cards" styleClass="theme-btn"/>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="ui-g-12 ui-md-4 pricing-box pricing-professional">
+                        <div class="card">
+                            <div class="pricing-header MBcards4">
+
+
+                            </div>
+                            <div class="pricing-content">
+                                <p:commandButton onclick="PF('CardsIntro4').show();" value="Card Rewards" styleClass="theme-btn"/>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div class="ui-g">
+
+                </div>   
+            </div>
+
+
+            <div id="promotion" >
+                <div class="ui-g">
+                    <div class="ui-g-12 ui-lg-8">
+                        <h1>Your Bank At Home</h1>
+                        <p:button outcome="/web/merlionBank/deposit/publicOpenAccount" value="Open Account" styleClass="secondary"/>
+                    </div>
+                    <div class="ui-g-12 ui-lg-4">
+                        <div class="card">
+                            <h3>Monthly Savings Account</h3>
+                            <p>An automatic monthly savings account with special interest rates — giving you flexibility and control.</p>
+                        </div>
+
+                        <div class="card">
+                            <h3>Bonus Savings Account</h3>
+                            <p>Every relationship should be this rewarding.</p>
+                        </div>
+
+                        <div class="card">
+                            <h3>Basic Savings Account</h3>
+                            <p>An all-in-one account with 12 foreign currencies types and Singapore dollar that lets you save and transact.</p>
+                        </div>
+
+                        <div class="card">
+                            <h3>Fixed Deposit Account</h3>
+                            <p>Save a fixed amount of money in Singapore Dollars at a fixed interest rate for a fixed period.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div id="features">
+                <h2>Invest Your Wealth</h2>
+                <p>Check out our wealth management products and services.</p>
+
+                <div class="ui-g">
+                    <div class="ui-g-12 ui-md-4">
+                        <h3>Featured Products</h3>
+
+                        <div class="feature-icon">
+                            <i class="ui-icon ui-icon-thumb-up"></i>
+                        </div>
+                    </div>
+                    <div class="ui-g-12 ui-md-4">
+                        <h3>Unit Trust</h3>
+
+                        <div class="feature-icon">
+                            <i class="ui-icon ui-icon-vpn-key"></i>
+                        </div>
+                    </div>
+                    <div class="ui-g-12 ui-md-4">
+                        <h3>Equities</h3>
+
+                        <div class="feature-icon">
+                            <i class="ui-icon ui-icon-directions-car"></i>
+                        </div>
+                    </div>
+
+                    <div class="ui-g-12 ui-md-4">
+                        <div class="feature-icon">
+                            <i class="ui-icon ui-icon-work"></i>
+                        </div>
+                        <h3>Fixed Income</h3>
+
+                    </div>
+                    <div class="ui-g-12 ui-md-4">
+                        <div class="feature-icon">
+                            <i class="ui-icon ui-icon-local-atm"></i>
+                        </div>
+                        <h3>FX and Cash Management</h3>
+
+                    </div>
+                    <div class="ui-g-12 ui-md-4">
+                        <div class="feature-icon">
+                            <i class="ui-icon ui-icon-dashboard"></i>
+                        </div>
+                        <h3>Structured Investments</h3>
+
+                    </div>
+                </div>
+            </div>
+
+            <div id="video">
+                <div class="video-content">
+
+
+                    <h:form>
+
+
+
+                        <p:dialog header="Featured Cards" widgetVar="CardsIntro1" modal="true" height="450" width="80%" responsive="true">
+                            <h:outputText value="Featured Cards Info" />
+                        </p:dialog>   
+
+                        <p:dialog header="Debit Cards" widgetVar="CardsIntro2" modal="true" height="450" width="80%" responsive="true">
+                            <h:outputText value="Debit Cards Info" />
+                        </p:dialog>   
+
+                        <p:dialog header="Credit Cards" widgetVar="CardsIntro3" modal="true" height="450" width="80%" responsive="true">
+                            <h:outputText value="Credit Cards Info" />
+                        </p:dialog>   
+
+                        <p:dialog header="Card Rewards" widgetVar="CardsIntro4" modal="true" height="450" width="80%" responsive="true">
+                            <h:outputText value="Card Rewards and Services Info" />
+                        </p:dialog>   
+
+
+                    </h:form>
+
+                </div>
+            </div>
+
+            <div class="footer">
+                <div class="footer-content">
+                    <div class="ui-g">
+                        <div class="ui-g-12 ui-md-6">
+                            <p>Merlion Bank</p>
+                        </div>
+                        <div class="ui-g-12 ui-md-6">
+                            <ul>
+                                <li><a href="#features">Wealth</a></li>
+                                <li><a href="#features">Loan</a></li>
+                                <li><h:link outcome="/web/onlineBanking/infrastructure/customerLogin">Login</h:link></li>
+                                <li><h:link outcome="/web/internalSystem/infrastructure/employeeLogin">Employee Login</h:link></li>
+                            </ul>
+                            <ul>
+                                <li><a href="#">Home</a></li>
+                                <li><a href="#promotion">Bank</a></li>
+                                <li><a href="#MBcards">Cards</a></li>
+                                <li><h:link outcome="/web/onlineBanking/infrastructure/customerReopenIBAccount.xhtml">Reopen iBanking Account</h:link></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h:outputStylesheet name="css/animate.css" library="ultima-layout" />
+        <h:outputStylesheet name="css/ripple.css" library="ultima-layout" />
+        <h:outputStylesheet name="css/layout-#{guestPreferences.theme}.css" library="ultima-layout" />
     </h:body>
-</html>
 
+</html>

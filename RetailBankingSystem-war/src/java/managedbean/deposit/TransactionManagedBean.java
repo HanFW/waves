@@ -15,16 +15,17 @@ import javax.inject.Named;
 @Named(value = "transactionManagedBean")
 @SessionScoped
 
-public class TransactionManagedBean implements Serializable{
+public class TransactionManagedBean implements Serializable {
+
     @EJB
     private LoggingSessionBeanLocal loggingSessionBeanLocal;
-    
+
     @EJB
     private TransactionSessionBeanLocal transactionSessionLocal;
-    
+
     private ExternalContext ec;
     private String bankAccountNum;
-    
+
     public TransactionManagedBean() {
     }
 
@@ -36,13 +37,12 @@ public class TransactionManagedBean implements Serializable{
         this.bankAccountNum = bankAccountNum;
     }
 
-    public List<AccTransaction> getAccTransaction() throws IOException
-    {
+    public List<AccTransaction> getAccTransaction() throws IOException {
         System.out.println("=");
         System.out.println("====== deposit/TransactionManagedBean: getAccTransaction() ======");
         ec = FacesContext.getCurrentInstance().getExternalContext();
         List<AccTransaction> accTransaction = transactionSessionLocal.retrieveAccTransactionByBankNum(bankAccountNum);
-        
+
         return accTransaction;
     }
 }

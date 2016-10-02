@@ -1,12 +1,13 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core" 
-      xmlns:p="http://primefaces.org/ui">
-    <h:head>
-        <title>Manage Customer Enquiry Case</title>
-    </h:head>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/internalSystemTemplate.xhtml">
+
+    <ui:define name="content">
     <h:body>
         <h:form>
             <p:menubar>
@@ -20,18 +21,53 @@
             </p:menubar>
         </h:form>
 
-        <h:outputText value="Welcome #{employeeAccountManagedBean.userName} !"/>
-        <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
-        <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
-        <h:outputText value="You have logged in as: Enquiry Manager"/>
 
         <h:form>
+            <div class="ui-g ui-fluid">
+                    <div class="ui-g-12 ui-lg-12">
+                        <div class="card card-w-title"> 
+                            <div align="center">
+                                <h:outputText value="Welcome " />
+                                <h:outputText value="#{employeeAccountManagedBean.userName}!"/>
+                                <br/>
+                                <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
+                                <br/>
+                                <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
+                                <br/>
+                                <h:outputText value="You have logged in as: Enquiry Manager"/>
+                                <br/>
             <p:messages />
             <p:panel id="detail" header="Customer Case Detail">
-                <h:outputText value="Customer Input:   #{enquiryManagerManagedBean.caseDetailById}" /> 
-                <p:panel header="Customer Case Issues">
+                <p:panel>
+                    <h:outputText value="Customer Input:   #{enquiryManagerManagedBean.caseDetailById}" /> 
+                </p:panel>
+                <p:panel>
+                    <p:dataTable var="followUp" value="#{enquiryManagerManagedBean.caseFollowUpById}" 
+                                 paginator="true" rows="10"  selection="#{enquiryManagerManagedBean.selectedFollowUp}"
+                                 rowKey="#{followUp.followUpId}" emptyMessage="No Follow-Up Submitted From Customer">
+                        <f:facet name="header">Customer Case Follow-Up</f:facet>
+                        <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+                        <p:column headerText="Follow-Up ID">
+                            <h:outputText value="#{followUp.followUpId}" />
+                        </p:column>
+
+                        <p:column headerText="Status"> 
+                            <h:outputText value="#{followUp.followUpStatus}" />
+                        </p:column>
+
+                        <p:column headerText="Detail" >
+                            <h:outputText value="#{followUp.followUpDetail}" /> 
+                        </p:column>
+
+                        <p:column headerText="Reply"> 
+                            <h:outputText value="#{followUp.followUpSolution}" />
+                        </p:column>
+                    </p:dataTable>
+                </p:panel>
+                <p:panel>
                     <p:dataTable var="issue" value="#{enquiryManagerManagedBean.caseIssueById}" 
                                  paginator="true" rows="10" emptyMessage="No Issue Sent to Specialists">
+                        <f:facet name="header">Customer Case Issues</f:facet>
                         <p:column headerText="Issue ID">
                             <h:outputText value="#{issue.issueId}" />
                         </p:column>
@@ -42,6 +78,10 @@
 
                         <p:column headerText="Detail" >
                             <h:outputText value="#{issue.issueProblem}" /> 
+                        </p:column>
+
+                        <p:column headerText="Department" >
+                            <h:outputText value="#{issue.departmentTo}" /> 
                         </p:column>
 
                         <p:column headerText="Reply"> 
@@ -88,7 +128,7 @@
                     <h:outputText value="&lt;br/&gt;" escape="false" />
                     <p:row>
                         <p:selectOneMenu id="departmentTo" value="#{enquiryManagerManagedBean.departmentTo}" 
-                                         style="width:125px">
+                                         style="width:225px">
                             <f:selectItem itemLabel="Please Select Department" itemValue=" " />
                             <f:selectItem itemLabel="Card Department" itemValue="Card" />
                             <f:selectItem itemLabel="Loan Department" itemValue="Loan" />
@@ -119,7 +159,12 @@
                     </p:row>
                 </p:panel>
             </p:panel>
-        </h:form>
-    </h:body>
-</html>
+       </div>
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+        </h:body>
+    </ui:define>
+</ui:composition>
 

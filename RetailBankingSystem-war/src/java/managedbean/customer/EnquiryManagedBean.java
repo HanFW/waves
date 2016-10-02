@@ -107,6 +107,7 @@ public class EnquiryManagedBean implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(enquirySessionBeanLocal.addNewCase(cb.getCustomerBasicId(), caseType, caseDetail), " "));
         caseType = null;
         caseDetail = null;
+        cb = null;
     }
 
     public List<EnquiryCase> getEnquiryCase() {

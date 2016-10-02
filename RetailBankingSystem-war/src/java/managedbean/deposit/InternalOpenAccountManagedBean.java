@@ -21,7 +21,7 @@ import org.primefaces.event.FlowEvent;
 @RequestScoped
 
 public class InternalOpenAccountManagedBean {
-    
+
     @EJB
     private MessageSessionBeanLocal messageSessionBeanLocal;
 
@@ -34,7 +34,6 @@ public class InternalOpenAccountManagedBean {
     private String bankAccountType;
     private String bankAccountPwd;
     private String confirmBankAccountPwd;
-    private String customerName;
     private String customerIdentificationNum;
     private String customerEmail;
     private String customerMobile;
@@ -67,7 +66,8 @@ public class InternalOpenAccountManagedBean {
     private String subject;
     private Date receivedDate;
     private String messageContent;
-    
+    private String customerName;
+
     public InternalOpenAccountManagedBean() {
     }
 
@@ -77,7 +77,6 @@ public class InternalOpenAccountManagedBean {
 
         CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
 
-        customerName = customerBasic.getCustomerName();
         customerIdentificationNum = customerBasic.getCustomerIdentificationNum();
         customerEmail = customerBasic.getCustomerEmail();
         customerMobile = customerBasic.getCustomerMobile();
@@ -105,14 +104,6 @@ public class InternalOpenAccountManagedBean {
 
     public void setConfirmBankAccountPwd(String confirmBankAccountPwd) {
         this.confirmBankAccountPwd = confirmBankAccountPwd;
-    }
-
-    public String getCustomerName() {
-        return customerName;
-    }
-
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
     }
 
     public String getCustomerIdentificationNum() {
@@ -319,6 +310,14 @@ public class InternalOpenAccountManagedBean {
         this.messageContent = messageContent;
     }
 
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
     public void saveAccount() throws IOException {
         System.out.println("hello");
         ec = FacesContext.getCurrentInstance().getExternalContext();
@@ -328,14 +327,6 @@ public class InternalOpenAccountManagedBean {
         bankAccountNum = bankAccountSessionBeanLocal.generateBankAccount();
         System.out.println(agreement);
         if (agreement) {
-            System.out.println("if");
-
-            dailyInterest = "0";
-            monthlyInterest = "0";
-            isTransfer = "0";
-            isWithdraw = "0";
-
-            newInterestId = interestSessionBeanLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw);
 
             bankAccountBalance = "0";
             transferDailyLimit = "3000";
@@ -344,7 +335,7 @@ public class InternalOpenAccountManagedBean {
             bankAccountDepositPeriod = "None";
             currentFixedDepositPeriod = "0";
             fixedDepositStatus = "";
-            statementDateDouble=0.0;
+            statementDateDouble = 0.0;
 
             if (bankAccountType.equals("Monthly Savings Account")) {
                 bankAccountStatus = "Activated";
@@ -357,18 +348,31 @@ public class InternalOpenAccountManagedBean {
 
             newAccountId = bankAccountSessionBeanLocal.addNewAccount(bankAccountNum, bankAccountPwd, bankAccountType,
                     bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
-                    bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus, 
-                    statementDateDouble, customerBasicId, newInterestId);
+                    bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
+                    statementDateDouble, customerBasicId);
+
+            dailyInterest = "0";
+            monthlyInterest = "0";
+            isTransfer = "0";
+            isWithdraw = "0";
+            newInterestId = interestSessionBeanLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw, newAccountId);
+
             bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountById(newAccountId);
 
             statusMessage = "New Account Saved Successfully.";
-            
+
             subject = "Welcome to Merlion Bank";
-                        Calendar cal = Calendar.getInstance();
-                        receivedDate = cal.getTime();
-                        messageContent = "Welcome to Merlion Bank! Please deposit/transfer sufficient fund to your bank account.";
-                        messageSessionBeanLocal.sendMessage("Merlion Bank", "Service", subject, receivedDate.toString(),
-                                messageContent, customerBasicId);
+            Calendar cal = Calendar.getInstance();
+            receivedDate = cal.getTime();
+//            messageContent = "Welcome to Merlion Bank! Please deposit/transfer sufficient fund to activate your bank account.\n"
+//                    + "For fixed depsit account, please declare your fixed deposit period first before activating your account.\n"
+//                    + "Your daily transfer limit is S$3000. You could update your daily transfer limit under 'My Account'.\n"
+//                    + "If you have any enquiry, please contact us at 800 820 8820 or you can write an enquiry after you login.\n";
+            messageContent = "Welcome to Merlion Bank! Please deposit/transfer sufficient fund to your bank account.\n"
+                    + "For fixed deposit account, please declare your deposit period before activating your account.\n"
+                    + "Please contact us at 800 820 8820 or write enquiry after you login.\n";
+            messageSessionBeanLocal.sendMessage("Merlion Bank", "Service", subject, receivedDate.toString(),
+                    messageContent, customerBasicId);
 
             ec.getFlash().put("statusMessage", statusMessage);
             ec.getFlash().put("newAccountId", newAccountId);

@@ -1,65 +1,63 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> <html xmlns="http://www.w3.org/1999/xhtml"
-                                                                                                                                xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:p="http://primefaces.org/ui">
-    <h:head>
-        <title>Open Account</title>
-        <style type="text/css">
-            .gritter-notice-wrapper {
-                left:200px;
-                top: 50px; }
-            </style>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/merlionBankTemplate.xhtml">
 
-        </h:head>
+    <ui:define name="content">  
+
         <h:body>
-            <h:form id="formMain">
-            <h1>Welcome to Merlion Bank</h1>
-            <p:menubar>
-                <p:submenu label="Home">
-                    <p:menuitem value="Home" url="/web/merlionBank/deposit/publicDepositIndex.xhtml" />
-                </p:submenu>
+            <h:form>
+                <br/>
 
-                <p:submenu label="Deposit">
-                    <p:menuitem value="Open Account" url="/web/merlionBank/deposit/publicOpenAccount.xhtml" />
-                </p:submenu>
-
-                <p:submenu label="Login">
-                    <p:menuitem value="Login" url="/web/onlineBanking/infrastructure/customerLogin.xhtml" />
-                </p:submenu>
-            </p:menubar>
-        </h:form>
-        <h:form>
-            <br/>
-            <p:panel id="panel" header="Save Account"> 
                 <p:messages />
-                
-                <p:panelGrid>
-                    <h:form id="formMain">
-                        <h:outputLabel value="Attention: If your bank account is inactive, please deposit/transfer sufficient amouont to your account to activate." 
-                                       style="font-weight:bold;font-size: 20px"/>
-                        <br/>
-                        <br/>
-                        <h:outputText style="font-weight: bold" value="Status Message: " />
-                        <h:outputText value="#{saveAccountManagedBean.statusMessage}" />
-                        <br/>
-                        <h:outputText style="font-weight: bold" value="Bank Account Id: "/>
-                        <h:outputText value="#{saveAccountManagedBean.bankAccountId}"/>
-                        <br/>
-                        <h:outputText style="font-weight: bold" value="Customer basic Id: "/>
-                        <h:outputText value="#{saveAccountManagedBean.customerBasicId}"/>
-                        <br/>
-                        <h:outputText style="font-weight: bold" value="Bank Account Num: "/>
-                        <h:outputText value="#{saveAccountManagedBean.bankAccountNum}"/>
-                        <br/>
-                        <h:outputText style="font-weight: bold" value="Bank Account Type: "/>
-                        <h:outputText value="#{saveAccountManagedBean.bankAccountType}"/>
-                        <br/>
-                        <h:outputText style="font-weight: bold" value="Bank Account Status: "/>
-                        <h:outputText value="#{saveAccountManagedBean.bankAccountStatus}"/>
-                        <br/>
-                    </h:form>
-                </p:panelGrid>
-            </p:panel>
-        </h:form>
-    </h:body>
-</html>
+                <div class="ui-g ui-fluid">
+                    <div class="ui-g-12 ui-lg-12">
+
+                        <div class="card card-w-title">
+                            <p:panelGrid>
+                                <h:form id="formMain">
+                                    <h:outputLabel value="The confirmation email has been sent to you." 
+                                                   style="font-weight:bold;font-size: 20px"/>
+                                    <br/>
+                                    <h:outputLabel value="An iBanking account has been created for you.Use the account number and initial password included in the email to login to iBanking." 
+                                                   style="font-weight:bold;font-size: 20px"/>
+                                    <br/>
+                                    <h:outputLabel value="Attention: If your bank account is inactive, please deposit/transfer sufficient amouont to your account to activate." 
+                                                   style="font-weight:bold;font-size: 20px"/>
+                                    <br/>
+                                    <br/>
+                                    <h:outputText style="font-weight: bold" value="Status Message: " />
+                                    <h:outputText value="#{saveAccountManagedBean.statusMessage}" />
+                                    <br/>
+                                    <br/>
+                                    <h:outputText style="font-weight: bold" value="Bank Account Id: "/>
+                                    <h:outputText value="#{saveAccountManagedBean.bankAccountId}"/>
+                                    <br/>
+                                    <br/>
+                                    <h:outputText style="font-weight: bold" value="Customer basic Id: "/>
+                                    <h:outputText value="#{saveAccountManagedBean.customerBasicId}"/>
+                                    <br/>
+                                    <br/>
+                                    <h:outputText style="font-weight: bold" value="Bank Account Num: "/>
+                                    <h:outputText value="#{saveAccountManagedBean.bankAccountNum}"/>
+                                    <br/>
+                                    <br/>
+                                    <h:outputText style="font-weight: bold" value="Bank Account Type: "/>
+                                    <h:outputText value="#{saveAccountManagedBean.bankAccountType}"/>
+                                    <br/>
+                                    <h:outputText style="font-weight: bold" value="Bank Account Status: "/>
+                                    <h:outputText value="#{saveAccountManagedBean.bankAccountStatus}"/>
+                                    <br/>
+                                </h:form>
+                                 <p:button outcome="/web/index.xhtml" value="Back to Homepage"/>
+                            </p:panelGrid>
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+        </h:body>
+    </ui:define>
+</ui:composition>
 

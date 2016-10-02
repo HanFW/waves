@@ -19,8 +19,10 @@ public class Statement implements Serializable {
     private String statementDate;
     private String statementType;
     private String accountDetails;
+    private Long startTime;
+    private Long endTime;
     
-    @ManyToOne(cascade={CascadeType.ALL},fetch=FetchType.EAGER)
+    @ManyToOne(cascade={CascadeType.PERSIST},fetch=FetchType.EAGER)
     private BankAccount bankAccount;
 
     public Long getStatementId() {
@@ -61,6 +63,22 @@ public class Statement implements Serializable {
 
     public void setBankAccount(BankAccount bankAccount) {
         this.bankAccount = bankAccount;
+    }
+
+    public Long getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Long startTime) {
+        this.startTime = startTime;
+    }
+
+    public Long getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Long endTime) {
+        this.endTime = endTime;
     }
 
     @Override

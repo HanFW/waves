@@ -5,6 +5,7 @@ import ejb.deposit.entity.BankAccount;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
@@ -27,7 +28,7 @@ public class DepositIndexManagedBean {
 
     private ExternalContext ec;
     private BarChartModel barModel;
-    
+
     public DepositIndexManagedBean() {
     }
 
@@ -35,7 +36,7 @@ public class DepositIndexManagedBean {
     public void init() {
         createBarModels();
     }
-    
+
     public BarChartModel getBarModel() {
         return barModel;
     }
@@ -43,49 +44,49 @@ public class DepositIndexManagedBean {
     public void setBarModel(BarChartModel barModel) {
         this.barModel = barModel;
     }
-    
+
     private BarChartModel initBarModel() {
         System.out.println("=");
         System.out.println("====== deposit/DepositIndexManagedBean: initBarModel() ======");
         ec = FacesContext.getCurrentInstance().getExternalContext();
-        
+
         CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
         List<BankAccount> bankAccounts = customerBasic.getBankAccount();
-        Double totalBalance =0.0;
-        
-        for(int i=0;i<bankAccounts.size();i++) {
+        Double totalBalance = 0.0;
+
+        for (int i = 0; i < bankAccounts.size(); i++) {
             totalBalance = totalBalance + Double.valueOf(bankAccounts.get(i).getBankAccountBalance());
         }
-        
+
         BarChartModel model = new BarChartModel();
-        
+
         ChartSeries balance = new ChartSeries();
         balance.set("Cash&Investments", totalBalance);
-        
+
         model.addSeries(balance);
-        
+
         return model;
     }
-    
+
     private void createBarModels() {
         createBarModel();
     }
-    
+
     private void createBarModel() {
         barModel = initBarModel();
-        
+
         barModel.setLegendPosition("ne");
-         
+
         Axis xAxis = barModel.getAxis(AxisType.X);
         xAxis.setLabel(" ");
-         
+
         Axis yAxis = barModel.getAxis(AxisType.Y);
         yAxis.setLabel(" ");
     }
-    
+
     public List<BankAccount> getBankAccount() throws IOException {
         ec = FacesContext.getCurrentInstance().getExternalContext();
-        
+
         CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
         String customerIC = customerBasic.getCustomerIdentificationNum();
 

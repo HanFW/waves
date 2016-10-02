@@ -1,155 +1,138 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> <html xmlns="http://www.w3.org/1999/xhtml"
-                                                                                                                                xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:p="http://primefaces.org/ui">
-    <h:head>
-        <title>Fund Transfer to My Accounts</title>
-        <style type="text/css">
-            .gritter-notice-wrapper {
-                left:200px;
-                top: 50px; }
-            </style>       
-        </h:head>
-        <h:body>
-            <h:form id="formMain">
-            <h1>Welcome to Merlion Bank</h1>
-            <p:menubar>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/onlineBankingTemplate.xhtml"
+                xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
 
-                <p:submenu label="My Account">
-                    <p:menuitem value="Home" url="/web/onlineBanking/deposit/customerDepositIndex.xhtml" />
-                    <p:menuitem value="Open Account" url="/web/onlineBanking/deposit/customerOpenAccount.xhtml" />
-                    <p:menuitem value="Close Account" url="/web/onlineBanking/deposit/customerCloseAccount.xhtml" />
-                    <p:menuitem value="View Account" url="/web/onlineBanking/deposit/customerViewAccount.xhtml" />
-                    <p:menuitem value="View Transaction" url="/web/onlineBanking/deposit/customerViewTransaction.xhtml" />
-                    <p:menuitem value="View Statement" url="/web/onlineBanking/deposit/customerViewStatement.xhtml" />
-                    <p:menuitem value="Activate Fixed Deposit Account" url="/web/onlineBanking/deposit/customerActivateFixedDepositAccount.xhtml" />
-                    <p:menuitem value="Change Password" url="/web/onlineBanking/deposit/customerChangeBankAccountPwd.xhtml" />
-                    <p:menuitem value="Forgot Password" url="/web/onlineBanking/deposit/customerForgotPassword.xhtml" />
-                </p:submenu>
-
-                <p:submenu label="Transfer" >
-                    <p:menuitem value="To My Account" url="/web/onlineBanking/deposit/customerToMyAccount.xhtml" />
-                    <p:menuitem value="To Other Merlion Accounts" url="/web/onlineBanking/deposit/customerToOthersAccount.xhtml" />
-                    <p:menuitem value="To Other Merlion Accuonts(One-time)" url="/web/onlineBanking/deposit/customerOneTimeTransfer.xhtml" />
-                    <p:menuitem value="Add Recipient" url="/web/onlineBanking/deposit/customerAddRecipient.xhtml" />
-                    <p:menuitem value="Delete Recipient" url="/web/onlineBanking/deposit/customerDeleteRecipient.xhtml" />
-                    <p:menuitem value="Change Daily Transfer Limit" url="/web/onlineBanking/deposit/customerDailyTransferLimit.xhtml" />
-                </p:submenu>
-
-                <p:submenu label="Enquiry">
-                    <p:menuitem value="Write an enquiry" url="/web/onlineBanking/customer/customerEnquiry.xhtml" />
-                </p:submenu>
-
-                <p:submenu label="My profile">
-                    <p:menuitem value="Change password" url="/web/onlineBanking/customer/customerChangePIN.xhtml" />
-                    <p:menuitem value="Update basic profile" url="/web/onlineBanking/customer/customerUpdateBasicProfile.xhtml" />
-                </p:submenu>
-
-                <p:submenu label="Logout">
-                    <p:menuitem value="Logout" actionListener="#{customerLoginManagedBean.doLogout}"/>
-                </p:submenu>
-            </p:menubar>
-        </h:form>
+    <ui:define name="content">
         <h:form>
-            <br/>
-            <p:panel id="panel" header="Fund Transfer to My Account"> 
-                <p:messages />
+            <div class="ui-g ui-fluid">
+                <div class="ui-g-12 ui-lg-12">
+                    <div class="card card-w-title"> 
 
-                <p:panelGrid style="margin-bottom:10px">
-                    <p:outputLabel style="font-weight: bold" value="From" />
-                </p:panelGrid>
-                <br/>
-                <p:panelGrid style="margin-bottom: 10px">
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel for="transferFromAccount" style="font-weight: bold" value="Account: " />
-                        </p:column>
-                        <p:column>
-                            <p:selectOneMenu id="transferFromAccount" value="#{transferManagedBean.fromBankAccountNumWithType}" effect="fold" editable="true">
-                                <f:selectItems value="#{transferManagedBean.fromAccounts}" />
-                            </p:selectOneMenu>
-                        </p:column>
-                        <p:column>
-                            <p:message for="transferFromAccount" />
-                        </p:column>
-                    </p:row>
+                        <p:panel>
+                            <p:outputLabel value="Welcome "/>
+                            <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
+                        </p:panel>
 
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel for="transferFromCurrency" style="font-weight: bold" value="Currency: " />
-                        </p:column>
-                        <p:column>
-                            <p:selectOneMenu id="transferFromCurrency" value="#{transferManagedBean.fromCurrency}" 
-                                             style="width:125px" required="true">
-                                <f:selectItem itemLabel="Singapore Dollar" itemValue="SGD - Singapore Dollar" />
-                            </p:selectOneMenu>
-                        </p:column>
-                        <p:column>
-                            <p:message for="transferFromCurrency" />
-                        </p:column>
-                    </p:row>
-                </p:panelGrid>
-                <br/>
-                <p:panelGrid style="margin-bottom:10px">
-                    <p:outputLabel style="font-weight: bold" value="To" />
-                </p:panelGrid>
-                <br/>
-                <p:panelGrid style="margin-bottom: 10px">
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel for="transferToAccount" style="font-weight: bold" value="Account: " />
-                        </p:column>
-                        <p:column>
-                            <p:selectOneMenu id="transferToAccount" value="#{transferManagedBean.toBankAccountNumWithType}" effect="fold" editable="true">
-                                <f:selectItems value="#{transferManagedBean.toAccounts}" />
-                            </p:selectOneMenu>
-                        </p:column>
-                        <p:column>
-                            <p:message for="transferToAccount" />
-                        </p:column>
-                    </p:row>
+                        <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                            <p:panel id="panel" header="Fund Transfer to My Account"> 
+                                <p:messages globalOnly="true"/>
 
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel for="transferToCurrency" style="font-weight: bold" value="Currency: " />
-                        </p:column>
-                        <p:column>
-                            <p:selectOneMenu id="transferToCurrency" value="#{transferManagedBean.toCurrency}" 
-                                             style="width:125px" required="true">
-                                <f:selectItem itemLabel="Singapore Dollar" itemValue="SGD - Singapore Dollar" />
-                            </p:selectOneMenu>
-                        </p:column>
-                        <p:column>
-                            <p:message for="transferToCurrency" />
-                        </p:column>
-                    </p:row>
+                                <p:outputLabel style="font-size:20px" value="Important Alert : There have been phone call scams requesting fund transfers." />
+                                <br/>
+                                <p:outputLabel style="font-size:20px" value="Please do not proceed with this transfer if you are unsure of the recipient or purpose for this transfer."/>
+                                <br/>
+                                <br/>
 
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel for="transferAmt" style="font-weight: bold" value="Amount: " />
-                        </p:column>
-                        <p:column>
-                            <p:inputText required="true" label="Amount" requiredMessage="Amount is required." id="transferAmt"
-                                         value="#{transferManagedBean.transferAmt}" converterMessage="Invalid input">
-                                <f:validateDoubleRange minimum="0.0" maximum="99999999.0" />
-                            </p:inputText>
-                        </p:column>
-                        <p:column>
-                            <p:message for="transferAmt" />
-                        </p:column>
-                    </p:row>
-                </p:panelGrid> 
-                <p:commandButton id="cancelBtn" action="/web/onlineBanking/deposit/customerDepositIndex.xhtml" value="Cancel" update="panel" immediate = "true">
-                    <p:confirm header="Cancel" message="Are you sure?" />
-                </p:commandButton>
+                                <p:outputLabel style="font-weight: bold;font-size: 24px" value="From:" />
 
-                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" action="/web/onlineBanking/deposit/customerDepositIndex.xhtml"/>
-                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" />
-                </p:confirmDialog>
+                                <h:outputText value="&lt;br /&gt;" escape="false" />
+                                <br/>
 
-                <p:commandButton id="nextBtn" value="Next" update="panel" 
-                                 actionListener="#{transferManagedBean.toMyAccount}" ajax="true"/>
-            </p:panel>
+                                <p:row>
+                                    <p:column>
+                                        <p:outputLabel for="transferFromAccount" style="font-weight: bold" value="Account: " />
+                                    </p:column>
+                                    <p:column>
+                                        <p:selectOneMenu id="transferFromAccount" value="#{transferManagedBean.fromBankAccountNumWithType}" effect="fold" editable="true">
+                                            <f:selectItems value="#{transferManagedBean.fromAccounts}" />
+                                        </p:selectOneMenu>
+                                    </p:column>
+                                    <p:column>
+                                        <p:message for="transferFromAccount" />
+                                    </p:column>
+                                </p:row>
+
+                                <p:row>
+                                    <p:column>
+                                        <p:outputLabel for="transferFromCurrency" style="font-weight: bold" value="Currency: " />
+                                    </p:column>
+                                    <p:column>
+                                        <p:selectOneMenu id="transferFromCurrency" value="#{transferManagedBean.fromCurrency}" 
+                                                         required="true">
+                                            <f:selectItem itemLabel="Singapore Dollar" itemValue="SGD - Singapore Dollar" />
+                                        </p:selectOneMenu>
+                                    </p:column>
+                                    <p:column>
+                                        <p:message for="transferFromCurrency" />
+                                    </p:column>
+                                </p:row>
+
+                                <br/>
+                                <h:outputText value="&lt;br /&gt;" escape="false" />
+                                <h:outputText value="&lt;br /&gt;" escape="false" />
+
+                                <p:outputLabel style="font-weight: bold;font-size: 24px" value="To:" />
+
+                                <h:outputText value="&lt;br /&gt;" escape="false" />
+                                <br/>
+
+                                <p:row>
+                                    <p:column>
+                                        <p:outputLabel for="transferToAccount" style="font-weight: bold" value="Account: " />
+                                    </p:column>
+                                    <p:column>
+                                        <p:selectOneMenu id="transferToAccount" value="#{transferManagedBean.toBankAccountNumWithType}" effect="fold" editable="true">
+                                            <f:selectItems value="#{transferManagedBean.toAccounts}" />
+                                        </p:selectOneMenu>
+                                    </p:column>
+                                    <p:column>
+                                        <p:message for="transferToAccount" />
+                                    </p:column>
+                                </p:row>
+
+                                <p:row>
+                                    <p:column>
+                                        <p:outputLabel for="transferToCurrency" style="font-weight: bold" value="Currency: " />
+                                    </p:column>
+                                    <p:column>
+                                        <p:selectOneMenu id="transferToCurrency" value="#{transferManagedBean.toCurrency}" 
+                                                         required="true">
+                                            <f:selectItem itemLabel="Singapore Dollar" itemValue="SGD - Singapore Dollar" />
+                                        </p:selectOneMenu>
+                                    </p:column>
+                                    <p:column>
+                                        <p:message for="transferToCurrency" />
+                                    </p:column>
+                                </p:row>
+
+                                <p:row>
+                                    <p:column>
+                                        <p:outputLabel for="transferAmt" style="font-weight: bold" value="Amount: " />
+                                    </p:column>
+                                    <p:column>
+                                        <p:inputText required="true" label="Amount" requiredMessage="Amount is required." id="transferAmt"
+                                                     value="#{transferManagedBean.transferAmt}" converterMessage="Invalid input">
+                                            <f:validateDoubleRange minimum="0.0" maximum="99999999.0" />
+                                        </p:inputText>
+                                    </p:column>
+                                    <p:column>
+                                        <p:message for="transferAmt" />
+                                    </p:column>
+                                </p:row>
+
+                                <p:commandButton id="cancelBtn" action="/web/onlineBanking/deposit/customerDepositIndex.xhtml" value="Cancel" update="panel" immediate = "true">
+                                    <p:confirm header="Cancel" message="Are you sure?" />
+                                </p:commandButton>
+
+                                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" action="/web/onlineBanking/deposit/customerDepositIndex.xhtml"/>
+                                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" />
+                                </p:confirmDialog>
+
+                                <p:commandButton id="nextBtn" value="Next" update="panel" 
+                                                 actionListener="#{transferManagedBean.toMyAccount}" ajax="true"/>
+                            </p:panel>
+                        </p:panelGrid>
+                    </div>
+                </div>
+            </div>
         </h:form>
-    </h:body>
-</html>
+        <ezcomp:CCTimeout/>
+    </ui:define>
+</ui:composition>

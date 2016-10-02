@@ -20,19 +20,21 @@ import javax.enterprise.context.RequestScoped;
 @Named(value = "employeeDisplayArchivedEmployeesManagedBean")
 @RequestScoped
 public class EmployeeDisplayArchivedEmployeesManagedBean {
+
     @EJB
     private EmployeeAdminSessionBeanLocal adminSessionBeanLocal;
+
     /**
      * Creates a new instance of EmployeeDisplayArchivedEmployeesManagedBean
      */
     public EmployeeDisplayArchivedEmployeesManagedBean() {
     }
-    
-     public List<Employee> getArchivedEmployees() {
+
+    public List<Employee> getArchivedEmployees() {
 
         List<Employee> employees = adminSessionBeanLocal.getArchivedEmployees();
-        
+
         return employees;
     }
-    
+
 }

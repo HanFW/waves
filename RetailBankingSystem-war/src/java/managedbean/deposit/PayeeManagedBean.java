@@ -115,6 +115,7 @@ public class PayeeManagedBean implements Serializable {
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
         CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
+        
         BankAccount bankAccount = bankAccountSessionLocal.retrieveBankAccountByNum(payeeAccountNum);
         boolean payeeExist = false;
 
@@ -139,7 +140,7 @@ public class PayeeManagedBean implements Serializable {
                 }
                 if (!payeeExist) {
 
-                    if (payees.size() >= 20) {
+                    if (payees.size() >= 2) {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! You already have 20 recipients.", "Failed!"));
                     } else {
 

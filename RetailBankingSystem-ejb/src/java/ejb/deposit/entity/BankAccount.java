@@ -16,14 +16,15 @@ import javax.persistence.OneToOne;
 
 @Entity
 public class BankAccount implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long bankAccountId;
-    
-    @Column(unique=true)
+
+    @Column(unique = true)
     private String bankAccountNum;
-    
+
     private String bankAccountPwd;
     private String bankAccountType;
     private String bankAccountBalance;
@@ -34,57 +35,57 @@ public class BankAccount implements Serializable {
     private String bankAccountDepositPeriod;
     private String currentFixedDepositPeriod;
     private String fixedDepositStatus;
-    
+
     private Double statementDateDouble;
-    
-    @OneToMany(cascade={CascadeType.ALL},fetch=FetchType.EAGER,mappedBy="bankAccount")
+
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "bankAccount")
     private List<AccTransaction> accTransaction;
-    
-    @ManyToOne(cascade={CascadeType.PERSIST},fetch=FetchType.EAGER)
+
+    @ManyToOne(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER)
     private CustomerBasic customerBasic;
-    
-    @OneToOne(cascade={CascadeType.ALL},fetch=FetchType.EAGER)
+
+    @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "bankAccount")
     private Interest interest;
-    
-    @OneToMany(cascade={CascadeType.ALL},fetch=FetchType.EAGER,mappedBy="bankAccount")
+
+    @OneToMany(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER, mappedBy = "bankAccount")
     private List<Statement> statement;
-    
+
     public Long getBankAccountId() {
         return bankAccountId;
     }
-    
+
     public void setBankAccountId(Long bankAccountId) {
         this.bankAccountId = bankAccountId;
     }
-    
+
     public String getBankAccountNum() {
         return bankAccountNum;
     }
-    
+
     public void setBankAccountNum(String bankAccountNum) {
         this.bankAccountNum = bankAccountNum;
     }
-    
+
     public String getBankAccountPwd() {
         return bankAccountPwd;
     }
-    
+
     public void setBankAccountPwd(String bankAccountPwd) {
         this.bankAccountPwd = bankAccountPwd;
     }
-    
+
     public String getBankAccountType() {
         return bankAccountType;
     }
-    
+
     public void setBankAccountTyep(String bankAccountType) {
         this.bankAccountType = bankAccountType;
     }
-    
+
     public List<AccTransaction> getAccTransaction() {
         return accTransaction;
     }
-    
+
     public void setAccTransaction(List<AccTransaction> transaction) {
         this.accTransaction = transaction;
     }
@@ -184,7 +185,7 @@ public class BankAccount implements Serializable {
     public void setStatementDateDouble(Double statementDateDouble) {
         this.statementDateDouble = statementDateDouble;
     }
-    
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -199,9 +200,8 @@ public class BankAccount implements Serializable {
             return false;
         }
         BankAccount other = (BankAccount) object;
-        if ((this.bankAccountId == null && other.bankAccountId != null) || (this.bankAccountId != null 
-                && !this.bankAccountId.equals(other.bankAccountId))) 
-        {
+        if ((this.bankAccountId == null && other.bankAccountId != null) || (this.bankAccountId != null
+                && !this.bankAccountId.equals(other.bankAccountId))) {
             return false;
         }
         return true;

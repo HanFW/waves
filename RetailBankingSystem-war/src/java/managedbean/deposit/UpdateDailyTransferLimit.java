@@ -41,7 +41,7 @@ public class UpdateDailyTransferLimit {
 
         if (ec.getSessionMap().get("customer") != null) {
             CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
-
+            
             List<BankAccount> bankAccounts = bankAccountSessionLocal.retrieveBankAccountByCusIC(customerBasic.getCustomerIdentificationNum());
 
             myBankAccounts = new HashMap<String, String>();

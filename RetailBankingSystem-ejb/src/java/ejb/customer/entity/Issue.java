@@ -30,11 +30,11 @@ public class Issue implements Serializable {
     private String issueStatus;
     private String createdTime;
     
-    @ManyToOne(cascade={CascadeType.ALL},fetch=FetchType.EAGER)
+    @ManyToOne(cascade={CascadeType.PERSIST},fetch=FetchType.EAGER)
     private EnquiryCase enquiryCase;
     
-    @ManyToOne(cascade={CascadeType.ALL},fetch=FetchType.EAGER)
-    private FollowUp followUp;
+//    @ManyToOne(cascade={CascadeType.ALL},fetch=FetchType.EAGER)
+//    private FollowUp followUp;
 
     
     public EnquiryCase getEnquiryCase() {
@@ -85,13 +85,13 @@ public class Issue implements Serializable {
         this.issueStatus = issueStatus;
     }
 
-    public FollowUp getFollowUp() {
-        return followUp;
-    }
-
-    public void setFollowUp(FollowUp followUp) {
-        this.followUp = followUp;
-    }
+//    public FollowUp getFollowUp() {
+//        return followUp;
+//    }
+//
+//    public void setFollowUp(FollowUp followUp) {
+//        this.followUp = followUp;
+//    }
 
     public String getCreatedTime() {
         return createdTime;

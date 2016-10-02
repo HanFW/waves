@@ -3,9 +3,7 @@ package managedbean.deposit;
 import ejb.customer.entity.CustomerBasic;
 import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import ejb.deposit.entity.BankAccount;
-import ejb.deposit.entity.Payee;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
-import ejb.deposit.session.PayeeSessionBeanLocal;
 import ejb.deposit.session.TransactionSessionBeanLocal;
 import ejb.infrastructure.session.LoggingSessionBeanLocal;
 import java.io.IOException;
@@ -29,9 +27,6 @@ public class CloseAccountManagedBean {
     private LoggingSessionBeanLocal loggingSessionBeanLocal;
 
     @EJB
-    private PayeeSessionBeanLocal payeeSessionBeanLocal;
-
-    @EJB
     private TransactionSessionBeanLocal transactionSessionLocal;
 
     @EJB
@@ -51,6 +46,7 @@ public class CloseAccountManagedBean {
     private String bankAccountPwd;
     private String confirmBankAccountPwd;
     private boolean checkOnlyOneAccount;
+    private String customerName;
 
     private Map<String, String> myBankAccounts = new HashMap<String, String>();
 
@@ -159,8 +155,9 @@ public class CloseAccountManagedBean {
     public void setCheckOnlyOneAccount(boolean checkOnlyOneAccount) {
         this.checkOnlyOneAccount = checkOnlyOneAccount;
     }
-
+    
     public void deleteAccount() throws IOException {
+        
         System.out.println("=");
         System.out.println("====== deposit/CloseAccountManagedBean: deleteAccount() ======");
         ec = FacesContext.getCurrentInstance().getExternalContext();
@@ -183,6 +180,7 @@ public class CloseAccountManagedBean {
                 if (!bankAccount.getBankAccountBalance().equals("0")) {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Please withdraw all your money.", "Failed!"));
                 } else {
+
                     bankAccountSessionLocal.deleteAccount(bankAccountNum);
                     statusMessage = "Account has been successfully deleted.";
                     loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "close account", "successful", null);
@@ -202,17 +200,6 @@ public class CloseAccountManagedBean {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Please withdraw all your money.", "Failed!"));
                 } else {
 
-                    if (!customerBasic.getPayee().isEmpty()) {
-                        List<Payee> payees = customerBasic.getPayee();
-                        String payeeAccountNum = "";
-
-                        for (int i = customerBasic.getPayee().size() - 1; i >= 0; i--) {
-                            payeeAccountNum = payees.get(i).getPayeeAccountNum();
-                            payeeSessionBeanLocal.deletePayee(payeeAccountNum);
-                        }
-                    }
-
-                    bankAccountSessionLocal.deleteAccount(bankAccountNum);
                     customerSessionBeanLocal.deleteCustomerBasic(customerBasic.getCustomerIdentificationNum());
 
                     statusMessage = "Account has been successfully deleted.";
