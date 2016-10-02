@@ -49,7 +49,6 @@ public class CustomerLoginManagedBean implements Serializable {
     private CustomerBasic customer;
     private int loginAttempts;
     private String customerStatus;
-    private String customerNationality;
     private String customerIdentification;
     private String customerOTP;
 
@@ -72,11 +71,13 @@ public class CustomerLoginManagedBean implements Serializable {
         FacesContext context = FacesContext.getCurrentInstance();
         //retrieve customer by user ID
         customer = adminSessionBeanLocal.getCustomerByOnlineBankingAccount(customerAccount);
+        customerOTP = null;
 
         if (customer == null) {
             //if no customer found in database
             message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid account number: ", "Please check your account number.");
             context.addMessage(null, message);
+            customerPassword = null;
             System.out.println("====== infrastructure/CustomerLoginManagedBean: doLogin(): login failed: invalid account number");
         } else {
             //found customer by userID
@@ -85,6 +86,12 @@ public class CustomerLoginManagedBean implements Serializable {
             String status = adminSessionBeanLocal.login(customerAccount, customerPassword);
 
             switch (status) {
+                case "locked":
+                    message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "For your safety, your online banking account has been temporarily locked.", "To unlock your account, please contact our customer service at 800-820-8820.");
+                    context.addMessage(null, message);
+                    customerPassword = null;
+                    customer = null;
+                    break;
                 case "loggedIn":
                     RequestContext rc = RequestContext.getCurrentInstance();
                     rc.execute("PF('otpDialog').show();");
@@ -98,6 +105,9 @@ public class CustomerLoginManagedBean implements Serializable {
                     message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid password: ", "Please enter your password again.");
                     context.addMessage(null, message);
                     loginAttempts++;
+                    if (loginAttempts >= 5) {
+                        adminSessionBeanLocal.lockCustomerOnlineBankingAccount(customer.getCustomerBasicId());
+                    }
                     System.out.println("====== infrastructure/CustomerLoginManagedBean: doLogin(): login failed: invalid password. login attepts: " + loginAttempts);
                     break;
                 default:
@@ -136,7 +146,7 @@ public class CustomerLoginManagedBean implements Serializable {
                 } else if (customer.getCustomerStatus().equals("reset")) {
                     System.out.println("====== infrastructure/CustomerLoginManagedBean: verifyLoginOTP(): customer reset password: redirect to reset password page");
                     ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/infrastructure/customerPINReset.xhtml?faces-redirect=true");
-                }else {
+                } else {
                     System.out.println("====== infrastructure/CustomerLoginManagedBean: verifyLoginOTP(): existing customer: redirect to online banking home page");
                     context.getExternalContext().redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerDepositIndex.xhtml?faces-redirect=true");
                 }
@@ -163,6 +173,7 @@ public class CustomerLoginManagedBean implements Serializable {
         FacesContext context = FacesContext.getCurrentInstance();
 
         customer = adminSessionBeanLocal.getCustomerByIdentificationNum(customerIdentification);
+        customerIdentification = null;
         if (customer == null) {
             System.out.println("====== infrastructure/CustomerLoginManagedBean: forgetOTP(): no customer found");
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please check your identification number.", null));
@@ -187,7 +198,6 @@ public class CustomerLoginManagedBean implements Serializable {
         customer = null;
         loginAttempts = 0;
         customerStatus = null;
-        customerNationality = null;
         customerIdentification = null;
         customerOTP = null;
         String serverName = FacesContext.getCurrentInstance().getExternalContext().getRequestServerName();
@@ -211,7 +221,6 @@ public class CustomerLoginManagedBean implements Serializable {
         customer = null;
         loginAttempts = 0;
         customerStatus = null;
-        customerNationality = null;
         customerIdentification = null;
         customerOTP = null;
         String serverName = FacesContext.getCurrentInstance().getExternalContext().getRequestServerName();
@@ -245,6 +254,7 @@ public class CustomerLoginManagedBean implements Serializable {
                 currentCustomer.setCustomerOnlineBankingAccountNum(newCustomerAccount);
                 currentCustomer.setCustomerOnlineBankingPassword(newCustomerPassword);
                 newCustomerPassword = null;
+                newCustomerAccount = null;
                 System.out.println("====== infrastructure/CustomerLoginManagedBean: activateOnlineBankingAccount(): account activated");
                 loggingSessionBeanLocal.createNewLogging("customer", customer.getCustomerBasicId(), "activate online banking account", "successful", null);
             }
@@ -294,7 +304,8 @@ public class CustomerLoginManagedBean implements Serializable {
                     customerAccount = customer.getCustomerOnlineBankingAccountNum();
                     System.out.println("====== infrastructure/CustomerLoginManagedBean: retrieveCustomerAccount(): customer online banking account number retrieved: " + customerAccount);
                     customerOTP = null;
-                    ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/infrastructure/customerRetrieveUserId.xhtml");
+                    customer = null;
+                    ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/infrastructure/customerRetrieveUserId.xhtml?faces-redirect=true");
                 } else {
                     System.out.println("====== infrastructure/CustomerLoginManagedBean: retrieveCustomerAccount(): customer entered wrong OTP");
                     context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "That is an invalid online banking OTP. Please re-enter.", null));
@@ -315,6 +326,7 @@ public class CustomerLoginManagedBean implements Serializable {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please enter your OTP", null));
         } else if (customer == null) {
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please enter correct identification number and OTP", null));
+            customerOTP = null;
         } else {
             Clock clock = new Clock(120);
             Totp totp = new Totp(customer.getCustomerOTPSecret(), clock);
@@ -324,6 +336,7 @@ public class CustomerLoginManagedBean implements Serializable {
                 rc.execute("PF('resetConfirmation').show();");
                 Boolean reset = adminSessionBeanLocal.resetPassword(customerIdentification);
                 customerOTP = null;
+                customer = null;
                 System.out.println("====== infrastructure/CustomerLoginManagedBean: resetCustomerPassword(): PIN reset successful");
                 loggingSessionBeanLocal.createNewLogging("customer", customer.getCustomerBasicId(), "reset online banking PIN", "successful", null);
             } else {
@@ -334,8 +347,8 @@ public class CustomerLoginManagedBean implements Serializable {
         }
 
     }
-    
-    public void deleteIBAccount(){
+
+    public void deleteIBAccount() {
         customer = null;
     }
 
@@ -413,14 +426,6 @@ public class CustomerLoginManagedBean implements Serializable {
         this.customerStatus = customerStatus;
     }
 
-    public String getCustomerNationality() {
-        return customerNationality;
-    }
-
-    public void setCustomerNationality(String customerNationality) {
-        this.customerNationality = customerNationality;
-    }
-
     public String getCustomerIdentification() {
         return customerIdentification;
     }
@@ -442,4 +447,73 @@ public class CustomerLoginManagedBean implements Serializable {
         this.customerOTP = customerOTP;
     }
 
+    public void doLoginFast(ActionEvent event) throws NoSuchAlgorithmException, IOException {
+        System.out.println("=");
+        System.out.println("====== infrastructure/CustomerLoginManagedBean: doLogin() ======");
+
+        FacesMessage message = null;
+        FacesContext context = FacesContext.getCurrentInstance();
+        ExternalContext ec = context.getExternalContext();
+        //retrieve customer by user ID
+        customer = adminSessionBeanLocal.getCustomerByOnlineBankingAccount(customerAccount);
+
+        if (customer == null) {
+            //if no customer found in database
+            message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid account number: ", "Please check your account number.");
+            context.addMessage(null, message);
+            customerPassword = null;
+            System.out.println("====== infrastructure/CustomerLoginManagedBean: doLogin(): login failed: invalid account number");
+        } else {
+            //found customer by userID
+            //encrypt the customerPassword first
+            customerPassword = md5Hashing(customerPassword + customer.getCustomerIdentificationNum().substring(0, 3));
+            String status = adminSessionBeanLocal.login(customerAccount, customerPassword);
+
+            switch (status) {
+                case "locked":
+                    message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "For your safety, your online banking account has been temporarily locked.", "To unlock your account, please contact our customer service at 800-820-8820.");
+                    context.addMessage(null, message);
+                    customerPassword = null;
+                    customer = null;
+                    break;
+                case "loggedIn":
+                    customerAccount = null;
+                    customerPassword = null;
+                    ec.setSessionMaxInactiveInterval(-1);
+                    ec.getSessionMap().put("customer", getCustomer());
+                    loggingSessionBeanLocal.createNewLogging("customer", customer.getCustomerBasicId(), "login to online banking", "successful", null);
+                    
+                    System.out.println("====== infrastructure/CustomerLoginManagedBean: doLogin(): login userID and PIN correct");
+                    if (customer.getCustomerStatus().equals("new")) {
+                        System.out.println("====== infrastructure/CustomerLoginManagedBean: verifyLoginOTP(): new customer: redirect to activation page");
+                        ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/infrastructure/customerUserIdActivation.xhtml?faces-redirect=true");
+                    } else if (customer.getCustomerStatus().equals("reset")) {
+                        System.out.println("====== infrastructure/CustomerLoginManagedBean: verifyLoginOTP(): customer reset password: redirect to reset password page");
+                        ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/infrastructure/customerPINReset.xhtml?faces-redirect=true");
+                    } else {
+                        System.out.println("====== infrastructure/CustomerLoginManagedBean: verifyLoginOTP(): existing customer: redirect to online banking home page");
+                        context.getExternalContext().redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerDepositIndex.xhtml?faces-redirect=true");
+                    }
+                    break;
+                case "invalidPassword":
+                    customerPassword = null;
+                    message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid password: ", "Please enter your password again.");
+                    context.addMessage(null, message);
+                    loginAttempts++;
+                    if (loginAttempts >= 5) {
+                        adminSessionBeanLocal.lockCustomerOnlineBankingAccount(customer.getCustomerBasicId());
+                    }
+                    System.out.println("====== infrastructure/CustomerLoginManagedBean: doLogin(): login failed: invalid password. login attepts: " + loginAttempts);
+                    break;
+                default:
+                    message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid account: ", "Please check your account number.");
+                    context.addMessage(null, message);
+                    customerAccount = null;
+                    customerPassword = null;
+                    System.out.println("====== infrastructure/CustomerLoginManagedBean: doLogin(): login failed: invalid account");
+                    break;
+            }
+        }
+
+    }
 }

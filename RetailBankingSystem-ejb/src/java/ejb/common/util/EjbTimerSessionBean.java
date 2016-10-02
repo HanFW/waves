@@ -33,9 +33,11 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
     private final String TIMER_NAME_10000MS = "EJB-TIMER-10000MS";
     private final int TIMER_DURATION_10000MS = 10000;
     private final String TIMER_NAME_15000MS = "EJB-TIMER-15000MS";
-    private final int TIMER_DURATION_15000MS = 15000;
+    private final int TIMER_DURATION_15000MS = 30000;
     private final String TIMER_NAME_300000MS = "EJB-TIMER-300000MS";
     private final int TIMER_DURATION_300000MS = 300100;
+    private final String TIMER_NAME_70000MS = "EJB-TIMER-70000MS";
+    private final int TIMER_DURATION_70000MS = 70000;
 
     public EjbTimerSessionBean() {
 
@@ -66,6 +68,16 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
     }
 
     @Override
+    public void createTimer70000MS() {
+        TimerService timerService = ctx.getTimerService();
+
+        Timer timer70000ms = timerService.createTimer(TIMER_DURATION_70000MS,
+                TIMER_DURATION_70000MS, new String(TIMER_NAME_70000MS));
+        System.out.println("{***70000MS Timer created" + String.valueOf(timer70000ms.getTimeRemaining()) + ","
+                + timer70000ms.getInfo().toString());
+    }
+
+    @Override
     public void cancelTimer10000MS() {
         TimerService timerService = ctx.getTimerService();
         Collection timers = timerService.getTimers();
@@ -77,6 +89,22 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
             {
                 timer.cancel();
                 System.out.println("*** 10000MS Timer cancelled");
+            }
+        }
+    }
+
+    @Override
+    public void cancelTimer70000MS() {
+        TimerService timerService = ctx.getTimerService();
+        Collection timers = timerService.getTimers();
+
+        for (Object obj : timers) {
+            Timer timer = (Timer) obj;
+
+            if (timer.getInfo().toString().equals(TIMER_NAME_70000MS));
+            {
+                timer.cancel();
+                System.out.println("*** 70000MS Timer cancelled");
             }
         }
     }
@@ -132,6 +160,8 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
             handleTimeout_300000ms();
         } else if (timer.getInfo().toString().equals(TIMER_NAME_15000MS)) {
             handleTimeout_15000ms();
+        } else if (timer.getInfo().toString().equals(TIMER_NAME_70000MS)) {
+            handleTimeout_70000ms();
         } else {
             System.out.println("*** Unknown timer timeout: " + timer.getInfo().toString());
         }
@@ -154,5 +184,9 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
 //        System.out.println("*** 10000MS Timer timeout");
 
         bankAccountSessionLocal.resetDailyTransferLimit();
+    }
+
+    private void handleTimeout_70000ms() {
+        System.out.println("*** 70000MS Timer timeout");
     }
 }
