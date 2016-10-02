@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package managedbean.infrastructure;
 
 import ejb.infrastructure.entity.Employee;
@@ -12,26 +7,22 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 import javax.ejb.EJB;
-import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
-import javax.faces.event.ActionEvent;
 
-/**
- *
- * @author Jingyuan
- */
 @Named(value = "systemAdminEditUserAccountManagedBean")
 @SessionScoped
+
 public class SystemAdminEditUserAccountManagedBean implements Serializable {
 
     @EJB
-    private EmployeeAdminSessionBeanLocal employeeAdminSessionBeanLocal;   
+    private EmployeeAdminSessionBeanLocal employeeAdminSessionBeanLocal;
+    
     @EJB
     private LoggingSessionBeanLocal loggingSessionBeanLocal;
-
 
     private String targetEmployeeName;
     private String targetEmployeeDepartment;
@@ -45,11 +36,27 @@ public class SystemAdminEditUserAccountManagedBean implements Serializable {
     private List<String> departments;
     private List<String> positions;
 
+    private ExternalContext ec;
+
     /**
      * Creates a new instance of SystemAdminEditUserAccountManagedBean
      */
-    public void updateAccountInfo(ActionEvent event) {
-
+//    @PostConstruct
+//    public void init() {
+////        if (employeeId == null) {
+////            System.out.println("null");
+////        } else {
+////            System.out.println("not null");
+////        }
+//        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+//        Map<String, Object> sessionMap = externalContext.getSessionMap();
+//        sessionMap.put("employeeId", employeeId);
+//    }
+    public void updateAccountInfo() {
+//        ec = FacesContext.getCurrentInstance().getExternalContext();
+//        employeeId = (Long) ec.getSessionMap().get("employeeId");
+        System.out.println("edit");
+        System.out.println(employeeId);
         FacesMessage message = null;
         FacesContext context = FacesContext.getCurrentInstance();
 
@@ -58,12 +65,16 @@ public class SystemAdminEditUserAccountManagedBean implements Serializable {
             System.err.println("********** sr: " + sr);
         }
         employeeAdminSessionBeanLocal.updateEmployeeAccount(employeeId, targetEmployeeName, targetEmployeeDepartment, targetEmployeePosition, targetEmployeeMobile, targetEmployeeEmail, selectedRoles);
-        loggingSessionBeanLocal.createNewLogging("employee", getEmployeeIdViaSessionScope(),"System admin updates account information of employee "+ targetEmployeeName,
-                "successful",null);
-        
+      
+
         System.out.println("clear");
-        employee=null;
-        employeeId=null;
+
+        message = new FacesMessage(FacesMessage.SEVERITY_INFO, "User account has been successfully updated!", "account updated");
+        context.addMessage(null, message);
+        System.out.println("*** AccountManagedBean: account updated");
+
+        employee = null;
+        employeeId = null;
         targetEmployeeName = null;
         targetEmployeeDepartment = null;
         targetEmployeePosition = null;
@@ -71,24 +82,29 @@ public class SystemAdminEditUserAccountManagedBean implements Serializable {
         targetEmployeeEmail = null;
         selectedRoles = null;
 
-        message = new FacesMessage(FacesMessage.SEVERITY_INFO, "User account has been successfully updated!", "account updated");
-        context.addMessage(null, message);
-        System.out.println("*** AccountManagedBean: account updated");
-        
-        
-
     }
 
     public SystemAdminEditUserAccountManagedBean() {
     }
 
     public String getTargetEmployeeName() {
-        if (targetEmployeeName == null) {
-            if (employee == null) {
-                employee = employeeAdminSessionBeanLocal.getEmployeeById(employeeId);
-            }
-            targetEmployeeName = employee.getEmployeeName();
-        }
+//        ec = FacesContext.getCurrentInstance().getExternalContext();
+//        employeeId = (Long) ec.getSessionMap().get("employeeId");
+
+//        targetEmployeeName = null;
+//        System.out.println(employeeId);
+////        if (targetEmployeeName == null) {
+//            if (employee == null) {
+//                System.out.println("if");
+//                employee = employeeAdminSessionBeanLocal.getEmployeeById(employeeId);
+//                System.out.println(employee);
+//            } else {
+//                System.out.println("else");
+        employee = employeeAdminSessionBeanLocal.getEmployeeById(employeeId);
+        targetEmployeeName = employee.getEmployeeName();
+       
+//            }
+//        }
         return targetEmployeeName;
     }
 
@@ -97,12 +113,12 @@ public class SystemAdminEditUserAccountManagedBean implements Serializable {
     }
 
     public String getTargetEmployeeDepartment() {
-        if (targetEmployeeDepartment == null) {
-            if (employee == null) {
-                employee = employeeAdminSessionBeanLocal.getEmployeeById(employeeId);
-            }
-            targetEmployeeDepartment = employee.getEmployeeDepartment();
-        }
+//        ec = FacesContext.getCurrentInstance().getExternalContext();
+//        employeeId = (Long) ec.getSessionMap().get("employeeId");
+
+        employee = employeeAdminSessionBeanLocal.getEmployeeById(employeeId);
+        targetEmployeeDepartment = employee.getEmployeeDepartment();
+
         return targetEmployeeDepartment;
     }
 
@@ -111,12 +127,12 @@ public class SystemAdminEditUserAccountManagedBean implements Serializable {
     }
 
     public String getTargetEmployeePosition() {
-        if (targetEmployeePosition == null) {
-            if (employee == null) {
-                employee = employeeAdminSessionBeanLocal.getEmployeeById(employeeId);
-            }
-            targetEmployeePosition = employee.getEmployeePosition();
-        }
+//        ec = FacesContext.getCurrentInstance().getExternalContext();
+//        employeeId = (Long) ec.getSessionMap().get("employeeId");
+
+        employee = employeeAdminSessionBeanLocal.getEmployeeById(employeeId);
+        targetEmployeePosition = employee.getEmployeePosition();
+
         return targetEmployeePosition;
     }
 
@@ -125,12 +141,15 @@ public class SystemAdminEditUserAccountManagedBean implements Serializable {
     }
 
     public String getTargetEmployeeMobile() {
-        if (targetEmployeeMobile == null) {
-            if (employee == null) {
-                employee = employeeAdminSessionBeanLocal.getEmployeeById(employeeId);
-            }
-            targetEmployeeMobile = employee.getEmployeeMobileNum();
-        }
+//        ec = FacesContext.getCurrentInstance().getExternalContext();
+//        employeeId = (Long) ec.getSessionMap().get("employeeId");
+        System.out.println("get");
+//        if (targetEmployeeMobile == null) {
+        employee = employeeAdminSessionBeanLocal.getEmployeeById(employeeId);
+        System.out.println(employee);
+        targetEmployeeMobile = employee.getEmployeeMobileNum();
+
+//        }
         return targetEmployeeMobile;
     }
 
@@ -139,12 +158,12 @@ public class SystemAdminEditUserAccountManagedBean implements Serializable {
     }
 
     public String getTargetEmployeeEmail() {
-        if (targetEmployeeEmail == null) {
-            if (employee == null) {
-                employee = employeeAdminSessionBeanLocal.getEmployeeById(employeeId);
-            }
-            targetEmployeeEmail = employee.getEmployeeEmail();
-        }
+//        ec = FacesContext.getCurrentInstance().getExternalContext();
+//        employeeId = (Long) ec.getSessionMap().get("employeeId");
+
+        employee = employeeAdminSessionBeanLocal.getEmployeeById(employeeId);
+        targetEmployeeEmail = employee.getEmployeeEmail();
+
         return targetEmployeeEmail;
     }
 
@@ -153,6 +172,8 @@ public class SystemAdminEditUserAccountManagedBean implements Serializable {
     }
 
     public Set<String> getSelectedRoles() {
+//        ec = FacesContext.getCurrentInstance().getExternalContext();
+//        employeeId = (Long) ec.getSessionMap().get("employeeId");
         if (selectedRoles == null && employeeId != null) {
             selectedRoles = employeeAdminSessionBeanLocal.getSelectedRoles(employeeId);
         }
@@ -183,7 +204,7 @@ public class SystemAdminEditUserAccountManagedBean implements Serializable {
     }
 
     public Long getEmployeeId() {
-        System.out.println("***** SystemAdminEditAccountManagedBean get employee id"+employeeId);
+        System.out.println("***** SystemAdminEditAccountManagedBean get employee id" + employeeId);
         return employeeId;
     }
 
@@ -205,11 +226,6 @@ public class SystemAdminEditUserAccountManagedBean implements Serializable {
         }
         return positions;
     }
-    
-     public Long getEmployeeIdViaSessionScope() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        Employee employee = (Employee) context.getExternalContext().getSessionMap().get("employee");
-        Long employeeId = employee.getEmployeeId();
-        return employeeId;
-    }
+
+ 
 }

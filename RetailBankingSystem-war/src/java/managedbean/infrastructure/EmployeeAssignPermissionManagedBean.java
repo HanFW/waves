@@ -131,8 +131,6 @@ public class EmployeeAssignPermissionManagedBean implements Serializable {
         context.addMessage(null, message);
         System.out.println("*** employeeAssignPermissionManagedBena: permission deleted");
         
-         loggingSessionBeanLocal.createNewLogging("employee", getEmployeeIdViaSessionScope(),"System admin deletes a permission of role "+roleName,
-                "successful",null);
 
         permissions = null;
 
@@ -171,8 +169,6 @@ public class EmployeeAssignPermissionManagedBean implements Serializable {
         context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath()+ "/web/internalSystem/infrastructure/employeeSystemAdminAssignPermission.xhtml");
         System.out.println("===== AssignPermissionManagedBean: add new permission to role =====");
         
-        loggingSessionBeanLocal.createNewLogging("employee", getEmployeeIdViaSessionScope(),"System admin adds a new permission to role "+ roleName,
-                "successful",null);
 
           permissions=null;
     }
@@ -180,14 +176,7 @@ public class EmployeeAssignPermissionManagedBean implements Serializable {
     public void AssignPermission(ActionEvent event) throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
         context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/web/internalSystem/infrastructure/employeeSystemAdminAssignPermission.xhtml");
-
     }
     
-     public Long getEmployeeIdViaSessionScope() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        Employee employee = (Employee) context.getExternalContext().getSessionMap().get("employee");
-        Long employeeId = employee.getEmployeeId();
-        return employeeId;
-    }
 
 }

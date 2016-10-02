@@ -20,18 +20,18 @@
                 </p:submenu>
             </p:menubar>
         </h:form>
-        
+
         <h:outputText value="Welcome #{employeeAccountManagedBean.userName} !"/>
         <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
         <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
         <h:outputText value="You have logged in as: System Admin"/>
+
         <br>
         </br>
 
         <h:form id="form">
 
-            <p:messages autoUpdate="true"/>
-
+            <p:messages autoUpdate="true" globalOnly="true"/>
             <h:panelGrid cellpadding="5" id="userInfo">
                 <p:row>
                     <p:column>
@@ -71,7 +71,11 @@
                         <p:outputLabel for="employeeMobileNum" value="Mobile Number:" />
                     </p:column>
                     <p:column>
-                        <p:inputText id="employeeMobileNum" value="#{systemAdminEditUserAccountManagedBean.targetEmployeeMobile}" />
+                        <p:inputText converterMessage="invalid input" validatorMessage="Please provide a valid mobile number" id="employeeMobileNum" value="#{systemAdminEditUserAccountManagedBean.targetEmployeeMobile}" />
+                        <f:validateLength minimum="8" maximum="8"/>
+                    </p:column>
+                    <p:column>
+                        <p:message for="employeeMobileNum"/>
                     </p:column>
                 </p:row>
 
@@ -80,7 +84,11 @@
                         <p:outputLabel for="employeeEmail" value="Email Address:" />
                     </p:column>
                     <p:column>
-                        <p:inputText id="employeeEmail" value="#{systemAdminEditUserAccountManagedBean.targetEmployeeEmail}" />
+                        <p:inputText id="employeeEmail" validatorMessage="Please provide a valid email address" value="#{systemAdminEditUserAccountManagedBean.targetEmployeeEmail}" />
+                        <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                    </p:column>
+                    <p:column>
+                        <p:message for="employeeEmail" />
                     </p:column>
                 </p:row>
 

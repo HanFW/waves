@@ -8,13 +8,15 @@
         <title>Employee Account Management</title>
     </h:head>
     <h:body>
-        <h:outputText value="Welcome #{employeeAccountManagedBean.userName} !"/>
-        <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
-        <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
-        <h:outputText value="You have logged in as: System Admin"/>
-        
+
         <h:form>
             <h1>Add a New User Account</h1>
+            
+            <h:outputText value="Welcome #{employeeAccountManagedBean.userName} ! "/>
+            <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment} "/>
+            <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition} "/>
+            <h:outputText value="You have logged in as: System Admin"/>
+            
             <p:messages globalOnly="true"/>
             <p:panelGrid>
                 <p:row>
@@ -37,7 +39,7 @@
                         <p:outputLabel for="employeeNRIC" style="font-weight: bold" value="NRIC No.: " />
                     </p:column>
                     <p:column>
-                        <p:inputText validatorMessage="Please provide a valid NRIC number" label="Employee NRIC" id="employeeNRIC"
+                        <p:inputText required="true" requiredMessage="NRIC is required" validatorMessage="Please provide a valid NRIC number" label="Employee NRIC" id="employeeNRIC"
                                      value="#{employeeAccountManagedBean.employeeNRIC}">
                             <f:validateLength minimum="9" maximum="9" /> 
                         </p:inputText>
@@ -127,8 +129,8 @@
                         <h:outputLabel for="role" style="font-weight: bold" value="Role:" />
                     </p:column>
                     <p:column>
-                        <p:selectCheckboxMenu id="menu" value="#{employeeAccountManagedBean.selectedRoles}" label="Select"
-                                              filter="true" filterMatchMode="startsWith" panelStyle="width:250px">
+                        <p:selectCheckboxMenu  required="true" requiredMessage="Roles must be selected" id="menu" value="#{employeeAccountManagedBean.selectedRoles}" label="Select"
+                                               filter="true" filterMatchMode="startsWith" panelStyle="width:250px">
                             <f:selectItems value="#{employeeAccountManagedBean.roles}" />
                         </p:selectCheckboxMenu>
                         <p:commandLink value="Confirm" style="margin-left: 20px" update="display"/>
@@ -137,19 +139,19 @@
 
                 <p:row>
                     <p:column colspan="2">
-                    <p:outputPanel id="display" style="width:250px;padding-left:5px">
-                        <p:dataList value="#{employeeAccountManagedBean.selectedRoles}" var="role" emptyMessage="No roles selected">
-                            #{role}
-                        </p:dataList>
-                    </p:outputPanel>
-                    <!--</h:form>-->
+                        <p:outputPanel id="display" style="width:250px;padding-left:5px">
+                            <p:dataList value="#{employeeAccountManagedBean.selectedRoles}" var="role" emptyMessage="No roles selected">
+                                #{role}
+                            </p:dataList>
+                        </p:outputPanel>
+                        <!--</h:form>-->
                     </p:column>
                 </p:row>
             </p:panelGrid>
 
             <p:row>
                 <p:column colspan="2">
-                    <p:commandButton type="submit" value="Submit" actionListener="#{employeeAccountManagedBean.createAccount}" update="@form"/>
+                    <p:commandButton type="submit" value="Submit" actionListener="#{employeeCreateUserAccountManagedBean.createAccount}" update="@form"/>
                 </p:column>
                 <p:column colspan="2">
                     <p:commandButton value="Quit" type="submit" action="/web/internalSystem/infrastructure/employeeUserAccountManagement.xhtml" immediate="true"/>

@@ -590,11 +590,11 @@ public class EmployeeAdminSessionBean implements EmployeeAdminSessionBeanLocal {
     }
 
     @Override
-    public void deletePermission(String roleName,String permissionName) {
+    public void deletePermission(String roleName, String permissionName) {
         System.out.println("*** adminSessionBean: Display all permissions of " + roleName);
-        Role role=getRoleByName(roleName);
-        Permission permission=getPermissionByName(permissionName);
-        
+        Role role = getRoleByName(roleName);
+        Permission permission = getPermissionByName(permissionName);
+
         role.deletePermissionFromRole(permission);
         permission.deleteRoleFromPermission(role);
         em.flush();
@@ -602,14 +602,12 @@ public class EmployeeAdminSessionBean implements EmployeeAdminSessionBeanLocal {
 
     @Override
     public void addPermissionToRole(String roleName, String permissionName) {
-        Role role=getRoleByName(roleName);
-        Permission permission=getPermissionByName(permissionName);
-        
+        Role role = getRoleByName(roleName);
+        Permission permission = getPermissionByName(permissionName);
+
         role.addPermissionToRole(permission);
         permission.addRoleToPermission(role);
         em.flush();
     }
-
-   
 
 }
