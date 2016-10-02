@@ -38,6 +38,7 @@ public class EmployeeCreateUserAccountManagedBean {
     private String employeeNRIC;
     private Integer employeeMobileNum;
     private String employeeEmail;
+    private String logInStatus;
     private Set<String> selectedRoles;
     private List<String> roles;
 
