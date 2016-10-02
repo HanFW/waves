@@ -40,6 +40,7 @@
             <p:panel id="detail" header="Customer Case Detail">
                 <p:panel>
                     <h:outputText value="Customer Input:   #{enquiryManagerManagedBean.caseDetailById}" /> 
+                    <h:outputText value="Previous Reply:   #{enquiryManagerManagedBean.caseReply}"
                 </p:panel>
                 <p:panel>
                     <p:dataTable var="followUp" value="#{enquiryManagerManagedBean.caseFollowUpById}" 

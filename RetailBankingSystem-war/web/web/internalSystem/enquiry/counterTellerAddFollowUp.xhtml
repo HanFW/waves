@@ -44,7 +44,7 @@
                                         <p:row>
                                             <h:outputLabel style="font-weight: bold" value="Record more about customer's previous enquiry" />
                                             <h:outputText value="&lt;br/&gt;" escape="false" />
-                                            <p:inputTextarea id="followUpDetail" value="#{employeeRecordEnquiryManagedBean.followUpDetail}" required="true" rows="5" cols="50" counter="display" maxlength="500" counterTemplate="{0} characters remaining." autoResize="false" />
+                                            <p:inputTextarea id="followUpDetail" value="#{employeeAddFollowUpManagedBean.followUpDetail}" required="true" rows="5" cols="50" counter="display" maxlength="500" counterTemplate="{0} characters remaining." autoResize="false" />
                                             <h:outputText value="&lt;br/&gt;" escape="false" />
                                             <h:outputText id="display" />
                                         </p:row>
@@ -52,7 +52,7 @@
                                     </h:panelGrid>
                                 </p:panel>
 
-                                <p:commandButton value="Send Follow-up" style="width:40%" actionListener="#{employeeRecordEnquiryManagedBean.saveFollowUp}" ajax="false" />
+                                <p:commandButton value="Send Follow-up" style="width:40%" actionListener="#{employeeAddFollowUpManagedBean.saveFollowUp}" ajax="false" />
                             </div>
                         </div>
                     </div>

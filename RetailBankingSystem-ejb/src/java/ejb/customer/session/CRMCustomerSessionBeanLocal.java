@@ -9,6 +9,8 @@ import javax.ejb.Local;
 
 public interface CRMCustomerSessionBeanLocal {
 
+    public CustomerBasic getCustomer(String onlineBankingAccountNum);
+
     public List<CustomerBasic> getMyCustomerBasicProfile(String onlineBankingAccountNum);
 
     public CustomerAdvanced getCustomerAdvancedByAccNum(String onlineBankingAccountNum);
@@ -22,7 +24,7 @@ public interface CRMCustomerSessionBeanLocal {
             String customerCompany, String customerEmail, String customerMobile, String customerAddress,
             String customerPostal);
 
-    public String updateCustomerAdvancedProfile(String customerOnlineBankingAccountNum, String customerEmploymentDetails,
+    public String updateCustomerAdvancedProfile(Long customerAdvancedId, String customerEmploymentDetails,
             String customerFamilyInfo, String customerCreditReport, String customerFinancialRiskRating,
             String customerFinanacialAssets, String customerFinanacialGoals);
 
@@ -41,5 +43,6 @@ public interface CRMCustomerSessionBeanLocal {
     public CustomerAdvanced retrieveCustomerAdvancedByAdId(Long customerAdvancedId);
 
     public void deleteCustomerAdvanced(Long customerAdvancedId);
+
     public CustomerAdvanced getCustomerAdvancedById(Long id);
 }

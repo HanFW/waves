@@ -6,25 +6,21 @@
 package managedbean.customer;
 
 import ejb.customer.entity.CustomerBasic;
-import ejb.customer.entity.EnquiryCase;
-import ejb.customer.entity.FollowUp;
-import java.io.Serializable;
-import java.util.List;
+import ejb.customer.session.EnquirySessionBeanLocal;
 import javax.ejb.EJB;
-import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import ejb.customer.session.EnquirySessionBeanLocal;
 
 /**
  *
  * @author aaa
  */
-@Named(value = "enquiryManagedBean")
-@SessionScoped
-public class EnquiryManagedBean implements Serializable {
+@Named(value = "customerWriteEnquiryManagedBean")
+@RequestScoped
+public class CustomerWriteEnquiryManagedBean {
 
     @EJB
     private EnquirySessionBeanLocal enquirySessionBeanLocal;
@@ -32,17 +28,24 @@ public class EnquiryManagedBean implements Serializable {
     private Long caseId;
     private String caseType;
     private String caseDetail;
-    
+
     private String followUpDetail;
     private String caseStatus;
     private String onlineBankingAccountNum;
-    
 
     private ExternalContext ec;
 
     private CustomerBasic cb = new CustomerBasic();
 
-    public EnquiryManagedBean() {
+    public CustomerWriteEnquiryManagedBean() {
+    }
+
+    public EnquirySessionBeanLocal getEnquirySessionBeanLocal() {
+        return enquirySessionBeanLocal;
+    }
+
+    public void setEnquirySessionBeanLocal(EnquirySessionBeanLocal enquirySessionBeanLocal) {
+        this.enquirySessionBeanLocal = enquirySessionBeanLocal;
     }
 
     public Long getCaseId() {
@@ -69,6 +72,14 @@ public class EnquiryManagedBean implements Serializable {
         this.caseDetail = caseDetail;
     }
 
+    public String getFollowUpDetail() {
+        return followUpDetail;
+    }
+
+    public void setFollowUpDetail(String followUpDetail) {
+        this.followUpDetail = followUpDetail;
+    }
+
     public String getCaseStatus() {
         return caseStatus;
     }
@@ -85,44 +96,25 @@ public class EnquiryManagedBean implements Serializable {
         this.onlineBankingAccountNum = onlineBankingAccountNum;
     }
 
-
-
-    public String getFollowUpDetail() {
-        return followUpDetail;
+    public ExternalContext getEc() {
+        return ec;
     }
 
-    public void setFollowUpDetail(String followUpDetail) {
-        this.followUpDetail = followUpDetail;
-    }
-    
-        
-    public List<FollowUp> retrieveFollowUpByCaseId() {
-        List<FollowUp> fu = enquirySessionBeanLocal.getFollowUpByCaseId(caseId);
-        return fu;
+    public void setEc(ExternalContext ec) {
+        this.ec = ec;
     }
 
-//    public void saveEnquiryCase() {
-//        ec = FacesContext.getCurrentInstance().getExternalContext();
-//        cb = (CustomerBasic) ec.getSessionMap().get("customer");
-//        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(enquirySessionBeanLocal.addNewCase(cb.getCustomerBasicId(), caseType, caseDetail), " "));
-//        caseType = null;
-//        caseDetail = null;
-//        cb = null;
-//    }
+    public CustomerBasic getCb() {
+        return cb;
+    }
 
-    public List<EnquiryCase> getEnquiryCase() {
+    public void setCb(CustomerBasic cb) {
+        this.cb = cb;
+    }
+ 
+    public void saveEnquiryCase() {
         ec = FacesContext.getCurrentInstance().getExternalContext();
         cb = (CustomerBasic) ec.getSessionMap().get("customer");
-        List<EnquiryCase> enquiryCases = enquirySessionBeanLocal.getCustomerEnquiry(cb.getCustomerBasicId());
-
-        return enquiryCases;
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(enquirySessionBeanLocal.addNewCase(cb.getCustomerBasicId(), caseType, caseDetail), " "));
     }
-
-//    public void saveFollowUp() {
-//
-//        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(enquirySessionBeanLocal.addFollowUp(caseId, followUpDetail), " "));
-//        caseId = null;
-//        followUpDetail = null;
-//    }
-
 }

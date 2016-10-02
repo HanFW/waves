@@ -124,8 +124,7 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
         return "Delete Customer Successfully";
     }
 
-    private CustomerBasic
-            getCustomer(String onlineBankingAccountNum) {
+    public CustomerBasic getCustomer(String onlineBankingAccountNum) {
         CustomerBasic customer = entityManager.find(CustomerBasic.class, onlineBankingAccountNum);
         return customer;
     }
@@ -207,12 +206,12 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
             return ca;
         }
     }
-    
+
     @Override
     public CustomerAdvanced getCustomerAdvancedById(Long id) {
-        
+
         CustomerAdvanced ca = entityManager.find(CustomerAdvanced.class, id);
-        
+
         System.out.println("%%%%%" + ca);
         return ca;
     }
@@ -276,9 +275,9 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
     }
 
     @Override
-    public String updateCustomerAdvancedProfile(String customerOnlineBankingAccountNum, String customerEmploymentDetails, String customerFamilyInfo, String customerCreditReport, String customerFinancialRiskRating, String customerFinanacialAssets, String customerFinanacialGoals) {
-        Query query = entityManager.createQuery("SELECT ca FROM CustomerAdvanced ca WHERE ca.customerOnlineBankingAccountNum = :customerOnlineBankingAccountNum");
-        query.setParameter("customerOnlineBankingAccountNum", customerOnlineBankingAccountNum);
+    public String updateCustomerAdvancedProfile(Long customerAdvancedId, String customerEmploymentDetails, String customerFamilyInfo, String customerCreditReport, String customerFinancialRiskRating, String customerFinanacialAssets, String customerFinanacialGoals) {
+        Query query = entityManager.createQuery("SELECT ca FROM CustomerAdvanced ca WHERE ca.customerAdvancedId = :customerAdvancedId");
+        query.setParameter("customerAdvancedId", customerAdvancedId);
         List resultList = query.getResultList();
         if (resultList.isEmpty()) {
             return "Cannot find customer profile, please contact with our IT staff";
