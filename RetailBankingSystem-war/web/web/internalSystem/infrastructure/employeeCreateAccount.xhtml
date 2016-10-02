@@ -33,7 +33,7 @@
                                         </p:column>
                                         <p:column>
                                             <p:inputText label="Employee Name" id="employeeName"
-                                                         value="#{employeeAccountManagedBean.employeeName}">
+                                                         value="#{employeeCreateUserAccountManagedBean.employeeName}">
                                             </p:inputText>
                                         </p:column>
                                         <p:column>
@@ -47,7 +47,7 @@
                                         </p:column>
                                         <p:column>
                                             <p:inputText validatorMessage="Please provide a valid NRIC number" label="Employee NRIC" id="employeeNRIC"
-                                                         value="#{employeeAccountManagedBean.employeeNRIC}">
+                                                         value="#{employeeCreateUserAccountManagedBean.employeeNRIC}">
                                                 <f:validateLength minimum="9" maximum="9" /> 
                                             </p:inputText>
                                         </p:column>
@@ -61,7 +61,7 @@
                                             <p:outputLabel for="employeeDepartment" style="font-weight: bold" value="Department: " />
                                         </p:column>
                                         <p:column>
-                                            <p:selectOneMenu id="employeeDepartment" value="#{employeeAccountManagedBean.employeeDepartment}" 
+                                            <p:selectOneMenu id="employeeDepartment" value="#{employeeCreateUserAccountManagedBean.employeeDepartment}" 
                                                              style="width:125px">
                                                 <f:selectItem itemLabel="Please Select" itemValue=" " />
                                                 <f:selectItem itemLabel="CEO" itemValue="CEO" />
@@ -81,7 +81,7 @@
                                             <p:outputLabel for="employeePosition" style="font-weight: bold" value="Position: " />
                                         </p:column>
                                         <p:column>
-                                            <p:selectOneMenu id="employeePosition" value="#{employeeAccountManagedBean.employeePosition}" 
+                                            <p:selectOneMenu id="employeePosition" value="#{employeeCreateUserAccountManagedBean.employeePosition}" 
                                                              style="width:125px">
                                                 <f:selectItem itemLabel="Please Select" itemValue=" " />
                                                 <f:selectItem itemLabel="CEO" itemValue="CEO" />
@@ -105,7 +105,7 @@
                                         </p:column>
                                         <p:column>
                                             <p:inputText converterMessage="invalid input" label="Employee Mobile Number" id="employeeMobileNum" validatorMessage="Please provide a valid mobile number"
-                                                         value="#{employeeAccountManagedBean.employeeMobileNum}">
+                                                         value="#{employeeCreateUserAccountManagedBean.employeeMobileNum}">
                                                 <f:validateLength minimum="8" maximum="8"/>
                                             </p:inputText>
                                         </p:column>
@@ -120,7 +120,7 @@
                                         </p:column>
                                         <p:column>
                                             <p:inputText validatorMessage="Please provide a valid email address" label="Employee Email" id="employeeEmail"
-                                                         value="#{employeeAccountManagedBean.employeeEmail}">
+                                                         value="#{employeeCreateUserAccountManagedBean.employeeEmail}">
                                                 <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
                                             </p:inputText>
                                         </p:column>
@@ -135,9 +135,9 @@
                                         <p:column>
                                             <h:outputLabel for="role" style="font-weight: bold" value="Role:" />
 
-                                            <p:selectCheckboxMenu id="menu" value="#{employeeAccountManagedBean.selectedRoles}" label="Select"
+                                            <p:selectCheckboxMenu id="menu" value="#{employeeCreateUserAccountManagedBean.selectedRoles}" label="Select"
                                                                   filter="true" filterMatchMode="startsWith" panelStyle="width:250px">
-                                                <f:selectItems value="#{employeeAccountManagedBean.roles}" />
+                                                <f:selectItems value="#{employeeCreateUserAccountManagedBean.roles}" />
                                             </p:selectCheckboxMenu>
                                             <p:commandLink value="Confirm" style="margin-left: 20px" update="display"/>
                                         </p:column>
@@ -146,7 +146,7 @@
                                     <p:row>
                                         <p:column colspan="2">
                                             <p:outputPanel id="display" style="width:250px;padding-left:5px">
-                                                <p:dataList value="#{employeeAccountManagedBean.selectedRoles}" var="role" emptyMessage="No roles selected">
+                                                <p:dataList value="#{employeeCreateUserAccountManagedBean.selectedRoles}" var="role" emptyMessage="No roles selected">
                                                     #{role}
                                                 </p:dataList>
                                             </p:outputPanel>
@@ -157,7 +157,7 @@
 
 
                                 <br/>
-                                <p:commandButton type="submit" value="Submit" style="width:40%" actionListener="#{employeeAccountManagedBean.createAccount}" update="@form"/>
+                                <p:commandButton type="submit" value="Submit" style="width:40%" actionListener="#{employeeCreateUserAccountManagedBean.createAccount}" update="@form"/>
 
                                 <br/>
                                 <br/>
