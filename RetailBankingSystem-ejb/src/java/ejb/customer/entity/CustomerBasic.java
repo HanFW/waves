@@ -43,6 +43,7 @@ public class CustomerBasic implements Serializable {
     private String customerPayeeNum;
     private String customerAge;
     private String customerOTPSecret;
+    private String customerOnlineBankingAccountLocked;
 
     private byte[] customerSignature;
 
@@ -287,6 +288,14 @@ public class CustomerBasic implements Serializable {
 
     public void setCustomerAdvanced(CustomerAdvanced customerAdvanced) {
         this.customerAdvanced = customerAdvanced;
+    }
+
+    public String getCustomerOnlineBankingAccountLocked() {
+        return customerOnlineBankingAccountLocked;
+    }
+
+    public void setCustomerOnlineBankingAccountLocked(String customerOnlineBankingAccountLocked) {
+        this.customerOnlineBankingAccountLocked = customerOnlineBankingAccountLocked;
     }
 
     

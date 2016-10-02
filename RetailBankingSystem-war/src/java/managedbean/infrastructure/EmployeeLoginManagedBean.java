@@ -40,8 +40,6 @@ public class EmployeeLoginManagedBean implements Serializable {
     private String employeeAccountNum;
     private String employeePassword;
     private Employee employee;
-    private String currentPassword;
-    private String newPassword;
     private boolean loggedIn = false;
     private boolean ArchiveStatus = false;
 
@@ -93,6 +91,8 @@ public class EmployeeLoginManagedBean implements Serializable {
                 System.out.println("*** LoginManagedBean: invalid account");
                 break;
         }
+        employeeAccountNum=null;
+        employeePassword=null;
     }
 
     public void doLogOut(ActionEvent event) throws IOException {
