@@ -13,12 +13,11 @@
         <h:form>
             <p:menubar>
                 <p:submenu label="Home">
-                    <p:menuitem value="Home" url="/web/internalSystem/infrastructure/employeeMainPage.xhtml"/>
+                    <p:menuitem value="Home" url="/web/internalSystem/infrastructure/employeeMainPage.xhtml?faces-redirect=true"/>
                 </p:submenu>
                 <p:submenu label="Tasks">
-                    <p:menuitem value="Search Enquiry" action="/web/internalSystem/enquiry/counterTellerSearchCustomer.xhtml"/>
-                    <p:menuitem value="View Enquiry" action="/web/internalSystem/enquiry/enquirymanagerViewEnquiry.xhtml"/>
-                    <p:menuitem value="Forward Enquiry" action="/web/internalSystem/enquiry/enquirymanagerReplyCase.xhtml"/>
+                    <p:menuitem value="Search Enquiry" action="/web/internalSystem/enquiry/counterTellerSearchCustomer.xhtml?faces-redirect=true"/>
+                    <p:menuitem value="View Enquiry" action="/web/internalSystem/enquiry/enquirymanagerViewEnquiry.xhtml?faces-redirect=true"/>
                 </p:submenu>
                 <p:submenu label="Manage My Account">
                     <p:menuitem value="Change Password" actionListener="#{employeeLoginManagedBean.changePassword}" />

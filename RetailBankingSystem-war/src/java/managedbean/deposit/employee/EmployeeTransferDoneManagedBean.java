@@ -129,6 +129,14 @@ public class EmployeeTransferDoneManagedBean {
         this.statusMessage = statusMessage;
     }
 
+    public String getCustomerIdentificationNum() {
+        return customerIdentificationNum;
+    }
+
+    public void setCustomerIdentificationNum(String customerIdentificationNum) {
+        this.customerIdentificationNum = customerIdentificationNum;
+    }
+
     public void transfer() throws IOException {
 
         BankAccount bankAccountFrom = bankAccountSessionBeanLocal.retrieveBankAccountByNum(fromAccount);

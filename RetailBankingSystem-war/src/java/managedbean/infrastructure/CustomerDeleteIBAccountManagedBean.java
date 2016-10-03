@@ -47,29 +47,11 @@ public class CustomerDeleteIBAccountManagedBean {
         loggingSessionBeanLocal.createNewLogging("customer", customer.getCustomerBasicId(), "delete online banking account", "successful", null);
         ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/infrastructure/customerLoggedOut.xhtml");
     }
-    
-    public void displayServices(ActionEvent event) throws IOException{
+
+    public ArrayList<String> getDisplayMessage() {
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         CustomerBasic customer = (CustomerBasic) ec.getSessionMap().get("customer");
         displayMessage = customerAdminSessionBeanLocal.checkExistingService(customer.getCustomerBasicId());
-        if (!displayMessage.isEmpty()) {
-            hasServices = true;
-        }else{
-            hasServices = false;
-        }
-        ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/infrastructure/customerDeleteIBAccount.xhtml?faces-redirect=true");
-    }
-
-    public ArrayList<String> getDisplayMessage() {
         return displayMessage;
     }
-
-    public boolean isHasServices() {
-        return hasServices;
-    }
-
-    public void setHasServices(boolean hasServices) {
-        this.hasServices = hasServices;
-    }
-
 }

@@ -105,8 +105,7 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
             }
         }
 
-        if (!customerBasic.getPayee()
-                .isEmpty()) {
+        if (!customerBasic.getPayee().isEmpty()) {
             List<Payee> payees = customerBasic.getPayee();
             String payeeAccountNum = "";
 
@@ -123,7 +122,6 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
         }
 
         entityManager.remove(customerBasic);
-
         entityManager.flush();
 
         return "Delete Customer Successfully";

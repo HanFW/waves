@@ -22,7 +22,7 @@
             </h:form>
 
             <h:form id="formMain">
-          <div class="ui-g ui-fluid">
+                <div class="ui-g ui-fluid">
                     <div class="ui-g-12 ui-lg-12">
                         <div class="card card-w-title"> 
                             <div align="center">
@@ -35,33 +35,33 @@
                                 <br/>
                                 <h:outputText value="You have logged in as: Counter Teller"/>
                                 <br/>
-            <br/>
-            <p:panel id="panel" header="Cash Withdraw"> 
-                <p:panelGrid>
+                                <br/>
+                                <p:panel id="panel" header="Cash Withdraw"> 
+                                    <p:panelGrid>
 
-                    <p:messages />
+                                        <p:messages />
 
-                    <h:form id="formMain">
-                        <h:outputText style="font-weight: bold" value="Transaction Id: "/>
-                        <h:outputText value="#{employeeWithdrawDoneManagedBean.transactionId}"/>
-                        <br/>
-                        <h:outputText style="font-weight: bold" value="Status Message: " />
-                        <h:outputText value="#{employeeWithdrawDoneManagedBean.statusMessage}" />
-                        <br/>
-                        <h:outputText style="font-weight: bold" value="Bank Account Number: "/>
-                        <h:outputText value="#{employeeWithdrawDoneManagedBean.withdrawAccountNum}"/>
-                        <br/>
-                        <h:outputText style="font-weight: bold" value="Withdraw Amount: "/>
-                        <h:outputText value="#{employeeWithdrawDoneManagedBean.withdrawAmt}"/>
-                    </h:form>
-                </p:panelGrid>
-            </p:panel>
-                       </div>
+                                        <h:form id="formMain">
+                                            <h:outputText style="font-weight: bold" value="Transaction Id: "/>
+                                            <h:outputText value="#{employeeWithdrawDoneManagedBean.transactionId}"/>
+                                            <br/>
+                                            <h:outputText style="font-weight: bold" value="Status Message: " />
+                                            <h:outputText value="#{employeeWithdrawDoneManagedBean.statusMessage}" />
+                                            <br/>
+                                            <h:outputText style="font-weight: bold" value="Bank Account Number: "/>
+                                            <h:outputText value="#{employeeWithdrawDoneManagedBean.withdrawAccountNum}"/>
+                                            <br/>
+                                            <h:outputText style="font-weight: bold" value="Withdraw Amount: "/>
+                                            <h:outputText value="#{employeeWithdrawDoneManagedBean.withdrawAmt}"/>
+                                        </h:form>
+                                    </p:panelGrid>
+                                </p:panel>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-        </h:form>
-    </h:body>
+            </h:form>
+        </h:body>
     </ui:define>
 </ui:composition>

@@ -42,7 +42,7 @@
                                 <p:panel id="panel" header="Cash Withdraw">
                                     <p:messages globalOnly="true"/>
 
-                                     <h:panelGrid columns="1" cellpadding="5" styleClass="ui-panelgrid-blank form-group">     
+                                    <h:panelGrid columns="1" cellpadding="5" styleClass="ui-panelgrid-blank form-group">     
                                         <p:row>
                                             <p:column>
                                                 <p:outputLabel for="withdrawAmt" style="font-weight: bold" value="Withdraw Amount(S$): " />
@@ -96,22 +96,22 @@
                                         </p:row>    
                                     </h:panelGrid>
                                     <br/>
-                                     <h:panelGrid columns="2" cellpadding="5" styleClass="ui-panelgrid-blank form-group">  
-                                    
-                                    <p:commandButton id="withdrawBtn" value="Withdraw" update="panel" 
-                                                     actionListener="#{employeeCashManagedBean.cashWithdraw}" ajax="true" />
-                                 
-                                     <p:commandButton id="cancelBtn" action="/webindex.xhtml" value="Cancel" update="panel" immediate = "true"> 
-                                        <p:confirm header="Cancel" message="Are you sure?" />
-                                    </p:commandButton>
+                                    <h:panelGrid columns="2" cellpadding="5" styleClass="ui-panelgrid-blank form-group">  
 
-                                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                                        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" action="/web/index.xhtml"/>
-                                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" />
-                                    </p:confirmDialog>
+                                        <p:commandButton id="withdrawBtn" value="Withdraw" update="panel" 
+                                                         actionListener="#{employeeCashManagedBean.cashWithdraw}" ajax="true" />
 
-                                     </h:panelGrid>
-                                
+                                        <p:commandButton id="cancelBtn" action="/webindex.xhtml" value="Cancel" update="panel" immediate = "true"> 
+                                            <p:confirm header="Cancel" message="Are you sure?" />
+                                        </p:commandButton>
+
+                                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" action="/web/index.xhtml"/>
+                                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" />
+                                        </p:confirmDialog>
+
+                                    </h:panelGrid>
+
                                 </p:panel>
                             </div>
                         </div>

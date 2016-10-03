@@ -4,7 +4,7 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/onlineBankingTemplate.xhtml"
-                 xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
+                xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
     <ui:define name="content">
 
 
@@ -16,36 +16,36 @@
                             <p:outputLabel value="Welcome "/>
                             <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
                         </p:panel> 
-       
-            <p:panel>
-                <p:outputLabel rendered="#{customerDeleteIBAccountManagedBean.hasServices}" value="We are still serving you on the following services: "/>
-                <p:dataList rendered="#{customerDeleteIBAccountManagedBean.hasServices}" value="#{customerDeleteIBAccountManagedBean.displayMessage}" var="service">
-                    <h:outputText value="#{service}"/>
-                </p:dataList>
-                <div align="center">
-                <h:outputText value="Merlion online banking serves as a way to help you manage your wealth."/>
-                <br/>
-                <h:outputText value="Are you sure you want to delete your online banking account?"/>
-                <br/>
-                 </div>
-                 <h:outputText value="&lt;br /&gt;" escape="false" />
-                <p:commandButton value="Delete anyway" onclick="PF('confirmationDialog').show();"/>
-            </p:panel>
-            <p:dialog widgetVar="confirmationDialog" header="Delete confirmation" responsive="true">
-                <h:outputText value="After deleting your online banking account, you will automatically log out. "/>
-                <br/>
-                <h:outputText value="Are you sure you want to delete your online banking account?"/>
-                <br/>
-                <p:commandButton value="Yes" actionListener="#{customerDeleteIBAccountManagedBean.deleteIBAccount}"/>
-                <p:commandButton value="No" onclick="PF('confirmationDialog').hide();"/>
-            </p:dialog>
-        
- 
+
+                        <p:panel>
+                            <div align="center">
+                                <p:outputLabel value="We are still serving you on the following services: "/>
+                                <p:dataList value="#{customerDeleteIBAccountManagedBean.displayMessage}" var="service">
+                                    <h:outputText value="#{service}"/>
+                                </p:dataList>
+                                <h:outputText value="Merlion online banking serves as a way to help you manage your wealth."/>
+                                <br/>
+                                <h:outputText value="Are you sure you want to delete your online banking account?"/>
+                                <br/>
+                            </div>
+                            <h:outputText value="&lt;br /&gt;" escape="false" />
+                            <p:commandButton value="Delete anyway" onclick="PF('confirmationDialog').show();"/>
+                        </p:panel>
+                        <p:dialog widgetVar="confirmationDialog" header="Delete confirmation" responsive="true">
+                            <h:outputText value="After deleting your online banking account, you will automatically log out. "/>
+                            <br/>
+                            <h:outputText value="Are you sure you want to delete your online banking account?"/>
+                            <br/>
+                            <p:commandButton value="Yes" actionListener="#{customerDeleteIBAccountManagedBean.deleteIBAccount}"/>
+                            <p:commandButton value="No" onclick="PF('confirmationDialog').hide();"/>
+                        </p:dialog>
+
+
                     </div>
                 </div>
             </div>
         </h:form>
 
- <ezcomp:CCTimeout/>
+        <ezcomp:CCTimeout/>
     </ui:define>
 </ui:composition>
