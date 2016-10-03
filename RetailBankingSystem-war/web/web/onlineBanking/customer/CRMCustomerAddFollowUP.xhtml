@@ -42,12 +42,12 @@
                                         <h:outputText value="&lt;br/&gt;" escape="false" />
                                         <br/>
 
-                                        <p:inputTextarea id="followUpDetail" placeholder="Enquiry Detail" value="#{enquiryManagedBean.followUpDetail}" required="true" rows="9"  counter="display" maxlength="500" counterTemplate="{0} characters remaining." autoResize="false" />
+                                        <p:inputTextarea id="followUpDetail" placeholder="Enquiry Detail" value="#{customerFollowUpManagedBean.followUpDetail}" required="true" rows="9"  counter="display" maxlength="500" counterTemplate="{0} characters remaining." autoResize="false" />
                                         <h:outputText value="&lt;br/&gt;" escape="false" />
                                         <h:outputText id="display" />
 
                                     </p:row>
-                                    <p:commandButton value="Send Follow-up" actionListener="#{enquiryManagedBean.saveFollowUp}" ajax="false" />
+                                    <p:commandButton value="Send Follow-up" actionListener="#{customerFollowUpManagedBean.saveFollowUp}" ajax="false" />
 
 
                                 </p:panel>

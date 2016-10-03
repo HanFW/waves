@@ -94,7 +94,9 @@
                                     </p:row>
                               </p:panel>
                             <div align="center">
-                               <p:commandButton style="width:40%" value="Add Follow Up Question" action="counterTellerAddFollowUp.xhtml" ajax="false"/>
+                                <p:commandButton style="width:40%" value="Add Follow Up Question" action="counterTellerAddFollowUp.xhtml" ajax="false">
+                                    <f:setPropertyActionListener target="#{employeeAddFollowUpManagedBean.caseId}" value="#{employeeRecordEnquiryManagedBean.caseId}"/>
+                                </p:commandButton>
                             </div>      
                             
                         </div>
