@@ -5,16 +5,15 @@
  */
 package managedbean.infrastructure;
 
-import ejb.infrastructure.entity.Employee;
 import ejb.infrastructure.entity.Permission;
 import ejb.infrastructure.entity.Role;
 import ejb.infrastructure.session.EmployeeAdminSessionBeanLocal;
+import ejb.infrastructure.session.EmployeeRolePermissionManagementSessionBeanLocal;
 import ejb.infrastructure.session.LoggingSessionBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 import javax.ejb.EJB;
-import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -36,6 +35,8 @@ public class EmployeeAssignPermissionManagedBean implements Serializable {
     private EmployeeAdminSessionBeanLocal employeeAdminSessionBeanLocal;
     @EJB
     private LoggingSessionBeanLocal loggingSessionBeanLocal;
+    @EJB
+    private EmployeeRolePermissionManagementSessionBeanLocal rolePermissionManagementSessionBeanLocal;
 
     private String roleName;
     private String[] permissionList1;
@@ -64,11 +65,14 @@ public class EmployeeAssignPermissionManagedBean implements Serializable {
     }
 
     public String[] getPermissionList1() {
-        if (permissionList1 == null) {
-            permissionList1 = employeeAdminSessionBeanLocal.getPermissionList1();
+        if (roleName == null) {
+            permissionList1 = rolePermissionManagementSessionBeanLocal.getPermissionList();
+            System.out.println("~~~~~~~~I am null");
+        } else {
+            System.out.println("****** employeeAssignPermissionManagedBean: get permission list1" + roleName);
+            permissionList1 = rolePermissionManagementSessionBeanLocal.getPermissions(roleName);
+            System.out.println("****** employeeAssignPermissionManagedBean: get permission list1 " + permissionList1);
         }
-
-        System.out.println("****** employeeAssignPermissionManagedBean: " + permissionList1);
         return permissionList1;
     }
 
@@ -124,13 +128,12 @@ public class EmployeeAssignPermissionManagedBean implements Serializable {
             System.out.println("*** employeeAssignPermissionManagedBena: permission is null");
         }
         employeeAdminSessionBeanLocal.deletePermission(roleName, permission.getPermissionName());
-        
-        context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath()+ "/web/internalSystem/infrastructure/employeeSystemAdminAssignPermission.xhtml?faces-redirect=true");
+
+        context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/web/internalSystem/infrastructure/employeeSystemAdminAssignPermission.xhtml?faces-redirect=true");
 
         message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Permission is deleted for the role!", "permission disabled");
         context.addMessage(null, message);
         System.out.println("*** employeeAssignPermissionManagedBena: permission deleted");
-        
 
         permissions = null;
 
@@ -166,17 +169,15 @@ public class EmployeeAssignPermissionManagedBean implements Serializable {
         System.out.println("===== AssignPermissionManagedBean: role name =====" + roleName);
         employeeAdminSessionBeanLocal.addPermissionToRole(roleName, permissionName);
         FacesContext context = FacesContext.getCurrentInstance();
-        context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath()+ "/web/internalSystem/infrastructure/employeeSystemAdminAssignPermission.xhtml?faces-redirect=true");
+        context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/web/internalSystem/infrastructure/employeeSystemAdminAssignPermission.xhtml?faces-redirect=true");
         System.out.println("===== AssignPermissionManagedBean: add new permission to role =====");
-        
 
-          permissions=null;
+        permissions = null;
     }
 
     public void AssignPermission(ActionEvent event) throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
         context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/web/internalSystem/infrastructure/employeeSystemAdminAssignPermission.xhtml?faces-redirect=true");
     }
-    
 
 }

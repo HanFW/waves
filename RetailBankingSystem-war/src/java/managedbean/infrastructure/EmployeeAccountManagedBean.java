@@ -41,20 +41,21 @@ public class EmployeeAccountManagedBean implements Serializable {
 
     private Long employeeId;
     private String employeeName;
+    private String employeeGender;
     private String employeeDepartment;
     private String employeePosition;
     private String employeeNRIC;
     private Integer employeeMobileNum;
     private String employeeEmail;
     private Employee employee;
-   
+
     private List<Employee> employees;
     private List<Employee> filteredEmployees;
     private List<String> departments;
     private List<String> positions;
+    private List<String> genders;
     private Set<Role> role;
     private List<String> roles;
-    private String employeeStatus;
 
     /**
      * Creates a new instance of loginManagedBean
@@ -67,21 +68,17 @@ public class EmployeeAccountManagedBean implements Serializable {
      * @param event
      * @return
      */
-
-
     public List<Employee> getEmployees() {
 
         if (employees == null) {
             employees = adminSessionBeanLocal.getEmployees();;
             System.out.println(employees);
         }
-        
+
         System.out.println("===== AcocuntManagedBean: get current employees =====" + employees);
         System.out.println(employees);
         return employees;
     }
-
- 
 
     public List<String> getDepartments() {
         if (departments == null) {
@@ -99,6 +96,14 @@ public class EmployeeAccountManagedBean implements Serializable {
         return positions;
     }
 
+    public List<String> getGenders() {
+
+        if (genders == null) {
+            genders = adminSessionBeanLocal.getEmployeeGenders();
+        }
+        return genders;
+    }
+
     public List<String> getRoles() {
 
         if (roles == null) {
@@ -106,14 +111,14 @@ public class EmployeeAccountManagedBean implements Serializable {
         }
         return roles;
     }
-    
+
     public void deleteCancel(Employee employee) {
 
         System.out.println("===== AcocuntManagedBean: deleteCancel =====");
         FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Archive Action Cancelled", "Archive Action Cancelled");
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
-    
+
     public Long getEmployeeId() {
         System.out.println("*** AccountManagedBean: get employee Id!!!" + employeeId);
         return employeeId;
@@ -130,6 +135,14 @@ public class EmployeeAccountManagedBean implements Serializable {
 
     public void setEmployeeName(String employeeName) {
         this.employeeName = employeeName;
+    }
+
+    public String getEmployeeGender() {
+        return employeeGender;
+    }
+
+    public void setEmployeeGender(String employeeGender) {
+        this.employeeGender = employeeGender;
     }
 
     public String getEmployeeDepartment() {
@@ -181,7 +194,6 @@ public class EmployeeAccountManagedBean implements Serializable {
     public void setEmployee(Employee employee) {
         this.employee = employee;
     }
-
 
     public Set<Role> getRole() {
         return role;
@@ -349,26 +361,25 @@ public class EmployeeAccountManagedBean implements Serializable {
         return employee.getRole().contains(hasRole);
     }
 
-    public String getUserName(){
-    
+    public String getUserName() {
+
         FacesContext context = FacesContext.getCurrentInstance();
         employee = (Employee) context.getExternalContext().getSessionMap().get("employee");
         return employee.getEmployeeName();
-}
-    
-     public String getUserDepartment(){
-    
+    }
+
+    public String getUserDepartment() {
+
         FacesContext context = FacesContext.getCurrentInstance();
         employee = (Employee) context.getExternalContext().getSessionMap().get("employee");
         return employee.getEmployeeDepartment();
-}
-    
-      public String getUserPosition(){
-    
+    }
+
+    public String getUserPosition() {
+
         FacesContext context = FacesContext.getCurrentInstance();
         employee = (Employee) context.getExternalContext().getSessionMap().get("employee");
         return employee.getEmployeePosition();
-}
- 
+    }
 
 }

@@ -42,12 +42,23 @@
                                     </p:row>
 
                                     <p:row>
+                                        <p:outputLabel for="employeeGender" style="font-weight: bold" value="Gender:" />
+                                        <p:selectOneRadio required="true" requiredMessage="Please indicate the gender" id="employeeGender" value="#{employeeCreateUserAccountManagedBean.employeeGender}">
+                                            <f:selectItem itemLabel="Female" itemValue="Female" />
+                                            <f:selectItem itemLabel="Male" itemValue="Male" />
+                                        </p:selectOneRadio>                              
+                                        <p:column>
+                                            <p:message for="employeeGender" />
+                                        </p:column>
+                                    </p:row>
+
+                                    <p:row>
                                         <p:column>
                                             <p:outputLabel for="employeeNRIC" style="font-weight: bold" value="NRIC No.: " />
                                         </p:column>
                                         <p:column>
-                                            <p:inputText validatorMessage="Please provide a valid NRIC number" label="Employee NRIC" id="employeeNRIC"
-                                                         value="#{employeeCreateUserAccountManagedBean.employeeNRIC}">
+                                            <p:inputText requiredMessage="Please provide employee's NRIC number" validatorMessage="Please provide a valid NRIC number" label="Employee NRIC" id="employeeNRIC"
+                                                         value="#{employeeCreateUserAccountManagedBean.employeeNRIC}" required="true">
                                                 <f:validateLength minimum="9" maximum="9" /> 
                                             </p:inputText>
                                         </p:column>
@@ -130,16 +141,17 @@
                                     </p:row>
 
                                     <p:row>
-                                        <!--<h:form>-->
-
                                         <p:column>
                                             <h:outputLabel for="role" style="font-weight: bold" value="Role:" />
 
-                                            <p:selectCheckboxMenu id="menu" value="#{employeeCreateUserAccountManagedBean.selectedRoles}" label="Select"
+                                            <p:selectCheckboxMenu required="true" requiredMessage="Please select roles" id="role" value="#{employeeCreateUserAccountManagedBean.selectedRoles}" label="Select"
                                                                   filter="true" filterMatchMode="startsWith" panelStyle="width:250px">
                                                 <f:selectItems value="#{employeeCreateUserAccountManagedBean.roles}" />
                                             </p:selectCheckboxMenu>
                                             <p:commandLink value="Confirm" style="margin-left: 20px" update="display"/>
+                                        </p:column>
+                                        <p:column>
+                                            <p:message for="role" />
                                         </p:column>
                                     </p:row>
 

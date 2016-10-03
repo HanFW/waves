@@ -58,7 +58,16 @@
 
                                             <p:column headerText="Name">
                                                 <h:outputText value="#{employee.employeeName}" />
-                                            </p:column>                                           
+                                            </p:column>
+
+                                            <p:column filterBy="#{employee.employeeGender}" style="width:15%" filterMatchMode="in">
+                                                <f:facet name="filter">
+                                                    <p:selectCheckboxMenu label="Gender" onchange="PF('userAccounts').filter()" panelStyle="width:125px" scrollHeight="150">
+                                                        <f:selectItems value="#{employeeAccountManagedBean.genders}" />
+                                                    </p:selectCheckboxMenu>
+                                                </f:facet>
+                                                <h:outputText value="#{employee.employeeGender}" />
+                                            </p:column>
 
                                             <p:column filterBy="#{employee.employeeDepartment}" style="width:15%" filterMatchMode="in">
                                                 <f:facet name="filter">
@@ -114,6 +123,14 @@
                                             </f:facet>
                                             <p:column headerText="Name" style="width: 20%">
                                                 <h:outputText value="#{employee.employeeName}" />
+                                            </p:column>
+                                            <p:column filterBy="#{employee.employeeGender}" style="width:15%" filterMatchMode="in">
+                                                <f:facet name="filter">
+                                                    <p:selectCheckboxMenu label="Gender" onchange="PF('archivedUserAccounts').filter()" panelStyle="width:125px" scrollHeight="150">
+                                                        <f:selectItems value="#{employeeAccountManagedBean.genders}" />
+                                                    </p:selectCheckboxMenu>
+                                                </f:facet>
+                                                <h:outputText value="#{employee.employeeGender}" />
                                             </p:column>
                                             <p:column filterBy="#{employee.employeeDepartment}" style="width:15%" filterMatchMode="in">
                                                 <f:facet name="filter">

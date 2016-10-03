@@ -33,6 +33,7 @@ public class EmployeeCreateUserAccountManagedBean {
 
     private Employee employee;
     private String employeeName;
+    private String employeeGender;
     private String employeeDepartment;
     private String employeePosition;
     private String employeeNRIC;
@@ -53,7 +54,7 @@ public class EmployeeCreateUserAccountManagedBean {
         FacesMessage message = null;
         FacesContext context = FacesContext.getCurrentInstance();
 
-        String newEmployee = adminSessionBeanLocal.createEmployeeAccount(employeeName,
+        String newEmployee = adminSessionBeanLocal.createEmployeeAccount(employeeName,employeeGender,
                 employeeDepartment, employeePosition, employeeNRIC, employeeMobileNum.toString(),
                 employeeEmail, selectedRoles);
 
@@ -89,6 +90,14 @@ public class EmployeeCreateUserAccountManagedBean {
     public void setEmployeeName(String employeeName) {
         this.employeeName = employeeName;
     }
+
+    public String getEmployeeGender() {
+        return employeeGender;
+    }
+
+    public void setEmployeeGender(String employeeGender) {
+        this.employeeGender = employeeGender;
+    }   
 
     public String getEmployeeDepartment() {
         return employeeDepartment;
