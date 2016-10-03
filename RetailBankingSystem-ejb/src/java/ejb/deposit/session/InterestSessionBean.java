@@ -23,8 +23,7 @@ public class InterestSessionBean implements InterestSessionBeanLocal {
     private EntityManager entityManager;
 
     @Override
-    public Long addNewInterest(String dailyInterest, String monthlyInterest, String isTransfer, String isWithdraw,
-    Long bankAccountId) {
+    public Long addNewInterest(String dailyInterest, String monthlyInterest, String isTransfer, String isWithdraw) {
 
         System.out.println("*");
         System.out.println("****** deposit/InterestSessionBean: addNewInterest() ******");
@@ -34,7 +33,6 @@ public class InterestSessionBean implements InterestSessionBeanLocal {
         interest.setMonthlyInterest(monthlyInterest);
         interest.setIsTransfer(isTransfer);
         interest.setIsWithdraw(isWithdraw);
-        interest.setBankAccount(bankAccountSessionLocal.retrieveBankAccountById(bankAccountId));
 
         entityManager.persist(interest);
         entityManager.flush();

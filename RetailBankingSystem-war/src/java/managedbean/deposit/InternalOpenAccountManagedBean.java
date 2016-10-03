@@ -329,8 +329,8 @@ public class InternalOpenAccountManagedBean {
         if (agreement) {
 
             bankAccountBalance = "0";
-            transferDailyLimit = "3000";
-            transferBalance = "3000";
+            transferDailyLimit = "3000.0";
+            transferBalance = "3000.0";
             bankAccountMinSaving = "";
             bankAccountDepositPeriod = "None";
             currentFixedDepositPeriod = "0";
@@ -346,16 +346,16 @@ public class InternalOpenAccountManagedBean {
 
             customerBasicId = customerBasic.getCustomerBasicId();
 
-            newAccountId = bankAccountSessionBeanLocal.addNewAccount(bankAccountNum, bankAccountPwd, bankAccountType,
-                    bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
-                    bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
-                    statementDateDouble, customerBasicId);
-
             dailyInterest = "0";
             monthlyInterest = "0";
             isTransfer = "0";
             isWithdraw = "0";
-            newInterestId = interestSessionBeanLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw, newAccountId);
+            newInterestId = interestSessionBeanLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw);
+            
+            newAccountId = bankAccountSessionBeanLocal.addNewAccount(bankAccountNum, bankAccountPwd, bankAccountType,
+                    bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
+                    bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
+                    statementDateDouble, customerBasicId, newInterestId);
 
             bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountById(newAccountId);
 

@@ -1,6 +1,5 @@
 package ejb.deposit.session;
 
-import ejb.customer.entity.CustomerAdvanced;
 import ejb.infrastructure.session.CustomerAdminSessionBeanLocal;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.entity.AccTransaction;
@@ -30,6 +29,7 @@ import javax.persistence.NonUniqueResultException;
 
 @Stateless
 @LocalBean
+
 public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
 
     @EJB
@@ -210,7 +210,8 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
             String bankAccountType, String bankAccountBalance, String transferDailyLimit,
             String transferBalance, String bankAccountStatus, String bankAccountMinSaving,
             String bankAccountDepositPeriod, String currentFixedDepositPeriod,
-            String fixedDepositStatus, Double statementDateDouble, Long customerBasicId) {
+            String fixedDepositStatus, Double statementDateDouble, Long customerBasicId,
+            Long interestId) {
 
         System.out.println("*");
         System.out.println("****** deposit/BankAccountSessionBean: addNewAccount() ******");
@@ -236,8 +237,13 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
         bankAccount.setFixedDepositStatus(fixedDepositStatus);
         bankAccount.setStatementDateDouble(statementDateDouble);
         bankAccount.setCustomerBasic(retrieveCustomerBasicById(customerBasicId));
+        bankAccount.setInterest(interestSessionLocal.retrieveInterestById(interestId));
+
+        Interest interest = interestSessionLocal.retrieveInterestById(interestId);
+        interest.setBankAccount(bankAccount);
 
         entityManager.persist(bankAccount);
+        entityManager.persist(interest);
         entityManager.flush();
 
         String onlineBankingAccount = adminSessionBeanLocal.createOnlineBankingAccount(customerBasicId);
@@ -264,10 +270,6 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
             }
         }
 
-        if (bankAccount.getInterest() != null) {
-            interestSessionLocal.deleteInterest(bankAccount.getInterest().getInterestId());
-        }
-
         entityManager.remove(bankAccount);
         entityManager.flush();
 
@@ -290,7 +292,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
             Double accuredInterest = 0.0;
             Double finalBalance = 0.0;
             Double finalInterest = 0.0;
-            Interest interest = new Interest();
+            Interest interest = activatedBankAccount.getInterest();
 
             currentBalance = Double.valueOf(activatedBankAccount.getBankAccountBalance());
 
@@ -299,7 +301,6 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
 
                 if (activatedBankAccount.getInterest().getIsTransfer().equals("1") || activatedBankAccount.getInterest().getIsWithdraw().equals("1")) {
 
-                    interest = activatedBankAccount.getInterest();
                     interest.setIsTransfer("0");
                     interest.setIsWithdraw("0");
 
@@ -341,8 +342,6 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
                     totalInterest = currentInterest + currentBalance * Double.valueOf(interestRate) / 360;
                     accuredInterest = Double.valueOf(df.format(totalInterest));
 
-                    interest = activatedBankAccount.getInterest();
-
                     if (activatedBankAccount.getCurrentFixedDepositPeriod().equals(activatedBankAccount.getBankAccountDepositPeriod())) {
 
                         interest.setDailyInterest(totalInterest.toString());
@@ -379,22 +378,18 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
 
                 totalInterest = currentInterest + currentBalance * 0.0005 / 360;
 
-                interest = activatedBankAccount.getInterest();
                 interest.setDailyInterest(totalInterest.toString());
 
             } else if (currentBalance > 0) {
 
-                currentInterest = Double.valueOf(activatedBankAccount.getInterest().getDailyInterest());
+                currentInterest = Double.valueOf(interest.getDailyInterest());
                 currentBalance = Double.valueOf(activatedBankAccount.getBankAccountBalance());
 
                 totalInterest = currentInterest + currentBalance * 0.0005 / 360;
 
-                interest = activatedBankAccount.getInterest();
-
                 interest.setDailyInterest(totalInterest.toString());
             }
         }
-
     }
 
     @Override
@@ -715,8 +710,8 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
             String bankAccountType, String bankAccountBalance, String transferDailyLimit,
             String transferBalance, String bankAccountStatus, String bankAccountMinSaving,
             String bankAccountDepositPeriod, String currentFixedDepositPeriod,
-            String fixedDepositStatus, Double statementDateDouble, Long customerBasicId
-    ) {
+            String fixedDepositStatus, Double statementDateDouble, Long customerBasicId,
+            Long interestId) {
 
         BankAccount bankAccount = new BankAccount();
         String hashedPwd = "";
@@ -740,8 +735,13 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
         bankAccount.setFixedDepositStatus(fixedDepositStatus);
         bankAccount.setStatementDateDouble(statementDateDouble);
         bankAccount.setCustomerBasic(retrieveCustomerBasicById(customerBasicId));
+        bankAccount.setInterest(interestSessionLocal.retrieveInterestById(interestId));
+
+        Interest interest = interestSessionLocal.retrieveInterestById(interestId);
+        interest.setBankAccount(bankAccount);
 
         entityManager.persist(bankAccount);
+        entityManager.persist(interest);
         entityManager.flush();
 
         return bankAccount.getBankAccountId();
