@@ -129,65 +129,10 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
         return "Delete Customer Successfully";
     }
 
+    @Override
     public CustomerBasic getCustomer(String onlineBankingAccountNum) {
         CustomerBasic customer = entityManager.find(CustomerBasic.class, onlineBankingAccountNum);
         return customer;
-    }
-
-    private String getAge(String customerDateOfBirth) {
-        String daystr = customerDateOfBirth.substring(0, 2);
-        String monthstr = customerDateOfBirth.substring(3, 6);
-        String yearstr = customerDateOfBirth.substring(7);
-        int month = 0;
-        int day = Integer.parseInt(daystr);
-        int year = Integer.parseInt(yearstr);
-        String customerAge = "";
-
-        switch (monthstr) {
-            case "Jan":
-                month = 1;
-                break;
-            case "Feb":
-                month = 2;
-                break;
-            case "Mar":
-                month = 3;
-                break;
-            case "Apr":
-                month = 4;
-                break;
-            case "May":
-                month = 5;
-                break;
-            case "Jun":
-                month = 6;
-                break;
-            case "Jul":
-                month = 7;
-                break;
-            case "Aug":
-                month = 8;
-                break;
-            case "Sep":
-                month = 9;
-                break;
-            case "Oct":
-                month = 10;
-                break;
-            case "Nov":
-                month = 11;
-                break;
-            case "Dec":
-                month = 12;
-                break;
-        }
-
-        LocalDate localBirth = LocalDate.of(year, month, day);
-        LocalDate now = LocalDate.now();
-        Period p = Period.between(localBirth, now);
-        customerAge = String.valueOf(p.getYears());
-
-        return customerAge;
     }
 
     @Override
@@ -216,8 +161,6 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
     public CustomerAdvanced getCustomerAdvancedById(Long id) {
 
         CustomerAdvanced ca = entityManager.find(CustomerAdvanced.class, id);
-
-        System.out.println("%%%%%" + ca);
         return ca;
     }
 
@@ -247,11 +190,6 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
             }
             return "Same Password";
         }
-    }
-
-    private String md5Hashing(String stringToHash) throws NoSuchAlgorithmException {
-        MessageDigest md = MessageDigest.getInstance("MD5");
-        return Arrays.toString(md.digest(stringToHash.getBytes()));
     }
 
     @Override
@@ -353,7 +291,7 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
         entityManager.remove(customerAdvanced);
         entityManager.flush();
     }
-    
+
     @Override
     public Long addNewCustomerOneTime(String customerName, String customerSalutation,
             String customerIdentificationNum, String customerGender,
@@ -369,11 +307,11 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
         String secret = generateOTPSecret();
 
         try {
-            hashedPwd = md5Hashing(customerOnlineBankingPassword+customerIdentificationNum.substring(0, 3));
+            hashedPwd = md5Hashing(customerOnlineBankingPassword + customerIdentificationNum.substring(0, 3));
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(BankAccountSessionBean.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         customerBasic.setCustomerName(customerName);
         customerBasic.setCustomerSalutation(customerSalutation);
         customerBasic.setCustomerIdentificationNum(customerIdentificationNum);
@@ -403,7 +341,7 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
         return customerBasic.getCustomerBasicId();
 
     }
-    
+
     private String generateOTPSecret() {
         System.out.println("*");
         System.out.println("****** infrastructure/CustomerAdminSessionBean: generateOTPSecret() ******");
@@ -424,5 +362,66 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
         }
         System.out.println("****** infrastructure/CustomerAdminSessionBean: generateOTPSecret(): customer OTP secret generated");
         return secret;
+    }
+
+    private String md5Hashing(String stringToHash) throws NoSuchAlgorithmException {
+        MessageDigest md = MessageDigest.getInstance("MD5");
+        return Arrays.toString(md.digest(stringToHash.getBytes()));
+    }
+
+    private String getAge(String customerDateOfBirth) {
+        String daystr = customerDateOfBirth.substring(0, 2);
+        String monthstr = customerDateOfBirth.substring(3, 6);
+        String yearstr = customerDateOfBirth.substring(7);
+        int month = 0;
+        int day = Integer.parseInt(daystr);
+        int year = Integer.parseInt(yearstr);
+        String customerAge = "";
+
+        switch (monthstr) {
+            case "Jan":
+                month = 1;
+                break;
+            case "Feb":
+                month = 2;
+                break;
+            case "Mar":
+                month = 3;
+                break;
+            case "Apr":
+                month = 4;
+                break;
+            case "May":
+                month = 5;
+                break;
+            case "Jun":
+                month = 6;
+                break;
+            case "Jul":
+                month = 7;
+                break;
+            case "Aug":
+                month = 8;
+                break;
+            case "Sep":
+                month = 9;
+                break;
+            case "Oct":
+                month = 10;
+                break;
+            case "Nov":
+                month = 11;
+                break;
+            case "Dec":
+                month = 12;
+                break;
+        }
+
+        LocalDate localBirth = LocalDate.of(year, month, day);
+        LocalDate now = LocalDate.now();
+        Period p = Period.between(localBirth, now);
+        customerAge = String.valueOf(p.getYears());
+
+        return customerAge;
     }
 }

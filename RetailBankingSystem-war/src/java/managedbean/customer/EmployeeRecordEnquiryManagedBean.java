@@ -393,7 +393,7 @@ public class EmployeeRecordEnquiryManagedBean implements Serializable {
 
     public void retrieveCaseByCaseRef() throws IOException {
         caseId = Long.valueOf(caseIdStr);
-        ec = enquirySessionBeanLocal.getEnquiryByCaseId(caseId);
+        ec = enquirySessionBeanLocal.getEnquiryByCaseId(caseId).get(0);
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext ec = context.getExternalContext();
         ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/counterTellerSearchCaseDone.xhtml");
