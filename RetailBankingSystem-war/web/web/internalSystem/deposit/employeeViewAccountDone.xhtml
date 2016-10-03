@@ -52,6 +52,14 @@
                                         <p:column headerText="Balance"> 
                                             <h:outputText value="S$#{bankAccount.bankAccountBalance}" />
                                         </p:column>
+                                        
+                                        <p:column headerText="Authorised Daily Limit"> 
+                                            <h:outputText value="S$#{bankAccount.transferDailyLimit}" />
+                                        </p:column>
+                                        
+                                        <p:column headerText="Remaining Daily Limit"> 
+                                            <h:outputText value="S$#{bankAccount.transferBalance}" />
+                                        </p:column>
 
                                     </p:dataTable>
                                 </p:panel>
