@@ -125,7 +125,7 @@ public class EmployeeAssignPermissionManagedBean implements Serializable {
         }
         employeeAdminSessionBeanLocal.deletePermission(roleName, permission.getPermissionName());
         
-        context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath()+ "/web/internalSystem/infrastructure/employeeSystemAdminAssignPermission.xhtml");
+        context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath()+ "/web/internalSystem/infrastructure/employeeSystemAdminAssignPermission.xhtml?faces-redirect=true");
 
         message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Permission is deleted for the role!", "permission disabled");
         context.addMessage(null, message);
@@ -166,7 +166,7 @@ public class EmployeeAssignPermissionManagedBean implements Serializable {
         System.out.println("===== AssignPermissionManagedBean: role name =====" + roleName);
         employeeAdminSessionBeanLocal.addPermissionToRole(roleName, permissionName);
         FacesContext context = FacesContext.getCurrentInstance();
-        context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath()+ "/web/internalSystem/infrastructure/employeeSystemAdminAssignPermission.xhtml");
+        context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath()+ "/web/internalSystem/infrastructure/employeeSystemAdminAssignPermission.xhtml?faces-redirect=true");
         System.out.println("===== AssignPermissionManagedBean: add new permission to role =====");
         
 
@@ -175,7 +175,7 @@ public class EmployeeAssignPermissionManagedBean implements Serializable {
 
     public void AssignPermission(ActionEvent event) throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
-        context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/web/internalSystem/infrastructure/employeeSystemAdminAssignPermission.xhtml");
+        context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/web/internalSystem/infrastructure/employeeSystemAdminAssignPermission.xhtml?faces-redirect=true");
     }
     
 
