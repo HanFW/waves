@@ -15,10 +15,14 @@
             <div class="ui-g">
                 <div class="ui-g-12 ui-lg-12">
                     <div class="card card-w-title">
+                        
                         <p:panel>
-                    <p:outputLabel value="Welcome "/>
-                    <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
-                </p:panel>
+                            <p:outputLabel value="Welcome "/>
+                            <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
+                        </p:panel>
+                        
+                        <p:messages globalOnly="true"/>
+                        
                         <p:dataTable var="bankAccount" value="#{accountDataTableBean.bankAccount}" 
                                      reflow="true" paginator="true" rows="10" emptyMessage="No Account" >
                             <f:facet name="header">

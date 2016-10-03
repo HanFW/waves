@@ -12,7 +12,10 @@
 
         <div class="ui-g">
             <div class="ui-g-12 ui-lg-12">
-                <div class="card card-w-title">     
+                <div class="card card-w-title">  
+                    
+                    <p:messages globalOnly="true"/>
+                    
                     <p:dataTable var="accTransaction" value="#{transactionManagedBean.accTransaction}" 
                                  reflow="true" paginator="true" rows="20" emptyMessage="No Transaction Record"
                                  rowsPerPageTemplate="5,10,15,20"

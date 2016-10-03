@@ -1,33 +1,31 @@
-package managedbean.deposit;
+package managedbean.payment;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 
-@Named(value = "transferDoneManagedBean")
+@Named(value = "fastTransferDoneManagedBean")
 @RequestScoped
 
-public class TransferDoneManagedBean {
+public class FastTransferDoneManagedBean {
 
     private String statusMessage;
-    private String fromAccount;
-    private String toAccount;
-    private String transferAmt;
     private String transactionId;
     private String toBankAccountNumWithType;
     private String fromBankAccountNumWithType;
+    private String transferAmt;
+    private String fromAccount;
+    private String toAccount;
     private String fromBankAccountBalance;
-
-    private boolean visible;
-
-    public TransferDoneManagedBean() {
+    
+    public FastTransferDoneManagedBean() {
     }
-
+    
     @PostConstruct
     public void init() {
         statusMessage = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("statusMessage").toString();
-        transactionId = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("newTransactionId").toString();
+        transactionId = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("transactionId").toString();
         toBankAccountNumWithType = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("toBankAccountNumWithType").toString();
         fromBankAccountNumWithType = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("fromBankAccountNumWithType").toString();
         transferAmt = "S$" + FacesContext.getCurrentInstance().getExternalContext().getFlash().get("transferAmt").toString();
@@ -36,44 +34,12 @@ public class TransferDoneManagedBean {
         fromBankAccountBalance = "S$" + FacesContext.getCurrentInstance().getExternalContext().getFlash().get("fromAccountBalance").toString();
     }
 
-    public void show() {
-        visible = true;
-    }
-
-    public void hide() {
-        visible = false;
-    }
-
     public String getStatusMessage() {
         return statusMessage;
     }
 
     public void setStatusMessage(String statusMessage) {
         this.statusMessage = statusMessage;
-    }
-
-    public String getFromAccount() {
-        return fromAccount;
-    }
-
-    public void setFromAccount(String fromAccount) {
-        this.fromAccount = fromAccount;
-    }
-
-    public String getToAccount() {
-        return toAccount;
-    }
-
-    public void setToAccount(String toAccount) {
-        this.toAccount = toAccount;
-    }
-
-    public String getTransferAmt() {
-        return transferAmt;
-    }
-
-    public void setTransferAmt(String transferAmt) {
-        this.transferAmt = transferAmt;
     }
 
     public String getTransactionId() {
@@ -92,20 +58,36 @@ public class TransferDoneManagedBean {
         this.toBankAccountNumWithType = toBankAccountNumWithType;
     }
 
-    public boolean isVisible() {
-        return visible;
-    }
-
-    public void setVisible(boolean visible) {
-        this.visible = visible;
-    }
-
     public String getFromBankAccountNumWithType() {
         return fromBankAccountNumWithType;
     }
 
     public void setFromBankAccountNumWithType(String fromBankAccountNumWithType) {
         this.fromBankAccountNumWithType = fromBankAccountNumWithType;
+    }
+
+    public String getTransferAmt() {
+        return transferAmt;
+    }
+
+    public void setTransferAmt(String transferAmt) {
+        this.transferAmt = transferAmt;
+    }
+
+    public String getFromAccount() {
+        return fromAccount;
+    }
+
+    public void setFromAccount(String fromAccount) {
+        this.fromAccount = fromAccount;
+    }
+
+    public String getToAccount() {
+        return toAccount;
+    }
+
+    public void setToAccount(String toAccount) {
+        this.toAccount = toAccount;
     }
 
     public String getFromBankAccountBalance() {
@@ -115,4 +97,5 @@ public class TransferDoneManagedBean {
     public void setFromBankAccountBalance(String fromBankAccountBalance) {
         this.fromBankAccountBalance = fromBankAccountBalance;
     }
+    
 }

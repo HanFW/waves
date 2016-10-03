@@ -21,31 +21,31 @@
                             <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
                         </p:panel>
 
-                        <p:dataTable var="payee" value="#{payeeManagedBean.payee}" 
+                        <p:dataTable var="fastPayee" value="#{deleteFastPayeeManagedBean.fastPayees}" 
                                      reflow="true" paginator="true" rows="10" emptyMessage="No Recipient">
                             <f:facet name="header">
                                 Delete Recipient
                             </f:facet>
                             <p:column headerText="Recipient's Name" >
-                                <h:outputText value="#{payee.payeeName}" /> 
+                                <h:outputText value="#{fastPayee.fastPayeeName}" /> 
                             </p:column>
 
                             <p:column headerText="Recipient's Bank Account Number"> 
-                                <h:outputText value="#{payee.payeeAccountNum}" />
+                                <h:outputText value="#{fastPayee.fastPayeeAccountNum}" />
                             </p:column>
 
                             <p:column headerText="Recipient's Bank Account Type"> 
-                                <h:outputText value="#{payee.payeeAccountType}" />
+                                <h:outputText value="#{fastPayee.fastPayeeAccountType}" />
                             </p:column>
 
                             <p:column headerText="Last Transaction Date"> 
-                                <h:outputText value="#{payee.lastTransactionDate}" />
+                                <h:outputText value="#{fastPayee.lastTransactionDate}" />
                             </p:column>
 
                             <p:column headerText="Action"> 
-                                <p:commandButton process="@this" action="#{deletePayeeManagedBean.deletePayee()}"
+                                <p:commandButton process="@this" action="#{deleteFastPayeeManagedBean.deletePayee()}"
                                                  icon="ui-icon-trash" ajax="false">
-                                    <f:setPropertyActionListener target="#{deletePayeeManagedBean.payeeAccountNum}" value="#{payee.payeeAccountNum}" />
+                                    <f:setPropertyActionListener target="#{deleteFastPayeeManagedBean.payeeAccountNum}" value="#{fastPayee.fastPayeeAccountNum}" />
                                 </p:commandButton>
                             </p:column>
 

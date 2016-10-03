@@ -21,19 +21,19 @@
                             </p:panel>
                             <p:panel header="Transfer to My Account">
 
-                                <h:outputText value="#{transferDoneManagedBean.statusMessage}" style="font-size: 24px"/>
+                                <h:outputText value="#{fastTransferDoneManagedBean.statusMessage}" style="font-size: 24px"/>
                                 <br/>
                                 <br/>
                                 <br/>
                                 <h:outputText style="font-weight: bold" value="Please note this transaction reference number
                                               for your records: " />
-                                <h:outputText value="#{transferDoneManagedBean.transactionId}" />
+                                <h:outputText value="#{fastTransferDoneManagedBean.transactionId}" />
                                 <br/>
                                 <h:outputText style="font-weight: bold" value="To Account Number: "/>
-                                <h:outputText value="#{transferDoneManagedBean.toBankAccountNumWithType}"/>
+                                <h:outputText value="#{fastTransferDoneManagedBean.toBankAccountNumWithType}"/>
                                 <br/>
                                 <h:outputText style="font-weight: bold" value="Transfer Amount: "/>
-                                <h:outputText value="#{transferDoneManagedBean.transferAmt}"/>
+                                <h:outputText value="#{fastTransferDoneManagedBean.transferAmt}"/>
                                 <br/>
                                 <br/>
                                 <p:accordionPanel activeIndex="-1" style="">
@@ -43,10 +43,10 @@
                                         <br/>
                                         <br/>
                                         <h:outputText style="font-weight: bold" value="Account Number: "/>
-                                        <h:outputText value="#{transferDoneManagedBean.fromBankAccountNumWithType}"/>
+                                        <h:outputText value="#{fastTransferDoneManagedBean.fromBankAccountNumWithType}"/>
                                         <br/>
                                         <h:outputText style="font-weight: bold" value="Lastest Account Balance: "/>
-                                        <h:outputText value="#{transferDoneManagedBean.fromBankAccountBalance}"/>
+                                        <h:outputText value="#{fastTransferDoneManagedBean.fromBankAccountBalance}"/>
                                         <br/>
                                         <br/>
                                         <h:outputText value="To" style="font-size: 24px" />
@@ -54,13 +54,13 @@
                                         <br/>
                                         <br/>
                                         <h:outputText style="font-weight: bold" value="Account Number: "/>
-                                        <h:outputText value="#{transferDoneManagedBean.toBankAccountNumWithType}"/>
+                                        <h:outputText value="#{fastTransferDoneManagedBean.toBankAccountNumWithType}"/>
                                         <br/>
                                         <h:outputText style="font-weight: bold" value="Transfer Amount: "/>
-                                        <h:outputText value="#{transferDoneManagedBean.transferAmt}"/>
+                                        <h:outputText value="#{fastTransferDoneManagedBean.transferAmt}"/>
                                         <br/>
                                         <h:outputText style="font-weight: bold" value="Transaction Reference Number: "/>
-                                        <h:outputText value="#{transferDoneManagedBean.transactionId}" />
+                                        <h:outputText value="#{fastTransferDoneManagedBean.transactionId}" />
                                     </p:tab>
                                 </p:accordionPanel>
                             </p:panel>

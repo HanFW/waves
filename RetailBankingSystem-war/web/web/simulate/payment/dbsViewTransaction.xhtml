@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <h:form>
+            <p:menubar>
+                <p:submenu label="My Account">
+                    <p:menuitem value="View Transaction" url="index.xhtml" />
+                </p:submenu>
+            </p:menubar>
+        </h:form>
+
+        <h:form id="formMain"> 
+            <p:messages/>
+            
+            <p:panel>
+                
+                <p:dataTable var="dbsTransaction" value="#{dBSViewTransactionManagedBean.DBSTransaction}" 
+                             reflow="true" paginator="true" rows="20" emptyMessage="No Transaction Record"
+                             rowsPerPageTemplate="5,10,15,20"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                    
+                    <p:column headerText="Transaction ID">
+                        <h:outputText value="#{dbsTransaction.dbsTransactionId}" /> 
+                    </p:column>
+
+                    <p:column headerText="Transaction Date">
+                        <h:outputText value="#{dbsTransaction.dbsTransactionDate}" />
+                    </p:column>
+
+                    <p:column headerText="Transaction Code"> 
+                        <h:outputText value="#{dbsTransaction.dbsTransactionCode}" />
+                    </p:column>
+
+                    <p:column headerText="Transaction Ref"> 
+                        <h:outputText value="#{dbsTransaction.dbsTransactionRef}" />
+                    </p:column>
+
+                    <p:column headerText="Account Debit(Withdrawal)"> 
+                        <h:outputText value="#{dbsTransaction.dbsAccountDebit}">
+                            <f:convertNumber type="currency" currencyCode="$" minFractionDigits="2" />
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="Account Credit(Deposit)"> 
+                        <h:outputText value="#{dbsTransaction.dbsAccountCredit}">
+                            <f:convertNumber type="currency" currencyCode="SGD" />
+                        </h:outputText>
+                    </p:column>
+
+                </p:dataTable>
+
+            </p:panel>
+        </h:form>
+    </h:body>
+</html>
+
+
+

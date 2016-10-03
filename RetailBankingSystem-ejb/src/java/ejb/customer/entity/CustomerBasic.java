@@ -3,6 +3,7 @@ package ejb.customer.entity;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.entity.MessageBox;
 import ejb.deposit.entity.Payee;
+import ejb.payment.entity.FastPayee;
 import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -61,6 +62,9 @@ public class CustomerBasic implements Serializable {
     
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
     private List<MessageBox> messageBox;
+    
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
+    private List<FastPayee> fastPayee;
 
     public Long getCustomerBasicId() {
         return customerBasicId;
@@ -298,6 +302,13 @@ public class CustomerBasic implements Serializable {
         this.customerOnlineBankingAccountLocked = customerOnlineBankingAccountLocked;
     }
 
+    public List<FastPayee> getFastPayee() {
+        return fastPayee;
+    }
+
+    public void setFastPayee(List<FastPayee> fastPayee) {
+        this.fastPayee = fastPayee;
+    }
     
     @Override
     public int hashCode() {

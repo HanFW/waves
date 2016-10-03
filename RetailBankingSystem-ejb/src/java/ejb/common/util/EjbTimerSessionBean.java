@@ -168,7 +168,7 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
     }
 
     private void handleTimeout_10000ms() {
-        System.out.println("*** 10000MS Timer timeout");
+//        System.out.println("*** 10000MS Timer timeout");
         bankAccountSessionLocal.interestAccuring();
     }
 
