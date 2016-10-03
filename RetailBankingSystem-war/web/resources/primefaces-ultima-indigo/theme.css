@@ -4941,7 +4941,7 @@ body {
     body .ui-tabs.ui-tabs-scrollable.ui-tabs-bottom .ui-tabs-navscroller > .ui-tabs-navscroller-btn-right {
       border-top: 1px solid #bdbdbd; }
   body .ui-wizard .ui-wizard-step-titles {
-    background-color: #011e41;
+   
     -moz-border-radius-topleft: 3px;
     -webkit-border-top-left-radius: 3px;
     border-top-left-radius: 3px;
@@ -4955,7 +4955,6 @@ body {
       body .ui-wizard .ui-wizard-step-titles > li.ui-state-highlight {
         color: #ffffff;
         background-color: transparent;
-        border-bottom: 2px solid #E6A82E;
         -moz-border-radius: 0;
         -webkit-border-radius: 0;
         border-radius: 0; }
@@ -4966,10 +4965,10 @@ body {
       -webkit-border-radius: 0;
       border-radius: 0; }
   body .ui-breadcrumb {
-    padding: 10px 16px; }
+    padding: 22px 26px; }
     body .ui-breadcrumb a {
       color: #ffffff;
-      font-size: 16px; }
+      font-size: 18px; }
     body .ui-breadcrumb li:first-child a {
       position: relative;
       font-size: 24px;
@@ -5009,7 +5008,6 @@ body {
       body .ui-steps .ui-steps-item:last-child .ui-menuitem-link {
         display: block; }
     body .ui-steps:before {
-      content: ' ';
       border: 1px solid #bdbdbd;
       width: 90%;
       top: 45%;
