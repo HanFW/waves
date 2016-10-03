@@ -10,6 +10,11 @@
     <ui:define name="content">
 
         <h:form>
+            <p:commandButton id="oneTimeBtn" value="Open Account"
+                                     actionListener="#{accountManagedBean.openAccountOneClick()}" ajax="true"/>
+        </h:form>
+        
+        <h:form>
 
             <p:growl id="growl" sticky="true" showDetail="true"/>
 

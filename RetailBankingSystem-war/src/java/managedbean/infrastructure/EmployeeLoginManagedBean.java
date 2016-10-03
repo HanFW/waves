@@ -40,10 +40,9 @@ public class EmployeeLoginManagedBean implements Serializable {
     private String employeeAccountNum;
     private String employeePassword;
     private Employee employee;
-    private String currentPassword;
-    private String newPassword;
     private boolean loggedIn = false;
     private boolean ArchiveStatus = false;
+    private String logInStatus;
 
     /**
      * Creates a new instance of loginManagedBean
@@ -68,10 +67,15 @@ public class EmployeeLoginManagedBean implements Serializable {
                 context.getExternalContext().getSessionMap().put("employee", getEmployee());
                 loggedIn = true;
                 try {
-                    context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/web/internalSystem/infrastructure/employeeMainPage.xhtml");
-                    message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Welcome " + employee.getEmployeeName() + " !", "Welcome message");
-                    context.addMessage(null, message);
-                    System.out.println("*** LoginManagedBean: welcome message");
+                    String logInStatus = getEmployee().getLogInStatus();
+                    if (logInStatus.equals("true")) {
+                        context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/web/internalSystem/infrastructure/employeeChangePassword.xhtml");
+                    } else {
+                        context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/web/internalSystem/infrastructure/employeeMainPage.xhtml");
+                        message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Welcome " + employee.getEmployeeName() + " !", "Welcome message");
+                        context.addMessage(null, message);
+                        System.out.println("*** LoginManagedBean: welcome message");
+                    }
 
                 } catch (IOException ex) {
                     Logger.getLogger(EmployeeLoginManagedBean.class.getName()).log(Level.SEVERE, null, ex);
@@ -93,6 +97,8 @@ public class EmployeeLoginManagedBean implements Serializable {
                 System.out.println("*** LoginManagedBean: invalid account");
                 break;
         }
+        employeeAccountNum = null;
+        employeePassword = null;
     }
 
     public void doLogOut(ActionEvent event) throws IOException {
@@ -114,14 +120,13 @@ public class EmployeeLoginManagedBean implements Serializable {
         FacesContext context = FacesContext.getCurrentInstance();
         context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/web/internalSystem/infrastructure/employeeForgetPassword.xhtml");
 
-
     }
 
     public void changePassword(ActionEvent event) throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
 
         context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/web/internalSystem/infrastructure/employeeChangePassword.xhtml");
-        
+
     }
 
     public Long getEmployeeId() {
@@ -155,12 +160,13 @@ public class EmployeeLoginManagedBean implements Serializable {
     public void setEmployee(Employee employee) {
         this.employee = employee;
     }
+
     public void redirectToViewCustomer() throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext ec = context.getExternalContext();
         ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/CRM/RMViewCustomerList.xhtml");
     }
-    
+
     public void redirectToSearchCustomer() throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext ec = context.getExternalContext();
@@ -173,6 +179,14 @@ public class EmployeeLoginManagedBean implements Serializable {
 
     public void setLoggedIn(boolean loggedIn) {
         this.loggedIn = loggedIn;
+    }
+
+    public String getLogInStatus() {
+        return logInStatus;
+    }
+
+    public void setLogInStatus(String logInStatus) {
+        this.logInStatus = logInStatus;
     }
 
 }

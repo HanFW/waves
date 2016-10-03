@@ -42,4 +42,11 @@ public interface CRMCustomerSessionBeanLocal {
 
     public void deleteCustomerAdvanced(Long customerAdvancedId);
     public CustomerAdvanced getCustomerAdvancedById(Long id);
+    public Long addNewCustomerOneTime(String customerName, String customerSalutation,
+            String customerIdentificationNum, String customerGender,
+            String customerEmail, String customerMobile, String customerDateOfBirth,
+            String customerNationality, String customerCountryOfResidence, String customerRace,
+            String customerMaritalStatus, String customerOccupation, String customerCompany,
+            String customerAddress, String customerPostal, String customerOnlineBankingAccountNum,
+            String customerOnlineBankingPassword, byte[] customerSignature);
 }

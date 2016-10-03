@@ -3,6 +3,7 @@ package ejb.customer.session;
 import ejb.customer.entity.CustomerAdvanced;
 import ejb.customer.entity.CustomerBasic;
 import ejb.deposit.entity.Payee;
+import ejb.deposit.session.BankAccountSessionBean;
 import javax.ejb.Stateless;
 import javax.ejb.LocalBean;
 import javax.persistence.EntityManager;
@@ -19,7 +20,11 @@ import java.time.Period;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import ejb.deposit.session.PayeeSessionBeanLocal;
 import ejb.infrastructure.session.MessageSessionBeanLocal;
+import java.security.SecureRandom;
 import java.util.Arrays;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.jboss.aerogear.security.otp.api.Base32;
 
 @Stateless
 @LocalBean
@@ -348,5 +353,77 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
 
         entityManager.remove(customerAdvanced);
         entityManager.flush();
+    }
+    
+    @Override
+    public Long addNewCustomerOneTime(String customerName, String customerSalutation,
+            String customerIdentificationNum, String customerGender,
+            String customerEmail, String customerMobile, String customerDateOfBirth,
+            String customerNationality, String customerCountryOfResidence, String customerRace,
+            String customerMaritalStatus, String customerOccupation, String customerCompany,
+            String customerAddress, String customerPostal, String customerOnlineBankingAccountNum,
+            String customerOnlineBankingPassword, byte[] customerSignature) {
+
+        CustomerBasic customerBasic = new CustomerBasic();
+
+        String hashedPwd = "";
+        String secret = generateOTPSecret();
+
+        try {
+            hashedPwd = md5Hashing(customerOnlineBankingPassword+customerIdentificationNum.substring(0, 3));
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(BankAccountSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        customerBasic.setCustomerName(customerName);
+        customerBasic.setCustomerSalutation(customerSalutation);
+        customerBasic.setCustomerIdentificationNum(customerIdentificationNum);
+        customerBasic.setCustomerGender(customerGender);
+        customerBasic.setCustomerEmail(customerEmail);
+        customerBasic.setCustomerMobile(customerMobile);
+        customerBasic.setCustomerDateOfBirth(customerDateOfBirth);
+        customerBasic.setCustomerNationality(customerNationality);
+        customerBasic.setCustomerCountryOfResidence(customerCountryOfResidence);
+        customerBasic.setCustomerCompany(customerCompany);
+        customerBasic.setCustomerRace(customerRace);
+        customerBasic.setCustomerMaritalStatus(customerMaritalStatus);
+        customerBasic.setCustomerOccupation(customerOccupation);
+        customerBasic.setCustomerAddress(customerAddress);
+        customerBasic.setCustomerPostal(customerPostal);
+        customerBasic.setCustomerOnlineBankingAccountNum(customerOnlineBankingAccountNum);
+        customerBasic.setCustomerOnlineBankingPassword(hashedPwd);
+        customerBasic.setCustomerSignature(customerSignature);
+        customerBasic.setCustomerAge(getAge(customerDateOfBirth));
+        customerBasic.setCustomerOTPSecret(secret);
+        customerBasic.setCustomerStatus("new");
+        customerBasic.setCustomerOnlineBankingAccountLocked("no");
+
+        entityManager.persist(customerBasic);
+        entityManager.flush();
+
+        return customerBasic.getCustomerBasicId();
+
+    }
+    
+    private String generateOTPSecret() {
+        System.out.println("*");
+        System.out.println("****** infrastructure/CustomerAdminSessionBean: generateOTPSecret() ******");
+        SecureRandom random = new SecureRandom();
+//        String secret = new BigInteger(80, random).toString(32).toUpperCase();
+        String secret = Base32.random();
+
+        boolean isUnique = false;
+        while (!isUnique) {
+            Query query = entityManager.createQuery("SELECT c FROM CustomerBasic c WHERE c.customerOTPSecret = :secret");
+            query.setParameter("secret", secret);
+            List resultList = query.getResultList();
+            if (resultList.isEmpty()) {
+                isUnique = true;
+            } else {
+                secret = Base32.random();
+            }
+        }
+        System.out.println("****** infrastructure/CustomerAdminSessionBean: generateOTPSecret(): customer OTP secret generated");
+        return secret;
     }
 }
