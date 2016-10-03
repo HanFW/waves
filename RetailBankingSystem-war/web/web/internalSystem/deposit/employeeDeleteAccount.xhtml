@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
- <ui:composition xmlns="http://www.w3.org/1999/xhtml"
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
@@ -8,21 +8,21 @@
                 template="/WEB-INF/internalSystemTemplate.xhtml">
 
     <ui:define name="content">
-    <h:body>
-        <h:form>
-            <p:menubar>
-                <p:submenu label="Home">
-                    <p:menuitem value="Home" url="/web/internalSystem/infrastructure/employeeCounterTellerMainPage.xhtml"/>
-                </p:submenu>
+        <h:body>
+            <h:form>
+                <p:menubar>
+                    <p:submenu label="Home">
+                        <p:menuitem value="Home" url="/web/internalSystem/infrastructure/employeeCounterTellerMainPage.xhtml"/>
+                    </p:submenu>
 
-                <p:submenu label="Log Out">
-                    <p:menuitem value="Logout" actionListener="#{employeeLoginManagedBean.doLogOut}" />
-                </p:submenu>
-            </p:menubar>
-        </h:form>
+                    <p:submenu label="Log Out">
+                        <p:menuitem value="Logout" actionListener="#{employeeLoginManagedBean.doLogOut}" />
+                    </p:submenu>
+                </p:menubar>
+            </h:form>
 
-        <h:form id="formMain">
-             <div class="ui-g ui-fluid">
+            <h:form id="formMain">
+                <div class="ui-g ui-fluid">
                     <div class="ui-g-12 ui-lg-12">
                         <div class="card card-w-title"> 
                             <div align="center">
@@ -36,24 +36,24 @@
                                 <h:outputText value="You have logged in as: Counter Teller"/>
                                 <br/>
                                 <br/>
-            <p:panel id="panel" header="Close Account">
-                <p:messages globalOnly="true"/>
+                                <p:panel id="panel" header="Close Account">
+                                    <p:messages globalOnly="true"/>
 
-              <h:panelGrid columns="1" cellpadding="5" styleClass="ui-panelgrid-blank form-group">     
-                    <h:form id="openAccountForm">
-                        <h:outputText style="font-weight: bold" value="Status Message: " />
-                        <h:outputText value="#{employeeDeleteAccountManagedBean.statusMessage}" />
-                        <br/>
-                        <h:outputText style="font-weight: bold" value="Bank Account Num: "/>
-                        <h:outputText value="#{employeeDeleteAccountManagedBean.bankAccountNum}"/>
-                        <br/>
-                        <h:outputText style="font-weight: bold" value="Bank Account Type: "/>
-                        <h:outputText value="#{employeeDeleteAccountManagedBean.bankAccountType}"/>
-                    </h:form>
-                </h:panelGrid>
-                <br/>
-            </p:panel>
-        </div>
+                                    <h:panelGrid columns="1" cellpadding="5" styleClass="ui-panelgrid-blank form-group">     
+                                        <h:form id="openAccountForm">
+                                            <h:outputText style="font-weight: bold" value="Status Message: " />
+                                            <h:outputText value="#{employeeDeleteAccountManagedBean.statusMessage}" />
+                                            <br/>
+                                            <h:outputText style="font-weight: bold" value="Bank Account Num: "/>
+                                            <h:outputText value="#{employeeDeleteAccountManagedBean.bankAccountNum}"/>
+                                            <br/>
+                                            <h:outputText style="font-weight: bold" value="Bank Account Type: "/>
+                                            <h:outputText value="#{employeeDeleteAccountManagedBean.bankAccountType}"/>
+                                        </h:form>
+                                    </h:panelGrid>
+                                    <br/>
+                                </p:panel>
+                            </div>
                         </div>
                     </div>
                 </div>

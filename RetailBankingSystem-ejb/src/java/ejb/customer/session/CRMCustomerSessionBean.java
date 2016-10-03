@@ -105,8 +105,7 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
             }
         }
 
-        if (!customerBasic.getPayee()
-                .isEmpty()) {
+        if (!customerBasic.getPayee().isEmpty()) {
             List<Payee> payees = customerBasic.getPayee();
             String payeeAccountNum = "";
 
@@ -123,7 +122,6 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
         }
 
         entityManager.remove(customerBasic);
-
         entityManager.flush();
 
         return "Delete Customer Successfully";
@@ -353,7 +351,7 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
         entityManager.remove(customerAdvanced);
         entityManager.flush();
     }
-    
+
     @Override
     public Long addNewCustomerOneTime(String customerName, String customerSalutation,
             String customerIdentificationNum, String customerGender,
@@ -369,11 +367,11 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
         String secret = generateOTPSecret();
 
         try {
-            hashedPwd = md5Hashing(customerOnlineBankingPassword+customerIdentificationNum.substring(0, 3));
+            hashedPwd = md5Hashing(customerOnlineBankingPassword + customerIdentificationNum.substring(0, 3));
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(BankAccountSessionBean.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         customerBasic.setCustomerName(customerName);
         customerBasic.setCustomerSalutation(customerSalutation);
         customerBasic.setCustomerIdentificationNum(customerIdentificationNum);
@@ -403,7 +401,7 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
         return customerBasic.getCustomerBasicId();
 
     }
-    
+
     private String generateOTPSecret() {
         System.out.println("*");
         System.out.println("****** infrastructure/CustomerAdminSessionBean: generateOTPSecret() ******");

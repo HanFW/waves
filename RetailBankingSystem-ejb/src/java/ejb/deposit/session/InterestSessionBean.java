@@ -2,8 +2,6 @@ package ejb.deposit.session;
 
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.entity.Interest;
-import java.util.Calendar;
-import java.util.Date;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -25,8 +23,7 @@ public class InterestSessionBean implements InterestSessionBeanLocal {
     private EntityManager entityManager;
 
     @Override
-    public Long addNewInterest(String dailyInterest, String monthlyInterest, String isTransfer, String isWithdraw,
-    Long bankAccountId) {
+    public Long addNewInterest(String dailyInterest, String monthlyInterest, String isTransfer, String isWithdraw) {
 
         System.out.println("*");
         System.out.println("****** deposit/InterestSessionBean: addNewInterest() ******");
@@ -36,7 +33,6 @@ public class InterestSessionBean implements InterestSessionBeanLocal {
         interest.setMonthlyInterest(monthlyInterest);
         interest.setIsTransfer(isTransfer);
         interest.setIsWithdraw(isWithdraw);
-        interest.setBankAccount(bankAccountSessionLocal.retrieveBankAccountById(bankAccountId));
 
         entityManager.persist(interest);
         entityManager.flush();
