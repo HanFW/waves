@@ -105,8 +105,7 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
             }
         }
 
-        if (!customerBasic.getPayee()
-                .isEmpty()) {
+        if (!customerBasic.getPayee().isEmpty()) {
             List<Payee> payees = customerBasic.getPayee();
             String payeeAccountNum = "";
 
@@ -123,14 +122,12 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
         }
 
         entityManager.remove(customerBasic);
-
         entityManager.flush();
 
         return "Delete Customer Successfully";
     }
 
-    private CustomerBasic
-            getCustomer(String onlineBankingAccountNum) {
+    public CustomerBasic getCustomer(String onlineBankingAccountNum) {
         CustomerBasic customer = entityManager.find(CustomerBasic.class, onlineBankingAccountNum);
         return customer;
     }
@@ -212,12 +209,12 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
             return ca;
         }
     }
-    
+
     @Override
     public CustomerAdvanced getCustomerAdvancedById(Long id) {
-        
+
         CustomerAdvanced ca = entityManager.find(CustomerAdvanced.class, id);
-        
+
         System.out.println("%%%%%" + ca);
         return ca;
     }
@@ -281,9 +278,9 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
     }
 
     @Override
-    public String updateCustomerAdvancedProfile(String customerOnlineBankingAccountNum, String customerEmploymentDetails, String customerFamilyInfo, String customerCreditReport, String customerFinancialRiskRating, String customerFinanacialAssets, String customerFinanacialGoals) {
-        Query query = entityManager.createQuery("SELECT ca FROM CustomerAdvanced ca WHERE ca.customerOnlineBankingAccountNum = :customerOnlineBankingAccountNum");
-        query.setParameter("customerOnlineBankingAccountNum", customerOnlineBankingAccountNum);
+    public String updateCustomerAdvancedProfile(Long customerAdvancedId, String customerEmploymentDetails, String customerFamilyInfo, String customerCreditReport, String customerFinancialRiskRating, String customerFinanacialAssets, String customerFinanacialGoals) {
+        Query query = entityManager.createQuery("SELECT ca FROM CustomerAdvanced ca WHERE ca.customerAdvancedId = :customerAdvancedId");
+        query.setParameter("customerAdvancedId", customerAdvancedId);
         List resultList = query.getResultList();
         if (resultList.isEmpty()) {
             return "Cannot find customer profile, please contact with our IT staff";
@@ -354,7 +351,7 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
         entityManager.remove(customerAdvanced);
         entityManager.flush();
     }
-    
+
     @Override
     public Long addNewCustomerOneTime(String customerName, String customerSalutation,
             String customerIdentificationNum, String customerGender,
@@ -370,11 +367,11 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
         String secret = generateOTPSecret();
 
         try {
-            hashedPwd = md5Hashing(customerOnlineBankingPassword+customerIdentificationNum.substring(0, 3));
+            hashedPwd = md5Hashing(customerOnlineBankingPassword + customerIdentificationNum.substring(0, 3));
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(BankAccountSessionBean.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         customerBasic.setCustomerName(customerName);
         customerBasic.setCustomerSalutation(customerSalutation);
         customerBasic.setCustomerIdentificationNum(customerIdentificationNum);
@@ -404,7 +401,7 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
         return customerBasic.getCustomerBasicId();
 
     }
-    
+
     private String generateOTPSecret() {
         System.out.println("*");
         System.out.println("****** infrastructure/CustomerAdminSessionBean: generateOTPSecret() ******");

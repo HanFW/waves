@@ -11,6 +11,7 @@ import javax.persistence.OneToOne;
 
 @Entity
 public class Interest implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,9 +21,9 @@ public class Interest implements Serializable {
     private String isTransfer;
     private String isWithdraw;
 
-    @OneToOne(cascade={CascadeType.PERSIST},fetch=FetchType.EAGER)
+    @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "interest")
     private BankAccount bankAccount;
-    
+
     public Long getInterestId() {
         return interestId;
     }
@@ -95,5 +96,5 @@ public class Interest implements Serializable {
     public String toString() {
         return "entity.Interest[ id=" + interestId + " ]";
     }
-    
+
 }

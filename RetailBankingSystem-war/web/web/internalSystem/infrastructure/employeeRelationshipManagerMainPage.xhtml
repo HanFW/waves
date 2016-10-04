@@ -18,12 +18,12 @@
 
                 <p:menubar>  
                     <p:submenu label="Home">
-                        <p:menuitem value="Home" url="/web/internalSystem/infrastructure/employeeMainPage.xhtml"/>
+                        <p:menuitem value="Home" url="/web/internalSystem/infrastructure/employeeMainPage.xhtml?faces-redirect=true"/>
                     </p:submenu>
 
                     <p:submenu label="Task">
-                        <p:menuitem value="My Customers" url="/web/internalSystem/CRM/RMViewCustomerList.xhtml"/>
-                        <p:menuitem value="Update Custmer Advanced Information" url="/web/internalSystem/CRM/RMSearchCustomer.xhtml"/>
+                        <p:menuitem value="My Customers" url="/web/internalSystem/CRM/RMViewCustomerList.xhtml?faces-redirect=true"/>
+                        <p:menuitem value="Update Custmer Advanced Information" url="/web/internalSystem/CRM/RMSearchCustomer.xhtml?faces-redirect=true"/>
                     </p:submenu>
                     <p:submenu label="Manage My Account">
                         <p:menuitem value="Change Password" actionListener="#{employeeLoginManagedBean.changePassword}" />

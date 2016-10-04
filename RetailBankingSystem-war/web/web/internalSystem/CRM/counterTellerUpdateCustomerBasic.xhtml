@@ -47,8 +47,12 @@
                             <p:outputLabel for="customerNationality"  value="Nationality:" />
                             <p:inputText id="customerNationality" value="#{employeeRecordEnquiryManagedBean.customerNationality}" required="true" />
 
+
                             <p:outputLabel for="customerCountryOfResidence"  value="Country of Residence:" />
                             <p:inputText id="customerCountryOfResidence" value="#{employeeRecordEnquiryManagedBean.customerCountryOfResidence}" required="true"  />
+
+
+                            <p:outputLabel for="customerCompany"  value="Company:" />
 
                             <p:outputLabel for="customerMaritalStatus"  value="Marital Status:" />
                             <p:inputText id="customerMaritalStatus" value="#{employeeRecordEnquiryManagedBean.customerMaritalStatus}" required="true"  />
@@ -56,39 +60,22 @@
                             <p:outputLabel for="customerOccupation"  value="Occupation:" />
                             <p:inputText id="customerOccupation" value="#{employeeRecordEnquiryManagedBean.customerOccupation}" required="true"  />
 
-                            <p:outputLabel for="customerCompany"  value="Company:" />
+
 
                             <p:inputText id="customerCompany" value="#{employeeRecordEnquiryManagedBean.customerCompany}" required="true"  />
 
                             <p:outputLabel for="customerMobileNumber"  value="Mobile Number:" />
                             <p:inputText id="customerMobileNumber" value="#{employeeRecordEnquiryManagedBean.replacedCustomerMobile}" required="true"  />
 
-                            <p:outputLabel for="customerEmailAddress"  value="Email Address:" />
-                            <p:inputText id="customerEmailAddress" value="#{employeeRecordEnquiryManagedBean.replacedCustomerEmail}" required="true"  />
-
-                            <p:outputLabel for="customerStreet"  value="Residential Street Name: " />
-                            <p:inputText id="customerStreet" value="#{employeeRecordEnquiryManagedBean.streetName}" required="true"  />
-
-                            <p:outputLabel for="customerUnitNum"  value="Residential Unit No.: " />
-                            <p:inputText id="customerUnitNum" value="#{employeeRecordEnquiryManagedBean.unitNum}" required="true"  />
-
-                            <p:outputLabel for="customerBlockNum"  value="Residential Block/House No.: " />
-                            <p:inputText id="customerBlockNum" value="#{employeeRecordEnquiryManagedBean.blockNum}" required="true"  />
-
-                            <p:outputLabel for="customerPostalCode"  value="Postal Code:" />
-                            <p:inputText id="customerPostalCode" value="#{employeeRecordEnquiryManagedBean.customerPostal}" required="true"  />
 
                         </h:panelGrid>   
                     </p:panel>
 
-                    <h:panelGrid columns="2" cellpadding="5" >
-
-                        <p:commandButton value="Reset" type="reset" />
-
-                        <p:commandButton value="Update" actionListener="#{employeeRecordEnquiryManagedBean.updateCustomerBasicProfile}" ajax="false"/>
-                    </h:panelGrid>
-                </p:dataList>
+                            <p:outputLabel for="customerEmailAddress"  value="Email Address:" />
+                            <p:inputText id="customerEmailAddress" value="#{employeeRecordEnquiryManagedBean.replacedCustomerEmail}" required="true"  />
             </div>
         </h:form>
     </ui:define>
 </ui:composition>
+                            <p:outputLabel for="customerStreet"  value="Residential Street Name: " />
+                            <p:inputText id="customerStreet" value="#{employeeRecordEnquiryManagedBean.streetName}" required="true"  />

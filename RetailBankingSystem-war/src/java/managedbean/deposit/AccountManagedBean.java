@@ -869,16 +869,16 @@ public class AccountManagedBean implements Serializable {
                             bankAccountStatus = "Inactivated";
                         }
 
-                        newAccountId = bankAccountSessionLocal.addNewAccount(bankAccountNum, bankAccountPwd, bankAccountType,
-                                bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
-                                bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
-                                statementDateDouble, customerBasicId);
-
                         dailyInterest = "0";
                         monthlyInterest = "0";
                         isTransfer = "0";
                         isWithdraw = "0";
-                        newInterestId = interestSessionLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw, newAccountId);
+                        newInterestId = interestSessionLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw);
+
+                        newAccountId = bankAccountSessionLocal.addNewAccount(bankAccountNum, bankAccountPwd, bankAccountType,
+                                bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
+                                bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
+                                statementDateDouble, customerBasicId, newInterestId);
 
                         bankAccount = bankAccountSessionLocal.retrieveBankAccountById(newAccountId);
                         bankAccountSessionLocal.retrieveBankAccountByCusIC(customerIdentificationNum).add(bankAccount);
@@ -945,16 +945,16 @@ public class AccountManagedBean implements Serializable {
                             bankAccountStatus = "Inactivated";
                         }
 
-                        newAccountId = bankAccountSessionLocal.addNewAccount(bankAccountNum, bankAccountPwd, bankAccountType,
-                                bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
-                                bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
-                                statementDateDouble, newCustomerBasicId);
-
                         dailyInterest = "0";
                         monthlyInterest = "0";
                         isTransfer = "0";
                         isWithdraw = "0";
-                        newInterestId = interestSessionLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw, newAccountId);
+                        newInterestId = interestSessionLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw);
+
+                        newAccountId = bankAccountSessionLocal.addNewAccount(bankAccountNum, bankAccountPwd, bankAccountType,
+                                bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
+                                bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
+                                statementDateDouble, newCustomerBasicId, newInterestId);
 
                         statusMessage = "New Account Saved Successfully.";
                         loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "open account", "successful", null);
@@ -1087,6 +1087,15 @@ public class AccountManagedBean implements Serializable {
                 customerAddress, customerPostal, "11223344",
                 "11223344", customerSignature.getBytes());
 
+        //Interest Details
+        dailyInterest = "0";
+        monthlyInterest = "0";
+        isTransfer = "0";
+        isWithdraw = "0";
+
+        newInterestId = interestSessionLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw);
+        interestId = interestSessionLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw);
+        
         //Bank Account Details
         bankAccountNum = bankAccountSessionLocal.generateBankAccount();
         bankAccountPwd = "123456";
@@ -1110,22 +1119,13 @@ public class AccountManagedBean implements Serializable {
         newAccountId = bankAccountSessionLocal.addNewAccountOneTime(bankAccountNum, bankAccountPwd, bankAccountType,
                 bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
                 bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
-                statementDateDouble, newCustomerBasicId);
+                statementDateDouble, newCustomerBasicId, newInterestId);
 
         accountId = bankAccountSessionLocal.addNewAccountOneTime(bankAccountSessionLocal.generateBankAccount(),
                 bankAccountPwd, "Basic Savings Account",
                 bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
                 bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
-                statementDateDouble, customerBasicId);
-
-        //Interest Details
-        dailyInterest = "0";
-        monthlyInterest = "0";
-        isTransfer = "0";
-        isWithdraw = "0";
-
-        newInterestId = interestSessionLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw, newAccountId);
-        interestId = interestSessionLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw, accountId);
+                statementDateDouble, customerBasicId, interestId);
 
         statusMessage = "New Account Saved Successfully.";
 

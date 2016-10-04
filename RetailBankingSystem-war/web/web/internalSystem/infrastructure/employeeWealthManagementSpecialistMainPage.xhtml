@@ -7,7 +7,19 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/internalSystemTemplate.xhtml">
 
-    <ui:define name="internalSystemMenu">
+    <ui:define name="content">
+    <h:body>
+        <h:form>
+            <p:menubar>
+                <p:submenu label="Home">
+                    <p:menuitem value="Home" url="/web/internalSystem/infrastructure/employeeMainPage.xhtml?faces-redirect=true"/>
+                </p:submenu>
+                <p:submenu label="Tasks">
+                    <p:menuitem value="View Enquiry" action="/web/internalSystem/enquiry/wealthManagementSpecialistViewPendingIssue.xhtml?faces-redirect=true"/>
+                </p:submenu>
+                <p:submenu label="Manage My Account">
+                    <p:menuitem value="Change Password" actionListener="#{employeeLoginManagedBean.changePassword}" />
+                </p:submenu>
 
         <ui:include src="/WEB-INF/internalSystemMenuWealthSpecialist.xhtml" />
 

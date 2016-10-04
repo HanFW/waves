@@ -37,6 +37,7 @@ public class RMUpdateCustomerAdvancedManagedBean implements Serializable {
 
     private String customerOnlineBankingAccountNum;
     private Long customerAdvancedId;
+    private Long customerBasicId;
 
     private String customerEmploymentDetails;
     private String customerFamilyInfo;
@@ -86,6 +87,14 @@ public class RMUpdateCustomerAdvancedManagedBean implements Serializable {
 
     public void setCustomerAdvancedId(Long customerAdvancedId) {
         this.customerAdvancedId = customerAdvancedId;
+    }
+
+    public Long getCustomerBasicId() {
+        return customerBasicId;
+    }
+
+    public void setCustomerBasicId(Long customerBasicId) {
+        this.customerBasicId = customerBasicId;
     }
 
     public void setCustomerEmploymentDetails(String customerEmploymentDetails) {
@@ -184,7 +193,7 @@ public class RMUpdateCustomerAdvancedManagedBean implements Serializable {
     }
 
     public void updateCustomerAdvanced() {
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(customerSessionBeanLocal.updateCustomerAdvancedProfile(customerOnlineBankingAccountNum, customerEmploymentDetails, customerFamilyInfo, customerCreditReport, customerFinancialRiskRating, customerFinanacialAssets, customerFinanacialGoals), " "));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(customerSessionBeanLocal.updateCustomerAdvancedProfile(customerAdvancedId, customerEmploymentDetails, customerFamilyInfo, customerCreditReport, customerFinancialRiskRating, customerFinanacialAssets, customerFinanacialGoals), " "));
         customerCreditReport = null;
         customerEmploymentDetails = null;
         customerFamilyInfo = null;

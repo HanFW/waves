@@ -47,12 +47,12 @@
                                 <p:outputLabel for="customerID"  value="Customer NRIC/Passport:" />
 
                                 <h:panelGrid columns="1" id="matchGrid" cellpadding="5" styleClass="ui-panelgrid-blank form-group">                  
-                                    <p:inputText id="customerID" value="#{employeeRecordEnquiryManagedBean.identificationNum}" />
-                                    <p:commandButton value="Show Customer" actionListener="#{employeeRecordEnquiryManagedBean.retieveCustomerByIdentification}" update="@form"/>
+                                    <p:inputText id="customerID" value="#{counterTellerSearchCustomerManagedBean.identificationNum}" />
+                                    <p:commandButton value="Show Customer" actionListener="#{counterTellerSearchCustomerManagedBean.retieveCustomerByIdentification}" update="@form"/>
                                 </h:panelGrid>
 
 
-                                <p:panelGrid rendered="#{employeeRecordEnquiryManagedBean.visible}" >
+                                <p:panelGrid rendered="#{counterTellerSearchCustomerManagedBean.visible}" >
 
                                     <p:row>
                                         <p:column colspan="2">
@@ -64,7 +64,7 @@
                                             <h:outputText value="Salutation:" />
                                         </p:column>
                                         <p:column>
-                                            <h:outputText value="#{employeeRecordEnquiryManagedBean.cb.customerSalutation}" />
+                                            <h:outputText value="#{counterTellerSearchCustomerManagedBean.cb.customerSalutation}" />
                                         </p:column>
                                     </p:row>
                                     <p:row>
@@ -72,7 +72,7 @@
                                             <h:outputText value="Name:" />
                                         </p:column>
                                         <p:column>
-                                            <h:outputText value="#{employeeRecordEnquiryManagedBean.cb.customerName}" />
+                                            <h:outputText value="#{counterTellerSearchCustomerManagedBean.cb.customerName}" />
                                         </p:column>
                                     </p:row>
                                     <p:row>
@@ -80,7 +80,7 @@
                                             <h:outputText value="NRIC/Passport:" />
                                         </p:column>
                                         <p:column>
-                                            <h:outputText value="#{employeeRecordEnquiryManagedBean.cb.customerIdentificationNum}" />
+                                            <h:outputText value="#{counterTellerSearchCustomerManagedBean.cb.customerIdentificationNum}" />
                                         </p:column>
                                     </p:row>
                                     <p:row>
@@ -88,14 +88,16 @@
                                             <h:outputText value="Customer Online Banking Acc. Num.:" />
                                         </p:column>
                                         <p:column>
-                                            <h:outputText value="#{employeeRecordEnquiryManagedBean.cb.customerOnlineBankingAccountNum}" />
+                                            <h:outputText value="#{counterTellerSearchCustomerManagedBean.cb.customerOnlineBankingAccountNum}" />
                                         </p:column>
                                     </p:row>
 
                                 </p:panelGrid>
 
                                 <h:panelGrid columns="1" cellpadding="5" styleClass="ui-panelgrid-blank form-group">                  
-                                    <p:commandButton value="View and Write Enquiry" actionListener="#{employeeRecordEnquiryManagedBean.helpCustomerRecordEnquiry}"/>
+                                    <p:commandButton value="View and Write Enquiry" actionListener="#{counterTellerSearchCustomerManagedBean.helpCustomerRecordEnquiry}" >
+                                        <f:setPropertyActionListener target="#{employeeRecordEnquiryManagedBean.cb}" value="#{counterTellerSearchCustomerManagedBean.cb}" />
+                                    </p:commandButton>
                                 </h:panelGrid>
 
 

@@ -28,52 +28,57 @@
             </h:form>
 
             <h:form>
+                <div class="ui-g ui-fluid">
+                    <div class="ui-g-12 ui-lg-12">
+                        <div class="card card-w-title"> 
+                            <div align="center">
+                                <h:outputText value="Welcome " />
+                                <h:outputText value="#{employeeAccountManagedBean.userName}!"/>
+                                <br/>
+                                <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
+                                <br/>
+                                <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
+                                <br/>
+                                <h:outputText value="You have logged in as: Enquiry Manager "/>
+                                <br/>
+                                <br/>
+                                <p:panel header="Pending Customer Enquiry">
+                                    <p:dataTable var="enquiryCase" value="#{enquiryManagerManagedBean.pendingCases}" 
+                                                 paginator="true" rows="10" emptyMessage="No Pending Cases">
+                                        <p:column headerText="Case ID" >
+                                            <h:outputText value="#{enquiryCase.caseId}" /> 
+                                        </p:column>
 
-                <div align="center">
-                    <h:outputText value="Welcome " />
-                    <h:outputText value="#{employeeAccountManagedBean.userName}!"/>
-                    <br/>
-                    <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
-                    <br/>
-                    <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
-                    <br/>
-                    <h:outputText value="You have logged in as: Enquiry Manager "/>
-                    <br/>
-                    <br/>
-                    <p:panel header="Pending Customer Enquiry">
-                        <p:dataTable var="enquiryCase" value="#{enquiryManagerManagedBean.pendingCases}" 
-                                     paginator="true" rows="10" emptyMessage="No Pending Cases">
-                            <p:column headerText="Case ID" >
-                                <h:outputText value="#{enquiryCase.caseId}" /> 
-                            </p:column>
+                                        <p:column headerText="Created Time">
+                                            <h:outputText value="#{enquiryCase.createdTime}" />
+                                        </p:column>
 
-                            <p:column headerText="Created Time">
-                                <h:outputText value="#{enquiryCase.createdTime}" />
-                            </p:column>
+                                        <p:column headerText="Detail" >
+                                            <h:outputText value="#{enquiryCase.caseDetail}" /> 
+                                        </p:column>
 
-                            <p:column headerText="Detail" >
-                                <h:outputText value="#{enquiryCase.caseDetail}" /> 
-                            </p:column>
+                                        <p:column headerText="Status"> 
+                                            <h:outputText value="#{enquiryCase.caseStatus}" />
+                                        </p:column>
 
-                            <p:column headerText="Status"> 
-                                <h:outputText value="#{enquiryCase.caseStatus}" />
-                            </p:column>
+                                        <p:column headerText="Issue Created"> 
+                                            <h:outputText value="#{enquiryManagerManagedBean.caseIssueCreated(enquiryCase.caseId)}" />
+                                        </p:column>
 
-                            <p:column headerText="Issue Created"> 
-                                <h:outputText value="#{enquiryManagerManagedBean.caseIssueCreated(enquiryCase.caseId)}" />
-                            </p:column>
+                                        <p:column headerText="All Issues Replied"> 
+                                            <h:outputText value="#{enquiryManagerManagedBean.caseIssueReplied(enquiryCase.caseId)}" />
+                                        </p:column>
 
-                            <p:column headerText="All Issues Replied"> 
-                                <h:outputText value="#{enquiryManagerManagedBean.caseIssueReplied(enquiryCase.caseId)}" />
-                            </p:column>
-
-                            <p:column > 
-                                <p:commandButton value="Reply" actionListener="#{enquiryManagerManagedBean.redirectToReplyCase}" ajax="true">
-                                    <f:setPropertyActionListener target="#{enquiryManagerManagedBean.caseId}" value="#{enquiryCase.caseId}" />
-                                </p:commandButton>
-                            </p:column>
-                        </p:dataTable>
-                    </p:panel>
+                                        <p:column > 
+                                            <p:commandButton value="Reply" actionListener="#{enquiryManagerManagedBean.redirectToReplyCase}" ajax="true">
+                                                <f:setPropertyActionListener target="#{enquiryManagerManagedBean.caseId}" value="#{enquiryCase.caseId}" />
+                                            </p:commandButton>
+                                        </p:column>
+                                    </p:dataTable>
+                                </p:panel>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </h:form>
         </h:body>

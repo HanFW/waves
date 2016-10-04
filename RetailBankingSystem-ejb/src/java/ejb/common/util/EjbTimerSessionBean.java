@@ -168,8 +168,7 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
     }
 
     private void handleTimeout_10000ms() {
-//        System.out.println("*** 10000MS Timer timeout");
-
+        System.out.println("*** 10000MS Timer timeout");
         bankAccountSessionLocal.interestAccuring();
     }
 
@@ -181,12 +180,14 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
     }
 
     private void handleTimeout_15000ms() {
-//        System.out.println("*** 10000MS Timer timeout");
+        System.out.println("*** 10000MS Timer timeout");
 
         bankAccountSessionLocal.resetDailyTransferLimit();
     }
 
     private void handleTimeout_70000ms() {
         System.out.println("*** 70000MS Timer timeout");
+        
+        bankAccountSessionLocal.autoCloseAccount();
     }
 }

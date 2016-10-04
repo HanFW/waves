@@ -85,7 +85,7 @@
                                                 <p:row>
                                                     <p:column colspan="2">
                                                         <p:commandButton value="Add Follow Up Question" action="CRMCustomerAddFollowUP.xhtml" ajax="true">
-                                                            <f:setPropertyActionListener target="#{enquiryManagedBean.caseId}" value="#{enquiryCase.caseId}" />
+                                                            <f:setPropertyActionListener target="#{customerFollowUpManagedBean.caseId}" value="#{enquiryCase.caseId}" />
                                                         </p:commandButton>
                                                     </p:column>
                                                 </p:row>

@@ -40,9 +40,13 @@
                     <h:outputText value="You have logged in as: Counter Teller "/>
                     <br/>
 
+
+
                     <br/>
                     <p:panel id="panel" header="View Transaction">
                         <p:messages globalOnly="true"/>
+
+
 
                         <h:panelGrid columns="1" cellpadding="5" styleClass="ui-panelgrid-blank form-group">                  
                             <p:row>
@@ -59,54 +63,6 @@
                                     <p:message for="customerName" />
                                 </p:column>
                             </p:row>
-
-                            <p:row>
-                                <p:column>
-                                    <p:outputLabel for="customerIdentificationNum" style="font-weight: bold" value="Identification Number: " />
-                                </p:column>
-                                <p:column>
-                                    <p:inputText label="Customer Identification Number" id="customerIdentificationNum" value="#{employeeViewTransactionManagedBean.customerIdentificationNum}"
-                                                 required="true" requiredMessage="Required Field">
-                                    </p:inputText>
-                                </p:column>
-                                <p:column>
-                                    <p:message for="customerIdentificationNum" />
-                                </p:column>
-                            </p:row>
-
-                            <p:row>
-                                <p:column>
-                                    <p:outputLabel for="customerDateOfBirth" style="font-weight: bold" value="Date Of Birth: " />
-                                </p:column>
-                                <p:column>
-                                    <p:calendar id="customerDateOfBirth" value="#{employeeViewTransactionManagedBean.customerDateOfBirth}" 
-                                                showOn="button" locale="de" navigator="true" pattern="dd/MM/yyyy" 
-                                                yearRange="c-200:c+200" required="true" requiredMessage="Required Field"/>
-                                </p:column>
-                                <p:column>
-                                    <p:message for="customerDateOfBirth" />
-                                </p:column>
-                            </p:row>
-
-                        </h:panelGrid>
-
-                        <h:panelGrid columns="2" cellpadding="5" styleClass="ui-panelgrid-blank form-group">                  
-
-
-                            <p:commandButton id="submitBtn" value="Submit" update="panel"
-                                             action="#{employeeViewTransactionManagedBean.submit}" ajax="true" />
-
-                            <p:commandButton id="cancelBtn" action="/web/index.xhtml" value="Cancel" update="panel" immediate = "true" >
-                                <p:confirm header="Cancel" message="Are you sure?" />
-                            </p:commandButton>
-
-
-                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                                <p:commandButton value="Yes" styleClass="ui-confirmdialog-yes" action="/web/index.xhtml"/>
-                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" />
-                            </p:confirmDialog>
-                        </h:panelGrid>
-                    </p:panel>
                 </div>
             </h:form>
         </h:body>
