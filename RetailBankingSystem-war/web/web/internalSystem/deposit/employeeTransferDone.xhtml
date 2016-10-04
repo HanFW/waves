@@ -7,6 +7,12 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/internalSystemTemplate.xhtml">
 
+    <ui:define name="internalSystemMenu">
+
+        <ui:include src="/WEB-INF/internalSystemMenuCounterTeller.xhtml" />
+
+    </ui:define>
+
     <ui:define name="content">
         <h:body>
             <h:form>
@@ -129,7 +135,7 @@
                                     <h:panelGrid columns="2" cellpadding="5" styleClass="ui-panelgrid-blank form-group">  
 
 
-                                         
+
                                         <p:commandButton id="nextBtn" value="Next" update="panel" 
                                                          actionListener="#{employeeTransferDoneManagedBean.transfer}" ajax="true"/>
 
@@ -141,8 +147,8 @@
                                             <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" action="/web/onlineBanking/deposit/customerDepositIndex.xhtml"/>
                                             <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" />
                                         </p:confirmDialog>
-                                        
-                                       
+
+
                                     </h:panelGrid>
                                 </p:panel>
 

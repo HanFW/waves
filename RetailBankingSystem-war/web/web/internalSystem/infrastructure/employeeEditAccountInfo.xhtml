@@ -24,67 +24,59 @@
 
 
             <h:form id="form">
-                <div class="ui-g ui-fluid">
-                    <div class="ui-g-12 ui-lg-12">
-                        <div class="card card-w-title"> 
-                            <div align="center">
-                                <h:outputText value="Welcome " />
-                                <h:outputText value="#{employeeAccountManagedBean.userName}!"/>
-                                <br/>
-                                <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
-                                <br/>
-                                <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
-                                <br/>
-                                <h:outputText value="You have logged in as: System Admin"/>
-                                <br/>
-                                <p:messages autoUpdate="true"/>
+                <div align="center">
+                    <h:outputText value="Welcome " />
+                    <h:outputText value="#{employeeAccountManagedBean.userName}!"/>
+                    <br/>
+                    <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
+                    <br/>
+                    <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
+                    <br/>
+                    <h:outputText value="You have logged in as: System Admin"/>
+                    <br/>
+                    <p:messages autoUpdate="true"/>
 
-                                <h:panelGrid columns="2" id="userInfo" cellpadding="5" styleClass="ui-panelgrid-blank form-group">
-                                  
-                                            <p:outputLabel  for="employeeName" value="Name: "/>
-                                       
-                                            <p:inputText id="employeeName" value="#{systemAdminEditUserAccountManagedBean.targetEmployeeName}"/> 
-                                
-                                            <p:outputLabel for="employeeDepartment" value="Department:" /> 
-                                      
-                                            <p:selectOneMenu id="employeeDepartment" value="#{systemAdminEditUserAccountManagedBean.targetEmployeeDepartment}"
-                                                             >
-                                                <f:selectItems value="#{systemAdminEditUserAccountManagedBean.departments}" var="department" itemLabel="#{department}" itemValue="#{department}" />
-                                            </p:selectOneMenu>
-                                  
-                                            <p:outputLabel for="employeePosition" value="Position:" />
-                                       
-                                            <p:selectOneMenu id="employeePosition" value="#{systemAdminEditUserAccountManagedBean.targetEmployeePosition}" 
-                                                            >
-                                                <f:selectItems  value="#{systemAdminEditUserAccountManagedBean.positions}" var="position" itemLabel="#{position}" itemValue="#{position}" />
-                                            </p:selectOneMenu>
-                                  
-                                            <p:outputLabel for="employeeMobileNum" value="Mobile Number:" />
-                                      
-                                            <p:inputText id="employeeMobileNum" value="#{systemAdminEditUserAccountManagedBean.targetEmployeeMobile}" />
-                                   
-                                            <p:outputLabel for="employeeEmail" value="Email Address:" />
-                                        
-                                            <p:inputText id="employeeEmail" value="#{systemAdminEditUserAccountManagedBean.targetEmployeeEmail}" />
-       
-                                            <p:outputLabel for="role" value="Role:" />
-                                      
-                                            <p:selectCheckboxMenu id="role" value="#{systemAdminEditUserAccountManagedBean.selectedRoles}" label="Select"
-                                                                  filter="true" filterMatchMode="startsWith" panelStyle="width:300px">
-                                                <f:selectItems value="#{systemAdminEditUserAccountManagedBean.roles}" />
-                                            </p:selectCheckboxMenu>
-                                
-                                <p:commandButton value="Return" type="submit" action="/web/internalSystem/infrastructure/employeeUserAccountManagement.xhtml" immediate="true"/>
-                            <p:commandButton value="Update" actionListener="#{systemAdminEditUserAccountManagedBean.updateAccountInfo}"/>
-                                
-                                </h:panelGrid>
-                            </div>
-                        </div>
-                    </div>
+                    <h:panelGrid columns="2" id="userInfo" cellpadding="5" styleClass="ui-panelgrid-blank form-group">
+
+                        <p:outputLabel  for="employeeName" value="Name: "/>
+
+                        <p:inputText id="employeeName" value="#{systemAdminEditUserAccountManagedBean.targetEmployeeName}"/> 
+
+                        <p:outputLabel for="employeeDepartment" value="Department:" /> 
+
+                        <p:selectOneMenu id="employeeDepartment" value="#{systemAdminEditUserAccountManagedBean.targetEmployeeDepartment}"
+                                         >
+                            <f:selectItems value="#{systemAdminEditUserAccountManagedBean.departments}" var="department" itemLabel="#{department}" itemValue="#{department}" />
+                        </p:selectOneMenu>
+
+                        <p:outputLabel for="employeePosition" value="Position:" />
+
+                        <p:selectOneMenu id="employeePosition" value="#{systemAdminEditUserAccountManagedBean.targetEmployeePosition}" 
+                                         >
+                            <f:selectItems  value="#{systemAdminEditUserAccountManagedBean.positions}" var="position" itemLabel="#{position}" itemValue="#{position}" />
+                        </p:selectOneMenu>
+
+                        <p:outputLabel for="employeeMobileNum" value="Mobile Number:" />
+
+                        <p:inputText id="employeeMobileNum" value="#{systemAdminEditUserAccountManagedBean.targetEmployeeMobile}" />
+
+                        <p:outputLabel for="employeeEmail" value="Email Address:" />
+
+                        <p:inputText id="employeeEmail" value="#{systemAdminEditUserAccountManagedBean.targetEmployeeEmail}" />
+
+                        <p:outputLabel for="role" value="Role:" />
+
+                        <p:selectCheckboxMenu id="role" value="#{systemAdminEditUserAccountManagedBean.selectedRoles}" label="Select"
+                                              filter="true" filterMatchMode="startsWith" panelStyle="width:300px">
+                            <f:selectItems value="#{systemAdminEditUserAccountManagedBean.roles}" />
+                        </p:selectCheckboxMenu>
+
+                        <p:commandButton value="Return" type="submit" action="/web/internalSystem/infrastructure/employeeUserAccountManagement.xhtml" immediate="true"/>
+                        <p:commandButton value="Update" actionListener="#{systemAdminEditUserAccountManagedBean.updateAccountInfo}"/>
+
+                    </h:panelGrid>
                 </div>
-
-
             </h:form>
         </h:body>
-      </ui:define>
+    </ui:define>
 </ui:composition>

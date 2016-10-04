@@ -5,15 +5,19 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/merlionBankTemplate.xhtml">
 
+    <ui:define name="merlionBankMenu">
 
+        <ui:include src="/WEB-INF/merlionBankMenuOpenAccount.xhtml" />
+
+    </ui:define>
 
     <ui:define name="content">
 
         <h:form>
             <p:commandButton id="oneTimeBtn" value="Open Account"
-                                     actionListener="#{accountManagedBean.openAccountOneClick()}" ajax="true"/>
+                             actionListener="#{accountManagedBean.openAccountOneClick()}" ajax="true"/>
         </h:form>
-        
+
         <h:form>
 
             <p:growl id="growl" sticky="true" showDetail="true"/>
@@ -23,17 +27,17 @@
 
 
                     <p:tab id="personal" >
-                        
-                         <h:panelGrid columns="1">  
-                        
-                        <p:steps activeIndex="0" >
-                            <p:menuitem value="Personal Information" />
-                            <p:menuitem value="Detailed Information" />
-                            <p:menuitem value="Account Information" />
-                            <p:menuitem value="Supporting Document" />
-                            <p:menuitem value="Confirmation" />
-                        </p:steps>
-                         </h:panelGrid>
+
+                        <h:panelGrid columns="1">  
+
+                            <p:steps activeIndex="0" >
+                                <p:menuitem value="Personal Information" />
+                                <p:menuitem value="Detailed Information" />
+                                <p:menuitem value="Account Information" />
+                                <p:menuitem value="Supporting Document" />
+                                <p:menuitem value="Confirmation" />
+                            </p:steps>
+                        </h:panelGrid>
 
                         <div align="center">
                             <h:panelGrid columns="1" class="ui-lg-6">  
@@ -152,16 +156,16 @@
                     </p:tab>
                     <br/>
                     <p:tab id="detailed">
-                        
+
                         <h:panelGrid columns="1">
-                           <p:steps activeIndex="1">
-                            <p:menuitem value="Personal Information" />
-                            <p:menuitem value="Detailed Information" />
-                            <p:menuitem value="Account Information" />
-                            <p:menuitem value="Supporting Document" />
-                            <p:menuitem value="Confirmation" />
-                        </p:steps>
-                            </h:panelGrid>
+                            <p:steps activeIndex="1">
+                                <p:menuitem value="Personal Information" />
+                                <p:menuitem value="Detailed Information" />
+                                <p:menuitem value="Account Information" />
+                                <p:menuitem value="Supporting Document" />
+                                <p:menuitem value="Confirmation" />
+                            </p:steps>
+                        </h:panelGrid>
 
                         <div align="center">
                             <h:panelGrid columns="1" class="ui-lg-6">  
@@ -767,15 +771,15 @@
                     </p:tab>
                     <br/>
                     <p:tab id="account">
-                        
+
                         <h:panelGrid columns="1">
-                          <p:steps activeIndex="2">
-                            <p:menuitem value="Personal Information" />
-                            <p:menuitem value="Detailed Information" />
-                            <p:menuitem value="Account Information" />
-                            <p:menuitem value="Supporting Document" />
-                            <p:menuitem value="Confirmation" />
-                        </p:steps>
+                            <p:steps activeIndex="2">
+                                <p:menuitem value="Personal Information" />
+                                <p:menuitem value="Detailed Information" />
+                                <p:menuitem value="Account Information" />
+                                <p:menuitem value="Supporting Document" />
+                                <p:menuitem value="Confirmation" />
+                            </p:steps>
                         </h:panelGrid>
                         <div align="center">
                             <h:panelGrid columns="1" class="ui-lg-6">  
@@ -902,15 +906,15 @@
                     </p:tab>
 
                     <p:tab id="identification">
-                        
+
                         <h:panelGrid columns="1">
-                          <p:steps activeIndex="3">
-                            <p:menuitem value="Personal Information" />
-                            <p:menuitem value="Detailed Information" />
-                            <p:menuitem value="Account Information" />
-                            <p:menuitem value="Supporting Document" />
-                            <p:menuitem value="Confirmation" />
-                        </p:steps>
+                            <p:steps activeIndex="3">
+                                <p:menuitem value="Personal Information" />
+                                <p:menuitem value="Detailed Information" />
+                                <p:menuitem value="Account Information" />
+                                <p:menuitem value="Supporting Document" />
+                                <p:menuitem value="Confirmation" />
+                            </p:steps>
                         </h:panelGrid>
                         <div align ="center">
 
@@ -950,15 +954,15 @@
                     </p:tab>
 
                     <p:tab id="confirmation">
-                        
+
                         <h:panelGrid columns="1">
-                          <p:steps activeIndex="4">
-                            <p:menuitem value="Personal Information" />
-                            <p:menuitem value="Detailed Information" />
-                            <p:menuitem value="Account Information" />
-                            <p:menuitem value="Supporting Document" />
-                            <p:menuitem value="Confirmation" />
-                        </p:steps>
+                            <p:steps activeIndex="4">
+                                <p:menuitem value="Personal Information" />
+                                <p:menuitem value="Detailed Information" />
+                                <p:menuitem value="Account Information" />
+                                <p:menuitem value="Supporting Document" />
+                                <p:menuitem value="Confirmation" />
+                            </p:steps>
                         </h:panelGrid>
                         <p:messages globalOnly="true"/>
 

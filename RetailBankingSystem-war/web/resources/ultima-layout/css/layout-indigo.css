@@ -40,12 +40,9 @@
     clear: both; }
 
 .card {
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
-    -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
-    -moz-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
-    border-radius: 2px;
+    -moz-border-radius: 0px;
+    -webkit-border-radius: 0px;
+    border-radius: 0px;
     background: #ffffff;
     padding: 16px;
     margin-bottom: 16px;
@@ -744,8 +741,6 @@ body {
     margin: 0; }
 body.main-body {
     background: url("#{resource['ultima-layout:images/onlineBanking/onlineBanking_templateBG.jpg']}")top right; }
-body.employee-main-body {
-    background: url("#{resource['ultima-layout:images/onlineBanking/onlineBanking_templateBG.jpg']}")top right; }
 body a {
     text-decoration: none; }
 
@@ -763,10 +758,7 @@ body a {
     z-index: 100;
     width: 100%;
     height: 90px;
-    background-color: rgba(0, 0, 0, 0.40);
-    -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
-    -moz-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
-    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26); }
+    background-color: rgba(0, 0, 0, 0.40); }
 .layout-wrapper .topbar .logo {
     display: inline-block;
     vertical-align: middle;
@@ -1190,9 +1182,7 @@ body a {
         top: 90px;
         height: auto;
         background-color: #022A5A;
-        -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
-        -moz-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
-        box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26); }
+        }
     
     
     .layout-wrapper.menu-layout-horizontal .layout-menu > .nano {

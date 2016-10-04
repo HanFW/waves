@@ -7,6 +7,12 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/internalSystemTemplate.xhtml">
 
+    <ui:define name="internalSystemMenu">
+
+        <ui:include src="/WEB-INF/internalSystemMenuRelationshipManager.xhtml" />
+
+    </ui:define>
+
     <ui:define name="content">
         <h:body>
             <h:form>
@@ -22,57 +28,51 @@
             </h:form>
 
             <h:form>
-                <div class="ui-g ui-fluid">
-                    <div class="ui-g-12 ui-lg-12">
-                        <div class="card card-w-title"> 
-                            <div align="center">
-                                <h:outputText value="Welcome " />
-                                <h:outputText value="#{employeeAccountManagedBean.userName}!"/>
-                                <br/>
-                                <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
-                                <br/>
-                                <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
-                                <br/>
-                                <h:outputText value="You have logged in as: Relationship Manager"/>
-                                <br/>
-                                <p:dataTable var="customerAdvanced" value="#{rMSearchCustomerAdvancedManagedBean.customerListFromEmployeeId}" paginator="true" rows="10"
-                                             paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
-                                             id="customerAdvancedTable" >
+                <div align="center">
+                    <h:outputText value="Welcome " />
+                    <h:outputText value="#{employeeAccountManagedBean.userName}!"/>
+                    <br/>
+                    <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
+                    <br/>
+                    <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
+                    <br/>
+                    <h:outputText value="You have logged in as: Relationship Manager"/>
+                    <br/>
+                    <p:dataTable var="customerAdvanced" value="#{rMSearchCustomerAdvancedManagedBean.customerListFromEmployeeId}" paginator="true" rows="10"
+                                 paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                                 id="customerAdvancedTable" >
 
-                                    <p:column headerText="Customer Name" sortBy="#{customerAdvanced.customerBasic.customerName}" filterBy="#{customerAdvanced.customerBasic.customerName}">
-                                        <h:outputText value="#{customerAdvanced.customerBasic.customerName}" /> 
-                                    </p:column>
+                        <p:column headerText="Customer Name" sortBy="#{customerAdvanced.customerBasic.customerName}" filterBy="#{customerAdvanced.customerBasic.customerName}">
+                            <h:outputText value="#{customerAdvanced.customerBasic.customerName}" /> 
+                        </p:column>
 
-                                    <p:column headerText="Gender" sortBy="#{customerAdvanced.customerBasic.customerGender}">
-                                        <h:outputText value="#{customerAdvanced.customerBasic.customerGender}" /> 
-                                    </p:column>
+                        <p:column headerText="Gender" sortBy="#{customerAdvanced.customerBasic.customerGender}">
+                            <h:outputText value="#{customerAdvanced.customerBasic.customerGender}" /> 
+                        </p:column>
 
-                                    <p:column headerText="Identification No." filterBy="#{customerAdvanced.customerBasic.customerIdentificationNum}">
-                                        <h:outputText value="#{customerAdvanced.customerBasic.customerIdentificationNum}" /> 
-                                    </p:column>
+                        <p:column headerText="Identification No." filterBy="#{customerAdvanced.customerBasic.customerIdentificationNum}">
+                            <h:outputText value="#{customerAdvanced.customerBasic.customerIdentificationNum}" /> 
+                        </p:column>
 
-                                    <p:column headerText="Employment Details" sortBy="#{customerAdvanced.customerEmploymentDetails}" filterBy="#{customerAdvanced.customerEmploymentDetails}">
-                                        <h:outputText value="#{customerAdvanced.customerEmploymentDetails}" />
-                                    </p:column>
-                                    <p:column headerText="Family Info" sortBy="#{customerAdvanced.customerFamilyInfo}" filterBy="#{customerAdvanced.customerFamilyInfo}">
-                                        <h:outputText value="#{customerAdvanced.customerFamilyInfo}" />
-                                    </p:column>
-                                    <p:column headerText="CreditReport" sortBy="#{customerAdvanced.customerCreditReport}" filterBy="#{customerAdvanced.customerCreditReport}">
-                                        <h:outputText value="#{customerAdvanced.customerCreditReport}" />
-                                    </p:column>
-                                    <p:column headerText="Financial Risk Rating" sortBy="#{customerAdvanced.customerFinancialRiskRating}" filterBy="#{customerAdvanced.customerFinancialRiskRating}">
-                                        <h:outputText value="#{customerAdvanced.customerFinancialRiskRating}" />
-                                    </p:column>
-                                    <p:column headerText="Finanacial Goals" sortBy="#{customerAdvanced.customerFinanacialGoals}" filterBy="#{customerAdvanced.customerFinanacialGoals}">
-                                        <h:outputText value="#{customerAdvanced.customerFinanacialGoals}"/>
-                                    </p:column>
-                                    <p:column headerText="Finanacial Assets" sortBy="#{customerAdvanced.customerFinanacialAssets}" filterBy="#{customerAdvanced.customerFinanacialAssets}">
-                                        <h:outputText value="#{customerAdvanced.customerFinanacialAssets}"/>
-                                    </p:column>
-                                </p:dataTable>
-                            </div>
-                        </div>
-                    </div>
+                        <p:column headerText="Employment Details" sortBy="#{customerAdvanced.customerEmploymentDetails}" filterBy="#{customerAdvanced.customerEmploymentDetails}">
+                            <h:outputText value="#{customerAdvanced.customerEmploymentDetails}" />
+                        </p:column>
+                        <p:column headerText="Family Info" sortBy="#{customerAdvanced.customerFamilyInfo}" filterBy="#{customerAdvanced.customerFamilyInfo}">
+                            <h:outputText value="#{customerAdvanced.customerFamilyInfo}" />
+                        </p:column>
+                        <p:column headerText="CreditReport" sortBy="#{customerAdvanced.customerCreditReport}" filterBy="#{customerAdvanced.customerCreditReport}">
+                            <h:outputText value="#{customerAdvanced.customerCreditReport}" />
+                        </p:column>
+                        <p:column headerText="Financial Risk Rating" sortBy="#{customerAdvanced.customerFinancialRiskRating}" filterBy="#{customerAdvanced.customerFinancialRiskRating}">
+                            <h:outputText value="#{customerAdvanced.customerFinancialRiskRating}" />
+                        </p:column>
+                        <p:column headerText="Finanacial Goals" sortBy="#{customerAdvanced.customerFinanacialGoals}" filterBy="#{customerAdvanced.customerFinanacialGoals}">
+                            <h:outputText value="#{customerAdvanced.customerFinanacialGoals}"/>
+                        </p:column>
+                        <p:column headerText="Finanacial Assets" sortBy="#{customerAdvanced.customerFinanacialAssets}" filterBy="#{customerAdvanced.customerFinanacialAssets}">
+                            <h:outputText value="#{customerAdvanced.customerFinanacialAssets}"/>
+                        </p:column>
+                    </p:dataTable>
                 </div>
             </h:form>
         </h:body>
