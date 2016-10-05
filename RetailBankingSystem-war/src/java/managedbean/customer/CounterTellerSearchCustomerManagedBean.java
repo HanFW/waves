@@ -65,7 +65,7 @@ public class CounterTellerSearchCustomerManagedBean implements Serializable {
     public void setCb(CustomerBasic cb) {
         this.cb = cb;
     }
-
+    
     public void retieveCustomerByIdentification() {
         cb = cRMCustomerSessionBeanLocal.retrieveCustomerBasicByIC(identificationNum);
         visible = true;

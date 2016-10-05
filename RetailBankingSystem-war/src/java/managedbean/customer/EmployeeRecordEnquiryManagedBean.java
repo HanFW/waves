@@ -396,7 +396,7 @@ public class EmployeeRecordEnquiryManagedBean implements Serializable {
         ec = enquirySessionBeanLocal.getEnquiryByCaseId(caseId).get(0);
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext ec = context.getExternalContext();
-        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/counterTellerSearchCaseDone.xhtml");
+        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/counterTellerSearchCaseDone.xhtml?faces-redirect=true");
     }
 
 //    public void helpCustomerRecordEnquiry() throws IOException {

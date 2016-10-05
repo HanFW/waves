@@ -12,7 +12,7 @@
             <h:form>
                 <p:menubar>
                     <p:submenu label="Home">
-                        <p:menuitem value="Home" url="/web/internalSystem/infrastructure/employeeCounterTellerMainPage.xhtml"/>
+                        <p:menuitem value="Home" url="/web/internalSystem/infrastructure/employeeCounterTellerMainPage.xhtml?faces-redirect=true"/>
                     </p:submenu>
 
                     <p:submenu label="Log Out">
@@ -94,7 +94,7 @@
                                     </p:row>
                               </p:panel>
                             <div align="center">
-                                <p:commandButton style="width:40%" value="Add Follow Up Question" action="counterTellerAddFollowUp.xhtml" ajax="false">
+                                <p:commandButton style="width:40%" value="Add Follow Up Question" action="counterTellerAddFollowUp.xhtml?faces-redirect=true" ajax="false">
                                     <f:setPropertyActionListener target="#{employeeAddFollowUpManagedBean.caseId}" value="#{employeeRecordEnquiryManagedBean.caseId}"/>
                                 </p:commandButton>
                             </div>      

@@ -12,7 +12,7 @@
             <h:form>
                 <p:menubar>
                     <p:submenu label="Home">
-                        <p:menuitem value="Home" url="/web/internalSystem/infrastructure/employeeCounterTellerMainPage.xhtml"/>
+                        <p:menuitem value="Home" url="/web/internalSystem/infrastructure/employeeCounterTellerMainPage.xhtml?faces-redirect=true"/>
                     </p:submenu>
 
                     <p:submenu label="Log Out">
@@ -85,16 +85,13 @@
                                             <h:outputText value="#{counterTellerSearchCustomerManagedBean.cb.customerOnlineBankingAccountNum}" />
                                         </p:column>
                                     </p:row>
+                                    <h:panelGrid columns="1" cellpadding="5" styleClass="ui-panelgrid-blank form-group">                  
+                                        <p:commandButton value="View and Write Enquiry" actionListener="#{counterTellerSearchCustomerManagedBean.helpCustomerRecordEnquiry}" >
+                                            <f:setPropertyActionListener target="#{employeeRecordEnquiryManagedBean.cb}" value="#{counterTellerSearchCustomerManagedBean.cb}" />
+                                        </p:commandButton>
+                                    </h:panelGrid>
 
                                 </p:panelGrid>
-
-                                <h:panelGrid columns="1" cellpadding="5" styleClass="ui-panelgrid-blank form-group">                  
-                                    <p:commandButton value="View and Write Enquiry" actionListener="#{counterTellerSearchCustomerManagedBean.helpCustomerRecordEnquiry}" >
-                                        <f:setPropertyActionListener target="#{employeeRecordEnquiryManagedBean.cb}" value="#{counterTellerSearchCustomerManagedBean.cb}" />
-                                    </p:commandButton>
-                                </h:panelGrid>
-
-
                             </div>
                         </div>
                     </div>

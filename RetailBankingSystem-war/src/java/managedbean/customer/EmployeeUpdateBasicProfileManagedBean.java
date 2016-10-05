@@ -289,7 +289,7 @@ public class EmployeeUpdateBasicProfileManagedBean implements Serializable {
     }
 
     public CustomerBasic getCustomerBasicInfo() {
-        System.out.println("////////////cb print////////" + cb);
+
         if (customerName == null) {
             customerName = cb.getCustomerName();
             customerOnlineBankingAccountNum = cb.getCustomerOnlineBankingAccountNum();

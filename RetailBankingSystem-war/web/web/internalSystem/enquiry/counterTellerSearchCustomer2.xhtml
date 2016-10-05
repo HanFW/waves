@@ -12,7 +12,7 @@
             <h:form>
                 <p:menubar>
                     <p:submenu label="Home">
-                        <p:menuitem value="Home" url="/web/internalSystem/infrastructure/employeeCounterTellerMainPage.xhtml"/>
+                        <p:menuitem value="Home" url="/web/internalSystem/infrastructure/employeeCounterTellerMainPage.xhtml?faces-redirect=true"/>
                     </p:submenu>
 
                     <p:submenu label="Log Out">
@@ -35,7 +35,7 @@
                                 <br/>
                                 <h:outputText value="You have logged in as: Counter Teller"/>
                                 <br/>
-                                
+
                                 <h:outputText value="&lt;br /&gt;" escape="false" /> 
                                 <h:outputText value="&lt;br /&gt;" escape="false" /> 
                                 <p:outputLabel for="customerID"  value="Customer NRIC/Passport:" />
@@ -85,22 +85,17 @@
                                             <h:outputText value="#{counterTellerSearchCustomerManagedBean.cb.customerOnlineBankingAccountNum}" />
                                         </p:column>
                                     </p:row>
+                                    <h:panelGrid columns="1" cellpadding="5" styleClass="ui-panelgrid-blank form-group">                  
 
+                                        <p:commandButton value="Update Customer Profile" actionListener="#{counterTellerSearchCustomerManagedBean.helpCustomerChangeBasicInfo}">
+                                            <f:setPropertyActionListener target="#{employeeUpdateBasicProfileManagedBean.cb}" value="#{counterTellerSearchCustomerManagedBean.cb}" />
+                                        </p:commandButton>
+                                    </h:panelGrid>
                                 </p:panelGrid>
-
-                                <h:panelGrid columns="1" cellpadding="5" styleClass="ui-panelgrid-blank form-group">                  
-                                   
-                                    <p:commandButton value="Update Customer Profile" actionListener="#{counterTellerSearchCustomerManagedBean.helpCustomerChangeBasicInfo}">
-                                        <f:setPropertyActionListener target="#{employeeUpdateBasicProfileManagedBean.cb}" value="#{counterTellerSearchCustomerManagedBean.cb}" />
-                                    </p:commandButton>
-                                </h:panelGrid>
-
-
                             </div>
                         </div>
                     </div>
                 </div>
-
             </h:form>
         </h:body>
     </ui:define>

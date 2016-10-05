@@ -6,11 +6,13 @@
 package managedbean.customer;
 
 import ejb.customer.session.EnquirySessionBeanLocal;
+import java.io.IOException;
 import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import javax.faces.application.FacesMessage;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
 @Named(value = "customerFollowUpManagedBean")
@@ -52,9 +54,13 @@ public class CustomerFollowUpManagedBean implements Serializable {
         this.followUpDetail = followUpDetail;
     }
 
-    public void saveFollowUp() {
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(enquirySessionBeanLocal.addFollowUp(caseId, followUpDetail), " "));
+    public void saveFollowUp() throws IOException {
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage(null, new FacesMessage(enquirySessionBeanLocal.addFollowUp(caseId, followUpDetail), " "));
         caseId = null;
         followUpDetail = null;
+        
+        ExternalContext ec = context.getExternalContext();
+        ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/customer/customerEnquiryDone.xhtml?faces-redirect=true");
     }
 }

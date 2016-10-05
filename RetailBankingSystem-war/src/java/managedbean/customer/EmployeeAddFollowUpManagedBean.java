@@ -118,7 +118,7 @@ public class EmployeeAddFollowUpManagedBean implements Serializable {
         FacesContext context = FacesContext.getCurrentInstance();
         context.addMessage(null, new FacesMessage(enquirySessionBeanLocal.addFollowUp(caseId, followUpDetail), " "));
         ExternalContext ec = context.getExternalContext();
-        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/counterTellerAddEnquiryDone.xhtml");
+        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/counterTellerAddEnquiryDone.xhtml?faces-redirect=true");
         caseId = null;
         caseIdStr = "";
         followUpDetail = null;
