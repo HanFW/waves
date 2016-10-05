@@ -23,7 +23,7 @@ public interface EnquirySessionBeanLocal {
 
     public String getCustomerEnquiryDetail(Long caseId);
 
-    public List<FollowUp> getAllPendingCustomerFollowUp();
+//    public List<FollowUp> getAllPendingCustomerFollowUp();
 
     public List<Issue> getAllPendingLoanIssue();
 
@@ -35,13 +35,13 @@ public interface EnquirySessionBeanLocal {
 
     public List<Issue> getAllPendingRMIssue();
 
-    public String getCustomerFollowUpDetail(Long followUpId);
+//    public String getCustomerFollowUpDetail(Long followUpId);
 
     public String getIssueDetail(Long issueId);
 
     public List<EnquiryCase> getAllEnquiry();
 
-    public EnquiryCase getEnquiryByCaseId(Long caseId);
+    public List<EnquiryCase> getEnquiryByCaseId(Long caseId);
 
     public List<FollowUp> getFollowUpByCaseId(Long caseId);
 
@@ -74,8 +74,6 @@ public interface EnquirySessionBeanLocal {
     public String caseIssueAllReplied(Long caseId);
 
 //    public String followUpIssueAllReplied(Long followUpId);
-    
-    public EnquiryCase retrieveEnquiryById(Long caseId);
     
     public String deleteCase(Long caseId);
 

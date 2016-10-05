@@ -195,7 +195,7 @@ public class EnquiryManagerManagedBean implements Serializable {
             caseReply = null;
             selectedFollowUp = null;
             followUps = null;
-            ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/enquirymanagerReplyCaseDone.xhtml");
+            ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/enquirymanagerReplyCaseDone.xhtml?faces-redirect=true");
         }
     }
 
@@ -223,7 +223,7 @@ public class EnquiryManagerManagedBean implements Serializable {
         departmentTo = null;
         issueProblem = null;
         followUps = null;
-        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/enquirymanagerSubmitDone.xhtml");
+        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/enquirymanagerSubmitDone.xhtml?faces-redirect=true");
     }
 
 //    public void addFollowUpIssue() throws IOException {
@@ -244,19 +244,19 @@ public class EnquiryManagerManagedBean implements Serializable {
     public void redirectToViewEnquiryDone() throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext ec = context.getExternalContext();
-        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/enquirymanagerViewEnquiryDone.xhtml");
+        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/enquirymanagerViewEnquiryDone.xhtml?faces-redirect=true");
     }
 
     public void redirectToReplyCase() throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext ec = context.getExternalContext();
-        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/enquirymanagerReplyCase.xhtml");
+        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/enquirymanagerReplyCase.xhtml?faces-redirect=true");
     }
 
     public void redirectToReplyFollowUp() throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext ec = context.getExternalContext();
-        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/enquirymanagerReplyFollowUp.xhtml");
+        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/enquirymanagerReplyFollowUp.xhtml?faces-redirect=true");
     }
 
     public String caseIssueCreated(Long caseId) {

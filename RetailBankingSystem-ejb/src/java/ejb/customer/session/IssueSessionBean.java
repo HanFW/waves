@@ -30,10 +30,7 @@ public class IssueSessionBean implements IssueSessionBeanLocal {
         issue.setIssueProblem(issueProblem);
         issue.setCreatedTime(createdTime);
         issue.setIssueStatus(issueStatus);
-//        EnquiryCase enquiryCase = entityManager.find(EnquiryCase.class, caseId);
-//        issue.setEnquiryCase(enquiryCase);
-        issue.setEnquiryCase(enquirySessionBeanLocal.retrieveEnquiryById(caseId));
-//        issue.setFollowUp(followUpSessionBeanLocal.retrieveEnquiryById(followUpId));
+        issue.setEnquiryCase(enquirySessionBeanLocal.getEnquiryByCaseId(caseId).get(0));
 
         entityManager.persist(issue);
         entityManager.flush();

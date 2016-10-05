@@ -53,7 +53,6 @@ public class CustomerFollowUpManagedBean implements Serializable {
     }
 
     public void saveFollowUp() {
-        System.out.println("//////////managed bean get case ID = " + caseId);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(enquirySessionBeanLocal.addFollowUp(caseId, followUpDetail), " "));
         caseId = null;
         followUpDetail = null;

@@ -74,14 +74,14 @@ public class CounterTellerSearchCustomerManagedBean implements Serializable {
     public void helpCustomerRecordEnquiry() throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext ec = context.getExternalContext();
-        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/counterTellerAddNewCase.xhtml");
+        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/counterTellerAddNewCase.xhtml?faces-redirect=true");
         visible = false;
     }
 
     public void helpCustomerChangeBasicInfo() throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext ec = context.getExternalContext();
-        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/CRM/counterTellerUpdateCustomerBasic.xhtml");
+        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/CRM/counterTellerUpdateCustomerBasic.xhtml?faces-redirect=true");
         visible = false;
     }
 }
