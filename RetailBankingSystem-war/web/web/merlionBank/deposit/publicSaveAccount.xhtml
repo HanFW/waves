@@ -5,8 +5,13 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/merlionBankTemplate.xhtml">
 
-    <ui:define name="content">  
+    <ui:define name="merlionBankMenu">
 
+        <ui:include src="/WEB-INF/merlionBankMenuOpenAccount.xhtml" />
+
+    </ui:define>
+
+    <ui:define name="content">  
 
         <h:form>
             <div align="center"> 
@@ -25,8 +30,7 @@
                 </h:panelGrid>
                 <h:panelGrid columns="2" class="ui-lg-7"> 
 
-                    <h:outputText style="font-weight: bold" value="Attention: " />
-                    <h:outputText value="#{saveAccountManagedBean.attention}" />
+
 
                     <h:outputText style="font-weight: bold" value="Bank Account Num: "/>
                     <h:outputText value="#{saveAccountManagedBean.bankAccountNum}"/>

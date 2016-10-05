@@ -7,35 +7,37 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/internalSystemTemplate.xhtml">
 
-    <ui:define name="content">
-    <h:body>
-        <h:form>
-            <p:menubar>               
-                <p:submenu label="Manage My Account">
-                    <p:menuitem value="Change Password" actionListener="#{employeeLoginManagedBean.changePassword}" />
-                </p:submenu>
+    <ui:define name="internalSystemMenu">
 
-                <p:submenu label="Log Out">
-                    <p:menuitem value="Logout" actionListener="#{employeeLoginManagedBean.doLogOut}" />
-                </p:submenu>
-            </p:menubar>
-            <div class="ui-g ui-fluid">
-                    <div class="ui-g-12 ui-lg-12">
-                        <div class="card card-w-title"> 
-                            <div align="center">
-                                <h:outputText value="Welcome " />
-                                <h:outputText value="#{employeeAccountManagedBean.userName}!"/>
-                                <br/>
-                                <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
-                                <br/>
-                                <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
-                                <br/>
-                                <h:outputText value="You have logged in as: Mortgage Appraiser"/>
-                                <br/>
-                            </div>
-                        </div>
-                    </div>
+        <ui:include src="/WEB-INF/internalSystemMenuMortgageAppraiser.xhtml" />
+
+    </ui:define>
+
+    <ui:define name="content">
+        <h:body>
+            <h:form>
+                <p:menubar>               
+                    <p:submenu label="Manage My Account">
+                        <p:menuitem value="Change Password" actionListener="#{employeeLoginManagedBean.changePassword}" />
+                    </p:submenu>
+
+                    <p:submenu label="Log Out">
+                        <p:menuitem value="Logout" actionListener="#{employeeLoginManagedBean.doLogOut}" />
+                    </p:submenu>
+                </p:menubar>
+
+                <div align="center">
+                    <h:outputText value="Welcome " />
+                    <h:outputText value="#{employeeAccountManagedBean.userName}!"/>
+                    <br/>
+                    <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
+                    <br/>
+                    <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
+                    <br/>
+                    <h:outputText value="You have logged in as: Mortgage Appraiser"/>
+                    <br/>
                 </div>
+
             </h:form>
         </h:body>
     </ui:define>

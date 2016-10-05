@@ -7,6 +7,12 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/internalSystemTemplate.xhtml">
 
+    <ui:define name="internalSystemMenu">
+
+        <ui:include src="/WEB-INF/internalSystemMenuCounterTeller.xhtml" />
+
+    </ui:define>
+
     <ui:define name="content">
         <h:body>
 
@@ -26,70 +32,64 @@
             </h:form>
 
             <h:form id="form">  
-                <div class="ui-g ui-fluid">
-                    <div class="ui-g-12 ui-lg-12">
-                        <div class="card card-w-title"> 
-                            <div align="center">
-                                <h:outputText value="Welcome " />
-                                <h:outputText value="#{employeeAccountManagedBean.userName}!"/>
-                                <br/>
-                                <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
-                                <br/>
-                                <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
-                                <br/>
-                                <h:outputText value="You have logged in as: Counter Teller "/>
-                                <br/>
+                <div align="center">
+                    <h:outputText value="Welcome " />
+                    <h:outputText value="#{employeeAccountManagedBean.userName}!"/>
+                    <br/>
+                    <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
+                    <br/>
+                    <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
+                    <br/>
+                    <h:outputText value="You have logged in as: Counter Teller "/>
+                    <br/>
 
-                                <p:growl id="msgs" showDetail="true" />
+                    <p:growl id="msgs" showDetail="true" />
 
 
-                                <p:accordionPanel>
-                                    <p:ajax event="tabChange" listener="#{tabbedView.onTabChange}" update=":form:msgs" />
-                                    <p:ajax event="tabClose" listener="#{tabbedView.onTabClose}" update=":form:msgs" />
+                    <p:accordionPanel>
+                        <p:ajax event="tabChange" listener="#{tabbedView.onTabChange}" update=":form:msgs" />
+                        <p:ajax event="tabClose" listener="#{tabbedView.onTabClose}" update=":form:msgs" />
 
-                                    <p:tab title="Customer Management">
-                                        <h:panelGrid columns="2" cellpadding="10">
-                                            <p:commandButton value="View Enquiry Case" action="/web/internalSystem/enquiry/counterTellerSearchCustomer.xhtml?faces-redirect=true"/>
-                                            <p:commandButton value="Create Enquiry Case" action="/web/internalSystem/enquiry/counterTellerSearchCustomer.xhtml?faces-redirect=true"/>
-                                            <p:commandButton value="Search Enquiry" action="/web/internalSystem/enquiry/counterTellerSearchCaseByID.xhtml?faces-redirect=true"/>
-                                            <p:commandButton value="Update Customer Basic Information" action="/web/internalSystem/enquiry/counterTellerSearchCustomer2.xhtml?faces-redirect=true"/>
-                                        </h:panelGrid>
-                                    </p:tab>
-                                    <p:tab title="Deposit">
-                                        <h:panelGrid columns="2" cellpadding="10">
-                                            <p:commandButton value="View Transaction History" action="/web/internalSystem/deposit/employeeViewTransaction.xhtml?faces-redirect=true"/>
-                                            <p:commandButton value="View Bank Statement" action="/web/internalSystem/deposit/employeeViewStatement.xhtml?faces-redirect=true"/>
-                                            <p:commandButton value="Fund Transfer" action="/web/internalSystem/deposit/employeeTransfer.xhtml?faces-redirect=true"/>
-                                            <p:commandButton value="Cash Deposit" action="/web/internalSystem/deposit/employeeCashDeposit.xhtml?faces-redirect=true"/>
-                                            <p:commandButton value="Cash Withdraw" action="/web/internalSystem/deposit/employeeCashWithdraw.xhtml?faces-redirect=true"/>
-                                            <p:commandButton value="Open Account" action="/web/internalSystem/deposit/employeeOpenAccount.xhtml?faces-redirect=true"/>
-                                            <p:commandButton value="Delete Account" action="/web/internalSystem/deposit/employeeCloseAccount.xhtml?faces-redirect=true"/>
-                                            <p:commandButton value="Change Deposit Account Password" action="/web/internalSystem/deposit/employeeChangeBankAccountPwd.xhtml?faces-redirect=true"/>
-                                            <p:commandButton value="Retrieve Deposit Account Password" action="/web/internalSystem/deposit/employeeForgotDepositPassword.xhtml?faces-redirect=true"/>
-                                            <p:commandButton value="Activate Fixed Deposit" action="/web/internalSystem/deposit/employeeActivateFixedDeposit.xhtml?faces-redirect=true"/>
-                                            <p:commandButton value="View Customer Accounts Infornation" action="/web/internalSystem/deposit/employeeViewAccount.xhtml?faces-redirect=true"/>
-                                             <p:commandButton value="Change Daily Transfer Limit" action="/web/internalSystem/deposit/employeeChangeDailyTransferLimit.xhtml?faces-redirect=true"/>
-                                        </h:panelGrid>
-                                    </p:tab>
-                                    <p:tab title="Loan">
-                                        <h:panelGrid columns="2" cellpadding="10">
+                        <p:tab title="Customer Management">
+                            <h:panelGrid columns="2" cellpadding="10">
+                                <p:commandButton value="View Enquiry Case" action="/web/internalSystem/enquiry/counterTellerSearchCustomer.xhtml"/>
+                                <p:commandButton value="Create Enquiry Case" action="/web/internalSystem/enquiry/counterTellerSearchCustomer.xhtml"/>
+                                <p:commandButton value="Search Enquiry" action="/web/internalSystem/enquiry/counterTellerSearchCaseByID.xhtml"/>
+                                <p:commandButton value="Update Customer Basic Information" action="/web/internalSystem/enquiry/counterTellerSearchCustomer2.xhtml"/>
+                            </h:panelGrid>
+                        </p:tab>
+                        <p:tab title="Deposit">
+                            <h:panelGrid columns="2" cellpadding="10">
+                                <p:commandButton value="View Transaction History" action="/web/internalSystem/deposit/employeeViewTransaction.xhtml"/>
+                                <p:commandButton value="View Bank Statement" action="/web/internalSystem/deposit/employeeViewStatement.xhtml"/>
+                                <p:commandButton value="Fund Transfer" action="/web/internalSystem/deposit/employeeTransfer.xhtml"/>
+                                <p:commandButton value="Cash Deposit" action="/web/internalSystem/deposit/employeeCashDeposit.xhtml"/>
+                                <p:commandButton value="Cash Withdraw" action="/web/internalSystem/deposit/employeeCashWithdraw.xhtml"/>
+                                <p:commandButton value="Open Account" action="/web/internalSystem/deposit/employeeOpenAccount.xhtml"/>
+                                <p:commandButton value="Delete Account" action="/web/internalSystem/deposit/employeeCloseAccount.xhtml"/>
+                                <p:commandButton value="Change Deposit Account Password" action="/web/internalSystem/deposit/employeeChangeBankAccountPwd.xhtml"/>
+                                <p:commandButton value="Retrieve Deposit Account Password" action="/web/internalSystem/deposit/employeeForgotDepositPassword.xhtml"/>
+                                <p:commandButton value="Activate Fixed Deposit" action="/web/internalSystem/deposit/employeeActivateFixedDeposit.xhtml"/>
+                                <p:commandButton value="View Customer Accounts Infornation" action="/web/internalSystem/deposit/employeeViewAccount.xhtml"/>
+                                <p:commandButton value="Change Daily Transfer Limit" action="/web/internalSystem/deposit/employeeChangeDailyTransferLimit.xhtml"/>
+                            </h:panelGrid>
+                        </p:tab>
+                        <p:tab title="Loan">
+                            <h:panelGrid columns="2" cellpadding="10">
 
-                                        </h:panelGrid>
-                                    </p:tab>
-                                    <p:tab title="Card">
-                                        <h:panelGrid columns="2" cellpadding="10">
+                            </h:panelGrid>
+                        </p:tab>
+                        <p:tab title="Card">
+                            <h:panelGrid columns="2" cellpadding="10">
 
-                                        </h:panelGrid>
-                                    </p:tab>
-                                    <p:tab title="Billing and Payment">
-                                        <h:panelGrid columns="2" cellpadding="10">
+                            </h:panelGrid>
+                        </p:tab>
+                        <p:tab title="Billing and Payment">
+                            <h:panelGrid columns="2" cellpadding="10">
 
-                                        </h:panelGrid>
-                                    </p:tab>
-                                </p:accordionPanel>
-                            </div>
-                        </div>
-                    </div>
+                            </h:panelGrid>
+                        </p:tab>
+                    </p:accordionPanel>
                 </div>
             </h:form>
         </h:body>

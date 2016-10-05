@@ -7,6 +7,12 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/internalSystemTemplate.xhtml">
 
+    <ui:define name="internalSystemMenu">
+
+        <ui:include src="/WEB-INF/internalSystemMenuCounterTeller.xhtml" />
+
+    </ui:define>
+
     <ui:define name="content">
         <h:body>
             <h:form>
@@ -35,7 +41,7 @@
                                 <br/>
                                 <h:outputText value="You have logged in as: Counter Teller"/>
                                 <br/>
-                                
+
                                 <h:outputText value="&lt;br /&gt;" escape="false" /> 
                                 <h:outputText value="&lt;br /&gt;" escape="false" /> 
                                 <p:outputLabel for="customerID"  value="Customer NRIC/Passport:" />
