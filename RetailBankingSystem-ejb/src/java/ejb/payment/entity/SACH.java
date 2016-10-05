@@ -14,8 +14,10 @@ public class SACH implements Serializable {
     private Long sachId;
     private String dbsAccountBalance;
     private String merlionAccountBalance;
-    private String dbsTotalCredit;
-    private String merlionTotalCredit;
+    private Double dbsTotalCredit;
+    private Double merlionTotalCredit;
+    private String updateDate;
+    private String bankNames;
 
     public Long getSachId() {
         return sachId;
@@ -33,6 +35,30 @@ public class SACH implements Serializable {
         this.dbsAccountBalance = dbsAccountBalance;
     }
 
+    public String getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(String updateDate) {
+        this.updateDate = updateDate;
+    }
+
+    public String getBankNames() {
+        return bankNames;
+    }
+
+    public void setBankNames(String bankNames) {
+        this.bankNames = bankNames;
+    }
+
+    public Double getMerlionTotalCredit() {
+        return merlionTotalCredit;
+    }
+
+    public void setMerlionTotalCredit(Double merlionTotalCredit) {
+        this.merlionTotalCredit = merlionTotalCredit;
+    }
+
     public String getMerlionAccountBalance() {
         return merlionAccountBalance;
     }
@@ -41,20 +67,12 @@ public class SACH implements Serializable {
         this.merlionAccountBalance = merlionAccountBalance;
     }
 
-    public String getDbsTotalCredit() {
+    public Double getDbsTotalCredit() {
         return dbsTotalCredit;
     }
 
-    public void setDbsTotalCredit(String dbsTotalCredit) {
+    public void setDbsTotalCredit(Double dbsTotalCredit) {
         this.dbsTotalCredit = dbsTotalCredit;
-    }
-
-    public String getMerlionTotalCredit() {
-        return merlionTotalCredit;
-    }
-
-    public void setMerlionTotalCredit(String merlionTotalCredit) {
-        this.merlionTotalCredit = merlionTotalCredit;
     }
     
     @Override

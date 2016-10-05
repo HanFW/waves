@@ -10,65 +10,62 @@
 
     <ui:define name="content">
         <h:form>
-            <div class="ui-g ui-fluid">
-                <div class="ui-g-12 ui-lg-12">
-                    <div class="card card-w-title"> 
-                        <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+            <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
 
-                            <p:panel>
-                                <p:outputLabel value="Welcome "/>
-                                <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
-                            </p:panel>
-                            <p:panel header="Transfer to My Account">
+                <p:panel>
+                    <p:outputLabel value="Welcome "/>
+                    <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
+                </p:panel>
+                <p:messages globalOnly="true"/>
 
-                                <h:outputText value="#{fastTransferDoneManagedBean.statusMessage}" style="font-size: 24px"/>
-                                <br/>
-                                <br/>
-                                <br/>
-                                <h:outputText style="font-weight: bold" value="Please note this transaction reference number
-                                              for your records: " />
-                                <h:outputText value="#{fastTransferDoneManagedBean.transactionId}" />
-                                <br/>
-                                <h:outputText style="font-weight: bold" value="To Account Number: "/>
-                                <h:outputText value="#{fastTransferDoneManagedBean.toBankAccountNumWithType}"/>
-                                <br/>
-                                <h:outputText style="font-weight: bold" value="Transfer Amount: "/>
-                                <h:outputText value="#{fastTransferDoneManagedBean.transferAmt}"/>
-                                <br/>
-                                <br/>
-                                <p:accordionPanel activeIndex="-1" style="">
-                                    <p:tab title="View Transaction Details">
-                                        <h:outputText value="From" style="font-size: 24px" />
-                                        <p:separator />
-                                        <br/>
-                                        <br/>
-                                        <h:outputText style="font-weight: bold" value="Account Number: "/>
-                                        <h:outputText value="#{fastTransferDoneManagedBean.fromBankAccountNumWithType}"/>
-                                        <br/>
-                                        <h:outputText style="font-weight: bold" value="Lastest Account Balance: "/>
-                                        <h:outputText value="#{fastTransferDoneManagedBean.fromBankAccountBalance}"/>
-                                        <br/>
-                                        <br/>
-                                        <h:outputText value="To" style="font-size: 24px" />
-                                        <p:separator />
-                                        <br/>
-                                        <br/>
-                                        <h:outputText style="font-weight: bold" value="Account Number: "/>
-                                        <h:outputText value="#{fastTransferDoneManagedBean.toBankAccountNumWithType}"/>
-                                        <br/>
-                                        <h:outputText style="font-weight: bold" value="Transfer Amount: "/>
-                                        <h:outputText value="#{fastTransferDoneManagedBean.transferAmt}"/>
-                                        <br/>
-                                        <h:outputText style="font-weight: bold" value="Transaction Reference Number: "/>
-                                        <h:outputText value="#{fastTransferDoneManagedBean.transactionId}" />
-                                    </p:tab>
-                                </p:accordionPanel>
-                            </p:panel>
+                <p:panel header="Transfer to My Account">
 
-                        </p:panelGrid>
-                    </div>
-                </div>
-            </div>
+                    <h:outputText value="#{fastTransferDoneManagedBean.statusMessage}" style="font-size: 24px"/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <h:outputText style="font-weight: bold" value="Please note this transaction reference number
+                                  for your records: " />
+                    <h:outputText value="#{fastTransferDoneManagedBean.transactionId}" />
+                    <br/>
+                    <h:outputText style="font-weight: bold" value="To Account Number: "/>
+                    <h:outputText value="#{fastTransferDoneManagedBean.toBankAccountNumWithType}"/>
+                    <br/>
+                    <h:outputText style="font-weight: bold" value="Transfer Amount: "/>
+                    <h:outputText value="#{fastTransferDoneManagedBean.transferAmt}"/>
+                    <br/>
+                    <br/>
+                    <p:accordionPanel activeIndex="-1" style="">
+                        <p:tab title="View Transaction Details">
+                            <h:outputText value="From" style="font-size: 24px" />
+                            <p:separator />
+                            <br/>
+                            <br/>
+                            <h:outputText style="font-weight: bold" value="Account Number: "/>
+                            <h:outputText value="#{fastTransferDoneManagedBean.fromBankAccountNumWithType}"/>
+                            <br/>
+                            <h:outputText style="font-weight: bold" value="Lastest Account Balance: "/>
+                            <h:outputText value="#{fastTransferDoneManagedBean.fromBankAccountBalance}"/>
+                            <br/>
+                            <br/>
+                            <h:outputText value="To" style="font-size: 24px" />
+                            <p:separator />
+                            <br/>
+                            <br/>
+                            <h:outputText style="font-weight: bold" value="Account Number: "/>
+                            <h:outputText value="#{fastTransferDoneManagedBean.toBankAccountNumWithType}"/>
+                            <br/>
+                            <h:outputText style="font-weight: bold" value="Transfer Amount: "/>
+                            <h:outputText value="#{fastTransferDoneManagedBean.transferAmt}"/>
+                            <br/>
+                            <h:outputText style="font-weight: bold" value="Transaction Reference Number: "/>
+                            <h:outputText value="#{fastTransferDoneManagedBean.transactionId}" />
+                        </p:tab>
+                    </p:accordionPanel>
+                </p:panel>
+
+            </p:panelGrid>
+
         </h:form>
         <ezcomp:CCTimeout/>
     </ui:define>

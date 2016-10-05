@@ -17,14 +17,14 @@
 
         <h:form id="formMain"> 
             <p:messages/>
-            
+
             <p:panel>
-                
+
                 <p:dataTable var="dbsTransaction" value="#{dBSViewTransactionManagedBean.DBSTransaction}" 
                              reflow="true" paginator="true" rows="20" emptyMessage="No Transaction Record"
                              rowsPerPageTemplate="5,10,15,20"
                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
-                    
+
                     <p:column headerText="Transaction ID">
                         <h:outputText value="#{dbsTransaction.dbsTransactionId}" /> 
                     </p:column>
@@ -54,7 +54,10 @@
                     </p:column>
 
                 </p:dataTable>
-
+                <br/>
+                <p:commandButton id="backBtn" value="Back" action="/web/simulate/payment/dbsViewAccount.xhtml?faces-redirect=true" 
+                             ajax="true"/>
+                
             </p:panel>
         </h:form>
     </h:body>

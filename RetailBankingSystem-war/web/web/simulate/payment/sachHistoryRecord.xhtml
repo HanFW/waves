@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <h:form>
+            <p:menubar>
+                <p:submenu label="Home">
+                    <p:menuitem value="SACH" url="/web/simulate/payment/sachMainPage.xhtml" />
+                </p:submenu>
+            </p:menubar>
+        </h:form>
+        
+        <h:form>
+            <p:dataTable var="dbsAndMerlionSACH" value="#{sACHHistoryRecordManagedBean.dbsAndMerlionSACHs}" 
+                         reflow="true" paginator="true" rows="10" emptyMessage="No Record" >
+                
+                <p:column headerText="Date"> 
+                    <h:outputText value="#{dbsAndMerlionSACH.updateDate}" />
+                </p:column>
+                
+                <p:column headerText="DBS Total Credit"> 
+                    <h:outputText value="#{dbsAndMerlionSACH.dbsTotalCredit}" />
+                </p:column>
+                
+                <p:column headerText="Merlion Total Credit"> 
+                    <h:outputText value="#{dbsAndMerlionSACH.merlionTotalCredit}" />
+                </p:column>
+            </p:dataTable>
+            <br/>
+            <p:commandButton id="backBtn" value="Back" action="/web/simulate/payment/sachMainPage.xhtml?faces-redirect=true" 
+                             ajax="true"/>
+        </h:form>
+    </h:body>
+</html>
+

@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <h:form>
+            <p:menubar>
+                <p:submenu label="Home">
+                    <p:menuitem value="SACH" url="/web/simulate/payment/sachMainPage.xhtml" />
+                </p:submenu>
+            </p:menubar>
+        </h:form>
+
+        <h:form>
+            <p:panelGrid columns="1">
+                <p:commandLink process="@this" action="/web/simulate/payment/dbsMasterAccountTransaction.xhtml?faces-redirect=true" >
+                    <h:outputText value="DBS Account Transaction" />
+                </p:commandLink>
+                
+                <p:commandLink process="@this" action="/web/simulate/payment/merlionMasterAccountTransaction.xhtml?faces-redirect=true" >
+                    <h:outputText value="Merlion Bank Account Transaction" />
+                </p:commandLink>
+                
+                <p:commandLink process="@this" action="/web/simulate/payment/sachHistoryRecord.xhtml?faces-redirect=true" >
+                    <h:outputText value="SACH History Records" />
+                </p:commandLink>
+            </p:panelGrid>
+        </h:form>
+    </h:body>
+</html>
+

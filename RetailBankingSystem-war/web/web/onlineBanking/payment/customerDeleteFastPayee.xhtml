@@ -10,50 +10,44 @@
 
     <ui:define name="content">
         <h:form>
-            <div class="ui-g">
-                <div class="ui-g-12 ui-lg-12">
-                    <div class="card card-w-title">
 
-                        <p:messages globalOnly="true"/>
-                        
-                        <p:panel>
-                            <p:outputLabel value="Welcome "/>
-                            <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
-                        </p:panel>
+            <p:panel>
+                <p:outputLabel value="Welcome "/>
+                <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
+            </p:panel>
 
-                        <p:dataTable var="fastPayee" value="#{deleteFastPayeeManagedBean.fastPayees}" 
-                                     reflow="true" paginator="true" rows="10" emptyMessage="No Recipient">
-                            <f:facet name="header">
-                                Delete Recipient
-                            </f:facet>
-                            <p:column headerText="Recipient's Name" >
-                                <h:outputText value="#{fastPayee.fastPayeeName}" /> 
-                            </p:column>
+            <p:messages globalOnly="true"/>
+            
+            <p:dataTable var="fastPayee" value="#{deleteFastPayeeManagedBean.fastPayees}" 
+                         reflow="true" paginator="true" rows="10" emptyMessage="No Recipient">
+                <f:facet name="header">
+                    Delete Recipient
+                </f:facet>
+                <p:column headerText="Recipient's Name" >
+                    <h:outputText value="#{fastPayee.fastPayeeName}" /> 
+                </p:column>
 
-                            <p:column headerText="Recipient's Bank Account Number"> 
-                                <h:outputText value="#{fastPayee.fastPayeeAccountNum}" />
-                            </p:column>
+                <p:column headerText="Recipient's Bank Account Number"> 
+                    <h:outputText value="#{fastPayee.fastPayeeAccountNum}" />
+                </p:column>
 
-                            <p:column headerText="Recipient's Bank Account Type"> 
-                                <h:outputText value="#{fastPayee.fastPayeeAccountType}" />
-                            </p:column>
+                <p:column headerText="Recipient's Bank Account Type"> 
+                    <h:outputText value="#{fastPayee.fastPayeeAccountType}" />
+                </p:column>
 
-                            <p:column headerText="Last Transaction Date"> 
-                                <h:outputText value="#{fastPayee.lastTransactionDate}" />
-                            </p:column>
+                <p:column headerText="Last Transaction Date"> 
+                    <h:outputText value="#{fastPayee.lastTransactionDate}" />
+                </p:column>
 
-                            <p:column headerText="Action"> 
-                                <p:commandButton process="@this" action="#{deleteFastPayeeManagedBean.deletePayee()}"
-                                                 icon="ui-icon-trash" ajax="false">
-                                    <f:setPropertyActionListener target="#{deleteFastPayeeManagedBean.payeeAccountNum}" value="#{fastPayee.fastPayeeAccountNum}" />
-                                </p:commandButton>
-                            </p:column>
+                <p:column headerText="Action"> 
+                    <p:commandButton process="@this" action="#{deleteFastPayeeManagedBean.deletePayee()}"
+                                     icon="ui-icon-trash" ajax="false">
+                        <f:setPropertyActionListener target="#{deleteFastPayeeManagedBean.payeeAccountNum}" value="#{fastPayee.fastPayeeAccountNum}" />
+                    </p:commandButton>
+                </p:column>
 
-                        </p:dataTable>
+            </p:dataTable>
 
-                    </div>
-                </div>
-            </div>
         </h:form>
         <ezcomp:CCTimeout/>
     </ui:define>

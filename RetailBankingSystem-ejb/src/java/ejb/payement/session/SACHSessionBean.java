@@ -3,6 +3,7 @@ package ejb.payement.session;
 import ejb.customer.entity.CustomerBasic;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
+import ejb.payment.entity.DBSBankAccount;
 import ejb.payment.entity.FastPayee;
 import ejb.payment.entity.SACH;
 import java.util.Calendar;
@@ -17,6 +18,11 @@ import javax.persistence.Query;
 
 @Stateless
 public class SACHSessionBean implements SACHSessionBeanLocal {
+    @EJB
+    private DBSBankAccountSessionBeanLocal dBSBankAccountSessionBeanLocal;
+    
+    @EJB
+    private SACHMasterAccountTransactionSessionBeanLocal sACHMasterAccountTransactionSessionBean;
 
     @EJB
     private BankAccountSessionBeanLocal bankAccountSessionBeanLocal;
@@ -30,22 +36,32 @@ public class SACHSessionBean implements SACHSessionBeanLocal {
     @Override
     public void SACHTransfer(String fromBankAccount, String toBankAccount, Double transferAmt) {
 
-        Long sachId = Long.valueOf(1);
+        List<SACH> sachs = getAllSACH("DBS&Merlion");
+        int size = sachs.size();
+        Long sachId = sachs.get(size - 1).getSachId();
+        Calendar cal = Calendar.getInstance();
+
         SACH sach = retrieveSACHById(sachId);
 
-        Double dbsTotalCredit = Double.valueOf(sach.getDbsTotalCredit()) + transferAmt;
-        Double merlionTotalCredit = Double.valueOf(sach.getDbsTotalCredit()) - transferAmt;
+        Double dbsTotalCredit = sach.getDbsTotalCredit() + transferAmt;
+        Double merlionTotalCredit = sach.getMerlionTotalCredit() - transferAmt;
 
-        sach.setDbsTotalCredit(dbsTotalCredit.toString());
-        sach.setMerlionTotalCredit(merlionTotalCredit.toString());
-
+        sach.setDbsTotalCredit(dbsTotalCredit);
+        sach.setMerlionTotalCredit(merlionTotalCredit);
+        
         BankAccount bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountByNum(fromBankAccount);
+        DBSBankAccount dbsBankAccount = dBSBankAccountSessionBeanLocal.retrieveBankAccountByNum(toBankAccount);
+        
+        String dbsTransactionRef = bankAccount.getBankAccountNum()+"-"+bankAccount.getBankAccountType()+" Transfer To "+dbsBankAccount.getDbsBankAccountNum()+"-"+dbsBankAccount.getDbsBankAccountType();
+        
+        Long dbsTransactionId = sACHMasterAccountTransactionSessionBean.addNewMasterAccountTransaction(cal.getTime().toString(), dbsTransactionRef, " ", transferAmt.toString(), Long.valueOf(1));
+        Long merlionTransactionId = sACHMasterAccountTransactionSessionBean.addNewMasterAccountTransaction(cal.getTime().toString(), dbsTransactionRef, transferAmt.toString(), " ", Long.valueOf(2));
+
         CustomerBasic customerBasic = bankAccountSessionBeanLocal.retrieveCustomerBasicByAccNum(fromBankAccount);
         List<FastPayee> fastPayee = customerBasic.getFastPayee();
-        Calendar cal = Calendar.getInstance();
-        
+
         for (int i = 0; i < fastPayee.size(); i++) {
-            if(fastPayee.get(i).getFastPayeeAccountNum().equals(toBankAccount)) {
+            if (fastPayee.get(i).getFastPayeeAccountNum().equals(toBankAccount)) {
                 fastPayee.get(i).setLastTransactionDate(cal.getTime().toString());
             }
         }
@@ -58,7 +74,7 @@ public class SACHSessionBean implements SACHSessionBeanLocal {
         SACH sach = new SACH();
 
         try {
-            Query query = entityManager.createQuery("Select sach From SACH sach Where sach.sachId=:sachId");
+            Query query = entityManager.createQuery("Select s From SACH s Where s.sachId=:sachId");
             query.setParameter("sachId", sachId);
 
             if (query.getResultList().isEmpty()) {
@@ -74,5 +90,33 @@ public class SACHSessionBean implements SACHSessionBeanLocal {
         }
 
         return sach;
+    }
+
+    @Override
+    public Long addNewSACH(String dbsAccountBalance, String merlionAccountBalance, Double dbsTotalCredit,
+            Double merlionTotalCredit, String updateDate, String bankNames) {
+
+        SACH sach = new SACH();
+
+        sach.setDbsAccountBalance(dbsAccountBalance);
+        sach.setDbsTotalCredit(dbsTotalCredit);
+        sach.setMerlionAccountBalance(merlionAccountBalance);
+        sach.setMerlionTotalCredit(merlionTotalCredit);
+        sach.setUpdateDate(updateDate);
+        sach.setBankNames(bankNames);
+
+        entityManager.persist(sach);
+        entityManager.flush();
+
+        return sach.getSachId();
+    }
+
+    @Override
+    public List<SACH> getAllSACH(String bankNames) {
+
+        Query query = entityManager.createQuery("SELECT s FROM SACH s Where s.bankNames=:bankNames");
+        query.setParameter("bankNames", bankNames);
+
+        return query.getResultList();
     }
 }

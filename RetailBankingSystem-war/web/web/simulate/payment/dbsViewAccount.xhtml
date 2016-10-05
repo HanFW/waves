@@ -25,21 +25,21 @@
                              reflow="true" paginator="true" rows="10" emptyMessage="No Account" >
                     
                     <p:column headerText="Bank Account Type"> 
-                        <p:commandLink process="@this" action="/web/simulate/payment/dbsViewTransaction.xhtml">
+                        <p:commandLink process="@this" action="/web/simulate/payment/dbsViewTransaction.xhtml?faces-redirect=true">
                             <h:outputText value="#{dbsBankAccount.dbsBankAccountType}" />
                             <f:setPropertyActionListener value="#{dbsBankAccount.dbsBankAccountNum}" target="#{dBSViewTransactionManagedBean.dbsBankAccountNum}" />
                         </p:commandLink>
                     </p:column>
 
                     <p:column headerText="Bank Account Number" >
-                        <p:commandLink process="@this" action="/web/simulate/payment/dbsViewTransaction.xhtml" >
+                        <p:commandLink process="@this" action="/web/simulate/payment/dbsViewTransaction.xhtml?faces-redirect=true" >
                             <h:outputText value="#{dbsBankAccount.dbsBankAccountNum}" /> 
                             <f:setPropertyActionListener value="#{dbsBankAccount.dbsBankAccountNum}" target="#{dBSViewTransactionManagedBean.dbsBankAccountNum}" />
                         </p:commandLink>
                     </p:column>
 
                     <p:column headerText="Balance"> 
-                        <p:commandLink process="@this" action="/web/simulate/payment/dbsViewTransaction.xhtml" >
+                        <p:commandLink process="@this" action="/web/simulate/payment/dbsViewTransaction.xhtml?faces-redirect=true" >
                             <h:outputText value="S$#{dbsBankAccount.dbsBankAccountBalance}" />
                             <f:setPropertyActionListener value="#{dbsBankAccount.dbsBankAccountNum}" target="#{dBSViewTransactionManagedBean.dbsBankAccountNum}" />
                         </p:commandLink>

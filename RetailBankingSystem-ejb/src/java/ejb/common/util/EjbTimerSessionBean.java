@@ -13,11 +13,21 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import ejb.deposit.session.StatementSessionBeanLocal;
+import ejb.payement.session.SACHMasterBankAccountSessionBeanLocal;
+import ejb.payement.session.SACHSessionBeanLocal;
+import ejb.payment.entity.SACHMasterBankAccount;
+import java.util.Calendar;
 
 @Stateless
 @LocalBean
 
 public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
+    
+    @EJB
+    private SACHMasterBankAccountSessionBeanLocal sACHMasterBankAccountSessionBeanLocal;
+    
+    @EJB
+    private SACHSessionBeanLocal sACHSessionBeanLocal;
 
     @EJB
     private StatementSessionBeanLocal statementSessionBeanLocal;
@@ -27,6 +37,7 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
 
     @Resource
     private SessionContext ctx;
+    
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -38,6 +49,8 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
     private final int TIMER_DURATION_300000MS = 300100;
     private final String TIMER_NAME_70000MS = "EJB-TIMER-70000MS";
     private final int TIMER_DURATION_70000MS = 70000;
+    private final String TIMER_NAME_20000MS = "EJB-TIMER-20000MS";
+    private final int TIMER_DURATION_20000MS = 200000;
 
     public EjbTimerSessionBean() {
 
@@ -75,6 +88,16 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
                 TIMER_DURATION_70000MS, new String(TIMER_NAME_70000MS));
         System.out.println("{***70000MS Timer created" + String.valueOf(timer70000ms.getTimeRemaining()) + ","
                 + timer70000ms.getInfo().toString());
+    }
+    
+    @Override
+    public void createTimer20000MS() {
+        TimerService timerService = ctx.getTimerService();
+
+        Timer timer20000ms = timerService.createTimer(TIMER_DURATION_20000MS,
+                TIMER_DURATION_20000MS, new String(TIMER_NAME_20000MS));
+        System.out.println("{***20000MS Timer created" + String.valueOf(timer20000ms.getTimeRemaining()) + ","
+                + timer20000ms.getInfo().toString());
     }
 
     @Override
@@ -151,6 +174,22 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
             }
         }
     }
+    
+    @Override
+    public void cancelTimer20000MS() {
+        TimerService timerService = ctx.getTimerService();
+        Collection timers = timerService.getTimers();
+
+        for (Object obj : timers) {
+            Timer timer = (Timer) obj;
+
+            if (timer.getInfo().toString().equals(TIMER_NAME_20000MS));
+            {
+                timer.cancel();
+                System.out.println("*** 20000MS Timer cancelled");
+            }
+        }
+    }
 
     @Timeout
     public void handleTimeout(Timer timer) {
@@ -162,6 +201,8 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
             handleTimeout_15000ms();
         } else if (timer.getInfo().toString().equals(TIMER_NAME_70000MS)) {
             handleTimeout_70000ms();
+        } else if (timer.getInfo().toString().equals(TIMER_NAME_20000MS)) {
+            handleTimeout_20000ms();
         } else {
             System.out.println("*** Unknown timer timeout: " + timer.getInfo().toString());
         }
@@ -189,5 +230,17 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
         System.out.println("*** 70000MS Timer timeout");
         
         bankAccountSessionLocal.autoCloseAccount();
+    }
+    
+    private void handleTimeout_20000ms() {
+//        System.out.println("*** 20000MS Timer timeout");
+        
+        SACHMasterBankAccount dbsMasterBankAccount = sACHMasterBankAccountSessionBeanLocal.retrieveSACHMasterBankAccountByBankName("DBS");
+        SACHMasterBankAccount merlionMasterBankAccount = sACHMasterBankAccountSessionBeanLocal.retrieveSACHMasterBankAccountByBankName("Merlion");
+        
+        Calendar cal = Calendar.getInstance();
+        
+        sACHSessionBeanLocal.addNewSACH(dbsMasterBankAccount.getMasterBankAccountBalance(), 
+                merlionMasterBankAccount.getMasterBankAccountBalance(), 0.0, 0.0, cal.getTime().toString(), "DBS&Merlion");
     }
 }
