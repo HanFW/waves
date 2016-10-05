@@ -7,6 +7,11 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/internalSystemTemplate.xhtml">
 
+    <ui:define name="internalSystemMenu">
+
+        <ui:include src="/WEB-INF/internalSystemMenuCounterTeller.xhtml" />
+
+    </ui:define>
     <ui:define name="content">
     <h:body>
         <h:form>
@@ -15,13 +20,13 @@
                     <p:menuitem value="Home" url="/web/internalSystem/infrastructure/employeeCounterTellerMainPage.xhtml?faces-redirect=true"/>
                 </p:submenu>
 
-                <p:submenu label="Log Out">
-                    <p:menuitem value="Logout" actionListener="#{employeeLoginManagedBean.doLogOut}" />
-                </p:submenu>
-            </p:menubar>
-        </h:form>
+                    <p:submenu label="Log Out">
+                        <p:menuitem value="Logout" actionListener="#{employeeLoginManagedBean.doLogOut}" />
+                    </p:submenu>
+                </p:menubar>
+            </h:form>
 
-<h:form>
+            <h:form>
                 <div class="ui-g ui-fluid">
                     <div class="ui-g-12 ui-lg-12">
                         <div class="card card-w-title"> 
@@ -44,7 +49,7 @@
                     </div>
                 </div>
             </h:form>
-    </h:body>
+        </h:body>
     </ui:define>
 </ui:composition>
 

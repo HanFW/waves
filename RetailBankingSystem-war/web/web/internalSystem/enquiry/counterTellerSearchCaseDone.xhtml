@@ -7,6 +7,11 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/internalSystemTemplate.xhtml">
 
+    <ui:define name="internalSystemMenu">
+
+        <ui:include src="/WEB-INF/internalSystemMenuCounterTeller.xhtml" />
+
+    </ui:define>
     <ui:define name="content">
         <h:body>
             <h:form>
@@ -37,68 +42,68 @@
                                 <h:outputText value="You have logged in as: Counter Teller "/>
                                 <br/>
                                 <br/>
-                                </div>
-                                <p:panel header="Enquiry Case ID: #{employeeRecordEnquiryManagedBean.caseId} - created time: #{employeeRecordEnquiryManagedBean.ec.createdTime}" style="margin-bottom:20px">
-                                    <p:row>
-                                        <p:column colspan="2">
-                                            <h:outputText value="Detail:   " style="font-weight: bold" />
-                                        </p:column>
-                                        <p:column>
-                                            <h:outputText value="#{employeeRecordEnquiryManagedBean.ec.caseDetail}" />
-                                        </p:column>
-                                    </p:row>
-                                    <h:outputText value="&lt;br/&gt;" escape="false" />
-                                    <p:row>
-                                        <p:column colspan="2">
-                                            <h:outputText value="Status:  " style="font-weight: bold" />
-                                        </p:column>
+                            </div>
+                            <p:panel header="Enquiry Case ID: #{employeeRecordEnquiryManagedBean.caseId} - created time: #{employeeRecordEnquiryManagedBean.ec.createdTime}" style="margin-bottom:20px">
+                                <p:row>
+                                    <p:column colspan="2">
+                                        <h:outputText value="Detail:   " style="font-weight: bold" />
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{employeeRecordEnquiryManagedBean.ec.caseDetail}" />
+                                    </p:column>
+                                </p:row>
+                                <h:outputText value="&lt;br/&gt;" escape="false" />
+                                <p:row>
+                                    <p:column colspan="2">
+                                        <h:outputText value="Status:  " style="font-weight: bold" />
+                                    </p:column>
 
-                                        <p:column>
-                                            <h:outputText value="#{employeeRecordEnquiryManagedBean.ec.caseStatus}" />
-                                        </p:column>
-                                    </p:row>
-                                    <h:outputText value="&lt;br/&gt;" escape="false" />
-                                    <p:row>
-                                        <p:column colspan="2">
-                                            <h:outputText value="Reply:   " style="font-weight: bold" />
-                                        </p:column>
-                                        <p:column>
-                                            <h:outputText value="#{employeeRecordEnquiryManagedBean.ec.caseReply}" />
-                                        </p:column>
-                                    </p:row>
-                                    <h:outputText value="&lt;br/&gt;" escape="false" />
-                                    <p:row>
-                                        <p:panel header="Customer Follow-up Questions">
-                                            <p:dataTable var="followUp" value="#{employeeRecordEnquiryManagedBean.ec.followUp}" 
-                                                         paginator="true" rows="10" emptyMessage="No Follow-up Questions">
-                                                <p:column headerText="Follow Up ID">
-                                                    <h:outputText value="#{followUp.followUpId}" />
-                                                </p:column>
-                                                <p:column headerText="Created Time">
-                                                    <h:outputText value="#{followUp.sendTime}" />
-                                                </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{employeeRecordEnquiryManagedBean.ec.caseStatus}" />
+                                    </p:column>
+                                </p:row>
+                                <h:outputText value="&lt;br/&gt;" escape="false" />
+                                <p:row>
+                                    <p:column colspan="2">
+                                        <h:outputText value="Reply:   " style="font-weight: bold" />
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{employeeRecordEnquiryManagedBean.ec.caseReply}" />
+                                    </p:column>
+                                </p:row>
+                                <h:outputText value="&lt;br/&gt;" escape="false" />
+                                <p:row>
+                                    <p:panel header="Customer Follow-up Questions">
+                                        <p:dataTable var="followUp" value="#{employeeRecordEnquiryManagedBean.ec.followUp}" 
+                                                     paginator="true" rows="10" emptyMessage="No Follow-up Questions">
+                                            <p:column headerText="Follow Up ID">
+                                                <h:outputText value="#{followUp.followUpId}" />
+                                            </p:column>
+                                            <p:column headerText="Created Time">
+                                                <h:outputText value="#{followUp.sendTime}" />
+                                            </p:column>
 
-                                                <p:column headerText="Detail" >
-                                                    <h:outputText value="#{followUp.followUpDetail}" /> 
-                                                </p:column>
+                                            <p:column headerText="Detail" >
+                                                <h:outputText value="#{followUp.followUpDetail}" /> 
+                                            </p:column>
 
-                                                <p:column headerText="Status"> 
-                                                    <h:outputText value="#{followUp.followUpStatus}" />
-                                                </p:column>
+                                            <p:column headerText="Status"> 
+                                                <h:outputText value="#{followUp.followUpStatus}" />
+                                            </p:column>
 
-                                                <p:column headerText="Reply"> 
-                                                    <h:outputText value="#{followUp.followUpSolution}" />
-                                                </p:column>
-                                            </p:dataTable>
-                                        </p:panel>
-                                    </p:row>
-                              </p:panel>
+                                            <p:column headerText="Reply"> 
+                                                <h:outputText value="#{followUp.followUpSolution}" />
+                                            </p:column>
+                                        </p:dataTable>
+                                    </p:panel>
+                                </p:row>
+                            </p:panel>
                             <div align="center">
                                 <p:commandButton style="width:40%" value="Add Follow Up Question" action="counterTellerAddFollowUp.xhtml?faces-redirect=true" ajax="false">
                                     <f:setPropertyActionListener target="#{employeeAddFollowUpManagedBean.caseId}" value="#{employeeRecordEnquiryManagedBean.caseId}"/>
                                 </p:commandButton>
                             </div>      
-                            
+
                         </div>
                     </div>
                 </div>
