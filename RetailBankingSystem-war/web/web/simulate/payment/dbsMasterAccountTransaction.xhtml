@@ -17,24 +17,27 @@
         </h:form>
 
         <h:form>
+            <h:outputText value="View DBS Master Account Transaction" />
+            <br/>
+            <br/>
             <p:dataTable var="dbsMasterAccountTransaction" value="#{dBSMasterAccountTransactionManagedBean.dbsMasterAccountTransactions}" 
-                         reflow="true" paginator="true" rows="10" emptyMessage="No Transaction" >
+                         reflow="true" paginator="true" rows="10" emptyMessage="No Transaction">
                 <p:column headerText="Transaction Id"> 
                     <h:outputText value="#{dbsMasterAccountTransaction.transactionId}" />
                 </p:column>
-                
+
                 <p:column headerText="Transaction Date"> 
                     <h:outputText value="#{dbsMasterAccountTransaction.transactionDate}" />
                 </p:column>
-                
+
                 <p:column headerText="Transaction Ref"> 
                     <h:outputText value="#{dbsMasterAccountTransaction.transactionRef}" />
                 </p:column>
-                
+
                 <p:column headerText="Account Debit(Withdrawal)"> 
                     <h:outputText value="#{dbsMasterAccountTransaction.accountDebit}" />
                 </p:column>
-                
+
                 <p:column headerText="Account Credit(Deposit)"> 
                     <h:outputText value="#{dbsMasterAccountTransaction.accountCredit}" />
                 </p:column>
