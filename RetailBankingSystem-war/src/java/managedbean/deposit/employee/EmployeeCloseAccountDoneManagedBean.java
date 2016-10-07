@@ -24,9 +24,10 @@ import javax.faces.context.FacesContext;
 @RequestScoped
 
 public class EmployeeCloseAccountDoneManagedBean {
+
     @EJB
     private LoggingSessionBeanLocal loggingSessionBeanLocal;
-    
+
     @EJB
     private PayeeSessionBeanLocal payeeSessionBeanLocal;
 
@@ -48,7 +49,6 @@ public class EmployeeCloseAccountDoneManagedBean {
     private String onlyOneAccount;
     private String statusMessage;
     private String customerIdentificationNum;
-    private String bankAccountPwd;
     private String confirmBankAccountPwd;
     private boolean checkOnlyOneAccount;
 
@@ -129,14 +129,6 @@ public class EmployeeCloseAccountDoneManagedBean {
         this.customerIdentificationNum = customerIdentificationNum;
     }
 
-    public String getBankAccountPwd() {
-        return bankAccountPwd;
-    }
-
-    public void setBankAccountPwd(String bankAccountPwd) {
-        this.bankAccountPwd = bankAccountPwd;
-    }
-
     public String getConfirmBankAccountPwd() {
         return confirmBankAccountPwd;
     }
@@ -168,67 +160,60 @@ public class EmployeeCloseAccountDoneManagedBean {
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
         bankAccountNum = handleAccountString(bankAccountNumWithType);
-        String passwordCheck = transactionSessionBeanLocal.checkPassword(bankAccountNum, bankAccountPwd);
         bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountByNum(bankAccountNum);
         bankAccountType = bankAccount.getBankAccountType();
 
-        if (passwordCheck.equals("Error! Bank account does not exist!")) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Error! Bank account does not exist!", "Failed!"));
-        } else if (passwordCheck.equals("Password is incorrect!")) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Password is incorrect!", "Failed!"));
-        } else {
-            customerIdentificationNum = ec.getSessionMap().get("customerIdentificationNum").toString();
-            CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum);
-            
-            checkOnlyOneAccount = bankAccountSessionBeanLocal.checkOnlyOneAccount(customerBasic.getCustomerIdentificationNum());
+        customerIdentificationNum = ec.getSessionMap().get("customerIdentificationNum").toString();
+        CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum);
 
-            if (onlyOneAccount.equals("Yes") && !checkOnlyOneAccount) {
-                if (!bankAccount.getBankAccountBalance().equals("0")) {
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Please withdraw all your money.", "Failed!"));
-                } else {
+        checkOnlyOneAccount = bankAccountSessionBeanLocal.checkOnlyOneAccount(customerBasic.getCustomerIdentificationNum());
 
-                    bankAccountSessionBeanLocal.deleteAccount(bankAccountNum);
-                    statusMessage = "Account has been successfully deleted.";
-                    loggingSessionBeanLocal.createNewLogging("employee",null, "close account", "successful", null);
+        if (onlyOneAccount.equals("Yes") && !checkOnlyOneAccount) {
+            if (!bankAccount.getBankAccountBalance().equals("0")) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Please withdraw all your money.", "Failed!"));
+            } else {
 
-                    ec.getFlash().put("statusMessage", statusMessage);
-                    ec.getFlash().put("bankAccountNum", bankAccountNum);
-                    ec.getFlash().put("bankAccountType", bankAccountType);
+                bankAccountSessionBeanLocal.deleteAccount(bankAccountNum);
+                statusMessage = "Account has been successfully deleted.";
+                loggingSessionBeanLocal.createNewLogging("employee", null, "close account", "successful", null);
 
-                    ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/deposit/employeeDeleteAccount.xhtml?faces-redirect=true");
-                }
+                ec.getFlash().put("statusMessage", statusMessage);
+                ec.getFlash().put("bankAccountNum", bankAccountNum);
+                ec.getFlash().put("bankAccountType", bankAccountType);
 
-            } else if (onlyOneAccount.equals("Yes") && checkOnlyOneAccount) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! You only have one account.", "Failed!"));
-            } else if (onlyOneAccount.equals("No") && checkOnlyOneAccount) {
-
-                if (!bankAccount.getBankAccountBalance().equals("0")) {
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Please withdraw all your money.", "Failed!"));
-                } else {
-                    
-                    if (!customerBasic.getPayee().isEmpty()) {
-                        List<Payee> payees = customerBasic.getPayee();
-                        String payeeAccountNum = "";
-
-                        for (int i = customerBasic.getPayee().size() - 1; i >= 0; i--) {
-                            payeeAccountNum = payees.get(i).getPayeeAccountNum();
-                            payeeSessionBeanLocal.deletePayee(payeeAccountNum);
-                        }
-                    }
-                    
-                    bankAccountSessionBeanLocal.deleteAccount(bankAccountNum);
-                    customerSessionBeanLocal.deleteCustomerBasic(customerIdentificationNum);
-                    statusMessage = "Account has been successfully deleted.";
-
-                    ec.getFlash().put("statusMessage", statusMessage);
-                    ec.getFlash().put("bankAccountNum", bankAccountNum);
-                    ec.getFlash().put("bankAccountType", bankAccountType);
-
-                    ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/deposit/employeeDeleteAccount.xhtml?faces-redirect=true");
-                }
-            } else if (onlyOneAccount.equals("No") && !checkOnlyOneAccount) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! You have more than one accounts.", "Failed!"));
+                ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/deposit/employeeDeleteAccount.xhtml?faces-redirect=true");
             }
+
+        } else if (onlyOneAccount.equals("Yes") && checkOnlyOneAccount) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! You only have one account.", "Failed!"));
+        } else if (onlyOneAccount.equals("No") && checkOnlyOneAccount) {
+
+            if (!bankAccount.getBankAccountBalance().equals("0")) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Please withdraw all your money.", "Failed!"));
+            } else {
+
+                if (!customerBasic.getPayee().isEmpty()) {
+                    List<Payee> payees = customerBasic.getPayee();
+                    String payeeAccountNum = "";
+
+                    for (int i = customerBasic.getPayee().size() - 1; i >= 0; i--) {
+                        payeeAccountNum = payees.get(i).getPayeeAccountNum();
+                        payeeSessionBeanLocal.deletePayee(payeeAccountNum);
+                    }
+                }
+
+                bankAccountSessionBeanLocal.deleteAccount(bankAccountNum);
+                customerSessionBeanLocal.deleteCustomerBasic(customerIdentificationNum);
+                statusMessage = "Account has been successfully deleted.";
+
+                ec.getFlash().put("statusMessage", statusMessage);
+                ec.getFlash().put("bankAccountNum", bankAccountNum);
+                ec.getFlash().put("bankAccountType", bankAccountType);
+
+                ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/deposit/employeeDeleteAccount.xhtml?faces-redirect=true");
+            }
+        } else if (onlyOneAccount.equals("No") && !checkOnlyOneAccount) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! You have more than one accounts.", "Failed!"));
         }
     }
 

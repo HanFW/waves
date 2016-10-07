@@ -34,12 +34,6 @@ public class SaveAccountManagedBean {
         bankAccountType = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("bankAccountType").toString();
         bankAccountStatus = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("bankAccountStatus").toString();
 
-        if (bankAccountStatus.equals("Inactivated")) {
-            bankAccountStatus = "Inactive";
-        } else {
-            bankAccountStatus = "Active";
-        }
-
         if (bankAccountStatus.equals("Inactive") && !bankAccountType.equals("Fixed Deposit Account")) {
             attention = "Dear customer, your bank account is inactive."
                     + "To activate, please deposit/transfer sufficient amount to your account.\n"

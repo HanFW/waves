@@ -206,26 +206,18 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
     }
 
     @Override
-    public Long addNewAccount(String bankAccountNum, String bankAccountPwd,
+    public Long addNewAccount(String bankAccountNum,
             String bankAccountType, String bankAccountBalance, String transferDailyLimit,
             String transferBalance, String bankAccountStatus, String bankAccountMinSaving,
             String bankAccountDepositPeriod, String currentFixedDepositPeriod,
-            String fixedDepositStatus, Double statementDateDouble, Long customerBasicId,
-            Long interestId) {
+            String fixedDepositStatus, Double statementDateDouble, String accountApproval,
+            Long customerBasicId, Long interestId) {
 
         System.out.println("*");
         System.out.println("****** deposit/BankAccountSessionBean: addNewAccount() ******");
         BankAccount bankAccount = new BankAccount();
-        String hashedPwd = "";
-
-        try {
-            hashedPwd = md5Hashing(bankAccountPwd);
-        } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(BankAccountSessionBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
 
         bankAccount.setBankAccountNum(bankAccountNum);
-        bankAccount.setBankAccountPwd(hashedPwd);
         bankAccount.setBankAccountTyep(bankAccountType);
         bankAccount.setBankAccountBalance(bankAccountBalance);
         bankAccount.setTransferDailyLimit(transferDailyLimit);
@@ -236,6 +228,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
         bankAccount.setCurrentFixedDepositPeriod(currentFixedDepositPeriod);
         bankAccount.setFixedDepositStatus(fixedDepositStatus);
         bankAccount.setStatementDateDouble(statementDateDouble);
+        bankAccount.setAccountApproval(accountApproval);
         bankAccount.setCustomerBasic(retrieveCustomerBasicById(customerBasicId));
         bankAccount.setInterest(interestSessionLocal.retrieveInterestById(interestId));
 
@@ -281,7 +274,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
         DecimalFormat df = new DecimalFormat("#.00");
 
         Query query = entityManager.createQuery("SELECT a FROM BankAccount a WHERE a.bankAccountStatus = :bankAccountStatus");
-        query.setParameter("bankAccountStatus", "Activated");
+        query.setParameter("bankAccountStatus", "Active");
         List<BankAccount> activatedBankAccounts = query.getResultList();
 
         for (BankAccount activatedBankAccount : activatedBankAccounts) {
@@ -351,7 +344,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
                         activatedBankAccount.setBankAccountBalance(df.format(finalBalance));
                         activatedBankAccount.setFixedDepositStatus("Withdrawn");
                         activatedBankAccount.setBankAccountDepositPeriod("None");
-                        activatedBankAccount.setBankAccountStatus("Inactivated");
+                        activatedBankAccount.setBankAccountStatus("Inactive");
 
                         String accountDebit = " ";
                         String transactionCode = "DEFI";
@@ -399,7 +392,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
         DecimalFormat df = new DecimalFormat("#.00");
 
         Query query = entityManager.createQuery("SELECT a FROM BankAccount a WHERE a.bankAccountStatus = :bankAccountStatus");
-        query.setParameter("bankAccountStatus", "Activated");
+        query.setParameter("bankAccountStatus", "Active");
         List<BankAccount> activatedBankAccounts = query.getResultList();
 
         for (BankAccount activatedBankAccount : activatedBankAccounts) {
@@ -561,7 +554,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
         Double depositPeriodDay = Double.valueOf(depositPeriod) * 30;
 
         if (bankAccount.getFixedDepositStatus().equals("Withdrawn")) {
-            bankAccount.setBankAccountStatus("Activated");
+            bankAccount.setBankAccountStatus("Active");
         }
         bankAccount.setBankAccountDepositPeriod(depositPeriodDay.toString());
         bankAccount.setFixedDepositStatus("Deposited");
@@ -647,28 +640,10 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
     }
 
     @Override
-    public void updatePwd(String bankAccountNum, String bankAccountPwd) {
-        System.out.println("*");
-        System.out.println("****** deposit/BankAccountSessionBean: updatePwd() ******");
-
-        BankAccount bankAccount = retrieveBankAccountByNum(bankAccountNum);
-
-        String hashedPwd = "";
-
-        try {
-            hashedPwd = md5Hashing(bankAccountPwd);
-        } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(BankAccountSessionBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        bankAccount.setBankAccountPwd(hashedPwd);
-    }
-
-    @Override
     public void resetDailyTransferLimit() {
 
         Query query = entityManager.createQuery("SELECT a FROM BankAccount a WHERE a.bankAccountStatus = :bankAccountStatus");
-        query.setParameter("bankAccountStatus", "Activated");
+        query.setParameter("bankAccountStatus", "Active");
         List<BankAccount> activatedBankAccounts = query.getResultList();
 
         for (BankAccount activatedBankAccount : activatedBankAccounts) {
@@ -690,7 +665,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
         System.out.println("****** deposit/BankAccountSessionBean: autoCloseAccount() ******");
 
         Query query = entityManager.createQuery("SELECT a FROM BankAccount a WHERE a.bankAccountStatus = :bankAccountStatus");
-        query.setParameter("bankAccountStatus", "Inactivated");
+        query.setParameter("bankAccountStatus", "Inactive");
         List<BankAccount> inActivatedBankAccounts = query.getResultList();
 
         for (BankAccount inActivatedBankAccount : inActivatedBankAccounts) {
@@ -706,24 +681,16 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
     }
 
     @Override
-    public Long addNewAccountOneTime(String bankAccountNum, String bankAccountPwd,
+    public Long addNewAccountOneTime(String bankAccountNum,
             String bankAccountType, String bankAccountBalance, String transferDailyLimit,
             String transferBalance, String bankAccountStatus, String bankAccountMinSaving,
             String bankAccountDepositPeriod, String currentFixedDepositPeriod,
-            String fixedDepositStatus, Double statementDateDouble, Long customerBasicId,
-            Long interestId) {
+            String fixedDepositStatus, Double statementDateDouble, String accountApproval,
+            Long customerBasicId, Long interestId) {
 
         BankAccount bankAccount = new BankAccount();
-        String hashedPwd = "";
-
-        try {
-            hashedPwd = md5Hashing(bankAccountPwd);
-        } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(BankAccountSessionBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
 
         bankAccount.setBankAccountNum(bankAccountNum);
-        bankAccount.setBankAccountPwd(hashedPwd);
         bankAccount.setBankAccountTyep(bankAccountType);
         bankAccount.setBankAccountBalance(bankAccountBalance);
         bankAccount.setTransferDailyLimit(transferDailyLimit);
@@ -734,6 +701,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
         bankAccount.setCurrentFixedDepositPeriod(currentFixedDepositPeriod);
         bankAccount.setFixedDepositStatus(fixedDepositStatus);
         bankAccount.setStatementDateDouble(statementDateDouble);
+        bankAccount.setAccountApproval(accountApproval);
         bankAccount.setCustomerBasic(retrieveCustomerBasicById(customerBasicId));
         bankAccount.setInterest(interestSessionLocal.retrieveInterestById(interestId));
 
@@ -745,5 +713,15 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
         entityManager.flush();
 
         return bankAccount.getBankAccountId();
+    }
+    
+    @Override
+    public void approveAccount(String customerIdentificationNum) {
+        
+        CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum);
+        BankAccount bankAccount = customerBasic.getBankAccount().get(0);
+        
+        bankAccount.setAccountApproval("Yes");
+        customerBasic.setNewCustomer("No");
     }
 }

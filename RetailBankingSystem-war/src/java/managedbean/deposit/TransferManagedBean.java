@@ -277,7 +277,7 @@ public class TransferManagedBean {
             if (fromAccount.equals(toAccount)) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Fund transfer cannot be done within the same accounts.", "Failed!"));
             } else {
-                if (bankAccountFrom.getBankAccountStatus().equals("Activated") && bankAccountTo.getBankAccountStatus().equals("Inactivated")) {
+                if (bankAccountFrom.getBankAccountStatus().equals("Active") && bankAccountTo.getBankAccountStatus().equals("Inactive")) {
 
                     activationCheck = transactionSessionLocal.checkAccountActivation(bankAccountTo.getBankAccountNum(), transferAmt.toString());
 
@@ -293,7 +293,7 @@ public class TransferManagedBean {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Please contact us at 800 820 8820 or visit our branch.", "Failed"));
                     } else if (activationCheck.equals("Please declare your deposit period")) {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Please declare your fixed deposit period first.", "Failed"));
-                    } else if (activationCheck.equals("Activated successfully.")) {
+                    } else if (activationCheck.equals("Activate successfully.")) {
                         Double diffAmt = Double.valueOf(bankAccountFrom.getBankAccountBalance()) - transferAmt;
 
                         if (diffAmt >= 0) {
@@ -320,9 +320,9 @@ public class TransferManagedBean {
                             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!Your account balance is insufficient.", "Failed!"));
                         }
                     }
-                } else if (bankAccountFrom.getBankAccountStatus().equals("Inactivated") && bankAccountTo.getBankAccountStatus().equals("Activated")) {
+                } else if (bankAccountFrom.getBankAccountStatus().equals("Inactive") && bankAccountTo.getBankAccountStatus().equals("Active")) {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!You account(from) has not been activated.", "Failed!"));
-                } else if (bankAccountFrom.getBankAccountStatus().equals("Activated") && bankAccountTo.getBankAccountStatus().equals("Activated")) {
+                } else if (bankAccountFrom.getBankAccountStatus().equals("Active") && bankAccountTo.getBankAccountStatus().equals("Active")) {
                     Double diffAmt = Double.valueOf(bankAccountFrom.getBankAccountBalance()) - transferAmt;
 
                     if (diffAmt >= 0) {
@@ -348,7 +348,7 @@ public class TransferManagedBean {
                     } else {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!Your account balance is insufficient.", "Failed!"));
                     }
-                } else if (bankAccountFrom.getBankAccountStatus().equals("Inactivated") && bankAccountTo.getBankAccountStatus().equals("Inactivated")) {
+                } else if (bankAccountFrom.getBankAccountStatus().equals("Inactive") && bankAccountTo.getBankAccountStatus().equals("Inactive")) {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!Both of accounts have not been activated.", "Failed!"));
                 }
             }
@@ -378,7 +378,7 @@ public class TransferManagedBean {
             if (fromAccount.equals(toAccount)) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Fund transfer cannot be done within the same accounts.", "Failed!"));
             } else {
-                if (bankAccountFrom.getBankAccountStatus().equals("Activated") && bankAccountTo.getBankAccountStatus().equals("Inactivated")) {
+                if (bankAccountFrom.getBankAccountStatus().equals("Active") && bankAccountTo.getBankAccountStatus().equals("Inactive")) {
 
                     activationCheck = transactionSessionLocal.checkAccountActivation(bankAccountTo.getBankAccountNum(), transferAmt.toString());
 
@@ -422,9 +422,9 @@ public class TransferManagedBean {
                             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!Your account balance is insufficient.", "Failed!"));
                         }
                     }
-                } else if (bankAccountFrom.getBankAccountStatus().equals("Inactivated") && bankAccountTo.getBankAccountStatus().equals("Activated")) {
+                } else if (bankAccountFrom.getBankAccountStatus().equals("Inactive") && bankAccountTo.getBankAccountStatus().equals("Active")) {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!You account(from) has not been activated.", "Failed!"));
-                } else if (bankAccountFrom.getBankAccountStatus().equals("Activated") && bankAccountTo.getBankAccountStatus().equals("Activated")) {
+                } else if (bankAccountFrom.getBankAccountStatus().equals("Active") && bankAccountTo.getBankAccountStatus().equals("Active")) {
                     Double diffAmt = Double.valueOf(bankAccountFrom.getBankAccountBalance()) - transferAmt;
 
                     if (diffAmt >= 0) {
@@ -457,7 +457,7 @@ public class TransferManagedBean {
                     } else {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!Your account balance is insufficient.", "Failed!"));
                     }
-                } else if (bankAccountFrom.getBankAccountStatus().equals("Inactivated") && bankAccountTo.getBankAccountStatus().equals("Inactivated")) {
+                } else if (bankAccountFrom.getBankAccountStatus().equals("Inactive") && bankAccountTo.getBankAccountStatus().equals("Inactive")) {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!Both of accounts have not been activated.", "Failed!"));
                 }
             }
@@ -486,7 +486,7 @@ public class TransferManagedBean {
             if (fromAccount.equals(toAccount)) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Fund transfer cannot be done within the same accounts.", "Failed!"));
             } else {
-                if (bankAccountFrom.getBankAccountStatus().equals("Activated") && bankAccountTo.getBankAccountStatus().equals("Inactivated")) {
+                if (bankAccountFrom.getBankAccountStatus().equals("Active") && bankAccountTo.getBankAccountStatus().equals("Inactive")) {
 
                     activationCheck = transactionSessionLocal.checkAccountActivation(bankAccountTo.getBankAccountNum(), transferAmt.toString());
 
@@ -531,9 +531,9 @@ public class TransferManagedBean {
                             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!Your account balance is insufficient.", "Failed!"));
                         }
                     }
-                } else if (bankAccountFrom.getBankAccountStatus().equals("Inactivated") && bankAccountTo.getBankAccountStatus().equals("Activated")) {
+                } else if (bankAccountFrom.getBankAccountStatus().equals("Inactive") && bankAccountTo.getBankAccountStatus().equals("Active")) {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!You account(from) has not been activated.", "Failed!"));
-                } else if (bankAccountFrom.getBankAccountStatus().equals("Activated") && bankAccountTo.getBankAccountStatus().equals("Activated")) {
+                } else if (bankAccountFrom.getBankAccountStatus().equals("Active") && bankAccountTo.getBankAccountStatus().equals("Active")) {
 
                     Double diffAmt = Double.valueOf(bankAccountFrom.getBankAccountBalance()) - transferAmt;
 
@@ -559,7 +559,7 @@ public class TransferManagedBean {
                     } else {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!Your account balance is insufficient.", "Failed!"));
                     }
-                } else if (bankAccountFrom.getBankAccountStatus().equals("Inactivated") && bankAccountTo.getBankAccountStatus().equals("Inactivated")) {
+                } else if (bankAccountFrom.getBankAccountStatus().equals("Inactive") && bankAccountTo.getBankAccountStatus().equals("Inactive")) {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!Both of accounts have not been activated.", "Failed!"));
                 }
             }

@@ -46,7 +46,6 @@ public class EmployeeOpenAccountManagedBean implements Serializable {
 
     private Long bankAccountId;
     private String bankAccountNum;
-    private String bankAccountPwd;
     private String confirmBankAccountPwd;
     private String bankAccountType;
     private String bankAccountBalance;
@@ -120,6 +119,9 @@ public class EmployeeOpenAccountManagedBean implements Serializable {
     private boolean nricRender = false;
     private boolean passportRender = false;
     private boolean singaporePRRender = false;
+    
+    private String newCustomer;
+    private String accountApproval;
 
     //private ExternalContext ec;
     //ec = FacesContext.getCurrentInstance().getExternalContext();
@@ -302,14 +304,6 @@ public class EmployeeOpenAccountManagedBean implements Serializable {
 
     public void setBankAccountNum(String bankAccountNum) {
         this.bankAccountNum = bankAccountNum;
-    }
-
-    public String getBankAccountPwd() {
-        return bankAccountPwd;
-    }
-
-    public void setBankAccountPwd(String bankAccountPwd) {
-        this.bankAccountPwd = bankAccountPwd;
     }
 
     public String getBankAccountType() {
@@ -732,6 +726,22 @@ public class EmployeeOpenAccountManagedBean implements Serializable {
         this.statementDateDouble = statementDateDouble;
     }
 
+    public String getNewCustomer() {
+        return newCustomer;
+    }
+
+    public void setNewCustomer(String newCustomer) {
+        this.newCustomer = newCustomer;
+    }
+
+    public String getAccountApproval() {
+        return accountApproval;
+    }
+
+    public void setAccountApproval(String accountApproval) {
+        this.accountApproval = accountApproval;
+    }
+
     public void saveAccount() throws IOException {
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
@@ -776,12 +786,13 @@ public class EmployeeOpenAccountManagedBean implements Serializable {
                 currentFixedDepositPeriod = "0";
                 fixedDepositStatus = "";
                 statementDateDouble = 0.0;
+                accountApproval = "Yes";
 
                 if (bankAccountType.equals("Monthly Savings Account")) {
-                    bankAccountStatus = "Activated";
+                    bankAccountStatus = "Active";
                     bankAccountMinSaving = "Insufficient";
                 } else {
-                    bankAccountStatus = "Inactivated";
+                    bankAccountStatus = "Inactive";
                 }
                 
                 dailyInterest = "0";
@@ -789,11 +800,11 @@ public class EmployeeOpenAccountManagedBean implements Serializable {
                 isTransfer = "0";
                 isWithdraw = "0";
                 newInterestId = interestSessionLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw);
-
-                newAccountId = bankAccountSessionLocal.addNewAccount(bankAccountNum, bankAccountPwd, bankAccountType,
+                
+                newAccountId = bankAccountSessionLocal.addNewAccount(bankAccountNum, bankAccountType,
                         bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
                         bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
-                        statementDateDouble, customerBasicId, newInterestId);
+                        statementDateDouble, accountApproval, customerBasicId, newInterestId);
 
                 bankAccount = bankAccountSessionLocal.retrieveBankAccountById(newAccountId);
                 bankAccountSessionLocal.retrieveBankAccountByCusIC(customerIdentificationNum).add(bankAccount);
@@ -814,6 +825,7 @@ public class EmployeeOpenAccountManagedBean implements Serializable {
             } else if (existingCustomer.equals("No") && !checkExist && agreement) {
 
                 customerAddress = customerStreetName + ", " + customerBlockNum + ", " + customerUnitNum + ", " + customerPostal;
+                newCustomer = "Yes";
 
                 newCustomerBasicId = customerSessionBean.addNewCustomerBasic(customerName,
                         customerSalutation, customerIdentificationNum.toUpperCase(),
@@ -821,7 +833,7 @@ public class EmployeeOpenAccountManagedBean implements Serializable {
                         customerNationality, customerCountryOfResidence, customerRace,
                         customerMaritalStatus, customerOccupation, customerCompany,
                         customerAddress, customerPostal, customerOnlineBankingAccountNum,
-                        customerOnlineBankingPassword, customerSignature.getBytes());
+                        customerOnlineBankingPassword, customerSignature.getBytes(),newCustomer);
 
                 bankAccountBalance = "0";
                 transferDailyLimit = "3000";
@@ -831,12 +843,13 @@ public class EmployeeOpenAccountManagedBean implements Serializable {
                 currentFixedDepositPeriod = "0";
                 fixedDepositStatus = "";
                 statementDateDouble = 0.0;
+                accountApproval = "No";
 
                 if (bankAccountType.equals("Monthly Savings Account")) {
-                    bankAccountStatus = "Activated";
+                    bankAccountStatus = "Active";
                     bankAccountMinSaving = "Insufficient";
                 } else {
-                    bankAccountStatus = "Inactivated";
+                    bankAccountStatus = "Inactive";
                 }
                 
                 dailyInterest = "0";
@@ -844,11 +857,11 @@ public class EmployeeOpenAccountManagedBean implements Serializable {
                 isTransfer = "0";
                 isWithdraw = "0";
                 newInterestId = interestSessionLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw);
-
-                newAccountId = bankAccountSessionLocal.addNewAccount(bankAccountNum, bankAccountPwd, bankAccountType,
+                
+                newAccountId = bankAccountSessionLocal.addNewAccount(bankAccountNum, bankAccountType,
                         bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
                         bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
-                        statementDateDouble, newCustomerBasicId, newInterestId);
+                        statementDateDouble, accountApproval, newCustomerBasicId, newInterestId);
 
                 statusMessage = "New Account Saved Successfully.";
 
@@ -891,6 +904,8 @@ public class EmployeeOpenAccountManagedBean implements Serializable {
 
         file = event.getFile();
 
+        checkIdentificationType();
+                
         if (file != null) {
             String filename = customerName + "-" + customerIdentificationNum + ".png";
             InputStream input = file.getInputstream();

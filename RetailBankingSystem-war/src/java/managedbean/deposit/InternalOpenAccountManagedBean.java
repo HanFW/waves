@@ -32,7 +32,6 @@ public class InternalOpenAccountManagedBean {
     private InterestSessionBeanLocal interestSessionBeanLocal;
 
     private String bankAccountType;
-    private String bankAccountPwd;
     private String confirmBankAccountPwd;
     private String customerIdentificationNum;
     private String customerEmail;
@@ -67,6 +66,7 @@ public class InternalOpenAccountManagedBean {
     private Date receivedDate;
     private String messageContent;
     private String customerName;
+    private String accountApproval;
 
     public InternalOpenAccountManagedBean() {
     }
@@ -88,14 +88,6 @@ public class InternalOpenAccountManagedBean {
 
     public void setBankAccountType(String bankAccountType) {
         this.bankAccountType = bankAccountType;
-    }
-
-    public String getBankAccountPwd() {
-        return bankAccountPwd;
-    }
-
-    public void setBankAccountPwd(String bankAccountPwd) {
-        this.bankAccountPwd = bankAccountPwd;
     }
 
     public String getConfirmBankAccountPwd() {
@@ -318,8 +310,16 @@ public class InternalOpenAccountManagedBean {
         this.customerName = customerName;
     }
 
+    public String getAccountApproval() {
+        return accountApproval;
+    }
+
+    public void setAccountApproval(String accountApproval) {
+        this.accountApproval = accountApproval;
+    }
+
     public void saveAccount() throws IOException {
-        System.out.println("hello");
+        
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
         CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
@@ -336,12 +336,13 @@ public class InternalOpenAccountManagedBean {
             currentFixedDepositPeriod = "0";
             fixedDepositStatus = "";
             statementDateDouble = 0.0;
+            accountApproval = "Yes";
 
             if (bankAccountType.equals("Monthly Savings Account")) {
-                bankAccountStatus = "Activated";
+                bankAccountStatus = "Active";
                 bankAccountMinSaving = "Insufficient";
             } else {
-                bankAccountStatus = "Inactivated";
+                bankAccountStatus = "Inactive";
             }
 
             customerBasicId = customerBasic.getCustomerBasicId();
@@ -352,10 +353,10 @@ public class InternalOpenAccountManagedBean {
             isWithdraw = "0";
             newInterestId = interestSessionBeanLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw);
             
-            newAccountId = bankAccountSessionBeanLocal.addNewAccount(bankAccountNum, bankAccountPwd, bankAccountType,
+            newAccountId = bankAccountSessionBeanLocal.addNewAccount(bankAccountNum, bankAccountType,
                     bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
                     bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
-                    statementDateDouble, customerBasicId, newInterestId);
+                    statementDateDouble, accountApproval, customerBasicId, newInterestId);
 
             bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountById(newAccountId);
 

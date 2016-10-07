@@ -185,60 +185,52 @@ public class CloseAccountManagedBean {
         CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
 
         bankAccountNum = handleAccountString(bankAccountNumWithType);
-        String passwordCheck = transactionSessionLocal.checkPassword(bankAccountNum, bankAccountPwd);
         bankAccount = bankAccountSessionLocal.retrieveBankAccountByNum(bankAccountNum);
         bankAccountType = bankAccount.getBankAccountType();
 
-        if (passwordCheck.equals("Error! Bank account does not exist!")) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Error! Bank account does not exist!", "Failed!"));
-        } else if (passwordCheck.equals("Password is incorrect!")) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Password is incorrect!", "Failed!"));
-        } else {
+        checkOnlyOneAccount = bankAccountSessionLocal.checkOnlyOneAccount(customerBasic.getCustomerIdentificationNum());
 
-            checkOnlyOneAccount = bankAccountSessionLocal.checkOnlyOneAccount(customerBasic.getCustomerIdentificationNum());
+        if (onlyOneAccount.equals("Yes") && !checkOnlyOneAccount) {
+            if (!bankAccount.getBankAccountBalance().equals("0.0")) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Please withdraw all your money.", "Failed!"));
+            } else {
 
-            if (onlyOneAccount.equals("Yes") && !checkOnlyOneAccount) {
-                if (!bankAccount.getBankAccountBalance().equals("0.0")) {
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Please withdraw all your money.", "Failed!"));
-                } else {
+                interestId = bankAccount.getInterest().getInterestId();
+                bankAccountSessionLocal.deleteAccount(bankAccountNum);
+                interestSessionBeanLocal.deleteInterest(interestId);
+                statusMessage = "Account has been successfully deleted.";
+                loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "close account", "successful", null);
 
-                    interestId = bankAccount.getInterest().getInterestId();
-                    bankAccountSessionLocal.deleteAccount(bankAccountNum);
-                    interestSessionBeanLocal.deleteInterest(interestId);
-                    statusMessage = "Account has been successfully deleted.";
-                    loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "close account", "successful", null);
+                ec.getFlash().put("statusMessage", statusMessage);
+                ec.getFlash().put("bankAccountNum", bankAccountNum);
+                ec.getFlash().put("bankAccountType", bankAccountType);
 
-                    ec.getFlash().put("statusMessage", statusMessage);
-                    ec.getFlash().put("bankAccountNum", bankAccountNum);
-                    ec.getFlash().put("bankAccountType", bankAccountType);
-
-                    ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerDeleteAccount.xhtml?faces-redirect=true");
-                }
-
-            } else if (onlyOneAccount.equals("Yes") && checkOnlyOneAccount) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! You only have one account.", "Failed!"));
-            } else if (onlyOneAccount.equals("No") && checkOnlyOneAccount) {
-
-                if (!bankAccount.getBankAccountBalance().equals("0.0")) {
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Please withdraw all your money.", "Failed!"));
-                } else {
-
-                    interestId = bankAccount.getInterest().getInterestId();
-                    customerSessionBeanLocal.deleteCustomerBasic(customerBasic.getCustomerIdentificationNum());
-                    interestSessionBeanLocal.deleteInterest(interestId);
-
-                    statusMessage = "Account has been successfully deleted.";
-                    loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "close account", "successful", null);
-
-                    ec.getFlash().put("statusMessage", statusMessage);
-                    ec.getFlash().put("bankAccountNum", bankAccountNum);
-                    ec.getFlash().put("bankAccountType", bankAccountType);
-
-                    ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerDeleteAccount.xhtml?faces-redirect=true");
-                }
-            } else if (onlyOneAccount.equals("No") && !checkOnlyOneAccount) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! You have more than one accounts.", "Failed!"));
+                ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerDeleteAccount.xhtml?faces-redirect=true");
             }
+
+        } else if (onlyOneAccount.equals("Yes") && checkOnlyOneAccount) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! You only have one account.", "Failed!"));
+        } else if (onlyOneAccount.equals("No") && checkOnlyOneAccount) {
+
+            if (!bankAccount.getBankAccountBalance().equals("0.0")) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Please withdraw all your money.", "Failed!"));
+            } else {
+
+                interestId = bankAccount.getInterest().getInterestId();
+                customerSessionBeanLocal.deleteCustomerBasic(customerBasic.getCustomerIdentificationNum());
+                interestSessionBeanLocal.deleteInterest(interestId);
+
+                statusMessage = "Account has been successfully deleted.";
+                loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "close account", "successful", null);
+
+                ec.getFlash().put("statusMessage", statusMessage);
+                ec.getFlash().put("bankAccountNum", bankAccountNum);
+                ec.getFlash().put("bankAccountType", bankAccountType);
+
+                ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerDeleteAccount.xhtml?faces-redirect=true");
+            }
+        } else if (onlyOneAccount.equals("No") && !checkOnlyOneAccount) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! You have more than one accounts.", "Failed!"));
         }
     }
 

@@ -34,7 +34,7 @@ public interface CRMCustomerSessionBeanLocal {
             String customerNationality, String customerCountryOfResidence, String customerRace,
             String customerMaritalStatus, String customerOccupation, String customerCompany,
             String customerAddress, String customerPostal, String customerOnlineBankingAccountNum,
-            String customerOnlineBankingPassword, byte[] customerSignature);
+            String customerOnlineBankingPassword, byte[] customerSignature, String newCustomer);
 
     public String deleteCustomerBasic(String customerIdentificationNum);
 
@@ -51,5 +51,7 @@ public interface CRMCustomerSessionBeanLocal {
             String customerNationality, String customerCountryOfResidence, String customerRace,
             String customerMaritalStatus, String customerOccupation, String customerCompany,
             String customerAddress, String customerPostal, String customerOnlineBankingAccountNum,
-            String customerOnlineBankingPassword, byte[] customerSignature);
+            String customerOnlineBankingPassword, byte[] customerSignature, String newCustomer);
+    
+    public List<CustomerBasic> getAllNewCustomer();
 }

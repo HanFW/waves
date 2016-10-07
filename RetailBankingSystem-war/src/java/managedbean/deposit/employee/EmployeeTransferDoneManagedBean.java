@@ -158,7 +158,7 @@ public class EmployeeTransferDoneManagedBean {
                 if (fromAccount.equals(toAccount)) {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Fund transfer cannot be done within the same accounts.", "Failed!"));
                 } else {
-                    if (bankAccountFrom.getBankAccountStatus().equals("Activated") && bankAccountTo.getBankAccountStatus().equals("Inactivated")) {
+                    if (bankAccountFrom.getBankAccountStatus().equals("Active") && bankAccountTo.getBankAccountStatus().equals("Inactive")) {
 
                         activationCheck = transactionSessionBeanLocal.checkAccountActivation(bankAccountTo.getBankAccountNum(), transferAmt.toString());
 
@@ -203,9 +203,9 @@ public class EmployeeTransferDoneManagedBean {
                                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Your account balance is insufficient.", "Failed!"));
                             }
                         }
-                    } else if (bankAccountFrom.getBankAccountStatus().equals("Inactivated") && bankAccountTo.getBankAccountStatus().equals("Activated")) {
+                    } else if (bankAccountFrom.getBankAccountStatus().equals("Inactive") && bankAccountTo.getBankAccountStatus().equals("Active")) {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! You account(from) has not been activated.", "Failed!"));
-                    } else if (bankAccountFrom.getBankAccountStatus().equals("Activated") && bankAccountTo.getBankAccountStatus().equals("Activated")) {
+                    } else if (bankAccountFrom.getBankAccountStatus().equals("Active") && bankAccountTo.getBankAccountStatus().equals("Active")) {
                         Double diffAmt = Double.valueOf(bankAccountFrom.getBankAccountBalance()) - transferAmt;
 
                         toBankAccountNumWithType = toAccount + "-" + bankAccountTo.getBankAccountType();
@@ -233,7 +233,7 @@ public class EmployeeTransferDoneManagedBean {
                         } else {
                             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Your account balance is insufficient.", "Failed!"));
                         }
-                    } else if (bankAccountFrom.getBankAccountStatus().equals("Inactivated") && bankAccountTo.getBankAccountStatus().equals("Inactivated")) {
+                    } else if (bankAccountFrom.getBankAccountStatus().equals("Inactive") && bankAccountTo.getBankAccountStatus().equals("Inactive")) {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Both of accounts have not been activated.", "Failed!"));
                     }
                 }

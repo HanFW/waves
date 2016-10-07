@@ -7,12 +7,12 @@ import java.io.Serializable;
 import javax.ejb.EJB;
 import java.util.List;
 import javax.enterprise.context.RequestScoped;
-import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import ejb.infrastructure.session.LoggingSessionBeanLocal;
+import java.util.ArrayList;
 
 @Named(value = "accountDataTableBean")
 @RequestScoped
@@ -38,13 +38,12 @@ public class AccountDataTableBean implements Serializable {
         CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
         String customerIC = customerBasic.getCustomerIdentificationNum();
 
-        List<BankAccount> bankAccount = bankAccountSessionLocal.retrieveBankAccountByCusIC(customerIC.toUpperCase());
-
-        if (bankAccount.isEmpty()) {
-            loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "view account", "failed", "invalid customer");
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Your identification is invalid", "Failed!"));
-        } else {
-            loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "view account", "successful", null);
+        List<BankAccount> bankAccount = new ArrayList<BankAccount>();
+        
+        for(int i=0;i<customerBasic.getBankAccount().size();i++) {
+            if(customerBasic.getBankAccount().get(i).getAccountApproval().equals("Yes")) {
+                bankAccount.add(customerBasic.getBankAccount().get(i));
+            }
         }
 
         return bankAccount;
