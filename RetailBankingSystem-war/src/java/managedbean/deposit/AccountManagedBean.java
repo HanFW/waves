@@ -109,6 +109,7 @@ public class AccountManagedBean implements Serializable {
     private boolean visible3 = false;
     private boolean visible4 = false;
     private boolean visible5 = false;
+    private boolean visible6 = false;
 
     private ExternalContext ec;
     private CustomerBasic customerBasic;
@@ -123,6 +124,7 @@ public class AccountManagedBean implements Serializable {
     private boolean nricRender = false;
     private boolean passportRender = false;
     private boolean singaporePRRender = false;
+    private boolean fixedDepositRender = false;
 
     private String subject;
     private Date receivedDate;
@@ -261,6 +263,17 @@ public class AccountManagedBean implements Serializable {
         }
     }
 
+    public void show6() {
+
+        if (bankAccountType.equals("Fixed Deposit Account")) {
+            visible6 = true;
+            fixedDepositRender = true;
+        } else {
+            visible6 = false;
+            fixedDepositRender = false;
+        }
+    }
+
     public boolean isVisible() {
         return visible;
     }
@@ -299,6 +312,14 @@ public class AccountManagedBean implements Serializable {
 
     public void setVisible5(boolean visible5) {
         this.visible5 = visible5;
+    }
+
+    public boolean isVisible6() {
+        return visible6;
+    }
+
+    public void setVisible6(boolean visible6) {
+        this.visible6 = visible6;
     }
 
     public UploadedFile getFile() {
@@ -807,6 +828,14 @@ public class AccountManagedBean implements Serializable {
 
     public void setAccountApproval(String accountApproval) {
         this.accountApproval = accountApproval;
+    }
+
+    public boolean isFixedDepositRender() {
+        return fixedDepositRender;
+    }
+
+    public void setFixedDepositRender(boolean fixedDepositRender) {
+        this.fixedDepositRender = fixedDepositRender;
     }
 
     public void saveAccount() throws IOException {
