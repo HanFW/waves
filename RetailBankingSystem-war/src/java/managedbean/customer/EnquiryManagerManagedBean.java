@@ -199,18 +199,10 @@ public class EnquiryManagerManagedBean implements Serializable {
         }
     }
 
-//    public void replyToFollowUp() throws IOException {
-//        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(enquirySessionBeanLocal.replyCustomerFollowUp(followUpId, followUpSolution), " "));
-//        followUpId = null;
-//        followUpSolution = null;
-//        FacesContext context = FacesContext.getCurrentInstance();
-//        ExternalContext ec = context.getExternalContext();
-//        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/enquirymanagerReplyCaseDone.xhtml");
-//    }
     public void addIssue() throws IOException {
         System.out.println("addIssue");
         FacesContext context = FacesContext.getCurrentInstance();
-        context.addMessage(null, new FacesMessage(enquirySessionBeanLocal.addNewCaseIssue(caseId, departmentTo, issueProblem, followUps), " "));
+        context.addMessage(null, new FacesMessage(enquirySessionBeanLocal.addNewCaseIssue(caseId, departmentTo, issueProblem), " "));
         departmentTo = null;
         issueProblem = null;
     }
@@ -218,7 +210,7 @@ public class EnquiryManagerManagedBean implements Serializable {
     public void saveIssue() throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext ec = context.getExternalContext();
-        context.addMessage(null, new FacesMessage(enquirySessionBeanLocal.addNewCaseIssue(caseId, departmentTo, issueProblem, followUps), " "));
+        context.addMessage(null, new FacesMessage(enquirySessionBeanLocal.addNewCaseIssue(caseId, departmentTo, issueProblem), " "));
         caseId = null;
         departmentTo = null;
         issueProblem = null;

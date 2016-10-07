@@ -1,19 +1,13 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:p="http://primefaces.org/ui"
-                template="/WEB-INF/internalSystemTemplate.xhtml">
-
-    <ui:define name="internalSystemMenu">
-
-        <ui:include src="/WEB-INF/internalSystemMenuOperationSpecialist.xhtml" />
-
-    </ui:define>
-
-    <ui:define name="content">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core" 
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>View Pending Issue</title>
+    </h:head>
+    <h:body>
         <h:form>
             <p:menubar>
                 <p:submenu label="Home">
@@ -64,6 +58,5 @@
             </p:panel>
         </h:form>
     </h:body>
-   </ui:define>
-</ui:composition>
+</html>
 

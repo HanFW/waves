@@ -10,14 +10,12 @@ import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 
 /**
  *
@@ -59,6 +57,14 @@ public class EmployeeUpdateBasicProfileManagedBean implements Serializable {
     private String replacedCustomerMobile;
 
     private CustomerBasic cb = new CustomerBasic();
+    
+    @PostConstruct
+    public void init()
+    {
+        cb = (CustomerBasic)FacesContext.getCurrentInstance().getExternalContext().getRequestMap().get("customerBasic");
+        System.err.println("*************** EmployeeUpdateBasicProfileManagedBean: " + cb);
+    
+    }
 
     public EmployeeUpdateBasicProfileManagedBean() {
     }
