@@ -23,20 +23,20 @@
 
                                 <p:panelGrid columns="1" styleClass="ui-panelgrid-blank form-group">
 
-                                    <p:outputLabel style="font-size:16pt" for="customerAccount" value="New account number: "/>
+                                    <p:outputLabel style="font-size:16pt" for="customerAccount" value="New user ID: "/>
 
 
-                                    <p:inputText type="text" id="customerAccount" value="#{customerLoginManagedBean.newCustomerAccount}" required="true" requiredMessage="Please create a new account number.">
+                                    <p:inputText type="text" id="customerAccount" value="#{customerLoginManagedBean.newCustomerAccount}" required="true" requiredMessage="Please create a new user ID.">
                                         <f:validateLength minimum="6" maximum="20" />
                                     </p:inputText>
                                     <p:message for="customerAccount"/>
 
 
-                                    <p:outputLabel style="font-size:16pt" for="customerPassword" value="New password: "/>
+                                    <p:outputLabel style="font-size:16pt" for="customerPassword" value="New PIN: "/>
 
 
 
-                                    <p:inputText type="password" id= "customerPassword" value="#{customerLoginManagedBean.newCustomerPassword}" required="true" requiredMessage="Please create a new password." >
+                                    <p:inputText type="password" id= "customerPassword" value="#{customerLoginManagedBean.newCustomerPassword}" required="true" requiredMessage="Please create a new PIN." >
                                         <f:validateLength minimum="6" maximum="20" />
                                     </p:inputText>
                                     <p:message for="customerPassword"/>
@@ -52,7 +52,7 @@
                 </div>
             </h:form>
             <h:form id="activationConfirmation">
-                <p:confirmDialog closable="false" widgetVar="activationDialog" message="Your account has been successfully updated. Please remember your new online banking account number and password. " header="Your account has been activated" severity="info">
+                <p:confirmDialog closable="false" widgetVar="activationDialog" message="Your online banking has been successfully updated. Please remember your new user ID and PIN. " header="Your online banking has been activated" severity="info">
                     <p:commandButton action="/web/onlineBanking/deposit/customerDepositIndex.xhtml" value="OK" style="font-family:Eurostile;font-size:16pt"/>
                 </p:confirmDialog>
             </h:form>
