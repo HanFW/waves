@@ -14,37 +14,37 @@
                     <div class="ui-g-12 ui-lg-12">
                         <div class="card card-w-title"> 
                             <div align="center">
-            
-                 <h2>Please reset your PIN</h2>
+
+                                <h2>Please reset your PIN</h2>
                                 <br/>
-                <p:messages globalOnly="true" showDetail="true" id="activationMessage"/>
-                
-                <p:panelGrid columns="1" styleClass="ui-panelgrid-blank form-group">
-                    
-                            <p:outputLabel for="customerPassword" value="New PIN: "/>
-                        
-                            <p:inputText type="password" id= "customerPassword" value="#{customerLoginManagedBean.newCustomerPassword}" required="true" requiredMessage="Please create a new PIN.">
-                                <f:validateLength minimum="6" maximum="20" />
-                            </p:inputText>
-                            <p:message for="customerPassword"/>
-                     
-                   
-                      
-                            <p:commandButton value="Submit" type="submit" actionListener="#{customerLoginManagedBean.activateNewPIN}" update="activationConfirmation activationForm"/>
-                      
-                    
-                </p:panelGrid>
-        
+                                <p:messages globalOnly="true" showDetail="true" id="activationMessage"/>
+
+                                <p:panelGrid columns="1" styleClass="ui-panelgrid-blank form-group">
+
+                                    <p:outputLabel for="customerPassword" value="New PIN: "/>
+
+                                    <p:inputText type="password" id= "customerPassword" value="#{customerLoginManagedBean.newCustomerPassword}" required="true" requiredMessage="Please create a new PIN.">
+                                        <f:validateLength minimum="6" maximum="20" />
+                                    </p:inputText>
+                                    <p:message for="customerPassword"/>
+
+
+
+                                    <p:commandButton value="Submit" type="submit" actionListener="#{customerLoginManagedBean.activateNewPIN}" update="activationConfirmation activationForm"/>
+
+
+                                </p:panelGrid>
+
                             </div>
                         </div>
                     </div>
                 </div>
-        </h:form>
-        <h:form id="activationConfirmation">
-            <p:confirmDialog widgetVar="pinActivationDialog" closable="false" message="Your online banking has been successfully updated. Please remember your new online banking PIN. " header="Your PIN has been updated" severity="info">
-                <p:commandButton action="/web/onlineBanking/deposit/customerDepositIndex.xhtml" value="OK"/>
-            </p:confirmDialog>
-           </h:form>
+            </h:form>
+            <h:form id="activationConfirmation">
+                <p:confirmDialog widgetVar="pinActivationDialog" closable="false" message="Your online banking has been successfully updated. Please remember your new online banking PIN. " header="Your PIN has been updated" severity="info">
+                    <p:commandButton action="/web/onlineBanking/deposit/customerDepositIndex.xhtml" value="OK"/>
+                </p:confirmDialog>
+            </h:form>
         </h:body>
     </ui:define>
 </ui:composition>

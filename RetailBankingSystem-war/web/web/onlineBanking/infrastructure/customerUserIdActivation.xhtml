@@ -8,56 +8,56 @@
                 template="/WEB-INF/onlineBankingTemplate.xhtml"
                 xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
     <ui:define name="content">
-       
-
-            <h:form id="activationForm">
-                <div class="ui-g ui-fluid">
-                    <div class="ui-g-12 ui-lg-12">
-                        <div class="card card-w-title"> 
-                            <div align="center">
-                                <h2>Please activate your account by entering your new account number and password</h2>
-                                <br/>
-
-                                <p:messages globalOnly="true" showDetail="true" id="activationMessage"/>
 
 
-                                <p:panelGrid columns="1" styleClass="ui-panelgrid-blank form-group">
+        <h:form id="activationForm">
+            <div class="ui-g ui-fluid">
+                <div class="ui-g-12 ui-lg-12">
+                    <div class="card card-w-title"> 
+                        <div align="center">
+                            <h2>Please activate your account by entering your new account number and password</h2>
+                            <br/>
 
-                                    <p:outputLabel style="font-size:16pt" for="customerAccount" value="New user ID: "/>
-
-
-                                    <p:inputText type="text" id="customerAccount" value="#{customerLoginManagedBean.newCustomerAccount}" required="true" requiredMessage="Please create a new user ID.">
-                                        <f:validateLength minimum="6" maximum="20" />
-                                    </p:inputText>
-                                    <p:message for="customerAccount"/>
-
-
-                                    <p:outputLabel style="font-size:16pt" for="customerPassword" value="New PIN: "/>
+                            <p:messages globalOnly="true" showDetail="true" id="activationMessage"/>
 
 
+                            <p:panelGrid columns="1" styleClass="ui-panelgrid-blank form-group">
 
-                                    <p:inputText type="password" id= "customerPassword" value="#{customerLoginManagedBean.newCustomerPassword}" required="true" requiredMessage="Please create a new PIN." >
-                                        <f:validateLength minimum="6" maximum="20" />
-                                    </p:inputText>
-                                    <p:message for="customerPassword"/>
+                                <p:outputLabel style="font-size:16pt" for="customerAccount" value="New user ID: "/>
 
 
-                                    <p:commandButton value="Submit" type="submit" actionListener="#{customerLoginManagedBean.activateOnlineBankingAccount}" update="activationConfirmation activationForm" style="font-family:Eurostile;font-size:16pt"/>
+                                <p:inputText type="text" id="customerAccount" value="#{customerLoginManagedBean.newCustomerAccount}" required="true" requiredMessage="Please create a new user ID.">
+                                    <f:validateLength minimum="6" maximum="20" />
+                                </p:inputText>
+                                <p:message for="customerAccount"/>
 
-                                </p:panelGrid>
-                            </div>
 
+                                <p:outputLabel style="font-size:16pt" for="customerPassword" value="New PIN: "/>
+
+
+
+                                <p:inputText type="password" id= "customerPassword" value="#{customerLoginManagedBean.newCustomerPassword}" required="true" requiredMessage="Please create a new PIN." >
+                                    <f:validateLength minimum="6" maximum="20" />
+                                </p:inputText>
+                                <p:message for="customerPassword"/>
+
+
+                                <p:commandButton value="Submit" type="submit" actionListener="#{customerLoginManagedBean.activateOnlineBankingAccount}" update="activationConfirmation activationForm" style="font-family:Eurostile;font-size:16pt"/>
+
+                            </p:panelGrid>
                         </div>
+
                     </div>
                 </div>
-            </h:form>
-            <h:form id="activationConfirmation">
-                <p:confirmDialog closable="false" widgetVar="activationDialog" message="Your online banking has been successfully updated. Please remember your new user ID and PIN. " header="Your online banking has been activated" severity="info">
-                    <p:commandButton action="/web/onlineBanking/deposit/customerDepositIndex.xhtml" value="OK" style="font-family:Eurostile;font-size:16pt"/>
-                </p:confirmDialog>
-            </h:form>
+            </div>
+        </h:form>
+        <h:form id="activationConfirmation">
+            <p:confirmDialog closable="false" widgetVar="activationDialog" message="Your online banking has been successfully updated. Please remember your new user ID and PIN. " header="Your online banking has been activated" severity="info">
+                <p:commandButton action="/web/onlineBanking/deposit/customerDepositIndex.xhtml" value="OK" style="font-family:Eurostile;font-size:16pt"/>
+            </p:confirmDialog>
+        </h:form>
 
- 
+
     </ui:define>
 </ui:composition>
 
