@@ -15,35 +15,50 @@
                 <div class="ui-g-12 ui-lg-12">
                     <div class="card card-w-title"> 
                         <div align="center">
-                            <h2>Please activate your account by entering your new account number and password</h2>
+                            <h2>Please activate your account by entering your new user ID, PIN and validating your mobile number</h2>
                             <br/>
 
                             <p:messages globalOnly="true" showDetail="true" id="activationMessage"/>
 
 
-                            <p:panelGrid columns="1" styleClass="ui-panelgrid-blank form-group">
+                            <p:panelGrid styleClass="ui-panelgrid-blank form-group">
 
-                                <p:outputLabel style="font-size:16pt" for="customerAccount" value="New user ID: "/>
-
-
-                                <p:inputText type="text" id="customerAccount" value="#{customerLoginManagedBean.newCustomerAccount}" required="true" requiredMessage="Please create a new user ID.">
-                                    <f:validateLength minimum="6" maximum="20" />
-                                </p:inputText>
-                                <p:message for="customerAccount"/>
-
-
-                                <p:outputLabel style="font-size:16pt" for="customerPassword" value="New PIN: "/>
-
-
-
-                                <p:inputText type="password" id= "customerPassword" value="#{customerLoginManagedBean.newCustomerPassword}" required="true" requiredMessage="Please create a new PIN." >
-                                    <f:validateLength minimum="6" maximum="20" />
-                                </p:inputText>
-                                <p:message for="customerPassword"/>
-
-
-                                <p:commandButton value="Submit" type="submit" actionListener="#{customerLoginManagedBean.activateOnlineBankingAccount}" update="activationConfirmation activationForm" style="font-family:Eurostile;font-size:16pt"/>
-
+                                <p:row>
+                                    <p:column>
+                                        <p:outputLabel style="font-size:16pt" for="customerAccount" value="New user ID: "/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:inputText type="text" id="customerAccount" value="#{customerLoginManagedBean.newCustomerAccount}" required="true" requiredMessage="Please create a new user ID.">
+                                            <f:validateLength minimum="6" maximum="20" />
+                                        </p:inputText>                                    
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column colspan="2">
+                                        <p:message for="customerAccount"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column>
+                                        <p:outputLabel style="font-size:16pt" for="customerPassword" value="New PIN: "/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:inputText type="password" id="customerPassword" value="#{customerLoginManagedBean.newCustomerPassword}" required="true" requiredMessage="Please create a new PIN." >
+                                            <f:validateLength minimum="6" maximum="20" />
+                                        </p:inputText>                                    
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column colspan="2">
+                                        <p:message for="customerPassword"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column colspan="2">
+                                        <p:commandButton value="Submit" type="submit" actionListener="#{customerLoginManagedBean.activateOnlineBankingAccount}" update="activationConfirmation activationForm" style="font-family:Eurostile;font-size:16pt"/>
+                                    </p:column>
+                                </p:row>
+                                
                             </p:panelGrid>
                         </div>
 
