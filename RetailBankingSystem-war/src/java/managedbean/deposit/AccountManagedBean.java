@@ -845,7 +845,7 @@ public class AccountManagedBean implements Serializable {
 
         if ((customerNRIC.length() > 9 || customerNRIC.length() < 9 || customerNRICSG.length() < 9 || customerNRICSG.length() > 9)
                 && (customerPassport == null)) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Invalid NRIC", "Failed!"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid NRIC", "Failed!"));
         } else {
             customerSignature = ec.getSessionMap().get("customerSignature").toString();
 
@@ -863,7 +863,7 @@ public class AccountManagedBean implements Serializable {
                 Double customerAgeDouble = Double.valueOf(customerBasic.getCustomerAge());
 
                 if (customerAgeDouble < 16) {
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Eligibility of openning account is 16 years old and above.", "Failed!"));
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Eligibility of openning account is 16 years old and above.", "Failed!"));
                 } else {
 
                     bankAccountBalance = "0";
@@ -928,7 +928,7 @@ public class AccountManagedBean implements Serializable {
 
             } else if (existingCustomer.equals(
                     "Yes") && !checkExist) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! You don't have Merlion bank account yet.", "Failed!"));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! You don't have Merlion bank account yet.", "Failed!"));
             } else if (existingCustomer.equals(
                     "No") && !checkExist && agreement) {
 
@@ -947,7 +947,7 @@ public class AccountManagedBean implements Serializable {
                 Double customerAgeDouble = Double.valueOf(customerBasic.getCustomerAge());
 
                 if (customerAgeDouble < 16) {
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Eligibility of openning account is 16 years old and above.", "Failed!"));
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Eligibility of openning account is 16 years old and above.", "Failed!"));
                 } else {
 
                     bankAccountBalance = "0";
@@ -1003,9 +1003,9 @@ public class AccountManagedBean implements Serializable {
                     ec.redirect(ec.getRequestContextPath() + "/web/merlionBank/deposit/publicSaveAccountNewCustomer.xhtml?faces-redirect=true");
                 }
             } else if (existingCustomer.equals("No") && checkExist) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! You have Merlion bank account already. Please check.", "Failed!"));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! You have Merlion bank account already. Please check.", "Failed!"));
             } else {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Please agree to terms.", "Failed!"));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Please agree to terms.", "Failed!"));
             }
         }
     }
@@ -1051,7 +1051,7 @@ public class AccountManagedBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, message);
         } else {
             loggingSessionBeanLocal.createNewLogging("customer", null, "upload softcopy of passport or IC", "failed", "file cannot be found");
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cannot find the file, please upload again.", "");
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cannot find the file, please upload again.", "");
             FacesContext.getCurrentInstance().addMessage(null, message);
         }
     }

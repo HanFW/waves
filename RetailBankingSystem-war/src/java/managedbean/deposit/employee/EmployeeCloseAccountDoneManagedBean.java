@@ -170,7 +170,7 @@ public class EmployeeCloseAccountDoneManagedBean {
 
         if (onlyOneAccount.equals("Yes") && !checkOnlyOneAccount) {
             if (!bankAccount.getBankAccountBalance().equals("0")) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Please withdraw all your money.", "Failed!"));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Please withdraw all your money.", "Failed!"));
             } else {
 
                 bankAccountSessionBeanLocal.deleteAccount(bankAccountNum);
@@ -185,11 +185,11 @@ public class EmployeeCloseAccountDoneManagedBean {
             }
 
         } else if (onlyOneAccount.equals("Yes") && checkOnlyOneAccount) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! You only have one account.", "Failed!"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! You only have one account.", "Failed!"));
         } else if (onlyOneAccount.equals("No") && checkOnlyOneAccount) {
 
             if (!bankAccount.getBankAccountBalance().equals("0")) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Please withdraw all your money.", "Failed!"));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Please withdraw all your money.", "Failed!"));
             } else {
 
                 if (!customerBasic.getPayee().isEmpty()) {
@@ -213,7 +213,7 @@ public class EmployeeCloseAccountDoneManagedBean {
                 ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/deposit/employeeDeleteAccount.xhtml?faces-redirect=true");
             }
         } else if (onlyOneAccount.equals("No") && !checkOnlyOneAccount) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! You have more than one accounts.", "Failed!"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! You have more than one accounts.", "Failed!"));
         }
     }
 

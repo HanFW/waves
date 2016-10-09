@@ -103,13 +103,13 @@ public class EmployeeOpenAccountApprovalManagedBean implements Serializable {
         bankAccountSessionBeanLocal.approveAccount(customerIdentificationNum);
         CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum);
 
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Successfully Approve Customer " + customerBasic.getCustomerName(), "Successfully!"));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Successfully Approve Customer " + customerBasic.getCustomerName(), "Successfully!"));
         customerIdentificationNum = null;
     }
 
     public void rejectOpenAccount() {
 
         CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum);
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Successfully Approve Customer " + customerBasic.getCustomerName(), "Successfully!"));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Successfully Approve Customer " + customerBasic.getCustomerName(), "Successfully!"));
     }
 }

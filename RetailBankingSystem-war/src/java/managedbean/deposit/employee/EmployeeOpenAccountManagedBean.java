@@ -823,7 +823,7 @@ public class EmployeeOpenAccountManagedBean implements Serializable {
             ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/deposit/employeeSaveAccount.xhtml?faces-redirect=true");
 
         } else if (existingCustomer.equals("Yes") && !checkExist) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! You don't have Merlion bank account yet.", "Failed!"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! You don't have Merlion bank account yet.", "Failed!"));
         } else if (existingCustomer.equals("No") && !checkExist && agreement) {
 
             customerAddress = customerStreetName + ", " + customerBlockNum + ", " + customerUnitNum + ", " + customerPostal;
@@ -877,9 +877,9 @@ public class EmployeeOpenAccountManagedBean implements Serializable {
             ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/deposit/employeeSaveAccount.xhtml?faces-redirect=true");
 
         } else if (existingCustomer.equals("No") && checkExist) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! You have Merlion bank account already. Please check.", "Failed!"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! You have Merlion bank account already. Please check.", "Failed!"));
         } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Please agree to terms.", "Failed!"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Please agree to terms.", "Failed!"));
         }
     }
 

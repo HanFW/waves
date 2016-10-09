@@ -319,7 +319,7 @@ public class InternalOpenAccountManagedBean {
     }
 
     public void saveAccount() throws IOException {
-        
+
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
         CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
@@ -351,7 +351,7 @@ public class InternalOpenAccountManagedBean {
             isTransfer = "0";
             isWithdraw = "0";
             newInterestId = interestSessionBeanLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw);
-            
+
             newAccountId = bankAccountSessionBeanLocal.addNewAccount(bankAccountNum, bankAccountType,
                     bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
                     bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
@@ -385,7 +385,7 @@ public class InternalOpenAccountManagedBean {
 
         } else {
             System.out.println("else");
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Please agree to terms.", "Failed!"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Please agree to terms.", "Failed!"));
         }
     }
 }
