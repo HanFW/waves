@@ -107,6 +107,13 @@ public class EnquirySessionBean implements EnquirySessionBeanLocal {
     }
 
     @Override
+    public String getCustomerEnquiryReply(Long caseId) {
+        List resultList = getEnquiryByCaseId(caseId);
+        EnquiryCase ec = (EnquiryCase) resultList.get(0);
+        return ec.getCaseReply();
+    }
+
+    @Override
     public String getIssueDetail(Long issueId) {
         Query query = entityManager.createQuery("SELECT i FROM Issue i WHERE i.issueId = :issueId");
         query.setParameter("issueId", issueId);

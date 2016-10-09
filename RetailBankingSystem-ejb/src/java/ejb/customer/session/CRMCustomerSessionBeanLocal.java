@@ -52,4 +52,6 @@ public interface CRMCustomerSessionBeanLocal {
             String customerMaritalStatus, String customerOccupation, String customerCompany,
             String customerAddress, String customerPostal, String customerOnlineBankingAccountNum,
             String customerOnlineBankingPassword, byte[] customerSignature);
+    
+    public void updateCustomerMobile(Long customerId,String customerMobile);
 }
