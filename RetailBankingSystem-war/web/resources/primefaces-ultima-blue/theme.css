@@ -3738,19 +3738,19 @@ body {
         outline: 0 none;
         background-color: #6ec071; }
     body .ui-button.deep-orange-btn {
-      background-color: #607D8B; }
+      background-color: #FF5722; }
       body .ui-button.deep-orange-btn.ui-state-hover {
-        background-color: #37474F; }
+        background-color: #D84315; }
       body .ui-button.deep-orange-btn.ui-state-focus {
         outline: 0 none;
-        background-color: #7b96a3; }
+        background-color: #ff7e55; }
     body .ui-button.purple-btn {
-      background-color: #FF5722; }
+      background-color: #673AB7; }
       body .ui-button.purple-btn.ui-state-hover {
-        background-color: #D84315; }
+        background-color: #4527A0; }
       body .ui-button.purple-btn.ui-state-focus {
         outline: 0 none;
-        background-color: #ff7e55; }
+        background-color: #8259cb; }
     body .ui-button.pink-btn {
       background-color: #E91E63; }
       body .ui-button.pink-btn.ui-state-hover {
@@ -4004,6 +4004,12 @@ body {
     -moz-border-radius: 0;
     -webkit-border-radius: 0;
     border-radius: 0; }
+    body .ui-selectcheckboxmenu .ui-selectcheckboxmenu-label-container {
+      display: block;
+      position: relative;
+      top: 2px; }
+      body .ui-selectcheckboxmenu .ui-selectcheckboxmenu-label-container .ui-selectcheckboxmenu-label {
+        padding: 2px 2px 0px 2px; }
     body .ui-selectcheckboxmenu .ui-selectcheckboxmenu-trigger {
       height: 24px;
       width: 24px;

@@ -308,13 +308,22 @@ public class CustomerAdminSessionBean implements CustomerAdminSessionBeanLocal {
         emailActions.put("pin", pin);
         customerEmailSessionBeanLocal.sendEmail(customer, "recreateIBAccount", emailActions);
     }
-    
+
     @Override
-    public void lockCustomerOnlineBankingAccount(Long customerId){
+    public void lockCustomerOnlineBankingAccount(Long customerId) {
         System.out.println("*");
         System.out.println("****** infrastructure/CustomerAdminSessionBean: lockCustomerOnlineBankingAccount() ******");
         CustomerBasic customer = em.find(CustomerBasic.class, customerId);
         customer.setCustomerOnlineBankingAccountLocked("yes");
+        em.flush();
+    }
+
+    @Override
+    public void unlockCustomerOnlineBankingAccount(Long customerId) {
+        System.out.println("*");
+        System.out.println("****** infrastructure/CustomerAdminSessionBean: unlockCustomerOnlineBankingAccount() ******");
+        CustomerBasic customer = em.find(CustomerBasic.class, customerId);
+        customer.setCustomerOnlineBankingAccountLocked("no");
         em.flush();
     }
 

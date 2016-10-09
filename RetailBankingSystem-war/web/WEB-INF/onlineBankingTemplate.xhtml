@@ -32,12 +32,22 @@
             <ui:include src="./onlineBankingMenu.xhtml" />
 
             <div class="layout-main">
-                <ui:insert name="content"/>
 
-                <ui:include src="./footer.xhtml" />
+                <div class="ui-g ui-fluid">
+                    <div class="ui-g-12 ui-lg-12">
+
+                        <div class="card card-w-title">
+                            <ui:insert name="content"/>
+
+                            <ui:include src="./footer.xhtml" />
+                        </div>
+                    </div>
+                </div>
             </div>
 
         </div>
+
+
 
         <p:ajaxStatus style="width:32px;height:32px;position:fixed;right:7px;bottom:7px">
             <f:facet name="start">

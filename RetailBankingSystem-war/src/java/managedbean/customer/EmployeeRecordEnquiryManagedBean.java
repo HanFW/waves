@@ -373,102 +373,102 @@ public class EmployeeRecordEnquiryManagedBean implements Serializable {
         cb = null;
     }
 
-    public void saveFollowUp() throws IOException {
-        FacesContext context = FacesContext.getCurrentInstance();
-        context.addMessage(null, new FacesMessage(enquirySessionBeanLocal.addFollowUp(caseId, followUpDetail), " "));
-        ExternalContext ec = context.getExternalContext();
-        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/counterTellerAddEnquiryDone.xhtml");
-        caseId = null;
-        caseIdStr = "";
-        followUpDetail = null;
-        identificationNum = null;
-        cb = null;
-        ec = null;
-    }
+//    public void saveFollowUp() throws IOException {
+//        FacesContext context = FacesContext.getCurrentInstance();
+//        context.addMessage(null, new FacesMessage(enquirySessionBeanLocal.addFollowUp(caseId, followUpDetail), " "));
+//        ExternalContext ec = context.getExternalContext();
+//        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/counterTellerAddEnquiryDone.xhtml");
+//        caseId = null;
+//        caseIdStr = "";
+//        followUpDetail = null;
+//        identificationNum = null;
+//        cb = null;
+//        ec = null;
+//    }
 
-    public void retieveCustomerByIdentification() {
-        cb = cRMCustomerSessionBeanLocal.retrieveCustomerBasicByIC(identificationNum);
-        visible = true;
-    }
+//    public void retieveCustomerByIdentification() {
+//        cb = cRMCustomerSessionBeanLocal.retrieveCustomerBasicByIC(identificationNum);
+//        visible = true;
+//    }
 
     public void retrieveCaseByCaseRef() throws IOException {
         caseId = Long.valueOf(caseIdStr);
-        ec = enquirySessionBeanLocal.getEnquiryByCaseId(caseId);
+        ec = enquirySessionBeanLocal.getEnquiryByCaseId(caseId).get(0);
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext ec = context.getExternalContext();
-        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/counterTellerSearchCaseDone.xhtml");
+        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/counterTellerSearchCaseDone.xhtml?faces-redirect=true");
     }
 
-    public void helpCustomerRecordEnquiry() throws IOException {
-        FacesContext context = FacesContext.getCurrentInstance();
-        ExternalContext ec = context.getExternalContext();
-        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/counterTellerAddNewCase.xhtml");
-        visible = false;
-    }
+//    public void helpCustomerRecordEnquiry() throws IOException {
+//        FacesContext context = FacesContext.getCurrentInstance();
+//        ExternalContext ec = context.getExternalContext();
+//        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/counterTellerAddNewCase.xhtml");
+//        visible = false;
+//    }
+//
+//    public void helpCustomerChangeBasicInfo() throws IOException {
+//        FacesContext context = FacesContext.getCurrentInstance();
+//        ExternalContext ec = context.getExternalContext();
+//        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/CRM/counterTellerUpdateCustomerBasic.xhtml");
+//        visible = false;
+//    }
 
-    public void helpCustomerChangeBasicInfo() throws IOException {
-        FacesContext context = FacesContext.getCurrentInstance();
-        ExternalContext ec = context.getExternalContext();
-        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/CRM/counterTellerUpdateCustomerBasic.xhtml");
-        visible = false;
-    }
-
-    public CustomerBasic getCustomerBasicInfo() {
-
-        cb = cRMCustomerSessionBeanLocal.retrieveCustomerBasicByIC(identificationNum);
-
-        if (customerName == null) {
-            customerName = cb.getCustomerName();
-            customerOnlineBankingAccountNum = cb.getCustomerOnlineBankingAccountNum();
-            customerGender = cb.getCustomerGender();
-            customerDateOfBirth = cb.getCustomerDateOfBirth();
-            customerRace = cb.getCustomerRace();
-            customerNationality = cb.getCustomerNationality();
-            customerCountryOfResidence = cb.getCustomerCountryOfResidence();
-            customerMaritalStatus = cb.getCustomerMaritalStatus();
-            customerOccupation = cb.getCustomerOccupation();
-            customerCompany = cb.getCustomerCompany();
-            customerMobile = cb.getCustomerMobile();
-            replacedCustomerMobile = customerMobileNumReplaceWithStar(customerMobile);
-            customerEmail = cb.getCustomerEmail();
-            replacedCustomerEmail = customerEmailReplaceWithStar(customerEmail);
-            customerAddress = cb.getCustomerAddress();
-            customerPostal = cb.getCustomerPostal();
-            addressList = Arrays.asList(customerAddress.split(","));
-            streetName = addressList.get(0).trim();
-            blockNum = addressList.get(1).trim();
-            unitNum = addressList.get(2).trim();
-        }
-        return cb;
-    }
-
-    public void updateCustomerBasicProfile() {
-
-        String updatedCustomerMobile = customerMobile;
-        String updatedCustomerEmail = customerEmail;
-
-        if (!replacedCustomerMobile.contains("*")) {
-            updatedCustomerMobile = replacedCustomerMobile;
-        }
-
-        if (!replacedCustomerEmail.contains("*")) {
-            updatedCustomerEmail = replacedCustomerEmail;
-        }
-
-        customerAddress = streetName + ", " + blockNum + ", " + unitNum + ", " + customerPostal;
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(cRMCustomerSessionBeanLocal.updateCustomerBasicProfile(customerOnlineBankingAccountNum, customerNationality, customerCountryOfResidence, customerMaritalStatus, customerOccupation, customerCompany, updatedCustomerEmail, updatedCustomerMobile, customerAddress, customerPostal), " "));
-    }
-
-    public String customerMobileNumReplaceWithStar(String inputCustomerMobileNum) {
-        String customerMobileNumAfterReplaced = "";
-        customerMobileNumAfterReplaced = "****" + inputCustomerMobileNum.substring(4);
-        return customerMobileNumAfterReplaced;
-    }
-
-    public String customerEmailReplaceWithStar(String inputCustomerEmail) {
-        String customerEmailAfterReplaced = "";
-        customerEmailAfterReplaced = inputCustomerEmail.substring(0, 1) + "**" + inputCustomerEmail.substring(3);
-        return customerEmailAfterReplaced;
-    }
+//    public CustomerBasic getCustomerBasicInfo() {
+//
+//        cb = cRMCustomerSessionBeanLocal.retrieveCustomerBasicByIC(identificationNum);
+//
+//        if (customerName == null) {
+//            customerName = cb.getCustomerName();
+//            customerOnlineBankingAccountNum = cb.getCustomerOnlineBankingAccountNum();
+//            customerGender = cb.getCustomerGender();
+//            customerDateOfBirth = cb.getCustomerDateOfBirth();
+//            customerRace = cb.getCustomerRace();
+//            customerNationality = cb.getCustomerNationality();
+//            customerCountryOfResidence = cb.getCustomerCountryOfResidence();
+//            customerMaritalStatus = cb.getCustomerMaritalStatus();
+//            customerOccupation = cb.getCustomerOccupation();
+//            customerCompany = cb.getCustomerCompany();
+//            customerMobile = cb.getCustomerMobile();
+//            replacedCustomerMobile = customerMobileNumReplaceWithStar(customerMobile);
+//            customerEmail = cb.getCustomerEmail();
+//            replacedCustomerEmail = customerEmailReplaceWithStar(customerEmail);
+//            customerAddress = cb.getCustomerAddress();
+//            customerPostal = cb.getCustomerPostal();
+//            addressList = Arrays.asList(customerAddress.split(","));
+//            streetName = addressList.get(0).trim();
+//            blockNum = addressList.get(1).trim();
+//            unitNum = addressList.get(2).trim();
+//        }
+//        return cb;
+//    }
+//
+//    public void updateCustomerBasicProfile() {
+//
+//        String updatedCustomerMobile = customerMobile;
+//        String updatedCustomerEmail = customerEmail;
+//
+//        if (!replacedCustomerMobile.contains("*")) {
+//            updatedCustomerMobile = replacedCustomerMobile;
+//        }
+//
+//        if (!replacedCustomerEmail.contains("*")) {
+//            updatedCustomerEmail = replacedCustomerEmail;
+//        }
+//
+//        customerAddress = streetName + ", " + blockNum + ", " + unitNum + ", " + customerPostal;
+//        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(cRMCustomerSessionBeanLocal.updateCustomerBasicProfile(customerOnlineBankingAccountNum, customerNationality, customerCountryOfResidence, customerMaritalStatus, customerOccupation, customerCompany, updatedCustomerEmail, updatedCustomerMobile, customerAddress, customerPostal), " "));
+//    }
+//
+//    public String customerMobileNumReplaceWithStar(String inputCustomerMobileNum) {
+//        String customerMobileNumAfterReplaced = "";
+//        customerMobileNumAfterReplaced = "****" + inputCustomerMobileNum.substring(4);
+//        return customerMobileNumAfterReplaced;
+//    }
+//
+//    public String customerEmailReplaceWithStar(String inputCustomerEmail) {
+//        String customerEmailAfterReplaced = "";
+//        customerEmailAfterReplaced = inputCustomerEmail.substring(0, 1) + "**" + inputCustomerEmail.substring(3);
+//        return customerEmailAfterReplaced;
+//    }
 
 }

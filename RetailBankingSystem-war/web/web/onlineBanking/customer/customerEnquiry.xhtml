@@ -34,7 +34,7 @@
                                         <h:outputText value="&lt;br/&gt;" escape="false" />
                                         <p:column>
 
-                                            <p:selectOneMenu id="caseType" value="#{enquiryManagedBean.caseType}" 
+                                            <p:selectOneMenu id="caseType" value="#{customerWriteEnquiryManagedBean.caseType}" 
                                                              style="margin-bottom:10pxs" styleClass="form-group ui-panelgrid-blank">
                                                 <f:selectItem itemLabel="Please Select" itemValue="" />
                                                 <f:selectItem itemLabel="Credit Card" itemValue="Credit Card" />
@@ -57,23 +57,17 @@
                                     <h:form>
 
                                         <h:outputText value="&lt;br/&gt;" escape="false" />
-                                        <p:inputTextarea id="caseDetail" placeholder="Enquiry Detail" value="#{enquiryManagedBean.caseDetail}" required="true" rows="5" cols="80" counter="display" maxlength="1000" counterTemplate="{0} characters remaining." autoResize="false" />
+                                        <p:inputTextarea id="caseDetail" placeholder="Enquiry Detail" value="#{customerWriteEnquiryManagedBean.caseDetail}" required="true" rows="5" cols="80" counter="display" maxlength="1000" counterTemplate="{0} characters remaining." autoResize="false" />
                                         <h:outputText value="&lt;br/&gt;" escape="false" />
                                         <h:outputText id="display" />
 
                                     </h:form>
-
-
-
-
-
-                                    <p:commandButton value="Save" update="@form" actionListener="#{enquiryManagedBean.saveEnquiryCase}" ajax="false" />
+                                    <p:commandButton value="Save" update="@form" actionListener="#{customerWriteEnquiryManagedBean.saveEnquiryCase}" ajax="false" />
                                 </p:panel>
                             </p:panelGrid>
                         </div>
                     </div>
                 </div>
-
             </h:form>
             <ezcomp:CCTimeout/>
         </h:body>

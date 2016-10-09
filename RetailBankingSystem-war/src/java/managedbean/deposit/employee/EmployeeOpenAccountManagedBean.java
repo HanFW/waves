@@ -783,17 +783,17 @@ public class EmployeeOpenAccountManagedBean implements Serializable {
                 } else {
                     bankAccountStatus = "Inactivated";
                 }
-
-                newAccountId = bankAccountSessionLocal.addNewAccount(bankAccountNum, bankAccountPwd, bankAccountType,
-                        bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
-                        bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
-                        statementDateDouble, customerBasicId);
-
+                
                 dailyInterest = "0";
                 monthlyInterest = "0";
                 isTransfer = "0";
                 isWithdraw = "0";
-                newInterestId = interestSessionLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw, newAccountId);
+                newInterestId = interestSessionLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw);
+
+                newAccountId = bankAccountSessionLocal.addNewAccount(bankAccountNum, bankAccountPwd, bankAccountType,
+                        bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
+                        bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
+                        statementDateDouble, customerBasicId, newInterestId);
 
                 bankAccount = bankAccountSessionLocal.retrieveBankAccountById(newAccountId);
                 bankAccountSessionLocal.retrieveBankAccountByCusIC(customerIdentificationNum).add(bankAccount);
@@ -838,17 +838,17 @@ public class EmployeeOpenAccountManagedBean implements Serializable {
                 } else {
                     bankAccountStatus = "Inactivated";
                 }
-
-                newAccountId = bankAccountSessionLocal.addNewAccount(bankAccountNum, bankAccountPwd, bankAccountType,
-                        bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
-                        bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
-                        statementDateDouble, newCustomerBasicId);
-
+                
                 dailyInterest = "0";
                 monthlyInterest = "0";
                 isTransfer = "0";
                 isWithdraw = "0";
-                newInterestId = interestSessionLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw, newAccountId);
+                newInterestId = interestSessionLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw);
+
+                newAccountId = bankAccountSessionLocal.addNewAccount(bankAccountNum, bankAccountPwd, bankAccountType,
+                        bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
+                        bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
+                        statementDateDouble, newCustomerBasicId, newInterestId);
 
                 statusMessage = "New Account Saved Successfully.";
 

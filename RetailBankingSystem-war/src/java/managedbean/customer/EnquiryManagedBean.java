@@ -101,14 +101,14 @@ public class EnquiryManagedBean implements Serializable {
         return fu;
     }
 
-    public void saveEnquiryCase() {
-        ec = FacesContext.getCurrentInstance().getExternalContext();
-        cb = (CustomerBasic) ec.getSessionMap().get("customer");
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(enquirySessionBeanLocal.addNewCase(cb.getCustomerBasicId(), caseType, caseDetail), " "));
-        caseType = null;
-        caseDetail = null;
-        cb = null;
-    }
+//    public void saveEnquiryCase() {
+//        ec = FacesContext.getCurrentInstance().getExternalContext();
+//        cb = (CustomerBasic) ec.getSessionMap().get("customer");
+//        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(enquirySessionBeanLocal.addNewCase(cb.getCustomerBasicId(), caseType, caseDetail), " "));
+//        caseType = null;
+//        caseDetail = null;
+//        cb = null;
+//    }
 
     public List<EnquiryCase> getEnquiryCase() {
         ec = FacesContext.getCurrentInstance().getExternalContext();
@@ -118,11 +118,11 @@ public class EnquiryManagedBean implements Serializable {
         return enquiryCases;
     }
 
-    public void saveFollowUp() {
-
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(enquirySessionBeanLocal.addFollowUp(caseId, followUpDetail), " "));
-        caseId = null;
-        followUpDetail = null;
-    }
+//    public void saveFollowUp() {
+//
+//        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(enquirySessionBeanLocal.addFollowUp(caseId, followUpDetail), " "));
+//        caseId = null;
+//        followUpDetail = null;
+//    }
 
 }

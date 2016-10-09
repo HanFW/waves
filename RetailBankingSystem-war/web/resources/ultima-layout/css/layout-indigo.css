@@ -40,12 +40,9 @@
     clear: both; }
 
 .card {
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
-    -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
-    -moz-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
-    -moz-border-radius: 2px;
-    -webkit-border-radius: 2px;
-    border-radius: 2px;
+    -moz-border-radius: 0px;
+    -webkit-border-radius: 0px;
+    border-radius: 0px;
     background: #ffffff;
     padding: 16px;
     margin-bottom: 16px;
@@ -744,8 +741,6 @@ body {
     margin: 0; }
 body.main-body {
     background: url("#{resource['ultima-layout:images/onlineBanking/onlineBanking_templateBG.jpg']}")top right; }
-body.employee-main-body {
-    background: url("#{resource['ultima-layout:images/onlineBanking/onlineBanking_templateBG.jpg']}")top right; }
 body a {
     text-decoration: none; }
 
@@ -763,10 +758,7 @@ body a {
     z-index: 100;
     width: 100%;
     height: 90px;
-    background-color: rgba(0, 0, 0, 0.40);
-    -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
-    -moz-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
-    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26); }
+    background-color: #5D6D7E }
 .layout-wrapper .topbar .logo {
     display: inline-block;
     vertical-align: middle;
@@ -851,7 +843,7 @@ body a {
 .layout-wrapper .topbar .topbar-right #topbar-menu-button {
     display: none;
     float: right;
-    color: #ffffff;
+    color: #E6A82E;
     vertical-align: middle;
     height: 36px;
     margin: 5px 10px 0 0;
@@ -872,8 +864,8 @@ body a {
     background-color: transparent;
     border-width: 0 0 1px 0;
     padding: 2px 2px 1px 2px;
-    border-color: #ffffff;
-    color: #ffffff; }
+    border-color: #E6A82E;
+    color: #E6A82E; }
 .layout-wrapper .topbar .topbar-right .topbar-items .search-item input:focus {
     outline: 0 none;
     border-bottom-width: 2px; }
@@ -884,7 +876,7 @@ body a {
 .layout-wrapper .topbar .topbar-right .topbar-items .search-item input.ui-state-filled ~ label {
     display: none; }
 .layout-wrapper .topbar .topbar-right .topbar-items .search-item label {
-    color: #ffffff;
+    color: #E6A82E;
     top: 8px; }
 
 .layout-wrapper .layout-menu {
@@ -901,7 +893,10 @@ body a {
     -moz-transition: margin-left 0.3s;
     -o-transition: margin-left 0.3s;
     -webkit-transition: margin-left 0.3s;
-    transition: margin-left 0.3s; }
+    transition: margin-left 0.3s; 
+}
+
+
 .layout-wrapper .layout-menu > .nano > .nano-content.menu-scroll-content {
     display: block;
     height: 100%;
@@ -1187,9 +1182,9 @@ body a {
         top: 90px;
         height: auto;
         background-color: #022A5A;
-        -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
-        -moz-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
-        box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26); }
+        }
+    
+    
     .layout-wrapper.menu-layout-horizontal .layout-menu > .nano {
         overflow: visible; }
     .layout-wrapper.menu-layout-horizontal .layout-menu > .nano .nano-content.menu-scroll-content {
@@ -1875,9 +1870,10 @@ body.layout-compact .ui-wizard .ui-wizard-step-titles > li {
     padding: 8px 14px;
     font-size: 14px; }
 body.layout-compact .ui-breadcrumb {
-    padding: 6px 10px; }
+    padding: 21px 26px; 
+ }
 body.layout-compact .ui-breadcrumb a {
-    font-size: 14px; }
+    font-size: 18px; }
 body.layout-compact .ui-breadcrumb li:first-child a {
     font-size: 20px;
     top: 1px; }

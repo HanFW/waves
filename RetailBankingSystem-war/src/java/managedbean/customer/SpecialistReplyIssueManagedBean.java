@@ -113,7 +113,7 @@ public class SpecialistReplyIssueManagedBean implements Serializable {
     public void redirectToReplyPage() throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext ec = context.getExternalContext();
-        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/specialistsReplyIssue.xhtml");
+        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/specialistsReplyIssue.xhtml?faces-redirect=true");
     }
 
     public String getIssueDetailById() {
@@ -129,7 +129,7 @@ public class SpecialistReplyIssueManagedBean implements Serializable {
         issueProblem = null;
         issueSolution = null;
         issueStatus = null;
-        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/issueReplyDone.xhtml");
+        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/issueReplyDone.xhtml?faces-redirect=true");
     }
 
 }

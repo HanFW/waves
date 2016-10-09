@@ -7,22 +7,28 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/internalSystemTemplate.xhtml">
 
+    <ui:define name="internalSystemMenu">
+
+        <ui:include src="/WEB-INF/internalSystemMenuCounterTeller.xhtml" />
+
+    </ui:define>
+    
     <ui:define name="content">
-    <h:body>
-        <h:form>
-            <p:menubar>
-                <p:submenu label="Home">
-                    <p:menuitem value="Home" url="/web/internalSystem/infrastructure/employeeCounterTellerMainPage.xhtml"/>
-                </p:submenu>
+        <h:body>
+            <h:form>
+                <p:menubar>
+                    <p:submenu label="Home">
+                        <p:menuitem value="Home" url="/web/internalSystem/infrastructure/employeeCounterTellerMainPage.xhtml"/>
+                    </p:submenu>
 
-                <p:submenu label="Log Out">
-                    <p:menuitem value="Logout" actionListener="#{employeeLoginManagedBean.doLogOut}" />
-                </p:submenu>
-            </p:menubar>
-        </h:form>
+                    <p:submenu label="Log Out">
+                        <p:menuitem value="Logout" actionListener="#{employeeLoginManagedBean.doLogOut}" />
+                    </p:submenu>
+                </p:menubar>
+            </h:form>
 
-        <h:form id="formMain">
-               <div class="ui-g ui-fluid">
+            <h:form id="formMain">
+                <div class="ui-g ui-fluid">
                     <div class="ui-g-12 ui-lg-12">
                         <div class="card card-w-title"> 
                             <div align="center">
@@ -36,88 +42,88 @@
                                 <h:outputText value="You have logged in as: Counter Teller"/>
                                 <br/>
                                 <br/>
-                                
-            <p:panel id="panel" header="Update Deposit Account Password">
-                <p:messages globalOnly="true"/>
 
-               <h:panelGrid columns="1" cellpadding="5" styleClass="ui-panelgrid-blank form-group">
+                                <p:panel id="panel" header="Update Deposit Account Password">
+                                    <p:messages globalOnly="true"/>
 
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel for="bankAccountNum" style="font-weight: bold" value="Account Number: " />
-                        </p:column>
-                        <p:column>
-                            <p:selectOneMenu id="bankAccountNum" value="#{employeeChangePwdDoneManagedBean.bankAccountNumWithType}" effect="fold" editable="true">
-                                <f:selectItems value="#{employeeChangePwdDoneManagedBean.bankAccountNums}" />
-                            </p:selectOneMenu>
-                        </p:column>
-                        <p:column>
-                            <p:message for="bankAccountNum" />
-                        </p:column>
-                    </p:row>
+                                    <h:panelGrid columns="1" cellpadding="5" styleClass="ui-panelgrid-blank form-group">
 
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel for="oldBankAccountPwd" style="font-weight: bold" value="Old Password: " />
-                        </p:column>
-                        <p:column>
-                            <p:password id="oldBankAccountPwd" value="#{employeeChangePwdDoneManagedBean.oldPassword}"
-                                        required="true" requiredMessage="Required Field">
-                                <f:validateLength minimum="6" maximum="6" />
-                            </p:password>
-                        </p:column>
-                        <p:column>
-                            <p:message for="oldBankAccountPwd" />
-                        </p:column>
-                    </p:row>
+                                        <p:row>
+                                            <p:column>
+                                                <p:outputLabel for="bankAccountNum" style="font-weight: bold" value="Account Number: " />
+                                            </p:column>
+                                            <p:column>
+                                                <p:selectOneMenu id="bankAccountNum" value="#{employeeChangePwdDoneManagedBean.bankAccountNumWithType}" effect="fold" editable="true">
+                                                    <f:selectItems value="#{employeeChangePwdDoneManagedBean.bankAccountNums}" />
+                                                </p:selectOneMenu>
+                                            </p:column>
+                                            <p:column>
+                                                <p:message for="bankAccountNum" />
+                                            </p:column>
+                                        </p:row>
 
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel for="newBankAccountPwd" style="font-weight: bold" value="New Password: " />
-                        </p:column>
-                        <p:column>
-                            <p:password id="newBankAccountPwd" value="#{employeeChangePwdDoneManagedBean.newPassword}" match="confirmBankAccountPwd" 
-                                        required="true" requiredMessage="Required Field">
-                                <f:validateLength minimum="6" maximum="6" />
-                            </p:password>
-                        </p:column>
-                        <p:column>
-                            <p:message for="newBankAccountPwd" />
-                        </p:column>
-                    </p:row>
+                                        <p:row>
+                                            <p:column>
+                                                <p:outputLabel for="oldBankAccountPwd" style="font-weight: bold" value="Old Password: " />
+                                            </p:column>
+                                            <p:column>
+                                                <p:password id="oldBankAccountPwd" value="#{employeeChangePwdDoneManagedBean.oldPassword}"
+                                                            required="true" requiredMessage="Required Field">
+                                                    <f:validateLength minimum="6" maximum="6" />
+                                                </p:password>
+                                            </p:column>
+                                            <p:column>
+                                                <p:message for="oldBankAccountPwd" />
+                                            </p:column>
+                                        </p:row>
 
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel for="confirmBankAccountPwd" style="font-weight: bold" value="Confirm Password: " />
-                        </p:column>
-                        <p:column>
-                            <p:password id="confirmBankAccountPwd" value="#{employeeChangePwdDoneManagedBean.confirmPwd}" 
-                                        label="Confirm Password" maxlength="6" required="true" requiredMessage="Required Field">
-                                <f:validateLength minimum="6" maximum="6" />
-                            </p:password>
-                        </p:column>
-                        <p:column>
-                            <p:message for="confirmBankAccountPwd" />
-                        </p:column>
-                    </p:row>
-                </h:panelGrid>
+                                        <p:row>
+                                            <p:column>
+                                                <p:outputLabel for="newBankAccountPwd" style="font-weight: bold" value="New Password: " />
+                                            </p:column>
+                                            <p:column>
+                                                <p:password id="newBankAccountPwd" value="#{employeeChangePwdDoneManagedBean.newPassword}" match="confirmBankAccountPwd" 
+                                                            required="true" requiredMessage="Required Field">
+                                                    <f:validateLength minimum="6" maximum="6" />
+                                                </p:password>
+                                            </p:column>
+                                            <p:column>
+                                                <p:message for="newBankAccountPwd" />
+                                            </p:column>
+                                        </p:row>
 
-                
-                <h:panelGrid columns="2" cellpadding="5" styleClass="ui-panelgrid-blank form-group">  
-                <p:commandButton id="cancelBtn" action="/web/index.xhtml" value="Cancel" update="panel" immediate = "true">
-                    <p:confirm header="Cancel" message="Are you sure?" />
-                </p:commandButton>
+                                        <p:row>
+                                            <p:column>
+                                                <p:outputLabel for="confirmBankAccountPwd" style="font-weight: bold" value="Confirm Password: " />
+                                            </p:column>
+                                            <p:column>
+                                                <p:password id="confirmBankAccountPwd" value="#{employeeChangePwdDoneManagedBean.confirmPwd}" 
+                                                            label="Confirm Password" maxlength="6" required="true" requiredMessage="Required Field">
+                                                    <f:validateLength minimum="6" maximum="6" />
+                                                </p:password>
+                                            </p:column>
+                                            <p:column>
+                                                <p:message for="confirmBankAccountPwd" />
+                                            </p:column>
+                                        </p:row>
+                                    </h:panelGrid>
 
-                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                    <p:commandButton value="Yes" styleClass="ui-confirmdialog-yes" action="/web/index.xhtml"/>
-                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" />
-                </p:confirmDialog>
 
-                <p:commandButton id="submitBtn" value="Submit" update="panel" 
-                                 actionListener="#{employeeChangePwdDoneManagedBean.submit}" ajax="true"/>
-                </h:panelGrid>
-            </p:panel>
-                   </div>
+                                    <h:panelGrid columns="2" cellpadding="5" styleClass="ui-panelgrid-blank form-group">  
+                                        <p:commandButton id="cancelBtn" action="/web/index.xhtml" value="Cancel" update="panel" immediate = "true">
+                                            <p:confirm header="Cancel" message="Are you sure?" />
+                                        </p:commandButton>
+
+                                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                            <p:commandButton value="Yes" styleClass="ui-confirmdialog-yes" action="/web/index.xhtml"/>
+                                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" />
+                                        </p:confirmDialog>
+
+                                        <p:commandButton id="submitBtn" value="Submit" update="panel" 
+                                                         actionListener="#{employeeChangePwdDoneManagedBean.submit}" ajax="true"/>
+                                    </h:panelGrid>
+                                </p:panel>
+                            </div>
                         </div>
                     </div>
                 </div>

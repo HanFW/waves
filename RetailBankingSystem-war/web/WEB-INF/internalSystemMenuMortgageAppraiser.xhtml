@@ -1,0 +1,94 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:pu="http://primefaces.org/ultima">
+
+    <h:form id="menuform"> 
+        <div class="layout-menu #{employeePreferences.menuClass}">
+
+            <div class="nano">
+                <div class="nano-content menu-scroll-content">
+                    <ui:fragment rendered="#{employeePreferences.profileMode == 'inline' and employeePreferences.menuLayout != 'menu-layout-static menu-layout-horizontal'}">
+                        <div class="profile">
+                            <div class="profile-image"></div>
+                            <a id="profile-options" href="#">
+                                <span class="profile-name">#{employeeAccountManagedBean.userName}</span>
+                                <i class="material-icons">&#xE313;</i>
+                                <br/>
+                                <span class="profile-intro">#{employeeAccountManagedBean.userDepartment}, #{employeeAccountManagedBean.userPosition}</span>
+                                <br/>
+                                <span class="profile-intro">Role: XXX</span>      
+                            </a>
+                        </div>
+
+                        <ul id="profile-menu" class="ultima-menu">
+                            <li role="menuitem">
+                                <a href="#" class="ripplelink">
+                                    <i class="material-icons">person</i>
+                                    <span>Profile</span>
+                                </a>
+                            </li>
+                            <li role="menuitem">
+                                <a href="/RetailBankingSystem-war/web/internalSystem/infrastructure/employeeChangePassword.xhtml" class="ripplelink">
+                                    <i class="material-icons">security</i>
+                                    <span>Change Password</span>
+
+                                </a>
+                            </li>
+
+                            <li role="menuitem">
+                                <a href="#" class="ripplelink">
+                                    <i class="material-icons">power_settings_new</i>
+                                    <span>Logout</span>
+                                </a>
+
+                            </li>
+                        </ul>
+                    </ui:fragment>
+
+                    <pu:menu widgetVar="myMenu">
+
+                        <p:submenu label="Mortgage Appraiser">
+                            <p:menuitem value="Home" url="/web/onlineBanking/deposit/customerDepositIndex.xhtml" />
+                            <p:menuitem value="Open Account" url="/web/onlineBanking/deposit/customerOpenAccount.xhtml" />
+                            <p:menuitem value="Close Account" url="/web/onlineBanking/deposit/customerCloseAccount.xhtml" />
+                            <p:menuitem value="View Account" url="/web/onlineBanking/deposit/customerViewAccount.xhtml" />
+                            <p:menuitem value="View Transaction" url="/web/onlineBanking/deposit/customerViewTransaction.xhtml" />
+                            <p:menuitem value="View Statement" url="/web/onlineBanking/deposit/customerViewStatement.xhtml" />
+                            <p:menuitem value="Activate Fixed Deposit Account" url="/web/onlineBanking/deposit/customerActivateFixedDepositAccount.xhtml" />
+                            <p:menuitem value="Change Bank Account Password" url="/web/onlineBanking/deposit/customerChangeBankAccountPwd.xhtml" />
+                            <p:menuitem value="Forgot Bank Account Password" url="/web/onlineBanking/deposit/customerForgotPassword.xhtml" />
+
+                        </p:submenu>
+
+                        <p:submenu label="Transfer" >
+                            <p:menuitem value="To My Account" url="/web/onlineBanking/deposit/customerToMyAccount.xhtml" />
+                            <p:menuitem value="To Other Merlion Accounts" url="/web/onlineBanking/deposit/customerToOthersAccount.xhtml" />
+                            <p:menuitem value="To Other Merlion Accuonts(One-time)" url="/web/onlineBanking/deposit/customerOneTimeTransfer.xhtml" />
+                            <p:menuitem value="Add Recipient" url="/web/onlineBanking/deposit/customerAddRecipient.xhtml" />
+                            <p:menuitem value="Delete Recipient" url="/web/onlineBanking/deposit/customerDeleteRecipient.xhtml" />
+                            <p:menuitem value="Change Daily Transfer Limit" url="/web/onlineBanking/deposit/customerDailyTransferLimit.xhtml" />
+                        </p:submenu>
+
+                        <p:submenu label="Enquiry">
+                            <p:menuitem value="Write an enquiry" url="/web/onlineBanking/customer/customerEnquiry.xhtml" />
+                            <p:menuitem value="View enquiry" url="/web/onlineBanking/customer/CRMCustomerViewEnquiry.xhtml"/>
+                        </p:submenu>
+
+                        <p:submenu label="My profile">
+                            <p:menuitem value="Change password" url="/web/onlineBanking/customer/customerChangePIN.xhtml" />
+                            <p:menuitem value="Update basic profile" url="/web/onlineBanking/customer/customerUpdateBasicProfile.xhtml" />
+                            <p:menuitem value="Delete iBanking Account" url="/web/onlineBanking/infrastructure/customerDeleteIBAccount.xhtml" />
+                        </p:submenu>
+
+                    </pu:menu>
+
+
+                </div>
+            </div>
+        </div>
+    </h:form>
+</ui:composition>

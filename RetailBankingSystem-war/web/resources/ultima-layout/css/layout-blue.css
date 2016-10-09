@@ -417,8 +417,8 @@
     margin-top: -15px; } }
 .landing-wrapper #header {
   width: 100%;
-  min-height: 500px;
-  background: url("#{resource['ultima-layout:images/landing/homepage_header.png']}") top left no-repeat #f7f7f7;
+  min-height: 400px;
+  background: url("#{resource['ultima-layout:images/landing/landing-header.png']}") top left no-repeat #f7f7f7;
   background-size: 100% auto; }
   .landing-wrapper #header .header-top {
     width: 960px;
@@ -708,7 +708,7 @@ body {
   padding: 0;
   margin: 0; }
   body.main-body {
-    background-color: #f7f7f7; }
+    background-color: #F5F4F2; }
   body a {
     text-decoration: none; }
 
@@ -716,7 +716,6 @@ body {
   position: fixed;
   width: 100%;
   height: 100%;
-  background-color: #424242;
   opacity: 0.7;
   top: 0;
   left: 0;
@@ -727,33 +726,31 @@ body {
   z-index: 100;
   width: 100%;
   height: 75px;
-  background-color: #03A9F4;
-  -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
-  -moz-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
-  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26); }
+  background-color: #FBFCFC;
+
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.12); 
+}
   .layout-wrapper .topbar .logo {
     display: inline-block;
     vertical-align: middle;
-    width: 200px;
-    height: 30px;
+    width: 180px;
+    height: 44px;
     background: url("#{resource['ultima-layout:images/logo.png']}") top left no-repeat; }
   .layout-wrapper .topbar .topbar-left {
     box-sizing: border-box;
     padding: 20px;
     height: 75px;
     width: 250px;
-    background-color: #0277BD;
+    background-color: #FBFCFC;
     float: left;
-    -webkit-box-shadow: 3px 0 6px rgba(0, 0, 0, 0.3);
-    -moz-box-shadow: 3px 0 6px rgba(0, 0, 0, 0.3);
-    box-shadow: 3px 0 6px rgba(0, 0, 0, 0.3); }
+    box-shadow: 3px 0 6px rgba(0, 0, 0, 0.1);}
   .layout-wrapper .topbar .topbar-right {
     padding: 15px; }
     .layout-wrapper .topbar .topbar-right #menu-button {
       color: #212121;
       display: inline-block;
       vertical-align: middle;
-      height: 65px;
+      height: 36px;
       margin-right: 10px;
       position: relative;
       left: -16px;
@@ -765,10 +762,7 @@ body {
       -moz-transition: all 0.3s;
       -o-transition: all 0.3s;
       -webkit-transition: all 0.3s;
-      transition: all 0.3s;
-      -webkit-box-shadow: 0 3px 10px rgba(0, 0, 0, 0.23), 0 3px 10px rgba(0, 0, 0, 0.16);
-      -moz-box-shadow: 0 3px 10px rgba(0, 0, 0, 0.23), 0 3px 10px rgba(0, 0, 0, 0.16);
-      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.23), 0 3px 10px rgba(0, 0, 0, 0.16); }
+      transition: all 0.3s; }
       .layout-wrapper .topbar .topbar-right #menu-button:hover {
         -webkit-transform: scale(1.2);
         -moz-transform: scale(1.2);
@@ -814,7 +808,7 @@ body {
     .layout-wrapper .topbar .topbar-right #topbar-menu-button {
       display: none;
       float: right;
-      color: #ffffff;
+      color: #273746;
       vertical-align: middle;
       height: 36px;
       margin: 5px 10px 0 0;
@@ -835,19 +829,19 @@ body {
       background-color: transparent;
       border-width: 0 0 1px 0;
       padding: 2px 2px 1px 2px;
-      border-color: #ffffff;
-      color: #ffffff; }
+      border-color: #273746;
+      color: #273746; }
       .layout-wrapper .topbar .topbar-right .topbar-items .search-item input:focus {
         outline: 0 none;
         border-bottom-width: 2px; }
     .layout-wrapper .topbar .topbar-right .topbar-items .search-item input:focus ~ label {
       top: -5px;
       font-size: 12px;
-      color: #03A9F4; }
+      color: #E6A82E; }
     .layout-wrapper .topbar .topbar-right .topbar-items .search-item input.ui-state-filled ~ label {
       display: none; }
     .layout-wrapper .topbar .topbar-right .topbar-items .search-item label {
-      color: #ffffff;
+      color: #273746;
       top: 8px; }
 .layout-wrapper .layout-menu {
   overflow: auto;
@@ -856,7 +850,7 @@ body {
   z-index: 99;
   top: 75px;
   height: 100%;
-  background-color: #ffffff;
+  background-color: #273750;
   -webkit-box-shadow: 3px 0 6px rgba(0, 0, 0, 0.3);
   -moz-box-shadow: 3px 0 6px rgba(0, 0, 0, 0.3);
   box-shadow: 3px 0 6px rgba(0, 0, 0, 0.3);
@@ -881,10 +875,10 @@ body {
     box-sizing: border-box;
     padding-top: 30px;
     width: 250px;
-    height: 145px;
+    height: 165px;
     text-align: center;
     background: url("#{resource['ultima-layout:images/profile-bg.png']}") top left no-repeat;
-    background-size: 250px 145px;
+    background-size: 250px 165px;
     -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16);
     -moz-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16);
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16); }
@@ -892,15 +886,20 @@ body {
       width: 60px;
       height: 60px;
       margin: 0 auto 5px auto;
-      background: url("#{resource['ultima-layout:images/avatar2x.png']}") top left no-repeat;
+      background: url("#{resource['ultima-layout:images/employee_avatar.png']}") top left no-repeat;
       background-size: 60px 60px; }
     .layout-wrapper .layout-menu .profile .profile-name {
       display: inline-block;
-      color: #212121;
+      color: #ffffff;
       vertical-align: middle;
       font-size: 16px; }
+       .layout-wrapper .layout-menu .profile .profile-intro {
+      display: inline-block;
+      color: #ffffff;
+      vertical-align: middle;
+      font-size: 12px; }
     .layout-wrapper .layout-menu .profile i {
-      color: #212121;
+      color: #ffffff;
       vertical-align: middle;
       -moz-transition: transform 0.3s;
       -o-transition: transform 0.3s;
@@ -986,7 +985,7 @@ body {
     font-size: 16px;
     display: block;
     padding: 10px 16px;
-    color: #212121;
+    color: #ffffff;
     width: 100%;
     box-sizing: border-box;
     -moz-transition: background-color 0.3s;
@@ -995,7 +994,7 @@ body {
     transition: background-color 0.3s;
     overflow: hidden; }
     .layout-wrapper .ultima-menu li a i {
-      color: #757575; }
+      color: #ffffff; }
     .layout-wrapper .ultima-menu li a i:first-child {
       display: inline-block;
       vertical-align: middle;
@@ -1011,13 +1010,13 @@ body {
       -webkit-transition: transform 0.3s;
       transition: transform 0.3s; }
     .layout-wrapper .ultima-menu li a:hover {
-      background-color: #e8e8e8; }
+        
+    }
     .layout-wrapper .ultima-menu li a span {
       display: inline-block;
       vertical-align: middle; }
   .layout-wrapper .ultima-menu li.active-menuitem > a {
-    color: #03A9F4;
-    background-color: #e8e8e8; }
+    color: #E6A82E;}
     .layout-wrapper .ultima-menu li.active-menuitem > a i:last-child {
       -webkit-transform: rotate(-180deg);
       -moz-transform: rotate(-180deg);
@@ -1090,7 +1089,7 @@ body {
           line-height: 12px; }
       .layout-wrapper .topbar-items > li .topbar-icon {
         font-size: 36px;
-        color: #ffffff;
+        color: #273746;
         -moz-transition: color 0.3s;
         -o-transition: color 0.3s;
         -webkit-transition: color 0.3s;
@@ -1108,10 +1107,7 @@ body {
         right: 5px;
         display: none;
         width: 250px;
-        background-color: #ffffff;
-        -webkit-box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.19), 0 8px 17px 0 rgba(0, 0, 0, 0.2);
-        -moz-box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.19), 0 8px 17px 0 rgba(0, 0, 0, 0.2);
-        box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.19), 0 8px 17px 0 rgba(0, 0, 0, 0.2);
+        background-color: #273746;
         -webkit-animation-duration: .5s;
         -moz-animation-duration: .5s;
         animation-duration: .5s; }
@@ -1358,7 +1354,7 @@ body {
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
   .layout-wrapper .topbar .logo {
     background: url("#{resource['ultima-layout:images/logo2x.png']}") top left no-repeat;
-    background-size: 200px 30px; } }
+    background-size: 180px 44px; } }
 body.layout-compact {
   font-size: 14px;
   line-height: 18px;
@@ -1711,11 +1707,15 @@ body.layout-compact {
       height: 20px;
       width: 20px;
       margin-top: -8px; }
+  body.layout-compact .ui-selectonemenu .ui-selectonemenu-label {
+    font-size: 14px; }
   body.layout-compact .ui-selectonemenu-panel .ui-selectonemenu-item {
     font-size: 14px;
     padding: 6px 10px; }
   body.layout-compact .ui-selectonemenu-panel .ui-selectonemenu-item-group {
     padding: 8px; }
+  body.layout-compact .ui-selectcheckboxmenu .ui-selectcheckboxmenu-label-container .ui-selectcheckboxmenu-label {
+    padding-bottom: 1px; }
   body.layout-compact .ui-selectcheckboxmenu .ui-selectcheckboxmenu-trigger {
     height: 20px;
     width: 20px;

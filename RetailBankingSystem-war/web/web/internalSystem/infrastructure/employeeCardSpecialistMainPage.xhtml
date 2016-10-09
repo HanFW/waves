@@ -6,43 +6,42 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/internalSystemTemplate.xhtml">
-    
+
+    <ui:define name="internalSystemMenu">
+
+        <ui:include src="/WEB-INF/internalSystemCardSpecialist.xhtml" />
+
+    </ui:define>
+
     <ui:define name="content">
-    <h:body>
-             
-        <h:form>
-            <p:menubar>
-                <p:submenu label="Home">
-                    <p:menuitem value="Home" url="/web/internalSystem/infrastructure/employeeMainPage.xhtml?faces-redirect=true"/>
-                </p:submenu>
-                <p:submenu label="Tasks">
-                    <p:menuitem value="View Enquiry" action="/web/internalSystem/enquiry/cardSpecialistViewPendingIssue.xhtml?faces-redirect=true"/>
-                </p:submenu>
-                <p:submenu label="Manage My Account">
-                    <p:menuitem value="Change Password" actionListener="#{employeeLoginManagedBean.changePassword}" />
-                </p:submenu>
+        <h:body>
 
-                <p:submenu label="Log Out">
-                    <p:menuitem value="Logout" actionListener="#{employeeLoginManagedBean.doLogOut}" />
-                </p:submenu>
-            </p:menubar>
-       <div class="ui-g ui-fluid">
-                    <div class="ui-g-12 ui-lg-12">
-                        <div class="card card-w-title"> 
-                            <div align="center">
-                                <h:outputText value="Welcome " />
-                                <h:outputText value="#{employeeAccountManagedBean.userName}!"/>
-                                <br/>
-                                <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
-                                <br/>
-                                <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
-                                <br/>
-                                <h:outputText value="You have logged in as: Card Specialist"/>
-                                <br/>
+            <h:form>
+                <p:menubar>
+                    <p:submenu label="Home">
+                        <p:menuitem value="Home" url="/web/internalSystem/infrastructure/employeeMainPage.xhtml"/>
+                    </p:submenu>
+                    <p:submenu label="Tasks">
+                        <p:menuitem value="View Enquiry" action="/web/internalSystem/enquiry/cardSpecialistViewPendingIssue.xhtml"/>
+                    </p:submenu>
+                    <p:submenu label="Manage My Account">
+                        <p:menuitem value="Change Password" actionListener="#{employeeLoginManagedBean.changePassword}" />
+                    </p:submenu>
 
-                     </div>
-                        </div>
-                    </div>
+                    <p:submenu label="Log Out">
+                        <p:menuitem value="Logout" actionListener="#{employeeLoginManagedBean.doLogOut}" />
+                    </p:submenu>
+                </p:menubar>
+                <div align="center">
+                    <h:outputText value="Welcome " />
+                    <h:outputText value="#{employeeAccountManagedBean.userName}!"/>
+                    <br/>
+                    <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
+                    <br/>
+                    <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
+                    <br/>
+                    <h:outputText value="You have logged in as: Card Specialist"/>
+                    <br/>
                 </div>
             </h:form>
         </h:body>

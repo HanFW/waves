@@ -1,11 +1,17 @@
 package managedbean.customer;
 
+import static ejb.customer.entity.CustomerBasic_.customerBasicId;
 import ejb.customer.entity.EnquiryCase;
 import ejb.customer.entity.FollowUp;
 import ejb.customer.entity.Issue;
 import ejb.customer.session.EnquirySessionBeanLocal;
+import static ejb.deposit.entity.MessageBox_.messageContent;
+import static ejb.deposit.entity.MessageBox_.subject;
+import ejb.infrastructure.session.MessageSessionBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
@@ -21,7 +27,10 @@ public class EnquiryManagerManagedBean implements Serializable {
 
     @EJB
     private EnquirySessionBeanLocal enquirySessionBeanLocal;
-
+    @EJB
+    private MessageSessionBeanLocal messageSessionBeanLocal;
+    
+    private Long customerBasicId;
     private Long caseId;
     private Long followUpId;
     private String caseReply;
@@ -30,6 +39,10 @@ public class EnquiryManagerManagedBean implements Serializable {
     private String issueProblem;
     private List<FollowUp> selectedFollowUp;
     private List<FollowUp> followUps;
+    
+    private Date receivedDate;
+    private String subject;
+    private String messageContent;
 
     private String ableToReply = " ";
     private String ableToReply2 = " ";
@@ -38,7 +51,6 @@ public class EnquiryManagerManagedBean implements Serializable {
     private boolean visible2;
     private boolean visible3;
     private boolean visible4;
-
 
     public EnquiryManagerManagedBean() {
     }
@@ -107,6 +119,46 @@ public class EnquiryManagerManagedBean implements Serializable {
         this.departmentTo = departmentTo;
     }
 
+    public MessageSessionBeanLocal getMessageSessionBeanLocal() {
+        return messageSessionBeanLocal;
+    }
+
+    public void setMessageSessionBeanLocal(MessageSessionBeanLocal messageSessionBeanLocal) {
+        this.messageSessionBeanLocal = messageSessionBeanLocal;
+    }
+
+    public Long getCustomerBasicId() {
+        return customerBasicId;
+    }
+
+    public void setCustomerBasicId(Long customerBasicId) {
+        this.customerBasicId = customerBasicId;
+    }
+
+    public Date getReceivedDate() {
+        return receivedDate;
+    }
+
+    public void setReceivedDate(Date receivedDate) {
+        this.receivedDate = receivedDate;
+    }
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
+
+    public String getMessageContent() {
+        return messageContent;
+    }
+
+    public void setMessageContent(String messageContent) {
+        this.messageContent = messageContent;
+    }
+
     public String getIssueProblem() {
         return issueProblem;
     }
@@ -169,7 +221,6 @@ public class EnquiryManagerManagedBean implements Serializable {
 //    public String getFollowUpDetailById() {
 //        return enquirySessionBeanLocal.getCustomerFollowUpDetail(followUpId);
 //    }
-
     public List<Issue> getCaseIssueById() {
         return enquirySessionBeanLocal.getCaseIssue(caseId);
     }
@@ -191,26 +242,33 @@ public class EnquiryManagerManagedBean implements Serializable {
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext ec = context.getExternalContext();
         if (msg == "1") {
+            Calendar cal = Calendar.getInstance();
+            receivedDate = cal.getTime();
+            customerBasicId = enquirySessionBeanLocal.getEnquiryByCaseId(caseId).get(0).getCustomerBasic().getCustomerBasicId();
+            subject = "Your enquiry has been replied";
+            messageContent = "Your enquiry has been answered by one of our enquiry managers.\n" + 
+                             "Please view the reply from View Enquiry page.\n" +
+                             "If our reply did not answer your question entirely, you may add a follow-up question to elaborate your concern." +
+                             "Thank you.";
+            
+            messageSessionBeanLocal.sendMessage("Merlion Bank", "Enquiry", subject, receivedDate.toString(),
+                    messageContent, customerBasicId);
+            subject = null;
+            receivedDate = null;
+            messageContent = null;
+            customerBasicId = null;
             caseId = null;
             caseReply = null;
             selectedFollowUp = null;
             followUps = null;
-            ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/enquirymanagerReplyCaseDone.xhtml");
+            ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/enquirymanagerReplyCaseDone.xhtml?faces-redirect=true");
         }
     }
 
-//    public void replyToFollowUp() throws IOException {
-//        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(enquirySessionBeanLocal.replyCustomerFollowUp(followUpId, followUpSolution), " "));
-//        followUpId = null;
-//        followUpSolution = null;
-//        FacesContext context = FacesContext.getCurrentInstance();
-//        ExternalContext ec = context.getExternalContext();
-//        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/enquirymanagerReplyCaseDone.xhtml");
-//    }
     public void addIssue() throws IOException {
         System.out.println("addIssue");
         FacesContext context = FacesContext.getCurrentInstance();
-        context.addMessage(null, new FacesMessage(enquirySessionBeanLocal.addNewCaseIssue(caseId, departmentTo, issueProblem, followUps), " "));
+        context.addMessage(null, new FacesMessage(enquirySessionBeanLocal.addNewCaseIssue(caseId, departmentTo, issueProblem), " "));
         departmentTo = null;
         issueProblem = null;
     }
@@ -218,12 +276,11 @@ public class EnquiryManagerManagedBean implements Serializable {
     public void saveIssue() throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext ec = context.getExternalContext();
-        context.addMessage(null, new FacesMessage(enquirySessionBeanLocal.addNewCaseIssue(caseId, departmentTo, issueProblem, followUps), " "));
+        context.addMessage(null, new FacesMessage(enquirySessionBeanLocal.addNewCaseIssue(caseId, departmentTo, issueProblem), " "));
         caseId = null;
         departmentTo = null;
         issueProblem = null;
-        followUps = null;
-        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/enquirymanagerSubmitDone.xhtml");
+        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/enquirymanagerSubmitDone.xhtml?faces-redirect=true");
     }
 
 //    public void addFollowUpIssue() throws IOException {
@@ -244,19 +301,19 @@ public class EnquiryManagerManagedBean implements Serializable {
     public void redirectToViewEnquiryDone() throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext ec = context.getExternalContext();
-        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/enquirymanagerViewEnquiryDone.xhtml");
+        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/enquirymanagerViewEnquiryDone.xhtml?faces-redirect=true");
     }
 
     public void redirectToReplyCase() throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext ec = context.getExternalContext();
-        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/enquirymanagerReplyCase.xhtml");
+        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/enquirymanagerReplyCase.xhtml?faces-redirect=true");
     }
 
     public void redirectToReplyFollowUp() throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext ec = context.getExternalContext();
-        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/enquirymanagerReplyFollowUp.xhtml");
+        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/enquirymanagerReplyFollowUp.xhtml?faces-redirect=true");
     }
 
     public String caseIssueCreated(Long caseId) {
@@ -266,7 +323,6 @@ public class EnquiryManagerManagedBean implements Serializable {
 //    public String followUpIssueCreated(Long followUpId) {
 //        return enquirySessionBeanLocal.followUpIssueIsCreated(followUpId);
 //    }
-
     public String caseIssueReplied(Long caseId) {
         return enquirySessionBeanLocal.caseIssueAllReplied(caseId);
     }

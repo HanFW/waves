@@ -12,7 +12,7 @@
             <h:form>
                 <p:menubar>
                     <p:submenu label="Home">
-                        <p:menuitem value="Home" url="/web/internalSystem/infrastructure/employeeCounterTellerMainPage.xhtml"/>
+                        <p:menuitem value="Home" url="/web/internalSystem/infrastructure/employeeCounterTellerMainPage.xhtml?faces-redirect=true"/>
                     </p:submenu>
 
                     <p:submenu label="Log Out">
@@ -35,18 +35,18 @@
                                 <br/>
                                 <h:outputText value="You have logged in as: Counter Teller"/>
                                 <br/>
-                                
+
                                 <h:outputText value="&lt;br /&gt;" escape="false" /> 
                                 <h:outputText value="&lt;br /&gt;" escape="false" /> 
                                 <p:outputLabel for="customerID"  value="Customer NRIC/Passport:" />
 
                                 <h:panelGrid columns="1" id="matchGrid" cellpadding="5" styleClass="ui-panelgrid-blank form-group">                  
-                                    <p:inputText id="customerID" value="#{employeeRecordEnquiryManagedBean.identificationNum}" />
-                                    <p:commandButton value="Show Customer" actionListener="#{employeeRecordEnquiryManagedBean.retieveCustomerByIdentification}" update="@form"/>
+                                    <p:inputText id="customerID" value="#{counterTellerSearchCustomerManagedBean.identificationNum}" />
+                                    <p:commandButton value="Show Customer" actionListener="#{counterTellerSearchCustomerManagedBean.retieveCustomerByIdentification}" update="@form"/>
                                 </h:panelGrid>
 
 
-                                <p:panelGrid rendered="#{employeeRecordEnquiryManagedBean.visible}" >
+                                <p:panelGrid rendered="#{counterTellerSearchCustomerManagedBean.visible}" >
 
                                     <p:row>
                                         <p:column colspan="2">
@@ -58,7 +58,7 @@
                                             <h:outputText value="Salutation:" />
                                         </p:column>
                                         <p:column>
-                                            <h:outputText value="#{employeeRecordEnquiryManagedBean.cb.customerSalutation}" />
+                                            <h:outputText value="#{counterTellerSearchCustomerManagedBean.cb.customerSalutation}" />
                                         </p:column>
                                     </p:row>
                                     <p:row>
@@ -66,7 +66,7 @@
                                             <h:outputText value="Name:" />
                                         </p:column>
                                         <p:column>
-                                            <h:outputText value="#{employeeRecordEnquiryManagedBean.cb.customerName}" />
+                                            <h:outputText value="#{counterTellerSearchCustomerManagedBean.cb.customerName}" />
                                         </p:column>
                                     </p:row>
                                     <p:row>
@@ -74,7 +74,7 @@
                                             <h:outputText value="NRIC/Passport:" />
                                         </p:column>
                                         <p:column>
-                                            <h:outputText value="#{employeeRecordEnquiryManagedBean.cb.customerIdentificationNum}" />
+                                            <h:outputText value="#{counterTellerSearchCustomerManagedBean.cb.customerIdentificationNum}" />
                                         </p:column>
                                     </p:row>
                                     <p:row>
@@ -82,23 +82,20 @@
                                             <h:outputText value="Customer Online Banking Acc. Num.:" />
                                         </p:column>
                                         <p:column>
-                                            <h:outputText value="#{employeeRecordEnquiryManagedBean.cb.customerOnlineBankingAccountNum}" />
+                                            <h:outputText value="#{counterTellerSearchCustomerManagedBean.cb.customerOnlineBankingAccountNum}" />
                                         </p:column>
                                     </p:row>
+                                    <h:panelGrid columns="1" cellpadding="5" styleClass="ui-panelgrid-blank form-group">                  
 
+                                        <p:commandButton value="Update Customer Profile" actionListener="#{counterTellerSearchCustomerManagedBean.helpCustomerChangeBasicInfo}">
+                                            <f:setPropertyActionListener target="#{employeeUpdateBasicProfileManagedBean.cb}" value="#{counterTellerSearchCustomerManagedBean.cb}" />
+                                        </p:commandButton>
+                                    </h:panelGrid>
                                 </p:panelGrid>
-
-                                <h:panelGrid columns="1" cellpadding="5" styleClass="ui-panelgrid-blank form-group">                  
-                                   
-                                    <p:commandButton value="Update Customer Profile" actionListener="#{employeeRecordEnquiryManagedBean.helpCustomerChangeBasicInfo}"/>
-                                </h:panelGrid>
-
-
                             </div>
                         </div>
                     </div>
                 </div>
-
             </h:form>
         </h:body>
     </ui:define>

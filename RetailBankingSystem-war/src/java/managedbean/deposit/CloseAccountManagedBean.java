@@ -4,6 +4,7 @@ import ejb.customer.entity.CustomerBasic;
 import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
+import ejb.deposit.session.InterestSessionBeanLocal;
 import ejb.deposit.session.TransactionSessionBeanLocal;
 import ejb.infrastructure.session.LoggingSessionBeanLocal;
 import java.io.IOException;
@@ -22,6 +23,9 @@ import javax.faces.context.FacesContext;
 @RequestScoped
 
 public class CloseAccountManagedBean {
+
+    @EJB
+    private InterestSessionBeanLocal interestSessionBeanLocal;
 
     @EJB
     private LoggingSessionBeanLocal loggingSessionBeanLocal;
@@ -47,6 +51,7 @@ public class CloseAccountManagedBean {
     private String confirmBankAccountPwd;
     private boolean checkOnlyOneAccount;
     private String customerName;
+    private Long interestId;
 
     private Map<String, String> myBankAccounts = new HashMap<String, String>();
 
@@ -155,9 +160,25 @@ public class CloseAccountManagedBean {
     public void setCheckOnlyOneAccount(boolean checkOnlyOneAccount) {
         this.checkOnlyOneAccount = checkOnlyOneAccount;
     }
-    
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
+    public Long getInterestId() {
+        return interestId;
+    }
+
+    public void setInterestId(Long interestId) {
+        this.interestId = interestId;
+    }
+
     public void deleteAccount() throws IOException {
-        
+
         System.out.println("=");
         System.out.println("====== deposit/CloseAccountManagedBean: deleteAccount() ======");
         ec = FacesContext.getCurrentInstance().getExternalContext();
@@ -177,11 +198,13 @@ public class CloseAccountManagedBean {
             checkOnlyOneAccount = bankAccountSessionLocal.checkOnlyOneAccount(customerBasic.getCustomerIdentificationNum());
 
             if (onlyOneAccount.equals("Yes") && !checkOnlyOneAccount) {
-                if (!bankAccount.getBankAccountBalance().equals("0")) {
+                if (!bankAccount.getBankAccountBalance().equals("0.0")) {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Please withdraw all your money.", "Failed!"));
                 } else {
 
+                    interestId = bankAccount.getInterest().getInterestId();
                     bankAccountSessionLocal.deleteAccount(bankAccountNum);
+                    interestSessionBeanLocal.deleteInterest(interestId);
                     statusMessage = "Account has been successfully deleted.";
                     loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "close account", "successful", null);
 
@@ -196,11 +219,13 @@ public class CloseAccountManagedBean {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! You only have one account.", "Failed!"));
             } else if (onlyOneAccount.equals("No") && checkOnlyOneAccount) {
 
-                if (!bankAccount.getBankAccountBalance().equals("0")) {
+                if (!bankAccount.getBankAccountBalance().equals("0.0")) {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Please withdraw all your money.", "Failed!"));
                 } else {
 
+                    interestId = bankAccount.getInterest().getInterestId();
                     customerSessionBeanLocal.deleteCustomerBasic(customerBasic.getCustomerIdentificationNum());
+                    interestSessionBeanLocal.deleteInterest(interestId);
 
                     statusMessage = "Account has been successfully deleted.";
                     loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "close account", "successful", null);

@@ -12,7 +12,7 @@
         <h:form>
             <p:menubar>
                 <p:submenu label="Home">
-                    <p:menuitem value="Home" url="/web/internalSystem/infrastructure/employeeEnquiryManagerMainPage.xhtml"/>
+                    <p:menuitem value="Home" url="/web/internalSystem/infrastructure/employeeEnquiryManagerMainPage.xhtml?faces-redirect=true"/>
                 </p:submenu>
 
                 <p:submenu label="Log Out">
@@ -40,6 +40,7 @@
             <p:panel id="detail" header="Customer Case Detail">
                 <p:panel>
                     <h:outputText value="Customer Input:   #{enquiryManagerManagedBean.caseDetailById}" /> 
+                    <h:outputText value="Previous Reply:   #{enquiryManagerManagedBean.caseReply}"/>
                 </p:panel>
                 <p:panel>
                     <p:dataTable var="followUp" value="#{enquiryManagerManagedBean.caseFollowUpById}" 
