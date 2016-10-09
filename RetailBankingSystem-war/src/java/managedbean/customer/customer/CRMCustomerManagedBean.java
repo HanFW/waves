@@ -13,14 +13,18 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.inject.Named;
-import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import ejb.customer.session.CRMCustomerSessionBean;
+import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import javax.faces.event.ActionEvent;
 import ejb.infrastructure.session.CustomerAdminSessionBean;
+import ejb.infrastructure.session.SMSSessionBeanLocal;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
+import org.jboss.aerogear.security.otp.Totp;
+import org.jboss.aerogear.security.otp.api.Clock;
+import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -32,7 +36,10 @@ import java.util.List;
 public class CRMCustomerManagedBean {
 
     @EJB
-    private CRMCustomerSessionBean customerSessionBean;
+    private SMSSessionBeanLocal sMSSessionBeanLocal;
+
+    @EJB
+    private CRMCustomerSessionBeanLocal customerSessionBean;
     private String customerName;
     private String customerSalutation;
     private String customerIdentificationNum;
@@ -57,6 +64,8 @@ public class CRMCustomerManagedBean {
     private String blockNum;
     private String unitNum;
     List<String> addressList;
+    private String customerOTP;
+    private String updatedCustomerMobile;
 
 //advanced profile
     private String customerEmploymentDetails;
@@ -317,14 +326,6 @@ public class CRMCustomerManagedBean {
         this.replacedCustomerEmail = replacedCustomerEmail;
     }
 
-    public CRMCustomerSessionBean getCustomerSessionBean() {
-        return customerSessionBean;
-    }
-
-    public void setCustomerSessionBean(CRMCustomerSessionBean customerSessionBean) {
-        this.customerSessionBean = customerSessionBean;
-    }
-
     public String getCustomerName() {
         return customerName;
     }
@@ -376,6 +377,14 @@ public class CRMCustomerManagedBean {
         this.hashedNewPassword = hashedNewPassword;
     }
 
+    public String getCustomerOTP() {
+        return customerOTP;
+    }
+
+    public void setCustomerOTP(String customerOTP) {
+        this.customerOTP = customerOTP;
+    }
+
     public Long saveNewCustomerBasic(ActionEvent customerBasic) {
 
         try {
@@ -392,7 +401,7 @@ public class CRMCustomerManagedBean {
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         cb = (CustomerBasic) ec.getSessionMap().get("customer");
 //        cb = customerSessionBean.getAllCustomerBasicProfile().get(0);
-        
+
         if (customerName == null) {
             customerName = cb.getCustomerName();
             customerOnlineBankingAccountNum = cb.getCustomerOnlineBankingAccountNum();
@@ -420,7 +429,7 @@ public class CRMCustomerManagedBean {
 
     }
 
-     //    public String customerAccountNumReplaceWithStar(String inputCustomerAccountNumber) {
+    //    public String customerAccountNumReplaceWithStar(String inputCustomerAccountNumber) {
     //
     //        String customerAccountNumAfterReplaced = "";
     //
@@ -442,21 +451,60 @@ public class CRMCustomerManagedBean {
     }
 
     public void updateCustomerBasicProfile() {
-//        ec = FacesContext.getCurrentInstance().getExternalContext();
+        System.out.println("=");
+        System.out.println("====== onlineBanking/CRMCustomerMangedBean: updateCustomerBasicProfile() ======");
+        ec = FacesContext.getCurrentInstance().getExternalContext();
+        CustomerBasic customer = (CustomerBasic) ec.getSessionMap().get("customer");
 
-        String updatedCustomerMobile = customerMobile;
+        updatedCustomerMobile = customerMobile;
         String updatedCustomerEmail = customerEmail;
 
         if (!replacedCustomerMobile.contains("*")) {
             updatedCustomerMobile = replacedCustomerMobile;
+            customer.setCustomerMobile(updatedCustomerMobile);
         }
-
         if (!replacedCustomerEmail.contains("*")) {
             updatedCustomerEmail = replacedCustomerEmail;
+            customer.setCustomerEmail(customerEmail);
         }
-        
         customerAddress = streetName + ", " + blockNum + ", " + unitNum + ", " + customerPostal;
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(customerSessionBean.updateCustomerBasicProfile(customerOnlineBankingAccountNum, customerNationality, customerCountryOfResidence, customerMaritalStatus, customerOccupation, customerCompany, updatedCustomerEmail, updatedCustomerMobile, customerAddress, customerPostal), " "));
+        
+        customer.setCustomerNationality(customerNationality);
+        customer.setCustomerCountryOfResidence(customerCountryOfResidence);
+        customer.setCustomerMaritalStatus(customerMaritalStatus);
+        customer.setCustomerOccupation(customerOccupation);
+        customer.setCustomerCompany(customerCompany);
+        customer.setCustomerAddress(customerAddress);
+        customer.setCustomerPostal(customerPostal);
+
+        FacesContext.getCurrentInstance().addMessage("updateMessage", new FacesMessage(customerSessionBean.updateCustomerBasicProfile(customerOnlineBankingAccountNum, customerNationality, customerCountryOfResidence, customerMaritalStatus, customerOccupation, customerCompany, updatedCustomerEmail, replacedCustomerMobile, customerAddress, customerPostal), " "));
+        if (!replacedCustomerMobile.contains("*")) {
+            System.out.println("====== onlineBanking/CRMCustomerMangedBean: updateCustomerBasicProfile(): mobile changed");
+            RequestContext rc = RequestContext.getCurrentInstance();
+            rc.execute("PF('otpDialog').show();");
+            sMSSessionBeanLocal.sendOTP("customer", customer);
+        }
+    }
+
+    public void validateMobile() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        ExternalContext ec = context.getExternalContext();
+
+        if (customerOTP == null || customerOTP.trim().length() == 0) {
+            context.addMessage("otpMessage", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid input: ", "Please enter your OTP"));
+        } else {
+            Clock clock = new Clock(120);
+            CustomerBasic customer = (CustomerBasic) ec.getSessionMap().get("customer");
+            Totp totp = new Totp(customer.getCustomerOTPSecret(), clock);
+            if (totp.verify(customerOTP)) {
+                customerSessionBean.updateCustomerMobile(customer.getCustomerBasicId(), customer.getCustomerMobile());
+                RequestContext rc = RequestContext.getCurrentInstance();
+                context.addMessage("updateMessage", new FacesMessage(FacesMessage.SEVERITY_INFO, "Mobile number updated", null));
+                rc.execute("PF('confirmDialog').show();");
+            } else {
+                context.addMessage("otpMessage", new FacesMessage(FacesMessage.SEVERITY_ERROR, "OTP does not match: ", "That is an invalid online banking OTP. Please re-enter."));
+            }
+        }
     }
 
     public void updateOnlineBankingAccountPIN() {

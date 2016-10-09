@@ -422,4 +422,11 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
 
         return customerAge;
     }
+    
+    @Override
+    public void updateCustomerMobile(Long customerId,String customerMobile){
+        CustomerBasic customer = entityManager.find(CustomerBasic.class, customerId);
+        customer.setCustomerMobile(customerMobile);
+        entityManager.flush();
+    }
 }
