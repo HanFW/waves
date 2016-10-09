@@ -43,13 +43,16 @@
                     <div>
                         <p:row rendered="#{customerLoginManagedBean.loginAttempts >= 5}">
                             <p:column colspan="2">
-                                <p>
+                                <p style="color:red">
                                     You have reached the maximum number of failed login attempts.
                                     For your safety, access to online banking has been locked.
                                     To unlock your access, please contact our customer service at 800-820-8820.
                                 </p>
                             </p:column>
                         </p:row>
+                    </div>
+                    <div>
+                        <p:captcha rendered="#{customerLoginManagedBean.loginAttempts eq 3 or customerLoginManagedBean.loginAttempts eq 4}"/>
                     </div>
                     <div class="ui-g-12">
                         <p:commandButton value="Log in" type="submit" actionListener="#{customerLoginManagedBean.doLogin}" icon="ui-icon-person" update="@form"/>
