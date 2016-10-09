@@ -20,8 +20,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.PersistenceContext;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.persistence.EntityNotFoundException;
@@ -210,7 +208,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
             String bankAccountType, String bankAccountBalance, String transferDailyLimit,
             String transferBalance, String bankAccountStatus, String bankAccountMinSaving,
             String bankAccountDepositPeriod, String currentFixedDepositPeriod,
-            String fixedDepositStatus, Double statementDateDouble, String accountApproval,
+            String fixedDepositStatus, Double statementDateDouble,
             Long customerBasicId, Long interestId) {
 
         System.out.println("*");
@@ -228,7 +226,6 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
         bankAccount.setCurrentFixedDepositPeriod(currentFixedDepositPeriod);
         bankAccount.setFixedDepositStatus(fixedDepositStatus);
         bankAccount.setStatementDateDouble(statementDateDouble);
-        bankAccount.setAccountApproval(accountApproval);
         bankAccount.setCustomerBasic(retrieveCustomerBasicById(customerBasicId));
         bankAccount.setInterest(interestSessionLocal.retrieveInterestById(interestId));
 
@@ -238,8 +235,6 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
         entityManager.persist(bankAccount);
         entityManager.persist(interest);
         entityManager.flush();
-
-        String onlineBankingAccount = adminSessionBeanLocal.createOnlineBankingAccount(customerBasicId);
 
         return bankAccount.getBankAccountId();
     }
@@ -685,7 +680,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
             String bankAccountType, String bankAccountBalance, String transferDailyLimit,
             String transferBalance, String bankAccountStatus, String bankAccountMinSaving,
             String bankAccountDepositPeriod, String currentFixedDepositPeriod,
-            String fixedDepositStatus, Double statementDateDouble, String accountApproval,
+            String fixedDepositStatus, Double statementDateDouble,
             Long customerBasicId, Long interestId) {
 
         BankAccount bankAccount = new BankAccount();
@@ -701,7 +696,6 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
         bankAccount.setCurrentFixedDepositPeriod(currentFixedDepositPeriod);
         bankAccount.setFixedDepositStatus(fixedDepositStatus);
         bankAccount.setStatementDateDouble(statementDateDouble);
-        bankAccount.setAccountApproval(accountApproval);
         bankAccount.setCustomerBasic(retrieveCustomerBasicById(customerBasicId));
         bankAccount.setInterest(interestSessionLocal.retrieveInterestById(interestId));
 
@@ -714,14 +708,22 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
 
         return bankAccount.getBankAccountId();
     }
-    
+
     @Override
     public void approveAccount(String customerIdentificationNum) {
-        
+
         CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum);
         BankAccount bankAccount = customerBasic.getBankAccount().get(0);
-        
-        bankAccount.setAccountApproval("Yes");
+
         customerBasic.setNewCustomer("No");
+
+        if (bankAccount.getBankAccountType().equals("Monthly Savings Account")) {
+            bankAccount.setBankAccountStatus("Active");
+            bankAccount.setBankAccountMinSaving("Insufficient");
+        } else {
+            bankAccount.setBankAccountStatus("Inactive");
+        }
+
+        String onlineBankingAccount = adminSessionBeanLocal.createOnlineBankingAccount(customerBasic.getCustomerBasicId());
     }
 }

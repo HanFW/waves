@@ -38,13 +38,7 @@ public class AccountDataTableBean implements Serializable {
         CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
         String customerIC = customerBasic.getCustomerIdentificationNum();
 
-        List<BankAccount> bankAccount = new ArrayList<BankAccount>();
-        
-        for(int i=0;i<customerBasic.getBankAccount().size();i++) {
-            if(customerBasic.getBankAccount().get(i).getAccountApproval().equals("Yes")) {
-                bankAccount.add(customerBasic.getBankAccount().get(i));
-            }
-        }
+        List<BankAccount> bankAccount = bankAccountSessionLocal.retrieveBankAccountByCusIC(customerIC);
 
         return bankAccount;
     }

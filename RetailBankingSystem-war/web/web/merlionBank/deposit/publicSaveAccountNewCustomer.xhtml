@@ -1,0 +1,39 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/merlionBankTemplate.xhtml">
+
+    <ui:define name="merlionBankMenu">
+
+        <ui:include src="/WEB-INF/merlionBankMenuOpenAccount.xhtml" />
+
+    </ui:define>
+
+    <ui:define name="content">  
+
+        <h:form>
+            <div align="center"> 
+
+                <h:panelGrid columns="1" class="ui-lg-7"> 
+
+                    <h:outputLabel value="Dear customer, we have received your open account application." 
+                                   style="font-weight:bold;font-size: 18px"/>
+
+                    <h:outputLabel value="We will process your application and send a confirmation emial to you within 2-5 working days." 
+                                   style="font-weight:bold;font-size: 18px"/>
+                    
+                    <h:outputLabel value="If you have any enquiry, please contact us at 800 820 8820." 
+                                   style="font-weight:bold;font-size: 18px"/>
+                </h:panelGrid>
+
+                <h:panelGrid columns="1" class="ui-lg-7"> 
+                    <p:button outcome="/web/index.xhtml" value="Back to Homepage"/>
+                </h:panelGrid>
+            </div>
+        </h:form>
+
+    </ui:define>
+</ui:composition>
+

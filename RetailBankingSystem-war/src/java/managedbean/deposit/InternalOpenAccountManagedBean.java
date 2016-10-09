@@ -336,7 +336,6 @@ public class InternalOpenAccountManagedBean {
             currentFixedDepositPeriod = "0";
             fixedDepositStatus = "";
             statementDateDouble = 0.0;
-            accountApproval = "Yes";
 
             if (bankAccountType.equals("Monthly Savings Account")) {
                 bankAccountStatus = "Active";
@@ -356,7 +355,7 @@ public class InternalOpenAccountManagedBean {
             newAccountId = bankAccountSessionBeanLocal.addNewAccount(bankAccountNum, bankAccountType,
                     bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
                     bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
-                    statementDateDouble, accountApproval, customerBasicId, newInterestId);
+                    statementDateDouble, customerBasicId, newInterestId);
 
             bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountById(newAccountId);
 

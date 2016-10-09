@@ -16,21 +16,21 @@
         <h:form>
             <div align="center"> 
 
-                <h:panelGrid columns="1" class="ui-lg-7"> 
-
-
+                <h:panelGrid columns="1" class="ui-lg-7">
 
                     <h:outputLabel value="Bank Account Successfully Created." 
                                    style="font-weight:bold;font-size: 18px"/>
                     <h:outputLabel value="An confirmation email has been sent to you. Please deposit/transfer sufficient amount to your account to activate it." 
                                    style="font-weight:bold;font-size: 18px"/>
-
                     <h:outputLabel value="An iBanking account has been created for you. Use the account number and initial password included in the email to login to iBanking." 
                                    style="font-weight:bold;font-size: 18px"/>
+                    <br/>
+                    <br/>
+                    <h:outputText style="font-weight: bold;font-size: 20px" value="Attention: " />
+                    <h:outputText value="#{saveAccountManagedBean.attention}"/>
+                    <br/>
                 </h:panelGrid>
                 <h:panelGrid columns="2" class="ui-lg-7"> 
-
-
 
                     <h:outputText style="font-weight: bold" value="Bank Account Num: "/>
                     <h:outputText value="#{saveAccountManagedBean.bankAccountNum}"/>

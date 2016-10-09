@@ -34,7 +34,6 @@ public class BankAccount implements Serializable {
     private String bankAccountDepositPeriod;
     private String currentFixedDepositPeriod;
     private String fixedDepositStatus;
-    private String accountApproval;
 
     private Double statementDateDouble;
 
@@ -176,14 +175,6 @@ public class BankAccount implements Serializable {
 
     public void setStatementDateDouble(Double statementDateDouble) {
         this.statementDateDouble = statementDateDouble;
-    }
-
-    public String getAccountApproval() {
-        return accountApproval;
-    }
-
-    public void setAccountApproval(String accountApproval) {
-        this.accountApproval = accountApproval;
     }
 
     @Override

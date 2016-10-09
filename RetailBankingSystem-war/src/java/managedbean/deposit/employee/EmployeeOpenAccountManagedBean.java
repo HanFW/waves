@@ -786,18 +786,10 @@ public class EmployeeOpenAccountManagedBean implements Serializable {
             transferDailyLimit = "3000";
             transferBalance = "3000";
             bankAccountMinSaving = "";
-            bankAccountDepositPeriod = "None";
             currentFixedDepositPeriod = "0";
             fixedDepositStatus = "";
             statementDateDouble = 0.0;
-            accountApproval = "Yes";
-
-            if (bankAccountType.equals("Monthly Savings Account")) {
-                bankAccountStatus = "Active";
-                bankAccountMinSaving = "Insufficient";
-            } else {
-                bankAccountStatus = "Inactive";
-            }
+            bankAccountStatus = "Inactive";
 
             dailyInterest = "0";
             monthlyInterest = "0";
@@ -805,13 +797,19 @@ public class EmployeeOpenAccountManagedBean implements Serializable {
             isWithdraw = "0";
             newInterestId = interestSessionLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw);
 
+            if (bankAccountDepositPeriod == null) {
+                bankAccountDepositPeriod = "None";
+            }
+
             newAccountId = bankAccountSessionLocal.addNewAccount(bankAccountNum, bankAccountType,
                     bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
                     bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
-                    statementDateDouble, accountApproval, customerBasicId, newInterestId);
+                    statementDateDouble, customerBasicId, newInterestId);
 
             bankAccount = bankAccountSessionLocal.retrieveBankAccountById(newAccountId);
             bankAccountSessionLocal.retrieveBankAccountByCusIC(customerIdentificationNum).add(bankAccount);
+
+            bankAccountSessionLocal.updateDepositPeriod(bankAccountNum, bankAccountDepositPeriod);
 
             statusMessage = "New Account Saved Successfully.";
 
@@ -843,18 +841,10 @@ public class EmployeeOpenAccountManagedBean implements Serializable {
             transferDailyLimit = "3000";
             transferBalance = "3000";
             bankAccountMinSaving = "";
-            bankAccountDepositPeriod = "None";
             currentFixedDepositPeriod = "0";
             fixedDepositStatus = "";
             statementDateDouble = 0.0;
-            accountApproval = "No";
-
-            if (bankAccountType.equals("Monthly Savings Account")) {
-                bankAccountStatus = "Active";
-                bankAccountMinSaving = "Insufficient";
-            } else {
-                bankAccountStatus = "Inactive";
-            }
+            bankAccountStatus = "Inactive";
 
             dailyInterest = "0";
             monthlyInterest = "0";
@@ -862,10 +852,18 @@ public class EmployeeOpenAccountManagedBean implements Serializable {
             isWithdraw = "0";
             newInterestId = interestSessionLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw);
 
+            if (bankAccountDepositPeriod == null) {
+                bankAccountDepositPeriod = "None";
+            }
+
             newAccountId = bankAccountSessionLocal.addNewAccount(bankAccountNum, bankAccountType,
                     bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
                     bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
-                    statementDateDouble, accountApproval, newCustomerBasicId, newInterestId);
+                    statementDateDouble, newCustomerBasicId, newInterestId);
+
+            bankAccount = bankAccountSessionLocal.retrieveBankAccountById(newAccountId);
+
+            bankAccountSessionLocal.updateDepositPeriod(bankAccountNum, bankAccountDepositPeriod);
 
             statusMessage = "New Account Saved Successfully.";
 

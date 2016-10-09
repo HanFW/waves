@@ -3,8 +3,6 @@ package managedbean.deposit;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
 @Named(value = "saveAccountManagedBean")
