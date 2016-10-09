@@ -8,7 +8,7 @@
                 template="/WEB-INF/onlineBankingTemplate.xhtml"
                 xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
     <ui:define name="content">  
-       
+
         <h:body>
             <h:form>
 
@@ -17,9 +17,9 @@
                     <div class="ui-g-12 ui-lg-12">
                         <div class="card card-w-title"> 
                             <p:panel>
-                            <p:outputLabel value="Welcome "/>
-                            <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
-                        </p:panel>
+                                <p:outputLabel value="Welcome "/>
+                                <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
+                            </p:panel>
                             <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
                                 <p:panel header="View My Enquiry">
 
@@ -84,7 +84,7 @@
 
                                                 <p:row>
                                                     <p:column colspan="2">
-                                                        <p:commandButton value="Add Follow Up Question" action="CRMCustomerAddFollowUP.xhtml" ajax="true">
+                                                        <p:commandButton value="Add Follow Up Question" action="CRMCustomerAddFollowUP.xhtml?faces-redirect=true" ajax="true">
                                                             <f:setPropertyActionListener target="#{customerFollowUpManagedBean.caseId}" value="#{enquiryCase.caseId}" />
                                                         </p:commandButton>
                                                     </p:column>

@@ -7,12 +7,6 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/internalSystemTemplate.xhtml">
 
-    <ui:define name="internalSystemMenu">
-
-        <ui:include src="/WEB-INF/internalSystemMenuCounterTeller.xhtml" />
-
-    </ui:define>
-
     <ui:define name="content">
 
         <h:form>
@@ -28,54 +22,73 @@
         </h:form>
 
         <h:form>
-            <div align="center">
-                <h:outputText value="Welcome " />
-                <h:outputText value="#{employeeAccountManagedBean.userName}!"/>
-                <br/>
-                <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
-                <br/>
-                <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
-                <br/>
-                <h:outputText value="You have logged in as: Counter Teller"/>
-                <br/>
-                <p:dataList id="customerCurrentBasicProfile" value="#{employeeRecordEnquiryManagedBean.customerBasicInfo}" type="definition">
-                    <p:panel >
-                        <p:messages />
+            <div class="ui-g ui-fluid">
+                <div class="ui-g-12 ui-lg-12">
+                    <div class="card card-w-title"> 
+                        <div align="center">
+                            <h:outputText value="Welcome " />
+                            <h:outputText value="#{employeeAccountManagedBean.userName}!"/>
+                            <br/>
+                            <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
+                            <br/>
+                            <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
+                            <br/>
+                            <h:outputText value="You have logged in as: Counter Teller"/>
+                            <br/>
+                            <p:dataList id="customerCurrentBasicProfile" value="#{employeeUpdateBasicProfileManagedBean.customerBasicInfo}" type="definition">
+                                <p:panel >
+                                    <p:messages />
 
-                        <h:panelGrid id="BasicProfile" columns="2" cellpadding="5" >
+                                    <h:panelGrid id="BasicProfile" columns="2" cellpadding="5" >
 
-                            <p:outputLabel for="customerNationality"  value="Nationality:" />
-                            <p:inputText id="customerNationality" value="#{employeeRecordEnquiryManagedBean.customerNationality}" required="true" />
+                                        <p:outputLabel for="customerNationality"  value="Nationality:" />
+                                        <p:inputText id="customerNationality" value="#{employeeUpdateBasicProfileManagedBean.customerNationality}" required="true" />
 
+                                        <p:outputLabel for="customerCountryOfResidence"  value="Country of Residence:" />
+                                        <p:inputText id="customerCountryOfResidence" value="#{employeeUpdateBasicProfileManagedBean.customerCountryOfResidence}" required="true"  />
 
-                            <p:outputLabel for="customerCountryOfResidence"  value="Country of Residence:" />
-                            <p:inputText id="customerCountryOfResidence" value="#{employeeRecordEnquiryManagedBean.customerCountryOfResidence}" required="true"  />
+                                        <p:outputLabel for="customerMaritalStatus"  value="Marital Status:" />
+                                        <p:inputText id="customerMaritalStatus" value="#{employeeUpdateBasicProfileManagedBean.customerMaritalStatus}" required="true"  />
 
+                                        <p:outputLabel for="customerOccupation"  value="Occupation:" />
+                                        <p:inputText id="customerOccupation" value="#{employeeUpdateBasicProfileManagedBean.customerOccupation}" required="true"  />
 
-                            <p:outputLabel for="customerCompany"  value="Company:" />
+                                        <p:outputLabel for="customerCompany"  value="Company:" />
 
-                            <p:outputLabel for="customerMaritalStatus"  value="Marital Status:" />
-                            <p:inputText id="customerMaritalStatus" value="#{employeeRecordEnquiryManagedBean.customerMaritalStatus}" required="true"  />
+                                        <p:inputText id="customerCompany" value="#{employeeUpdateBasicProfileManagedBean.customerCompany}" required="true"  />
 
-                            <p:outputLabel for="customerOccupation"  value="Occupation:" />
-                            <p:inputText id="customerOccupation" value="#{employeeRecordEnquiryManagedBean.customerOccupation}" required="true"  />
+                                        <p:outputLabel for="customerMobileNumber"  value="Mobile Number:" />
+                                        <p:inputText id="customerMobileNumber" value="#{employeeUpdateBasicProfileManagedBean.replacedCustomerMobile}" required="true"  />
 
+                                        <p:outputLabel for="customerEmailAddress"  value="Email Address:" />
+                                        <p:inputText id="customerEmailAddress" value="#{employeeUpdateBasicProfileManagedBean.replacedCustomerEmail}" required="true"  />
 
+                                        <p:outputLabel for="customerStreet"  value="Residential Street Name: " />
+                                        <p:inputText id="customerStreet" value="#{employeeUpdateBasicProfileManagedBean.streetName}" required="true"  />
 
-                            <p:inputText id="customerCompany" value="#{employeeRecordEnquiryManagedBean.customerCompany}" required="true"  />
+                                        <p:outputLabel for="customerUnitNum"  value="Residential Unit No.: " />
+                                        <p:inputText id="customerUnitNum" value="#{employeeUpdateBasicProfileManagedBean.unitNum}" required="true"  />
 
-                            <p:outputLabel for="customerMobileNumber"  value="Mobile Number:" />
-                            <p:inputText id="customerMobileNumber" value="#{employeeRecordEnquiryManagedBean.replacedCustomerMobile}" required="true"  />
+                                        <p:outputLabel for="customerBlockNum"  value="Residential Block/House No.: " />
+                                        <p:inputText id="customerBlockNum" value="#{employeeUpdateBasicProfileManagedBean.blockNum}" required="true"  />
 
+                                        <p:outputLabel for="customerPostalCode"  value="Postal Code:" />
+                                        <p:inputText id="customerPostalCode" value="#{employeeUpdateBasicProfileManagedBean.customerPostal}" required="true"  />
 
-                        </h:panelGrid>   
-                    </p:panel>
+                                    </h:panelGrid>   
+                                </p:panel>
+                                
+                                 <h:panelGrid columns="2" cellpadding="5" >
+                                
+                                <p:commandButton value="Reset" type="reset" />
 
-                            <p:outputLabel for="customerEmailAddress"  value="Email Address:" />
-                            <p:inputText id="customerEmailAddress" value="#{employeeRecordEnquiryManagedBean.replacedCustomerEmail}" required="true"  />
+                                <p:commandButton value="Update" actionListener="#{employeeUpdateBasicProfileManagedBean.updateCustomerBasicProfile}" ajax="false"/>
+                                 </h:panelGrid>
+                            </p:dataList>
+                        </div>
+                    </div>
+                </div>
             </div>
         </h:form>
     </ui:define>
 </ui:composition>
-                            <p:outputLabel for="customerStreet"  value="Residential Street Name: " />
-                            <p:inputText id="customerStreet" value="#{employeeRecordEnquiryManagedBean.streetName}" required="true"  />

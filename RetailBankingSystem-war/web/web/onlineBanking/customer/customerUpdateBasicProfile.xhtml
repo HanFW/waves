@@ -9,18 +9,18 @@
                 xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
     <ui:define name="content">
         <h:body> 
-          
+
             <h:form>
                 <div class="ui-g ui-fluid">
                     <div class="ui-g-12 ui-lg-12">
                         <div class="card card-w-title"> 
                             <p:panel>
-                            <p:outputLabel value="Welcome "/>
-                            <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
-                        </p:panel>
+                                <p:outputLabel value="Welcome "/>
+                                <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
+                            </p:panel>
                             <p:dataList id="customerCurrentBasicProfile" value="#{cRMCustomerManagedBean.customerBasicInfo}" type="definition">
                                 <p:panel >
-                                    <p:messages />
+                                    <p:messages id="updateMessage" autoUpdate="true"/>
                                     <div align="center">
                                         <h:panelGrid id="BasicProfile" columns="2" cellpadding="5" styleClass="ui-panelgrid-blank form-group" >
 
@@ -41,7 +41,10 @@
                                             <p:inputText id="customerCompany" value="#{cRMCustomerManagedBean.customerCompany}" required="true"  />
 
                                             <p:outputLabel for="customerMobileNumber"  value="Mobile Number:" />
-                                            <p:inputText id="customerMobileNumber" value="#{cRMCustomerManagedBean.replacedCustomerMobile}" required="true"  />
+                                            <p:column>
+                                                <p:inputText id="customerMobileNumber" value="#{cRMCustomerManagedBean.replacedCustomerMobile}" required="true" title="After you submit your changes, OTP will be sent to your updated mobile number for validation."/>
+                                                <p:tooltip for="customerMobileNumber" showEvent="focus" hideEvent="blur" position="top"/>
+                                            </p:column>
 
                                             <p:outputLabel for="customerEmailAddress"  value="Email Address:" />
                                             <p:inputText id="customerEmailAddress" value="#{cRMCustomerManagedBean.replacedCustomerEmail}" required="true"  />
@@ -65,13 +68,38 @@
                                 <h:panelGrid id="BasicProfile2" columns="2" cellpadding="5" styleClass="ui-panelgrid-blank form-group" >
                                     <p:commandButton value="Reset" type="reset" />
 
-                                    <p:commandButton value="Update" actionListener="#{cRMCustomerManagedBean.updateCustomerBasicProfile}" ajax="false"/>
+                                    <p:commandButton value="Update" actionListener="#{cRMCustomerManagedBean.updateCustomerBasicProfile}" update="@form"/>
                                 </h:panelGrid>
 
                             </p:dataList>
                         </div>
                     </div>
                 </div>
+                <p:dialog header="Mobile vaildation" widgetVar="otpDialog" responsive="true">
+                    <h:panelGrid id="otpPanel">
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="Please enter the one-time password sent to your registered mobile. "/>
+                            </p:column>
+                        </p:row>
+                        <p:row><p:messages id="otpMessage" autoUpdate="true" showDetail="true"/></p:row>
+                        <p:row>
+                            <p:column>
+                                <p:inputText type="password" value="#{cRMCustomerManagedBean.customerOTP}"/>
+                                <p:commandLink value="Resend OTP" actionListener="#{cRMCustomerManagedBean.updateCustomerBasicProfile}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:commandButton value="Cancel" update="otpPanel" onclick="PF('otpDialog').hide();"/>
+                                <p:commandButton value="Submit" actionListener="#{cRMCustomerManagedBean.validateMobile}" update="otpPanel"/>
+                            </p:column>
+                        </p:row>
+                    </h:panelGrid>
+                </p:dialog>
+                <p:confirmDialog closable="false" widgetVar="confirmDialog" message="Your mobile number has been updated." header="Profile updated" severity="info">
+                    <p:commandButton value="OK" style="font-family:Eurostile;font-size:16pt" onclick="PF('confirmDialog').hide();PF('otpDialog').hide();"/>
+                </p:confirmDialog>
             </h:form>
             <ezcomp:CCTimeout/>
         </h:body>

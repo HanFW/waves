@@ -7,12 +7,6 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/internalSystemTemplate.xhtml">
 
-    <ui:define name="internalSystemMenu">
-
-        <ui:include src="/WEB-INF/internalSystemMenuRelationshipManager.xhtml" />
-
-    </ui:define>
-
     <ui:define name="content">
         <h:body>
 
@@ -30,38 +24,44 @@
 
 
             <h:form>
-                <div align="center">
-                    <h:outputText value="Welcome " />
-                    <h:outputText value="#{employeeAccountManagedBean.userName}!"/>
-                    <br/>
-                    <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
-                    <br/>
-                    <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
-                    <br/>
-                    <h:outputText value="You have logged in as: Relationship Manager"/>
-                    <br/>
-                    <p:panel header="My Current Customers">
-                        <p:dataTable var="customerAdvanced" value="#{rMUpdateCustomerAdvancedManagedBean.customerListFromEmployeeId}" 
-                                     paginator="true" rows="10" emptyMessage="No Customer Assigned">
-                            <p:column headerText="Customer Name" >
-                                <h:outputText value="#{customerAdvanced.customerBasic.customerName}" /> 
-                            </p:column>
+                <div class="ui-g ui-fluid">
+                    <div class="ui-g-12 ui-lg-12">
+                        <div class="card card-w-title"> 
+                            <div align="center">
+                                <h:outputText value="Welcome " />
+                                <h:outputText value="#{employeeAccountManagedBean.userName}!"/>
+                                <br/>
+                                <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
+                                <br/>
+                                <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
+                                <br/>
+                                <h:outputText value="You have logged in as: Relationship Manager"/>
+                                <br/>
+                                <p:panel header="My Current Customers">
+                                    <p:dataTable var="customerAdvanced" value="#{rMUpdateCustomerAdvancedManagedBean.customerListFromEmployeeId}" 
+                                                 paginator="true" rows="10" emptyMessage="No Customer Assigned">
+                                        <p:column headerText="Customer Name" >
+                                            <h:outputText value="#{customerAdvanced.customerBasic.customerName}" /> 
+                                        </p:column>
 
-                            <p:column headerText="Gender" >
-                                <h:outputText value="#{customerAdvanced.customerBasic.customerGender}" /> 
-                            </p:column>
+                                        <p:column headerText="Gender" >
+                                            <h:outputText value="#{customerAdvanced.customerBasic.customerGender}" /> 
+                                        </p:column>
 
-                            <p:column headerText="Identification No." >
-                                <h:outputText value="#{customerAdvanced.customerBasic.customerIdentificationNum}" /> 
-                            </p:column>
+                                        <p:column headerText="Identification No." >
+                                            <h:outputText value="#{customerAdvanced.customerBasic.customerIdentificationNum}" /> 
+                                        </p:column>
 
-                            <p:column > 
-                                <p:commandButton value="Update Advanced Profile" actionListener="#{rMUpdateCustomerAdvancedManagedBean.redirectToViewAdvanced}" ajax="false">
-                                    <f:setPropertyActionListener target="#{rMUpdateCustomerAdvancedManagedBean.customerAdvancedId}" value="#{customerAdvanced.customerAdvancedId}" />
-                                </p:commandButton>
-                            </p:column>
-                        </p:dataTable>
-                    </p:panel>
+                                        <p:column > 
+                                            <p:commandButton value="Update Advanced Profile" actionListener="#{rMUpdateCustomerAdvancedManagedBean.redirectToViewAdvanced}" ajax="false">
+                                                <f:setPropertyActionListener target="#{rMUpdateCustomerAdvancedManagedBean.customerAdvancedId}" value="#{customerAdvanced.customerAdvancedId}" />
+                                            </p:commandButton>
+                                        </p:column>
+                                    </p:dataTable>
+                                </p:panel>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </h:form>
         </h:body>
