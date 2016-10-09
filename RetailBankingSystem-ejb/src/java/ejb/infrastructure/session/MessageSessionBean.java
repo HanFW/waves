@@ -101,8 +101,5 @@ public class MessageSessionBean implements MessageSessionBeanLocal {
         
         MessageBox messageBox = addNewMessage(fromWhere, messageType, subject, receivedDate, messageContent, customerBasicId);
         customerBasic.getMessageBox().add(messageBox);
-        System.out.println("/////////////////new message added//////////////");
-        System.out.println("///////////messageBox content" + messageBox.toString());
-        System.out.println("////////////message size in session bean" + customerBasic.getMessageBox().size());
     }
 }
