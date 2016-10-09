@@ -217,10 +217,11 @@ public class EnquiryManagerManagedBean implements Serializable {
     public String getCaseDetailById() {
         return enquirySessionBeanLocal.getCustomerEnquiryDetail(caseId);
     }
+    
+    public String getCaseReplyById() {
+        return enquirySessionBeanLocal.getCustomerEnquiryReply(caseId);
+    }
 
-//    public String getFollowUpDetailById() {
-//        return enquirySessionBeanLocal.getCustomerFollowUpDetail(followUpId);
-//    }
     public List<Issue> getCaseIssueById() {
         return enquirySessionBeanLocal.getCaseIssue(caseId);
     }
@@ -229,10 +230,6 @@ public class EnquiryManagerManagedBean implements Serializable {
         followUps = enquirySessionBeanLocal.getCaseFollowUp(caseId);
         return followUps;
     }
-//
-//    public List<Issue> getFollowUpIssueById() {
-//        return enquirySessionBeanLocal.getFollowUpIssue(followUpId);
-//    }
 
     public void replyToCase() throws IOException {
         String msg;
@@ -245,8 +242,8 @@ public class EnquiryManagerManagedBean implements Serializable {
             Calendar cal = Calendar.getInstance();
             receivedDate = cal.getTime();
             customerBasicId = enquirySessionBeanLocal.getEnquiryByCaseId(caseId).get(0).getCustomerBasic().getCustomerBasicId();
-            subject = "Your enquiry has been replied";
-            messageContent = "Your enquiry has been answered by one of our enquiry managers.\n" + 
+            subject = "Your enquiry (Case ID: " + caseId + ") has been replied";
+            messageContent = "Your enquiry (Case ID: " + caseId + ") has been answered by one of our enquiry managers.\n" + 
                              "Please view the reply from View Enquiry page.\n" +
                              "If our reply did not answer your question entirely, you may add a follow-up question to elaborate your concern." +
                              "Thank you.";
@@ -283,21 +280,6 @@ public class EnquiryManagerManagedBean implements Serializable {
         ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/enquirymanagerSubmitDone.xhtml?faces-redirect=true");
     }
 
-//    public void addFollowUpIssue() throws IOException {
-//        FacesContext context = FacesContext.getCurrentInstance();
-//        context.addMessage(null, new FacesMessage(enquirySessionBeanLocal.addNewFollowUpIssue(followUpId, departmentTo, issueProblem), " "));
-//        departmentTo = null;
-//        issueProblem = null;
-//    }
-//    public void saveFollowUpIssue() throws IOException {
-//        FacesContext context = FacesContext.getCurrentInstance();
-//        ExternalContext ec = context.getExternalContext();
-//        context.addMessage(null, new FacesMessage(enquirySessionBeanLocal.addNewFollowUpIssue(followUpId, departmentTo, issueProblem), " "));
-//        followUpId = null;
-//        departmentTo = null;
-//        issueProblem = null;
-//        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/enquirymanagerSubmitDone.xhtml");
-//    }
     public void redirectToViewEnquiryDone() throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext ec = context.getExternalContext();
@@ -320,17 +302,10 @@ public class EnquiryManagerManagedBean implements Serializable {
         return enquirySessionBeanLocal.caseIssueIsCreated(caseId);
     }
 
-//    public String followUpIssueCreated(Long followUpId) {
-//        return enquirySessionBeanLocal.followUpIssueIsCreated(followUpId);
-//    }
     public String caseIssueReplied(Long caseId) {
         return enquirySessionBeanLocal.caseIssueAllReplied(caseId);
     }
-//
-//    public String followUpIssueReplied(Long followUpId) {
-//        return enquirySessionBeanLocal.followUpIssueAllReplied(followUpId);
-//    }
-
+    
     public void show1() {
 
         if (ableToReply.equals("Yes")) {
@@ -338,8 +313,6 @@ public class EnquiryManagerManagedBean implements Serializable {
         } else {
             visible1 = false;
         }
-//        ableToReply = null;
-
     }
 
     public void show2() {
