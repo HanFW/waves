@@ -8,74 +8,47 @@
                 template="/WEB-INF/onlineBankingTemplate.xhtml"
                 xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
     <ui:define name="content">
-       
-        <h:body>
-        
-            <h:form>
-                <div class="ui-g ui-fluid">
-                    <div class="ui-g-12 ui-lg-12">
-                        <div class="card card-w-title"> 
-                            <p:panel>
-                            <p:outputLabel value="Welcome "/>
-                            <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
-                        </p:panel>
-                            <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
-                                <p:panel >
-                                    <p:messages />
 
 
-                                    <p:row>
-                                        <div align='center'>
-                                            <p:column>
-                                                <p:outputLabel for="caseType" style="font-size:15pt" value="What is it regarding?" />
-                                            </p:column>
-                                        </div>
-                                        <br/>
-                                        <h:outputText value="&lt;br/&gt;" escape="false" />
-                                        <p:column>
+        <h:form>
 
-                                            <p:selectOneMenu id="caseType" value="#{customerWriteEnquiryManagedBean.caseType}" 
-                                                             style="margin-bottom:10pxs" styleClass="form-group ui-panelgrid-blank">
-                                                <f:selectItem itemLabel="Please Select" itemValue="" />
-                                                <f:selectItem itemLabel="Credit Card" itemValue="Credit Card" />
-                                                <f:selectItem itemLabel="Saving Account" itemValue="Saving Account" />
-                                                <f:selectItem itemLabel="Loan" itemValue="Loan" />
-                                                <f:selectItem itemLabel="Online Banking" itemValue="Online Banking" />
-                                                <f:selectItem itemLabel="Fund Transfer" itemValue="Fund Transfer" />
-                                                <f:selectItem itemLabel="Wealth Management" itemValue="Wealth Management" />
-                                                <f:selectItem itemLabel="Others" itemValue="Others" />
-                                            </p:selectOneMenu>
+            <p:panel>
+                <p:outputLabel value="Welcome "/>
+                <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
+            </p:panel>
+            
+            <div align="center">
+            <p:panelGrid columns="1" styleClass="ui-panelgrid-blank form-group ui-lg-4">
+                
+                    <p:messages />
 
+                   <p:outputLabel for="caseType" style="font-size:15pt;text-align: center" value="What is it regarding?" />
+         
+                        <br/>
+                       
+                       
+                            <p:selectOneMenu id="caseType" value="#{customerWriteEnquiryManagedBean.caseType}" 
+                                             style="margin-bottom:10pxs" styleClass="form-group ui-panelgrid-blank">
+                                <f:selectItem itemLabel="Please Select" itemValue="" />
+                                <f:selectItem itemLabel="Credit Card" itemValue="Credit Card" />
+                                <f:selectItem itemLabel="Saving Account" itemValue="Saving Account" />
+                                <f:selectItem itemLabel="Loan" itemValue="Loan" />
+                                <f:selectItem itemLabel="Online Banking" itemValue="Online Banking" />
+                                <f:selectItem itemLabel="Fund Transfer" itemValue="Fund Transfer" />
+                                <f:selectItem itemLabel="Wealth Management" itemValue="Wealth Management" />
+                                <f:selectItem itemLabel="Others" itemValue="Others" />
+                            </p:selectOneMenu>
+                      
+                            <p:message for="caseType" />                
+                        <p:inputTextarea id="caseDetail" placeholder="Enquiry Detail" value="#{customerWriteEnquiryManagedBean.caseDetail}" required="true" rows="5" cols="80" counter="display" maxlength="1000" counterTemplate="{0} characters remaining." autoResize="false" />
+                      
+                        <h:outputText id="display" />
 
-                                        </p:column>
-                                        <p:column style='border:none'>
-                                            <p:message for="caseType" />
-                                        </p:column>
-                                    </p:row>
-
-                                    <h:outputText value="&lt;br/&gt;" escape="false" />
-                                    <h:form>
-
-                                        <h:outputText value="&lt;br/&gt;" escape="false" />
-                                        <p:inputTextarea id="caseDetail" placeholder="Enquiry Detail" value="#{customerWriteEnquiryManagedBean.caseDetail}" required="true" rows="5" cols="80" counter="display" maxlength="1000" counterTemplate="{0} characters remaining." autoResize="false" />
-                                        <h:outputText value="&lt;br/&gt;" escape="false" />
-                                        <h:outputText id="display" />
-
-                                    </h:form>
-
-
-
-
-
-                                    <p:commandButton value="Save" update="@form" actionListener="#{customerWriteEnquiryManagedBean.saveEnquiryCase}" ajax="false" />
-                                </p:panel>
-                            </p:panelGrid>
-                        </div>
-                    </div>
-                </div>
-
-            </h:form>
-            <ezcomp:CCTimeout/>
-        </h:body>
+                    <p:commandButton value="Save" update="@form" actionListener="#{customerWriteEnquiryManagedBean.saveEnquiryCase}" ajax="false" />
+              
+            </p:panelGrid>
+            </div>
+        </h:form>
+        <ezcomp:CCTimeout/>
     </ui:define>
 </ui:composition>

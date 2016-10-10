@@ -10,83 +10,60 @@
 
     <ui:define name="content">
         <h:form>
-            <div class="ui-g ui-fluid">
-                <div class="ui-g-12 ui-lg-12">
-                    <div class="card card-w-title">
-                        <p:panel>
-                            <p:outputLabel value="Welcome "/>
-                            <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
-                        </p:panel>
+            <p:panel>
+                <p:outputLabel value="Welcome "/>
+                <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
+            </p:panel>
 
-                        <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
-                            <p:panel id="panel" header="Add Recipient"> 
-                                <p:messages globalOnly="true"/>
+            <p:panel id="panel" header="Add Recipient" style="text-align: center">
+                <div align="center">
+                    <h:panelGrid columns="1" class="ui-lg-4">
+                        <p:messages globalOnly="true"/>
 
-                                <p:row>
-                                    <p:column>
-                                        <p:outputLabel for="recipientName" style="font-weight: bold" value="Recipent's Name: " />
-                                    </p:column>
-                                    <p:column>
-                                        <p:inputText required="true" label="Recipient Name" requiredMessage="Recipient's name is required." id="recipientName"
-                                                     value="#{payeeManagedBean.payeeName}">
-                                        </p:inputText>
-                                    </p:column>
-                                    <p:column>
-                                        <p:message for="recipientName" />
-                                    </p:column>
-                                </p:row>
+                        <p:outputLabel for="recipientName" style="font-weight: bold" value="Recipent's Name: " />
 
-                                <p:row>
-                                    <p:column>
-                                        <p:outputLabel for="recipientAccountNum" style="font-weight: bold" value="Recipent's Account Number: " />
-                                    </p:column>
-                                    <p:column>
-                                        <p:inputText required="true" label="Recipient Account Number" requiredMessage="Recipient's account number is required." id="recipientAccountNum"
-                                                     value="#{payeeManagedBean.payeeAccountNum}">
-                                        </p:inputText>
-                                    </p:column>
-                                    <p:column>
-                                        <p:message for="recipientAccountNum" />
-                                    </p:column>
-                                </p:row>
+                        <p:inputText required="true" label="Recipient Name" requiredMessage="Recipient's name is required." id="recipientName"
+                                     value="#{payeeManagedBean.payeeName}">
+                        </p:inputText>
 
-                                <p:row>
-                                    <p:column>
-                                        <p:outputLabel for="payeeAccountType" style="font-weight: bold" value="Recipient's Account Type: " />
-                                    </p:column>
-                                    <p:column>
-                                        <p:selectOneMenu id="payeeAccountType" value="#{payeeManagedBean.payeeAccountType}" 
-                                                         required="true" requiredMessage="Recipient's account type is required.">
-                                            <f:selectItem itemLabel="Please Select" itemValue="" />
-                                            <f:selectItem itemLabel="Monthly Savings Account" itemValue="Monthly Savings Account" />
-                                            <f:selectItem itemLabel="Bonus Savings Account" itemValue="Bonus Savings Account" />
-                                            <f:selectItem itemLabel="Basic Savings Account" itemValue="Basic Savings Account" />
-                                            <f:selectItem itemLabel="Fixed Deposit Account" itemValue="Fixed Deposit Account" />
-                                        </p:selectOneMenu>
-                                    </p:column>
-                                    <p:column>
-                                        <p:message for="payeeAccountType" />
-                                    </p:column>
-                                </p:row>
+                        <p:message for="recipientName" />
 
+                        <p:outputLabel for="recipientAccountNum" style="font-weight: bold" value="Recipent's Account Number: " />
 
+                        <p:inputText required="true" label="Recipient Account Number" requiredMessage="Recipient's account number is required." id="recipientAccountNum"
+                                     value="#{payeeManagedBean.payeeAccountNum}">
+                        </p:inputText>
 
-                                <p:commandButton id="cancelBtn" action="/web/onlineBanking/deposit/customerDepositIndex.xhtml" value="Cancel" update="panel" immediate = "true">
-                                    <p:confirm header="Cancel" message="Are you sure?" />
-                                </p:commandButton>
+                        <p:message for="recipientAccountNum" />
 
-                                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                                    <p:commandButton value="Yes" styleClass="ui-confirmdialog-yes" action="depositIndex"/>
-                                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" />
-                                </p:confirmDialog>
+                        <p:outputLabel for="payeeAccountType" style="font-weight: bold" value="Recipient's Account Type: " />
 
-                                <p:commandButton id="addBtn" value="Add Recipient" update="panel" 
-                                                 actionListener="#{payeeManagedBean.addPayee}" ajax="true"/>
-                            </p:panel>
-                        </p:panelGrid>
-                    </div>
-                </div>
-            </div>
+                        <p:selectOneMenu id="payeeAccountType" value="#{payeeManagedBean.payeeAccountType}" 
+                                         required="true" requiredMessage="Recipient's account type is required.">
+                            <f:selectItem itemLabel="Please Select" itemValue="" />
+                            <f:selectItem itemLabel="Monthly Savings Account" itemValue="Monthly Savings Account" />
+                            <f:selectItem itemLabel="Bonus Savings Account" itemValue="Bonus Savings Account" />
+                            <f:selectItem itemLabel="Basic Savings Account" itemValue="Basic Savings Account" />
+                            <f:selectItem itemLabel="Fixed Deposit Account" itemValue="Fixed Deposit Account" />
+                        </p:selectOneMenu>
+
+                        <p:message for="payeeAccountType" />
+                    </h:panelGrid>
+
+                    <h:panelGrid columns="2" class="ui-lg-4">
+
+                        <p:commandButton id="cancelBtn" action="/web/onlineBanking/deposit/customerDepositIndex.xhtml" value="Cancel" update="panel" immediate = "true">
+                            <p:confirm header="Cancel" message="Are you sure?" />
+                        </p:commandButton>
+                        <p:commandButton id="addBtn" value="Add Recipient" update="panel" 
+                                         actionListener="#{payeeManagedBean.addPayee}" ajax="true"/>
+                    </h:panelGrid>             
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                        <p:commandButton value="Yes" styleClass="ui-confirmdialog-yes" action="depositIndex"/>
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" />
+                    </p:confirmDialog>        
+                </div>    
+            </p:panel>
         </h:form>
         <ezcomp:CCTimeout/>
     </ui:define>
