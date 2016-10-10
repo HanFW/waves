@@ -2,7 +2,7 @@ package managedbean.deposit.customer;
 
 import ejb.customer.entity.CustomerBasic;
 import javax.ejb.EJB;
-import ejb.customer.session.CRMCustomerSessionBean;
+import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import ejb.deposit.entity.BankAccount;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -30,6 +30,9 @@ import org.apache.commons.io.IOUtils;
 @ViewScoped
 
 public class AccountManagedBean implements Serializable {
+    
+    @EJB
+    private CRMCustomerSessionBeanLocal customerSessionBeanLocal;
 
     @EJB
     private LoggingSessionBeanLocal loggingSessionBeanLocal;
@@ -38,10 +41,7 @@ public class AccountManagedBean implements Serializable {
     private MessageSessionBeanLocal messageSessionBeanLocal;
 
     @EJB
-    private InterestSessionBeanLocal interestSessionLocal;
-
-    @EJB
-    private CRMCustomerSessionBean customerSessionBean;
+    private InterestSessionBeanLocal interestSessionBeanLocal;
 
     @EJB
     private BankAccountSessionBeanLocal bankAccountSessionLocal;
@@ -853,7 +853,7 @@ public class AccountManagedBean implements Serializable {
 
                 if (existingCustomer.equals("Yes") && checkExist && agreement) {
 
-                    customerBasicId = customerSessionBean.retrieveCustomerBasicByIC(customerIdentificationNum.toUpperCase()).getCustomerBasicId();
+                    customerBasicId = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum.toUpperCase()).getCustomerBasicId();
                     CustomerBasic customerBasic = bankAccountSessionLocal.retrieveCustomerBasicById(customerBasicId);
                     Double customerAgeDouble = Double.valueOf(customerBasic.getCustomerAge());
 
@@ -873,7 +873,7 @@ public class AccountManagedBean implements Serializable {
                         monthlyInterest = "0";
                         isTransfer = "0";
                         isWithdraw = "0";
-                        newInterestId = interestSessionLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw);
+                        newInterestId = interestSessionBeanLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw);
 
                         if (bankAccount.getBankAccountType().equals("Monthly Savings Account")) {
                             bankAccountStatus = "Active";
@@ -930,7 +930,7 @@ public class AccountManagedBean implements Serializable {
                     customerAddress = customerStreetName + ", " + customerBlockNum + ", " + customerUnitNum + ", " + customerPostal;
                     newCustomer = "Yes";
 
-                    newCustomerBasicId = customerSessionBean.addNewCustomerBasic(customerName,
+                    newCustomerBasicId = customerSessionBeanLocal.addNewCustomerBasic(customerName,
                             customerSalutation, customerIdentificationNum.toUpperCase(),
                             customerGender, customerEmail, customerMobile.toString(), dateOfBirth,
                             customerNationality, customerCountryOfResidence, customerRace,
@@ -958,7 +958,7 @@ public class AccountManagedBean implements Serializable {
                         monthlyInterest = "0";
                         isTransfer = "0";
                         isWithdraw = "0";
-                        newInterestId = interestSessionLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw);
+                        newInterestId = interestSessionBeanLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw);
 
                         if (bankAccountDepositPeriod == null) {
                             bankAccountDepositPeriod = "None";
@@ -1077,7 +1077,7 @@ public class AccountManagedBean implements Serializable {
         customerSignature = "1234";
         newCustomer = "Yes";
 
-        newCustomerBasicId = customerSessionBean.addNewCustomerOneTime(customerName,
+        newCustomerBasicId = customerSessionBeanLocal.addNewCustomerOneTime(customerName,
                 customerSalutation, customerIdentificationNum.toUpperCase(),
                 customerGender, customerEmail, customerMobile.toString(), dateOfBirth,
                 customerNationality, customerCountryOfResidence, customerRace,
@@ -1085,7 +1085,7 @@ public class AccountManagedBean implements Serializable {
                 customerAddress, customerPostal.toString(), customerOnlineBankingAccountNum,
                 customerOnlineBankingPassword, customerSignature.getBytes(), newCustomer);
 
-        customerBasicId = customerSessionBean.addNewCustomerOneTime("Han FengWei",
+        customerBasicId = customerSessionBeanLocal.addNewCustomerOneTime("Han FengWei",
                 "Ms", "G11223344".toUpperCase(),
                 "Female", "yongxue0701@gmail.com", "84819970", "02/Jul/1993",
                 customerNationality, customerCountryOfResidence, customerRace,
@@ -1099,8 +1099,8 @@ public class AccountManagedBean implements Serializable {
         isTransfer = "0";
         isWithdraw = "0";
 
-        newInterestId = interestSessionLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw);
-        interestId = interestSessionLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw);
+        newInterestId = interestSessionBeanLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw);
+        interestId = interestSessionBeanLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw);
 
         //Bank Account Details
         bankAccountNum = bankAccountSessionLocal.generateBankAccount();
