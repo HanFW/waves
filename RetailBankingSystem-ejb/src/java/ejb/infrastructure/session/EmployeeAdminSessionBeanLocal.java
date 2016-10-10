@@ -25,13 +25,10 @@ public interface EmployeeAdminSessionBeanLocal {
     
     public Role findRole(Long RoleId);
     
-    public String createEmployeeAccount(String employeeName, String employeeDepartment,
+    public String createEmployeeAccount(String employeeName, String employeeGender,String employeeDepartment,
     String employeePosition, String employeeNRIC, String employeeMobileNum, String employeeEmail,
     Set<String> roles);
-    
-//    public void updateEmployeeAccount(String employeeName, String employeeDepartment,
-//    String employeePosition, Long employeeId, String employeeMobileNum, String employeeEmail,
-//    Set<String> roles);
+ 
     
     public void updateEmployeeAccount(Long id, String name, String department, String position, String mobile, String email, Set<String> roles);
     
@@ -53,6 +50,8 @@ public interface EmployeeAdminSessionBeanLocal {
     
     public List<String> getEmployeePositions();
     
+    public List<String> getEmployeeGenders();
+    
     public String deleteEmployee(Employee employee);
     
     public void editUserAccount(Long employeeId,String employeeName,String employeeDepartment,
@@ -61,8 +60,6 @@ public interface EmployeeAdminSessionBeanLocal {
     public List<String> getRoles();
     
     public List<Permission> getPermissionList(String roleName);
-    
-    public String[] getPermissionList1();
     
     public String[] getSelectedPermissionList(Long roleId);
     
