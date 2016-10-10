@@ -8,7 +8,6 @@
     <ui:define name="content">
 
         <h:form>
-            <<<<<<< HEAD
 
             <p:panel>
                 <p:outputLabel value="Welcome "/>
@@ -93,35 +92,6 @@
                         <p:message for="fixedDepositPeriod" />
                     </p:panel>
 
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel for="bankAccountPwd" style="font-weight: bold" value="Account Password: " />
-                        </p:column>
-                        <p:column>
-                            <p:password id="bankAccountPwd" value="#{internalOpenAccountManagedBean.bankAccountPwd}" match="confirmBankAccountPwd" 
-                                        required="true" requiredMessage="Required Field">
-                                <f:validateLength minimum="6" maximum="6" />
-                            </p:password>
-                        </p:column>
-                        <p:column>
-                            <p:message for="bankAccountPwd" />
-                        </p:column>
-                    </p:row>   
-
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel for ="confirmBankAccountPwd" style="font-weight:bold" value="Confirm Password: " />
-                        </p:column>
-                        <p:column>
-                            <p:password id="confirmBankAccountPwd" value="#{internalOpenAccountManagedBean.confirmBankAccountPwd}" 
-                                        label="Confirm Password" maxlength="6" required="true" requiredMessage="Required Field">
-                                <f:validateLength minimum="6" maximum="6" />
-                            </p:password>
-                        </p:column>
-                        <p:column>
-                            <p:message for="confirmBankAccountPwd" />
-                        </p:column>
-                    </p:row>
                     <h:panelGrid columns="2" style="margin-bottom:10px">
                         <p:selectBooleanCheckbox id = "agreement" value="#{internalOpenAccountManagedBean.agreement}" 
                                                  style="margin-top:5px"/>
