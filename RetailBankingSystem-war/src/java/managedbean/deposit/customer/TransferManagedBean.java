@@ -78,7 +78,12 @@ public class TransferManagedBean {
 
             for (int i = 0; i < bankAccounts.size(); i++) {
                 fromAccounts.put(bankAccounts.get(i).getBankAccountType() + "-" + bankAccounts.get(i).getBankAccountNum(), bankAccounts.get(i).getBankAccountType() + "-" + bankAccounts.get(i).getBankAccountNum());
-                toAccounts.put(bankAccounts.get(i).getBankAccountType() + "-" + bankAccounts.get(i).getBankAccountNum(), bankAccounts.get(i).getBankAccountType() + "-" + bankAccounts.get(i).getBankAccountNum());
+            }
+
+            for (int a = 0; a < bankAccounts.size(); a++) {
+                if(!bankAccounts.get(a).getBankAccountType().equals("Fixed Deposit Account")) {
+                    toAccounts.put(bankAccounts.get(a).getBankAccountType() + "-" + bankAccounts.get(a).getBankAccountNum(), bankAccounts.get(a).getBankAccountType() + "-" + bankAccounts.get(a).getBankAccountNum());
+                }
             }
 
             for (int j = 0; j < payees.size(); j++) {

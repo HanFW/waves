@@ -879,8 +879,9 @@
                                 <p:outputLabel for="customerPostal" style="font-weight: bold" value="Postal Code" />
 
                                 <p:inputText label="Postal Code" id="customerPostal"
-                                             value="#{accountManagedBean.customerPostal}"
-                                             required="true" requiredMessage="Required Field">
+                                             value="#{accountManagedBean.customerPostal}" validatorMessage="Invalid Postal Code"
+                                             required="true" requiredMessage="Required Field" converterMessage="Invalid Input">
+                                    <f:validateDoubleRange minimum="100000" maximum="999999" />
                                 </p:inputText>
 
                                 <p:message for="customerPostal" />
@@ -1025,9 +1026,6 @@
                         <h:panelGrid columns="2" class="ui-lg-6">     
                             <h:outputText value="Bank Account Type: "/>
                             <h:outputText value="#{accountManagedBean.bankAccountType}"/>
-
-                            <h:outputText value="Initial Deposit Amount: "/>
-                            <h:outputText value="#{accountManagedBean.initialDepositAmt}"/>
                         </h:panelGrid>
                         <br/>
                         <h:panelGrid columns="2" class="ui-lg-6">  
@@ -1044,6 +1042,7 @@
 
                         <h:panelGrid columns="2" class="ui-lg-6">     
                             <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('openAccountWizard').back()"/>
+                            
                             <p:commandButton id="saveBtn" value="Open Account" update="growl"
                                              actionListener="#{accountManagedBean.saveAccount}" ajax="true"/>
                         </h:panelGrid> 

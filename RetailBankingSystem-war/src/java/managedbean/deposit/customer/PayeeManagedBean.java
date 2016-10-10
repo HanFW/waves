@@ -123,6 +123,8 @@ public class PayeeManagedBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Your recipient account does not exist.", "Failed!"));
         } else if ((bankAccount.getCustomerBasic().getCustomerBasicId()).equals(customerBasic.getCustomerBasicId())) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! You cannot add your own account as recipient.", "Failed!"));
+        } else if (bankAccount.getBankAccountType().equals("Fixed Deposit Account")) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! You cannot add fixed deposit account user as recipient.", "Failed!"));
         } else {
 
             if (!bankAccount.getBankAccountType().equals(payeeAccountType)) {

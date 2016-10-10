@@ -46,7 +46,9 @@ public class FixedDepositAccountManagedBean {
             fixedDepositAccounts = new HashMap<String, String>();
 
             for (int i = 0; i < bankAccounts.size(); i++) {
-                fixedDepositAccounts.put(bankAccounts.get(i).getBankAccountType() + "-" + bankAccounts.get(i).getBankAccountNum(), bankAccounts.get(i).getBankAccountType() + "-" + bankAccounts.get(i).getBankAccountNum());
+                if (bankAccounts.get(i).getBankAccountType().equals("Fixed Deposit Account")) {
+                    fixedDepositAccounts.put(bankAccounts.get(i).getBankAccountType() + "-" + bankAccounts.get(i).getBankAccountNum(), bankAccounts.get(i).getBankAccountType() + "-" + bankAccounts.get(i).getBankAccountNum());
+                }
             }
         }
     }

@@ -68,6 +68,9 @@ public class InternalOpenAccountManagedBean {
     private String customerName;
     private String accountApproval;
 
+    private boolean visible = false;
+    private boolean fixedDepositRender = false;
+
     public InternalOpenAccountManagedBean() {
     }
 
@@ -80,6 +83,33 @@ public class InternalOpenAccountManagedBean {
         customerIdentificationNum = customerBasic.getCustomerIdentificationNum();
         customerEmail = customerBasic.getCustomerEmail();
         customerMobile = customerBasic.getCustomerMobile();
+    }
+
+    public void show() {
+
+        if (bankAccountType.equals("Fixed Deposit Account")) {
+            visible = true;
+            fixedDepositRender = true;
+        } else {
+            visible = false;
+            fixedDepositRender = false;
+        }
+    }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
+
+    public boolean isFixedDepositRender() {
+        return fixedDepositRender;
+    }
+
+    public void setFixedDepositRender(boolean fixedDepositRender) {
+        this.fixedDepositRender = fixedDepositRender;
     }
 
     public String getBankAccountType() {
@@ -332,7 +362,6 @@ public class InternalOpenAccountManagedBean {
             transferDailyLimit = "3000.0";
             transferBalance = "3000.0";
             bankAccountMinSaving = "";
-            bankAccountDepositPeriod = "None";
             currentFixedDepositPeriod = "0";
             fixedDepositStatus = "";
             statementDateDouble = 0.0;
@@ -352,12 +381,20 @@ public class InternalOpenAccountManagedBean {
             isWithdraw = "0";
             newInterestId = interestSessionBeanLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw);
 
+            if (bankAccountDepositPeriod == null) {
+                bankAccountDepositPeriod = "None";
+            }
+
             newAccountId = bankAccountSessionBeanLocal.addNewAccount(bankAccountNum, bankAccountType,
                     bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
                     bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
                     statementDateDouble, customerBasicId, newInterestId);
 
             bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountById(newAccountId);
+
+            if (!bankAccountDepositPeriod.equals("None")) {
+                bankAccountSessionBeanLocal.updateDepositPeriod(bankAccountNum, bankAccountDepositPeriod);
+            }
 
             statusMessage = "New Account Saved Successfully.";
 
