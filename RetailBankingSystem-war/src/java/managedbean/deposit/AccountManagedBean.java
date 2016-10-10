@@ -1069,7 +1069,7 @@ public class AccountManagedBean implements Serializable {
         customerPostal = "118429";
         customerOnlineBankingAccountNum = "123456789";
         customerOnlineBankingPassword = "123456789";
-        customerSignature = "1234";
+//        customerSignature = "1234";
 
         newCustomerBasicId = customerSessionBean.addNewCustomerOneTime(customerName,
                 customerSalutation, customerIdentificationNum.toUpperCase(),
@@ -1095,7 +1095,7 @@ public class AccountManagedBean implements Serializable {
 
         newInterestId = interestSessionLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw);
         interestId = interestSessionLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw);
-        
+
         //Bank Account Details
         bankAccountNum = bankAccountSessionLocal.generateBankAccount();
         bankAccountPwd = "123456";
