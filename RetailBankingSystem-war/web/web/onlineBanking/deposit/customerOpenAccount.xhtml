@@ -8,6 +8,7 @@
     <ui:define name="content">
 
         <h:form>
+            <<<<<<< HEAD
 
             <p:panel>
                 <p:outputLabel value="Welcome "/>
@@ -57,12 +58,40 @@
                                 <f:selectItem itemLabel="Bonus Savings Account" itemValue="Bonus Savings Account" />
                                 <f:selectItem itemLabel="Basic Savings Account" itemValue="Basic Savings Account" />
                                 <f:selectItem itemLabel="Fixed Deposit Account" itemValue="Fixed Deposit Account" />
+                                <p:ajax event="change" update="fixedDepositDurationPanel" listener="#{internalOpenAccountManagedBean.show()}"/>
                             </p:selectOneMenu>
                         </p:column>
                         <p:column>
                             <p:message for="bankAccountType" />
                         </p:column>
                     </p:row>
+
+                    <p:panel style="border: none;" id="fixedDepositDurationPanel" visible="#{internalOpenAccountManagedBean.visible}">
+                        <p:outputLabel for="fixedDepositPeriod" style="font-weight: bold" value="Deposit Period: " />
+
+                        <p:selectOneMenu id="fixedDepositPeriod" value="#{internalOpenAccountManagedBean.bankAccountDepositPeriod}" 
+                                         style="width:125px" required="#{internalOpenAccountManagedBean.fixedDepositRender}" 
+                                         requiredMessage="Required Field">
+                            <f:selectItem itemLabel="Please Select" itemValue="" />
+                            <f:selectItem itemLabel="1 Month" itemValue="1 Month" />
+                            <f:selectItem itemLabel="2 Month" itemValue="2 Month" />
+                            <f:selectItem itemLabel="3 Month" itemValue="3 Month" />
+                            <f:selectItem itemLabel="4 Month" itemValue="4 Month" />
+                            <f:selectItem itemLabel="5 Month" itemValue="5 Month" />
+                            <f:selectItem itemLabel="6 Month" itemValue="6 Month" />
+                            <f:selectItem itemLabel="7 Month" itemValue="7 Month" />
+                            <f:selectItem itemLabel="8 Month" itemValue="8 Month" />
+                            <f:selectItem itemLabel="9 Month" itemValue="9 Month" />
+                            <f:selectItem itemLabel="10 Month" itemValue="10 Month" />
+                            <f:selectItem itemLabel="11 Month" itemValue="11 Month" />
+                            <f:selectItem itemLabel="12 Month" itemValue="12 Month" />
+                            <f:selectItem itemLabel="18 Month" itemValue="18 Month" />
+                            <f:selectItem itemLabel="24 Month" itemValue="24 Month" />
+                            <f:selectItem itemLabel="36 Month" itemValue="36 Month" />
+                        </p:selectOneMenu>
+
+                        <p:message for="fixedDepositPeriod" />
+                    </p:panel>
 
                     <p:row>
                         <p:column>
@@ -102,15 +131,13 @@
                         <h:outputText value="I have also read and agree to the Terms and Conditions Governing Personal Data Protection Act 2012."/>
                     </h:panelGrid>
                     <br/>
-                   
+
                     <div align ="center">
 
                         <p:commandButton id="saveBtn" value="Open Account" actionListener="#{internalOpenAccountManagedBean.saveAccount}" 
                                          ajax="true" update="panel" style="width: 50%"/>
                     </div>
                 </p:panel>
-
-
 
                 <p:panelGrid>
                     <h3>
@@ -157,52 +184,46 @@
                 <br/>
                 <h:panelGrid columns="9" cellpadding="5">
 
-                   
-                            <p:outputLabel style="font-weight: bold" value="Deposit Period(Month)" />
-                        
-                            <p:outputLabel value="1 - 2" />
-                        
-                            <p:outputLabel value="3 - 5" />
-                        
-                            <p:outputLabel value="6 - 8" />
-                        
-                            <p:outputLabel value="9 - 11" />
-                        
-                            <p:outputLabel value="12"/>
-                        
-                            <p:outputLabel value="18"/>
-                        
-                            <p:outputLabel value="24"/>
-                        
-                            <p:outputLabel value="36"/>
-                        
-                            <p:outputLabel style="font-weight: bold" value="Interest Rate" />
-                        
-                            <p:outputLabel value="0.05%" />
-                        
-                            <p:outputLabel value="0.1%" />
-                        
-                            <p:outputLabel value="0.15%" />
-                        
-                            <p:outputLabel value="0.2%" />
-                       
-                            <p:outputLabel value="0.25%" />
-                        
-                            <p:outputLabel value="0.5%" />
-                        
-                            <p:outputLabel value="0.55%" />
-                       
-                            <p:outputLabel value="0.65%" />
-                      
+                    <p:outputLabel style="font-weight: bold" value="Deposit Period(Month)" />
+
+                    <p:outputLabel value="1 - 2" />
+
+                    <p:outputLabel value="3 - 5" />
+
+                    <p:outputLabel value="6 - 8" />
+
+                    <p:outputLabel value="9 - 11" />
+
+                    <p:outputLabel value="12"/>
+
+                    <p:outputLabel value="18"/>
+
+                    <p:outputLabel value="24"/>
+
+                    <p:outputLabel value="36"/>
+
+                    <p:outputLabel style="font-weight: bold" value="Interest Rate" />
+
+                    <p:outputLabel value="0.05%" />
+
+                    <p:outputLabel value="0.1%" />
+
+                    <p:outputLabel value="0.15%" />
+
+                    <p:outputLabel value="0.2%" />
+
+                    <p:outputLabel value="0.25%" />
+
+                    <p:outputLabel value="0.5%" />
+
+                    <p:outputLabel value="0.55%" />
+
+                    <p:outputLabel value="0.65%" />
+
                 </h:panelGrid>
                 <br/>
                 <br/>
-
-
-
-
             </p:panelGrid>
-
         </h:form>
         <ezcomp:CCTimeout/>
     </ui:define>

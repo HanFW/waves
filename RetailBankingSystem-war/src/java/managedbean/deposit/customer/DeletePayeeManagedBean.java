@@ -75,12 +75,12 @@ public class DeletePayeeManagedBean implements Serializable {
         Payee payee = payeeSessionLocal.retrievePayeeByNum(payeeAccountNum);
 
         if (payee.getPayeeId() == null) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Recipient does not exist.", "Failed!"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Recipient does not exist.", "Failed!"));
             loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "delete recipient", "failed", "Recipient does not exist");
         } else {
             String delete = payeeSessionLocal.deletePayee(payeeAccountNum);
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Successfuly! Recipient deleted Successfully.", "Successfuly!"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Successfuly! Recipient deleted Successfully.", "Successfuly!"));
             loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "delete recipient", "successful", null);
         }
     }

@@ -19,6 +19,7 @@ import javax.faces.context.FacesContext;
 @RequestScoped
 
 public class UpdateDailyTransferLimit {
+
     @EJB
     private LoggingSessionBeanLocal loggingSessionBeanLocal;
 
@@ -41,7 +42,7 @@ public class UpdateDailyTransferLimit {
 
         if (ec.getSessionMap().get("customer") != null) {
             CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
-            
+
             List<BankAccount> bankAccounts = bankAccountSessionLocal.retrieveBankAccountByCusIC(customerBasic.getCustomerIdentificationNum());
 
             myBankAccounts = new HashMap<String, String>();
@@ -88,12 +89,12 @@ public class UpdateDailyTransferLimit {
         System.out.println("=");
         System.out.println("====== deposit/UpdateDailyTransferLimit: submit() ======");
         CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
-        
+
         bankAccountNum = handleAccountString(bankAccountNumWithType);
         bankAccountSessionLocal.updateDailyTransferLimit(bankAccountNum, dailyTransferLimit);
 
         loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "update daily transfer limit", "successful", null);
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("You have updated your daily transfer limit successfully.", " Successfully"));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "You have updated your daily transfer limit successfully.", " Successfully"));
     }
 
     private String handleAccountString(String bankAccountNumWithType) {

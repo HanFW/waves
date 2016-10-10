@@ -32,7 +32,6 @@ public class InternalOpenAccountManagedBean {
     private InterestSessionBeanLocal interestSessionBeanLocal;
 
     private String bankAccountType;
-    private String bankAccountPwd;
     private String confirmBankAccountPwd;
     private String customerIdentificationNum;
     private String customerEmail;
@@ -67,6 +66,10 @@ public class InternalOpenAccountManagedBean {
     private Date receivedDate;
     private String messageContent;
     private String customerName;
+    private String accountApproval;
+
+    private boolean visible = false;
+    private boolean fixedDepositRender = false;
 
     public InternalOpenAccountManagedBean() {
     }
@@ -82,20 +85,39 @@ public class InternalOpenAccountManagedBean {
         customerMobile = customerBasic.getCustomerMobile();
     }
 
+    public void show() {
+
+        if (bankAccountType.equals("Fixed Deposit Account")) {
+            visible = true;
+            fixedDepositRender = true;
+        } else {
+            visible = false;
+            fixedDepositRender = false;
+        }
+    }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
+
+    public boolean isFixedDepositRender() {
+        return fixedDepositRender;
+    }
+
+    public void setFixedDepositRender(boolean fixedDepositRender) {
+        this.fixedDepositRender = fixedDepositRender;
+    }
+
     public String getBankAccountType() {
         return bankAccountType;
     }
 
     public void setBankAccountType(String bankAccountType) {
         this.bankAccountType = bankAccountType;
-    }
-
-    public String getBankAccountPwd() {
-        return bankAccountPwd;
-    }
-
-    public void setBankAccountPwd(String bankAccountPwd) {
-        this.bankAccountPwd = bankAccountPwd;
     }
 
     public String getConfirmBankAccountPwd() {
@@ -318,8 +340,16 @@ public class InternalOpenAccountManagedBean {
         this.customerName = customerName;
     }
 
+    public String getAccountApproval() {
+        return accountApproval;
+    }
+
+    public void setAccountApproval(String accountApproval) {
+        this.accountApproval = accountApproval;
+    }
+
     public void saveAccount() throws IOException {
-        System.out.println("hello");
+
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
         CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
@@ -332,16 +362,15 @@ public class InternalOpenAccountManagedBean {
             transferDailyLimit = "3000.0";
             transferBalance = "3000.0";
             bankAccountMinSaving = "";
-            bankAccountDepositPeriod = "None";
             currentFixedDepositPeriod = "0";
             fixedDepositStatus = "";
             statementDateDouble = 0.0;
 
             if (bankAccountType.equals("Monthly Savings Account")) {
-                bankAccountStatus = "Activated";
+                bankAccountStatus = "Active";
                 bankAccountMinSaving = "Insufficient";
             } else {
-                bankAccountStatus = "Inactivated";
+                bankAccountStatus = "Inactive";
             }
 
             customerBasicId = customerBasic.getCustomerBasicId();
@@ -351,13 +380,21 @@ public class InternalOpenAccountManagedBean {
             isTransfer = "0";
             isWithdraw = "0";
             newInterestId = interestSessionBeanLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw);
-            
-            newAccountId = bankAccountSessionBeanLocal.addNewAccount(bankAccountNum, bankAccountPwd, bankAccountType,
+
+            if (bankAccountDepositPeriod == null) {
+                bankAccountDepositPeriod = "None";
+            }
+
+            newAccountId = bankAccountSessionBeanLocal.addNewAccount(bankAccountNum, bankAccountType,
                     bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
                     bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
                     statementDateDouble, customerBasicId, newInterestId);
 
             bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountById(newAccountId);
+
+            if (!bankAccountDepositPeriod.equals("None")) {
+                bankAccountSessionBeanLocal.updateDepositPeriod(bankAccountNum, bankAccountDepositPeriod);
+            }
 
             statusMessage = "New Account Saved Successfully.";
 
@@ -385,7 +422,7 @@ public class InternalOpenAccountManagedBean {
 
         } else {
             System.out.println("else");
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Please agree to terms.", "Failed!"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Please agree to terms.", "Failed!"));
         }
     }
 }

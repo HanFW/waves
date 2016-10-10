@@ -1,0 +1,101 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/internalSystemTemplate.xhtml">
+
+    <ui:define name="internalSystemMenu">
+
+        <!--        <ui:include src="/WEB-INF/internalSystemMenuCounterTeller.xhtml" />-->
+
+    </ui:define>
+
+    <ui:define name="content">
+        <h:body>
+            <h:form>
+                <p:menubar>
+                    <p:submenu label="Home">
+                        <p:menuitem value="Home" url="/web/internalSystem/infrastructure/employeeCounterTellerMainPage.xhtml"/>
+                    </p:submenu>
+
+                    <p:submenu label="Log Out">
+                        <p:menuitem value="Logout" actionListener="#{employeeLoginManagedBean.doLogOut}" />
+                    </p:submenu>
+                </p:menubar>
+            </h:form>
+
+            <h:form id="formMain">
+
+                <div class="ui-g ui-fluid">
+                    <div class="ui-g-12 ui-lg-12">
+                        <div class="card card-w-title"> 
+                            <div align="center">
+                                <p:messages globalOnly="true"/>
+                                <p:dataTable var="customerBasic" value="#{employeeOpenAccountApprovalManagedBean.customerBasics}" 
+                                             paginator="true" rows="10" emptyMessage="No Record" reflow="true">
+
+                                    <p:column headerText="Customer Name"> 
+                                        <h:outputText value="#{customerBasic.customerName}" />
+                                    </p:column>
+
+                                    <p:column headerText="Identification Number"> 
+                                        <h:outputText value="#{customerBasic.customerIdentificationNum}" />
+                                    </p:column>
+
+                                    <p:column headerText="Gender" >
+                                        <h:outputText value="#{customerBasic.customerGender}" /> 
+                                    </p:column>
+
+                                    <p:column headerText="Date of Birth"> 
+                                        <h:outputText value="#{customerBasic.customerDateOfBirth}" />
+                                    </p:column>
+
+                                    <p:column headerText="Nationality"> 
+                                        <h:outputText value="#{customerBasic.customerNationality}" />
+                                    </p:column>
+
+                                    <p:column headerText="Identification">
+                                        <p:commandButton process="@this" oncomplete="PF('dlg1').show()" 
+                                                         value="View" update="identificationNumDialog">
+                                            <f:setPropertyActionListener value="#{customerBasic.customerIdentificationNum}" target="#{employeeOpenAccountApprovalManagedBean.customerIdentificationNum}"/>
+                                        </p:commandButton>
+                                    </p:column>
+
+                                    <p:column headerText="Approve">
+                                        <p:commandButton process="@this" ajax="false"
+                                                         value="Approve" action="#{employeeOpenAccountApprovalManagedBean.approveOpenAccount()}">
+                                            <f:setPropertyActionListener value="#{customerBasic.customerIdentificationNum}" target="#{employeeOpenAccountApprovalManagedBean.customerIdentificationNum}"/>
+                                        </p:commandButton>
+                                    </p:column>
+
+                                    <p:column headerText="Reject">
+                                        <p:commandButton process="@this" ajax="false"
+                                                         value="Reject" action="#{employeeOpenAccountApprovalManagedBean.rejectOpenAccount()}">
+                                            <f:setPropertyActionListener value="#{customerBasic.customerIdentificationNum}" target="#{employeeOpenAccountApprovalManagedBean.customerIdentificationNum}"/>
+                                        </p:commandButton>
+                                    </p:column>
+
+                                </p:dataTable>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </h:form>
+
+            <h:form id="identificationNumDialog">
+                <p:dialog header="Identification Softcopy" widgetVar="dlg1" minHeight="40"
+                          draggable="true">
+                    <div>
+                        <img style="width: 400px;height: 400px" 
+                             src="/RetailBankingSystem-war/resources/customerIdentification/#{employeeOpenAccountApprovalManagedBean.customerIdentificationNum}.png"/>
+                    </div>
+                </p:dialog>
+            </h:form>
+        </h:body>
+    </ui:define>
+</ui:composition>
+

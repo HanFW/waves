@@ -53,7 +53,7 @@ public class EmployeeViewAccountDoneManagedBean {
 
         if (bankAccount.isEmpty()) {
             loggingSessionBeanLocal.createNewLogging("employee", null, "view account", "failed", "invalid customer");
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Your identification is invalid", "Failed!"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,"Failed! Your identification is invalid", "Failed!"));
         } else {
             loggingSessionBeanLocal.createNewLogging("employee", null, "view account", "successful", null);
         }
