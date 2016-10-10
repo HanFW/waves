@@ -34,7 +34,7 @@ public class CustomerEmailSessionBean implements CustomerEmailSessionBeanLocal {
         String emailFromAddress = "Han Fengwei Test Send<merlionbankes05@gmail.com>";
         String toEmailAddress = "Han Fengwei Test Receive<" + customer.getCustomerEmail() + ">";
         String mailer = "JavaMailer";
-        String emailText = "Dear customer, \n";
+        String emailText = "Dear " + customer.getCustomerName() + ", \n";
 
         switch (subject) {
             //deposit: open deposit account
@@ -44,7 +44,13 @@ public class CustomerEmailSessionBean implements CustomerEmailSessionBeanLocal {
                     emailText += "Your online banking account has been successfully created.\n";
                     emailText += "Initial User ID: " + customer.getCustomerOnlineBankingAccountNum() + "\n";
                     emailText += "Initial PIN: " + actions.get("onlineBankingPassword") + "\n";
-                    emailText += "Please login with your initial User ID and PIN to activate your online banking account.";
+                    emailText += "Please login with your initial User ID and PIN. \n\n";
+                    emailText += "If your bank account type is Monthly Saving Account, please remember minimum monthly saving is S$50.";
+                    emailText += "Otherwise, you are not able to get bonus interest.\n\n";
+                    emailText += "If your bank account type is not Monthly Saving Account, please check your bank account status under 'My Account' after you login.\n";
+                    emailText += "Please deposit/transfer sufficient amount to your account to activate your bank account, if your bank account status is inactive.\n";
+                    emailText += "Please activate your bank account within one week.\n";
+                    emailText += "Otherwise, our system will automatically close your account after one week.\n";
                 }
                 break;
             case "resetOnlineBankingPassword":

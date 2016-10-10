@@ -56,6 +56,7 @@ public class EmployeeOpenAccountApprovalManagedBean implements Serializable {
     public void approveOpenAccount() throws IOException {
 
         ec = FacesContext.getCurrentInstance().getExternalContext();
+        System.out.println(customerIdentificationNum);
         bankAccountSessionBeanLocal.approveAccount(customerIdentificationNum);
         CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum);
 

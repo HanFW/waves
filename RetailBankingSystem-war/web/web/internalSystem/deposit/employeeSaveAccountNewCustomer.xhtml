@@ -46,17 +46,11 @@
                                     <p:messages />
 
                                     <h:panelGrid columns="1" cellpadding="5" styleClass="ui-panelgrid-blank form-group">     
-                                        <h:form id="formMain">
-                                            <h:outputText style="font-weight: bold" value="Bank Account Num: "/>
-                                            <h:outputText value="#{employeeSaveAccountManagedBean.bankAccountNum}"/>
-                                            <br/>
-                                            <h:outputText style="font-weight: bold" value="Bank Account Type: "/>
-                                            <h:outputText value="#{employeeSaveAccountManagedBean.bankAccountType}"/>
-                                            <br/>
-                                            <h:outputText style="font-weight: bold" value="Bank Account Status: "/>
-                                            <h:outputText value="#{employeeSaveAccountManagedBean.bankAccountStatus}"/>
-                                            <br/>
-                                        </h:form>
+                                        <h:outputLabel value="We have received customer open account application." 
+                                                       style="font-weight:bold;font-size: 18px"/>
+
+                                        <h:outputLabel value="We will process customer application and send a confirmation emial to his/her within 2-5 working days." 
+                                                       style="font-weight:bold;font-size: 18px"/>
                                     </h:panelGrid>
                                 </p:panel>
                             </div>

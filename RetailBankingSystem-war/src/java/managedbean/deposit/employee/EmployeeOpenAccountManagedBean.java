@@ -820,7 +820,7 @@ public class EmployeeOpenAccountManagedBean implements Serializable {
             ec.getFlash().put("bankAccountType", bankAccountType);
             ec.getFlash().put("bankAccountStatus", bankAccountStatus);
 
-            ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/deposit/employeeSaveAccount.xhtml?faces-redirect=true");
+            ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/deposit/employeeSaveAccountExistingCustomer.xhtml?faces-redirect=true");
 
         } else if (existingCustomer.equals("Yes") && !checkExist) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! You don't have Merlion bank account yet.", "Failed!"));
@@ -874,7 +874,7 @@ public class EmployeeOpenAccountManagedBean implements Serializable {
             ec.getFlash().put("bankAccountType", bankAccountType);
             ec.getFlash().put("bankAccountStatus", bankAccountStatus);
 
-            ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/deposit/employeeSaveAccount.xhtml?faces-redirect=true");
+            ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/deposit/employeeSaveAccountNewCustomer.xhtml?faces-redirect=true");
 
         } else if (existingCustomer.equals("No") && checkExist) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! You have Merlion bank account already. Please check.", "Failed!"));

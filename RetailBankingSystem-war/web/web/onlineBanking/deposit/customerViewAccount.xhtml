@@ -39,6 +39,10 @@
                             <p:column headerText="Balance"> 
                                 <h:outputText value="S$#{bankAccount.bankAccountBalance}" />
                             </p:column>
+                            
+                            <p:column headerText="Status"> 
+                                <h:outputText value="#{bankAccount.bankAccountStatus}" />
+                            </p:column>
 
                             <p:column headerText="Transfer"> 
                                 <center>
