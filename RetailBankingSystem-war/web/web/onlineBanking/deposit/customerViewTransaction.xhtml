@@ -12,44 +12,39 @@
     <ui:define name="content">
 
         <h:form>
-            <div class="ui-g">
-                <div class="ui-g-12 ui-lg-12">
-                    <div class="card card-w-title">
-                        <p:panel>
-                    <p:outputLabel value="Welcome "/>
-                    <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
-                </p:panel>
-                        <p:dataTable var="bankAccount" value="#{accountDataTableBean.bankAccount}" 
-                                     reflow="true" paginator="true" rows="10" emptyMessage="No Account" >
-                            <f:facet name="header">
-                                Choose Account to View Transaction History
-                            </f:facet>
-                            <p:column headerText="Bank Account Type"> 
-                                <p:commandLink process="@this" action="/web/onlineBanking/deposit/customerViewTransactionDone.xhtml">
-                                    <h:outputText value="#{bankAccount.bankAccountType}" />
-                                    <f:setPropertyActionListener value="#{bankAccount.bankAccountNum}" target="#{transactionManagedBean.bankAccountNum}" />
-                                </p:commandLink>
-                            </p:column>
 
-                            <p:column headerText="Bank Account Number" >
-                                <p:commandLink process="@this" action="/web/onlineBanking/deposit/customerViewTransactionDone.xhtml" >
-                                    <h:outputText value="#{bankAccount.bankAccountNum}" /> 
-                                    <f:setPropertyActionListener value="#{bankAccount.bankAccountNum}" target="#{transactionManagedBean.bankAccountNum}" />
-                                </p:commandLink>
-                            </p:column>
+            <p:panel>
+                <p:outputLabel value="Welcome "/>
+                <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
+            </p:panel>
+            <p:dataTable var="bankAccount" value="#{accountDataTableBean.bankAccount}" 
+                         reflow="true" paginator="true" rows="10" emptyMessage="No Account" >
+                <f:facet name="header">
+                    Choose Account to View Transaction History
+                </f:facet>
+                <p:column headerText="Bank Account Type"> 
+                    <p:commandLink process="@this" action="/web/onlineBanking/deposit/customerViewTransactionDone.xhtml">
+                        <h:outputText value="#{bankAccount.bankAccountType}" />
+                        <f:setPropertyActionListener value="#{bankAccount.bankAccountNum}" target="#{transactionManagedBean.bankAccountNum}" />
+                    </p:commandLink>
+                </p:column>
 
-                            <p:column headerText="Balance"> 
-                                <p:commandLink process="@this" action="/web/onlineBanking/deposit/customerViewTransactionDone.xhtml" >
-                                    <h:outputText value="S$#{bankAccount.bankAccountBalance}" />
-                                    <f:setPropertyActionListener value="#{bankAccount.bankAccountNum}" target="#{transactionManagedBean.bankAccountNum}" />
-                                </p:commandLink>
-                            </p:column>
+                <p:column headerText="Bank Account Number" >
+                    <p:commandLink process="@this" action="/web/onlineBanking/deposit/customerViewTransactionDone.xhtml" >
+                        <h:outputText value="#{bankAccount.bankAccountNum}" /> 
+                        <f:setPropertyActionListener value="#{bankAccount.bankAccountNum}" target="#{transactionManagedBean.bankAccountNum}" />
+                    </p:commandLink>
+                </p:column>
 
-                        </p:dataTable>
+                <p:column headerText="Balance"> 
+                    <p:commandLink process="@this" action="/web/onlineBanking/deposit/customerViewTransactionDone.xhtml" >
+                        <h:outputText value="S$#{bankAccount.bankAccountBalance}" />
+                        <f:setPropertyActionListener value="#{bankAccount.bankAccountNum}" target="#{transactionManagedBean.bankAccountNum}" />
+                    </p:commandLink>
+                </p:column>
 
-                    </div>
-                </div>
-            </div>
+            </p:dataTable>
+
         </h:form>
         <ezcomp:CCTimeout/>
     </ui:define>

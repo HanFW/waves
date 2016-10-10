@@ -53,7 +53,7 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
             String customerNationality, String customerCountryOfResidence, String customerRace,
             String customerMaritalStatus, String customerOccupation, String customerCompany,
             String customerAddress, String customerPostal, String customerOnlineBankingAccountNum,
-            String customerOnlineBankingPassword, byte[] customerSignature) {
+            String customerOnlineBankingPassword, byte[] customerSignature, String newCustomer) {
 
         CustomerBasic customerBasic = new CustomerBasic();
 
@@ -76,6 +76,7 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
         customerBasic.setCustomerOnlineBankingPassword(null);
         customerBasic.setCustomerSignature(customerSignature);
         customerBasic.setCustomerAge(getAge(customerDateOfBirth));
+        customerBasic.setNewCustomer(newCustomer);
 
         entityManager.persist(customerBasic);
         entityManager.flush();
@@ -248,6 +249,7 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
                 return new CustomerBasic();
             } else {
                 customerBasic = (CustomerBasic) query.getResultList().get(0);
+                entityManager.refresh(customerBasic);
             }
         } catch (EntityNotFoundException enfe) {
             System.out.println("\nEntity not found error: " + enfe.getMessage());
@@ -297,7 +299,7 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
             String customerNationality, String customerCountryOfResidence, String customerRace,
             String customerMaritalStatus, String customerOccupation, String customerCompany,
             String customerAddress, String customerPostal, String customerOnlineBankingAccountNum,
-            String customerOnlineBankingPassword, byte[] customerSignature) {
+            String customerOnlineBankingPassword, byte[] customerSignature, String newCustomer) {
 
         CustomerBasic customerBasic = new CustomerBasic();
 
@@ -332,6 +334,7 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
         customerBasic.setCustomerOTPSecret(secret);
         customerBasic.setCustomerStatus("new");
         customerBasic.setCustomerOnlineBankingAccountLocked("no");
+        customerBasic.setNewCustomer(newCustomer);
 
         entityManager.persist(customerBasic);
         entityManager.flush();
@@ -421,5 +424,20 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
         customerAge = String.valueOf(p.getYears());
 
         return customerAge;
+    }
+    
+    @Override
+    public List<CustomerBasic> getAllNewCustomer() {
+        Query query = entityManager.createQuery("SELECT c FROM CustomerBasic c Where c.newCustomer=:newCustomer");
+        query.setParameter("newCustomer", "Yes");
+        
+        return query.getResultList();
+    }
+    
+    @Override
+    public void updateCustomerMobile(Long customerId,String customerMobile){
+        CustomerBasic customer = entityManager.find(CustomerBasic.class, customerId);
+        customer.setCustomerMobile(customerMobile);
+        entityManager.flush();
     }
 }

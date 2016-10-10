@@ -77,29 +77,6 @@
                                             </p:column>
                                         </p:row>
 
-                                        <p:row>
-                                            <p:column>
-                                                <p:outputLabel for="depositAccountPwd" style="font-weight: bold" value="Account Password: " />
-                                            </p:column>
-                                            <p:column>
-                                                <p:password id="depositAccountPwd" value="#{employeeCashManagedBean.depositAccountPwd}" match="confirmDepositAccountPwd"
-                                                            required="true" requiredMessage="Account password is required."/>
-                                            </p:column>
-                                            <p:column>
-                                                <p:message for="depositAccountPwd" />
-                                            </p:column>
-                                        </p:row>
-
-                                        <p:row>
-                                            <p:column>
-                                                <p:outputLabel for ="confirmDepositAccountPwd" style="font-weight:bold" value="Confirm Password: " />
-                                            </p:column>
-                                            <p:column>
-                                                <p:password id="confirmDepositAccountPwd" value="#{employeeCashManagedBean.confirmDepositAccountPwd}" 
-                                                            label="Confirm Password" required="true" />
-                                            </p:column>
-                                        </p:row>
-
                                     </h:panelGrid>
                                     <br/>
 

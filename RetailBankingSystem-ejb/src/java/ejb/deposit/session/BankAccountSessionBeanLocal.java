@@ -22,12 +22,12 @@ public interface BankAccountSessionBeanLocal {
 
     public AccTransaction retrieveAccTransactionById(Long accTransactionId);
 
-    public Long addNewAccount(String bankAccountNum, String bankAccountPwd,
+    public Long addNewAccount(String bankAccountNum,
             String bankAccountType, String bankAccountBalance, String transferDailyLimit,
             String transferBalance, String bankAccountStatus, String bankAccountMinSaving,
             String bankAccountDepositPeriod, String currentFixedDepositPeriod,
-            String fixedDepositStatus, Double statementDateDouble, Long customerBasicId,
-            Long interestId);
+            String fixedDepositStatus, Double statementDateDouble,
+            Long customerBasicId, Long interestId);
 
     public String deleteAccount(String bankAccountNum);
 
@@ -49,18 +49,20 @@ public interface BankAccountSessionBeanLocal {
 
     public CustomerBasic retrieveCustomerBasicByAccNum(String bankAccountNum);
 
-    public void updatePwd(String bankAccountNum, String bankAccountPwd);
-
     public void resetDailyTransferLimit();
 
     public void updateDailyTransferLimit(String bankAccountNum, String dailyTransferLimit);
 
     public void autoCloseAccount();
 
-    public Long addNewAccountOneTime(String bankAccountNum, String bankAccountPwd,
+    public Long addNewAccountOneTime(String bankAccountNum,
             String bankAccountType, String bankAccountBalance, String transferDailyLimit,
             String transferBalance, String bankAccountStatus, String bankAccountMinSaving,
             String bankAccountDepositPeriod, String currentFixedDepositPeriod,
-            String fixedDepositStatus, Double statementDateDouble, Long customerBasicId,
-            Long interestId);
+            String fixedDepositStatus, Double statementDateDouble,
+            Long customerBasicId, Long interestId);
+    
+    public void approveAccount(String customerIdentificationNum);
+    
+    public void sendEmailToRejectCustomer(String customerIdentificationNum);
 }

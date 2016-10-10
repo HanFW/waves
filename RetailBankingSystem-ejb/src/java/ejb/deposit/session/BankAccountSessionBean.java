@@ -6,6 +6,7 @@ import ejb.deposit.entity.AccTransaction;
 import ejb.customer.entity.CustomerBasic;
 import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import ejb.deposit.entity.Interest;
+import ejb.infrastructure.session.CustomerEmailSessionBeanLocal;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -15,13 +16,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.PersistenceContext;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.persistence.EntityNotFoundException;
@@ -31,6 +32,9 @@ import javax.persistence.NonUniqueResultException;
 @LocalBean
 
 public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
+
+    @EJB
+    private CustomerEmailSessionBeanLocal customerEmailSessionBeanLocal;
 
     @EJB
     private StatementSessionBeanLocal statementSessionBeanLocal;
@@ -206,26 +210,18 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
     }
 
     @Override
-    public Long addNewAccount(String bankAccountNum, String bankAccountPwd,
+    public Long addNewAccount(String bankAccountNum,
             String bankAccountType, String bankAccountBalance, String transferDailyLimit,
             String transferBalance, String bankAccountStatus, String bankAccountMinSaving,
             String bankAccountDepositPeriod, String currentFixedDepositPeriod,
-            String fixedDepositStatus, Double statementDateDouble, Long customerBasicId,
-            Long interestId) {
+            String fixedDepositStatus, Double statementDateDouble,
+            Long customerBasicId, Long interestId) {
 
         System.out.println("*");
         System.out.println("****** deposit/BankAccountSessionBean: addNewAccount() ******");
         BankAccount bankAccount = new BankAccount();
-        String hashedPwd = "";
-
-        try {
-            hashedPwd = md5Hashing(bankAccountPwd);
-        } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(BankAccountSessionBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
 
         bankAccount.setBankAccountNum(bankAccountNum);
-        bankAccount.setBankAccountPwd(hashedPwd);
         bankAccount.setBankAccountTyep(bankAccountType);
         bankAccount.setBankAccountBalance(bankAccountBalance);
         bankAccount.setTransferDailyLimit(transferDailyLimit);
@@ -242,11 +238,14 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
         Interest interest = interestSessionLocal.retrieveInterestById(interestId);
         interest.setBankAccount(bankAccount);
 
+        CustomerBasic customerBasic = retrieveCustomerBasicById(customerBasicId);
+        List<BankAccount> bankAccounts = customerBasic.getBankAccount();
+        customerBasic.setBankAccount(bankAccounts);
+        
         entityManager.persist(bankAccount);
         entityManager.persist(interest);
+        entityManager.persist(customerBasic);
         entityManager.flush();
-
-        String onlineBankingAccount = adminSessionBeanLocal.createOnlineBankingAccount(customerBasicId);
 
         return bankAccount.getBankAccountId();
     }
@@ -281,7 +280,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
         DecimalFormat df = new DecimalFormat("#.00");
 
         Query query = entityManager.createQuery("SELECT a FROM BankAccount a WHERE a.bankAccountStatus = :bankAccountStatus");
-        query.setParameter("bankAccountStatus", "Activated");
+        query.setParameter("bankAccountStatus", "Active");
         List<BankAccount> activatedBankAccounts = query.getResultList();
 
         for (BankAccount activatedBankAccount : activatedBankAccounts) {
@@ -351,7 +350,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
                         activatedBankAccount.setBankAccountBalance(df.format(finalBalance));
                         activatedBankAccount.setFixedDepositStatus("Withdrawn");
                         activatedBankAccount.setBankAccountDepositPeriod("None");
-                        activatedBankAccount.setBankAccountStatus("Inactivated");
+                        activatedBankAccount.setBankAccountStatus("Inactive");
 
                         String accountDebit = " ";
                         String transactionCode = "DEFI";
@@ -399,7 +398,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
         DecimalFormat df = new DecimalFormat("#.00");
 
         Query query = entityManager.createQuery("SELECT a FROM BankAccount a WHERE a.bankAccountStatus = :bankAccountStatus");
-        query.setParameter("bankAccountStatus", "Activated");
+        query.setParameter("bankAccountStatus", "Active");
         List<BankAccount> activatedBankAccounts = query.getResultList();
 
         for (BankAccount activatedBankAccount : activatedBankAccounts) {
@@ -561,7 +560,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
         Double depositPeriodDay = Double.valueOf(depositPeriod) * 30;
 
         if (bankAccount.getFixedDepositStatus().equals("Withdrawn")) {
-            bankAccount.setBankAccountStatus("Activated");
+            bankAccount.setBankAccountStatus("Active");
         }
         bankAccount.setBankAccountDepositPeriod(depositPeriodDay.toString());
         bankAccount.setFixedDepositStatus("Deposited");
@@ -647,28 +646,10 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
     }
 
     @Override
-    public void updatePwd(String bankAccountNum, String bankAccountPwd) {
-        System.out.println("*");
-        System.out.println("****** deposit/BankAccountSessionBean: updatePwd() ******");
-
-        BankAccount bankAccount = retrieveBankAccountByNum(bankAccountNum);
-
-        String hashedPwd = "";
-
-        try {
-            hashedPwd = md5Hashing(bankAccountPwd);
-        } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(BankAccountSessionBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        bankAccount.setBankAccountPwd(hashedPwd);
-    }
-
-    @Override
     public void resetDailyTransferLimit() {
 
         Query query = entityManager.createQuery("SELECT a FROM BankAccount a WHERE a.bankAccountStatus = :bankAccountStatus");
-        query.setParameter("bankAccountStatus", "Activated");
+        query.setParameter("bankAccountStatus", "Active");
         List<BankAccount> activatedBankAccounts = query.getResultList();
 
         for (BankAccount activatedBankAccount : activatedBankAccounts) {
@@ -690,7 +671,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
         System.out.println("****** deposit/BankAccountSessionBean: autoCloseAccount() ******");
 
         Query query = entityManager.createQuery("SELECT a FROM BankAccount a WHERE a.bankAccountStatus = :bankAccountStatus");
-        query.setParameter("bankAccountStatus", "Inactivated");
+        query.setParameter("bankAccountStatus", "Inactive");
         List<BankAccount> inActivatedBankAccounts = query.getResultList();
 
         for (BankAccount inActivatedBankAccount : inActivatedBankAccounts) {
@@ -706,24 +687,16 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
     }
 
     @Override
-    public Long addNewAccountOneTime(String bankAccountNum, String bankAccountPwd,
+    public Long addNewAccountOneTime(String bankAccountNum,
             String bankAccountType, String bankAccountBalance, String transferDailyLimit,
             String transferBalance, String bankAccountStatus, String bankAccountMinSaving,
             String bankAccountDepositPeriod, String currentFixedDepositPeriod,
-            String fixedDepositStatus, Double statementDateDouble, Long customerBasicId,
-            Long interestId) {
+            String fixedDepositStatus, Double statementDateDouble,
+            Long customerBasicId, Long interestId) {
 
         BankAccount bankAccount = new BankAccount();
-        String hashedPwd = "";
-
-        try {
-            hashedPwd = md5Hashing(bankAccountPwd);
-        } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(BankAccountSessionBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
 
         bankAccount.setBankAccountNum(bankAccountNum);
-        bankAccount.setBankAccountPwd(hashedPwd);
         bankAccount.setBankAccountTyep(bankAccountType);
         bankAccount.setBankAccountBalance(bankAccountBalance);
         bankAccount.setTransferDailyLimit(transferDailyLimit);
@@ -745,5 +718,35 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
         entityManager.flush();
 
         return bankAccount.getBankAccountId();
+    }
+
+    @Override
+    public void approveAccount(String customerIdentificationNum) {
+
+        System.out.println("approve" + customerIdentificationNum);
+        CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum);
+        System.out.println("approve" + customerBasic);
+        BankAccount bankAccount = customerBasic.getBankAccount().get(0);
+
+        customerBasic.setNewCustomer("No");
+
+        if (bankAccount.getBankAccountType().equals("Monthly Savings Account")) {
+            bankAccount.setBankAccountStatus("Active");
+            bankAccount.setBankAccountMinSaving("Insufficient");
+        } else {
+            bankAccount.setBankAccountStatus("Inactive");
+        }
+
+        String onlineBankingAccount = adminSessionBeanLocal.createOnlineBankingAccount(customerBasic.getCustomerBasicId());
+    }
+
+    @Override
+    public void sendEmailToRejectCustomer(String customerIdentificationNum) {
+
+        CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum);
+
+        Map emailActions = new HashMap();
+//        emailActions.put("customerName", customerBasic.getCustomerName());
+        customerEmailSessionBeanLocal.sendEmail(customerBasic, "rejectOpenAccount", emailActions);
     }
 }

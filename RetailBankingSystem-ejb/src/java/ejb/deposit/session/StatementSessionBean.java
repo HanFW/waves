@@ -106,7 +106,7 @@ public class StatementSessionBean implements StatementSessionBeanLocal {
         System.out.println("****** deposit/StatementSessionBean: generateStatement() ******");
 
         Query query = entityManager.createQuery("SELECT a FROM BankAccount a WHERE a.bankAccountStatus = :bankAccountStatus");
-        query.setParameter("bankAccountStatus", "Activated");
+        query.setParameter("bankAccountStatus", "Active");
         List<BankAccount> activatedBankAccounts = query.getResultList();
 
         for (BankAccount activatedBankAccount : activatedBankAccounts) {
