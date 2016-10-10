@@ -40,11 +40,8 @@ public class EmployeeAdminSessionBean implements EmployeeAdminSessionBeanLocal {
 
     private final static String[] departments;
     private final static String[] positions;
+    private final static String[] genders;
     private final static String[] roles;
-
-    private final static String[] permissionList1;
-//    private final static String[] permissionList2;
-//    private final static String[] permissionList3;
 
     static {
         departments = new String[5];
@@ -63,6 +60,11 @@ public class EmployeeAdminSessionBean implements EmployeeAdminSessionBeanLocal {
         positions[5] = "Relationship Manager";
         positions[6] = "Counter Teller";
         positions[7] = "Call Center Staff";
+               
+        genders = new String[2];
+        genders[0] = "Female";
+        genders[1] = "Male";
+
 
         roles = new String[15];
         roles[0] = "CEO";
@@ -80,35 +82,6 @@ public class EmployeeAdminSessionBean implements EmployeeAdminSessionBeanLocal {
         roles[12] = "Operation Specialist";
         roles[13] = "Wealth Management Specialist";
         roles[14] = "Enquiry Manager";
-
-        permissionList1 = new String[27];
-        permissionList1[0] = "View Customer Accounts Information";
-        permissionList1[1] = "Create Enquiry Case";
-        permissionList1[2] = "Add Follow Up Questions";
-        permissionList1[3] = "Search Enquiry";
-        permissionList1[4] = "Edit Customer Basic Information";
-        permissionList1[5] = "View Enquiry";
-        permissionList1[6] = "Add A New Account";
-        permissionList1[7] = "Delete An Account";
-        permissionList1[8] = "View Transaction History";
-        permissionList1[9] = "View Bank Statement";
-        permissionList1[10] = "Fund-transfer";
-        permissionList1[11] = "Cash Deposit";
-        permissionList1[12] = "Cash Withdraw";
-        permissionList1[13] = "Forward Enquiry To Specialist";
-        permissionList1[14] = "Edit Customer Advanced Information";
-        permissionList1[15] = "View Customer Advanced Information";
-        permissionList1[16] = "User Account Management";
-        permissionList1[17] = "Manage Permissions of Roles";
-        permissionList1[18] = "View Deposit Department Issue";
-        permissionList1[19] = "View Card Department Issue";
-        permissionList1[20] = "View Loan Department Issue";
-        permissionList1[21] = "View Operation Department Issue";
-        permissionList1[22] = "View Wealth Management Issue";
-        permissionList1[23] = "Change Deposit Account PassWord";
-        permissionList1[24] = "Retrieve Deposit Account Password";
-        permissionList1[25] = "Activate Fixed Deposit";
-        permissionList1[26] = "Change Daily Transfer Limit";
     }
 
     @Override
@@ -127,7 +100,7 @@ public class EmployeeAdminSessionBean implements EmployeeAdminSessionBeanLocal {
     }
 
     @Override
-    public String createEmployeeAccount(String employeeName, String employeeDepartment,
+    public String createEmployeeAccount(String employeeName,String employeeGender, String employeeDepartment,
             String employeePosition, String employeeNRIC, String employeeMobileNum, String employeeEmail, Set<String> selectedRoles) {
 
         String account = null;
@@ -146,6 +119,7 @@ public class EmployeeAdminSessionBean implements EmployeeAdminSessionBeanLocal {
             Employee employee = new Employee();
 
             employee.setEmployeeName(employeeName);
+            employee.setEmployeeGender(employeeGender);
             employee.setEmployeeDepartment(employeeDepartment);
             employee.setEmployeePosition(employeePosition);
             employee.setEmployeeNRIC(employeeNRIC);
@@ -420,6 +394,13 @@ public class EmployeeAdminSessionBean implements EmployeeAdminSessionBeanLocal {
         System.out.println("*** adminSessionBean: Display all employee positions");
         return Arrays.asList(positions);
     }
+    
+    @Override
+    public List<String> getEmployeeGenders(){
+    System.out.println("*** adminSessionBean: Display all employee genders");
+        return Arrays.asList(genders);
+    }
+        
 
     @Override
     public List<String> getRoles() {
@@ -427,11 +408,6 @@ public class EmployeeAdminSessionBean implements EmployeeAdminSessionBeanLocal {
         return Arrays.asList(roles);
     }
 
-    @Override
-    public String[] getPermissionList1() {
-        System.out.println("*** adminSessionBean: Display all permissions" + permissionList1);
-        return permissionList1;
-    }
 
     //edit user account info
     @Override
