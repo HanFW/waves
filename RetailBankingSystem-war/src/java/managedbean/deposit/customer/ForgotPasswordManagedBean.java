@@ -22,27 +22,28 @@ import javax.faces.context.FacesContext;
 @RequestScoped
 
 public class ForgotPasswordManagedBean {
+
     @EJB
     private LoggingSessionBeanLocal loggingSessionBeanLocal;
-    
+
     @EJB
     private BankAccountSessionBeanLocal bankAccountSessionBeanLocal;
-    
+
     @EJB
     private CRMCustomerSessionBeanLocal customerSessionBeanLocal;
 
     private ExternalContext ec;
-    
+
     private String customerIdentificationNum;
     private String customerName;
     private Date customerDateOfBirth;
     private String bankAccountNumWithType;
     private String bankAccountNum;
     private Map<String, String> bankAccountNums = new HashMap<String, String>();
-    
+
     public ForgotPasswordManagedBean() {
     }
-    
+
     @PostConstruct
     public void init() {
 
@@ -124,40 +125,40 @@ public class ForgotPasswordManagedBean {
     public void setBankAccountNums(Map<String, String> bankAccountNums) {
         this.bankAccountNums = bankAccountNums;
     }
-    
+
     public void submit() throws IOException {
         System.out.println("=");
         System.out.println("====== deposit/ForgotPasswordManagedBean: submit() ======");
-        
+
         ec = FacesContext.getCurrentInstance().getExternalContext();
-        
+
         bankAccountNum = handleAccountString(bankAccountNumWithType);
 
         CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum.toUpperCase());
-        
+
         if (customerBasic.getCustomerBasicId() == null) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Customer does not exist.", "Failed!"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Customer does not exist.", "Failed!"));
         } else {
-            
+
             String name = customerBasic.getCustomerName();
             String customerDateOfBirthString = customerBasic.getCustomerDateOfBirth();
             String dateOfBirth = bankAccountSessionBeanLocal.changeDateFormat(customerDateOfBirth);
 
             if (!name.toUpperCase().equals(customerName.toUpperCase())) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Customer Name is Wrong.", "Failed!"));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Customer Name is Wrong.", "Failed!"));
             } else if (!dateOfBirth.equals(customerDateOfBirthString)) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Customer Date of Birth is Wrong.", "Failed!"));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Customer Date of Birth is Wrong.", "Failed!"));
             } else {
                 ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
                 Map<String, Object> sessionMap = externalContext.getSessionMap();
                 sessionMap.put("bankAccountNum", bankAccountNum);
                 loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "forgot password", "successful", null);
-                
+
                 ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerForgotPasswordDone.xhtml?faces-redirect=true");
             }
         }
     }
-    
+
     private String handleAccountString(String bankAccountNumWithType) {
 
         String[] bankAccountNums = bankAccountNumWithType.split("-");

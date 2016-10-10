@@ -218,33 +218,6 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
     }
 
     @Override
-    public String checkPassword(String bankAccountNum, String bankAccountPwd) {
-        System.out.println("*");
-        System.out.println("****** deposit/TransactionSessionBean: checkPassword() ******");
-
-        BankAccount bankAccount = bankAccountSessionLocal.retrieveBankAccountByNum(bankAccountNum);
-        String hashedPwd = "";
-
-        try {
-            hashedPwd = md5Hashing(bankAccountPwd);
-        } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(BankAccountSessionBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        if (bankAccount.getBankAccountId() == null) {
-            System.out.println("****** deposit/TransactionSessionBean: checkPassword(): invalid bank account number: no result found");
-            return "Error! Bank account does not exist!";
-        } else {
-            if (!hashedPwd.equals(bankAccount.getBankAccountPwd())) {
-                System.out.println("****** deposit/TransactionSessionBean: checkPassword(): bank account password is wrong");
-                return "Password is incorrect!";
-            }
-        }
-        System.out.println("****** deposit/TransactionSessionBean: checkPassword(): bank account password is correct");
-        return "Password is correct!";
-    }
-
-    @Override
     public Long fundTransfer(String fromAccount, String toAccount, String transferAmt) {
         System.out.println("*");
         System.out.println("****** deposit/TransactionSessionBean: fundTransfer() ******");
@@ -305,13 +278,13 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
             if (Double.valueOf(initialDepositAmount) < 3000) {
                 return "Initial deposit amount is insufficient.";
             } else {
-                bankAccount.setBankAccountStatus("Activated");
+                bankAccount.setBankAccountStatus("Active");
             }
         } else if (bankAccountType.equals("Basic Savings Account")) {
             if (Double.valueOf(initialDepositAmount) < 1) {
                 return "Initial deposit amount is insufficient.";
             } else {
-                bankAccount.setBankAccountStatus("Activated");
+                bankAccount.setBankAccountStatus("Active");
             }
         } else if (bankAccountType.equals("Fixed Deposit Account")) {
 
@@ -324,7 +297,7 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
                 } else if (Double.valueOf(initialDepositAmount) > 999999) {
                     return "Please contact us at 800 820 8820 or visit our branch.";
                 } else {
-                    bankAccount.setBankAccountStatus("Activated");
+                    bankAccount.setBankAccountStatus("Active");
                 }
             }
         }

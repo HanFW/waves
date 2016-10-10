@@ -14,14 +14,13 @@
                 <p:outputLabel value="Welcome "/>
                 <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
             </p:panel>
-            <p:panel id="panel" header="Activate Fixed Deposit Account" style="text-align: center"> 
+            <p:panel id="panel" header="Reactivate Fixed Deposit Account" style="text-align: center"> 
                 <div align="center">
                     <h:panelGrid columns="1" class="ui-lg-4" >
                         <p:messages globalOnly="true"/>
 
-
-                        <p:outputLabel for="fixedDepositAccountNum" style="font-weight: bold" value="Account: " />
-
+                        <p:outputLabel for="fixedDepositAccountNum" value="Account" style="font-weight: bold" />
+                        
                         <p:selectOneMenu id="fixedDepositAccountNum" value="#{fixedDepositAccountManagedBean.fixedDepositAccountWithType}" 
                                          effect="fold" editable="true">
                             <f:selectItems value="#{fixedDepositAccountManagedBean.fixedDepositAccounts}" />

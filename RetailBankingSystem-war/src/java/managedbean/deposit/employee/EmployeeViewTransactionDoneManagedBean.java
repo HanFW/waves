@@ -15,16 +15,15 @@ import javax.faces.context.FacesContext;
 @Named(value = "employeeViewTransactionDoneManagedBean")
 @RequestScoped
 
-public class EmployeeViewTransactionDoneManagedBean implements Serializable{
-    
+public class EmployeeViewTransactionDoneManagedBean implements Serializable {
+
     @EJB
     private BankAccountSessionBeanLocal bankAccountSessionBeanLocal;
-    
 
     private ExternalContext ec;
     private String bankAccountNum;
     private String customerIdentificationNum;
-    
+
     public EmployeeViewTransactionDoneManagedBean() {
     }
 
@@ -43,18 +42,18 @@ public class EmployeeViewTransactionDoneManagedBean implements Serializable{
     public void setCustomerIdentificationNum(String customerIdentificationNum) {
         this.customerIdentificationNum = customerIdentificationNum;
     }
-    
+
     public List<BankAccount> getBankAccount() throws IOException {
         System.out.println("=");
         System.out.println("====== deposit/EmployeeViewTransactionDoneManagedBean: getBankAccount() ======");
         ec = FacesContext.getCurrentInstance().getExternalContext();
-        
+
         customerIdentificationNum = ec.getSessionMap().get("customerIdentificationNum").toString();
 
         List<BankAccount> bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountByCusIC(customerIdentificationNum.toUpperCase());
 
         if (bankAccount.isEmpty()) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Your identification is invalid", "Failed!"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Your identification is invalid", "Failed!"));
         }
 
         return bankAccount;

@@ -19,7 +19,8 @@ import javax.enterprise.context.SessionScoped;
 @Named(value = "employeeViewStatementDoneManagedBean")
 @SessionScoped
 
-public class EmployeeViewStatementDoneManagedBean implements Serializable{
+public class EmployeeViewStatementDoneManagedBean implements Serializable {
+
     @EJB
     private LoggingSessionBeanLocal loggingSessionBeanLocal;
 
@@ -96,13 +97,13 @@ public class EmployeeViewStatementDoneManagedBean implements Serializable{
 
         customerIdentificationNum = ec.getSessionMap().get("customerIdentificationNum").toString();
         CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum);
-        
+
         BankAccount bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountByNum(bankAccountNum);
         List<Statement> statement = bankAccount.getStatement();
-        
+
         if (statement.isEmpty()) {
             loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "view statement", "falied", "invalid account number");
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Your account number is invalid", "Failed!"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Your account number is invalid", "Failed!"));
         } else {
             loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "view statement", "successful", null);
         }

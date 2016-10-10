@@ -32,7 +32,7 @@ public class CustomerViewMessageManagedBean implements Serializable{
         String customerIC = customerBasic.getCustomerIdentificationNum();
 
         List<MessageBox> messageBox = messageSessionBeanLocal.retrieveMessageBoxByCusIC(customerIC.toUpperCase());
-        System.out.println("////////message number//////" + messageBox.size() + "///////message content//" + messageBox.get(messageBox.size()- 1).getMessageContent());
+        
         if (messageBox.isEmpty()) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Your identification is invalid", "Failed!"));
         }

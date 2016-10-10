@@ -3,8 +3,6 @@ package managedbean.deposit.customer;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
 @Named(value = "saveAccountManagedBean")
@@ -33,12 +31,6 @@ public class SaveAccountManagedBean {
         bankAccountNum = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("bankAccountNum").toString();
         bankAccountType = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("bankAccountType").toString();
         bankAccountStatus = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("bankAccountStatus").toString();
-
-        if (bankAccountStatus.equals("Inactivated")) {
-            bankAccountStatus = "Inactive";
-        } else {
-            bankAccountStatus = "Active";
-        }
 
         if (bankAccountStatus.equals("Inactive") && !bankAccountType.equals("Fixed Deposit Account")) {
             attention = "Dear customer, your bank account is inactive."

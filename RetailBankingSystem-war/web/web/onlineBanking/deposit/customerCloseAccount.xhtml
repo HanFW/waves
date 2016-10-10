@@ -29,23 +29,6 @@
 
                         <p:message for="bankAccountNum" />
 
-                        <p:outputLabel for="bankAccountPwd" value="Account Password: " style="font-weight: bold"/>
-
-                        <p:password id="bankAccountPwd" value="#{closeAccountManagedBean.bankAccountPwd}" match="confirmBankAccountPwd" 
-                                    required="true" requiredMessage="Required Field">
-                            <f:validateLength minimum="6" maximum="6" />
-                        </p:password>
-
-                        <p:message for="bankAccountPwd" />
-
-                        <p:outputLabel for ="confirmBankAccountPwd" value="Confirm Password: " style="font-weight: bold" />
-
-                        <p:password id="confirmBankAccountPwd" value="#{closeAccountManagedBean.confirmBankAccountPwd}" 
-                                    label="Confirm Password" required="true" maxlength="6">
-                            <f:validateLength minimum="6" maximum="6" />
-                        </p:password>
-                        <br/>
-
                         <p:outputLabel for="onlyOneAccount" value="Do you have more than one accounts?" style="font-weight: bold"/>
 
                         <p:selectOneRadio id="onlyOneAccount" value="#{closeAccountManagedBean.onlyOneAccount}"
