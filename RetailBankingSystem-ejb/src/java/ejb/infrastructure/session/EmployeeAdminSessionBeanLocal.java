@@ -57,7 +57,9 @@ public interface EmployeeAdminSessionBeanLocal {
     public void editUserAccount(Long employeeId,String employeeName,String employeeDepartment,
             String employeePosition,String employeeMobileNum,String employeeEmail);
     
-    public List<String> getRoles();
+    public List<String> getPositionsByDepartment(String department);
+    
+    public List<String> getRolesByDepartment(String department);
     
     public List<Permission> getPermissionList(String roleName);
     

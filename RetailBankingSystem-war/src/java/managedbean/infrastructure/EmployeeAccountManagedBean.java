@@ -55,7 +55,6 @@ public class EmployeeAccountManagedBean implements Serializable {
     private List<String> positions;
     private List<String> genders;
     private Set<Role> role;
-    private List<String> roles;
 
     /**
      * Creates a new instance of loginManagedBean
@@ -87,14 +86,14 @@ public class EmployeeAccountManagedBean implements Serializable {
         return departments;
 
     }
-
-    public List<String> getPositions() {
-
-        if (positions == null) {
-            positions = adminSessionBeanLocal.getEmployeePositions();
+    
+    public List<String> getPositions(){
+        if(positions==null){
+            positions=adminSessionBeanLocal.getEmployeePositions();
         }
         return positions;
     }
+    
 
     public List<String> getGenders() {
 
@@ -102,14 +101,6 @@ public class EmployeeAccountManagedBean implements Serializable {
             genders = adminSessionBeanLocal.getEmployeeGenders();
         }
         return genders;
-    }
-
-    public List<String> getRoles() {
-
-        if (roles == null) {
-            roles = adminSessionBeanLocal.getRoles();
-        }
-        return roles;
     }
 
     public void deleteCancel(Employee employee) {
@@ -225,21 +216,21 @@ public class EmployeeAccountManagedBean implements Serializable {
         return employee.getRole().contains(hasRole);
     }
 
-    public boolean hasRoleEnquiryManager() {
+    public boolean hasRoleEnquiryProcessor() {
 
         FacesContext context = FacesContext.getCurrentInstance();
         employee = (Employee) context.getExternalContext().getSessionMap().get("employee");
 
-        Role hasRole = adminSessionBeanLocal.getRoleByName("Enquiry Manager");
+        Role hasRole = adminSessionBeanLocal.getRoleByName("Enquiry Processor");
         return employee.getRole().contains(hasRole);
     }
 
-    public boolean hasRoleCallCenterStaff() {
+    public boolean hasRoleCustomerServiceAgent() {
 
         FacesContext context = FacesContext.getCurrentInstance();
         employee = (Employee) context.getExternalContext().getSessionMap().get("employee");
 
-        Role hasRole = adminSessionBeanLocal.getRoleByName("Call Center Staff");
+        Role hasRole = adminSessionBeanLocal.getRoleByName("Customer Service Agent");
         return employee.getRole().contains(hasRole);
     }
 
@@ -297,12 +288,12 @@ public class EmployeeAccountManagedBean implements Serializable {
         return employee.getRole().contains(hasRole);
     }
 
-    public boolean hasRoleCEO() {
+    public boolean hasRoleDirector() {
 
         FacesContext context = FacesContext.getCurrentInstance();
         employee = (Employee) context.getExternalContext().getSessionMap().get("employee");
 
-        Role hasRole = adminSessionBeanLocal.getRoleByName("CEO");
+        Role hasRole = adminSessionBeanLocal.getRoleByName("Director");
         return employee.getRole().contains(hasRole);
     }
 

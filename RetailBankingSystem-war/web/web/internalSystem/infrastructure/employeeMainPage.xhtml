@@ -38,16 +38,16 @@
 
                     </p:panel>
 
-                    <p:panel visible="#{employeeAccountManagedBean.hasRoleCallCenterStaff()}" style="border: none">
+                    <p:panel visible="#{employeeAccountManagedBean.hasRoleCustomerServiceAgent()}" style="border: none">
 
-                        <p:button outcome="/web/internalSystem/infrastructure/employeeCallCenterStaffMainPage.xhtml?faces-redirect=true" value="Call Center Staff">
+                        <p:button outcome="/web/internalSystem/infrastructure/employeeCallCenterStaffMainPage.xhtml?faces-redirect=true" value="Customer Service Agent">
                         </p:button>
 
                     </p:panel>
 
-                    <p:panel visible="#{employeeAccountManagedBean.hasRoleEnquiryManager()}" style="border: none">
+                    <p:panel visible="#{employeeAccountManagedBean.hasRoleEnquiryProcessor()}" style="border: none">
 
-                        <p:button outcome="/web/internalSystem/infrastructure/employeeEnquiryManagerMainPage.xhtml?faces-redirect=true" value="Enquiry Manager">
+                        <p:button outcome="/web/internalSystem/infrastructure/employeeEnquiryManagerMainPage.xhtml?faces-redirect=true" value="Enquiry Processor">
                         </p:button>
 
                     </p:panel>
@@ -94,9 +94,9 @@
 
                     </p:panel>
 
-                    <p:panel visible="#{employeeAccountManagedBean.hasRoleCEO()}" style="border: none">
+                    <p:panel visible="#{employeeAccountManagedBean.hasRoleDirector()}" style="border: none">
 
-                        <p:button outcome="/web/internalSystem/infrastructure/employeeCEOMainPage.xhtml?faces-redirect=true" value="Chief Executive Officer">
+                        <p:button outcome="/web/internalSystem/infrastructure/employeeCEOMainPage.xhtml?faces-redirect=true" value="Director">
                         </p:button>
 
                     </p:panel>
@@ -122,7 +122,7 @@
 
                     </p:panel>
 
-                    <p:panel visible="#{employeeAccountManagedBean.hasRoleCEO()}" style="border: none">
+                    <p:panel visible="#{employeeAccountManagedBean.hasRoleOperationSpecialist()}" style="border: none">
 
                         <p:button outcome="/web/internalSystem/infrastructure/employeeOperationSpecialistMainPage.xhtml?faces-redirect=true" value="Operation Specialist">
                         </p:button>

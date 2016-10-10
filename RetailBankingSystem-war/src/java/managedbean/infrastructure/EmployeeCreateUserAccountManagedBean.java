@@ -12,8 +12,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 import javax.ejb.EJB;
-import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Named;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
@@ -41,20 +41,56 @@ public class EmployeeCreateUserAccountManagedBean {
     private String employeeEmail;
     private String logInStatus;
     private Set<String> selectedRoles;
+    private List<String> positions;
     private List<String> roles;
+//    private Map<String, Map<String, String>> data = new HashMap<String, Map<String, String>>();
+//    private Map<String, String> departments;
+//    private Map<String, String> positions;
 
     /**
      * Creates a new instance of EmployeeCreateUserAccountManagedBean
      */
     public EmployeeCreateUserAccountManagedBean() {
+
     }
+
+//    @PostConstruct
+//    public void init() {
+//        departments = new HashMap<String, String>();
+//        departments.put("Board of Directors", "Board of Directors");
+//        departments.put("Card Department", "Card Departments");
+//        departments.put("Loan Department", "Loan Department");
+//        departments.put("Sales Department", "Sales Department");
+//        departments.put("Operation Department", "Operation Department");
+//
+//        Map<String, String> map = new HashMap<String, String>();
+//        map.put("CEO", "CEO");
+//        map.put("CIO", "CIO");
+//        map.put("CTO", "CTO");
+//        map.put("CFO", "CFO");
+//        map.put("CMO", "CMO");
+//        map.put("COO", "COO");
+//        data.put("Board of Directors", map);
+//
+//        map = new HashMap<String, String>();
+//        map.put("", "Berlin");
+//        map.put("Munich", "Munich");
+//        map.put("Frankfurt", "Frankfurt");
+//        data.put("Card Department", map);
+//
+//        map = new HashMap<String, String>();
+//        map.put("Sao Paolo", "Sao Paolo");
+//        map.put("Rio de Janerio", "Rio de Janerio");
+//        map.put("Salvador", "Salvador");
+//        data.put("Loan Department", map);
+//    }
 
     public void createAccount(ActionEvent event) throws IOException {
 
         FacesMessage message = null;
         FacesContext context = FacesContext.getCurrentInstance();
 
-        String newEmployee = adminSessionBeanLocal.createEmployeeAccount(employeeName,employeeGender,
+        String newEmployee = adminSessionBeanLocal.createEmployeeAccount(employeeName, employeeGender,
                 employeeDepartment, employeePosition, employeeNRIC, employeeMobileNum.toString(),
                 employeeEmail, selectedRoles);
 
@@ -72,6 +108,34 @@ public class EmployeeCreateUserAccountManagedBean {
             System.out.println("*** AccountManagedBean: account created");
 
         }
+
+    }
+
+//    public Map<String, String> getDepartments() {
+//        return departments;
+//    }
+//
+//    public Map<String, String> getPositions() {
+//        return positions;
+//    }
+    
+    public List<String> getPositions(){
+        return positions;
+    }
+
+    public List<String> getRoles() {
+        return roles;
+    }
+
+    public void onDepartmentChangePositions() {
+        System.out.println("*** CreateUserAccountManagedBean: onDepartmentChangePositions");
+        positions=adminSessionBeanLocal.getPositionsByDepartment(employeeDepartment);
+
+    }
+
+    public void onDepartmentChangeRoles() {
+        System.out.println("*** CreateUserAccountManagedBean: onDepartmentChangeRoles");
+        roles = adminSessionBeanLocal.getRolesByDepartment(employeeDepartment);
 
     }
 
@@ -97,21 +161,24 @@ public class EmployeeCreateUserAccountManagedBean {
 
     public void setEmployeeGender(String employeeGender) {
         this.employeeGender = employeeGender;
-    }   
+    }
 
     public String getEmployeeDepartment() {
         return employeeDepartment;
     }
-
+    
     public void setEmployeeDepartment(String employeeDepartment) {
+        System.out.println("createAccountManagedBean: set employee Department"+ employeeDepartment);
         this.employeeDepartment = employeeDepartment;
     }
 
     public String getEmployeePosition() {
+        System.out.println("createAccountManagedBean get employee position: ");
         return employeePosition;
     }
 
     public void setEmployeePosition(String employeePosition) {
+        System.out.println("createAccountManagedBean: set employee position"+ employeePosition);
         this.employeePosition = employeePosition;
     }
 
@@ -140,20 +207,13 @@ public class EmployeeCreateUserAccountManagedBean {
     }
 
     public Set<String> getSelectedRoles() {
+        System.out.println("createAccountManagedBean get selectedRoles: ");
         return selectedRoles;
     }
 
     public void setSelectedRoles(Set<String> selectedRoles) {
+        System.out.println("createAccountManagedBean set selectedRoles: "+selectedRoles);
         this.selectedRoles = selectedRoles;
     }
-    
-     public List<String> getRoles() {
 
-        if (roles == null) {
-            roles = adminSessionBeanLocal.getRoles();
-        }
-        return roles;
-    }
-    
-    
 }
