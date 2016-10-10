@@ -10,7 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 @Entity
-public class SACHMasterAccountTransaction implements Serializable {
+public class MEPSMasterAccountTransaction implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,7 +21,7 @@ public class SACHMasterAccountTransaction implements Serializable {
     private String accountCredit;
 
     @ManyToOne(cascade={CascadeType.PERSIST},fetch=FetchType.EAGER)
-    private SACHMasterBankAccount sachMasterBankAccount;
+    private MEPSMasterBankAccount mepsMasterBankAccount;
     
     public Long getTransactionId() {
         return transactionId;
@@ -63,12 +63,12 @@ public class SACHMasterAccountTransaction implements Serializable {
         this.accountCredit = accountCredit;
     }
 
-    public SACHMasterBankAccount getSachMasterBankAccount() {
-        return sachMasterBankAccount;
+    public MEPSMasterBankAccount getMepsMasterBankAccount() {
+        return mepsMasterBankAccount;
     }
 
-    public void setSachMasterBankAccount(SACHMasterBankAccount sachMasterBankAccount) {
-        this.sachMasterBankAccount = sachMasterBankAccount;
+    public void setMepsMasterBankAccount(MEPSMasterBankAccount mepsMasterBankAccount) {
+        this.mepsMasterBankAccount = mepsMasterBankAccount;
     }
 
     @Override
@@ -81,10 +81,10 @@ public class SACHMasterAccountTransaction implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof SACHMasterAccountTransaction)) {
+        if (!(object instanceof MEPSMasterAccountTransaction)) {
             return false;
         }
-        SACHMasterAccountTransaction other = (SACHMasterAccountTransaction) object;
+        MEPSMasterAccountTransaction other = (MEPSMasterAccountTransaction) object;
         if ((this.transactionId == null && other.transactionId != null) || (this.transactionId != null && !this.transactionId.equals(other.transactionId))) {
             return false;
         }
@@ -93,7 +93,7 @@ public class SACHMasterAccountTransaction implements Serializable {
 
     @Override
     public String toString() {
-        return "ejb.payment.entity.SACHMasterAccountTransaction[ id=" + transactionId + " ]";
+        return "ejb.payment.entity.MEPSMasterAccountTransaction[ id=" + transactionId + " ]";
     }
     
 }

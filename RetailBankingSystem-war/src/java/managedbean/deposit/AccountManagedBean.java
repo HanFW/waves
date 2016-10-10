@@ -1069,7 +1069,7 @@ public class AccountManagedBean implements Serializable {
         customerPostal = "118429";
         customerOnlineBankingAccountNum = "123456789";
         customerOnlineBankingPassword = "123456789";
-//        customerSignature = "1234";
+        customerSignature = "1234";
 
         newCustomerBasicId = customerSessionBean.addNewCustomerOneTime(customerName,
                 customerSalutation, customerIdentificationNum.toUpperCase(),

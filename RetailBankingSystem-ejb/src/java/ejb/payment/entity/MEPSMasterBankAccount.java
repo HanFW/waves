@@ -11,7 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 @Entity
-public class SACHMasterBankAccount implements Serializable {
+public class MEPSMasterBankAccount implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,8 +20,8 @@ public class SACHMasterBankAccount implements Serializable {
     private String masterBankAccountNum;
     private String masterBankAccountBalance;
 
-    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "sachMasterBankAccount")
-    private List<SACHMasterAccountTransaction> sachMasterAccountTransaction;
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "mepsMasterBankAccount")
+    private List<MEPSMasterAccountTransaction> mepsMasterAccountTransaction;
     
     public Long getMasterBankAccountId() {
         return masterBankAccountId;
@@ -55,14 +55,14 @@ public class SACHMasterBankAccount implements Serializable {
         this.masterBankAccountBalance = masterBankAccountBalance;
     }
 
-    public List<SACHMasterAccountTransaction> getSachMasterAccountTransaction() {
-        return sachMasterAccountTransaction;
+    public List<MEPSMasterAccountTransaction> getMepsMasterAccountTransaction() {
+        return mepsMasterAccountTransaction;
     }
 
-    public void setSachMasterAccountTransaction(List<SACHMasterAccountTransaction> sachMasterAccountTransaction) {
-        this.sachMasterAccountTransaction = sachMasterAccountTransaction;
+    public void setMepsMasterAccountTransaction(List<MEPSMasterAccountTransaction> mepsMasterAccountTransaction) {
+        this.mepsMasterAccountTransaction = mepsMasterAccountTransaction;
     }
-
+    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -73,10 +73,10 @@ public class SACHMasterBankAccount implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof SACHMasterBankAccount)) {
+        if (!(object instanceof MEPSMasterBankAccount)) {
             return false;
         }
-        SACHMasterBankAccount other = (SACHMasterBankAccount) object;
+        MEPSMasterBankAccount other = (MEPSMasterBankAccount) object;
         if ((this.masterBankAccountId == null && other.masterBankAccountId != null) || (this.masterBankAccountId != null && !this.masterBankAccountId.equals(other.masterBankAccountId))) {
             return false;
         }

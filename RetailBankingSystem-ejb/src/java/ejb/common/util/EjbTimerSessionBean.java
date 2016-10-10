@@ -13,9 +13,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import ejb.deposit.session.StatementSessionBeanLocal;
-import ejb.payement.session.SACHMasterBankAccountSessionBeanLocal;
+import ejb.payement.session.MEPSMasterBankAccountSessionBeanLocal;
 import ejb.payement.session.SACHSessionBeanLocal;
-import ejb.payment.entity.SACHMasterBankAccount;
+import ejb.payment.entity.MEPSMasterBankAccount;
 import java.util.Calendar;
 
 @Stateless
@@ -24,7 +24,7 @@ import java.util.Calendar;
 public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
     
     @EJB
-    private SACHMasterBankAccountSessionBeanLocal sACHMasterBankAccountSessionBeanLocal;
+    private MEPSMasterBankAccountSessionBeanLocal sACHMasterBankAccountSessionBeanLocal;
     
     @EJB
     private SACHSessionBeanLocal sACHSessionBeanLocal;
@@ -234,13 +234,8 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
     
     private void handleTimeout_20000ms() {
 //        System.out.println("*** 20000MS Timer timeout");
-        
-        SACHMasterBankAccount dbsMasterBankAccount = sACHMasterBankAccountSessionBeanLocal.retrieveSACHMasterBankAccountByBankName("DBS");
-        SACHMasterBankAccount merlionMasterBankAccount = sACHMasterBankAccountSessionBeanLocal.retrieveSACHMasterBankAccountByBankName("Merlion");
-        
         Calendar cal = Calendar.getInstance();
         
-        sACHSessionBeanLocal.addNewSACH(dbsMasterBankAccount.getMasterBankAccountBalance(), 
-                merlionMasterBankAccount.getMasterBankAccountBalance(), 0.0, 0.0, cal.getTime().toString(), "DBS&Merlion");
+        sACHSessionBeanLocal.addNewSACH(0.0, 0.0, cal.getTime().toString(), "DBS&Merlion");
     }
 }

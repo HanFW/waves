@@ -17,26 +17,26 @@
         </h:form>
         
         <h:form>
-            <h:outputText value="View SACH Clearance History" />
+            <h:outputText value="View MEPS Settlement History" />
             <br/>
             <br/>
-            <p:dataTable var="dbsAndMerlionSACH" value="#{sACHHistoryRecordManagedBean.dbsAndMerlionSACHs}" 
+            <p:dataTable var="dbsAndMerlionMEPS" value="#{mEPSHistoryRecordManagedBean.dbsAndMerlionMEPSs}" 
                          reflow="true" paginator="true" rows="10" emptyMessage="No Record" >
                 
-                <p:column headerText="Date"> 
-                    <h:outputText value="#{dbsAndMerlionSACH.updateDate}" />
+                <p:column headerText="Settlement Date"> 
+                    <h:outputText value="#{dbsAndMerlionMEPS.settlementDate}" />
                 </p:column>
                 
-                <p:column headerText="DBS Total Credit"> 
-                    <h:outputText value="#{dbsAndMerlionSACH.dbsTotalCredit}" />
+                <p:column headerText="Settlement Reference"> 
+                    <h:outputText value="#{dbsAndMerlionMEPS.settlementRef}" />
                 </p:column>
                 
-                <p:column headerText="Merlion Total Credit"> 
-                    <h:outputText value="#{dbsAndMerlionSACH.merlionTotalCredit}" />
+                <p:column headerText="Bank"> 
+                    <h:outputText value="#{dbsAndMerlionMEPS.bankNames}" />
                 </p:column>
             </p:dataTable>
             <br/>
-            <p:commandButton id="backBtn" value="Back" action="/web/simulate/payment/sachMainPage.xhtml?faces-redirect=true" 
+            <p:commandButton id="backBtn" value="Back" action="/web/simulate/payment/masMainPage.xhtml?faces-redirect=true" 
                              ajax="true"/>
         </h:form>
     </h:body>

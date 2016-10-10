@@ -1,10 +1,5 @@
 package ejb.payement.session;
 
-import ejb.customer.entity.CustomerBasic;
-import ejb.deposit.entity.BankAccount;
-import ejb.deposit.session.BankAccountSessionBeanLocal;
-import ejb.payment.entity.DBSBankAccount;
-import ejb.payment.entity.FastPayee;
 import ejb.payment.entity.SACH;
 import java.util.Calendar;
 import java.util.List;
@@ -18,14 +13,9 @@ import javax.persistence.Query;
 
 @Stateless
 public class SACHSessionBean implements SACHSessionBeanLocal {
-    @EJB
-    private DBSBankAccountSessionBeanLocal dBSBankAccountSessionBeanLocal;
-    
-    @EJB
-    private SACHMasterAccountTransactionSessionBeanLocal sACHMasterAccountTransactionSessionBean;
 
     @EJB
-    private BankAccountSessionBeanLocal bankAccountSessionBeanLocal;
+    private MEPSSessionBeanLocal mEPSSessionBeanLocal;
 
     @EJB
     private DBSBankSessionBeanLocal dBSBankSessionBeanLocal;
@@ -36,37 +26,19 @@ public class SACHSessionBean implements SACHSessionBeanLocal {
     @Override
     public void SACHTransfer(String fromBankAccount, String toBankAccount, Double transferAmt) {
 
-        List<SACH> sachs = getAllSACH("DBS&Merlion");
-        int size = sachs.size();
-        Long sachId = sachs.get(size - 1).getSachId();
         Calendar cal = Calendar.getInstance();
-
+        String currentTime = cal.getTime().toString();
+        Long sachId = addNewSACH(0.0, 0.0, currentTime, "DBS&Merlion");
         SACH sach = retrieveSACHById(sachId);
 
-        Double dbsTotalCredit = sach.getDbsTotalCredit() + transferAmt;
-        Double merlionTotalCredit = sach.getMerlionTotalCredit() - transferAmt;
+        Double dbsTotalCredit = 0 + transferAmt;
+        Double merlionTotalCredit = 0 - transferAmt;
 
         sach.setDbsTotalCredit(dbsTotalCredit);
         sach.setMerlionTotalCredit(merlionTotalCredit);
-        
-        BankAccount bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountByNum(fromBankAccount);
-        DBSBankAccount dbsBankAccount = dBSBankAccountSessionBeanLocal.retrieveBankAccountByNum(toBankAccount);
-        
-        String dbsTransactionRef = bankAccount.getBankAccountNum()+"-"+bankAccount.getBankAccountType()+" Transfer To "+dbsBankAccount.getDbsBankAccountNum()+"-"+dbsBankAccount.getDbsBankAccountType();
-        
-        Long dbsTransactionId = sACHMasterAccountTransactionSessionBean.addNewMasterAccountTransaction(cal.getTime().toString(), dbsTransactionRef, " ", transferAmt.toString(), Long.valueOf(1));
-        Long merlionTransactionId = sACHMasterAccountTransactionSessionBean.addNewMasterAccountTransaction(cal.getTime().toString(), dbsTransactionRef, transferAmt.toString(), " ", Long.valueOf(2));
-
-        CustomerBasic customerBasic = bankAccountSessionBeanLocal.retrieveCustomerBasicByAccNum(fromBankAccount);
-        List<FastPayee> fastPayee = customerBasic.getFastPayee();
-
-        for (int i = 0; i < fastPayee.size(); i++) {
-            if (fastPayee.get(i).getFastPayeeAccountNum().equals(toBankAccount)) {
-                fastPayee.get(i).setLastTransactionDate(cal.getTime().toString());
-            }
-        }
 
         dBSBankSessionBeanLocal.actualTransfer(fromBankAccount, toBankAccount, transferAmt);
+        mEPSSessionBeanLocal.MEPSSettlement("88776655", "44332211", transferAmt);
     }
 
     @Override
@@ -93,14 +65,11 @@ public class SACHSessionBean implements SACHSessionBeanLocal {
     }
 
     @Override
-    public Long addNewSACH(String dbsAccountBalance, String merlionAccountBalance, Double dbsTotalCredit,
-            Double merlionTotalCredit, String updateDate, String bankNames) {
+    public Long addNewSACH(Double dbsTotalCredit, Double merlionTotalCredit, String updateDate, String bankNames) {
 
         SACH sach = new SACH();
 
-        sach.setDbsAccountBalance(dbsAccountBalance);
         sach.setDbsTotalCredit(dbsTotalCredit);
-        sach.setMerlionAccountBalance(merlionAccountBalance);
         sach.setMerlionTotalCredit(merlionTotalCredit);
         sach.setUpdateDate(updateDate);
         sach.setBankNames(bankNames);

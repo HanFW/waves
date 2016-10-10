@@ -1,7 +1,7 @@
 package managedbean.payment.simulate;
 
-import ejb.payement.session.SACHMasterAccountTransactionSessionBeanLocal;
-import ejb.payment.entity.SACHMasterAccountTransaction;
+import ejb.payement.session.MEPSMasterAccountTransactionSessionBeanLocal;
+import ejb.payment.entity.MEPSMasterAccountTransaction;
 import java.io.IOException;
 import java.util.List;
 import javax.ejb.EJB;
@@ -16,17 +16,17 @@ import javax.faces.context.FacesContext;
 public class MerlionMasterAccountTransactionManagedBean {
     
     @EJB
-    private SACHMasterAccountTransactionSessionBeanLocal sACHMasterAccountTransactionSessionBeanLocal;
+    private MEPSMasterAccountTransactionSessionBeanLocal mEPSMasterAccountTransactionSessionBeanLocal;
 
     private ExternalContext ec;
     
     public MerlionMasterAccountTransactionManagedBean() {
     }
     
-    public List<SACHMasterAccountTransaction> getMerlionMasterAccountTransactions() throws IOException {
+    public List<MEPSMasterAccountTransaction> getMerlionMasterAccountTransactions() throws IOException {
         
         ec = FacesContext.getCurrentInstance().getExternalContext();
-        List<SACHMasterAccountTransaction> merlionMasterAccountTransactions = sACHMasterAccountTransactionSessionBeanLocal.retrieveSACHMasterAccountTransactionByAccNum("88776655");
+        List<MEPSMasterAccountTransaction> merlionMasterAccountTransactions = mEPSMasterAccountTransactionSessionBeanLocal.retrieveMEPSMasterAccountTransactionByAccNum("88776655");
 
         return merlionMasterAccountTransactions;
     }

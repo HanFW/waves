@@ -11,7 +11,7 @@
         <h:form>
             <p:menubar>
                 <p:submenu label="Home">
-                    <p:menuitem value="SACH" url="/web/simulate/payment/sachMainPage.xhtml" />
+                    <p:menuitem value="MAS" url="/web/simulate/payment/masMainPage.xhtml" />
                 </p:submenu>
             </p:menubar>
         </h:form>
@@ -26,8 +26,12 @@
                     <h:outputText value="Merlion Bank Account Transaction" />
                 </p:commandLink>
                 
-                <p:commandLink process="@this" action="/web/simulate/payment/sachHistoryRecord.xhtml?faces-redirect=true" >
-                    <h:outputText value="SACH History Records" />
+                <p:commandLink process="@this" action="/web/simulate/payment/dbsMerlionSachHistoryRecord.xhtml?faces-redirect=true" >
+                    <h:outputText value="DBS and Merlion SACH History Records" />
+                </p:commandLink>
+                
+                <p:commandLink process="@this" action="/web/simulate/payment/mepsHistoryRecord.xhtml?faces-redirect=true" >
+                    <h:outputText value="DBS and Merlion MEPS History Records" />
                 </p:commandLink>
             </p:panelGrid>
         </h:form>

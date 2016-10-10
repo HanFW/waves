@@ -2,7 +2,6 @@ package managedbean.payment.simulate;
 
 import ejb.payement.session.SACHSessionBeanLocal;
 import ejb.payment.entity.SACH;
-import ejb.payment.entity.SACHMasterAccountTransaction;
 import java.io.IOException;
 import java.util.List;
 import javax.ejb.EJB;

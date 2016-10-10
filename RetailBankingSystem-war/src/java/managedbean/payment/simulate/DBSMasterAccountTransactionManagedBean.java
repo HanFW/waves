@@ -1,7 +1,7 @@
 package managedbean.payment.simulate;
 
-import ejb.payement.session.SACHMasterAccountTransactionSessionBeanLocal;
-import ejb.payment.entity.SACHMasterAccountTransaction;
+import ejb.payement.session.MEPSMasterAccountTransactionSessionBeanLocal;
+import ejb.payment.entity.MEPSMasterAccountTransaction;
 import java.io.IOException;
 import java.util.List;
 import javax.ejb.EJB;
@@ -16,17 +16,17 @@ import javax.faces.context.FacesContext;
 public class DBSMasterAccountTransactionManagedBean {
     
     @EJB
-    private SACHMasterAccountTransactionSessionBeanLocal sACHMasterAccountTransactionSessionBeanLocal;
+    private MEPSMasterAccountTransactionSessionBeanLocal mEPSMasterAccountTransactionSessionBeanLocal;
 
     private ExternalContext ec;
     
     public DBSMasterAccountTransactionManagedBean() {
     }
     
-    public List<SACHMasterAccountTransaction> getDbsMasterAccountTransactions() throws IOException {
+    public List<MEPSMasterAccountTransaction> getDbsMasterAccountTransactions() throws IOException {
         
         ec = FacesContext.getCurrentInstance().getExternalContext();
-        List<SACHMasterAccountTransaction> dbsMasterAccountTransactions = sACHMasterAccountTransactionSessionBeanLocal.retrieveSACHMasterAccountTransactionByAccNum("44332211");
+        List<MEPSMasterAccountTransaction> dbsMasterAccountTransactions = mEPSMasterAccountTransactionSessionBeanLocal.retrieveMEPSMasterAccountTransactionByAccNum("44332211");
 
         return dbsMasterAccountTransactions;
     }

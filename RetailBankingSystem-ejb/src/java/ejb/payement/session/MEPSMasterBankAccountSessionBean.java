@@ -1,6 +1,6 @@
 package ejb.payement.session;
 
-import ejb.payment.entity.SACHMasterBankAccount;
+import ejb.payment.entity.MEPSMasterBankAccount;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
@@ -9,80 +9,80 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 @Stateless
-public class SACHMasterBankAccountSessionBean implements SACHMasterBankAccountSessionBeanLocal {
+public class MEPSMasterBankAccountSessionBean implements MEPSMasterBankAccountSessionBeanLocal {
 
     @PersistenceContext
     private EntityManager entityManager;
     
     @Override
-    public SACHMasterBankAccount retrieveSACHMasterBankAccountByBankName(String bankName) {
+    public MEPSMasterBankAccount retrieveMEPSMasterBankAccountByBankName(String bankName) {
         
-        SACHMasterBankAccount sachMasterBankAccount = new SACHMasterBankAccount();
+        MEPSMasterBankAccount mepsMasterBankAccount = new MEPSMasterBankAccount();
 
         try {
-            Query query = entityManager.createQuery("Select s From SACHMasterBankAccount s Where s.bankName=:bankName");
+            Query query = entityManager.createQuery("Select m From MEPSMasterBankAccount m Where m.bankName=:bankName");
             query.setParameter("bankName", bankName);
 
             if (query.getResultList().isEmpty()) {
-                return new SACHMasterBankAccount();
+                return new MEPSMasterBankAccount();
             } else {
-                sachMasterBankAccount = (SACHMasterBankAccount) query.getSingleResult();
+                mepsMasterBankAccount = (MEPSMasterBankAccount) query.getSingleResult();
             }
         } catch (EntityNotFoundException enfe) {
             System.out.println("Entity not found error: " + enfe.getMessage());
-            return new SACHMasterBankAccount();
+            return new MEPSMasterBankAccount();
         } catch (NonUniqueResultException nure) {
             System.out.println("Non unique result error: " + nure.getMessage());
         }
 
-        return sachMasterBankAccount;
+        return mepsMasterBankAccount;
     }
     
     @Override
-    public SACHMasterBankAccount retrieveSACHMasterBankAccountByAccNum(String masterBankAccountNum) {
+    public MEPSMasterBankAccount retrieveMEPSMasterBankAccountByAccNum(String masterBankAccountNum) {
         
-        SACHMasterBankAccount sachMasterBankAccount = new SACHMasterBankAccount();
+        MEPSMasterBankAccount mepsMasterBankAccount = new MEPSMasterBankAccount();
 
         try {
-            Query query = entityManager.createQuery("Select s From SACHMasterBankAccount s Where s.masterBankAccountNum=:masterBankAccountNum");
+            Query query = entityManager.createQuery("Select m From MEPSMasterBankAccount m Where m.masterBankAccountNum=:masterBankAccountNum");
             query.setParameter("masterBankAccountNum", masterBankAccountNum);
 
             if (query.getResultList().isEmpty()) {
-                return new SACHMasterBankAccount();
+                return new MEPSMasterBankAccount();
             } else {
-                sachMasterBankAccount = (SACHMasterBankAccount) query.getSingleResult();
+                mepsMasterBankAccount = (MEPSMasterBankAccount) query.getSingleResult();
             }
         } catch (EntityNotFoundException enfe) {
             System.out.println("Entity not found error: " + enfe.getMessage());
-            return new SACHMasterBankAccount();
+            return new MEPSMasterBankAccount();
         } catch (NonUniqueResultException nure) {
             System.out.println("Non unique result error: " + nure.getMessage());
         }
 
-        return sachMasterBankAccount;
+        return mepsMasterBankAccount;
     }
     
     @Override
-    public SACHMasterBankAccount retrieveSACHMasterBankAccountById(Long masterBankAccountId) {
+    public MEPSMasterBankAccount retrieveMEPSMasterBankAccountById(Long masterBankAccountId) {
         
-        SACHMasterBankAccount sachMasterBankAccount = new SACHMasterBankAccount();
+        MEPSMasterBankAccount mepsMasterBankAccount = new MEPSMasterBankAccount();
 
         try {
-            Query query = entityManager.createQuery("Select s From SACHMasterBankAccount s Where s.masterBankAccountId=:masterBankAccountId");
+            Query query = entityManager.createQuery("Select m From MEPSMasterBankAccount m Where m.masterBankAccountId=:masterBankAccountId");
             query.setParameter("masterBankAccountId", masterBankAccountId);
 
             if (query.getResultList().isEmpty()) {
-                return new SACHMasterBankAccount();
+                return new MEPSMasterBankAccount();
             } else {
-                sachMasterBankAccount = (SACHMasterBankAccount) query.getSingleResult();
+                mepsMasterBankAccount = (MEPSMasterBankAccount) query.getSingleResult();
             }
         } catch (EntityNotFoundException enfe) {
             System.out.println("Entity not found error: " + enfe.getMessage());
-            return new SACHMasterBankAccount();
+            return new MEPSMasterBankAccount();
         } catch (NonUniqueResultException nure) {
             System.out.println("Non unique result error: " + nure.getMessage());
         }
 
-        return sachMasterBankAccount;
+        return mepsMasterBankAccount;
     }
 }

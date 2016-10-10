@@ -12,12 +12,11 @@ public class SACH implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long sachId;
-    private String dbsAccountBalance;
-    private String merlionAccountBalance;
     private Double dbsTotalCredit;
     private Double merlionTotalCredit;
     private String updateDate;
     private String bankNames;
+    private String fastTransferRef;
 
     public Long getSachId() {
         return sachId;
@@ -25,14 +24,6 @@ public class SACH implements Serializable {
 
     public void setSachId(Long sachId) {
         this.sachId = sachId;
-    }
-
-    public String getDbsAccountBalance() {
-        return dbsAccountBalance;
-    }
-
-    public void setDbsAccountBalance(String dbsAccountBalance) {
-        this.dbsAccountBalance = dbsAccountBalance;
     }
 
     public String getUpdateDate() {
@@ -59,20 +50,20 @@ public class SACH implements Serializable {
         this.merlionTotalCredit = merlionTotalCredit;
     }
 
-    public String getMerlionAccountBalance() {
-        return merlionAccountBalance;
-    }
-
-    public void setMerlionAccountBalance(String merlionAccountBalance) {
-        this.merlionAccountBalance = merlionAccountBalance;
-    }
-
     public Double getDbsTotalCredit() {
         return dbsTotalCredit;
     }
 
     public void setDbsTotalCredit(Double dbsTotalCredit) {
         this.dbsTotalCredit = dbsTotalCredit;
+    }
+
+    public String getFastTransferRef() {
+        return fastTransferRef;
+    }
+
+    public void setFastTransferRef(String fastTransferRef) {
+        this.fastTransferRef = fastTransferRef;
     }
     
     @Override
