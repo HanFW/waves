@@ -77,29 +77,6 @@
                                                 <p:message for="withdrawAccountNum" />
                                             </p:column>
                                         </p:row>
-
-                                        <p:row>
-                                            <p:column>
-                                                <p:outputLabel for="withdrawAccountPwd" style="font-weight: bold" value="Account Password: " />
-                                            </p:column>
-                                            <p:column>
-                                                <p:password id="withdrawAccountPwd" value="#{employeeCashManagedBean.withdrawAccountPwd}" match="confirmWithdrawAccountPwd"
-                                                            required="true" requiredMessage="Account password is required."/>
-                                            </p:column>
-                                            <p:column>
-                                                <p:message for="withdrawAccountPwd" />
-                                            </p:column>
-                                        </p:row>
-
-                                        <p:row>
-                                            <p:column>
-                                                <p:outputLabel for ="confirmWithdrawAccountPwd" style="font-weight:bold" value="Confirm Password: " />
-                                            </p:column>
-                                            <p:column>
-                                                <p:password id="confirmWithdrawAccountPwd" value="#{employeeCashManagedBean.confirmWithdrawAccountPwd}" 
-                                                            label="Confirm Password" required="true" />
-                                            </p:column>
-                                        </p:row>    
                                     </h:panelGrid>
                                     <br/>
                                     <h:panelGrid columns="2" cellpadding="5" styleClass="ui-panelgrid-blank form-group">  

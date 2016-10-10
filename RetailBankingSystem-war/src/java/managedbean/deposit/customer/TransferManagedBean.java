@@ -78,7 +78,12 @@ public class TransferManagedBean {
 
             for (int i = 0; i < bankAccounts.size(); i++) {
                 fromAccounts.put(bankAccounts.get(i).getBankAccountType() + "-" + bankAccounts.get(i).getBankAccountNum(), bankAccounts.get(i).getBankAccountType() + "-" + bankAccounts.get(i).getBankAccountNum());
-                toAccounts.put(bankAccounts.get(i).getBankAccountType() + "-" + bankAccounts.get(i).getBankAccountNum(), bankAccounts.get(i).getBankAccountType() + "-" + bankAccounts.get(i).getBankAccountNum());
+            }
+
+            for (int a = 0; a < bankAccounts.size(); a++) {
+                if(!bankAccounts.get(a).getBankAccountType().equals("Fixed Deposit Account")) {
+                    toAccounts.put(bankAccounts.get(a).getBankAccountType() + "-" + bankAccounts.get(a).getBankAccountNum(), bankAccounts.get(a).getBankAccountType() + "-" + bankAccounts.get(a).getBankAccountNum());
+                }
             }
 
             for (int j = 0; j < payees.size(); j++) {
@@ -228,7 +233,7 @@ public class TransferManagedBean {
         } else {
             fromAccountDefaultTransferLimit = "3000.0";
         }
-        
+
         return fromAccountDefaultTransferLimit;
     }
 
@@ -268,32 +273,32 @@ public class TransferManagedBean {
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
         if (Double.valueOf(bankAccountFrom.getTransferBalance()) < transferAmt) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Dear Customer, your transfer amount has been exceeded your daily transfer limit. "
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Dear Customer, your transfer amount has been exceeded your daily transfer limit. "
                     + "You remaining daily limit is S$" + bankAccountFrom.getTransferBalance(), "Failed!"));
         } else if (bankAccountTo.getBankAccountType().equals("Fixed Deposit Account")) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Dear Customer, you are not allowed transferring fund to a fixed deposit account. ", "Failed!"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Dear Customer, you are not allowed transferring fund to a fixed deposit account. ", "Failed!"));
         } else {
 
             if (fromAccount.equals(toAccount)) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Fund transfer cannot be done within the same accounts.", "Failed!"));
             } else {
-                if (bankAccountFrom.getBankAccountStatus().equals("Activated") && bankAccountTo.getBankAccountStatus().equals("Inactivated")) {
+                if (bankAccountFrom.getBankAccountStatus().equals("Active") && bankAccountTo.getBankAccountStatus().equals("Inactive")) {
 
                     activationCheck = transactionSessionLocal.checkAccountActivation(bankAccountTo.getBankAccountNum(), transferAmt.toString());
 
                     if (activationCheck.equals("Initial deposit amount is insufficient.")) {
                         if (bankAccountTo.getBankAccountType().equals("Bonus Savings Account")) {
-                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Dear customer, minimum initial deposit amount is S$3000", "Failed"));
+                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Dear customer, minimum initial deposit amount is S$3000", "Failed"));
                         } else if (bankAccountTo.getBankAccountType().equals("Basic Savings Account")) {
-                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Dear customer, minimum initial deposit amount is S$1", "Failed"));
+                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Dear customer, minimum initial deposit amount is S$1", "Failed"));
                         } else if (bankAccountTo.getBankAccountType().equals("Fixed Deposit Account")) {
-                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Dear customer, minimum initial deposit amount is S$1000", "Failed"));
+                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Dear customer, minimum initial deposit amount is S$1000", "Failed"));
                         }
                     } else if (activationCheck.equals("Please contact us at 800 820 8820 or visit our branch.")) {
-                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Please contact us at 800 820 8820 or visit our branch.", "Failed"));
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Please contact us at 800 820 8820 or visit our branch.", "Failed"));
                     } else if (activationCheck.equals("Please declare your deposit period")) {
-                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Please declare your fixed deposit period first.", "Failed"));
-                    } else if (activationCheck.equals("Activated successfully.")) {
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Please declare your fixed deposit period first.", "Failed"));
+                    } else if (activationCheck.equals("Activate successfully.")) {
                         Double diffAmt = Double.valueOf(bankAccountFrom.getBankAccountBalance()) - transferAmt;
 
                         if (diffAmt >= 0) {
@@ -317,12 +322,12 @@ public class TransferManagedBean {
 
                             ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerTransferDone.xhtml?faces-redirect=true");
                         } else {
-                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!Your account balance is insufficient.", "Failed!"));
+                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed!Your account balance is insufficient.", "Failed!"));
                         }
                     }
-                } else if (bankAccountFrom.getBankAccountStatus().equals("Inactivated") && bankAccountTo.getBankAccountStatus().equals("Activated")) {
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!You account(from) has not been activated.", "Failed!"));
-                } else if (bankAccountFrom.getBankAccountStatus().equals("Activated") && bankAccountTo.getBankAccountStatus().equals("Activated")) {
+                } else if (bankAccountFrom.getBankAccountStatus().equals("Inactive") && bankAccountTo.getBankAccountStatus().equals("Active")) {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed!You account(from) has not been activated.", "Failed!"));
+                } else if (bankAccountFrom.getBankAccountStatus().equals("Active") && bankAccountTo.getBankAccountStatus().equals("Active")) {
                     Double diffAmt = Double.valueOf(bankAccountFrom.getBankAccountBalance()) - transferAmt;
 
                     if (diffAmt >= 0) {
@@ -346,10 +351,10 @@ public class TransferManagedBean {
 
                         ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerTransferDone.xhtml?faces-redirect=true");
                     } else {
-                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!Your account balance is insufficient.", "Failed!"));
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed!Your account balance is insufficient.", "Failed!"));
                     }
-                } else if (bankAccountFrom.getBankAccountStatus().equals("Inactivated") && bankAccountTo.getBankAccountStatus().equals("Inactivated")) {
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!Both of accounts have not been activated.", "Failed!"));
+                } else if (bankAccountFrom.getBankAccountStatus().equals("Inactive") && bankAccountTo.getBankAccountStatus().equals("Inactive")) {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed!Both of accounts have not been activated.", "Failed!"));
                 }
             }
         }
@@ -369,31 +374,31 @@ public class TransferManagedBean {
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
         if (Double.valueOf(bankAccountFrom.getTransferBalance()) < transferAmt) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Dear Customer, your transfer amount has been exceeded your daily transfer limit. "
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Dear Customer, your transfer amount has been exceeded your daily transfer limit. "
                     + "You remaining daily limit is S$" + bankAccountFrom.getTransferBalance(), "Failed!"));
         } else if (bankAccountTo.getBankAccountType().equals("Fixed Deposit Account")) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Dear Customer, you are not allowed transferring fund to a fixed deposit account. ", "Failed!"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Dear Customer, you are not allowed transferring fund to a fixed deposit account. ", "Failed!"));
         } else {
 
             if (fromAccount.equals(toAccount)) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Fund transfer cannot be done within the same accounts.", "Failed!"));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Fund transfer cannot be done within the same accounts.", "Failed!"));
             } else {
-                if (bankAccountFrom.getBankAccountStatus().equals("Activated") && bankAccountTo.getBankAccountStatus().equals("Inactivated")) {
+                if (bankAccountFrom.getBankAccountStatus().equals("Active") && bankAccountTo.getBankAccountStatus().equals("Inactive")) {
 
                     activationCheck = transactionSessionLocal.checkAccountActivation(bankAccountTo.getBankAccountNum(), transferAmt.toString());
 
                     if (activationCheck.equals("Initial deposit amount is insufficient.")) {
                         if (bankAccountTo.getBankAccountType().equals("Bonus Savings Account")) {
-                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Dear customer, minimum initial deposit amount is S$3000", "Failed"));
+                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Dear customer, minimum initial deposit amount is S$3000", "Failed"));
                         } else if (bankAccountTo.getBankAccountType().equals("Basic Savings Account")) {
-                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Dear customer, minimum initial deposit amount is S$1", "Failed"));
+                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Dear customer, minimum initial deposit amount is S$1", "Failed"));
                         } else if (bankAccountTo.getBankAccountType().equals("Fixed Deposit Account")) {
-                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Dear customer, minimum initial deposit amount is S$1000", "Failed"));
+                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Dear customer, minimum initial deposit amount is S$1000", "Failed"));
                         }
                     } else if (activationCheck.equals("Please contact us at 800 820 8820 or visit our branch.")) {
-                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Please contact us at 800 820 8820 or visit our branch.", "Failed"));
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Please contact us at 800 820 8820 or visit our branch.", "Failed"));
                     } else if (activationCheck.equals("Please declare your deposit period")) {
-                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Please declare your fixed deposit period first.", "Failed"));
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Please declare your fixed deposit period first.", "Failed"));
                     } else if (activationCheck.equals("Activated successfully.")) {
                         Double diffAmt = Double.valueOf(bankAccountFrom.getBankAccountBalance()) - transferAmt;
 
@@ -419,12 +424,12 @@ public class TransferManagedBean {
 
                             ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerTransferDone.xhtml?faces-redirect=true");
                         } else {
-                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!Your account balance is insufficient.", "Failed!"));
+                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed!Your account balance is insufficient.", "Failed!"));
                         }
                     }
-                } else if (bankAccountFrom.getBankAccountStatus().equals("Inactivated") && bankAccountTo.getBankAccountStatus().equals("Activated")) {
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!You account(from) has not been activated.", "Failed!"));
-                } else if (bankAccountFrom.getBankAccountStatus().equals("Activated") && bankAccountTo.getBankAccountStatus().equals("Activated")) {
+                } else if (bankAccountFrom.getBankAccountStatus().equals("Inactive") && bankAccountTo.getBankAccountStatus().equals("Active")) {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed!You account(from) has not been activated.", "Failed!"));
+                } else if (bankAccountFrom.getBankAccountStatus().equals("Active") && bankAccountTo.getBankAccountStatus().equals("Active")) {
                     Double diffAmt = Double.valueOf(bankAccountFrom.getBankAccountBalance()) - transferAmt;
 
                     if (diffAmt >= 0) {
@@ -455,10 +460,10 @@ public class TransferManagedBean {
 
                         ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerTransferDone.xhtml?faces-redirect=true");
                     } else {
-                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!Your account balance is insufficient.", "Failed!"));
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed!Your account balance is insufficient.", "Failed!"));
                     }
-                } else if (bankAccountFrom.getBankAccountStatus().equals("Inactivated") && bankAccountTo.getBankAccountStatus().equals("Inactivated")) {
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!Both of accounts have not been activated.", "Failed!"));
+                } else if (bankAccountFrom.getBankAccountStatus().equals("Inactive") && bankAccountTo.getBankAccountStatus().equals("Inactive")) {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed!Both of accounts have not been activated.", "Failed!"));
                 }
             }
         }
@@ -477,31 +482,31 @@ public class TransferManagedBean {
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
         if (Double.valueOf(bankAccountFrom.getTransferBalance()) < transferAmt) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Dear Customer, your transfer amount has been exceeded your daily transfer limit. "
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Dear Customer, your transfer amount has been exceeded your daily transfer limit. "
                     + "You remaining daily limit is S$" + bankAccountFrom.getTransferBalance(), "Failed!"));
         } else if (bankAccountTo.getBankAccountType().equals("Fixed Deposit Account")) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Dear Customer, you are not allowed transferring fund to a fixed deposit account. ", "Failed!"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Dear Customer, you are not allowed transferring fund to a fixed deposit account. ", "Failed!"));
         } else {
 
             if (fromAccount.equals(toAccount)) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Fund transfer cannot be done within the same accounts.", "Failed!"));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Fund transfer cannot be done within the same accounts.", "Failed!"));
             } else {
-                if (bankAccountFrom.getBankAccountStatus().equals("Activated") && bankAccountTo.getBankAccountStatus().equals("Inactivated")) {
+                if (bankAccountFrom.getBankAccountStatus().equals("Active") && bankAccountTo.getBankAccountStatus().equals("Inactive")) {
 
                     activationCheck = transactionSessionLocal.checkAccountActivation(bankAccountTo.getBankAccountNum(), transferAmt.toString());
 
                     if (activationCheck.equals("Initial deposit amount is insufficient.")) {
                         if (bankAccountTo.getBankAccountType().equals("Bonus Savings Account")) {
-                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Dear customer, minimum initial deposit amount is S$3000", "Failed"));
+                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Dear customer, minimum initial deposit amount is S$3000", "Failed"));
                         } else if (bankAccountTo.getBankAccountType().equals("Basic Savings Account")) {
-                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!Dear customer, minimum initial deposit amount is S$1", "Failed"));
+                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed!Dear customer, minimum initial deposit amount is S$1", "Failed"));
                         } else if (bankAccountTo.getBankAccountType().equals("Fixed Deposit Account")) {
-                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!Dear customer, minimum initial deposit amount is S$1000", "Failed"));
+                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed!Dear customer, minimum initial deposit amount is S$1000", "Failed"));
                         }
                     } else if (activationCheck.equals("Please contact us at 800 820 8820 or visit our branch.")) {
-                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!Please contact us at 800 820 8820 or visit our branch.", "Failed"));
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed!Please contact us at 800 820 8820 or visit our branch.", "Failed"));
                     } else if (activationCheck.equals("Please declare your deposit period")) {
-                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!Please declare your fixed deposit period first.", "Failed"));
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed!Please declare your fixed deposit period first.", "Failed"));
                     } else if (activationCheck.equals("Activated successfully.")) {
 
                         Double diffAmt = Double.valueOf(bankAccountFrom.getBankAccountBalance()) - transferAmt;
@@ -528,12 +533,12 @@ public class TransferManagedBean {
                             ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerTransferDone.xhtml?faces-redirect=true");
 
                         } else {
-                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!Your account balance is insufficient.", "Failed!"));
+                            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed!Your account balance is insufficient.", "Failed!"));
                         }
                     }
-                } else if (bankAccountFrom.getBankAccountStatus().equals("Inactivated") && bankAccountTo.getBankAccountStatus().equals("Activated")) {
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!You account(from) has not been activated.", "Failed!"));
-                } else if (bankAccountFrom.getBankAccountStatus().equals("Activated") && bankAccountTo.getBankAccountStatus().equals("Activated")) {
+                } else if (bankAccountFrom.getBankAccountStatus().equals("Inactive") && bankAccountTo.getBankAccountStatus().equals("Active")) {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed!You account(from) has not been activated.", "Failed!"));
+                } else if (bankAccountFrom.getBankAccountStatus().equals("Active") && bankAccountTo.getBankAccountStatus().equals("Active")) {
 
                     Double diffAmt = Double.valueOf(bankAccountFrom.getBankAccountBalance()) - transferAmt;
 
@@ -557,10 +562,10 @@ public class TransferManagedBean {
 
                         ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerTransferDone.xhtml?faces-redirect=true");
                     } else {
-                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!Your account balance is insufficient.", "Failed!"));
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed!Your account balance is insufficient.", "Failed!"));
                     }
-                } else if (bankAccountFrom.getBankAccountStatus().equals("Inactivated") && bankAccountTo.getBankAccountStatus().equals("Inactivated")) {
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!Both of accounts have not been activated.", "Failed!"));
+                } else if (bankAccountFrom.getBankAccountStatus().equals("Inactive") && bankAccountTo.getBankAccountStatus().equals("Inactive")) {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed!Both of accounts have not been activated.", "Failed!"));
                 }
             }
         }

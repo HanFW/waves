@@ -115,18 +115,20 @@ public class PayeeManagedBean implements Serializable {
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
         CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
-        
+
         BankAccount bankAccount = bankAccountSessionLocal.retrieveBankAccountByNum(payeeAccountNum);
         boolean payeeExist = false;
 
         if (bankAccount.getBankAccountId() == null) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Your recipient account does not exist.", "Failed!"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Your recipient account does not exist.", "Failed!"));
         } else if ((bankAccount.getCustomerBasic().getCustomerBasicId()).equals(customerBasic.getCustomerBasicId())) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! You cannot add your own account as recipient.", "Failed!"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! You cannot add your own account as recipient.", "Failed!"));
+        } else if (bankAccount.getBankAccountType().equals("Fixed Deposit Account")) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! You cannot add fixed deposit account user as recipient.", "Failed!"));
         } else {
 
             if (!bankAccount.getBankAccountType().equals(payeeAccountType)) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Your recipient account type is wrong.", "Failed!"));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Your recipient account type is wrong.", "Failed!"));
             } else {
 
                 List<Payee> payees = customerBasic.getPayee();
@@ -141,7 +143,7 @@ public class PayeeManagedBean implements Serializable {
                 if (!payeeExist) {
 
                     if (payees.size() >= 2) {
-                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! You already have 20 recipients.", "Failed!"));
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! You already have 20 recipients.", "Failed!"));
                     } else {
 
                         lastTransactionDate = "";
@@ -163,7 +165,7 @@ public class PayeeManagedBean implements Serializable {
 
                     }
                 } else {
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Recipient has existed.", "Failed!"));
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Recipient has existed.", "Failed!"));
                 }
             }
         }
@@ -188,7 +190,7 @@ public class PayeeManagedBean implements Serializable {
         Payee payee = payeeSessionLocal.retrievePayeeByName(customerPayee.getPayeeAccountNum());
 
         if (payee.getPayeeId() == null) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Recipient does not exist.", "Failed!"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Recipient does not exist.", "Failed!"));
         } else {
             payeeAccountNum = payee.getPayeeAccountNum();
             payeeAccountType = payee.getPayeeAccountType();

@@ -80,13 +80,13 @@ public class ViewStatementManagedBean implements Serializable {
     public List<Statement> getStatement() throws IOException {
 
         ec = FacesContext.getCurrentInstance().getExternalContext();
-        
+
         BankAccount bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountByNum(bankAccountNum);
         List<Statement> statement = bankAccount.getStatement();
-        
+
         if (statement.isEmpty()) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Your account number is invalid", "Failed!"));
-        } 
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Your account number is invalid", "Failed!"));
+        }
 
         return statement;
     }

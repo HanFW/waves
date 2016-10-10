@@ -66,33 +66,6 @@
 
                                         <p:row>
                                             <p:column>
-                                                <p:outputLabel for="bankAccountPwd" style="font-weight: bold" value="Account Password: " />
-                                            </p:column>
-                                            <p:column>
-                                                <p:password id="bankAccountPwd" value="#{employeeCloseAccountDoneManagedBean.bankAccountPwd}" match="confirmBankAccountPwd" 
-                                                            required="true" requiredMessage="Required Field">
-                                                    <f:validateLength minimum="6" maximum="6" />
-                                                </p:password>
-                                            </p:column>
-                                            <p:column>
-                                                <p:message for="bankAccountPwd" />
-                                            </p:column>
-                                        </p:row>   
-
-                                        <p:row>
-                                            <p:column>
-                                                <p:outputLabel for ="confirmBankAccountPwd" style="font-weight:bold" value="Confirm Password: " />
-                                            </p:column>
-                                            <p:column>
-                                                <p:password id="confirmBankAccountPwd" value="#{employeeCloseAccountDoneManagedBean.confirmBankAccountPwd}" 
-                                                            label="Confirm Password" required="true" maxlength="6">
-                                                    <f:validateLength minimum="6" maximum="6" />
-                                                </p:password>
-                                            </p:column>
-                                        </p:row>
-
-                                        <p:row>
-                                            <p:column>
                                                 <p:outputLabel for="onlyOneAccount" style="font-weight: bold" value="Do you have more than one accounts?" />
                                             </p:column>
                                             <p:column>
