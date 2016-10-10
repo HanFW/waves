@@ -1,0 +1,89 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <h:form>
+            <p:menubar>
+                <p:submenu label="My Account">
+                    <p:menuitem value="Fast Transfer" url="/web/simulate/payment/dbsFastTransfer.xhtml" />
+                    <p:menuitem value="View Transaction" url="/web/simulate/payment/dbsViewAccount.xhtml" />
+                </p:submenu>
+            </p:menubar>
+        </h:form>
+
+        <h:form id="formMain"> 
+
+            <p:panelGrid style="margin-bottom:10px">
+                <p:outputLabel style="font-weight: bold" value="From" />
+            </p:panelGrid>
+            <br/>
+            <h:panelGrid columns="1" cellpadding="5" styleClass="ui-panelgrid-blank form-group">     
+
+                <p:outputLabel for="transferFromAccount" style="font-weight: bold" value="Account: " />
+                <p:inputText required="true" label="Amount" requiredMessage="Required Field" id="transferFromAccount"
+                             value="#{dBSFastTransferManagedBean.fromAccountNum}" converterMessage="Invalid input">
+                </p:inputText>
+                <p:message for="transferFromAccount" />
+
+                <p:outputLabel for="transferFromCurrency" style="font-weight: bold" value="Currency: " />
+                <p:selectOneMenu id="transferFromCurrency" value="#{dBSFastTransferManagedBean.fromCurrency}" 
+                                 required="true">
+                    <f:selectItem itemLabel="Singapore Dollar" itemValue="SGD - Singapore Dollar" />
+                </p:selectOneMenu>
+                <p:message for="transferFromCurrency" />
+
+            </h:panelGrid>
+            <br/>
+            <p:panelGrid style="margin-bottom:10px">
+                <p:outputLabel style="font-weight: bold" value="To" />
+            </p:panelGrid>
+            <br/>
+            <h:panelGrid columns="1" cellpadding="5" styleClass="ui-panelgrid-blank form-group">     
+
+                <p:outputLabel for="transferToAccount" style="font-weight: bold" value="Account: " />
+                <p:inputText required="true" label="Amount" requiredMessage="Required Field" id="transferToAccount"
+                             value="#{dBSFastTransferManagedBean.toAccountNum}" converterMessage="Invalid input">
+                </p:inputText>
+                <p:message for="transferToAccount" />
+
+                <p:outputLabel for="transferToCurrency" style="font-weight: bold" value="Currency: " />
+                <p:selectOneMenu id="transferToCurrency" value="#{dBSFastTransferManagedBean.toCurrency}" 
+                                 required="true">
+                    <f:selectItem itemLabel="Singapore Dollar" itemValue="SGD - Singapore Dollar" />
+                </p:selectOneMenu>
+                <p:message for="transferToCurrency" />
+
+                <p:outputLabel for="transferAmt" style="font-weight: bold" value="Amount: " />
+                <p:inputText required="true" label="Amount" requiredMessage="Amount is required." id="transferAmt"
+                             value="#{dBSFastTransferManagedBean.transferAmt}" converterMessage="Invalid input">
+                    <f:validateDoubleRange minimum="0.0" maximum="99999999.0" />
+                </p:inputText>
+                <p:message for="transferAmt" />
+            </h:panelGrid> 
+
+            <h:panelGrid columns="2" cellpadding="5" styleClass="ui-panelgrid-blank form-group">  
+
+                <p:commandButton id="confirmBtn" value="Confirm" update="panel" 
+                                 actionListener="#{dBSFastTransferManagedBean.transfer}" ajax="true"/>
+
+                <p:commandButton id="cancelBtn" action="/web/onlineBanking/deposit/customerDepositIndex.xhtml" value="Cancel" update="panel" immediate = "true">
+                    <p:confirm header="Cancel" message="Are you sure?" />
+                </p:commandButton>
+
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" action="/web/onlineBanking/deposit/customerDepositIndex.xhtml"/>
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" />
+                </p:confirmDialog>
+
+            </h:panelGrid>
+        </h:form>
+    </h:body>
+</html>
+
+

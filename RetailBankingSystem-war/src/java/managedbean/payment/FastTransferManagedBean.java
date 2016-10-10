@@ -159,6 +159,7 @@ public class FastTransferManagedBean {
         toBankAccount = handleAccountString(toBankAccountNumWithType);
 
         BankAccount bankAccountFrom = bankAccountSessionBeanLocal.retrieveBankAccountByNum(fromBankAccount);
+        BankAccount bankAccountTo = bankAccountSessionBeanLocal.retrieveBankAccountByNum(toBankAccount);
 
         Double diffAmt = Double.valueOf(bankAccountFrom.getBankAccountBalance()) - transferAmt;
         if (diffAmt >= 0) {
@@ -168,7 +169,7 @@ public class FastTransferManagedBean {
 
             Calendar cal = Calendar.getInstance();
             String transactionCode = "ICT";
-            String transactionRef = bankAccountFrom.getBankAccountType() + "-" + bankAccountFrom.getBankAccountNum();
+            String transactionRef = bankAccountTo.getBankAccountType() + "-" + bankAccountTo.getBankAccountNum();
             Long transactionDateMilis = cal.getTimeInMillis();
 
             Long transactionId = transactionSessionBeanLocal.addNewTransaction(cal.getTime().toString(), transactionCode, transactionRef,
