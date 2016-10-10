@@ -7,18 +7,12 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/internalSystemTemplate.xhtml">
 
-    <ui:define name="internalSystemMenu">
-
-        <ui:include src="/WEB-INF/internalSystemMenuCounterTeller.xhtml" />
-
-    </ui:define>
-
     <ui:define name="content">
         <h:body>
             <h:form>
                 <p:menubar>
                     <p:submenu label="Home">
-                        <p:menuitem value="Home" url="/web/internalSystem/infrastructure/employeeCounterTellerMainPage.xhtml"/>
+                        <p:menuitem value="Home" url="/web/internalSystem/infrastructure/employeeCounterTellerMainPage.xhtml?faces-redirect=true"/>
                     </p:submenu>
 
                     <p:submenu label="Log Out">
@@ -146,7 +140,7 @@
 
                                             <p:row>
                                                 <p:column colspan="2">
-                                                    <p:commandButton value="Add Follow Up Question" action="counterTellerAddFollowUp.xhtml" ajax="false">
+                                                    <p:commandButton value="Add Follow Up Question" action="counterTellerAddFollowUp.xhtml?faces-redirect=true" ajax="false">
                                                         <f:setPropertyActionListener target="#{employeeAddFollowUpManagedBean.caseId}" value="#{enquiryCase.caseId}" />
                                                     </p:commandButton>
                                                 </p:column>
