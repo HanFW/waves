@@ -248,6 +248,7 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
                 return new CustomerBasic();
             } else {
                 customerBasic = (CustomerBasic) query.getResultList().get(0);
+                entityManager.refresh(customerBasic);
             }
         } catch (EntityNotFoundException enfe) {
             System.out.println("\nEntity not found error: " + enfe.getMessage());
