@@ -6,6 +6,7 @@ import ejb.deposit.entity.AccTransaction;
 import ejb.customer.entity.CustomerBasic;
 import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import ejb.deposit.entity.Interest;
+import ejb.infrastructure.session.CustomerEmailSessionBeanLocal;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -15,11 +16,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.persistence.EntityNotFoundException;
@@ -29,6 +32,8 @@ import javax.persistence.NonUniqueResultException;
 @LocalBean
 
 public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
+    @EJB
+    private CustomerEmailSessionBeanLocal customerEmailSessionBeanLocal;
 
     @EJB
     private StatementSessionBeanLocal statementSessionBeanLocal;
@@ -725,5 +730,15 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
         }
 
         String onlineBankingAccount = adminSessionBeanLocal.createOnlineBankingAccount(customerBasic.getCustomerBasicId());
+    }
+
+    @Override
+    public void sendEmailToRejectCustomer(String customerIdentificationNum) {
+        
+        CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum);
+        
+        Map emailActions = new HashMap();
+//        emailActions.put("customerName", customerBasic.getCustomerName());
+        customerEmailSessionBeanLocal.sendEmail(customerBasic, "rejectOpenAccount", emailActions);
     }
 }

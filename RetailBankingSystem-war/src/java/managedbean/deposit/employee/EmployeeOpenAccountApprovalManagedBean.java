@@ -2,11 +2,13 @@ package managedbean.deposit.employee;
 
 import ejb.customer.entity.CustomerBasic;
 import ejb.customer.session.CRMCustomerSessionBeanLocal;
+import ejb.deposit.entity.BankAccount;
+import ejb.deposit.entity.Interest;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
+import ejb.deposit.session.InterestSessionBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
@@ -20,6 +22,9 @@ import javax.faces.context.FacesContext;
 public class EmployeeOpenAccountApprovalManagedBean implements Serializable {
 
     @EJB
+    private InterestSessionBeanLocal interestSessionBeanLocal;
+
+    @EJB
     private CRMCustomerSessionBeanLocal customerSessionBeanLocal;
 
     @EJB
@@ -28,39 +33,11 @@ public class EmployeeOpenAccountApprovalManagedBean implements Serializable {
     private ExternalContext ec;
 
     private String customerIdentificationNum;
-    private String customerName;
-    Long customerId;
 
     public EmployeeOpenAccountApprovalManagedBean() {
     }
 
-    @PostConstruct
-    public void init() {
-        customerIdentificationNum = null;
-    }
-
-    public Long getCustomerId() {
-        if (customerId == null) {
-            System.out.println("customerId null get");
-        } else {
-            System.out.println("customerId not null get");
-        }
-        return customerId;
-    }
-
-    public void setCustomerId(Long customerId) {
-        if (customerId == null) {
-            System.out.println("customerId null set");
-        } else {
-            System.out.println("customerId not null set");
-        }
-        this.customerId = customerId;
-    }
-
     public String getCustomerIdentificationNum() {
-        CustomerBasic customerBasic = bankAccountSessionBeanLocal.retrieveCustomerBasicById(customerId);
-        customerIdentificationNum = customerBasic.getCustomerIdentificationNum();
-
         return customerIdentificationNum;
     }
 
@@ -68,19 +45,7 @@ public class EmployeeOpenAccountApprovalManagedBean implements Serializable {
         this.customerIdentificationNum = customerIdentificationNum;
     }
 
-    public String getCustomerName() {
-        CustomerBasic customerBasic = bankAccountSessionBeanLocal.retrieveCustomerBasicById(customerId);
-        customerName = customerBasic.getCustomerName();
-
-        return customerName;
-    }
-
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
-    }
-
     public List<CustomerBasic> getCustomerBasics() throws IOException {
-
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
         List<CustomerBasic> customerBasics = customerSessionBeanLocal.getAllNewCustomer();
@@ -88,28 +53,28 @@ public class EmployeeOpenAccountApprovalManagedBean implements Serializable {
         return customerBasics;
     }
 
-//    public Image getFileUpload() throws IOException {
-//
-//        CustomerBasic customerBasic = bankAccountSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum);
-//
-//        String filename = customerBasic.getCustomerName() + "-" + customerIdentificationNum + ".png";
-//
-//        File file = new File("/Users/hanfengwei/NetBeansProjects/waves/RetailBankingSystem-war/web/resources/customerIdentification", filename);
-//        Image img = ImageIO.read(new File(file.toURI()));
-//
-//        return img;
-//    }
-    public void approveOpenAccount() {
+    public void approveOpenAccount() throws IOException {
+
+        ec = FacesContext.getCurrentInstance().getExternalContext();
         bankAccountSessionBeanLocal.approveAccount(customerIdentificationNum);
         CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum);
 
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Successfully Approve Customer " + customerBasic.getCustomerName(), "Successfully!"));
-        customerIdentificationNum = null;
     }
 
     public void rejectOpenAccount() {
-
+        
         CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum);
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Successfully Approve Customer " + customerBasic.getCustomerName(), "Successfully!"));
+        System.out.println(customerBasic);
+        BankAccount bankAccount = customerBasic.getBankAccount().get(0);
+        Interest interest = bankAccount.getInterest();
+        Long interestId = interest.getInterestId();
+        
+        bankAccountSessionBeanLocal.sendEmailToRejectCustomer(customerIdentificationNum);
+        
+        customerSessionBeanLocal.deleteCustomerBasic(customerIdentificationNum);
+        interestSessionBeanLocal.deleteInterest(interestId);
+        
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Successfully Reject Customer " + customerBasic.getCustomerName(), "Successfully!"));
     }
 }

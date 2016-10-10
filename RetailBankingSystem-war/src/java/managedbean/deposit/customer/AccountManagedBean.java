@@ -133,7 +133,6 @@ public class AccountManagedBean implements Serializable {
     private Long accountId;
     private Long interestId;
     private String newCustomer;
-    private String accountApproval;
 
 //    private boolean singaporePROutputRender = false;
 //    private boolean singaporeNRICOutputRender = false;
@@ -822,14 +821,6 @@ public class AccountManagedBean implements Serializable {
         this.newCustomer = newCustomer;
     }
 
-    public String getAccountApproval() {
-        return accountApproval;
-    }
-
-    public void setAccountApproval(String accountApproval) {
-        this.accountApproval = accountApproval;
-    }
-
     public boolean isFixedDepositRender() {
         return fixedDepositRender;
     }
@@ -953,7 +944,7 @@ public class AccountManagedBean implements Serializable {
                     if (customerAgeDouble < 16) {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Eligibility of openning account is 16 years old and above.", "Failed!"));
                     } else {
-
+                        
                         bankAccountBalance = "0";
                         transferDailyLimit = "3000.0";
                         transferBalance = "3000.0";
@@ -1041,7 +1032,7 @@ public class AccountManagedBean implements Serializable {
         checkIdentificationType();
 
         if (file != null) {
-            String filename = customerName + "-" + customerIdentificationNum + ".png";
+            String filename = customerIdentificationNum + ".png";
             InputStream input = file.getInputstream();
             OutputStream output = new FileOutputStream(new File("/Users/Yongxue/Desktop/JavaBean/waves/RetailBankingSystem-war/web/resources/customerIdentification", filename));
 
@@ -1161,6 +1152,6 @@ public class AccountManagedBean implements Serializable {
         ec.getFlash().put("bankAccountType", bankAccountType);
         ec.getFlash().put("bankAccountStatus", bankAccountStatus);
 
-        ec.redirect(ec.getRequestContextPath() + "/web/merlionBank/deposit/publicSaveAccountExistingCustomer.xhtml?faces-redirect=true");
+        ec.redirect(ec.getRequestContextPath() + "/web/merlionBank/deposit/publicSaveAccountNewCustomer.xhtml?faces-redirect=true");
     }
 }

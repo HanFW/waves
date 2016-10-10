@@ -59,8 +59,8 @@
 
                                     <p:column headerText="Identification">
                                         <p:commandButton process="@this" oncomplete="PF('dlg1').show()" 
-                                                         value="View">
-                                            <f:setPropertyActionListener value="#{customerBasic.customerIdentificationNum}" target="#{employeeViewIdentificationManagedBean.customerIdentificationNum}"/>
+                                                         value="View" update="identificationNumDialog">
+                                            <f:setPropertyActionListener value="#{customerBasic.customerIdentificationNum}" target="#{employeeOpenAccountApprovalManagedBean.customerIdentificationNum}"/>
                                         </p:commandButton>
                                     </p:column>
 
@@ -91,7 +91,7 @@
                           draggable="true">
                     <div>
                         <img style="width: 400px;height: 400px" 
-                             src="/RetailBankingSystem-war/resources/customerIdentification/#{employeeViewIdentificationManagedBean.customerIdentificationNum}.png"/>
+                             src="/RetailBankingSystem-war/resources/customerIdentification/#{employeeOpenAccountApprovalManagedBean.customerIdentificationNum}.png"/>
                     </div>
                 </p:dialog>
             </h:form>

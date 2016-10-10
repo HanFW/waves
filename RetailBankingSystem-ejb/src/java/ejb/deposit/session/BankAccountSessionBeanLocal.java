@@ -63,4 +63,6 @@ public interface BankAccountSessionBeanLocal {
             Long customerBasicId, Long interestId);
     
     public void approveAccount(String customerIdentificationNum);
+    
+    public void sendEmailToRejectCustomer(String customerIdentificationNum);
 }

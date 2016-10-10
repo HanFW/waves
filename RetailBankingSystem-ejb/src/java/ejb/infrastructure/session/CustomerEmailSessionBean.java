@@ -29,7 +29,7 @@ public class CustomerEmailSessionBean implements CustomerEmailSessionBeanLocal {
     public void sendEmail(CustomerBasic customer, String subject, Map actions) {
         System.out.println("@");
         System.out.println("@@@@@@ infrastructure/CustomerEmailSessionBean: sendEmail() @@@@@@");
-        
+
         String emailServerName = "smtp.gmail.com";
         String emailFromAddress = "Han Fengwei Test Send<merlionbankes05@gmail.com>";
         String toEmailAddress = "Han Fengwei Test Receive<" + customer.getCustomerEmail() + ">";
@@ -57,6 +57,12 @@ public class CustomerEmailSessionBean implements CustomerEmailSessionBeanLocal {
                 emailText += "Initial User ID: " + actions.get("userId") + "\n";
                 emailText += "Initial PIN: " + actions.get("pin") + "\n";
                 emailText += "Please login with your initial User ID and PIN to activate your online banking account.";
+                break;
+            case "rejectOpenAccount":
+                emailText += "I regret to inform that your open account application have not been approved. \n";
+                emailText += "Please verify your identification number with your IC/Passport. \n";
+                emailText += "If you have any enquiry, please contact us at 800 820 8820. \n";
+                emailText += "We look forward to serving you again. \n";
                 break;
         }
 
