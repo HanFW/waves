@@ -8,228 +8,192 @@
     <ui:define name="content">
 
         <h:form>
-            <div class="ui-g ui-fluid">
-                <div class="ui-g-12 ui-lg-12">
-                    <div class="card card-w-title"> 
-                        <p:panel>
-                            <p:outputLabel value="Welcome "/>
-                            <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
-                        </p:panel>
 
-                        <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
-                            <p:panel id="panel" header="Open a New Bank Account"> 
-                                <p:messages globalOnly="true"/>
+            <p:panel>
+                <p:outputLabel value="Welcome "/>
+                <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
+            </p:panel>
 
-                                <h:outputLabel value="Account Details" style="font-weight: bold; font-size: 24px" />
-                                <p:separator/>
-                                <br/>
-                                <p:row>
-                                    <p:column>
-                                        <p:outputLabel for="bankAccountType" style="font-weight: bold" value="Account Type: " />
-                                    </p:column>
-                                    <p:column>
-                                        <p:selectOneMenu id="bankAccountType" value="#{internalOpenAccountManagedBean.bankAccountType}" 
-                                                         required="true" requiredMessage="Required Field">
-                                            <f:selectItem itemLabel="Please Select" itemValue="" noSelectionOption="true"/>
-                                            <f:selectItem itemLabel="Monthly Savings Account" itemValue="Monthly Savings Account" />
-                                            <f:selectItem itemLabel="Bonus Savings Account" itemValue="Bonus Savings Account" />
-                                            <f:selectItem itemLabel="Basic Savings Account" itemValue="Basic Savings Account" />
-                                            <f:selectItem itemLabel="Fixed Deposit Account" itemValue="Fixed Deposit Account" />
-                                            <p:ajax event="change" update="fixedDepositDurationPanel" listener="#{internalOpenAccountManagedBean.show()}"/>
-                                        </p:selectOneMenu>
-                                    </p:column>
-                                    <p:column>
-                                        <p:message for="bankAccountType" />
-                                    </p:column>
-                                </p:row>
-                                
-                                <p:panel style="border: none;" id="fixedDepositDurationPanel" visible="#{internalOpenAccountManagedBean.visible}">
-                                    <p:outputLabel for="fixedDepositPeriod" style="font-weight: bold" value="Deposit Period: " />
+            <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
 
-                                    <p:selectOneMenu id="fixedDepositPeriod" value="#{internalOpenAccountManagedBean.bankAccountDepositPeriod}" 
-                                                     style="width:125px" required="#{internalOpenAccountManagedBean.fixedDepositRender}" 
-                                                     requiredMessage="Required Field">
-                                        <f:selectItem itemLabel="Please Select" itemValue="" />
-                                        <f:selectItem itemLabel="1 Month" itemValue="1 Month" />
-                                        <f:selectItem itemLabel="2 Month" itemValue="2 Month" />
-                                        <f:selectItem itemLabel="3 Month" itemValue="3 Month" />
-                                        <f:selectItem itemLabel="4 Month" itemValue="4 Month" />
-                                        <f:selectItem itemLabel="5 Month" itemValue="5 Month" />
-                                        <f:selectItem itemLabel="6 Month" itemValue="6 Month" />
-                                        <f:selectItem itemLabel="7 Month" itemValue="7 Month" />
-                                        <f:selectItem itemLabel="8 Month" itemValue="8 Month" />
-                                        <f:selectItem itemLabel="9 Month" itemValue="9 Month" />
-                                        <f:selectItem itemLabel="10 Month" itemValue="10 Month" />
-                                        <f:selectItem itemLabel="11 Month" itemValue="11 Month" />
-                                        <f:selectItem itemLabel="12 Month" itemValue="12 Month" />
-                                        <f:selectItem itemLabel="18 Month" itemValue="18 Month" />
-                                        <f:selectItem itemLabel="24 Month" itemValue="24 Month" />
-                                        <f:selectItem itemLabel="36 Month" itemValue="36 Month" />
-                                    </p:selectOneMenu>
+                <p:panel>
 
-                                    <p:message for="fixedDepositPeriod" />
-                                </p:panel>
+                    <h:outputLabel value="My Details" style="font-weight: bold; font-size: 24px" />
+                    <p:separator/>
+                    <br/>
+                    <h:outputText value="Name: "  style="font-weight: bold"/>
+                    <h:outputText value="#{internalOpenAccountManagedBean.customerName}" />
+                    <br/>
+                    <br/>
+                    <h:outputText value="Identification Number: " style="font-weight: bold"/>
+                    <h:outputText value="#{internalOpenAccountManagedBean.customerIdentificationNum}" />
+                    <br/>
+                    <br/>
+                    <h:outputText value="Email: " style="font-weight: bold"/>
+                    <h:outputText value="#{internalOpenAccountManagedBean.customerEmail}"/>
+                    <br/>
+                    <br/>
+                    <h:outputText value="Mobile: " style="font-weight: bold"/>
+                    <h:outputText value="#{internalOpenAccountManagedBean.customerMobile}"/>
+                    <br/>
 
-                                <br/>
-                                <h:outputLabel value="My Details" style="font-weight: bold; font-size: 24px" />
-                                <p:separator/>
-                                <br/>
-                                <h:outputText value="Name: "  style="font-weight: bold"/>
-                                <h:outputText value="#{internalOpenAccountManagedBean.customerName}" />
-                                <br/>
-                                <br/>
-                                <h:outputText value="Identification Number: " style="font-weight: bold"/>
-                                <h:outputText value="#{internalOpenAccountManagedBean.customerIdentificationNum}" />
-                                <br/>
-                                <br/>
-                                <h:outputText value="Email: " style="font-weight: bold"/>
-                                <h:outputText value="#{internalOpenAccountManagedBean.customerEmail}"/>
-                                <br/>
-                                <br/>
-                                <h:outputText value="Mobile: " style="font-weight: bold"/>
-                                <h:outputText value="#{internalOpenAccountManagedBean.customerMobile}"/>
-                                <br/>
-                                <p:panelGrid>
-                                    <h3>
-                                        Introduction of various bank account types: 
-                                    </h3>
-                                    <h:outputText value="(a) Monthly Savings Account"/>
-                                    <br/>
-                                    <h:outputText value="- Initial Deposit: S$0  Monthly Minimum Saving: S$50" style="margin-left:28px"/>
-                                    <br/>
-                                    <h:outputText value="- Basic Interest Rate: 0.05%  Bonus Interest Rate: 0.35%" style="margin-left:28px"/>
-                                    <br/>
-                                    <h:outputText value="- Bonus Interest Rate Criteria" style="margin-left:28px"/>
-                                    <br/>
-                                    <h:outputText value="· No withdrawal during this month" style="margin-left:40px"/>
-                                    <br/>
-                                    <h:outputText value="· No transfer to others' account during this month" style="margin-left:40px"/>
-                                    <br/>
-                                    <h:outputText value="· Monthly Minimum Saving S$50" style="margin-left:40px"/>
-                                    <br/>
-                                    <br/>
-                                    <h:outputText value="(b) Basic Savings Account"/>
-                                    <br/>
-                                    <h:outputText value="- Initial Deposit: S$1  Basic Interest Rate: 0.05%" style="margin-left:28px"/>
-                                    <br/>
-                                    <br/>
-                                    <h:outputText value="(c) Bonus Savings Account"/>
-                                    <br/>
-                                    <h:outputText value="- Initial Deposit: S$3000" style="margin-left:28px"/> 
-                                    <br/>
-                                    <h:outputText value="- Basic Interest Rate: 0.05%  Bonus Interest Rate: 0.75%" style="margin-left:28px"/>
-                                    <br/>
-                                    <h:outputText value="- Bonus Interest Rate Criteria" style="margin-left:28px"/>
-                                    <br/>
-                                    <h:outputText value="· No withdrawal during this month" style="margin-left:40px"/>
-                                    <br/>
-                                    <h:outputText value="· No transfer to others' account during this month" style="margin-left:40px"/>
-                                    <br/>
-                                    <br/>
-                                    <h:outputText value="(d) Fixed Deposit Account"/>
-                                    <br/>
-                                    <h:outputText value="- Initial Deposit: S$1000" style="margin-left:28px"/>
-                                    <br/>
-                                </p:panelGrid>
-                                <br/>
-                                <p:panelGrid>
+                </p:panel>
 
-                                    <p:row>
-                                        <p:column>
-                                            <p:outputLabel style="font-weight: bold" value="Deposit Period(Month)" />
-                                        </p:column>
+                <p:panel id="panel"> 
+                    <p:messages globalOnly="true"/>
 
-                                        <p:column>
-                                            <p:outputLabel value="1 - 2" />
-                                        </p:column>
+                    <h:outputLabel value="Open a New Account" style="font-weight: bold; font-size: 24px" />
+                    <p:separator/>
+                    <br/>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="bankAccountType" style="font-weight: bold" value="Account Type: " />
+                        </p:column>
+                        <p:column>
+                            <p:selectOneMenu id="bankAccountType" value="#{internalOpenAccountManagedBean.bankAccountType}" 
+                                             required="true" requiredMessage="Required Field">
+                                <f:selectItem itemLabel="Please Select" itemValue="" noSelectionOption="true"/>
+                                <f:selectItem itemLabel="Monthly Savings Account" itemValue="Monthly Savings Account" />
+                                <f:selectItem itemLabel="Bonus Savings Account" itemValue="Bonus Savings Account" />
+                                <f:selectItem itemLabel="Basic Savings Account" itemValue="Basic Savings Account" />
+                                <f:selectItem itemLabel="Fixed Deposit Account" itemValue="Fixed Deposit Account" />
+                                <p:ajax event="change" update="fixedDepositDurationPanel" listener="#{internalOpenAccountManagedBean.show()}"/>
+                            </p:selectOneMenu>
+                        </p:column>
+                        <p:column>
+                            <p:message for="bankAccountType" />
+                        </p:column>
+                    </p:row>
 
-                                        <p:column>
-                                            <p:outputLabel value="3 - 5" />
-                                        </p:column>
+                    <p:panel style="border: none;" id="fixedDepositDurationPanel" visible="#{internalOpenAccountManagedBean.visible}">
+                        <p:outputLabel for="fixedDepositPeriod" style="font-weight: bold" value="Deposit Period: " />
 
-                                        <p:column>
-                                            <p:outputLabel value="6 - 8" />
-                                        </p:column>
+                        <p:selectOneMenu id="fixedDepositPeriod" value="#{internalOpenAccountManagedBean.bankAccountDepositPeriod}" 
+                                         style="width:125px" required="#{internalOpenAccountManagedBean.fixedDepositRender}" 
+                                         requiredMessage="Required Field">
+                            <f:selectItem itemLabel="Please Select" itemValue="" />
+                            <f:selectItem itemLabel="1 Month" itemValue="1 Month" />
+                            <f:selectItem itemLabel="2 Month" itemValue="2 Month" />
+                            <f:selectItem itemLabel="3 Month" itemValue="3 Month" />
+                            <f:selectItem itemLabel="4 Month" itemValue="4 Month" />
+                            <f:selectItem itemLabel="5 Month" itemValue="5 Month" />
+                            <f:selectItem itemLabel="6 Month" itemValue="6 Month" />
+                            <f:selectItem itemLabel="7 Month" itemValue="7 Month" />
+                            <f:selectItem itemLabel="8 Month" itemValue="8 Month" />
+                            <f:selectItem itemLabel="9 Month" itemValue="9 Month" />
+                            <f:selectItem itemLabel="10 Month" itemValue="10 Month" />
+                            <f:selectItem itemLabel="11 Month" itemValue="11 Month" />
+                            <f:selectItem itemLabel="12 Month" itemValue="12 Month" />
+                            <f:selectItem itemLabel="18 Month" itemValue="18 Month" />
+                            <f:selectItem itemLabel="24 Month" itemValue="24 Month" />
+                            <f:selectItem itemLabel="36 Month" itemValue="36 Month" />
+                        </p:selectOneMenu>
 
-                                        <p:column>
-                                            <p:outputLabel value="9 - 11" />
-                                        </p:column>
+                        <p:message for="fixedDepositPeriod" />
+                    </p:panel>
 
-                                        <p:column>
-                                            <p:outputLabel value="12"/>
-                                        </p:column>
+                    <h:panelGrid columns="2" style="margin-bottom:10px">
+                        <p:selectBooleanCheckbox id = "agreement" value="#{internalOpenAccountManagedBean.agreement}" 
+                                                 style="margin-top:5px"/>
 
-                                        <p:column>
-                                            <p:outputLabel value="18"/>
-                                        </p:column>
+                        <h:outputText value="I have read and agree to the terms of Customer Declaration and Confirmation." />
+                        <br/>
+                        <h:outputText value="I have also read and agree to the Terms and Conditions Governing Personal Data Protection Act 2012."/>
+                    </h:panelGrid>
+                    <br/>
 
-                                        <p:column>
-                                            <p:outputLabel value="24"/>
-                                        </p:column>
+                    <div align ="center">
 
-                                        <p:column>
-                                            <p:outputLabel value="36"/>
-                                        </p:column>
-                                    </p:row>
-
-                                    <p:row>
-                                        <p:column>
-                                            <p:outputLabel style="font-weight: bold" value="Interest Rate" />
-                                        </p:column>
-
-                                        <p:column>
-                                            <p:outputLabel value="0.05%" />
-                                        </p:column>
-
-                                        <p:column>
-                                            <p:outputLabel value="0.1%" />
-                                        </p:column>
-
-                                        <p:column>
-                                            <p:outputLabel value="0.15%" />
-                                        </p:column>
-
-                                        <p:column>
-                                            <p:outputLabel value="0.2%" />
-                                        </p:column>
-
-                                        <p:column>
-                                            <p:outputLabel value="0.25%" />
-                                        </p:column>
-
-                                        <p:column>
-                                            <p:outputLabel value="0.5%" />
-                                        </p:column>
-
-                                        <p:column>
-                                            <p:outputLabel value="0.55%" />
-                                        </p:column>
-
-                                        <p:column>
-                                            <p:outputLabel value="0.65%" />
-                                        </p:column>
-                                    </p:row>
-
-                                </p:panelGrid>
-                                <br/>
-                                <br/>
-                                <h:panelGrid columns="2" style="margin-bottom:10px">
-                                    <p:selectBooleanCheckbox id = "agreement" value="#{internalOpenAccountManagedBean.agreement}" 
-                                                             style="margin-top:5px"/>
-                                    <h:outputText value="I have read and agree to the terms of Customer Declaration and Confirmation." />
-                                    <br/>
-                                    <h:outputText value="I have also read and agree to the Terms and Conditions Governing Personal Data Protection Act 2012."/>
-                                </h:panelGrid>
-                                <br/>
-
-                                <p:commandButton id="saveBtn" value="Open Account" actionListener="#{internalOpenAccountManagedBean.saveAccount}" 
-                                                 ajax="true" update="panel"/>
-                            </p:panel>
-                        </p:panelGrid>
+                        <p:commandButton id="saveBtn" value="Open Account" actionListener="#{internalOpenAccountManagedBean.saveAccount}" 
+                                         ajax="true" update="panel" style="width: 50%"/>
                     </div>
-                </div>
-            </div>
+                </p:panel>
 
+                <p:panelGrid>
+                    <h3>
+                        Introduction of various bank account types: 
+                    </h3>
+                    <h:outputText value="(a) Monthly Savings Account"/>
+                    <br/>
+                    <h:outputText value="- Initial Deposit: S$0  Monthly Minimum Saving: S$50" style="margin-left:28px"/>
+                    <br/>
+                    <h:outputText value="- Basic Interest Rate: 0.05%  Bonus Interest Rate: 0.35%" style="margin-left:28px"/>
+                    <br/>
+                    <h:outputText value="- Bonus Interest Rate Criteria" style="margin-left:28px"/>
+                    <br/>
+                    <h:outputText value="· No withdrawal during this month" style="margin-left:40px"/>
+                    <br/>
+                    <h:outputText value="· No transfer to others' account during this month" style="margin-left:40px"/>
+                    <br/>
+                    <h:outputText value="· Monthly Minimum Saving S$50" style="margin-left:40px"/>
+                    <br/>
+                    <br/>
+                    <h:outputText value="(b) Basic Savings Account"/>
+                    <br/>
+                    <h:outputText value="- Initial Deposit: S$1  Basic Interest Rate: 0.05%" style="margin-left:28px"/>
+                    <br/>
+                    <br/>
+                    <h:outputText value="(c) Bonus Savings Account"/>
+                    <br/>
+                    <h:outputText value="- Initial Deposit: S$3000" style="margin-left:28px"/> 
+                    <br/>
+                    <h:outputText value="- Basic Interest Rate: 0.05%  Bonus Interest Rate: 0.75%" style="margin-left:28px"/>
+                    <br/>
+                    <h:outputText value="- Bonus Interest Rate Criteria" style="margin-left:28px"/>
+                    <br/>
+                    <h:outputText value="· No withdrawal during this month" style="margin-left:40px"/>
+                    <br/>
+                    <h:outputText value="· No transfer to others' account during this month" style="margin-left:40px"/>
+                    <br/>
+                    <br/>
+                    <h:outputText value="(d) Fixed Deposit Account"/>
+                    <br/>
+                    <h:outputText value="- Initial Deposit: S$1000" style="margin-left:28px"/>
+                    <br/>
+                </p:panelGrid>
+                <br/>
+                <h:panelGrid columns="9" cellpadding="5">
+
+                    <p:outputLabel style="font-weight: bold" value="Deposit Period(Month)" />
+
+                    <p:outputLabel value="1 - 2" />
+
+                    <p:outputLabel value="3 - 5" />
+
+                    <p:outputLabel value="6 - 8" />
+
+                    <p:outputLabel value="9 - 11" />
+
+                    <p:outputLabel value="12"/>
+
+                    <p:outputLabel value="18"/>
+
+                    <p:outputLabel value="24"/>
+
+                    <p:outputLabel value="36"/>
+
+                    <p:outputLabel style="font-weight: bold" value="Interest Rate" />
+
+                    <p:outputLabel value="0.05%" />
+
+                    <p:outputLabel value="0.1%" />
+
+                    <p:outputLabel value="0.15%" />
+
+                    <p:outputLabel value="0.2%" />
+
+                    <p:outputLabel value="0.25%" />
+
+                    <p:outputLabel value="0.5%" />
+
+                    <p:outputLabel value="0.55%" />
+
+                    <p:outputLabel value="0.65%" />
+
+                </h:panelGrid>
+                <br/>
+                <br/>
+            </p:panelGrid>
         </h:form>
         <ezcomp:CCTimeout/>
     </ui:define>
