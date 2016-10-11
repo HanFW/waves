@@ -1,7 +1,7 @@
 package managedbean.infrastructure.customer;
 
 import ejb.customer.entity.CustomerBasic;
-import ejb.deposit.entity.MessageBox;
+import ejb.infrastructure.entity.MessageBox;
 import ejb.infrastructure.session.MessageSessionBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;

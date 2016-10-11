@@ -1,7 +1,7 @@
 package ejb.customer.entity;
 
 import ejb.deposit.entity.BankAccount;
-import ejb.deposit.entity.MessageBox;
+import ejb.infrastructure.entity.MessageBox;
 import ejb.deposit.entity.Payee;
 import java.io.Serializable;
 import javax.persistence.Entity;
