@@ -27,8 +27,7 @@ public interface EmployeeAdminSessionBeanLocal {
     
     public String createEmployeeAccount(String employeeName, String employeeGender,String employeeDepartment,
     String employeePosition, String employeeNRIC, String employeeMobileNum, String employeeEmail,
-    Set<String> roles);
- 
+    Set<String> roles); 
     
     public void updateEmployeeAccount(Long id, String name, String department, String position, String mobile, String email, Set<String> roles);
     

@@ -72,7 +72,7 @@ public class EmployeeLoginManagedBean implements Serializable {
                         context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/web/internalSystem/infrastructure/employeeChangePassword.xhtml?faces-redirect=true");
                     } else {
                         context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/web/internalSystem/infrastructure/employeeMainPage.xhtml?faces-redirect=true");
-                        message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Welcome " + employee.getEmployeeName() + " !", "Welcome message");
+                        message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Welcome " + employee.getEmployeeName() + " !", "Welcome message");
                         context.addMessage(null, message);
                         System.out.println("*** LoginManagedBean: welcome message");
                     }
@@ -82,17 +82,17 @@ public class EmployeeLoginManagedBean implements Serializable {
                 }
                 break;
             case "invalidPassword":
-                message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Invalid employee Password.", "Invalid employee Password.");
+                message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid employee Password.", "Invalid employee Password.");
                 context.addMessage(null, message);
                 System.out.println("*** LoginManagedBean: invalid password");
                 break;
             case "invalidUser":
-                message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Invalid employee Account.", "Invalid employee Account.");
+                message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid employee Account.", "Invalid employee Account.");
                 context.addMessage(null, message);
                 System.out.println("*** LoginManagedBean: invalid user account");
                 break;
             default:
-                message = new FacesMessage(FacesMessage.SEVERITY_INFO, status, "Please check your account number.");
+                message = new FacesMessage(FacesMessage.SEVERITY_ERROR, status, "Please check your account number.");
                 context.addMessage(null, message);
                 System.out.println("*** LoginManagedBean: invalid account");
                 break;

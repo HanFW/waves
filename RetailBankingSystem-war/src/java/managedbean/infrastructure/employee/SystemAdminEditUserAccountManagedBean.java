@@ -1,7 +1,9 @@
 package managedbean.infrastructure.employee;
 
 import ejb.infrastructure.entity.Employee;
+import ejb.infrastructure.entity.Role;
 import ejb.infrastructure.session.EmployeeAdminSessionBeanLocal;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
@@ -19,7 +21,7 @@ public class SystemAdminEditUserAccountManagedBean implements Serializable {
 
     @EJB
     private EmployeeAdminSessionBeanLocal employeeAdminSessionBeanLocal;
-    
+
     private String targetEmployeeName;
     private String targetEmployeeDepartment;
     private String targetEmployeePosition;
@@ -48,7 +50,6 @@ public class SystemAdminEditUserAccountManagedBean implements Serializable {
             System.err.println("********** sr: " + sr);
         }
         employeeAdminSessionBeanLocal.updateEmployeeAccount(employeeId, targetEmployeeName, targetEmployeeDepartment, targetEmployeePosition, targetEmployeeMobile, targetEmployeeEmail, selectedRoles);
-      
 
         System.out.println("clear");
 
@@ -64,6 +65,9 @@ public class SystemAdminEditUserAccountManagedBean implements Serializable {
         targetEmployeeMobile = null;
         targetEmployeeEmail = null;
         selectedRoles = null;
+        roles = null;
+        departments = null;
+        positions = null;
 
     }
 
@@ -74,7 +78,7 @@ public class SystemAdminEditUserAccountManagedBean implements Serializable {
 
         employee = employeeAdminSessionBeanLocal.getEmployeeById(employeeId);
         targetEmployeeName = employee.getEmployeeName();
-       
+
         return targetEmployeeName;
     }
 
@@ -86,6 +90,12 @@ public class SystemAdminEditUserAccountManagedBean implements Serializable {
 
         employee = employeeAdminSessionBeanLocal.getEmployeeById(employeeId);
         targetEmployeeDepartment = employee.getEmployeeDepartment();
+        System.out.println("test2");
+        positions = employeeAdminSessionBeanLocal.getPositionsByDepartment(targetEmployeeDepartment);
+        System.out.println("set positions" + positions);
+        System.out.println("test1");
+        roles = employeeAdminSessionBeanLocal.getRolesByDepartment(targetEmployeeDepartment);
+        System.out.println("set roles" + roles);
 
         return targetEmployeeDepartment;
     }
@@ -107,7 +117,7 @@ public class SystemAdminEditUserAccountManagedBean implements Serializable {
     }
 
     public String getTargetEmployeeMobile() {
-        System.out.println("get");
+
 //        if (targetEmployeeMobile == null) {
         employee = employeeAdminSessionBeanLocal.getEmployeeById(employeeId);
         System.out.println(employee);
@@ -134,8 +144,12 @@ public class SystemAdminEditUserAccountManagedBean implements Serializable {
     }
 
     public Set<String> getSelectedRoles() {
+        System.out.println("get " + employeeId);
+        System.out.println("selected roles is not null " + selectedRoles);
         if (selectedRoles == null && employeeId != null) {
             selectedRoles = employeeAdminSessionBeanLocal.getSelectedRoles(employeeId);
+            System.out.println("get" + employeeId);
+            System.out.println("get selected roles" + selectedRoles);
         }
         return selectedRoles;
     }
@@ -145,9 +159,8 @@ public class SystemAdminEditUserAccountManagedBean implements Serializable {
     }
 
     public List<String> getRoles() {
-        if (roles == null) {
-            roles = employeeAdminSessionBeanLocal.getRolesByDepartment(targetEmployeeDepartment);
-        }
+
+//        roles = employeeAdminSessionBeanLocal.getRolesByDepartment(targetEmployeeDepartment);
         return roles;
     }
 
@@ -182,11 +195,27 @@ public class SystemAdminEditUserAccountManagedBean implements Serializable {
 
     public List<String> getPositions() {
 
-        if (positions == null) {
-            positions = employeeAdminSessionBeanLocal.getEmployeePositions();
-        }
+//        if (positions == null) {
+//            positions = employeeAdminSessionBeanLocal.getEmployeePositions();
+//        }
         return positions;
     }
 
- 
+    public void setToNullActions() throws IOException {
+        employee = null;
+        employeeId = null;
+        targetEmployeeName = null;
+        targetEmployeeDepartment = null;
+        targetEmployeePosition = null;
+        targetEmployeeMobile = null;
+        targetEmployeeEmail = null;
+        selectedRoles = null;
+        roles = null;
+        departments = null;
+        positions = null;
+        
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/web/internalSystem/infrastructure/employeeUserAccountManagement.xhtml?faces-redirect=true");
+    }
+
 }

@@ -107,11 +107,12 @@ public class EmployeeAdminSessionBean implements EmployeeAdminSessionBeanLocal {
         roles4[1] = "Sales Department Manager";
         roles4[2] = "Wealth Management Specialist";
 
-        roles5 = new String[4];
+        roles5 = new String[5];
         roles5[0] = "Counter Teller";
         roles5[1] = "Customer Service Agent";
         roles5[2] = "Enquiry Processor";
         roles5[3] = "Operation Specialist";
+        roles5[4] = "Operation Department Manager";
 
     }
 

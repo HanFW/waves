@@ -9,22 +9,23 @@ import ejb.infrastructure.entity.Employee;
 import ejb.infrastructure.session.EmployeeAdminSessionBeanLocal;
 import ejb.infrastructure.session.EmployeeEmailSessionBeanLocal;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 import javax.ejb.EJB;
-import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.faces.view.ViewScoped;
 
 /**
  *
  * @author Jingyuan
  */
 @Named(value = "employeeCreateUserAccountManagedBean")
-@RequestScoped
-public class EmployeeCreateUserAccountManagedBean {
+@ViewScoped
+public class EmployeeCreateUserAccountManagedBean implements Serializable{
 
     @EJB
     private EmployeeAdminSessionBeanLocal adminSessionBeanLocal;
@@ -43,9 +44,6 @@ public class EmployeeCreateUserAccountManagedBean {
     private Set<String> selectedRoles;
     private List<String> positions;
     private List<String> roles;
-//    private Map<String, Map<String, String>> data = new HashMap<String, Map<String, String>>();
-//    private Map<String, String> departments;
-//    private Map<String, String> positions;
 
     /**
      * Creates a new instance of EmployeeCreateUserAccountManagedBean
@@ -53,37 +51,6 @@ public class EmployeeCreateUserAccountManagedBean {
     public EmployeeCreateUserAccountManagedBean() {
 
     }
-
-//    @PostConstruct
-//    public void init() {
-//        departments = new HashMap<String, String>();
-//        departments.put("Board of Directors", "Board of Directors");
-//        departments.put("Card Department", "Card Departments");
-//        departments.put("Loan Department", "Loan Department");
-//        departments.put("Sales Department", "Sales Department");
-//        departments.put("Operation Department", "Operation Department");
-//
-//        Map<String, String> map = new HashMap<String, String>();
-//        map.put("CEO", "CEO");
-//        map.put("CIO", "CIO");
-//        map.put("CTO", "CTO");
-//        map.put("CFO", "CFO");
-//        map.put("CMO", "CMO");
-//        map.put("COO", "COO");
-//        data.put("Board of Directors", map);
-//
-//        map = new HashMap<String, String>();
-//        map.put("", "Berlin");
-//        map.put("Munich", "Munich");
-//        map.put("Frankfurt", "Frankfurt");
-//        data.put("Card Department", map);
-//
-//        map = new HashMap<String, String>();
-//        map.put("Sao Paolo", "Sao Paolo");
-//        map.put("Rio de Janerio", "Rio de Janerio");
-//        map.put("Salvador", "Salvador");
-//        data.put("Loan Department", map);
-//    }
 
     public void createAccount(ActionEvent event) throws IOException {
 
@@ -111,13 +78,6 @@ public class EmployeeCreateUserAccountManagedBean {
 
     }
 
-//    public Map<String, String> getDepartments() {
-//        return departments;
-//    }
-//
-//    public Map<String, String> getPositions() {
-//        return positions;
-//    }
     
     public List<String> getPositions(){
         return positions;
