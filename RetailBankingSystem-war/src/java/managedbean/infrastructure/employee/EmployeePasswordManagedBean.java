@@ -53,7 +53,7 @@ public class EmployeePasswordManagedBean {
             System.out.println("*** PasswordManagedBean: new password has been sent");
 
         } else {
-            message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Account does not exist, please check your NRIC!", "Account not exist!");
+            message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Account does not exist, please check your NRIC!", "Account not exist!");
             context.addMessage(null, message);
             System.out.println("*** PasswordManagedBean: email account invalid");
         }
