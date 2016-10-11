@@ -239,12 +239,16 @@ public class EnquiryManagerManagedBean implements Serializable {
         CustomerBasic customer = enquirySessionBeanLocal.getEnquiryByCaseId(caseId).get(0).getCustomerBasic();
         String msg;
         msg = enquirySessionBeanLocal.replyCustomerCase(caseId, caseReply, selectedFollowUp, followUps);
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg, " "));
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext ec = context.getExternalContext();
-        if (msg == "1") {
-            URL domain = new URL("https://localhost:8181");
-            URL url = new URL(domain + "/RetailBankingSystem-war/web/onlineBanking/customer/CRMCustomerViewEnquiry.xhtml");
+        FacesMessage message = null;
+        
+        if (msg.equals("Box unchecked")) {
+            message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please select the follow-ups you wish to reply", "Empty followup");
+            context.addMessage(null, message);
+        }
+        
+        if (msg.equals("Successful")) {
             Calendar cal = Calendar.getInstance();
             receivedDate = cal.getTime();
             customerBasicId = enquirySessionBeanLocal.getEnquiryByCaseId(caseId).get(0).getCustomerBasic().getCustomerBasicId();
@@ -273,21 +277,53 @@ public class EnquiryManagerManagedBean implements Serializable {
     }
 
     public void addIssue() throws IOException {
-        System.out.println("addIssue");
+        FacesMessage message = null;
         FacesContext context = FacesContext.getCurrentInstance();
-        context.addMessage(null, new FacesMessage(enquirySessionBeanLocal.addNewCaseIssue(caseId, departmentTo, issueProblem), " "));
-        departmentTo = null;
-        issueProblem = null;
+        String msg = enquirySessionBeanLocal.addNewCaseIssue(caseId, departmentTo, issueProblem);
+
+        if (msg.equals("Empty department")) {
+            message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please select the department you wish to send issue to.", "Empty department");
+            context.addMessage(null, message);
+        }
+
+        if (msg.equals("Empty Problem")) {
+            message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please do not leave Issue Problem blank.", "Empty problem");
+            context.addMessage(null, message);
+        }
+
+        if (msg.equals("Successful")) {
+            message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Issue sent successfully. You can now edit your next issue.", "Successful");
+            context.addMessage(null, message);
+            departmentTo = null;
+            issueProblem = null;
+        }
     }
 
     public void saveIssue() throws IOException {
+        FacesMessage message = null;
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext ec = context.getExternalContext();
-        context.addMessage(null, new FacesMessage(enquirySessionBeanLocal.addNewCaseIssue(caseId, departmentTo, issueProblem), " "));
-        caseId = null;
-        departmentTo = null;
-        issueProblem = null;
-        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/enquirymanagerSubmitDone.xhtml?faces-redirect=true");
+        String msg = enquirySessionBeanLocal.addNewCaseIssue(caseId, departmentTo, issueProblem);
+
+        if (msg.equals("Empty department")) {
+            message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please select the department you wish to send issue to.", "Empty department");
+            context.addMessage(null, message);
+        }
+
+        if (msg.equals("Empty Problem")) {
+            message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please do not leave Issue Problem blank.", "Empty problem");
+            context.addMessage(null, message);
+        }
+
+        if (msg.equals("Successful")) {
+            message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Issue sent successfully. You can now edit your next issue.", "Successful");
+            context.addMessage(null, message);
+            caseId = null;
+            departmentTo = null;
+            issueProblem = null;
+            ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/enquirymanagerSubmitDone.xhtml?faces-redirect=true");
+        }
+
     }
 
     public void redirectToViewEnquiryDone() throws IOException {

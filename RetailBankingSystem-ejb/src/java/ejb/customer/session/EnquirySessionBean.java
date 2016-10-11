@@ -268,15 +268,15 @@ public class EnquirySessionBean implements EnquirySessionBeanLocal {
             return "Invalid Case ID";
         } else {
             if (departmentTo.trim().isEmpty()) {
-                return "Please select the department you wish to send issue to.";
+                return "Empty department";
             } else if (issueProblem.isEmpty()) {
-                return "Please do not leave Issue Problem blank.";
+                return "Empty Problem";
             } else {
 
                 Issue issue = issueSessionBeanLocal.addNewIssue(departmentTo, issueProblem, createdTime, "Pending", caseId);
                 ec.getIssue().add(issue);
 
-                return "Issue sent successfully. You can now edit your next issue.";
+                return "Successful";
             }
         }
     }
@@ -288,7 +288,7 @@ public class EnquirySessionBean implements EnquirySessionBeanLocal {
             return "Incorrect Case ID";
         } else {
             if (selectedFollowUp.isEmpty() && !followUps.isEmpty()) {
-                return "Please select the follow-ups you wish to reply";
+                return "Box unchecked";
             } else {
                 for (int i = 0; i < selectedFollowUp.size(); i++) {
                     Query query = entityManager.createQuery("SELECT fu FROM FollowUp fu WHERE fu.followUpId = :followUpId");
@@ -318,7 +318,7 @@ public class EnquirySessionBean implements EnquirySessionBeanLocal {
                         }
                     }
                 }
-                return "1";
+                return "Successful";
             }
         }
     }
