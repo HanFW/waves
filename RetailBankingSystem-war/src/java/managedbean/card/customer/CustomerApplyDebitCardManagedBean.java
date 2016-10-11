@@ -6,10 +6,12 @@
 package managedbean.card.customer;
 
 import ejb.card.session.DebitCardSessionBeanLocal;
+import ejb.customer.entity.CustomerBasic;
 import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.inject.Named;
-import javax.enterprise.context.Dependent;
+import javax.enterprise.context.RequestScoped;
+import javax.faces.context.FacesContext;
 import org.primefaces.event.FlowEvent;
 
 /**
@@ -17,7 +19,7 @@ import org.primefaces.event.FlowEvent;
  * @author Jingyuan
  */
 @Named(value = "customerApplyDebitCardManagedBean")
-@Dependent
+@RequestScoped
 public class CustomerApplyDebitCardManagedBean implements Serializable {
 
     /**
@@ -27,10 +29,22 @@ public class CustomerApplyDebitCardManagedBean implements Serializable {
     @EJB
     private DebitCardSessionBeanLocal debitCardSessionBeanLocal;
     
+    private CustomerBasic customer;
+    
     public CustomerApplyDebitCardManagedBean() {
     }
     
     public String onFlowProcess(FlowEvent event) {
         return event.getNewStep();
     }
+    
+    public CustomerBasic getCustomerViaSessionMap(){
+        FacesContext context = FacesContext.getCurrentInstance();
+        customer=(CustomerBasic)context.getExternalContext().getSessionMap().get("customer");
+        
+        return customer;
+        
+    }
+    
+    
 }

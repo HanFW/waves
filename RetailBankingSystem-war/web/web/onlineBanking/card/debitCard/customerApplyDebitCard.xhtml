@@ -13,6 +13,11 @@
 
             <div align="center">
                 <h:form>
+                    <p:panel>
+                        <p:outputLabel value="Welcome "/>
+                        <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
+                    </p:panel>
+
                     <p:growl id="growl" sticky="true" showDetail="true"/>
                     <p:wizard widgetVar ="applyDebitCardWizard" flowListener="#{customerApplyDebitCardManagedBean.onFlowProcess}" class="ui-lg-12" showNavBar="false">
 
@@ -175,22 +180,22 @@
                                 <h1>Personal Details</h1>
                                 <p:row>
                                     <p:outputLabel value="Name: "/>
-                                    <p:outputLabel value="Zhou Jingyuan"/>
+                                    <p:outputLabel value="#{customerApplyDebitCardManagedBean.customerViaSessionMap.customerName}"/>
                                 </p:row>
 
                                 <p:row>
                                     <p:outputLabel value="Name to appear on Card: "/>
-                                    <p:outputLabel value="Zhou Jingyuan"/>
+                                    <p:inputText value="zj"/>
                                 </p:row>
 
                                 <p:row>
                                     <p:outputLabel value="NRIC/Passport: "/>
-                                    <p:outputLabel value="E21701407"/>
+                                    <p:outputLabel value="#{customerApplyDebitCardManagedBean.customerViaSessionMap.customerIdentificationNum}"/>
                                 </p:row>
 
                                 <p:row>
                                     <p:outputLabel value="Date of Birth: "/>
-                                    <p:outputLabel value="09/11/1996"/>
+                                    <p:outputLabel value="#{customerApplyDebitCardManagedBean.customerViaSessionMap.customerDateOfBirth}"/>
                                 </p:row>
 
                             </h:panelGrid>                            
