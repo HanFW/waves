@@ -1,18 +1,20 @@
 package managedbean.customer.employee;
 
-import static ejb.customer.entity.CustomerBasic_.customerBasicId;
+import ejb.customer.entity.CustomerBasic;
 import ejb.customer.entity.EnquiryCase;
 import ejb.customer.entity.FollowUp;
 import ejb.customer.entity.Issue;
 import ejb.customer.session.EnquirySessionBeanLocal;
-import static ejb.deposit.entity.MessageBox_.messageContent;
-import static ejb.deposit.entity.MessageBox_.subject;
+import ejb.infrastructure.session.CustomerEmailSessionBeanLocal;
 import ejb.infrastructure.session.MessageSessionBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
+import java.net.URL;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
@@ -29,7 +31,9 @@ public class EnquiryManagerManagedBean implements Serializable {
     private EnquirySessionBeanLocal enquirySessionBeanLocal;
     @EJB
     private MessageSessionBeanLocal messageSessionBeanLocal;
-    
+    @EJB
+    private CustomerEmailSessionBeanLocal customerEmailSessionBeanLocal;
+
     private Long customerBasicId;
     private Long caseId;
     private Long followUpId;
@@ -39,7 +43,7 @@ public class EnquiryManagerManagedBean implements Serializable {
     private String issueProblem;
     private List<FollowUp> selectedFollowUp;
     private List<FollowUp> followUps;
-    
+
     private Date receivedDate;
     private String subject;
     private String messageContent;
@@ -217,7 +221,7 @@ public class EnquiryManagerManagedBean implements Serializable {
     public String getCaseDetailById() {
         return enquirySessionBeanLocal.getCustomerEnquiryDetail(caseId);
     }
-    
+
     public String getCaseReplyById() {
         return enquirySessionBeanLocal.getCustomerEnquiryReply(caseId);
     }
@@ -232,24 +236,30 @@ public class EnquiryManagerManagedBean implements Serializable {
     }
 
     public void replyToCase() throws IOException {
+        CustomerBasic customer = enquirySessionBeanLocal.getEnquiryByCaseId(caseId).get(0).getCustomerBasic();
         String msg;
         msg = enquirySessionBeanLocal.replyCustomerCase(caseId, caseReply, selectedFollowUp, followUps);
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg, " "));
-
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext ec = context.getExternalContext();
         if (msg == "1") {
+            URL domain = new URL("https://localhost:8181");
+            URL url = new URL(domain + "/RetailBankingSystem-war/web/onlineBanking/customer/CRMCustomerViewEnquiry.xhtml");
             Calendar cal = Calendar.getInstance();
             receivedDate = cal.getTime();
             customerBasicId = enquirySessionBeanLocal.getEnquiryByCaseId(caseId).get(0).getCustomerBasic().getCustomerBasicId();
             subject = "Your enquiry (Case ID: " + caseId + ") has been replied";
-            messageContent = "Your enquiry (Case ID: " + caseId + ") has been answered by one of our enquiry managers.\n" + 
-                             "Please view the reply from View Enquiry page.\n" +
-                             "If our reply did not answer your question entirely, you may add a follow-up question to elaborate your concern." +
-                             "Thank you.";
-            
+            messageContent = "Your enquiry (Case ID: " + caseId + ") has been answered by one of our enquiry managers. \n"
+                    + "Please view the reply from View Enquiry page. \n"
+                    + "https://localhost:8181/RetailBankingSystem-war/web/onlineBanking/customer/CRMCustomerViewEnquiry.xhtml \n"
+                    + "If our reply did not answer your question entirely, you may add a follow-up question to elaborate your concern. \n"
+                    + "Thank you. \n";
+
             messageSessionBeanLocal.sendMessage("Merlion Bank", "Enquiry", subject, receivedDate.toString(),
                     messageContent, customerBasicId);
+            Map emailActions = new HashMap();
+            emailActions.put("caseId", caseId);
+            customerEmailSessionBeanLocal.sendEmail(customer, "enquiryReplied", emailActions);
             subject = null;
             receivedDate = null;
             messageContent = null;
@@ -305,7 +315,7 @@ public class EnquiryManagerManagedBean implements Serializable {
     public String caseIssueReplied(Long caseId) {
         return enquirySessionBeanLocal.caseIssueAllReplied(caseId);
     }
-    
+
     public void show1() {
 
         if (ableToReply.equals("Yes")) {
