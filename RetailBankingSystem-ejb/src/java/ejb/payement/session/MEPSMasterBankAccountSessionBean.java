@@ -1,6 +1,7 @@
 package ejb.payement.session;
 
 import ejb.payment.entity.MEPSMasterBankAccount;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
@@ -13,10 +14,10 @@ public class MEPSMasterBankAccountSessionBean implements MEPSMasterBankAccountSe
 
     @PersistenceContext
     private EntityManager entityManager;
-    
+
     @Override
     public MEPSMasterBankAccount retrieveMEPSMasterBankAccountByBankName(String bankName) {
-        
+
         MEPSMasterBankAccount mepsMasterBankAccount = new MEPSMasterBankAccount();
 
         try {
@@ -37,10 +38,10 @@ public class MEPSMasterBankAccountSessionBean implements MEPSMasterBankAccountSe
 
         return mepsMasterBankAccount;
     }
-    
+
     @Override
     public MEPSMasterBankAccount retrieveMEPSMasterBankAccountByAccNum(String masterBankAccountNum) {
-        
+
         MEPSMasterBankAccount mepsMasterBankAccount = new MEPSMasterBankAccount();
 
         try {
@@ -61,10 +62,10 @@ public class MEPSMasterBankAccountSessionBean implements MEPSMasterBankAccountSe
 
         return mepsMasterBankAccount;
     }
-    
+
     @Override
     public MEPSMasterBankAccount retrieveMEPSMasterBankAccountById(Long masterBankAccountId) {
-        
+
         MEPSMasterBankAccount mepsMasterBankAccount = new MEPSMasterBankAccount();
 
         try {
@@ -84,5 +85,25 @@ public class MEPSMasterBankAccountSessionBean implements MEPSMasterBankAccountSe
         }
 
         return mepsMasterBankAccount;
+    }
+
+    @Override
+    public void maintainDailyBalance() {
+
+        Query query = entityManager.createQuery("SELECT m FROM MEPSMasterBankAccount m");
+        List<MEPSMasterBankAccount> mepsMasterBankAccounts = query.getResultList();
+
+        for (MEPSMasterBankAccount mepsMasterBankAccount : mepsMasterBankAccounts) {
+
+            String currentBalance = mepsMasterBankAccount.getMasterBankAccountBalance();
+            Double currentBalanceDouble = Double.valueOf(currentBalance);
+
+            if (currentBalanceDouble < 100000) {
+                Double diffBalance = 100000 - Double.valueOf(currentBalance);
+                Double totalBalance = Double.valueOf(currentBalance) + diffBalance;
+
+                mepsMasterBankAccount.setMasterBankAccountBalance(totalBalance.toString());
+            }
+        }
     }
 }

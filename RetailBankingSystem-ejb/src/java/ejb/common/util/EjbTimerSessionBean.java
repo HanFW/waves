@@ -15,17 +15,16 @@ import ejb.deposit.session.BankAccountSessionBeanLocal;
 import ejb.deposit.session.StatementSessionBeanLocal;
 import ejb.payement.session.MEPSMasterBankAccountSessionBeanLocal;
 import ejb.payement.session.SACHSessionBeanLocal;
-import ejb.payment.entity.MEPSMasterBankAccount;
 import java.util.Calendar;
 
 @Stateless
 @LocalBean
 
 public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
-    
+
     @EJB
-    private MEPSMasterBankAccountSessionBeanLocal sACHMasterBankAccountSessionBeanLocal;
-    
+    private MEPSMasterBankAccountSessionBeanLocal mEPSMasterBankAccountSessionBeanLocal;
+
     @EJB
     private SACHSessionBeanLocal sACHSessionBeanLocal;
 
@@ -37,7 +36,7 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
 
     @Resource
     private SessionContext ctx;
-    
+
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -89,7 +88,7 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
         System.out.println("{***70000MS Timer created" + String.valueOf(timer70000ms.getTimeRemaining()) + ","
                 + timer70000ms.getInfo().toString());
     }
-    
+
     @Override
     public void createTimer20000MS() {
         TimerService timerService = ctx.getTimerService();
@@ -174,7 +173,7 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
             }
         }
     }
-    
+
     @Override
     public void cancelTimer20000MS() {
         TimerService timerService = ctx.getTimerService();
@@ -209,7 +208,7 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
     }
 
     private void handleTimeout_10000ms() {
-//        System.out.println("*** 10000MS Timer timeout");
+        System.out.println("*** 10000MS Timer timeout");
         bankAccountSessionLocal.interestAccuring();
     }
 
@@ -218,6 +217,7 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
 
         bankAccountSessionLocal.interestCrediting();
         statementSessionBeanLocal.generateStatement();
+        mEPSMasterBankAccountSessionBeanLocal.maintainDailyBalance();
     }
 
     private void handleTimeout_15000ms() {
@@ -228,14 +228,14 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
 
     private void handleTimeout_70000ms() {
         System.out.println("*** 70000MS Timer timeout");
-        
+
         bankAccountSessionLocal.autoCloseAccount();
     }
-    
+
     private void handleTimeout_20000ms() {
 //        System.out.println("*** 20000MS Timer timeout");
         Calendar cal = Calendar.getInstance();
-        
+
         sACHSessionBeanLocal.addNewSACH(0.0, 0.0, cal.getTime().toString(), "DBS&Merlion");
     }
 }
