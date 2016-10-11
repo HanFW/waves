@@ -1,12 +1,9 @@
 package managedbean.customer.employee;
 
-import static ejb.customer.entity.CustomerBasic_.customerBasicId;
 import ejb.customer.entity.EnquiryCase;
 import ejb.customer.entity.FollowUp;
 import ejb.customer.entity.Issue;
 import ejb.customer.session.EnquirySessionBeanLocal;
-import static ejb.deposit.entity.MessageBox_.messageContent;
-import static ejb.deposit.entity.MessageBox_.subject;
 import ejb.infrastructure.session.MessageSessionBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;

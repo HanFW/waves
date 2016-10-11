@@ -1,4 +1,4 @@
-package ejb.deposit.entity;
+package ejb.infrastructure.entity;
 
 import ejb.customer.entity.CustomerBasic;
 import java.io.Serializable;
