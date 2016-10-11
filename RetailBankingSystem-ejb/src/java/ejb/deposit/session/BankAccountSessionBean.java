@@ -237,14 +237,9 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
 
         Interest interest = interestSessionLocal.retrieveInterestById(interestId);
         interest.setBankAccount(bankAccount);
-
-        CustomerBasic customerBasic = retrieveCustomerBasicById(customerBasicId);
-        List<BankAccount> bankAccounts = customerBasic.getBankAccount();
-        customerBasic.setBankAccount(bankAccounts);
         
         entityManager.persist(bankAccount);
         entityManager.persist(interest);
-        entityManager.persist(customerBasic);
         entityManager.flush();
 
         return bankAccount.getBankAccountId();
@@ -726,7 +721,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
         System.out.println("approve" + customerIdentificationNum);
         CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum);
         System.out.println("approve" + customerBasic);
-        BankAccount bankAccount = customerBasic.getBankAccount().get(0);
+        BankAccount bankAccount = retrieveBankAccountByCusIC(customerIdentificationNum).get(0);
 
         customerBasic.setNewCustomer("No");
 
