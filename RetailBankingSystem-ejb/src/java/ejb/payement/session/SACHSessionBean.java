@@ -21,7 +21,7 @@ public class SACHSessionBean implements SACHSessionBeanLocal {
     private MEPSSessionBeanLocal mEPSSessionBeanLocal;
 
     @EJB
-    private DBSBankSessionBeanLocal dBSBankSessionBeanLocal;
+    private OtherBankSessionBeanLocal otherBankSessionBeanLocal;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -37,10 +37,10 @@ public class SACHSessionBean implements SACHSessionBeanLocal {
         Double dbsTotalCredit = 0 + transferAmt;
         Double merlionTotalCredit = 0 - transferAmt;
 
-        sach.setDbsTotalCredit(dbsTotalCredit);
+        sach.setOtherBankTotalCredit(dbsTotalCredit);
         sach.setMerlionTotalCredit(merlionTotalCredit);
 
-        dBSBankSessionBeanLocal.actualTransfer(fromBankAccount, toBankAccount, transferAmt);
+        otherBankSessionBeanLocal.actualTransfer(fromBankAccount, toBankAccount, transferAmt);
         mEPSSessionBeanLocal.MEPSSettlementMTD("88776655", "44332211", transferAmt);
     }
 
@@ -68,11 +68,11 @@ public class SACHSessionBean implements SACHSessionBeanLocal {
     }
 
     @Override
-    public Long addNewSACH(Double dbsTotalCredit, Double merlionTotalCredit, String updateDate, String bankNames) {
+    public Long addNewSACH(Double otherTotalCredit, Double merlionTotalCredit, String updateDate, String bankNames) {
 
         SACH sach = new SACH();
 
-        sach.setDbsTotalCredit(dbsTotalCredit);
+        sach.setOtherBankTotalCredit(otherTotalCredit);
         sach.setMerlionTotalCredit(merlionTotalCredit);
         sach.setUpdateDate(updateDate);
         sach.setBankNames(bankNames);
@@ -103,7 +103,7 @@ public class SACHSessionBean implements SACHSessionBeanLocal {
         Double dbsTotalCredit = 0 - transferAmt;
         Double merlionTotalCredit = 0 + transferAmt;
 
-        sach.setDbsTotalCredit(dbsTotalCredit);
+        sach.setOtherBankTotalCredit(merlionTotalCredit);
         sach.setMerlionTotalCredit(merlionTotalCredit);
 
         transactionSessionBeanLocal.fastTransfer(fromBankAccount, toBankAccount, transferAmt);

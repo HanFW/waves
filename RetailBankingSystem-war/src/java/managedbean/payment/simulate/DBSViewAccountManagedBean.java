@@ -6,8 +6,8 @@ import javax.ejb.EJB;
 import java.util.List;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
-import ejb.payement.session.DBSBankAccountSessionBeanLocal;
-import ejb.payment.entity.DBSBankAccount;
+import ejb.payement.session.OtherBankAccountSessionBeanLocal;
+import ejb.payment.entity.OtherBankAccount;
 
 @Named(value = "dBSViewAccountManagedBean")
 @RequestScoped
@@ -15,14 +15,14 @@ import ejb.payment.entity.DBSBankAccount;
 public class DBSViewAccountManagedBean implements Serializable {
 
     @EJB
-    private DBSBankAccountSessionBeanLocal dBSBankAccountSessionBeanLocal;
+    private OtherBankAccountSessionBeanLocal otherBankAccountSessionBeanLocal;
 
     public DBSViewAccountManagedBean() {
     }
 
-    public List<DBSBankAccount> getAllDBSBankAccounts() throws IOException {
+    public List<OtherBankAccount> getAllDBSBankAccounts() throws IOException {
 
-        List<DBSBankAccount> dbsBankAccounts = dBSBankAccountSessionBeanLocal.getAllDBSBankAccount();
+        List<OtherBankAccount> dbsBankAccounts = otherBankAccountSessionBeanLocal.getAllDBSBankAccount();
 
         return dbsBankAccounts;
     }

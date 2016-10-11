@@ -12,7 +12,7 @@ public class SACH implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long sachId;
-    private Double dbsTotalCredit;
+    private Double otherBankTotalCredit;
     private Double merlionTotalCredit;
     private String updateDate;
     private String bankNames;
@@ -50,12 +50,12 @@ public class SACH implements Serializable {
         this.merlionTotalCredit = merlionTotalCredit;
     }
 
-    public Double getDbsTotalCredit() {
-        return dbsTotalCredit;
+    public Double getOtherBankTotalCredit() {
+        return otherBankTotalCredit;
     }
 
-    public void setDbsTotalCredit(Double dbsTotalCredit) {
-        this.dbsTotalCredit = dbsTotalCredit;
+    public void setOtherBankTotalCredit(Double otherBankTotalCredit) {
+        this.otherBankTotalCredit = otherBankTotalCredit;
     }
 
     public String getFastTransferRef() {

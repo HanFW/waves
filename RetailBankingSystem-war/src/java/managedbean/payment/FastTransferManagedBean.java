@@ -4,10 +4,10 @@ import ejb.customer.entity.CustomerBasic;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import ejb.deposit.session.TransactionSessionBeanLocal;
-import ejb.payement.session.DBSBankAccountSessionBeanLocal;
+import ejb.payement.session.OtherBankAccountSessionBeanLocal;
 import ejb.payement.session.FastPayeeSessionBeanLocal;
 import ejb.payement.session.SACHSessionBeanLocal;
-import ejb.payment.entity.DBSBankAccount;
+import ejb.payment.entity.OtherBankAccount;
 import ejb.payment.entity.FastPayee;
 import java.io.IOException;
 import java.util.Calendar;
@@ -26,9 +26,9 @@ import javax.faces.context.FacesContext;
 @RequestScoped
 
 public class FastTransferManagedBean {
-    
+
     @EJB
-    private DBSBankAccountSessionBeanLocal dBSBankAccountSessionBeanLocal;
+    private OtherBankAccountSessionBeanLocal otherBankAccountSessionBeanLocal;
 
     @EJB
     private SACHSessionBeanLocal sACHSessionBeanLocal;
@@ -181,7 +181,7 @@ public class FastTransferManagedBean {
         toBankAccount = handleAccountString(toBankAccountNumWithType);
 
         BankAccount merlionBankAccountFrom = bankAccountSessionBeanLocal.retrieveBankAccountByNum(fromBankAccount);
-        DBSBankAccount dbsBankAccountTo = dBSBankAccountSessionBeanLocal.retrieveBankAccountByNum(toBankAccount);
+        OtherBankAccount otherBankAccountTo = otherBankAccountSessionBeanLocal.retrieveBankAccountByNum(toBankAccount);
 
         Double diffAmt = Double.valueOf(merlionBankAccountFrom.getBankAccountBalance()) - transferAmt;
         if (diffAmt >= 0) {
@@ -191,7 +191,7 @@ public class FastTransferManagedBean {
 
             Calendar cal = Calendar.getInstance();
             String transactionCode = "ICT";
-            String transactionRef = dbsBankAccountTo.getDbsBankAccountType() + "-" + dbsBankAccountTo.getDbsBankAccountNum();
+            String transactionRef = "Transfer to " + otherBankAccountTo.getOtherBankAccountType() + "-" + otherBankAccountTo.getOtherBankAccountNum();
             Long transactionDateMilis = cal.getTimeInMillis();
 
             Long transactionId = transactionSessionBeanLocal.addNewTransaction(cal.getTime().toString(), transactionCode, transactionRef,

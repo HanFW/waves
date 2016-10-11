@@ -10,6 +10,7 @@
         <h:form>
             <p:menubar>
                 <p:submenu label="My Account">
+                    <p:menuitem value="Fast Transfer" url="/web/simulate/payment/dbsFastTransfer.xhtml" />
                     <p:menuitem value="View Transaction" url="index.xhtml" />
                 </p:submenu>
             </p:menubar>
@@ -26,29 +27,29 @@
                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
 
                     <p:column headerText="Transaction ID">
-                        <h:outputText value="#{dbsTransaction.dbsTransactionId}" /> 
+                        <h:outputText value="#{dbsTransaction.otherTransactionId}" /> 
                     </p:column>
 
                     <p:column headerText="Transaction Date">
-                        <h:outputText value="#{dbsTransaction.dbsTransactionDate}" />
+                        <h:outputText value="#{dbsTransaction.otherTransactionDate}" />
                     </p:column>
 
                     <p:column headerText="Transaction Code"> 
-                        <h:outputText value="#{dbsTransaction.dbsTransactionCode}" />
+                        <h:outputText value="#{dbsTransaction.otherTransactionCode}" />
                     </p:column>
 
                     <p:column headerText="Transaction Ref"> 
-                        <h:outputText value="#{dbsTransaction.dbsTransactionRef}" />
+                        <h:outputText value="#{dbsTransaction.otherTransactionRef}" />
                     </p:column>
 
                     <p:column headerText="Account Debit(Withdrawal)"> 
-                        <h:outputText value="#{dbsTransaction.dbsAccountDebit}">
+                        <h:outputText value="#{dbsTransaction.otherAccountDebit}">
                             <f:convertNumber type="currency" currencyCode="$" minFractionDigits="2" />
                         </h:outputText>
                     </p:column>
 
                     <p:column headerText="Account Credit(Deposit)"> 
-                        <h:outputText value="#{dbsTransaction.dbsAccountCredit}">
+                        <h:outputText value="#{dbsTransaction.otherAccountCredit}">
                             <f:convertNumber type="currency" currencyCode="SGD" />
                         </h:outputText>
                     </p:column>
@@ -56,8 +57,8 @@
                 </p:dataTable>
                 <br/>
                 <p:commandButton id="backBtn" value="Back" action="/web/simulate/payment/dbsViewAccount.xhtml?faces-redirect=true" 
-                             ajax="true"/>
-                
+                                 ajax="true"/>
+
             </p:panel>
         </h:form>
     </h:body>

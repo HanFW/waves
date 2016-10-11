@@ -3,8 +3,8 @@ package ejb.deposit.session;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.entity.AccTransaction;
 import ejb.deposit.entity.Interest;
-import ejb.payement.session.DBSBankAccountSessionBeanLocal;
-import ejb.payment.entity.DBSBankAccount;
+import ejb.payement.session.OtherBankAccountSessionBeanLocal;
+import ejb.payment.entity.OtherBankAccount;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -25,11 +25,12 @@ import javax.persistence.NonUniqueResultException;
 @Stateless
 @LocalBean
 public class TransactionSessionBean implements TransactionSessionBeanLocal {
+
     @EJB
     private BankAccountSessionBeanLocal bankAccountSessionBeanLocal;
-    
+
     @EJB
-    private DBSBankAccountSessionBeanLocal dBSBankAccountSessionBeanLocal;
+    private OtherBankAccountSessionBeanLocal otherBankAccountSessionBeanLocal;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -268,8 +269,8 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
         Long bankAccountToId = bankAccountTo.getBankAccountId();
 
         String transactionCode = "TRF";
-        String transactionRefFrom = bankAccountTo.getBankAccountType()+"-"+toAccount;
-        String transactionRefTo = bankAccountFrom.getBankAccountType()+"-"+fromAccount;
+        String transactionRefFrom = bankAccountTo.getBankAccountType() + "-" + toAccount;
+        String transactionRefTo = bankAccountFrom.getBankAccountType() + "-" + fromAccount;
 
         Calendar cal = Calendar.getInstance();
 //        int year = cal.get(Calendar.YEAR);
@@ -335,34 +336,34 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
 
         return "Activated successfully.";
     }
-    
+
     @Override
     public void deleteAccTransaction(Long transactionId) {
         AccTransaction transaction = bankAccountSessionBeanLocal.retrieveAccTransactionById(transactionId);
-        
+
         entityManager.remove(transaction);
         entityManager.flush();
     }
-    
+
     @Override
-    public void fastTransfer(String fromBankAccount,String toBankAccount,Double transferAmt) {
-        
-        DBSBankAccount dbsBankAccount = dBSBankAccountSessionBeanLocal.retrieveBankAccountByNum(fromBankAccount);
+    public void fastTransfer(String fromBankAccount, String toBankAccount, Double transferAmt) {
+
+        OtherBankAccount otherBankAccount = otherBankAccountSessionBeanLocal.retrieveBankAccountByNum(fromBankAccount);
         BankAccount bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountByNum(toBankAccount);
         Double balance = Double.valueOf(bankAccount.getBankAccountBalance()) + transferAmt;
-        
+
         Calendar cal = Calendar.getInstance();
         String transactionCode = "ICT";
-        String transactionRef = dbsBankAccount.getDbsBankAccountType()+"-"+dbsBankAccount.getDbsBankAccountNum();
+        String transactionRef = "Transfer from " + otherBankAccount.getOtherBankAccountType() + "-" + otherBankAccount.getOtherBankAccountNum();
         String accountDebit = " ";
         String accountCredit = transferAmt.toString();
         Long transactionDateMilis = cal.getTimeInMillis();
-        
+
         Long transactionId = addNewTransaction(cal.getTime().toString(),
-                transactionCode,transactionRef,accountDebit,accountCredit,
-                transactionDateMilis,bankAccount.getBankAccountId());
-        
+                transactionCode, transactionRef, accountDebit, accountCredit,
+                transactionDateMilis, bankAccount.getBankAccountId());
+
         bankAccount.setBankAccountBalance(balance.toString());
-        
+
     }
 }

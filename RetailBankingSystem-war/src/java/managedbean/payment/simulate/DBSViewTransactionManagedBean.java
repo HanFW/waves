@@ -4,8 +4,8 @@ import java.io.IOException;
 import javax.ejb.EJB;
 import java.io.Serializable;
 import java.util.List;
-import ejb.payement.session.DBSTransactionSessionBeanLocal;
-import ejb.payment.entity.DBSTransaction;
+import ejb.payement.session.OtherTransactionSessionBeanLocal;
+import ejb.payment.entity.OtherBankAccountTransaction;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
@@ -15,7 +15,7 @@ import javax.inject.Named;
 public class DBSViewTransactionManagedBean implements Serializable {
     
     @EJB
-    private DBSTransactionSessionBeanLocal dBSTransactionSessionBeanLocal;
+    private OtherTransactionSessionBeanLocal dBSTransactionSessionBeanLocal;
 
     private String dbsBankAccountNum;
 
@@ -30,9 +30,9 @@ public class DBSViewTransactionManagedBean implements Serializable {
         this.dbsBankAccountNum = dbsBankAccountNum;
     }
 
-    public List<DBSTransaction> getDBSTransaction() throws IOException {
+    public List<OtherBankAccountTransaction> getDBSTransaction() throws IOException {
         
-        List<DBSTransaction> dbsTransaction = dBSTransactionSessionBeanLocal.retrieveAccTransactionByBankNum(dbsBankAccountNum);
+        List<OtherBankAccountTransaction> dbsTransaction = dBSTransactionSessionBeanLocal.retrieveAccTransactionByBankNum(dbsBankAccountNum);
 
         return dbsTransaction;
     }
