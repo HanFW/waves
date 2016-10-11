@@ -336,6 +336,55 @@ public class EmployeeAccountManagedBean implements Serializable {
         Role hasRole = adminSessionBeanLocal.getRoleByName("Wealth Management Specialist");
         return employee.getRole().contains(hasRole);
     }
+    
+    public boolean hasRoleCreditCardManager() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        employee = (Employee) context.getExternalContext().getSessionMap().get("employee");
+
+        Role hasRole = adminSessionBeanLocal.getRoleByName("Credit Card Manager");
+        return employee.getRole().contains(hasRole);
+    }
+    
+    public boolean hasRoleCreditCardVerifier() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        employee = (Employee) context.getExternalContext().getSessionMap().get("employee");
+
+        Role hasRole = adminSessionBeanLocal.getRoleByName("Credit Card Verifier");
+        return employee.getRole().contains(hasRole);
+    }
+    
+    public boolean hasRoleLoanDepartmentManager() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        employee = (Employee) context.getExternalContext().getSessionMap().get("employee");
+
+        Role hasRole = adminSessionBeanLocal.getRoleByName("Loan Department Manager");
+        return employee.getRole().contains(hasRole);
+    }
+    
+    public boolean hasRoleOperationDepartmentManager() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        employee = (Employee) context.getExternalContext().getSessionMap().get("employee");
+
+        Role hasRole = adminSessionBeanLocal.getRoleByName("Operation Department Manager");
+        return employee.getRole().contains(hasRole);
+    }
+    
+    public boolean hasRoleDepositAccountVerifier() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        employee = (Employee) context.getExternalContext().getSessionMap().get("employee");
+
+        Role hasRole = adminSessionBeanLocal.getRoleByName("Deposit Account Verifier");
+        return employee.getRole().contains(hasRole);
+    }
+    
+    public boolean hasRoleDepositDepartmentManager() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        employee = (Employee) context.getExternalContext().getSessionMap().get("employee");
+
+        Role hasRole = adminSessionBeanLocal.getRoleByName("Deposit Department Manager");
+        return employee.getRole().contains(hasRole);
+    }
+    
 
     public boolean hasRoleSystemAdmin() {
 

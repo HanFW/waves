@@ -52,6 +52,21 @@
 
                     </p:panel>
 
+                    <p:panel visible="#{employeeAccountManagedBean.hasRoleOperationDepartmentManager()}" style="border: none">
+
+                        <p:button outcome="/web/internalSystem/infrastructure/employeeWealthManagementSpecialistMainPage.xhtml?faces-redirect=true" value="Operation Department Manager">
+                        </p:button>
+
+                    </p:panel>
+
+                    <p:panel visible="#{employeeAccountManagedBean.hasRoleOperationSpecialist()}" style="border: none">
+
+                        <p:button outcome="/web/internalSystem/infrastructure/employeeOperationSpecialistMainPage.xhtml?faces-redirect=true" value="Operation Specialist">
+                        </p:button>
+
+                    </p:panel>
+
+
                     <p:panel visible="#{employeeAccountManagedBean.hasRoleRelationshipManager()}" style="border: none">
 
                         <p:button outcome="/web/internalSystem/infrastructure/employeeRelationshipManagerMainPage.xhtml?faces-redirect=true" value="Relationship Manager">
@@ -59,9 +74,16 @@
 
                     </p:panel>
 
-                    <p:panel visible="#{employeeAccountManagedBean.hasRoleCardDepartmentManager()}" style="border: none">
+                    <p:panel visible="#{employeeAccountManagedBean.hasRoleWealthManagementSpecialist()}" style="border: none">
 
-                        <p:button outcome="/web/internalSystem/infrastructure/employeeCardDepartmentManagerMainPage.xhtml?faces-redirect=true" value="Card Department Manager">
+                        <p:button outcome="/web/internalSystem/infrastructure/employeeWealthManagementSpecialistMainPage.xhtml?faces-redirect=true" value="Wealth Management Specialist">
+                        </p:button>
+
+                    </p:panel>
+
+                    <p:panel visible="#{employeeAccountManagedBean.hasRoleSalesDepartmentManager()}" style="border: none">
+
+                        <p:button outcome="/web/internalSystem/infrastructure/employeeSalesDepartmentManagerMainPage.xhtml?faces-redirect=true" value="Sales Department Manager">
                         </p:button>
 
                     </p:panel>
@@ -80,30 +102,9 @@
 
                     </p:panel>
 
-                    <p:panel visible="#{employeeAccountManagedBean.hasRoleSalesDepartmentManager()}" style="border: none">
-
-                        <p:button outcome="/web/internalSystem/infrastructure/employeeSalesDepartmentManagerMainPage.xhtml?faces-redirect=true" value="Sales Department Manager">
-                        </p:button>
-
-                    </p:panel>
-
                     <p:panel visible="#{employeeAccountManagedBean.hasRoleMortgageAppraiser()}" style="border: none">
 
                         <p:button outcome="/web/internalSystem/infrastructure/employeeMortgageAppraiserMainPage.xhtml?faces-redirect=true" value="Mortage Appraiser">
-                        </p:button>
-
-                    </p:panel>
-
-                    <p:panel visible="#{employeeAccountManagedBean.hasRoleDirector()}" style="border: none">
-
-                        <p:button outcome="/web/internalSystem/infrastructure/employeeCEOMainPage.xhtml?faces-redirect=true" value="Director">
-                        </p:button>
-
-                    </p:panel>
-
-                    <p:panel visible="#{employeeAccountManagedBean.hasRoleDepositSpecialist()}" style="border: none">
-
-                        <p:button outcome="/web/internalSystem/infrastructure/employeeDepositSpecialistMainPage.xhtml?faces-redirect=true" value="Deposit Specialist">
                         </p:button>
 
                     </p:panel>
@@ -115,6 +116,27 @@
 
                     </p:panel>
 
+                    <p:panel visible="#{employeeAccountManagedBean.hasRoleLoanDepartmentManager()}" style="border: none">
+
+                        <p:button outcome="/web/internalSystem/infrastructure/employeeWealthManagementSpecialistMainPage.xhtml?faces-redirect=true" value="Loan Department Manager">
+                        </p:button>
+
+                    </p:panel>
+
+                    <p:panel visible="#{employeeAccountManagedBean.hasRoleDirector()}" style="border: none">
+
+                        <p:button outcome="/web/internalSystem/infrastructure/employeeCEOMainPage.xhtml?faces-redirect=true" value="Director">
+                        </p:button>
+
+                    </p:panel>
+
+                    <p:panel visible="#{employeeAccountManagedBean.hasRoleCardDepartmentManager()}" style="border: none">
+
+                        <p:button outcome="/web/internalSystem/infrastructure/employeeCardDepartmentManagerMainPage.xhtml?faces-redirect=true" value="Card Department Manager">
+                        </p:button>
+
+                    </p:panel>
+
                     <p:panel visible="#{employeeAccountManagedBean.hasRoleCardSpecialist()}" style="border: none">
 
                         <p:button outcome="/web/internalSystem/infrastructure/employeeCardSpecialistMainPage.xhtml?faces-redirect=true" value="Card Specialist">
@@ -122,16 +144,37 @@
 
                     </p:panel>
 
-                    <p:panel visible="#{employeeAccountManagedBean.hasRoleOperationSpecialist()}" style="border: none">
+                    <p:panel visible="#{employeeAccountManagedBean.hasRoleCreditCardManager()}" style="border: none">
 
-                        <p:button outcome="/web/internalSystem/infrastructure/employeeOperationSpecialistMainPage.xhtml?faces-redirect=true" value="Operation Specialist">
+                        <p:button outcome="/web/internalSystem/infrastructure/employeeWealthManagementSpecialistMainPage.xhtml?faces-redirect=true" value="Credit Card Manager">
                         </p:button>
 
                     </p:panel>
 
-                    <p:panel visible="#{employeeAccountManagedBean.hasRoleWealthManagementSpecialist()}" style="border: none">
+                    <p:panel visible="#{employeeAccountManagedBean.hasRoleCreditCardVerifier()}" style="border: none">
 
-                        <p:button outcome="/web/internalSystem/infrastructure/employeeWealthManagementSpecialistMainPage.xhtml?faces-redirect=true" value="Wealth Management Specialist">
+                        <p:button outcome="/web/internalSystem/infrastructure/employeeWealthManagementSpecialistMainPage.xhtml?faces-redirect=true" value="Credit Card Verifier">
+                        </p:button>
+
+                    </p:panel>
+
+                    <p:panel visible="#{employeeAccountManagedBean.hasRoleDepositAccountVerifier()}" style="border: none">
+
+                        <p:button outcome="/web/internalSystem/deposit/employeeApproveOpenAccount.xhtml?faces-redirect=true" value="Deposit Account Verifier">
+                        </p:button>
+
+                    </p:panel>
+
+                    <p:panel visible="#{employeeAccountManagedBean.hasRoleDepositDepartmentManager()}" style="border: none">
+
+                        <p:button outcome="/web/internalSystem/infrastructure/employeeWealthManagementSpecialistMainPage.xhtml?faces-redirect=true" value="Deposit Department Manager">
+                        </p:button>
+
+                    </p:panel>                   
+
+                    <p:panel visible="#{employeeAccountManagedBean.hasRoleDepositSpecialist()}" style="border: none">
+
+                        <p:button outcome="/web/internalSystem/infrastructure/employeeDepositSpecialistMainPage.xhtml?faces-redirect=true" value="Deposit Specialist">
                         </p:button>
 
                     </p:panel>
