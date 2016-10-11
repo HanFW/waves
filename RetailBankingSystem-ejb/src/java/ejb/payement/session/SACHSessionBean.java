@@ -1,5 +1,6 @@
 package ejb.payement.session;
 
+import ejb.deposit.session.TransactionSessionBeanLocal;
 import ejb.payment.entity.SACH;
 import java.util.Calendar;
 import java.util.List;
@@ -13,6 +14,8 @@ import javax.persistence.Query;
 
 @Stateless
 public class SACHSessionBean implements SACHSessionBeanLocal {
+    @EJB
+    private TransactionSessionBeanLocal transactionSessionBeanLocal;
 
     @EJB
     private MEPSSessionBeanLocal mEPSSessionBeanLocal;
@@ -24,7 +27,7 @@ public class SACHSessionBean implements SACHSessionBeanLocal {
     private EntityManager entityManager;
 
     @Override
-    public void SACHTransfer(String fromBankAccount, String toBankAccount, Double transferAmt) {
+    public void SACHTransferMTD(String fromBankAccount, String toBankAccount, Double transferAmt) {
 
         Calendar cal = Calendar.getInstance();
         String currentTime = cal.getTime().toString();
@@ -38,7 +41,7 @@ public class SACHSessionBean implements SACHSessionBeanLocal {
         sach.setMerlionTotalCredit(merlionTotalCredit);
 
         dBSBankSessionBeanLocal.actualTransfer(fromBankAccount, toBankAccount, transferAmt);
-        mEPSSessionBeanLocal.MEPSSettlement("88776655", "44332211", transferAmt);
+        mEPSSessionBeanLocal.MEPSSettlementMTD("88776655", "44332211", transferAmt);
     }
 
     @Override
@@ -87,5 +90,23 @@ public class SACHSessionBean implements SACHSessionBeanLocal {
         query.setParameter("bankNames", bankNames);
 
         return query.getResultList();
+    }
+    
+    @Override
+    public void SACHTransferDTM(String fromBankAccount, String toBankAccount, Double transferAmt) {
+
+        Calendar cal = Calendar.getInstance();
+        String currentTime = cal.getTime().toString();
+        Long sachId = addNewSACH(0.0, 0.0, currentTime, "DBS&Merlion");
+        SACH sach = retrieveSACHById(sachId);
+
+        Double dbsTotalCredit = 0 - transferAmt;
+        Double merlionTotalCredit = 0 + transferAmt;
+
+        sach.setDbsTotalCredit(dbsTotalCredit);
+        sach.setMerlionTotalCredit(merlionTotalCredit);
+
+        transactionSessionBeanLocal.fastTransfer(fromBankAccount, toBankAccount, transferAmt);
+        mEPSSessionBeanLocal.MEPSSettlementDTM("44332211", "88776655", transferAmt);
     }
 }

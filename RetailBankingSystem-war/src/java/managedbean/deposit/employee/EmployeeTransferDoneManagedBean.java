@@ -227,7 +227,6 @@ public class EmployeeTransferDoneManagedBean {
                             ec.getFlash().put("fromAccount", fromAccount);
                             ec.getFlash().put("toAccount", toAccount);
                             ec.getFlash().put("fromAccountBalance", fromAccountBalance);
-                            ec.getFlash().put("toAccountBalance", toAccountBalance);
 
                             ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/deposit/employeeTransferFinished.xhtml?faces-redirect=true");
                         } else {

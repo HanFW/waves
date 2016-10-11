@@ -746,4 +746,11 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
 
         return bankAccount.getBankAccountId();
     }
+    
+    @Override
+    public void updateBankAccountBalance(String bankAccountNum,String bankAccountBalance) {
+        BankAccount bankAccount = retrieveBankAccountByNum(bankAccountNum);
+        
+        bankAccount.setBankAccountBalance(bankAccountBalance);
+    }
 }

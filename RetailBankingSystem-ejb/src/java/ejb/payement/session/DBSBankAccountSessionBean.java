@@ -67,4 +67,11 @@ public class DBSBankAccountSessionBean implements DBSBankAccountSessionBeanLocal
 
         return dbsBankAccount;
     }
+    
+    @Override
+    public void updateBankAccountBalance(String dbsBankAccountNum,String dbsBankAccountBalance) {
+        DBSBankAccount dbsBankAccount = retrieveBankAccountByNum(dbsBankAccountNum);
+        
+        dbsBankAccount.setDbsBankAccountBalance(dbsBankAccountBalance);
+    }
 }

@@ -1,14 +1,14 @@
-package managedbean.deposit.employee;
+package managedbean.payment.simulate;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 
-@Named(value = "employeeTransferFinishedManagedBean")
+@Named(value = "dBSFastTransferDoneManagedBean")
 @RequestScoped
 
-public class EmployeeTransferFinishedManagedBean {
+public class DBSFastTransferDoneManagedBean {
 
     private String statusMessage;
     private String fromAccount;
@@ -18,14 +18,15 @@ public class EmployeeTransferFinishedManagedBean {
     private String toBankAccountNumWithType;
     private String fromBankAccountNumWithType;
     private String fromBankAccountBalance;
+    private String toBankAccountBalance;
 
-    public EmployeeTransferFinishedManagedBean() {
+    public DBSFastTransferDoneManagedBean() {
     }
 
     @PostConstruct
     public void init() {
         statusMessage = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("statusMessage").toString();
-        transactionId = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("newTransactionId").toString();
+        transactionId = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("transactionId").toString();
         toBankAccountNumWithType = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("toBankAccountNumWithType").toString();
         fromBankAccountNumWithType = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("fromBankAccountNumWithType").toString();
         transferAmt = "S$" + FacesContext.getCurrentInstance().getExternalContext().getFlash().get("transferAmt").toString();
@@ -96,5 +97,13 @@ public class EmployeeTransferFinishedManagedBean {
 
     public void setFromBankAccountBalance(String fromBankAccountBalance) {
         this.fromBankAccountBalance = fromBankAccountBalance;
+    }
+
+    public String getToBankAccountBalance() {
+        return toBankAccountBalance;
+    }
+
+    public void setToBankAccountBalance(String toBankAccountBalance) {
+        this.toBankAccountBalance = toBankAccountBalance;
     }
 }

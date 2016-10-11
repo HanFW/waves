@@ -4,8 +4,10 @@ import ejb.customer.entity.CustomerBasic;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import ejb.deposit.session.TransactionSessionBeanLocal;
+import ejb.payement.session.DBSBankAccountSessionBeanLocal;
 import ejb.payement.session.FastPayeeSessionBeanLocal;
 import ejb.payement.session.SACHSessionBeanLocal;
+import ejb.payment.entity.DBSBankAccount;
 import ejb.payment.entity.FastPayee;
 import java.io.IOException;
 import java.util.Calendar;
@@ -24,6 +26,9 @@ import javax.faces.context.FacesContext;
 @RequestScoped
 
 public class FastTransferManagedBean {
+    
+    @EJB
+    private DBSBankAccountSessionBeanLocal dBSBankAccountSessionBeanLocal;
 
     @EJB
     private SACHSessionBeanLocal sACHSessionBeanLocal;
@@ -46,6 +51,7 @@ public class FastTransferManagedBean {
     private Double transferAmt;
     private String fromBankAccount;
     private String toBankAccount;
+    private String fromAccountBalance;
 
     private String statusMessage;
 
@@ -149,6 +155,22 @@ public class FastTransferManagedBean {
         this.toBankAccount = toBankAccount;
     }
 
+    public String getFromAccountBalance() {
+        return fromAccountBalance;
+    }
+
+    public void setFromAccountBalance(String fromAccountBalance) {
+        this.fromAccountBalance = fromAccountBalance;
+    }
+
+    public String getStatusMessage() {
+        return statusMessage;
+    }
+
+    public void setStatusMessage(String statusMessage) {
+        this.statusMessage = statusMessage;
+    }
+
     public void fastTransfer() throws IOException {
 
         ec = FacesContext.getCurrentInstance().getExternalContext();
@@ -158,27 +180,27 @@ public class FastTransferManagedBean {
         fromBankAccount = handleAccountString(fromBankAccountNumWithType);
         toBankAccount = handleAccountString(toBankAccountNumWithType);
 
-        BankAccount bankAccountFrom = bankAccountSessionBeanLocal.retrieveBankAccountByNum(fromBankAccount);
-        BankAccount bankAccountTo = bankAccountSessionBeanLocal.retrieveBankAccountByNum(toBankAccount);
+        BankAccount merlionBankAccountFrom = bankAccountSessionBeanLocal.retrieveBankAccountByNum(fromBankAccount);
+        DBSBankAccount dbsBankAccountTo = dBSBankAccountSessionBeanLocal.retrieveBankAccountByNum(toBankAccount);
 
-        Double diffAmt = Double.valueOf(bankAccountFrom.getBankAccountBalance()) - transferAmt;
+        Double diffAmt = Double.valueOf(merlionBankAccountFrom.getBankAccountBalance()) - transferAmt;
         if (diffAmt >= 0) {
 
-            Double currentBalance = Double.valueOf(bankAccountFrom.getBankAccountBalance()) - transferAmt;
-            bankAccountFrom.setBankAccountBalance(currentBalance.toString());
+            Double currentBalance = Double.valueOf(merlionBankAccountFrom.getBankAccountBalance()) - transferAmt;
+            bankAccountSessionBeanLocal.updateBankAccountBalance(fromBankAccount, currentBalance.toString());
 
             Calendar cal = Calendar.getInstance();
             String transactionCode = "ICT";
-            String transactionRef = bankAccountTo.getBankAccountType() + "-" + bankAccountTo.getBankAccountNum();
+            String transactionRef = dbsBankAccountTo.getDbsBankAccountType() + "-" + dbsBankAccountTo.getDbsBankAccountNum();
             Long transactionDateMilis = cal.getTimeInMillis();
 
             Long transactionId = transactionSessionBeanLocal.addNewTransaction(cal.getTime().toString(), transactionCode, transactionRef,
-                    transferAmt.toString(), " ", transactionDateMilis, bankAccountFrom.getBankAccountId());
+                    transferAmt.toString(), " ", transactionDateMilis, merlionBankAccountFrom.getBankAccountId());
 
-            sACHSessionBeanLocal.SACHTransfer(fromBankAccount, toBankAccount, transferAmt);
+            sACHSessionBeanLocal.SACHTransferMTD(fromBankAccount, toBankAccount, transferAmt);
 
             statusMessage = "Your transaction has been completed.";
-            String fromAccountBalance = bankAccountFrom.getBankAccountBalance();
+            fromAccountBalance = currentBalance.toString();
 
             ec.getFlash().put("statusMessage", statusMessage);
             ec.getFlash().put("transactionId", transactionId);

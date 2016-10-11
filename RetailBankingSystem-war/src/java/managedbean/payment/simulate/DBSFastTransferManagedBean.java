@@ -40,6 +40,9 @@ public class DBSFastTransferManagedBean {
     private String statusMessage;
     private String toBankAccountNumWithType;
     private String fromBankAccountNumWithType;
+    private Long transactionId;
+    private String fromAccountBalance;
+    private Double currentBalance;
 
     private ExternalContext ec;
 
@@ -110,6 +113,30 @@ public class DBSFastTransferManagedBean {
         this.fromBankAccountNumWithType = fromBankAccountNumWithType;
     }
 
+    public Long getTransactionId() {
+        return transactionId;
+    }
+
+    public void setTransactionId(Long transactionId) {
+        this.transactionId = transactionId;
+    }
+
+    public String getFromAccountBalance() {
+        return fromAccountBalance;
+    }
+
+    public void setFromAccountBalance(String fromAccountBalance) {
+        this.fromAccountBalance = fromAccountBalance;
+    }
+
+    public Double getCurrentBalance() {
+        return currentBalance;
+    }
+
+    public void setCurrentBalance(Double currentBalance) {
+        this.currentBalance = currentBalance;
+    }
+
     public void transfer() throws IOException {
 
         ec = FacesContext.getCurrentInstance().getExternalContext();
@@ -120,20 +147,20 @@ public class DBSFastTransferManagedBean {
         Double diffAmt = Double.valueOf(dbsBankAccountFrom.getDbsBankAccountBalance()) - transferAmt;
         if (diffAmt >= 0) {
 
-            Double currentBalance = Double.valueOf(dbsBankAccountFrom.getDbsBankAccountBalance()) - transferAmt;
-            dbsBankAccountFrom.setDbsBankAccountBalance(currentBalance.toString());
+            currentBalance = Double.valueOf(dbsBankAccountFrom.getDbsBankAccountBalance()) - transferAmt;
+            dBSBankAccountSessionBeanLocal.updateBankAccountBalance(fromAccountNum, currentBalance.toString());
 
             Calendar cal = Calendar.getInstance();
             String transactionCode = "ICT";
             String transactionRef = merlionBankAccountTo.getBankAccountType() + "-" + merlionBankAccountTo.getBankAccountNum();
 
-            Long transactionId = dBSTransactionSessionBeanLocal.addNewDBSTransaction(cal.getTime().toString(), transactionCode,
+            transactionId = dBSTransactionSessionBeanLocal.addNewDBSTransaction(cal.getTime().toString(), transactionCode,
                     transactionRef, transferAmt.toString(), " ", dbsBankAccountFrom.getDbsBankAccountId());
-
-            sACHSessionBeanLocal.SACHTransfer(fromAccountNum, toAccountNum, transferAmt);
+            
+            sACHSessionBeanLocal.SACHTransferDTM(fromAccountNum, toAccountNum, transferAmt);
 
             statusMessage = "Your transaction has been completed.";
-            String fromAccountBalance = dbsBankAccountFrom.getDbsBankAccountBalance();
+            fromAccountBalance = dbsBankAccountFrom.getDbsBankAccountBalance();
 
             toBankAccountNumWithType = merlionBankAccountTo.getBankAccountNum() + "-" + merlionBankAccountTo.getBankAccountType();
             fromBankAccountNumWithType = fromAccountNum + "-" + "DBS Savings Account";

@@ -39,7 +39,7 @@ public class MEPSSessionBean implements MEPSSessionBeanLocal {
     }
 
     @Override
-    public void MEPSSettlement(String fromMasterBankAccountNum, String toMasterBankAccountNum, Double transferAmt) {
+    public void MEPSSettlementMTD(String fromMasterBankAccountNum, String toMasterBankAccountNum, Double transferAmt) {
 
         MEPSMasterBankAccount merlionMasterBankAccount = mEPSMasterBankAccountSessionBeanLocal.retrieveMEPSMasterBankAccountByAccNum(fromMasterBankAccountNum);
         MEPSMasterBankAccount dbsMasterBankAccount = mEPSMasterBankAccountSessionBeanLocal.retrieveMEPSMasterBankAccountByAccNum(toMasterBankAccountNum);
@@ -57,8 +57,10 @@ public class MEPSSessionBean implements MEPSSessionBeanLocal {
         Double merlionCurrentBalance = Double.valueOf(merlionMasterBankAccount.getMasterBankAccountBalance()) - transferAmt;
         Double dbsCurrentBalance = Double.valueOf(dbsMasterBankAccount.getMasterBankAccountBalance()) + transferAmt;
 
-        Long newMerlionMasterAccountTransaction = mEPSMasterAccountTransactionSessionBeanLocal.addNewMasterAccountTransaction(currentTime, settlementRefMerlion, transferAmt.toString(), " ", Long.valueOf(1));
-        Long newDBSMasterAccountTransaction = mEPSMasterAccountTransactionSessionBeanLocal.addNewMasterAccountTransaction(currentTime, settlementRefDBS, " ", transferAmt.toString(), Long.valueOf(2));
+        Long newDBSMasterAccountTransaction = mEPSMasterAccountTransactionSessionBeanLocal.addNewMasterAccountTransaction(currentTime, 
+                settlementRefDBS, " ", transferAmt.toString(), dbsMasterBankAccount.getMasterBankAccountId());
+        Long newMerlionMasterAccountTransaction = mEPSMasterAccountTransactionSessionBeanLocal.addNewMasterAccountTransaction(currentTime, 
+                settlementRefMerlion, transferAmt.toString(), " ", merlionMasterBankAccount.getMasterBankAccountId());
 
         merlionMasterBankAccount.setMasterBankAccountBalance(merlionCurrentBalance.toString());
         dbsMasterBankAccount.setMasterBankAccountBalance(dbsCurrentBalance.toString());
@@ -71,5 +73,33 @@ public class MEPSSessionBean implements MEPSSessionBeanLocal {
         query.setParameter("bankNames", bankNames);
 
         return query.getResultList();
+    }
+    
+    @Override
+    public void MEPSSettlementDTM(String fromMasterBankAccountNum, String toMasterBankAccountNum, Double transferAmt) {
+
+        MEPSMasterBankAccount merlionMasterBankAccount = mEPSMasterBankAccountSessionBeanLocal.retrieveMEPSMasterBankAccountByAccNum(toMasterBankAccountNum);
+        MEPSMasterBankAccount dbsMasterBankAccount = mEPSMasterBankAccountSessionBeanLocal.retrieveMEPSMasterBankAccountByAccNum(fromMasterBankAccountNum);
+
+        String settlementRefMerlion = "Receive " + "S$" + transferAmt+ " from DBS";
+        String settlementRefDBS = "Pay " +"S$" +transferAmt+" to Merlion Bank";
+        String settlementRef = "DBS pays Merlion Bank S$"+transferAmt;
+        
+        Calendar cal = Calendar.getInstance();
+        String currentTime = cal.getTime().toString();
+        String bankNames = "DBS&Merlion";
+
+        Long newMepsId = addNewMEPS(settlementRef, currentTime, bankNames);
+
+        Double merlionCurrentBalance = Double.valueOf(merlionMasterBankAccount.getMasterBankAccountBalance()) + transferAmt;
+        Double dbsCurrentBalance = Double.valueOf(dbsMasterBankAccount.getMasterBankAccountBalance()) - transferAmt;
+
+        Long newDBSMasterAccountTransaction = mEPSMasterAccountTransactionSessionBeanLocal.addNewMasterAccountTransaction(currentTime, 
+                settlementRefDBS, transferAmt.toString(), " ", dbsMasterBankAccount.getMasterBankAccountId());
+        Long newMerlionMasterAccountTransaction = mEPSMasterAccountTransactionSessionBeanLocal.addNewMasterAccountTransaction(currentTime, 
+                settlementRefMerlion, " ", transferAmt.toString(), merlionMasterBankAccount.getMasterBankAccountId());
+
+        merlionMasterBankAccount.setMasterBankAccountBalance(merlionCurrentBalance.toString());
+        dbsMasterBankAccount.setMasterBankAccountBalance(dbsCurrentBalance.toString());
     }
 }
