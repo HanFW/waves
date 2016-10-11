@@ -324,7 +324,7 @@
   -moz-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12); }
 
 .login-body {
-  background: url("#{resource['ultima-layout:images/login/login.png']}") top left no-repeat #f7f7f7;
+  background-color: #273746;
   background-size: 100% auto; }
 
 .login-panel {
@@ -348,7 +348,7 @@
 
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
   .login-body {
-    background: url("#{resource['ultima-layout:images/login/login2x.png']}") top left no-repeat #f7f7f7;
+    background-color: #273746;
     background-size: 100% auto; } }
 @media (max-width: 1024px) {
   .login-panel {
@@ -882,11 +882,17 @@ body {
     -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16);
     -moz-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16);
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16); }
-    .layout-wrapper .layout-menu .profile .profile-image {
+    .layout-wrapper .layout-menu .profile .profile-image.Male {
       width: 60px;
       height: 60px;
       margin: 0 auto 5px auto;
-      background: url("#{resource['ultima-layout:images/employee_avatar.png']}") top left no-repeat;
+      background: url("#{resource['ultima-layout:images/employee_avatar_male.png']}") top left no-repeat;
+      background-size: 60px 60px; }
+    .layout-wrapper .layout-menu .profile .profile-image.Female {
+      width: 60px;
+      height: 60px;
+      margin: 0 auto 5px auto;
+      background: url("#{resource['ultima-layout:images/employee_avatar_female.png']}") top left no-repeat;
       background-size: 60px 60px; }
     .layout-wrapper .layout-menu .profile .profile-name {
       display: inline-block;
