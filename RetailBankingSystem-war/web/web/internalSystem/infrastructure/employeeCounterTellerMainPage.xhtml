@@ -43,13 +43,9 @@
                     <h:outputText value="You have logged in as: Counter Teller "/>
                     <br/>
 
-                    <p:growl id="msgs" showDetail="true" />
-
 
                     <p:accordionPanel>
-                        <p:ajax event="tabChange" listener="#{tabbedView.onTabChange}" update=":form:msgs" />
-                        <p:ajax event="tabClose" listener="#{tabbedView.onTabClose}" update=":form:msgs" />
-
+                       
                         <p:tab title="Customer Management">
                             <h:panelGrid columns="2" cellpadding="10">
                                 <p:commandButton value="View Enquiry Case" action="/web/internalSystem/enquiry/counterTellerSearchCustomer.xhtml"/>
@@ -66,10 +62,8 @@
                                 <p:commandButton value="Cash Deposit" action="/web/internalSystem/deposit/employeeCashDeposit.xhtml"/>
                                 <p:commandButton value="Cash Withdraw" action="/web/internalSystem/deposit/employeeCashWithdraw.xhtml"/>
                                 <p:commandButton value="Open Account" action="/web/internalSystem/deposit/employeeOpenAccount.xhtml"/>
-                                <p:commandButton value="Delete Account" action="/web/internalSystem/deposit/employeeCloseAccount.xhtml"/>
-                                <p:commandButton value="Change Deposit Account Password" action="/web/internalSystem/deposit/employeeChangeBankAccountPwd.xhtml"/>
-                                <p:commandButton value="Retrieve Deposit Account Password" action="/web/internalSystem/deposit/employeeForgotDepositPassword.xhtml"/>
-                                <p:commandButton value="Activate Fixed Deposit" action="/web/internalSystem/deposit/employeeActivateFixedDeposit.xhtml"/>
+                                <p:commandButton value="Delete Account" action="/web/internalSystem/deposit/employeeCloseAccount.xhtml"/>      
+                                <p:commandButton value="Reactivate Fixed Deposit" action="/web/internalSystem/deposit/employeeActivateFixedDeposit.xhtml"/>
                                 <p:commandButton value="View Customer Accounts Infornation" action="/web/internalSystem/deposit/employeeViewAccount.xhtml"/>
                                 <p:commandButton value="Change Daily Transfer Limit" action="/web/internalSystem/deposit/employeeChangeDailyTransferLimit.xhtml"/>
                             </h:panelGrid>

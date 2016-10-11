@@ -80,7 +80,7 @@
                     </h:panelGrid>
                     <br/>
                     <h:panelGrid columns="2" styleClass="ui-panelgrid-blank form-group" width="60%">
-                        <p:commandButton value="Cancel" update="otpPanel" onclick="PF('otpDialog').hide();" />
+                        <p:commandButton value="Cancel" update="otpPanel customerCurrentBasicProfile" actionListener="#{cRMCustomerManagedBean.cancelMobileUpdate}" onclick="PF('otpDialog').hide();" />
                         <p:commandButton value="Submit" actionListener="#{cRMCustomerManagedBean.validateMobile}" update="otpPanel"/>
                     </h:panelGrid>
                 </div>

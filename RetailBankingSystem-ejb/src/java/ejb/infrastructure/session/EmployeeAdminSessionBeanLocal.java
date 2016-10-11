@@ -27,8 +27,7 @@ public interface EmployeeAdminSessionBeanLocal {
     
     public String createEmployeeAccount(String employeeName, String employeeGender,String employeeDepartment,
     String employeePosition, String employeeNRIC, String employeeMobileNum, String employeeEmail,
-    Set<String> roles);
- 
+    Set<String> roles); 
     
     public void updateEmployeeAccount(Long id, String name, String department, String position, String mobile, String email, Set<String> roles);
     
@@ -57,7 +56,9 @@ public interface EmployeeAdminSessionBeanLocal {
     public void editUserAccount(Long employeeId,String employeeName,String employeeDepartment,
             String employeePosition,String employeeMobileNum,String employeeEmail);
     
-    public List<String> getRoles();
+    public List<String> getPositionsByDepartment(String department);
+    
+    public List<String> getRolesByDepartment(String department);
     
     public List<Permission> getPermissionList(String roleName);
     
