@@ -381,5 +381,12 @@ public class EmployeeAccountManagedBean implements Serializable {
         employee = (Employee) context.getExternalContext().getSessionMap().get("employee");
         return employee.getEmployeePosition();
     }
+    
+     public String getUserGender() {
+
+        FacesContext context = FacesContext.getCurrentInstance();
+        employee = (Employee) context.getExternalContext().getSessionMap().get("employee");
+        return employee.getEmployeeGender();
+    }
 
 }

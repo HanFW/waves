@@ -13,7 +13,7 @@
                 <div class="nano-content menu-scroll-content">
                     <ui:fragment rendered="#{employeePreferences.profileMode == 'inline' and employeePreferences.menuLayout != 'menu-layout-static menu-layout-horizontal'}">
                         <div class="profile">
-                            <div class="profile-image"></div>
+                            <div class="profile-image #{employeeAccountManagedBean.userGender}"></div>
                             <a id="profile-options" href="#">
                                 <span class="profile-name">#{employeeAccountManagedBean.userName}</span>
                                 <i class="material-icons">&#xE313;</i>

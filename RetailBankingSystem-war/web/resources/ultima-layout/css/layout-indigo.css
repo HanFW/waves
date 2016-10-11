@@ -1122,7 +1122,7 @@ body a {
         font-size: 12px;
         line-height: 12px; }
     .layout-wrapper .topbar-items > li .topbar-icon {
-        font-size: 30px;
+        font-size: 32px;
         color: #E6A82E;
         -moz-transition: color 0.3s;
         -o-transition: color 0.3s;
@@ -1137,7 +1137,7 @@ body a {
         background-size: 36px 36px; }
     .layout-wrapper .topbar-items > li > ul {
         position: absolute;
-        top: 55px;
+        top: 40px;
         right: 5px;
         display: none;
         width: 250px;
@@ -1291,7 +1291,7 @@ body a {
         display: block; }
     .layout-wrapper .topbar .topbar-right .topbar-items {
         position: absolute;
-        top: 75px;
+        top: 90px;
         right: 15px;
         width: 275px;
         -webkit-animation-duration: .5s;
