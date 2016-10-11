@@ -718,9 +718,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
     @Override
     public void approveAccount(String customerIdentificationNum) {
 
-        System.out.println("approve" + customerIdentificationNum);
         CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum);
-        System.out.println("approve" + customerBasic);
         BankAccount bankAccount = retrieveBankAccountByCusIC(customerIdentificationNum).get(0);
 
         customerBasic.setNewCustomer("No");
