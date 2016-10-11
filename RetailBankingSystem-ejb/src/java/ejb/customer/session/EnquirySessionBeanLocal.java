@@ -5,6 +5,7 @@
  */
 package ejb.customer.session;
 
+import ejb.customer.entity.CustomerBasic;
 import javax.ejb.Local;
 import ejb.customer.entity.EnquiryCase;
 import ejb.customer.entity.FollowUp;
@@ -40,6 +41,8 @@ public interface EnquirySessionBeanLocal {
     public List<EnquiryCase> getAllEnquiry();
 
     public List<EnquiryCase> getEnquiryByCaseId(Long caseId);
+
+    public List<CustomerBasic> getCustomerByCaseId(Long caseId);
 
     public List<FollowUp> getFollowUpByCaseId(Long caseId);
 
