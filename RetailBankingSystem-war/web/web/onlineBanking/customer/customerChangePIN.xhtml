@@ -8,44 +8,36 @@
                 template="/WEB-INF/onlineBankingTemplate.xhtml"
                 xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
     <ui:define name="content">
-        
-        <h:body>
-            <h:form>
-       
-                    <div class="ui-g ui-fluid">
-                        <div class="ui-g-12 ui-lg-12">
-                            <div class="card card-w-title"> 
-                                <p:panel>
-                            <p:outputLabel value="Welcome "/>
-                            <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
-                        </p:panel>
-                                <p:panel >
-                                    <p:messages />
-                                    <div align="center">
-                                        <h:panelGrid columns="2" id="matchGrid" cellpadding="5" styleClass="ui-panelgrid-blank form-group">
 
-                                            <h:outputLabel for="currentPassword" value="Current Password: *" />
-                                            <p:password id="currentPassword" value="#{cRMCustomerManagedBean.customerOnlineBankingPassword}" label="Current Password" required="true" />
+        <h:form>
+            <p:panel>
+                <p:outputLabel value="Welcome "/>
+                <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
+            </p:panel>
+            <p:panel >
+                <p:messages />
+                <div align="center">
+                    <h:panelGrid columns="2" id="matchGrid" cellpadding="5" styleClass="ui-panelgrid-blank form-group">
 
-                                            <h:outputLabel for="newPassword" value="New Password: *" />
-                                            <p:password id="newPassword" value="#{cRMCustomerManagedBean.customerOnlineBankingNewPassword}" match="newPasswordConfirm" label="New Password" required="true" />
+                        <h:outputLabel for="currentPassword" value="Current Password: *" />
+                        <p:password id="currentPassword" value="#{cRMCustomerManagedBean.customerOnlineBankingPassword}" label="Current Password" required="true" />
 
-                                            <h:outputLabel for="newPasswordConfirm" value="Confirm New Password: *" />
-                                            <p:password id="newPasswordConfirm" value="#{cRMCustomerManagedBean.customerOnlineBankingNewPasswordConfirm}" label="Confirm New Password" required="true" />
+                        <h:outputLabel for="newPassword" value="New Password: *" />
+                        <p:password id="newPassword" value="#{cRMCustomerManagedBean.customerOnlineBankingNewPassword}" match="newPasswordConfirm" label="New Password" required="true" />
+
+                        <h:outputLabel for="newPasswordConfirm" value="Confirm New Password: *" />
+                        <p:password id="newPasswordConfirm" value="#{cRMCustomerManagedBean.customerOnlineBankingNewPasswordConfirm}" label="Confirm New Password" required="true" />
 
 
-                                        </h:panelGrid>
-                                        <h:panelGrid columns="1" id="matchGrid2" cellpadding="5" styleClass="ui-panelgrid-blank form-group">
-                                            <p:commandButton value="Save" actionListener="#{cRMCustomerManagedBean.updateOnlineBankingAccountPIN}" ajax="false" />
-                                        </h:panelGrid>
-                                    </div>
-                                </p:panel>
-                            </div>
-                        </div>
-                    </div>
-            </h:form>
-            <ezcomp:CCTimeout/>
-        </h:body>
+                    </h:panelGrid>
+                    <br/>
+
+                    <p:commandButton value="Update Password" actionListener="#{cRMCustomerManagedBean.updateOnlineBankingAccountPIN}" ajax="false" style="width:260px"/>
+
+                </div>
+            </p:panel>
+        </h:form>
+        <ezcomp:CCTimeout/>
     </ui:define>
 </ui:composition>
 

@@ -324,7 +324,7 @@
   -moz-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12); }
 
 .login-body {
-  background: url("#{resource['ultima-layout:images/login/login.png']}") top left no-repeat #f7f7f7;
+  background-color: #273746;
   background-size: 100% auto; }
 
 .login-panel {
@@ -348,7 +348,7 @@
 
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
   .login-body {
-    background: url("#{resource['ultima-layout:images/login/login2x.png']}") top left no-repeat #f7f7f7;
+    background-color: #273746;
     background-size: 100% auto; } }
 @media (max-width: 1024px) {
   .login-panel {
