@@ -1,0 +1,304 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/onlineBankingTemplate.xhtml"
+                xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
+    <ui:define name="content">
+
+        <h:body>
+
+            <div align="center">
+                <h:form>
+                    <p:growl id="growl" sticky="true" showDetail="true"/>
+                    <p:wizard widgetVar ="applyDebitCardWizard" flowListener="#{customerApplyDebitCardManagedBean.onFlowProcess}" class="ui-lg-12" showNavBar="false">
+
+                        <p:tab id="selectCard">
+
+                            <h:panelGrid columns="1">
+                                <p:steps activeIndex="0">
+                                    <p:menuitem value="1. Select Card" />
+                                    <p:menuitem value="2. Input Details" />
+                                    <p:menuitem value="3. Declaration" />
+                                    <p:menuitem value="4. Verify Details" />
+                                    <p:menuitem value="5. Completion" />
+                                </p:steps>
+                            </h:panelGrid>
+
+                            <h:panelGrid columns="1" class="ui-lg-6">  
+
+                                <p:messages globalOnly="true"/>
+
+                                <p:outputLabel style="font-size: 20px;font-weight: bold" value="Important"/>
+                                <br/>
+                                <br/>
+
+                                <p:outputLabel style="font-size: 20px" value="Applicants must be 16 years of age 16 and above."/>
+                                <br/>
+
+                                <p:outputLabel style="font-size: 20px" value="You will receive your Debit Card(s) within 3 to 5 working days upon successful application."/>
+                                <br/>
+
+                                <p:outputLabel style="font-size: 20px" value="Purchases are directly deducted from your Bank account.There are potential risks of unauthorized signature-based, contactless payment with MasterCard® Contactless / Visa payWave or card-not-present transactions (such as online, phone and mail orders)."/>
+                                <br/>
+
+                                <p:outputLabel style="font-size: 20px" value="Your signature will be verified against any of your signature records with the Bank. Please ensure that the signature on the application form matches the Bank's record."/>
+                                <br/>
+
+                            </h:panelGrid>
+
+
+                            <p:outputLabel style="font-size: 40px" value="I would to apply for"/>
+
+                            <h:panelGrid>
+                                <p:row>
+                                    <p:column>
+                                        <h:outputText style="width:30%" value="Most Popular Cards"/>
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText style="width:30%" value="Annual Fees"/>
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText style="width:30%" value="Waiver(perpetual)"/>
+                                    </p:column>
+                                </p:row>
+
+                                <!--<h:form>-->
+                                <p:row>
+                                    <p:selectOneRadio style="text-align:left" >
+                                        <f:selectItem itemLabel="Merlion Bank Visa PayWave Debit Card" itemValue="Visa PayWave" />
+                                    </p:selectOneRadio>
+                                    <p:commandLink value="More Details" oncomplete="PF('debitCard1').show()"/>
+                                </p:row>
+                                <p:row>    
+                                    <h:outputText style="width:30%" value="S$5.00(Principal)"/>
+                                </p:row>
+                                <p:row>
+                                    <h:outputText style="width:30%" value="3 YEARS(Free Waiver)"/>                     
+                                </p:row>
+                                <!--</h:form>-->
+
+                                <!--<h:form>-->
+                                <p:row>
+                                    <p:selectOneRadio style="text-align:left" >
+                                        <f:selectItem itemLabel="Watsons Merlion Bank Mastercard Debit Card" itemValue="Watsons Mastercard" />
+                                    </p:selectOneRadio>
+                                    <p:commandLink value="More Details" oncomplete="PF('debitCard2').show();"/>
+                                </p:row>
+                                <p:row>    
+                                    <h:outputText style="width:30%" value="S$5.00(Principal)"/>
+                                </p:row>
+                                <p:row>
+                                    <h:outputText style="width:30%" value="3 YEARS(Free Waiver)"/>                     
+                                </p:row>
+                                <!--</h:form>-->
+
+                                <!--<h:form>-->
+                                <p:row>
+                                    <p:selectOneRadio style="text-align:left" >
+                                        <f:selectItem itemLabel="Merlion Bank NUS Visa Debit Card" itemValue="NUS Visa" />
+                                    </p:selectOneRadio>
+                                    <p:commandLink value="More Details" oncomplete="PF('debitCard3').show();"/>
+                                </p:row>
+                                <p:row>    
+                                    <h:outputText style="width:30%" value="S$0.00(Principal)"/>
+                                </p:row>
+                                <p:row>
+                                    <h:outputText style="width:30%" value="4 YEARS(Free Waiver)"/>                     
+                                </p:row>
+                                <!--</h:form>-->
+
+
+                            </h:panelGrid>
+
+                            <!--<h:form>-->
+                            <p:dialog  header="Merlion Bank Visa PayWave Debit Card" widgetVar="debitCard1" minHeight="400">
+                                <h:outputText value="Annual Fee(Inclusive of GST)"/>
+                                <br/>
+                                <h:outputText value="Principal: S$5.00"/>
+                                <br/>
+                                <h:outputText value="Annual Fee Waiver: 3 year"/>  
+                                <br/>
+                                <h:outputText value="5% cashback for contactless transactions"/>
+                                <br/>
+                                <h:outputText value="Conditions: not withdraw more than 3 times at Merlion Bank ATMs across all your Merlion Bank Cards as well as local Merlion Bank branches in the same month." />                              
+                            </p:dialog>
+                            <!--</h:form>-->
+
+                            <!--<h:form>-->
+                            <p:dialog header="Watsons Merlion Bank Mastercard Debit Card" widgetVar="debitCard2" minHeight="400">
+                                <h:outputText value="Annual Fee(Inclusive of GST)"/>
+                                <br/>
+                                <h:outputText value="Principal: S$5.00"/>
+                                <br/>
+                                <h:outputText value="Annual Fee Waiver: 5 year"/>  
+                                <br/>
+                                <h:outputText value="3% cashback for contactless transactions"/>                                                  
+                            </p:dialog>
+                            <!--</h:form>-->
+
+                            <!--<h:form>-->
+                            <p:dialog header="Watsons Merlion Bank Mastercard Debit Card" widgetVar="debitCard3" minHeight="400">
+                                <h:outputText value="Annual Fee(Inclusive of GST)"/>
+                                <br/>
+                                <h:outputText value="Principal: S$0.00"/>
+                                <br/>
+                                <h:outputText value="Annual Fee Waiver: 4 year"/>  
+                                <br/>
+                                <h:outputText value="3% cashback for contactless transactions"/>                                                  
+                            </p:dialog>
+                            <!--</h:form>-->
+
+                            <h:panelGrid columns="2" class="ui-lg-6"> 
+                                <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('applyDebitCardWizard').next();" />
+                            </h:panelGrid>
+
+                        </p:tab>
+
+                        <p:tab id="inputDetails">
+                            <h:panelGrid columns="1">
+                                <p:steps activeIndex="1">
+                                    <p:menuitem value="1. Select Card" />
+                                    <p:menuitem value="2. Input Details" />
+                                    <p:menuitem value="3. Declaration" />
+                                    <p:menuitem value="4. Verify Details" />
+                                    <p:menuitem value="5. Completion" />
+                                </p:steps>
+                            </h:panelGrid> 
+
+                            <h:panelGrid columns="1" class="ui-lg-6">  
+                                <p:messages globalOnly="true"/>
+
+                                <h1>Personal Details</h1>
+                                <p:row>
+                                    <p:outputLabel value="Name: "/>
+                                    <p:outputLabel value="Zhou Jingyuan"/>
+                                </p:row>
+
+                                <p:row>
+                                    <p:outputLabel value="Name to appear on Card: "/>
+                                    <p:outputLabel value="Zhou Jingyuan"/>
+                                </p:row>
+
+                                <p:row>
+                                    <p:outputLabel value="NRIC/Passport: "/>
+                                    <p:outputLabel value="E21701407"/>
+                                </p:row>
+
+                                <p:row>
+                                    <p:outputLabel value="Date of Birth: "/>
+                                    <p:outputLabel value="09/11/1996"/>
+                                </p:row>
+
+                            </h:panelGrid>                            
+
+                            <h:panelGrid columns="1" class="ui-lg-6">  
+                                <p:messages globalOnly="true"/>
+
+                                <h1>Contact Details</h1>
+                                <p:row>
+                                    <p:outputLabel value="Address: "/>
+                                    <p:outputLabel value="Zhou Jingyuan"/>
+                                </p:row>
+
+                                <p:row>
+                                    <p:outputLabel value="Email: "/>
+                                    <p:outputLabel value="Zhou Jingyuan"/>
+                                </p:row>
+
+                                <p:row>
+                                    <p:outputLabel value="Home: "/>
+                                    <p:outputLabel value="E21701407"/>
+                                </p:row>
+
+                                <p:row>
+                                    <p:outputLabel value="Office: "/>
+                                    <p:outputLabel value="09/11/1996"/>
+                                </p:row>
+
+                                <p:row>
+                                    <p:outputLabel value="Mobile: "/>
+                                    <p:outputLabel value="09/11/1996"/>
+                                </p:row>
+
+                                <p:row>
+                                    <p:outputLabel value="We will send ALL official bank alerts and One-Time Password(OTP) 
+                                                   for iBanking and online purchases to this mobile number. This mobile number will 
+                                                   supersede all existing mobile number(s) currently on our records."/>
+                                </p:row>
+
+                            </h:panelGrid>
+
+                            <h:panelGrid columns="2" class="ui-lg-6"> 
+                                <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('applyDebitCardWizard').back();" />
+                                <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('applyDebitCardWizard').next();" />
+                            </h:panelGrid>
+
+                        </p:tab>
+
+                        <p:tab id="Declaration">
+                            <h:panelGrid columns="1">
+                                <p:steps activeIndex="2">
+                                    <p:menuitem value="1. Select Card" />
+                                    <p:menuitem value="2. Input Details" />
+                                    <p:menuitem value="3. Declaration" />
+                                    <p:menuitem value="4. Verify Details" />
+                                    <p:menuitem value="5. Completion" />
+                                </p:steps>
+                            </h:panelGrid>
+
+                            <h1>Declaration</h1>
+                            <p:selectManyCheckbox id="basic" value="#{checkboxView.selectedConsoles}">
+                                <f:selectItem itemLabel="I have read and agree to be bound by the terms of this application,
+                                              the Merlion Bank Debit Card Agreement and the above Declaration" itemValue="declaration" />
+                            </p:selectManyCheckbox>
+
+                            <h:panelGrid columns="2" class="ui-lg-6"> 
+                                <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('applyDebitCardWizard').back();" />
+                                <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('applyDebitCardWizard').next();" />
+                            </h:panelGrid>
+
+                        </p:tab>
+
+                        <p:tab id="verifyDetails">
+                            <h:panelGrid columns="1">
+                                <p:steps activeIndex="3">
+                                    <p:menuitem value="1. Select Card" />
+                                    <p:menuitem value="2. Input Details" />
+                                    <p:menuitem value="3. Declaration" />
+                                    <p:menuitem value="4. Verify Details" />
+                                    <p:menuitem value="5. Completion" />
+                                </p:steps>
+                            </h:panelGrid>
+
+                            <h:outputText style="font-size: 40px" value="Apply for New Debit Cards"/>
+                            <h:panelGrid columns="1" class="ui-lg-6">  
+                                <h1>Personal Details</h1>
+                            </h:panelGrid>
+
+                            <h:panelGrid>
+                                <h1>Contact Details</h1>
+                            </h:panelGrid>
+
+                            <h:panelGrid columns="2" class="ui-lg-6"> 
+                                <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('applyDebitCardWizard').back();" />
+                                <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('applyDebitCardWizard').next();" />
+                            </h:panelGrid>
+
+
+                        </p:tab>
+                    </p:wizard>
+                </h:form>
+
+
+            </div>
+
+
+        </h:body>
+    </ui:define>
+</ui:composition>
+
+

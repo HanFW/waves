@@ -1,5 +1,6 @@
 package ejb.deposit.entity;
 
+import ejb.card.entity.DebitCard;
 import ejb.customer.entity.CustomerBasic;
 import java.io.Serializable;
 import javax.persistence.Entity;
@@ -36,6 +37,9 @@ public class BankAccount implements Serializable {
     private String fixedDepositStatus;
 
     private Double statementDateDouble;
+    
+    @OneToMany(cascade={CascadeType.ALL}, fetch=FetchType.EAGER, mappedBy="bankAccount")
+    private List<DebitCard> debitCards;
 
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "bankAccount")
     private List<AccTransaction> accTransaction;
@@ -176,6 +180,15 @@ public class BankAccount implements Serializable {
     public void setStatementDateDouble(Double statementDateDouble) {
         this.statementDateDouble = statementDateDouble;
     }
+
+    public List<DebitCard> getDebitCards() {
+        return debitCards;
+    }
+
+    public void setDebitCards(List<DebitCard> debitCards) {
+        this.debitCards = debitCards;
+    }
+       
 
     @Override
     public int hashCode() {
