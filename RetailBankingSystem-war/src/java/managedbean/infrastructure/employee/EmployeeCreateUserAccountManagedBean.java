@@ -9,22 +9,23 @@ import ejb.infrastructure.entity.Employee;
 import ejb.infrastructure.session.EmployeeAdminSessionBeanLocal;
 import ejb.infrastructure.session.EmployeeEmailSessionBeanLocal;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 import javax.ejb.EJB;
 import javax.inject.Named;
-import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.faces.view.ViewScoped;
 
 /**
  *
  * @author Jingyuan
  */
 @Named(value = "employeeCreateUserAccountManagedBean")
-@RequestScoped
-public class EmployeeCreateUserAccountManagedBean {
+@ViewScoped
+public class EmployeeCreateUserAccountManagedBean implements Serializable{
 
     @EJB
     private EmployeeAdminSessionBeanLocal adminSessionBeanLocal;
@@ -41,12 +42,14 @@ public class EmployeeCreateUserAccountManagedBean {
     private String employeeEmail;
     private String logInStatus;
     private Set<String> selectedRoles;
+    private List<String> positions;
     private List<String> roles;
 
     /**
      * Creates a new instance of EmployeeCreateUserAccountManagedBean
      */
     public EmployeeCreateUserAccountManagedBean() {
+
     }
 
     public void createAccount(ActionEvent event) throws IOException {
@@ -54,7 +57,7 @@ public class EmployeeCreateUserAccountManagedBean {
         FacesMessage message = null;
         FacesContext context = FacesContext.getCurrentInstance();
 
-        String newEmployee = adminSessionBeanLocal.createEmployeeAccount(employeeName,employeeGender,
+        String newEmployee = adminSessionBeanLocal.createEmployeeAccount(employeeName, employeeGender,
                 employeeDepartment, employeePosition, employeeNRIC, employeeMobileNum.toString(),
                 employeeEmail, selectedRoles);
 
@@ -62,7 +65,7 @@ public class EmployeeCreateUserAccountManagedBean {
 
         if (newEmployee.equals("existing account")) {
 
-            message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error! Account Existed", "Error!The employee account has already Existed");
+            message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error! Account Existed", "Error!The employee account has already Existed");
             context.addMessage(null, message);
             System.out.println("*** AccountManagedBean: account existed");
         } else {
@@ -72,6 +75,27 @@ public class EmployeeCreateUserAccountManagedBean {
             System.out.println("*** AccountManagedBean: account created");
 
         }
+
+    }
+
+    
+    public List<String> getPositions(){
+        return positions;
+    }
+
+    public List<String> getRoles() {
+        return roles;
+    }
+
+    public void onDepartmentChangePositions() {
+        System.out.println("*** CreateUserAccountManagedBean: onDepartmentChangePositions");
+        positions=adminSessionBeanLocal.getPositionsByDepartment(employeeDepartment);
+
+    }
+
+    public void onDepartmentChangeRoles() {
+        System.out.println("*** CreateUserAccountManagedBean: onDepartmentChangeRoles");
+        roles = adminSessionBeanLocal.getRolesByDepartment(employeeDepartment);
 
     }
 
@@ -97,21 +121,24 @@ public class EmployeeCreateUserAccountManagedBean {
 
     public void setEmployeeGender(String employeeGender) {
         this.employeeGender = employeeGender;
-    }   
+    }
 
     public String getEmployeeDepartment() {
         return employeeDepartment;
     }
-
+    
     public void setEmployeeDepartment(String employeeDepartment) {
+        System.out.println("createAccountManagedBean: set employee Department"+ employeeDepartment);
         this.employeeDepartment = employeeDepartment;
     }
 
     public String getEmployeePosition() {
+        System.out.println("createAccountManagedBean get employee position: ");
         return employeePosition;
     }
 
     public void setEmployeePosition(String employeePosition) {
+        System.out.println("createAccountManagedBean: set employee position"+ employeePosition);
         this.employeePosition = employeePosition;
     }
 
@@ -140,20 +167,13 @@ public class EmployeeCreateUserAccountManagedBean {
     }
 
     public Set<String> getSelectedRoles() {
+        System.out.println("createAccountManagedBean get selectedRoles: ");
         return selectedRoles;
     }
 
     public void setSelectedRoles(Set<String> selectedRoles) {
+        System.out.println("createAccountManagedBean set selectedRoles: "+selectedRoles);
         this.selectedRoles = selectedRoles;
     }
-    
-     public List<String> getRoles() {
 
-        if (roles == null) {
-            roles = adminSessionBeanLocal.getRoles();
-        }
-        return roles;
-    }
-    
-    
 }
