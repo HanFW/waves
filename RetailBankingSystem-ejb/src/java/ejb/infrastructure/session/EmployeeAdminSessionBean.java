@@ -48,14 +48,16 @@ public class EmployeeAdminSessionBean implements EmployeeAdminSessionBeanLocal {
     private final static String[] roles3;
     private final static String[] roles4;
     private final static String[] roles5;
+    private final static String[] roles6;
 
     static {
-        departments = new String[5];
+        departments = new String[6];
         departments[0] = "Board of Directors";
         departments[1] = "Card Department";
         departments[2] = "Loan Department";
         departments[3] = "Sales Department";
         departments[4] = "Operation Department";
+        departments[5] = "Deposit Department";
 
         positions = new String[9];
         positions[0] = "Staff";
@@ -88,12 +90,11 @@ public class EmployeeAdminSessionBean implements EmployeeAdminSessionBeanLocal {
         roles1 = new String[1];
         roles1[0] = "Director";
 
-        roles2 = new String[5];
+        roles2 = new String[4];
         roles2[0] = "Credit Card Manager";
         roles2[1] = "Credit Card Verifier";
         roles2[2] = "Card Department Manager";
         roles2[3] = "Card Specialist";
-        roles2[4] = "Deposit Specialist";
 
         roles3 = new String[5];
         roles3[0] = "Loan Officer";
@@ -114,6 +115,10 @@ public class EmployeeAdminSessionBean implements EmployeeAdminSessionBeanLocal {
         roles5[3] = "Operation Specialist";
         roles5[4] = "Operation Department Manager";
 
+        roles6 = new String[3];
+        roles6[0] = "Deposit Department Manager";
+        roles6[1] = "Deposit Account Verifier";
+        roles6[2] = "Deposit Specialist";
     }
 
     @Override
@@ -453,6 +458,8 @@ public class EmployeeAdminSessionBean implements EmployeeAdminSessionBeanLocal {
                 return Arrays.asList(roles3);
             case "Sales Department":
                 return Arrays.asList(roles4);
+            case "Deposit Department":
+                return Arrays.asList(roles6);
             default:
                 return Arrays.asList(roles5);
         }
