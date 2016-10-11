@@ -65,7 +65,7 @@ public class EmployeeCreateUserAccountManagedBean implements Serializable{
 
         if (newEmployee.equals("existing account")) {
 
-            message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Error! Account Existed", "Error!The employee account has already Existed");
+            message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error! Account Existed", "Error!The employee account has already Existed");
             context.addMessage(null, message);
             System.out.println("*** AccountManagedBean: account existed");
         } else {

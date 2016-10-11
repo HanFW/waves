@@ -40,7 +40,7 @@ public class EmployeePasswordManagedBean {
      */
     public EmployeePasswordManagedBean() {
     }
-    
+
     public void resetPassword(ActionEvent event) {
         FacesMessage message = null;
         FacesContext context = FacesContext.getCurrentInstance();
@@ -52,10 +52,14 @@ public class EmployeePasswordManagedBean {
             context.addMessage(null, message);
             System.out.println("*** PasswordManagedBean: new password has been sent");
 
+        } else if (msg.equals("emailInvalid")) {
+            message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Email entered is not your registered Email, please check it and enter again!", "Email invalid!");
+            context.addMessage(null, message);
+            System.out.println("*** PasswordManagedBean: email invalid");
         } else {
             message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Account does not exist, please check your NRIC!", "Account not exist!");
             context.addMessage(null, message);
-            System.out.println("*** PasswordManagedBean: email account invalid");
+            System.out.println("*** PasswordManagedBean: account invalid");
         }
 
     }
@@ -123,7 +127,5 @@ public class EmployeePasswordManagedBean {
     public void setEmployeeNRIC(String employeeNRIC) {
         this.employeeNRIC = employeeNRIC;
     }
-    
-    
 
 }
