@@ -8,6 +8,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 
 @Entity
@@ -20,6 +21,8 @@ public class MessageBox implements Serializable {
     private String messageType;
     private String subject;
     private String receivedDate;
+    
+    @Lob
     private String messageContent;
 
     @ManyToOne(cascade={CascadeType.PERSIST},fetch=FetchType.EAGER)
