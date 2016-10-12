@@ -31,7 +31,9 @@ public class DebitCard implements Serializable {
     @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     private BankAccount bankAccount;
 
-    private String debitCardName;
+    @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    private DebitCardType debitCardType;
+
     private String debitCardNum;
     private String debitCardPwd;
     private String debitCardExpiryDate;
@@ -52,14 +54,6 @@ public class DebitCard implements Serializable {
 
     public void setBankAccount(BankAccount bankAccount) {
         this.bankAccount = bankAccount;
-    }
-
-    public String getDebitCardName() {
-        return debitCardName;
-    }
-
-    public void setDebitCardName(String debitCardName) {
-        this.debitCardName = debitCardName;
     }
 
     public String getDebitCardNum() {
@@ -101,6 +95,15 @@ public class DebitCard implements Serializable {
     public void setCardSecurityCode(String cardSecurityCode) {
         this.cardSecurityCode = cardSecurityCode;
     }
+
+    public DebitCardType getDebitCardType() {
+        return debitCardType;
+    }
+
+    public void setDebitCardType(DebitCardType debitCardType) {
+        this.debitCardType = debitCardType;
+    }
+    
 
     @Override
     public int hashCode() {

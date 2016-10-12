@@ -5,7 +5,16 @@
  */
 package ejb.card.session;
 
+import ejb.card.entity.DebitCard;
+import ejb.card.entity.DebitCardType;
+import ejb.deposit.entity.BankAccount;
+import java.math.BigInteger;
+import java.security.SecureRandom;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -16,4 +25,121 @@ public class DebitCardSessionBean implements DebitCardSessionBeanLocal {
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
+    @EJB
+    private DebitCardSessionBeanLocal debitCardSessionBeanLocal;
+
+    @PersistenceContext
+    private EntityManager em;
+
+    @Override
+    public String createDebitCard(String bankAccountNum, String cardHolderName, String applicationDate, String cardTypeName) {
+        DebitCard debitCard = new DebitCard();
+        debitCard.setCardHolderName(cardHolderName);
+
+        BankAccount depositAccount = findDepositAccountByAccountNum(bankAccountNum);
+        debitCard.setBankAccount(depositAccount);
+
+        DebitCardType debitCardType = findCardTypeByTypeName(cardTypeName);
+        debitCard.setDebitCardType(debitCardType);
+
+        String cardNum = generateCardNum();
+        debitCard.setDebitCardNum(cardNum);
+
+        String debitCardSecurityCode = generateCardSecurityCode();
+        debitCard.setCardSecurityCode(debitCardSecurityCode);
+
+//        String[] applicationDateToString = changeDateFormat(applicationDate);
+        String[] applicationDateToString = applicationDate.split("/");
+        String applicationYear = applicationDateToString[2];
+        String applicationMonth = applicationDateToString[1];
+
+        int expiryYearToInt = Integer.valueOf(applicationYear) + 5;
+        String expiryYear = String.valueOf(expiryYearToInt);
+        String debitCardExpiryDate = applicationMonth +"/" +expiryYear;
+
+        debitCard.setDebitCardExpiryDate(debitCardExpiryDate);
+
+        em.persist(debitCard);
+        return "success";
+
+    }
+
+    private BankAccount findDepositAccountByAccountNum(String bankAccountNum) {
+        Query query = em.createQuery("SELECT b FROM BankAccount b WHERE b.bankAccountNum = :accountNum");
+        query.setParameter("accountNum", bankAccountNum);
+
+        BankAccount findBankAccount = (BankAccount) query.getSingleResult();
+        return findBankAccount;
+    }
+
+    private String generateCardNum() {
+        System.out.println("*");
+        System.out.println("****** card/DebitCardSessionBean: generateDebitCardNumber() ******");
+        SecureRandom random = new SecureRandom();
+        String cardNumber = new BigInteger(48, random).toString(8);
+
+        while (getCardByCardNum(cardNumber) != null) {
+            cardNumber = new BigInteger(48, random).toString(8);
+        }
+
+        System.out.println("****** card/DebitCardSessionBean: generateDebitCardNumber(): debit card number generated");
+        return cardNumber;
+    }
+
+    private DebitCard getCardByCardNum(String cardNum) {
+        Query query = em.createQuery("SELECT d FROM DebitCard d WHERE d.debitCardNum = :cardNum");
+        query.setParameter("cardNum", cardNum);
+
+        if (query.getResultList().isEmpty()) {
+            return null;
+        } else {
+            DebitCard findDebitCard = (DebitCard) query.getResultList().get(0);
+            return findDebitCard;
+        }
+    }
+
+    private DebitCard getCardBySecurityCode(String cardSecurityCode) {
+        Query query = em.createQuery("SELECT d FROM DebitCard d WHERE d.cardSecurityCode = :cardSecurityCode");
+        query.setParameter("cardSecurityCode", cardSecurityCode);
+
+        if (query.getResultList().isEmpty()) {
+            return null;
+        } else {
+            DebitCard findDebitCard = (DebitCard) query.getResultList().get(0);
+            return findDebitCard;
+        }
+    }
+
+//change date to string
+//    private String[] changeDateFormat(Date date) {
+//        String dateToString = date.toString();
+//        String[] changedDate = dateToString.split("/");
+//        return changedDate;
+//    }
+    private String generateCardSecurityCode() {
+        System.out.println("*");
+        System.out.println("****** card/DebitCardSessionBean: generateCardSecurityCode() ******");
+        SecureRandom random = new SecureRandom();
+        String csc = new BigInteger(9, random).toString(8);
+
+        while (getCardBySecurityCode(csc) != null) {
+            csc = new BigInteger(9, random).toString(8);
+        }
+
+        System.out.println("****** card/DebitCardSessionBean: generateCardSecurityCode(): debit CSC generated");
+        return csc;
+    }
+
+    private DebitCardType findCardTypeByTypeName(String cardTypeName) {
+        Query query = em.createQuery("SELECT d FROM DebitCardType d WHERE d.debitCardTypeName = :cardTypeName");
+        query.setParameter("cardTypeName", cardTypeName);
+
+        if (query.getResultList().isEmpty()) {
+            return null;
+        } else {
+            DebitCardType findDebitCardType = (DebitCardType) query.getResultList().get(0);
+            System.out.println("****** card/DebitCardSessionBean: find cardType: " + findDebitCardType);
+            return findDebitCardType;
+        }
+    }
 }
