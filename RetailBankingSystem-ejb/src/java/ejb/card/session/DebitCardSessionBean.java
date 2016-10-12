@@ -10,6 +10,7 @@ import ejb.card.entity.DebitCardType;
 import ejb.deposit.entity.BankAccount;
 import java.math.BigInteger;
 import java.security.SecureRandom;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -141,5 +142,22 @@ public class DebitCardSessionBean implements DebitCardSessionBeanLocal {
             System.out.println("****** card/DebitCardSessionBean: find cardType: " + findDebitCardType);
             return findDebitCardType;
         }
+    }
+    
+    @Override
+    public String checkDebitCardTypeForDepositAccount(String bankAccountNum, String cardTypeName){
+         BankAccount depositAccount = findDepositAccountByAccountNum(bankAccountNum);
+         DebitCardType debitCardType = findCardTypeByTypeName(cardTypeName);
+         
+         List<DebitCard> debitCardsOfType=debitCardType.getDebitCards();
+         List<DebitCard> debitCardsOfAccount=depositAccount.getDebitCards();
+         
+         for(int i=0;i<debitCardsOfAccount.size();i++){
+             DebitCard debitCard=debitCardsOfAccount.get(i);
+             if(debitCardsOfType.contains(debitCard))
+                 return "existing";
+         }
+         
+         return "not existing";
     }
 }

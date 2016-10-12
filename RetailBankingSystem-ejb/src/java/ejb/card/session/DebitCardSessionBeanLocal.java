@@ -15,4 +15,6 @@ import javax.ejb.Local;
 @Local
 public interface DebitCardSessionBeanLocal {
     public String createDebitCard(String bankAccountNum,String cardHolderName, String applicationDate,String cardTypeName);
+    
+    public String checkDebitCardTypeForDepositAccount(String bankAccountNum, String cardTypeName);
 }
