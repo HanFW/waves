@@ -8,7 +8,6 @@
 
     <h:form id="menuform"> 
         <div class="layout-menu #{employeePreferences.menuClass}">
-
             <div class="nano">
                 <div class="nano-content menu-scroll-content">
                     <ui:fragment rendered="#{employeePreferences.profileMode == 'inline' and employeePreferences.menuLayout != 'menu-layout-static menu-layout-horizontal'}">
@@ -18,9 +17,9 @@
                                 <span class="profile-name">#{employeeAccountManagedBean.userName}</span>
                                 <i class="material-icons">&#xE313;</i>
                                 <br/>
-                                <span class="profile-intro">#{employeeAccountManagedBean.userDepartment}, #{employeeAccountManagedBean.userPosition}</span>
+                                <span class="profile-intro">Department: #{employeeAccountManagedBean.userDepartment}</span>
                                 <br/>
-                                <span class="profile-intro">Role: XXX</span>      
+                                <span class="profile-intro">Position: #{employeeAccountManagedBean.userPosition}</span>
                             </a>
                         </div>
 
@@ -49,44 +48,116 @@
                         </ul>
                     </ui:fragment>
 
+
                     <pu:menu widgetVar="myMenu">
 
-                        <p:submenu label="General">
+                        <p:submenu label="System Administrator" rendered="#{employeeAccountManagedBean.hasRoleSystemAdmin()}">
+                            <p:menuitem value="Employee Account Management" url="/web/internalSystem/infrastructure/employeeUserAccountManagement.xhtml" />
+                            <p:menuitem value="View Logging" url="/web/internalSystem/infrastructure/employeeViewLogging.xhtml" />
+                            <p:menuitem value="Assign Permission" url="/web/internalSystem/infrastructure/employeeSystemAdminAssignPermission.xhtml" />
+                        </p:submenu>
+
+                        <p:submenu label="Counter Teller" rendered="#{employeeAccountManagedBean.hasRoleCounterTeller()}">                          
+                            <p:menuitem value="Create Enquiry Case" url="/web/internalSystem/enquiry/counterTellerSearchCustomer.xhtml" />
+                            <p:menuitem value="Search Enquiry Case" url="/web/internalSystem/enquiry/counterTellerSearchCaseByID.xhtml" />
+                            <p:menuitem value="Update Customer Basic Information" url="/web/internalSystem/enquiry/counterTellerSearchCustomer2.xhtml" />
+                            <p:menuitem value="Unlock Online Banking" url="/web/internalSystem/infrastructure/employeeUnlockIBAccount.xhtml?faces-redirect=true" />
+                            <p:menuitem value="View Transaction History" url="/web/internalSystem/deposit/employeeViewTransaction.xhtml" />
+                            <p:menuitem value="View Bank Statement" url="/web/internalSystem/deposit/employeeViewStatement.xhtml" />
+                            <p:menuitem value="Fund Transfer" url="/web/internalSystem/deposit/employeeTransfer.xhtml" />
+                            <p:menuitem value="Cash Deposit" url="/web/internalSystem/deposit/employeeCashDeposit.xhtml" />
+                            <p:menuitem value="Cash Withdraw" url="/web/internalSystem/deposit/employeeCashWithdraw.xhtml" />
+                            <p:menuitem value="Open Account" url="/web/internalSystem/deposit/employeeOpenAccount.xhtml" />
+                            <p:menuitem value="Delete Account" url="/web/internalSystem/deposit/employeeCloseAccount.xhtml" />
+                            <p:menuitem value="Reactivate Fixed Deposit" url="/web/internalSystem/deposit/employeeActivateFixedDeposit.xhtml" />
+                            <p:menuitem value="View Customer Accounts Infornation" url="/web/internalSystem/deposit/employeeViewAccount.xhtml" />
+                            <p:menuitem value="Change Daily Transfer Limit" url="/web/internalSystem/deposit/employeeChangeDailyTransferLimit.xhtml" />
+                        </p:submenu>
+
+                        <p:submenu label="Customer Service Agent" rendered="#{employeeAccountManagedBean.hasRoleCustomerServiceAgent()}">
+                            <p:menuitem value="Create Enquiry Case" url="/web/internalSystem/enquiry/counterTellerSearchCustomer.xhtml" />
+                            <p:menuitem value="Search Enquiry Case" url="/web/internalSystem/enquiry/counterTellerSearchCaseByID.xhtml" />
+                            <p:menuitem value="Unlock iBanking Account" url="/web/internalSystem/infrastructure/employeeUnlockIBAccount.xhtml" />                           
+                        </p:submenu>
+
+                        <p:submenu label="Enquiry Processor" rendered="#{employeeAccountManagedBean.hasRoleEnquiryProcessor()}">
+                            <p:menuitem value="Create Enquiry Case" url="/web/internalSystem/enquiry/counterTellerSearchCustomer.xhtml" />
+                        </p:submenu>
+
+                        <p:submenu label="Operation Department Manager" rendered="#{employeeAccountManagedBean.hasRoleOperationDepartmentManager()}">
+                            <p:menuitem value="XXXXXX" url="" />
+                        </p:submenu>
+
+                        <p:submenu label="Operation Specialist" rendered="#{employeeAccountManagedBean.hasRoleOperationSpecialist()}">
+                            <p:menuitem value="View Pending Issue" url="/web/internalSystem/enquiry/operationSpecialistViewPendingIssue.xhtml" />
+                        </p:submenu>
+
+                        <p:submenu label="Relationship Manager" rendered="#{employeeAccountManagedBean.hasRoleRelationshipManager()}">
+                            <p:menuitem value="Update Customer Advanced Profile" url="/web/internalSystem/CRM/RMViewCustomerList.xhtml" />
+                            <p:menuitem value="View All My Customers" url="/web/internalSystem/CRM/RMSearchCustomer.xhtml" />
+                        </p:submenu>
+
+                        <p:submenu label="Wealth Management Specialist" rendered="#{employeeAccountManagedBean.hasRoleWealthManagementSpecialist()}">
+                            <p:menuitem value="View Pending Issue" url="/web/internalSystem/enquiry/wealthManagementSpecialistViewPendingIssue.xhtml" />
+                        </p:submenu>
+
+                        <p:submenu label="Sales Department Manager" rendered="#{employeeAccountManagedBean.hasRoleSalesDepartmentManager()}">
+                            <p:menuitem value="XXXXXX" url="" />
+                        </p:submenu>
+
+                        <p:submenu label="Loan Officer" rendered="#{employeeAccountManagedBean.hasRoleLoanOfficer()}">
+                            <p:menuitem value="XXXXXX" url="" />
+                        </p:submenu>
+
+                        <p:submenu label="Underwriter" rendered="#{employeeAccountManagedBean.hasRoleUnderwriter()}">
+                            <p:menuitem value="XXXXXX" url="" />
+                        </p:submenu>
+
+                        <p:submenu label="Mortgage Appraiser" rendered="#{employeeAccountManagedBean.hasRoleMortgageAppraiser()}">
+                            <p:menuitem value="XXXXXX" url="" />
+                        </p:submenu>
+
+                        <p:submenu label="Loan Specialist" rendered="#{employeeAccountManagedBean.hasRoleLoanSpecialist()}">
+                            <p:menuitem value="View Pending Issue" url="/web/internalSystem/enquiry/loanSpecialistViewPendingIssue.xhtml" />
+                        </p:submenu>
+
+                        <p:submenu label="Loan Department Manager" rendered="#{employeeAccountManagedBean.hasRoleLoanDepartmentManager()}">
+                            <p:menuitem value="XXXXXX" url="" />
+                        </p:submenu>
+
+                        <p:submenu label="Director" rendered="#{employeeAccountManagedBean.hasRoleDirector()}">
+                            <p:menuitem value="XXXXXX" url="" />
+                        </p:submenu>
+
+                        <p:submenu label="Card Department Manager" rendered="#{employeeAccountManagedBean.hasRoleCardDepartmentManager()}">
+                            <p:menuitem value="XXXXXX" url="" />
+                        </p:submenu>
+
+                        <p:submenu label="Card Specialist" rendered="#{employeeAccountManagedBean.hasRoleCardSpecialist()}">
+                            <p:menuitem value="View Pending Issue" url="/web/internalSystem/enquiry/cardSpecialistViewPendingIssue.xhtml" />
+                        </p:submenu>
+
+                        <p:submenu label="Credit Card Manager" rendered="#{employeeAccountManagedBean.hasRoleCreditCardManager()}">
+                            <p:menuitem value="XXXXXX" url="" />
+                        </p:submenu>
+
+                        <p:submenu label="Credit Card Verifier" rendered="#{employeeAccountManagedBean.hasRoleCreditCardVerifier()}">
+                            <p:menuitem value="XXXXXX" url="" />
+                        </p:submenu>
+
+                        <p:submenu label="Deposit Account Verifier" rendered="#{employeeAccountManagedBean.hasRoleDepositAccountVerifier()}">
                             <p:menuitem value="Home" url="/web/onlineBanking/deposit/customerDepositIndex.xhtml" />
-                            <p:menuitem value="Open Account" url="/web/onlineBanking/deposit/customerOpenAccount.xhtml" />
-                            <p:menuitem value="Close Account" url="/web/onlineBanking/deposit/customerCloseAccount.xhtml" />
-                            <p:menuitem value="View Account" url="/web/onlineBanking/deposit/customerViewAccount.xhtml" />
-                            <p:menuitem value="View Transaction" url="/web/onlineBanking/deposit/customerViewTransaction.xhtml" />
-                            <p:menuitem value="View Statement" url="/web/onlineBanking/deposit/customerViewStatement.xhtml" />
-                            <p:menuitem value="Activate Fixed Deposit Account" url="/web/onlineBanking/deposit/customerActivateFixedDepositAccount.xhtml" />
-                            <p:menuitem value="Change Bank Account Password" url="/web/onlineBanking/deposit/customerChangeBankAccountPwd.xhtml" />
-                            <p:menuitem value="Forgot Bank Account Password" url="/web/onlineBanking/deposit/customerForgotPassword.xhtml" />
-
                         </p:submenu>
 
-                        <p:submenu label="Transfer" >
-                            <p:menuitem value="To My Account" url="/web/onlineBanking/deposit/customerToMyAccount.xhtml" />
-                            <p:menuitem value="To Other Merlion Accounts" url="/web/onlineBanking/deposit/customerToOthersAccount.xhtml" />
-                            <p:menuitem value="To Other Merlion Accuonts(One-time)" url="/web/onlineBanking/deposit/customerOneTimeTransfer.xhtml" />
-                            <p:menuitem value="Add Recipient" url="/web/onlineBanking/deposit/customerAddRecipient.xhtml" />
-                            <p:menuitem value="Delete Recipient" url="/web/onlineBanking/deposit/customerDeleteRecipient.xhtml" />
-                            <p:menuitem value="Change Daily Transfer Limit" url="/web/onlineBanking/deposit/customerDailyTransferLimit.xhtml" />
+                        <p:submenu label="Deposit Department Manager" rendered="#{employeeAccountManagedBean.hasRoleDepositDepartmentManager()}">
+                            <p:menuitem value="XXXXXX" url="" />
                         </p:submenu>
 
-                        <p:submenu label="Enquiry">
-                            <p:menuitem value="Write an enquiry" url="/web/onlineBanking/customer/customerEnquiry.xhtml" />
-                            <p:menuitem value="View enquiry" url="/web/onlineBanking/customer/CRMCustomerViewEnquiry.xhtml"/>
-                        </p:submenu>
-
-                        <p:submenu label="My profile">
-                            <p:menuitem value="Change password" url="/web/onlineBanking/customer/customerChangePIN.xhtml" />
-                            <p:menuitem value="Update basic profile" url="/web/onlineBanking/customer/customerUpdateBasicProfile.xhtml" />
-                            <p:menuitem value="Delete iBanking Account" url="/web/onlineBanking/infrastructure/customerDeleteIBAccount.xhtml" />
+                        <p:submenu label="Deposit Specialist" rendered="#{employeeAccountManagedBean.hasRoleDepositSpecialist()}">
+                            <p:menuitem value="View Pending Issue" url="/web/internalSystem/enquiry/depositSpecialistViewPendingIssue.xhtml" />
                         </p:submenu>
 
                     </pu:menu>
-
-
                 </div>
             </div>
         </div>

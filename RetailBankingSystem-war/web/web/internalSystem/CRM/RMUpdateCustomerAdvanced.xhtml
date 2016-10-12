@@ -8,70 +8,50 @@
                 template="/WEB-INF/internalSystemTemplate.xhtml">
 
     <ui:define name="content">
-        <h:body>
-            <h:form>
-                <p:menubar>
-                    <p:submenu label="Home">
-                        <p:menuitem value="Home" url="/web/internalSystem/infrastructure/employeeRelationshipManagerMainPage.xhtml"/>
-                    </p:submenu>
+        <h:form>
+            <div align="center">
+                <h:outputText value="Welcome " />
+                <h:outputText value="#{employeeAccountManagedBean.userName}!"/>
+                <br/>
+                <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
+                <br/>
+                <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
+                <br/>
+                <h:outputText value="You have logged in as: Relationship Manager"/>
+                <br/>  
+                <p:dataList id="customerCurrentAdvancedProfile" value="#{rMUpdateCustomerAdvancedManagedBean.customerAdvancedInfo}" type="definition">
+                    <p:panel >
+                        <p:messages />
 
-                    <p:submenu label="Log Out">
-                        <p:menuitem value="Logout" actionListener="#{employeeLoginManagedBean.doLogOut}" />
-                    </p:submenu>
-                </p:menubar>
-            </h:form>
+                        <h:panelGrid id="AdvancedProfile" columns="2" cellpadding="5" >
 
-            <h:form>
-                <div class="ui-g ui-fluid">
-                    <div class="ui-g-12 ui-lg-12">
-                        <div class="card card-w-title"> 
-                            <div align="center">
-                                <h:outputText value="Welcome " />
-                                <h:outputText value="#{employeeAccountManagedBean.userName}!"/>
-                                <br/>
-                                <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
-                                <br/>
-                                <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
-                                <br/>
-                                <h:outputText value="You have logged in as: Relationship Manager"/>
-                                <br/>  
-                                <p:dataList id="customerCurrentAdvancedProfile" value="#{rMUpdateCustomerAdvancedManagedBean.customerAdvancedInfo}" type="definition">
-                                    <p:panel >
-                                        <p:messages />
+                            <p:outputLabel for="customerEmploymentDetails"  value="Employment Details:" />
+                            <p:inputText id="customerEmploymentDetails" value="#{rMUpdateCustomerAdvancedManagedBean.customerEmploymentDetails}" required="true" />
 
-                                        <h:panelGrid id="AdvancedProfile" columns="2" cellpadding="5" >
+                            <p:outputLabel for="customerFamilyInfo"  value="Family Information" />
+                            <p:inputText id="customerFamilyInfo" value="#{rMUpdateCustomerAdvancedManagedBean.customerFamilyInfo}" required="true"  />
 
-                                            <p:outputLabel for="customerEmploymentDetails"  value="Employment Details:" />
-                                            <p:inputText id="customerEmploymentDetails" value="#{rMUpdateCustomerAdvancedManagedBean.customerEmploymentDetails}" required="true" />
+                            <p:outputLabel for="customerCreditReport"  value="Credit Report:" />
+                            <p:inputText id="customerCreditReport" value="#{rMUpdateCustomerAdvancedManagedBean.customerCreditReport}" required="true"  />
 
-                                            <p:outputLabel for="customerFamilyInfo"  value="Family Information" />
-                                            <p:inputText id="customerFamilyInfo" value="#{rMUpdateCustomerAdvancedManagedBean.customerFamilyInfo}" required="true"  />
+                            <p:outputLabel for="customerFinancialRiskRating"  value="Financial Risk Rating:" />
+                            <p:inputText id="customerFinancialRiskRating" value="#{rMUpdateCustomerAdvancedManagedBean.customerFinancialRiskRating}" required="true"  />
 
-                                            <p:outputLabel for="customerCreditReport"  value="Credit Report:" />
-                                            <p:inputText id="customerCreditReport" value="#{rMUpdateCustomerAdvancedManagedBean.customerCreditReport}" required="true"  />
+                            <p:outputLabel for="customerFinanacialAssets"  value="Finanacial Assets:" />
+                            <p:inputText id="customerFinanacialAssets" value="#{rMUpdateCustomerAdvancedManagedBean.customerFinanacialAssets}" required="true"  />
 
-                                            <p:outputLabel for="customerFinancialRiskRating"  value="Financial Risk Rating:" />
-                                            <p:inputText id="customerFinancialRiskRating" value="#{rMUpdateCustomerAdvancedManagedBean.customerFinancialRiskRating}" required="true"  />
+                            <p:outputLabel for="customerFinanacialGoals"  value="Finanacial Goals:" />
+                            <p:inputText id="customerFinanacialGoals" value="#{rMUpdateCustomerAdvancedManagedBean.customerFinanacialGoals}" required="true"  />
 
-                                            <p:outputLabel for="customerFinanacialAssets"  value="Finanacial Assets:" />
-                                            <p:inputText id="customerFinanacialAssets" value="#{rMUpdateCustomerAdvancedManagedBean.customerFinanacialAssets}" required="true"  />
+                        </h:panelGrid>   
+                    </p:panel>
+                    <p:commandButton value="Reset" type="reset" />
 
-                                            <p:outputLabel for="customerFinanacialGoals"  value="Finanacial Goals:" />
-                                            <p:inputText id="customerFinanacialGoals" value="#{rMUpdateCustomerAdvancedManagedBean.customerFinanacialGoals}" required="true"  />
+                    <p:commandButton value="Update" actionListener="#{rMUpdateCustomerAdvancedManagedBean.updateCustomerAdvanced}" ajax="false"/>
 
-                                        </h:panelGrid>   
-                                    </p:panel>
-                                    <p:commandButton value="Reset" type="reset" />
-
-                                    <p:commandButton value="Update" actionListener="#{rMUpdateCustomerAdvancedManagedBean.updateCustomerAdvanced}" ajax="false"/>
-
-                                </p:dataList>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </h:form>
-        </h:body>
+                </p:dataList>
+            </div>
+        </h:form>
     </ui:define>
 </ui:composition>
 

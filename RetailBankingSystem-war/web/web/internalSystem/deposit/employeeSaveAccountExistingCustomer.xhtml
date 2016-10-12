@@ -7,68 +7,33 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/internalSystemTemplate.xhtml">
 
-    <ui:define name="internalSystemMenu">
-
-        <ui:include src="/WEB-INF/internalSystemMenuCounterTeller.xhtml" />
-
-    </ui:define>
-
     <ui:define name="content">
-        <h:body>
-            <h:form>
-                <p:menubar>
-                    <p:submenu label="Home">
-                        <p:menuitem value="Home" url="/web/internalSystem/infrastructure/employeeCounterTellerMainPage.xhtml"/>
-                    </p:submenu>
+        <h:form id="formMain">
+            <div align="center">
+                <h:outputText value="You have logged in as: Counter Teller"/>
+                <br/>
+                <p:panel id="panel" header="Save Account"> 
+                    <p:messages />
 
-                    <p:submenu label="Log Out">
-                        <p:menuitem value="Logout" actionListener="#{employeeLoginManagedBean.doLogOut}" />
-                    </p:submenu>
-                </p:menubar>
-            </h:form>
-
-            <h:form id="formMain">
-                <div class="ui-g ui-fluid">
-                    <div class="ui-g-12 ui-lg-12">
-                        <div class="card card-w-title"> 
-                            <div align="center">
-                                <h:outputText value="Welcome " />
-                                <h:outputText value="#{employeeAccountManagedBean.userName}!"/>
-                                <br/>
-                                <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
-                                <br/>
-                                <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
-                                <br/>
-                                <h:outputText value="You have logged in as: Counter Teller"/>
-                                <br/>
-                                <br/>
-                                <p:panel id="panel" header="Save Account"> 
-                                    <p:messages />
-
-                                    <h:panelGrid columns="1" cellpadding="5" styleClass="ui-panelgrid-blank form-group">     
-                                        <h:form id="formMain">
-                                            <h:outputText style="font-weight: bold" value="Attention: "/>
-                                            <h:outputText value="#{employeeSaveAccountManagedBean.attention}"/>
-                                            <br/>
-                                            <br/>
-                                            <h:outputText style="font-weight: bold" value="Bank Account Num: "/>
-                                            <h:outputText value="#{employeeSaveAccountManagedBean.bankAccountNum}"/>
-                                            <br/>
-                                            <h:outputText style="font-weight: bold" value="Bank Account Type: "/>
-                                            <h:outputText value="#{employeeSaveAccountManagedBean.bankAccountType}"/>
-                                            <br/>
-                                            <h:outputText style="font-weight: bold" value="Bank Account Status: "/>
-                                            <h:outputText value="#{employeeSaveAccountManagedBean.bankAccountStatus}"/>
-                                            <br/>
-                                        </h:form>
-                                    </h:panelGrid>
-                                </p:panel>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </h:form>
-        </h:body>
+                    <h:panelGrid columns="1" cellpadding="5" styleClass="ui-panelgrid-blank form-group">     
+                        <h:form id="formMain">
+                            <h:outputText style="font-weight: bold" value="Attention: "/>
+                            <h:outputText value="#{employeeSaveAccountManagedBean.attention}"/>
+                            <br/>
+                            <br/>
+                            <h:outputText style="font-weight: bold" value="Bank Account Num: "/>
+                            <h:outputText value="#{employeeSaveAccountManagedBean.bankAccountNum}"/>
+                            <br/>
+                            <h:outputText style="font-weight: bold" value="Bank Account Type: "/>
+                            <h:outputText value="#{employeeSaveAccountManagedBean.bankAccountType}"/>
+                            <br/>
+                            <h:outputText style="font-weight: bold" value="Bank Account Status: "/>
+                            <h:outputText value="#{employeeSaveAccountManagedBean.bankAccountStatus}"/>
+                            <br/>
+                        </h:form>
+                    </h:panelGrid>
+                </p:panel>
+            </div>
+        </h:form>
     </ui:define>
 </ui:composition>

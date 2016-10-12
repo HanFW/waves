@@ -8,46 +8,18 @@
                 template="/WEB-INF/internalSystemTemplate.xhtml">
 
     <ui:define name="content">
-        <h:body>
-            <h:form>
-                <p:menubar>
-                    <p:submenu label="Home">
-                        <p:menuitem value="Home" url="/web/internalSystem/infrastructure/employeeEnquiryManagerMainPage.xhtml?faces-redirect=true"/>
-                    </p:submenu>
+        <h:form>
+            <div align="center">
 
-                    <p:submenu label="Log Out">
-                        <p:menuitem value="Logout" actionListener="#{employeeLoginManagedBean.doLogOut}" />
-                    </p:submenu>
-                </p:menubar>
-            </h:form>
+                <h:outputText value="You have logged in as: Enquiry Manager "/>
+                <br/>
 
-            <h:form>
-                <div class="ui-g ui-fluid">
-                    <div class="ui-g-12 ui-lg-12">
-                        <div class="card card-w-title"> 
-                            <div align="center">
-                                <h:outputText value="Welcome " />
-                                <h:outputText value="#{employeeAccountManagedBean.userName}!"/>
-                                <br/>
-                                <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
-                                <br/>
-                                <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
-                                <br/>
-                                <h:outputText value="You have logged in as: Enquiry Manager "/>
-                                <br/>
-                                <br/>
+                <h1>
+                    Your Reply Has Been Sent to Customer Successfully!
+                </h1>
 
-
-                                <h1>
-                                    Your Reply Has Been Sent to Customer Successfully!
-                                </h1>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </h:form>
-        </h:body>
+            </div>
+        </h:form>
     </ui:define>
 </ui:composition>
 
