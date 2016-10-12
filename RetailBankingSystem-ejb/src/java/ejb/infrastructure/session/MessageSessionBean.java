@@ -2,7 +2,7 @@ package ejb.infrastructure.session;
 
 import ejb.customer.entity.CustomerBasic;
 import ejb.customer.session.CRMCustomerSessionBeanLocal;
-import ejb.deposit.entity.MessageBox;
+import ejb.infrastructure.entity.MessageBox;
 import ejb.deposit.entity.Payee;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import java.util.ArrayList;

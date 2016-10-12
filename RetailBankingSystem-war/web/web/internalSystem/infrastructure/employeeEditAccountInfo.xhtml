@@ -42,17 +42,14 @@
 
                         <p:inputText id="employeeName" value="#{systemAdminEditUserAccountManagedBean.targetEmployeeName}"/> 
 
-                        <p:outputLabel for="employeeDepartment" value="Department:" /> 
+                        <p:outputLabel value="Department:" /> 
 
-                        <p:selectOneMenu id="employeeDepartment" value="#{systemAdminEditUserAccountManagedBean.targetEmployeeDepartment}"
-                                         >
-                            <f:selectItems value="#{systemAdminEditUserAccountManagedBean.departments}" var="department" itemLabel="#{department}" itemValue="#{department}" />
-                        </p:selectOneMenu>
+                        <p:outputLabel value="#{systemAdminEditUserAccountManagedBean.targetEmployeeDepartment}"/>
+                      
 
                         <p:outputLabel for="employeePosition" value="Position:" />
 
-                        <p:selectOneMenu id="employeePosition" value="#{systemAdminEditUserAccountManagedBean.targetEmployeePosition}" 
-                                         >
+                        <p:selectOneMenu id="employeePosition" value="#{systemAdminEditUserAccountManagedBean.targetEmployeePosition}">
                             <f:selectItems  value="#{systemAdminEditUserAccountManagedBean.positions}" var="position" itemLabel="#{position}" itemValue="#{position}" />
                         </p:selectOneMenu>
 
@@ -66,12 +63,12 @@
 
                         <p:outputLabel for="role" value="Role:" />
 
-                        <p:selectCheckboxMenu id="role" value="#{systemAdminEditUserAccountManagedBean.selectedRoles}" label="Select"
+                        <p:selectCheckboxMenu required="true" requiredMessage="Please selecte role(s) for the employee" id="role" value="#{systemAdminEditUserAccountManagedBean.selectedRoles}" label="Select"
                                               filter="true" filterMatchMode="startsWith" panelStyle="width:300px">
                             <f:selectItems value="#{systemAdminEditUserAccountManagedBean.roles}" />
                         </p:selectCheckboxMenu>
 
-                        <p:commandButton value="Return" type="submit" action="/web/internalSystem/infrastructure/employeeUserAccountManagement.xhtml" immediate="true"/>
+                        <p:commandButton value="Return" type="submit" action="#{systemAdminEditUserAccountManagedBean.setToNullActions}" immediate="true"/>
                         <p:commandButton value="Update" actionListener="#{systemAdminEditUserAccountManagedBean.updateAccountInfo}"/>
 
                     </h:panelGrid>

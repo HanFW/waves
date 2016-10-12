@@ -10,58 +10,67 @@
         <div class="topbar-left">
             <h:link outcome="/web/onlineBanking/deposit/customerDepositIndex.xhtml"><div class="logo"></div></h:link>      
         </div>
-        
+
         <div class="topbar-right">
-            <a id="menu-button" href="#">
+            <a id="menu-button" href="">
                 <i></i>
             </a>
-            
-            <a id="topbar-menu-button" href="#">
+            <a id="topbar-menu-button" href="">
                 <i class="material-icons">menu</i>
             </a>
             <ul class="topbar-items fadeInDown animated">
-             
 
-                
-                <li>
-                    <a href="#">
-                        <i class="topbar-icon material-icons">&#xE315;</i>
-                       
-                        <span class="topbar-item-name">Logout</span>
+                <li class="profile-item">
+                    <a href="">  
+                        <i class="topbar-icon material-icons animated swing">&#xE853;</i>
+                        <span class="topbar-item-name">#{customerLoginManagedBean.customer.customerName}</span>
                     </a>
+
                     <ul class="ultima-menu animated">
                         <li role="menuitem">
-                            
-                            <p:commandButton value="Logout" actionListener="#{customerLoginManagedBean.doLogout}" styleClass="secondary"/>
+                            <a href="/RetailBankingSystem-war/web/onlineBanking/customer/customerUpdateBasicProfile.xhtml">
+                                <i class="material-icons">&#xE7FD;</i>
+                                <span>Update Profile</span>
+                            </a>
                         </li>
-                   
+                        <li role="menuitem">
+                            <a href="/RetailBankingSystem-war/web/onlineBanking/customer/customerChangePIN.xhtml">
+                                <i class="material-icons">&#xE32A;</i>
+                                <span>Change Password</span>
+                            </a>
+                        </li>
+                        <li role="menuitem">
+                            <p:commandLink actionListener="#{customerLoginManagedBean.doLogout}">
+                                <i class="material-icons">&#xE879;</i>
+                                <span>Logout</span>
+                            </p:commandLink>
+                        </li>
                     </ul>
                 </li>
-                
+
                 <li>
-                    <a href="#">
+                    <a href="">
                         <i class="topbar-icon material-icons animated swing">&#xE0C9;</i>
                         <span class="topbar-badge animated rubberBand">6</span>
                         <span class="topbar-item-name">Messages</span>
                     </a>
                     <ul class="ultima-menu animated">
                         <li role="menuitem">
-                            
-                                <span> <h:link outcome="/web/onlineBanking/infrastructure/customerViewMessage.xhtml">Check your message box</h:link></span>
-                           
+                            <a href="/RetailBankingSystem-war/web/onlineBanking/infrastructure/customerViewMessage.xhtml">
+                                <i class="material-icons">&#xE0BE;</i>
+                                <span>Check Mailbox </span>
+                            </a>
                         </li>
-                    
-              
                     </ul>
                 </li>
-                
+
                 <li class="search-item">
                     <h:panelGroup styleClass="md-inputfield">
                         <p:inputText />
                         <label>Search</label>
                         <i class="topbar-icon material-icons">&#xE8B6;</i>
                     </h:panelGroup>
-                    
+
                 </li>
             </ul>
         </div>

@@ -1,6 +1,6 @@
 package ejb.infrastructure.session;
 
-import ejb.deposit.entity.MessageBox;
+import ejb.infrastructure.entity.MessageBox;
 import java.util.List;
 import javax.ejb.Local;
 

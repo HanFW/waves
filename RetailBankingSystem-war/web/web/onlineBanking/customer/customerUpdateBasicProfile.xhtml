@@ -7,101 +7,89 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/onlineBankingTemplate.xhtml"
                 xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
+
     <ui:define name="content">
-        <h:body> 
+        <h:form>
+            <p:panel>
+                <p:outputLabel value="Welcome "/>
+                <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
+            </p:panel>
+            <p:dataList id="customerCurrentBasicProfile" value="#{cRMCustomerManagedBean.customerBasicInfo}" type="definition">
 
-            <h:form>
-                <div class="ui-g ui-fluid">
-                    <div class="ui-g-12 ui-lg-12">
-                        <div class="card card-w-title"> 
-                            <p:panel>
-                                <p:outputLabel value="Welcome "/>
-                                <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
-                            </p:panel>
-                            <p:dataList id="customerCurrentBasicProfile" value="#{cRMCustomerManagedBean.customerBasicInfo}" type="definition">
-                                <p:panel >
-                                    <p:messages id="updateMessage" autoUpdate="true"/>
-                                    <div align="center">
-                                        <h:panelGrid id="BasicProfile" columns="2" cellpadding="5" styleClass="ui-panelgrid-blank form-group" >
+                <p:messages id="updateMessage" autoUpdate="true"/>
+                <div align="center">
+                    <h:panelGrid columns="2" cellpadding="5" styleClass="ui-panelgrid-blank form-group" >
 
-                                            <p:outputLabel for="customerNationality"  value="Nationality:" />
-                                            <p:inputText id="customerNationality" value="#{cRMCustomerManagedBean.customerNationality}" required="true" />
+                        <p:outputLabel for="customerNationality"  value="Nationality:" />
+                        <p:inputText id="customerNationality" value="#{cRMCustomerManagedBean.customerNationality}" required="true" />
 
-                                            <p:outputLabel for="customerCountryOfResidence"  value="Country of Residence:" />
-                                            <p:inputText id="customerCountryOfResidence" value="#{cRMCustomerManagedBean.customerCountryOfResidence}" required="true"  />
+                        <p:outputLabel for="customerCountryOfResidence"  value="Country of Residence:" />
+                        <p:inputText id="customerCountryOfResidence" value="#{cRMCustomerManagedBean.customerCountryOfResidence}" required="true"  />
 
-                                            <p:outputLabel for="customerMaritalStatus"  value="Marital Status:" />
-                                            <p:inputText id="customerMaritalStatus" value="#{cRMCustomerManagedBean.customerMaritalStatus}" required="true"  />
+                        <p:outputLabel for="customerMaritalStatus"  value="Marital Status:" />
+                        <p:inputText id="customerMaritalStatus" value="#{cRMCustomerManagedBean.customerMaritalStatus}" required="true"  />
 
-                                            <p:outputLabel for="customerOccupation"  value="Occupation:" />
-                                            <p:inputText id="customerOccupation" value="#{cRMCustomerManagedBean.customerOccupation}" required="true"  />
+                        <p:outputLabel for="customerOccupation"  value="Occupation:" />
+                        <p:inputText id="customerOccupation" value="#{cRMCustomerManagedBean.customerOccupation}" required="true"  />
 
-                                            <p:outputLabel for="customerCompany"  value="Company:" />
+                        <p:outputLabel for="customerCompany"  value="Company:" />
 
-                                            <p:inputText id="customerCompany" value="#{cRMCustomerManagedBean.customerCompany}" required="true"  />
+                        <p:inputText id="customerCompany" value="#{cRMCustomerManagedBean.customerCompany}" required="true"  />
 
-                                            <p:outputLabel for="customerMobileNumber"  value="Mobile Number:" />
-                                            <p:column>
-                                                <p:inputText id="customerMobileNumber" value="#{cRMCustomerManagedBean.replacedCustomerMobile}" required="true" title="After you submit your changes, OTP will be sent to your updated mobile number for validation."/>
-                                                <p:tooltip for="customerMobileNumber" showEvent="focus" hideEvent="blur" position="top"/>
-                                            </p:column>
+                        <p:outputLabel for="customerMobileNumber"  value="Mobile Number:" />
+                        <p:column>
+                            <p:inputText id="customerMobileNumber" value="#{cRMCustomerManagedBean.replacedCustomerMobile}" required="true" title="After you submit your changes, OTP will be sent to your updated mobile number for validation."/>
+                            <p:tooltip for="customerMobileNumber" showEvent="focus" hideEvent="blur" position="top"/>
+                        </p:column>
 
-                                            <p:outputLabel for="customerEmailAddress"  value="Email Address:" />
-                                            <p:inputText id="customerEmailAddress" value="#{cRMCustomerManagedBean.replacedCustomerEmail}" required="true"  />
+                        <p:outputLabel for="customerEmailAddress"  value="Email Address:" />
+                        <p:inputText id="customerEmailAddress" value="#{cRMCustomerManagedBean.replacedCustomerEmail}" required="true"  />
 
-                                            <p:outputLabel for="customerStreet"  value="Residential Street Name: " />
-                                            <p:inputText id="customerStreet" value="#{cRMCustomerManagedBean.streetName}" required="true"  />
+                        <p:outputLabel for="customerStreet"  value="Residential Street Name: " />
+                        <p:inputText id="customerStreet" value="#{cRMCustomerManagedBean.streetName}" required="true"  />
 
-                                            <p:outputLabel for="customerUnitNum"  value="Residential Unit No.: " />
-                                            <p:inputText id="customerUnitNum" value="#{cRMCustomerManagedBean.unitNum}" required="true"  />
+                        <p:outputLabel for="customerUnitNum"  value="Residential Unit No.: " />
+                        <p:inputText id="customerUnitNum" value="#{cRMCustomerManagedBean.unitNum}" required="true"  />
 
-                                            <p:outputLabel for="customerBlockNum"  value="Residential Block/House No.: " />
-                                            <p:inputText id="customerBlockNum" value="#{cRMCustomerManagedBean.blockNum}" required="true"  />
+                        <p:outputLabel for="customerBlockNum"  value="Residential Block/House No.: " />
+                        <p:inputText id="customerBlockNum" value="#{cRMCustomerManagedBean.blockNum}" required="true"  />
 
-                                            <p:outputLabel for="customerPostalCode"  value="Postal Code:" />
-                                            <p:inputText id="customerPostalCode" value="#{cRMCustomerManagedBean.customerPostal}" required="true"  />
+                        <p:outputLabel for="customerPostalCode"  value="Postal Code:" />
+                        <p:inputText id="customerPostalCode" value="#{cRMCustomerManagedBean.customerPostal}" required="true"  />
 
-                                        </h:panelGrid>  
-                                    </div>
-                                </p:panel>
+                    </h:panelGrid> 
 
-                                <h:panelGrid id="BasicProfile2" columns="2" cellpadding="5" styleClass="ui-panelgrid-blank form-group" >
-                                    <p:commandButton value="Reset" type="reset" />
-
-                                    <p:commandButton value="Update" actionListener="#{cRMCustomerManagedBean.updateCustomerBasicProfile}" update="@form"/>
-                                </h:panelGrid>
-
-                            </p:dataList>
-                        </div>
-                    </div>
-                </div>
-                <p:dialog header="Mobile vaildation" widgetVar="otpDialog" responsive="true">
-                    <h:panelGrid id="otpPanel">
-                        <p:row>
-                            <p:column>
-                                <p:outputLabel value="Please enter the one-time password sent to your registered mobile. "/>
-                            </p:column>
-                        </p:row>
-                        <p:row><p:messages id="otpMessage" autoUpdate="true" showDetail="true"/></p:row>
-                        <p:row>
-                            <p:column>
-                                <p:inputText type="password" value="#{cRMCustomerManagedBean.customerOTP}"/>
-                                <p:commandLink value="Resend OTP" actionListener="#{cRMCustomerManagedBean.updateCustomerBasicProfile}"/>
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column>
-                                <p:commandButton value="Cancel" update="otpPanel" onclick="PF('otpDialog').hide();"/>
-                                <p:commandButton value="Submit" actionListener="#{cRMCustomerManagedBean.validateMobile}" update="otpPanel"/>
-                            </p:column>
-                        </p:row>
+                    <h:panelGrid columns="2" cellpadding="5" styleClass="ui-panelgrid-blank form-group" >
+                        <p:commandButton value="Reset" type="reset" style="width:120px" />
+                        <p:commandButton value="Update" actionListener="#{cRMCustomerManagedBean.updateCustomerBasicProfile}" update="@form" style="width:120px"/>
                     </h:panelGrid>
-                </p:dialog>
-                <p:confirmDialog closable="false" widgetVar="confirmDialog" message="Your mobile number has been updated." header="Profile updated" severity="info">
-                    <p:commandButton value="OK" style="font-family:Eurostile;font-size:16pt" onclick="PF('confirmDialog').hide();PF('otpDialog').hide();"/>
-                </p:confirmDialog>
-            </h:form>
-            <ezcomp:CCTimeout/>
-        </h:body>
+                </div>
+
+            </p:dataList>
+
+            <p:dialog header="Mobile vaildation" widgetVar="otpDialog" responsive="true" resizable="false">
+
+                <p:messages id="otpMessage" autoUpdate="true" showDetail="true"/>
+                <p:outputLabel value="Please enter the one-time password sent to your registered mobile. "/>
+                <br/>
+                <br/>
+                <div align="center">
+                    <h:panelGrid id="otpPanel" columns="2" styleClass="ui-panelgrid-blank form-group" width="100%">
+                        <p:inputText type="password" value="#{cRMCustomerManagedBean.customerOTP}"/>
+                        <p:commandLink value="Resend OTP" actionListener="#{cRMCustomerManagedBean.updateCustomerBasicProfile}"/>
+                    </h:panelGrid>
+                    <br/>
+                    <h:panelGrid columns="2" styleClass="ui-panelgrid-blank form-group" width="60%">
+                        <p:commandButton value="Cancel" update="otpPanel customerCurrentBasicProfile" actionListener="#{cRMCustomerManagedBean.cancelMobileUpdate}" onclick="PF('otpDialog').hide();" />
+                        <p:commandButton value="Submit" actionListener="#{cRMCustomerManagedBean.validateMobile}" update="otpPanel"/>
+                    </h:panelGrid>
+                </div>
+            </p:dialog>
+
+            <p:confirmDialog closable="false" widgetVar="confirmDialog" message="Your mobile number has been updated." header="Profile updated" severity="info">
+                <p:commandButton value="OK" style="font-family:Eurostile;font-size:16pt" onclick="PF('confirmDialog').hide();
+                        PF('otpDialog').hide();"/>
+            </p:confirmDialog>
+        </h:form>
     </ui:define>
 </ui:composition>

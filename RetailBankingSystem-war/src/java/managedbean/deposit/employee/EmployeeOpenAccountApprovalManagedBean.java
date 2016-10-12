@@ -56,7 +56,7 @@ public class EmployeeOpenAccountApprovalManagedBean implements Serializable {
     public void approveOpenAccount() throws IOException {
 
         ec = FacesContext.getCurrentInstance().getExternalContext();
-        System.out.println(customerIdentificationNum);
+        
         bankAccountSessionBeanLocal.approveAccount(customerIdentificationNum);
         CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum);
 
@@ -66,8 +66,8 @@ public class EmployeeOpenAccountApprovalManagedBean implements Serializable {
     public void rejectOpenAccount() {
         
         CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum);
-        System.out.println(customerBasic);
-        BankAccount bankAccount = customerBasic.getBankAccount().get(0);
+        
+        BankAccount bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountByCusIC(customerIdentificationNum).get(0);
         Interest interest = bankAccount.getInterest();
         Long interestId = interest.getInterestId();
         

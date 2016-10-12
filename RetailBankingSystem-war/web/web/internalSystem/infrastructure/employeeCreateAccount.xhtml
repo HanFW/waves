@@ -74,12 +74,15 @@
                                         <p:column>
                                             <p:selectOneMenu id="employeeDepartment" value="#{employeeCreateUserAccountManagedBean.employeeDepartment}" 
                                                              style="width:125px">
-                                                <f:selectItem itemLabel="Please Select" itemValue=" " />
-                                                <f:selectItem itemLabel="CEO" itemValue="CEO" />
+                                                <f:selectItem itemLabel="Please Select" itemValue="" noSelectionOption="true"/>
+                                                <f:selectItem itemLabel="Board of Directors" itemValue="Board of Directors" />
                                                 <f:selectItem itemLabel="Card Department" itemValue="Card Department" />
                                                 <f:selectItem itemLabel="Loan Department" itemValue="Loan Department" />
                                                 <f:selectItem itemLabel="Sales Department" itemValue="Sales Department" />
                                                 <f:selectItem itemLabel="Operation Department" itemValue="Operation Department" />
+                                                <f:selectItem itemLabel="Deposit Department" itemValue="Deposit Department" />
+                                                <p:ajax listener="#{employeeCreateUserAccountManagedBean.onDepartmentChangePositions}" update="employeePosition"/>
+                                                <p:ajax listener="#{employeeCreateUserAccountManagedBean.onDepartmentChangeRoles}" update="role"/>
                                             </p:selectOneMenu>            
                                         </p:column>
                                         <p:column>
@@ -94,15 +97,8 @@
                                         <p:column>
                                             <p:selectOneMenu id="employeePosition" value="#{employeeCreateUserAccountManagedBean.employeePosition}" 
                                                              style="width:125px">
-                                                <f:selectItem itemLabel="Please Select" itemValue=" " />
-                                                <f:selectItem itemLabel="CEO" itemValue="CEO" />
-                                                <f:selectItem itemLabel="Manager" itemValue="Manager" />
-                                                <f:selectItem itemLabel="Officer" itemValue="Officer" />
-                                                <f:selectItem itemLabel="Mortgage Appraiser" itemValue="Mortgage Appraiser" />
-                                                <f:selectItem itemLabel="Underwriter" itemValue="Underwriter" />
-                                                <f:selectItem itemLabel="Relationship Manager" itemValue="Relationship Manager" />
-                                                <f:selectItem itemLabel="Counter Teller" itemValue="Counter Teller" />
-                                                <f:selectItem itemLabel="Call Center Staff" itemValue="Call Center Staff" />
+                                                <f:selectItem itemLabel="Select Position" itemValue="" noSelectionOption="true" />
+                                                <f:selectItems value="#{employeeCreateUserAccountManagedBean.positions}" var="position" itemLabel="#{position}" itemValue="#{position}" />
                                             </p:selectOneMenu>
                                             <p:column>
                                                 <p:message for="employeePosition" />
@@ -144,8 +140,7 @@
                                         <p:column>
                                             <h:outputLabel for="role" style="font-weight: bold" value="Role:" />
 
-                                            <p:selectCheckboxMenu required="true" requiredMessage="Please select roles" id="role" value="#{employeeCreateUserAccountManagedBean.selectedRoles}" label="Select"
-                                                                  filter="true" filterMatchMode="startsWith" panelStyle="width:250px">
+                                            <p:selectCheckboxMenu required="true" requiredMessage="Please select roles" id="role" value="#{employeeCreateUserAccountManagedBean.selectedRoles}" label="Please select roles" panelStyle="width:250px">
                                                 <f:selectItems value="#{employeeCreateUserAccountManagedBean.roles}" />
                                             </p:selectCheckboxMenu>
                                             <p:commandLink value="Confirm" style="margin-left: 20px" update="display"/>
@@ -162,7 +157,7 @@
                                                     #{role}
                                                 </p:dataList>
                                             </p:outputPanel>
-                                            <!--</h:form>-->
+
                                         </p:column>
                                     </p:row>
                                 </h:panelGrid>
@@ -182,7 +177,7 @@
                 </div>
 
 
-                </div>
+
             </h:form>
 
 
