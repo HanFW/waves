@@ -70,6 +70,11 @@ public class CustomerEmailSessionBean implements CustomerEmailSessionBeanLocal {
                 emailText += "If you have any enquiry, please contact us at 800 820 8820. \n";
                 emailText += "We look forward to serving you again. \n";
                 break;
+            case "enquiryReplied":
+                emailText += "Your recent enquiry (Case ID: " + actions.get("caseId") + ") has been replied by us. \n";
+                emailText += "Please login to your online banking account to view our reply in detail. \n";
+                emailText += "We look forward to serving you again. \n";
+                break;
         }
 
         try {
