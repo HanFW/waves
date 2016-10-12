@@ -20,8 +20,9 @@ import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import javax.faces.event.ActionEvent;
 import ejb.infrastructure.session.CustomerAdminSessionBean;
 import ejb.infrastructure.session.SMSSessionBeanLocal;
+import java.io.Serializable;
 import java.util.List;
-import javax.enterprise.context.RequestScoped;
+import javax.faces.view.ViewScoped;
 import org.jboss.aerogear.security.otp.Totp;
 import org.jboss.aerogear.security.otp.api.Clock;
 import org.primefaces.context.RequestContext;
@@ -31,9 +32,9 @@ import org.primefaces.context.RequestContext;
  * @author Nicole
  */
 @Named(value = "cRMCustomerManagedBean")
-@RequestScoped
+@ViewScoped
 
-public class CRMCustomerManagedBean {
+public class CRMCustomerManagedBean implements Serializable{
 
     @EJB
     private SMSSessionBeanLocal sMSSessionBeanLocal;
@@ -459,11 +460,11 @@ public class CRMCustomerManagedBean {
         updatedCustomerMobile = customerMobile;
         String updatedCustomerEmail = customerEmail;
 
-        if (!replacedCustomerMobile.contains("*")) {
+        if (!replacedCustomerMobile.equals(customerMobile)) {
             updatedCustomerMobile = replacedCustomerMobile;
             customer.setCustomerMobile(updatedCustomerMobile);
         }
-        if (!replacedCustomerEmail.contains("*")) {
+        if (!replacedCustomerEmail.equals(customerEmail)) {
             updatedCustomerEmail = replacedCustomerEmail;
             customer.setCustomerEmail(customerEmail);
         }
@@ -477,13 +478,22 @@ public class CRMCustomerManagedBean {
         customer.setCustomerAddress(customerAddress);
         customer.setCustomerPostal(customerPostal);
 
-        FacesContext.getCurrentInstance().addMessage("updateMessage", new FacesMessage(customerSessionBean.updateCustomerBasicProfile(customerOnlineBankingAccountNum, customerNationality, customerCountryOfResidence, customerMaritalStatus, customerOccupation, customerCompany, updatedCustomerEmail, replacedCustomerMobile, customerAddress, customerPostal), " "));
-        if (!replacedCustomerMobile.contains("*")) {
+        FacesContext.getCurrentInstance().addMessage("updateMessage", new FacesMessage(customerSessionBean.updateCustomerBasicProfile(customerOnlineBankingAccountNum, customerNationality, customerCountryOfResidence, customerMaritalStatus, customerOccupation, customerCompany, updatedCustomerEmail, customerMobile, customerAddress, customerPostal), " "));
+        if (!replacedCustomerMobile.equals(customerMobile)) {
             System.out.println("====== onlineBanking/CRMCustomerMangedBean: updateCustomerBasicProfile(): mobile changed");
             RequestContext rc = RequestContext.getCurrentInstance();
             rc.execute("PF('otpDialog').show();");
             sMSSessionBeanLocal.sendOTP("customer", customer);
+            customer.setCustomerMobile(customerMobile);
         }
+    }
+    
+    public void cancelMobileUpdate(){
+        ec = FacesContext.getCurrentInstance().getExternalContext();
+        CustomerBasic customer = (CustomerBasic) ec.getSessionMap().get("customer");
+        updatedCustomerMobile = customerMobile;
+        replacedCustomerMobile = customerMobile;
+        customer.setCustomerMobile(customerMobile);
     }
 
     public void validateMobile() {
@@ -497,7 +507,9 @@ public class CRMCustomerManagedBean {
             CustomerBasic customer = (CustomerBasic) ec.getSessionMap().get("customer");
             Totp totp = new Totp(customer.getCustomerOTPSecret(), clock);
             if (totp.verify(customerOTP)) {
-                customerSessionBean.updateCustomerMobile(customer.getCustomerBasicId(), customer.getCustomerMobile());
+                customerSessionBean.updateCustomerMobile(customer.getCustomerBasicId(), replacedCustomerMobile);
+                customer.setCustomerMobile(replacedCustomerMobile);
+                customerMobile = replacedCustomerMobile;
                 RequestContext rc = RequestContext.getCurrentInstance();
                 context.addMessage("updateMessage", new FacesMessage(FacesMessage.SEVERITY_INFO, "Mobile number updated", null));
                 rc.execute("PF('confirmDialog').show();");
