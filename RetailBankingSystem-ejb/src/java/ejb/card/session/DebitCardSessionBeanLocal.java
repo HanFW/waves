@@ -17,4 +17,6 @@ public interface DebitCardSessionBeanLocal {
     public String createDebitCard(String bankAccountNum,String cardHolderName, String applicationDate,String cardTypeName);
     
     public String checkDebitCardTypeForDepositAccount(String bankAccountNum, String cardTypeName);
+    
+    public String debitCardNumValiadation(String debitCardNum, String cardHolderName, String debitCardSecurityCode);
 }

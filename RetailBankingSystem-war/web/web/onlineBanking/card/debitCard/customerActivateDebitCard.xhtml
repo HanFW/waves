@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/onlineBankingTemplate.xhtml"
+                xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
+    <ui:define name="content">
+
+        <h:body>
+
+            <div align="center">
+                <h:form>
+                    <p:panel>
+                        <p:outputLabel value="Welcome "/>
+                        <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
+                    </p:panel>
+
+                    <p:messages autoUpdate="true"/>
+
+                    <h1>Activate Debit Card</h1>
+
+                    <p:panelGrid columns="3">
+
+                        <p:outputLabel id="debitCardNum" value="Debit Card Number: "/>
+                        <p:inputText required="true" requiredMessage="Please enter your debit card number" value="#{customerActivateDebitCardManagedBean.debitCardNum}"/>
+                        <p:messages for="debitCardNum"/>
+
+                        <p:outputLabel id="cardHolderName" value="Card Holder Name: "/>
+                        <p:inputText required="true" requiredMessage="Please enter card holder name" value="#{customerActivateDebitCardManagedBean.cardHolderName}"/>
+                        <p:messages for="cardHolderName"/>
+
+                        <p:outputLabel  id="csc" value="3-digit Card Security Code: "/>
+                        <p:inputText required="true" requiredMessage="Please enter the card security code" value="#{customerActivateDebitCardManagedBean.debitCardSecurityCode}"/>
+                        <p:messages for="csc"/>
+
+                    </p:panelGrid> 
+
+                    <div class="ui-g-12">                         
+                        <p:commandButton value="Activate My Debit Card" type="submit" actionListener="#{customerActivateDebitCardManagedBean.checkDebitCardNum}" update="@form otpForm"/>  
+                    </div>
+
+                </h:form>
+
+                <h:form id="otpForm">
+                    <p:dialog header="One-time Password" widgetVar="otpDialog" responsive="true">
+                        <h:panelGrid id="otpPanel">
+                            <p:row>
+                                <p:column>
+                                    Input the 6-digit iB Secure PIN.
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <p:inputText required="false" type="password" value="#{customerActivateDebitCardManagedBean.customerOTP}"/>
+                                    <br/>
+                                    <h:outputText value="&lt;br /&gt;" escape="false" />
+                                    <p:commandButton value="Send OTP" type="submit" actionListener="#{sMSManagedBean.sendOTP}" style="float:right"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                                <p:column>
+                                    <p:messages showDetail="true" globalOnly="true" closable="true"/>
+                                </p:column>
+                            </p:row>
+                            <p:row>
+                        <p:column>
+                            <p:commandButton type="submit" value="Confirm" actionListener="#{customerActivateDebitCardManagedBean.verifActivationOTP}" update="otpPanel"/>
+                        </p:column>
+                    </p:row>
+                        </h:panelGrid>
+                    </p:dialog>
+                </h:form>
+
+            </div>
+        </h:body>
+
+    </ui:define>
+</ui:composition>
+
