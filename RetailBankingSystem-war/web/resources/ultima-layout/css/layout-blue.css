@@ -1094,7 +1094,7 @@ body {
           font-size: 12px;
           line-height: 12px; }
       .layout-wrapper .topbar-items > li .topbar-icon {
-        font-size: 36px;
+        font-size: 32px;
         color: #273746;
         -moz-transition: color 0.3s;
         -o-transition: color 0.3s;
@@ -1113,7 +1113,7 @@ body {
         right: 5px;
         display: none;
         width: 250px;
-        background-color: #273746;
+        background-color: #E6A82E;
         -webkit-animation-duration: .5s;
         -moz-animation-duration: .5s;
         animation-duration: .5s; }

@@ -7,27 +7,10 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/internalSystemTemplate.xhtml">
 
-    <ui:define name="internalSystemMenu">
-
-        <ui:include src="/WEB-INF/internalSystemMenuCounterTeller.xhtml" />
-
-    </ui:define>
-
     <ui:define name="content">
-        <h:body>
             <h:form id="formMain">
-
                 <div align="center">
-                    <h:outputText value="Welcome " />
-                    <h:outputText value="#{employeeAccountManagedBean.userName}!"/>
-                    <br/>
-                    <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
-                    <br/>
-                    <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
-                    <br/>
                     <h:outputText value="You have logged in as: Counter Teller"/>
-                    <br/>
-
                     <br/>
                     <p:panel id="panel" header="View Statement"> 
                         <p:messages />
@@ -58,10 +41,7 @@
 
                         </p:dataTable>
                     </p:panel>
-
-
                 </div>
             </h:form>
-        </h:body>
     </ui:define>
 </ui:composition>

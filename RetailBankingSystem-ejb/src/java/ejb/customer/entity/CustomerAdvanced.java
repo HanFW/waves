@@ -26,13 +26,24 @@ public class CustomerAdvanced implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long customerAdvancedId;
-    private String customerEmploymentDetails;
-    private String customerFamilyInfo;
-    private String customerCreditReport;
-    private String customerFinancialRiskRating;
-    private String customerFinanacialGoals;
-    private String customerFinanacialAssets;
     private String customerOnlineBankingAccountNum;
+    
+    //credit card
+    private String numOfDependent;
+    private String education;
+    private String residencialStatus;
+    private String yearInResidence;
+    private String jobType;
+    private String jobIndustry;
+    private String jobDuration;
+    private String jobStatus;
+    private String incomeMonthly;
+    
+    //loan 
+    
+    
+    //wealthManagement
+    
     
     @OneToOne(cascade={CascadeType.ALL},fetch=FetchType.EAGER)
     private CustomerBasic customerBasic;
@@ -40,53 +51,6 @@ public class CustomerAdvanced implements Serializable {
     @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     private Employee employee;
     
-    public String getCustomerEmploymentDetails() {
-        return customerEmploymentDetails;
-    }
-
-    public void setCustomerEmploymentDetails(String customerEmploymentDetails) {
-        this.customerEmploymentDetails = customerEmploymentDetails;
-    }
-
-    public String getCustomerFamilyInfo() {
-        return customerFamilyInfo;
-    }
-
-    public void setCustomerFamilyInfo(String customerFamilyInfo) {
-        this.customerFamilyInfo = customerFamilyInfo;
-    }
-
-    public String getCustomerCreditReport() {
-        return customerCreditReport;
-    }
-
-    public void setCustomerCreditReport(String customerCreditReport) {
-        this.customerCreditReport = customerCreditReport;
-    }
-
-    public String getCustomerFinancialRiskRating() {
-        return customerFinancialRiskRating;
-    }
-
-    public void setCustomerFinancialRiskRating(String customerFinancialRiskRating) {
-        this.customerFinancialRiskRating = customerFinancialRiskRating;
-    }
-
-    public String getCustomerFinanacialGoals() {
-        return customerFinanacialGoals;
-    }
-
-    public void setCustomerFinanacialGoals(String customerFinanacialGoals) {
-        this.customerFinanacialGoals = customerFinanacialGoals;
-    }
-
-    public String getCustomerFinanacialAssets() {
-        return customerFinanacialAssets;
-    }
-
-    public void setCustomerFinanacialAssets(String customerFinanacialAssets) {
-        this.customerFinanacialAssets = customerFinanacialAssets;
-    }
 
     public String getCustomerOnlineBankingAccountNum() {
         return customerOnlineBankingAccountNum;
@@ -119,6 +83,78 @@ public class CustomerAdvanced implements Serializable {
 
     public void setEmployee(Employee employee) {
         this.employee = employee;
+    }
+
+    public String getNumOfDependent() {
+        return numOfDependent;
+    }
+
+    public void setNumOfDependent(String numOfDependent) {
+        this.numOfDependent = numOfDependent;
+    }
+
+    public String getEducation() {
+        return education;
+    }
+
+    public void setEducation(String education) {
+        this.education = education;
+    }
+
+    public String getResidencialStatus() {
+        return residencialStatus;
+    }
+
+    public void setResidencialStatus(String residencialStatus) {
+        this.residencialStatus = residencialStatus;
+    }
+
+    public String getYearInResidence() {
+        return yearInResidence;
+    }
+
+    public void setYearInResidence(String yearInResidence) {
+        this.yearInResidence = yearInResidence;
+    }
+
+    public String getJobType() {
+        return jobType;
+    }
+
+    public void setJobType(String jobType) {
+        this.jobType = jobType;
+    }
+
+    public String getJobIndustry() {
+        return jobIndustry;
+    }
+
+    public void setJobIndustry(String jobIndustry) {
+        this.jobIndustry = jobIndustry;
+    }
+
+    public String getJobDuration() {
+        return jobDuration;
+    }
+
+    public void setJobDuration(String jobDuration) {
+        this.jobDuration = jobDuration;
+    }
+
+    public String getJobStatus() {
+        return jobStatus;
+    }
+
+    public void setJobStatus(String jobStatus) {
+        this.jobStatus = jobStatus;
+    }
+
+    public String getIncomeMonthly() {
+        return incomeMonthly;
+    }
+
+    public void setIncomeMonthly(String incomeMonthly) {
+        this.incomeMonthly = incomeMonthly;
     }
     
     

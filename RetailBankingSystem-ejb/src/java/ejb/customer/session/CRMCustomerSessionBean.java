@@ -217,7 +217,8 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
     }
 
     @Override
-    public String updateCustomerAdvancedProfile(Long customerAdvancedId, String customerEmploymentDetails, String customerFamilyInfo, String customerCreditReport, String customerFinancialRiskRating, String customerFinanacialAssets, String customerFinanacialGoals) {
+    public String updateCustomerAdvancedProfile(Long customerAdvancedId, String education, String incomeMonthly, String jobDuration, String jobStatus, String jobIndustry, String jobType,
+            String numOfDependent, String residencialStatus, String yearInResidence) {
         Query query = entityManager.createQuery("SELECT ca FROM CustomerAdvanced ca WHERE ca.customerAdvancedId = :customerAdvancedId");
         query.setParameter("customerAdvancedId", customerAdvancedId);
         List resultList = query.getResultList();
@@ -225,12 +226,16 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
             return "Cannot find customer profile, please contact with our IT staff";
         } else {
             CustomerAdvanced ca = (CustomerAdvanced) resultList.get(0);
-            ca.setCustomerEmploymentDetails(customerEmploymentDetails);
-            ca.setCustomerCreditReport(customerCreditReport);
-            ca.setCustomerFamilyInfo(customerFamilyInfo);
-            ca.setCustomerFinanacialAssets(customerFinanacialAssets);
-            ca.setCustomerFinancialRiskRating(customerFinancialRiskRating);
-            ca.setCustomerFinanacialGoals(customerFinanacialGoals);
+            ca.setEducation(education);
+            ca.setIncomeMonthly(incomeMonthly);
+            ca.setJobDuration(jobDuration);
+            ca.setJobStatus(jobStatus);
+            ca.setJobIndustry(jobIndustry);
+            ca.setJobType(jobType);
+            ca.setNumOfDependent(numOfDependent);
+            ca.setResidencialStatus(residencialStatus);
+            ca.setYearInResidence(yearInResidence);
+            
             entityManager.flush();
 
             return "Update Successful";
