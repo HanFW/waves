@@ -39,6 +39,7 @@
     <h:body styleClass="landing-body">
         <div class="landing-wrapper">
             <div id="header">
+                <p:panel id="menubar" class="stickybar">
                 <div class="header-top clearfix">
                     <span class="logo"></span>
 
@@ -54,6 +55,8 @@
                         <li><h:link outcome="/web/onlineBanking/infrastructure/customerLogin"><i class="ui-icon ui-icon-account-box"></i><span>Login</span></h:link></li>
                     </ul>
                 </div>
+                    </p:panel>
+                <p:sticky target="menubar"/>
 
                 <div class="header-content clearfix">
                     <h1><span>Welcome to Merlion Bank</span></h1>
@@ -62,6 +65,8 @@
 
                 </div>
             </div>
+            
+            
 
             <div id="MBcards">
                 <h2>Cards</h2>

@@ -8,69 +8,108 @@
                 template="/WEB-INF/onlineBankingTemplate.xhtml"
                 xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
     <ui:define name="content">
-        <h:head>
-            <title>View Account</title>
-        </h:head>
-        <h:body>
-            <div class="ui-g ui-fluid">
-                <div class="ui-g-12 ui-lg-12">
-                    <div class="card card-w-title"> 
-                        <h:form>
-                            <br/>
-                            <p:panel>
-                                <p:outputLabel value="Welcome "/>
-                                <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
-                            </p:panel>
+        <style type="text/css">
+            .cars-datalist .text-column p:last-child{
+                color:#757575;
+            }
 
-                            <p:panel header="Message Box">
-                                <p:messages/>
-                                <h:outputLabel value="Inbox" style="font-weight: bold; font-size: 28px" />
-                                <p:separator/>
-                                <br/>
-                                <h:outputLabel value="Use the Secured Mailbox to view and retrieve your message from the Bank."/>
-                                <br/>
-                                <br/>
-                                <h:outputLabel value="To view our responses to your enquiry, click on the message subject."/>
-                                <br/>
-                                <br/>
-                                <p:dataTable var="messageBox" value="#{customerViewMessageManagedBean.messageBox}" 
-                                             paginator="true" rows="10" emptyMessage="No Message">
+            .cars-datalist .car-item i, .cars-datalist .car-item .car-details {
+                display: inline-block;
+                vertical-align: middle;
+            }
 
-                                    <p:column headerText="From"> 
-                                        <h:outputText value="#{messageBox.fromWhere}" />
-                                    </p:column>
+            .cars-datalist .car-item button {
+                float: right;
+            }
 
-                                    <p:column headerText="Type of Message" >
-                                        <h:outputText value="#{messageBox.messageType}" /> 
-                                    </p:column>
+            .cars-datalist ul {
+                margin: 0;
+                padding: 0;
+            }
 
-                                    <p:column headerText="Subject"> 
-                                        <p:commandLink ajax="false" process="@this" action="/web/onlineBanking/infrastructure/customerViewMessageContent.xhtml">
-                                            <h:outputText value="#{messageBox.subject}" />
-                                            <f:setPropertyActionListener value="#{messageBox.messageId}" target="#{customerViewMessageContentManagedBean.messageBoxId}" />
-                                        </p:commandLink>
-                                    </p:column>
+            .ui-car-display td:last-child {
+                font-weight: 700;
+            }
 
-                                    <p:column headerText="Received Date"> 
-                                        <h:outputText value="#{messageBox.receivedDate}" />
-                                    </p:column>
+            @media (max-width:640px) {
+                .cars-datalist .text-column {
+                    text-align: center;
+                }
+            }
+        </style>
+        <h:form>
+            <p:panel>
+                <p:outputLabel value="Welcome "/>
+                <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
+            </p:panel>
 
-                                    <p:column headerText="Delete" style="width: 10%"> 
-                                        <center>
-                                            <p:commandButton process="@this" action="#{customerViewMessageContentManagedBean.deleteMessage}"
-                                                             icon="ui-icon-trash" ajax="false">
-                                                <f:setPropertyActionListener target="#{customerViewMessageContentManagedBean.messageBoxId}" value="#{messageBox.messageId}" />
-                                            </p:commandButton>
-                                        </center>
-                                    </p:column>
+            <p:panel>
+                <p:messages/>
+                <h:outputLabel value="Inbox" style="font-weight: bold; font-size: 28px" />
+                <p:separator/>
+                <h:outputLabel value="Use the Secured Mailbox to view and retrieve your message from the Bank."/>
+                <br/>
+                <h:outputLabel value="To view our responses to your enquiry, click on the message subject."/>
+                <br/>
+                <br/>
+<!--                <p:dataTable var="messageBox" value="#{customerViewMessageManagedBean.messageBox}" 
+                             paginator="true" reflow="true" rows="10" emptyMessage="No Message">
 
-                                </p:dataTable>
-                            </p:panel>
-                        </h:form>
+                    <p:column headerText="From"> 
+                        <h:outputText value="#{messageBox.fromWhere}" />
+                    </p:column>
+
+                    <p:column headerText="Type of Message" >
+                        <h:outputText value="#{messageBox.messageType}" /> 
+                    </p:column>
+
+                    <p:column headerText="Subject"> 
+                        <p:commandLink ajax="false" process="@this" action="/web/onlineBanking/infrastructure/customerViewMessageContent.xhtml">
+                            <h:outputText value="#{messageBox.subject}" />
+                            <f:setPropertyActionListener value="#{messageBox.messageId}" target="#{customerViewMessageContentManagedBean.messageBoxId}" />
+                        </p:commandLink>
+                    </p:column>
+
+                    <p:column headerText="Received Date"> 
+                        <h:outputText value="#{messageBox.receivedDate}" />
+                    </p:column>
+
+                    <p:column headerText="Delete"> 
+                        <center>
+                            <p:commandButton process="@this" action="#{customerViewMessageContentManagedBean.deleteMessage}"
+                                             icon="ui-icon-trash" ajax="false">
+                                <f:setPropertyActionListener target="#{customerViewMessageContentManagedBean.messageBoxId}" value="#{messageBox.messageId}" />
+                            </p:commandButton>
+                        </center>
+                    </p:column>
+
+                </p:dataTable>
+                <br/>-->
+
+                <p:dataList var="messageBox" value="#{customerViewMessageManagedBean.messageBox}" 
+                            type="unordered" paginator="true" rows="10" emptyMessage="No Message" itemType="none" styleClass="cars-datalist">
+                    <!--                    <f:facet name="header">
+                                            Message Inbox
+                                        </f:facet>-->
+                    <div style="border-bottom: 1px solid #bdbdbd" class="clearfix car-item">
+                        <i class="ui-icon ui-icon-email" style="font-size:32px;color:#757575;margin:24px;"></i>
+                        <div class="car-details">
+                            <p><p:commandLink ajax="false" process="@this" action="/web/onlineBanking/infrastructure/customerViewMessageContent.xhtml">
+                                    <h:outputText value="#{messageBox.subject}" />
+                                    <f:setPropertyActionListener value="#{messageBox.messageId}" target="#{customerViewMessageContentManagedBean.messageBoxId}" />
+                                </p:commandLink></p>
+                            <p style="color:#757575">From: #{messageBox.fromWhere}  #{messageBox.receivedDate}</p>
+<!--                            <p style="color:#757575">Type: #{messageBox.messageType}</p>-->
+                        </div>
+                        <p:commandButton process="@this" action="#{customerViewMessageContentManagedBean.deleteMessage}"
+                                         icon="ui-icon-trash" ajax="false" style="margin:24px 24px 0 0">
+                            <f:setPropertyActionListener target="#{customerViewMessageContentManagedBean.messageBoxId}" value="#{messageBox.messageId}" />
+                        </p:commandButton>
                     </div>
-                </div>
-            </div>
-            <ezcomp:CCTimeout/>
-        </h:body>
+                </p:dataList>
+
+            </p:panel>
+        </h:form>
+        <ezcomp:CCTimeout/>
     </ui:define>
 </ui:composition>

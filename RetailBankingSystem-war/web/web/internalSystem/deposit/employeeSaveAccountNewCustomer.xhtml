@@ -7,58 +7,23 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/internalSystemTemplate.xhtml">
 
-    <ui:define name="internalSystemMenu">
-
-        <ui:include src="/WEB-INF/internalSystemMenuCounterTeller.xhtml" />
-
-    </ui:define>
-
     <ui:define name="content">
-        <h:body>
-            <h:form>
-                <p:menubar>
-                    <p:submenu label="Home">
-                        <p:menuitem value="Home" url="/web/internalSystem/infrastructure/employeeCounterTellerMainPage.xhtml"/>
-                    </p:submenu>
+        <h:form id="formMain">
+            <div align="center">
+                <h:outputText value="You have logged in as: Counter Teller"/>
+                <br/>
+                <p:panel id="panel" header="Save Account"> 
+                    <p:messages />
 
-                    <p:submenu label="Log Out">
-                        <p:menuitem value="Logout" actionListener="#{employeeLoginManagedBean.doLogOut}" />
-                    </p:submenu>
-                </p:menubar>
-            </h:form>
+                    <h:panelGrid columns="1" cellpadding="5" styleClass="ui-panelgrid-blank form-group">     
+                        <h:outputLabel value="We have received customer open account application." 
+                                       style="font-weight:bold;font-size: 18px"/>
 
-            <h:form id="formMain">
-                <div class="ui-g ui-fluid">
-                    <div class="ui-g-12 ui-lg-12">
-                        <div class="card card-w-title"> 
-                            <div align="center">
-                                <h:outputText value="Welcome " />
-                                <h:outputText value="#{employeeAccountManagedBean.userName}!"/>
-                                <br/>
-                                <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
-                                <br/>
-                                <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
-                                <br/>
-                                <h:outputText value="You have logged in as: Counter Teller"/>
-                                <br/>
-                                <br/>
-                                <p:panel id="panel" header="Save Account"> 
-                                    <p:messages />
-
-                                    <h:panelGrid columns="1" cellpadding="5" styleClass="ui-panelgrid-blank form-group">     
-                                        <h:outputLabel value="We have received customer open account application." 
-                                                       style="font-weight:bold;font-size: 18px"/>
-
-                                        <h:outputLabel value="We will process customer application and send a confirmation emial to his/her within 2-5 working days." 
-                                                       style="font-weight:bold;font-size: 18px"/>
-                                    </h:panelGrid>
-                                </p:panel>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </h:form>
-        </h:body>
+                        <h:outputLabel value="We will process customer application and send a confirmation emial to his/her within 2-5 working days." 
+                                       style="font-weight:bold;font-size: 18px"/>
+                    </h:panelGrid>
+                </p:panel>
+            </div>
+        </h:form>
     </ui:define>
 </ui:composition>

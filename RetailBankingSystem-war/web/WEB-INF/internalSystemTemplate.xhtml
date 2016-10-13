@@ -29,7 +29,7 @@
         <div class="layout-wrapper menu-layout-static">
 
             <ui:include src="./internalSystemTopbar.xhtml" />
-            <ui:insert name="internalSystemMenu"/>
+            <ui:include src="./internalSystemMenu.xhtml"/>
 
             <div class="layout-main">
                 <div class="ui-g ui-fluid">
@@ -43,8 +43,6 @@
                     </div>
                 </div>
             </div>
-
-
 
             <p:ajaxStatus style="width:32px;height:32px;position:fixed;right:7px;bottom:7px">
                 <f:facet name="start">
