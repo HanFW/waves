@@ -7,32 +7,9 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/internalSystemTemplate.xhtml">
 
-    <ui:define name="internalSystemMenu">
-
-        <ui:include src="/WEB-INF/internalSystemMenuCounterTeller.xhtml" />
-
-    </ui:define>
-
     <ui:define name="content">
-            <h:form>
-                <p:menubar>
-                    <p:submenu label="Home">
-                        <p:menuitem value="Home" url="/web/internalSystem/infrastructure/employeeCounterTellerMainPage.xhtml"/>
-                    </p:submenu>
-
-                    <p:submenu label="Log Out">
-                        <p:menuitem value="Logout" actionListener="#{employeeLoginManagedBean.doLogOut}" />
-                    </p:submenu>
-                </p:menubar>
-            </h:form>
-
-            <h:outputText value="Welcome #{employeeAccountManagedBean.userName} !"/>
-            <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
-            <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
+        <h:form id="formMain">
             <h:outputText value="You have logged in as: Counter Teller"/>
-
-            <h:form id="formMain">
-            <h1>Welcome to Merlion Bank</h1>
             <p:menubar>
                 <p:submenu label="Deposit">
                     <p:menuitem value="Home" url="/web/index.xhtml" />
@@ -109,7 +86,6 @@
 
                 <p:commandButton id="submitBtn" value="Submit" actionListener="#{employeeChangeDailyTransferLimitDone.submit}" 
                                  ajax="true" update="panel"/>
-
             </p:panel>
         </h:form>
     </ui:define>

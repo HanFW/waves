@@ -7,103 +7,67 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/internalSystemTemplate.xhtml">
 
-    <ui:define name="internalSystemMenu">
-
-        <ui:include src="/WEB-INF/internalSystemMenuCounterTeller.xhtml" />
-
-    </ui:define>
-
     <ui:define name="content">
-        <h:body>
-            <h:form>
-                <p:menubar>
-                    <p:submenu label="Home">
-                        <p:menuitem value="Home" url="/web/internalSystem/infrastructure/employeeCounterTellerMainPage.xhtml"/>
-                    </p:submenu>
+        <h:form id="formMain">
+            <div align="center">
+                <h:outputText value="You have logged in as: Counter Teller"/>
+                <br/>
+                <p:panel id="panel" header="Cash Deposit">
+                    <p:messages globalOnly="true"/>
 
-                    <p:submenu label="Log Out">
-                        <p:menuitem value="Logout" actionListener="#{employeeLoginManagedBean.doLogOut}" />
-                    </p:submenu>
-                </p:menubar>
-            </h:form>
+                    <h:panelGrid columns="1" cellpadding="5" styleClass="ui-panelgrid-blank form-group">  
 
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="depositAmt" style="font-weight: bold" value="Deposit Amount(S$): " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText required="true" label="Deposit Amount" requiredMessage="Deposit amount is required." id="depositAmt"
+                                             value="#{employeeCashManagedBean.depositAmt}" converterMessage="Invalid input">
+                                    <f:validateDoubleRange minimum="0.0" maximum="99999999.0" />
+                                </p:inputText>
+                            </p:column>
+                            <p:column>
+                                <p:message for="depositAmt" />
+                            </p:column>
+                        </p:row>
 
-            <h:form id="formMain">
-                <div class="ui-g ui-fluid">
-                    <div class="ui-g-12 ui-lg-12">
-                        <div class="card card-w-title"> 
-                            <div align="center">
-                                <h:outputText value="Welcome " />
-                                <h:outputText value="#{employeeAccountManagedBean.userName}!"/>
-                                <br/>
-                                <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
-                                <br/>
-                                <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
-                                <br/>
-                                <h:outputText value="You have logged in as: Counter Teller"/>
-                                <br/>
-                                <br/>
-                                <p:panel id="panel" header="Cash Deposit">
-                                    <p:messages globalOnly="true"/>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="depositAccountNum" style="font-weight: bold" value="Account Number: " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText required="true" label="Deposit Account Number" requiredMessage="Account number is required." id="depositAccountNum"
+                                             value="#{employeeCashManagedBean.depositAccountNum}">
+                                </p:inputText>
+                            </p:column>
+                            <p:column>
+                                <p:message for="depositAccountNum" />
+                            </p:column>
+                        </p:row>
 
-                                    <h:panelGrid columns="1" cellpadding="5" styleClass="ui-panelgrid-blank form-group">  
+                    </h:panelGrid>
+                    <br/>
 
-                                        <p:row>
-                                            <p:column>
-                                                <p:outputLabel for="depositAmt" style="font-weight: bold" value="Deposit Amount(S$): " />
-                                            </p:column>
-                                            <p:column>
-                                                <p:inputText required="true" label="Deposit Amount" requiredMessage="Deposit amount is required." id="depositAmt"
-                                                             value="#{employeeCashManagedBean.depositAmt}" converterMessage="Invalid input">
-                                                    <f:validateDoubleRange minimum="0.0" maximum="99999999.0" />
-                                                </p:inputText>
-                                            </p:column>
-                                            <p:column>
-                                                <p:message for="depositAmt" />
-                                            </p:column>
-                                        </p:row>
-
-                                        <p:row>
-                                            <p:column>
-                                                <p:outputLabel for="depositAccountNum" style="font-weight: bold" value="Account Number: " />
-                                            </p:column>
-                                            <p:column>
-                                                <p:inputText required="true" label="Deposit Account Number" requiredMessage="Account number is required." id="depositAccountNum"
-                                                             value="#{employeeCashManagedBean.depositAccountNum}">
-                                                </p:inputText>
-                                            </p:column>
-                                            <p:column>
-                                                <p:message for="depositAccountNum" />
-                                            </p:column>
-                                        </p:row>
-
-                                    </h:panelGrid>
-                                    <br/>
-
-                                    <h:panelGrid columns="2" cellpadding="5" styleClass="ui-panelgrid-blank form-group">
+                    <h:panelGrid columns="2" cellpadding="5" styleClass="ui-panelgrid-blank form-group">
 
 
-                                        <p:commandButton id="depositBtn" value="Deposit" update="panel" 
-                                                         actionListener="#{employeeCashManagedBean.cashDeposit}" ajax="true" />
+                        <p:commandButton id="depositBtn" value="Deposit" update="panel" 
+                                         actionListener="#{employeeCashManagedBean.cashDeposit}" ajax="true" />
 
-                                        <p:commandButton id="cancelBtn" action="/web/index.xhtml" value="Cancel" update="panel" immediate = "true">
-                                            <p:confirm header="Cancel" message="Are you sure?" />
-                                        </p:commandButton>
+                        <p:commandButton id="cancelBtn" action="/web/index.xhtml" value="Cancel" update="panel" immediate = "true">
+                            <p:confirm header="Cancel" message="Are you sure?" />
+                        </p:commandButton>
 
-                                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" action="/web/index.xhtml"/>
-                                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" />
-                                        </p:confirmDialog>
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" action="/web/index.xhtml"/>
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" />
+                        </p:confirmDialog>
 
 
-                                    </h:panelGrid>
-                                </p:panel>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </h:form>
-        </h:body>
+                    </h:panelGrid>
+                </p:panel>
+            </div>
+        </h:form>
     </ui:define>
 </ui:composition>
