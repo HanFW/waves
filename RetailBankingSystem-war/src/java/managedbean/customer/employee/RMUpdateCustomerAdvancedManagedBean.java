@@ -39,12 +39,15 @@ public class RMUpdateCustomerAdvancedManagedBean implements Serializable {
     private Long customerAdvancedId;
     private Long customerBasicId;
 
-    private String customerEmploymentDetails;
-    private String customerFamilyInfo;
-    private String customerCreditReport;
-    private String customerFinancialRiskRating;
-    private String customerFinanacialGoals;
-    private String customerFinanacialAssets;
+    private String numOfDependent;
+    private String education;
+    private String residencialStatus;
+    private String yearInResidence;
+    private String jobType;
+    private String jobIndustry;
+    private String jobDuration;
+    private String jobStatus;
+    private String incomeMonthly;
 
     public RMUpdateCustomerAdvancedManagedBean() {
     }
@@ -73,14 +76,6 @@ public class RMUpdateCustomerAdvancedManagedBean implements Serializable {
         this.customerAdvanceds = customerAdvanced;
     }
 
-    public String getCustomerEmploymentDetails() {
-        if (customerEmploymentDetails == null) {
-            customerAdvanced = customerSessionBeanLocal.retrieveCustomerAdvancedByAdId(customerAdvancedId);
-        }
-        customerEmploymentDetails = customerAdvanced.getCustomerEmploymentDetails();
-        return customerEmploymentDetails;
-    }
-
     public Long getCustomerAdvancedId() {
         return customerAdvancedId;
     }
@@ -95,70 +90,6 @@ public class RMUpdateCustomerAdvancedManagedBean implements Serializable {
 
     public void setCustomerBasicId(Long customerBasicId) {
         this.customerBasicId = customerBasicId;
-    }
-
-    public void setCustomerEmploymentDetails(String customerEmploymentDetails) {
-        this.customerEmploymentDetails = customerEmploymentDetails;
-    }
-
-    public String getCustomerFamilyInfo() {
-        if (customerFamilyInfo == null) {
-            customerAdvanced = customerSessionBeanLocal.retrieveCustomerAdvancedByAdId(customerAdvancedId);
-        }
-        customerFamilyInfo = customerAdvanced.getCustomerFamilyInfo();
-        return customerFamilyInfo;
-    }
-
-    public void setCustomerFamilyInfo(String customerFamilyInfo) {
-        this.customerFamilyInfo = customerFamilyInfo;
-    }
-
-    public String getCustomerCreditReport() {
-        if (customerCreditReport == null) {
-            customerAdvanced = customerSessionBeanLocal.retrieveCustomerAdvancedByAdId(customerAdvancedId);
-        }
-        customerCreditReport = customerAdvanced.getCustomerCreditReport();
-        return customerCreditReport;
-    }
-
-    public void setCustomerCreditReport(String customerCreditReport) {
-        this.customerCreditReport = customerCreditReport;
-    }
-
-    public String getCustomerFinancialRiskRating() {
-        if (customerFinancialRiskRating == null) {
-            customerAdvanced = customerSessionBeanLocal.retrieveCustomerAdvancedByAdId(customerAdvancedId);
-        }
-        customerFinancialRiskRating = customerAdvanced.getCustomerFinancialRiskRating();
-        return customerFinancialRiskRating;
-    }
-
-    public void setCustomerFinancialRiskRating(String customerFinancialRiskRating) {
-        this.customerFinancialRiskRating = customerFinancialRiskRating;
-    }
-
-    public String getCustomerFinanacialGoals() {
-        if (customerFinanacialGoals == null) {
-            customerAdvanced = customerSessionBeanLocal.retrieveCustomerAdvancedByAdId(customerAdvancedId);
-        }
-        customerFinanacialGoals = customerAdvanced.getCustomerFinanacialGoals();
-        return customerFinanacialGoals;
-    }
-
-    public void setCustomerFinanacialGoals(String customerFinanacialGoals) {
-        this.customerFinanacialGoals = customerFinanacialGoals;
-    }
-
-    public String getCustomerFinanacialAssets() {
-        if (customerFinanacialAssets == null) {
-            customerAdvanced = customerSessionBeanLocal.retrieveCustomerAdvancedByAdId(customerAdvancedId);
-        }
-        customerFinanacialAssets = customerAdvanced.getCustomerFinanacialAssets();
-        return customerFinanacialAssets;
-    }
-
-    public void setCustomerFinanacialAssets(String customerFinanacialAssets) {
-        this.customerFinanacialAssets = customerFinanacialAssets;
     }
 
     public CustomerAdvanced getCustomerAdvanced() {
@@ -177,6 +108,115 @@ public class RMUpdateCustomerAdvancedManagedBean implements Serializable {
         this.customerOnlineBankingAccountNum = customerOnlineBankingAccountNum;
     }
 
+    public String getNumOfDependent() {
+        if (numOfDependent == null) {
+            customerAdvanced = customerSessionBeanLocal.retrieveCustomerAdvancedByAdId(customerAdvancedId);
+        }
+        numOfDependent = customerAdvanced.getNumOfDependent();
+
+        return numOfDependent;
+    }
+
+    public void setNumOfDependent(String numOfDependent) {
+        this.numOfDependent = numOfDependent;
+    }
+
+    public String getEducation() {
+        if (education == null) {
+            customerAdvanced = customerSessionBeanLocal.retrieveCustomerAdvancedByAdId(customerAdvancedId);
+        }
+        education = customerAdvanced.getEducation();
+        return education;
+    }
+
+    public void setEducation(String education) {
+        this.education = education;
+    }
+
+    public String getResidencialStatus() {
+        if (residencialStatus == null) {
+            customerAdvanced = customerSessionBeanLocal.retrieveCustomerAdvancedByAdId(customerAdvancedId);
+        }
+        residencialStatus = customerAdvanced.getResidencialStatus();
+        return residencialStatus;
+    }
+
+    public void setResidencialStatus(String residencialStatus) {
+        this.residencialStatus = residencialStatus;
+    }
+
+    public String getYearInResidence() {
+        if (yearInResidence == null) {
+            customerAdvanced = customerSessionBeanLocal.retrieveCustomerAdvancedByAdId(customerAdvancedId);
+        }
+        yearInResidence = customerAdvanced.getYearInResidence();
+        return yearInResidence;
+    }
+
+    public void setYearInResidence(String yearInResidence) {
+        this.yearInResidence = yearInResidence;
+    }
+
+    public String getJobType() {
+        if (jobType == null) {
+            customerAdvanced = customerSessionBeanLocal.retrieveCustomerAdvancedByAdId(customerAdvancedId);
+        }
+        jobType = customerAdvanced.getJobType();
+        return jobType;
+    }
+
+    public void setJobType(String jobType) {
+        this.jobType = jobType;
+    }
+
+    public String getJobIndustry() {
+        if (jobIndustry == null) {
+            customerAdvanced = customerSessionBeanLocal.retrieveCustomerAdvancedByAdId(customerAdvancedId);
+        }
+        jobIndustry = customerAdvanced.getJobIndustry();
+        return jobIndustry;
+    }
+
+    public void setJobIndustry(String jobIndustry) {
+        this.jobIndustry = jobIndustry;
+    }
+
+    public String getJobDuration() {
+        if (jobDuration == null) {
+            customerAdvanced = customerSessionBeanLocal.retrieveCustomerAdvancedByAdId(customerAdvancedId);
+        }
+        jobDuration = customerAdvanced.getJobDuration();
+        return jobDuration;
+    }
+
+    public void setJobDuration(String jobDuration) {
+        this.jobDuration = jobDuration;
+    }
+
+    public String getJobStatus() {
+        if (jobStatus == null) {
+            customerAdvanced = customerSessionBeanLocal.retrieveCustomerAdvancedByAdId(customerAdvancedId);
+        }
+        jobStatus = customerAdvanced.getJobStatus();
+        return jobStatus;
+    }
+
+    public void setJobStatus(String jobStatus) {
+        this.jobStatus = jobStatus;
+    }
+
+    public String getIncomeMonthly() {
+        if (incomeMonthly == null) {
+            customerAdvanced = customerSessionBeanLocal.retrieveCustomerAdvancedByAdId(customerAdvancedId);
+        }
+        incomeMonthly = customerAdvanced.getIncomeMonthly();
+        return incomeMonthly;
+    }
+
+    public void setIncomeMonthly(String incomeMonthly) {
+        this.incomeMonthly = incomeMonthly;
+    }
+
     public List<CustomerAdvanced> getCustomerListFromEmployeeId() {
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         em = (Employee) ec.getSessionMap().get("employee");
@@ -193,13 +233,19 @@ public class RMUpdateCustomerAdvancedManagedBean implements Serializable {
     }
 
     public void updateCustomerAdvanced() {
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(customerSessionBeanLocal.updateCustomerAdvancedProfile(customerAdvancedId, customerEmploymentDetails, customerFamilyInfo, customerCreditReport, customerFinancialRiskRating, customerFinanacialAssets, customerFinanacialGoals), " "));
-        customerCreditReport = null;
-        customerEmploymentDetails = null;
-        customerFamilyInfo = null;
-        customerFinanacialGoals = null;
-        customerFinanacialAssets = null;
-        customerFinancialRiskRating = null;
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(customerSessionBeanLocal.updateCustomerAdvancedProfile(customerAdvancedId,
+                education, incomeMonthly, jobDuration, jobStatus, jobIndustry, jobType,
+                numOfDependent, residencialStatus, yearInResidence), " "));
+
+        numOfDependent = null;
+        education = null;
+        residencialStatus = null;
+        yearInResidence = null;
+        jobType = null;
+        jobIndustry = null;
+        jobDuration = null;
+        jobStatus = null;
+        incomeMonthly = null;
     }
 
     public void redirectToViewAdvanced() throws IOException {
