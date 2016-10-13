@@ -32,9 +32,6 @@ public class CustomerWriteEnquiryManagedBean {
     private String followUpDetail;
     private String caseStatus;
     private String onlineBankingAccountNum;
-
-    private ExternalContext ec;
-
     private CustomerBasic cb = new CustomerBasic();
 
     public CustomerWriteEnquiryManagedBean() {
@@ -96,14 +93,6 @@ public class CustomerWriteEnquiryManagedBean {
         this.onlineBankingAccountNum = onlineBankingAccountNum;
     }
 
-    public ExternalContext getEc() {
-        return ec;
-    }
-
-    public void setEc(ExternalContext ec) {
-        this.ec = ec;
-    }
-
     public CustomerBasic getCb() {
         return cb;
     }
@@ -113,8 +102,10 @@ public class CustomerWriteEnquiryManagedBean {
     }
  
     public void saveEnquiryCase() {
-        ec = FacesContext.getCurrentInstance().getExternalContext();
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         cb = (CustomerBasic) ec.getSessionMap().get("customer");
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(enquirySessionBeanLocal.addNewCase(cb.getCustomerBasicId(), caseType, caseDetail), " "));
+        caseType = null;
+        caseDetail = null;
     }
 }
