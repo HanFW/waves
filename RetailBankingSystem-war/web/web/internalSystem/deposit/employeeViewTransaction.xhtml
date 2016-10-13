@@ -7,66 +7,31 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/internalSystemTemplate.xhtml">
 
-    <ui:define name="internalSystemMenu">
-
-        <ui:include src="/WEB-INF/internalSystemMenuCounterTeller.xhtml" />
-
-    </ui:define>
-
     <ui:define name="content">
-        <h:body>
-
-            <h:form>
-                <p:menubar>
-                    <p:submenu label="Home">
-                        <p:menuitem value="Home" url="/web/internalSystem/infrastructure/employeeCounterTellerMainPage.xhtml"/>
-                    </p:submenu>
-
-                    <p:submenu label="Log Out">
-                        <p:menuitem value="Logout" actionListener="#{employeeLoginManagedBean.doLogOut}" />
-                    </p:submenu>
-                </p:menubar>
-            </h:form>
-            <h:form id="formMain">
-
-                <div align="center">
-                    <h:outputText value="Welcome " />
-                    <h:outputText value="#{employeeAccountManagedBean.userName}!"/>
-                    <br/>
-                    <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
-                    <br/>
-                    <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
-                    <br/>
-                    <h:outputText value="You have logged in as: Counter Teller "/>
-                    <br/>
-
-
-
-                    <br/>
-                    <p:panel id="panel" header="View Transaction">
-                        <p:messages globalOnly="true"/>
-
-
-
-                        <h:panelGrid columns="1" cellpadding="5" styleClass="ui-panelgrid-blank form-group">                  
-                            <p:row>
-                                <p:column>
-                                    <p:outputLabel for="customerName" style="font-weight: bold" value="Name: " />
-                                    <p:outputLabel style="font-weight: bold" value="(As per NRIC/Passport): " />
-                                </p:column>
-                                <p:column>
-                                    <p:inputText label="Customer Name" id="customerName" value="#{employeeViewTransactionManagedBean.customerName}"
-                                                 required="true" requiredMessage="Required Field">
-                                    </p:inputText>
-                                </p:column>
-                                <p:column>
-                                    <p:message for="customerName" />
-                                </p:column>
-                            </p:row>
-                        </h:panelGrid>
-                    </p:panel>
-                </div>
-            </h:form>
-        </h:body>
+        <h:form id="formMain">
+            <div align="center">
+                <h:outputText value="You have logged in as: Counter Teller "/>
+                <br/>                   
+                <p:panel id="panel" header="View Transaction">
+                    <p:messages globalOnly="true"/>
+                    <h:panelGrid columns="1" cellpadding="5" styleClass="ui-panelgrid-blank form-group">                  
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="customerName" style="font-weight: bold" value="Name: " />
+                                <p:outputLabel style="font-weight: bold" value="(As per NRIC/Passport): " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText label="Customer Name" id="customerName" value="#{employeeViewTransactionManagedBean.customerName}"
+                                             required="true" requiredMessage="Required Field">
+                                </p:inputText>
+                            </p:column>
+                            <p:column>
+                                <p:message for="customerName" />
+                            </p:column>
+                        </p:row>
+                    </h:panelGrid>
+                </p:panel>
+            </div>
+        </h:form>
     </ui:define>
 </ui:composition>

@@ -8,30 +8,8 @@
                 template="/WEB-INF/internalSystemTemplate.xhtml">
 
     <ui:define name="content">
-        <h:body>
-            <h1>Edit User Account Information</h1>
-            <h:form>
-                <p:menubar>
-                    <p:submenu label="Home">
-                        <p:menuitem value="Home" action="userAccountManagement.xhtml?faces-redirect=true"/>
-                    </p:submenu>
-
-                    <p:submenu label="Log Out">
-                        <p:menuitem value="Logout" actionListener="#{employeeLoginManagedBean.doLogOut}" />
-                    </p:submenu>
-                </p:menubar>
-            </h:form>
-
-
             <h:form id="form">
                 <div align="center">
-                    <h:outputText value="Welcome " />
-                    <h:outputText value="#{employeeAccountManagedBean.userName}!"/>
-                    <br/>
-                    <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
-                    <br/>
-                    <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
-                    <br/>
                     <h:outputText value="You have logged in as: System Admin"/>
                     <br/>
                     <p:messages autoUpdate="true"/>
@@ -74,6 +52,5 @@
                     </h:panelGrid>
                 </div>
             </h:form>
-        </h:body>
     </ui:define>
 </ui:composition>
