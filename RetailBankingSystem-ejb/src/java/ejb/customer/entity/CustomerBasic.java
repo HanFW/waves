@@ -1,5 +1,6 @@
 package ejb.customer.entity;
 
+import ejb.card.entity.CreditCard;
 import ejb.deposit.entity.BankAccount;
 import ejb.infrastructure.entity.MessageBox;
 import ejb.deposit.entity.Payee;
@@ -62,6 +63,9 @@ public class CustomerBasic implements Serializable {
     
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
     private List<MessageBox> messageBox;
+    
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
+    private List<CreditCard> creditCard;
 
     public Long getCustomerBasicId() {
         return customerBasicId;
@@ -289,6 +293,14 @@ public class CustomerBasic implements Serializable {
 
     public void setCustomerAdvanced(CustomerAdvanced customerAdvanced) {
         this.customerAdvanced = customerAdvanced;
+    }
+
+    public List<CreditCard> getCreditCard() {
+        return creditCard;
+    }
+
+    public void setCreditCard(List<CreditCard> creditCard) {
+        this.creditCard = creditCard;
     }
 
     public String getCustomerOnlineBankingAccountLocked() {
