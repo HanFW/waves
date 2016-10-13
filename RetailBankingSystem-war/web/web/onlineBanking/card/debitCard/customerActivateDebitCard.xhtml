@@ -39,39 +39,9 @@
                     </p:panelGrid> 
 
                     <div class="ui-g-12">                         
-                        <p:commandButton value="Activate My Debit Card" type="submit" actionListener="#{customerActivateDebitCardManagedBean.checkDebitCardNum}" update="@form otpForm"/>  
+                        <p:commandButton value="Activate My Debit Card" type="submit" actionListener="#{customerActivateDebitCardManagedBean.checkDebitCardNum}"/>  
                     </div>
 
-                </h:form>
-
-                <h:form id="otpForm">
-                    <p:dialog header="One-time Password" widgetVar="otpDialog" responsive="true">
-                        <h:panelGrid id="otpPanel">
-                            <p:row>
-                                <p:column>
-                                    Input the 6-digit iB Secure PIN.
-                                </p:column>
-                            </p:row>
-                            <p:row>
-                                <p:column>
-                                    <p:inputText required="false" type="password" value="#{customerActivateDebitCardManagedBean.customerOTP}"/>
-                                    <br/>
-                                    <h:outputText value="&lt;br /&gt;" escape="false" />
-                                    <p:commandButton value="Send OTP" type="submit" actionListener="#{sMSManagedBean.sendOTP}" style="float:right"/>
-                                </p:column>
-                            </p:row>
-                            <p:row>
-                                <p:column>
-                                    <p:messages showDetail="true" globalOnly="true" closable="true"/>
-                                </p:column>
-                            </p:row>
-                            <p:row>
-                        <p:column>
-                            <p:commandButton type="submit" value="Confirm" actionListener="#{customerActivateDebitCardManagedBean.verifActivationOTP}" update="otpPanel"/>
-                        </p:column>
-                    </p:row>
-                        </h:panelGrid>
-                    </p:dialog>
                 </h:form>
 
             </div>

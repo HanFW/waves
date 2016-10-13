@@ -30,16 +30,16 @@
 
                         <h:outputLabel for="pwd2" value="Password *" />
 
-                        <p:password validatorMessage="Length is less than allowable minimum of '8'" id="pwd2" value="#{customerActivateDebitCardManagedBean.debitCardPwd}" match="pwd3" label="Password 2" required="true" feedback="true">
-                            <f:validateLength minimum="8" maximum="8" /> 
+                        <p:password validatorMessage="Please enter a 6-digit PIN" id="pwd2" value="#{customerActivateDebitCardManagedBean.debitCardPwd}" match="pwd3" label="Password 2" required="true" feedback="true">
+                            <f:validateLength minimum="6" maximum="6" /> 
                         </p:password>
 
                         <p:message for="pwd2" />
 
                         <h:outputLabel for="pwd3" value="Confirm Password: *" />
 
-                        <p:password validatorMessage="Length is less than allowable minimum of '8'" id="pwd3" value="#{customerActivateDebitCardManagedBean.debitCardPwd}" label="Password 3" required="true" feedback="true">
-                            <f:validateLength minimum="8" maximum="8" /> 
+                        <p:password validatorMessage="Please enter a 6-digit PIN" id="pwd3" value="#{customerActivateDebitCardManagedBean.debitCardPwd}" label="Password 3" required="true" feedback="true">
+                            <f:validateLength minimum="6" maximum="6" /> 
                         </p:password>
 
                         <p:message for="pwd3" />

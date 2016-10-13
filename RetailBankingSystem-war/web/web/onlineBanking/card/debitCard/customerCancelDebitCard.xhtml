@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/onlineBankingTemplate.xhtml"
+                xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
+    <ui:define name="content">
+
+        <h:body>
+
+            <div align="center">
+                <h:form>
+                    <p:panel>
+                        <p:outputLabel value="Welcome "/>
+                        <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
+                    </p:panel>
+
+                    <p:messages autoUpdate="true"/>
+
+                        <p:outputLabel style="font-size: 40px;font-weight: bold" value="Cancel My Card"/>
+
+                        <h:panelGrid columns="3" class="ui-lg-6"> 
+
+                            <p:outputLabel value="Card Type:"/>
+                            <p:selectOneRadio required="true" requiredMessage="Please select card type" id="cardType" value="#{customerCancelCardManagedBean.cardType}">
+                                <f:selectItem itemLabel="Credit Card" itemValue="credit" />
+                                <f:selectItem itemLabel="Debit Card" itemValue="debit" />
+                            </p:selectOneRadio>
+                            <p:messages for="cardType"/>
+
+                            <p:outputLabel value="Card Number:" />
+                            <p:inputText validatorMessage="Card number is 16-digit" required="true" requiredMessage="Please input your card number" id="cardNo" value="#{customerCancelCardManagedBean.debitCardNum}">
+                                <!--<f:validateLength minimum="16" maximum="16" />--> 
+                            </p:inputText>
+                            <p:messages for="cardNo"/>   
+
+                            <p:outputLabel value="Card Password:" />
+                            <p:inputText validatorMessage="Card password is 6-digit" required="true" requiredMessage="Please input your card password" id="cardPwd" value="#{customerCancelCardManagedBean.debitCardPwd}">
+                                <f:validateLength minimum="6" maximum="6" /> 
+                            </p:inputText>
+                            <p:messages for="cardPwd"/>
+
+                        </h:panelGrid>
+
+                        <p:growl id="message" globalOnly="true" />
+
+                        <p:commandButton value="Cancel My Card" actionListener="#{customerCancelCardManagedBean.cancelCard}" update="message">
+                            <p:confirm header="Confirmation" message="Are you sure to cancel the card? This action is not reversible" icon="ui-icon-alert" />
+                        </p:commandButton>
+
+                        <p:confirmDialog id="dialog" global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+                        </p:confirmDialog>
+                </h:form>
+
+
+
+            </div>
+        </h:body>
+
+    </ui:define>
+</ui:composition>
+

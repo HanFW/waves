@@ -137,7 +137,7 @@ public class CustomerActivateDebitCardManagedBean implements Serializable {
         this.debitCardSecurityCode = debitCardSecurityCode;
     }
 
-    public void checkDebitCardNum(ActionEvent event) {
+    public void checkDebitCardNum(ActionEvent event) throws IOException {
         FacesMessage message = null;
         FacesContext context = FacesContext.getCurrentInstance();
 
@@ -163,9 +163,8 @@ public class CustomerActivateDebitCardManagedBean implements Serializable {
             case "valid":
                 System.out.println("put in map: "+debitCardNum);
                 context.getExternalContext().getSessionMap().put("debitCardNumber", debitCardNum);
-                RequestContext rc = RequestContext.getCurrentInstance();
-                rc.execute("PF('otpDialog').show();");
-                System.out.println("*** ActivateDebitCardManagedBean: card holer name does not match!");
+                context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() +"/web/onlineBanking/card/debitCard/customerActivateDebitCardDone.xhtml?faces-redirect=true");
+                System.out.println("*** ActivateDebitCardManagedBean: correct!");
                 break;
         }
 

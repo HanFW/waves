@@ -17,6 +17,7 @@ import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
+import javax.faces.context.ExternalContext;
 import javax.inject.Named;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
@@ -51,6 +52,20 @@ public class CustomerApplyDebitCardManagedBean implements Serializable {
     private boolean showResult = false;
 
     public CustomerApplyDebitCardManagedBean() {
+    }
+    
+    public void checkDepositAccountStatus(ActionEvent event) throws IOException{
+        FacesContext context = FacesContext.getCurrentInstance();
+        ExternalContext ec = context.getExternalContext();
+        
+        CustomerBasic findCustomer = getCustomerViaSessionMap();
+        System.out.println("test findCustomer: "+findCustomer);
+        
+        if(findCustomer.getBankAccount().isEmpty()){
+            ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/card/debitCard/customerRedirectToOpenDepositAccountPage.xhtml?faces-redirect=true");
+        }else {
+            ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/card/debitCard/customerApplyDebitCard.xhtml?faces-redirect=true"); 
+        }
     }
 
     public void createDebitCard(ActionEvent event) {

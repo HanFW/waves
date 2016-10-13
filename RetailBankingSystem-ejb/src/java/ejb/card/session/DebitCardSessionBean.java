@@ -72,6 +72,7 @@ public class DebitCardSessionBean implements DebitCardSessionBeanLocal {
             return "debit card not exist";
         } else {
             DebitCard findDebitCard = getCardByCardNum(debitCardNum);
+            System.out.println("debug!! card holder name "+findDebitCard.getCardHolderName());
             if (!findDebitCard.getCardHolderName().equals(cardHolderName)) {
                 return "cardHolderName not match";
             } else {

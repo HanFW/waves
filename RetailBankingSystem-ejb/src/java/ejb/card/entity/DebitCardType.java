@@ -82,6 +82,14 @@ public class DebitCardType implements Serializable {
     public void setDebitCards(List<DebitCard> debitCards) {
         this.debitCards = debitCards;
     }
+    
+    public void addDebitCard(DebitCard debitCard){
+        this.debitCards.add(debitCard);
+    }
+    
+    public void removeDebitCard(DebitCard debitCard){
+        this.debitCards.remove(debitCard);
+    }
 
     @Override
     public int hashCode() {
