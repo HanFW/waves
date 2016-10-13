@@ -20,44 +20,44 @@
                 <h:outputText value="You have logged in as: Relationship Manager"/>
                 <br/>  
                 <p:dataList id="customerCurrentAdvancedProfile" value="#{rMUpdateCustomerAdvancedManagedBean.customerAdvancedInfo}" type="definition">
-                                    <p:panel >
-                                        <p:messages />
+                    <p:panel >
+                        <p:messages />
 
-                                        <h:panelGrid id="AdvancedProfile" columns="2" cellpadding="5" >
+                        <h:panelGrid id="AdvancedProfile" columns="2" cellpadding="5" >
 
-                                            <p:outputLabel for="customerEducation"  value="Education:" />
-                                            <p:inputText id="customerEducation" value="#{rMUpdateCustomerAdvancedManagedBean.education}" required="true" />
+                            <p:outputLabel for="customerEducation"  value="Education:" />
+                            <p:inputText id="customerEducation" value="#{rMUpdateCustomerAdvancedManagedBean.education}" required="true" />
 
-                                            <p:outputLabel for="customerIncome"  value="Monthly Income:" />
-                                            <p:inputText id="customerIncome" value="#{rMUpdateCustomerAdvancedManagedBean.incomeMonthly}" required="true" />
-                                            
-                                            <p:outputLabel for="customerOccupation"  value="Occupation:" />
-                                            <p:inputText id="customerOccupation" value="#{rMUpdateCustomerAdvancedManagedBean.jobType}" required="true"  />
+                            <p:outputLabel for="customerIncome"  value="Monthly Income:" />
+                            <p:inputText id="customerIncome" value="#{rMUpdateCustomerAdvancedManagedBean.incomeMonthly}" required="true" />
 
-                                            <p:outputLabel for="customerJobStatus"  value="Job Status:" />
-                                            <p:inputText id="customerJobStatus" value="#{rMUpdateCustomerAdvancedManagedBean.jobStatus}" required="true"  />
+                            <p:outputLabel for="customerOccupation"  value="Occupation:" />
+                            <p:inputText id="customerOccupation" value="#{rMUpdateCustomerAdvancedManagedBean.jobType}" required="true"  />
 
-                                            <p:outputLabel for="customerIndustry"  value="Job Industry:" />
-                                            <p:inputText id="customerIndustry" value="#{rMUpdateCustomerAdvancedManagedBean.jobIndustry}" required="true"  />
+                            <p:outputLabel for="customerJobStatus"  value="Job Status:" />
+                            <p:inputText id="customerJobStatus" value="#{rMUpdateCustomerAdvancedManagedBean.jobStatus}" required="true"  />
 
-                                            <p:outputLabel for="customerJobDuration"  value="Length of Current Employeement" />
-                                            <p:inputText id="customerJobDuration" value="#{rMUpdateCustomerAdvancedManagedBean.jobDuration}" required="true"  />
+                            <p:outputLabel for="customerIndustry"  value="Job Industry:" />
+                            <p:inputText id="customerIndustry" value="#{rMUpdateCustomerAdvancedManagedBean.jobIndustry}" required="true"  />
 
-                                            <p:outputLabel for="customerNumDepend"  value="Number of Dependent:" />
-                                            <p:inputText id="customerNumDepend" value="#{rMUpdateCustomerAdvancedManagedBean.numOfDependent}" required="true"  />
+                            <p:outputLabel for="customerJobDuration"  value="Length of Current Employeement" />
+                            <p:inputText id="customerJobDuration" value="#{rMUpdateCustomerAdvancedManagedBean.jobDuration}" required="true"  />
 
-                                            <p:outputLabel for="customerResStatus"  value="Residential Status:" />
-                                            <p:inputText id="customerResStatus" value="#{rMUpdateCustomerAdvancedManagedBean.residencialStatus}" required="true"  />
-                                            
-                                            <p:outputLabel for="customerYearInRes"  value="Number of year in this residence:" />
-                                            <p:inputText id="customerYearInRes" value="#{rMUpdateCustomerAdvancedManagedBean.yearInResidence}" required="true"  />
-                                        </h:panelGrid>   
-                                    </p:panel>
-                                    <p:commandButton value="Reset" type="reset" />
+                            <p:outputLabel for="customerNumDepend"  value="Number of Dependent:" />
+                            <p:inputText id="customerNumDepend" value="#{rMUpdateCustomerAdvancedManagedBean.numOfDependent}" required="true"  />
 
-                                    <p:commandButton value="Update" actionListener="#{rMUpdateCustomerAdvancedManagedBean.updateCustomerAdvanced}" ajax="false"/>
+                            <p:outputLabel for="customerResStatus"  value="Residential Status:" />
+                            <p:inputText id="customerResStatus" value="#{rMUpdateCustomerAdvancedManagedBean.residencialStatus}" required="true"  />
 
-                                </p:dataList>
+                            <p:outputLabel for="customerYearInRes"  value="Number of year in this residence:" />
+                            <p:inputText id="customerYearInRes" value="#{rMUpdateCustomerAdvancedManagedBean.yearInResidence}" required="true"  />
+                        </h:panelGrid>   
+                    </p:panel>
+                    <p:commandButton value="Reset" type="reset" />
+
+                    <p:commandButton value="Update" actionListener="#{rMUpdateCustomerAdvancedManagedBean.updateCustomerAdvanced}" ajax="false"/>
+
+                </p:dataList>
             </div>
         </h:form>
     </ui:define>

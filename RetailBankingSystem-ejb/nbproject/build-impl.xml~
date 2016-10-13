@@ -834,7 +834,7 @@ exists or setup the property manually. For example like this:
         <copyfiles files="${libs.Jackson_Core_Asl.classpath}" todir="${dist.ear.dir}/lib"/>
         <copyfiles files="${libs.Jackson_Mapper_Asl.classpath}" todir="${dist.ear.dir}/lib"/>
         <copyfiles files="${libs.Apache_Commons_Codec_1.10.classpath}" todir="${dist.ear.dir}/lib"/>
-        <copyfiles files="${libs.Twilio_Jave.classpath}" todir="${dist.ear.dir}/lib"/>
+        <copyfiles files="${libs.Twilio_Java.classpath}" todir="${dist.ear.dir}/lib"/>
         <copyfiles files="${libs.Apache_Commons_lang3_3.4.classpath}" todir="${dist.ear.dir}/lib"/>
         <manifest file="${build.ear.classes.dir}/META-INF/MANIFEST.MF" mode="update"/>
     </target>
