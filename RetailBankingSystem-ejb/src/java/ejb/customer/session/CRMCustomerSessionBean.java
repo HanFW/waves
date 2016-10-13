@@ -233,7 +233,7 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
             ca.setJobIndustry(jobIndustry);
             ca.setJobType(jobType);
             ca.setNumOfDependent(numOfDependent);
-            ca.setResidencialStatus(residencialStatus);
+            ca.setResidentialStatus(residencialStatus);
             ca.setYearInResidence(yearInResidence);
             
             entityManager.flush();
