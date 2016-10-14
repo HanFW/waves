@@ -33,7 +33,7 @@
 
                             <p:outputLabel value="Card Number:" />
                             <p:inputText validatorMessage="Card number is 16-digit" required="true" requiredMessage="Please input your card number" id="cardNo" value="#{customerCancelCardManagedBean.debitCardNum}">
-                                <!--<f:validateLength minimum="16" maximum="16" />--> 
+                                <f:validateLength minimum="16" maximum="16" /> 
                             </p:inputText>
                             <p:messages for="cardNo"/>   
 

@@ -39,6 +39,7 @@ public class DebitCard implements Serializable {
     private String debitCardExpiryDate;
     private String cardHolderName;
     private String cardSecurityCode;
+    private String status;
 
     public Long getDebitCardId() {
         return debitCardId;
@@ -103,7 +104,15 @@ public class DebitCard implements Serializable {
     public void setDebitCardType(DebitCardType debitCardType) {
         this.debitCardType = debitCardType;
     }
-    
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+       
 
     @Override
     public int hashCode() {
