@@ -7,6 +7,7 @@ package ejb.card.entity;
 
 import ejb.customer.entity.CustomerBasic;
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,7 +15,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -33,12 +34,13 @@ public class CreditCard implements Serializable {
     @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     private CustomerBasic customerBasic;
     
-    @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "creditCard")
-    private SupplementaryCard supplementaryCard;
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "creditCard")
+    private List<SupplementaryCard> supplementaryCard;
     
     private String creditCardNum;
     private String cardHolderName;
     private String creditCardExpiryDate;
+    private String securityCode;
     private double creditLimit;
     private double outstandingBalance; 
 
@@ -66,11 +68,11 @@ public class CreditCard implements Serializable {
         this.customerBasic = customerBasic;
     }
 
-    public SupplementaryCard getSupplementaryCard() {
+    public List<SupplementaryCard> getSupplementaryCard() {
         return supplementaryCard;
     }
 
-    public void setSupplementaryCard(SupplementaryCard supplementaryCard) {
+    public void setSupplementaryCard(List<SupplementaryCard> supplementaryCard) {
         this.supplementaryCard = supplementaryCard;
     }
 
@@ -96,6 +98,14 @@ public class CreditCard implements Serializable {
 
     public void setCreditCardExpiryDate(String creditCardExpiryDate) {
         this.creditCardExpiryDate = creditCardExpiryDate;
+    }
+
+    public String getSecurityCode() {
+        return securityCode;
+    }
+
+    public void setSecurityCode(String securityCode) {
+        this.securityCode = securityCode;
     }
 
     public double getCreditLimit() {

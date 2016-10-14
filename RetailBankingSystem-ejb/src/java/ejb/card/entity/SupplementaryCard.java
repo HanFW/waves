@@ -12,7 +12,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
 
 /**
  *
@@ -25,7 +25,7 @@ public class SupplementaryCard implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long supplementaryCardId;
     
-    @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     private CreditCard creditCard;
     
     private String creditCardNum;
