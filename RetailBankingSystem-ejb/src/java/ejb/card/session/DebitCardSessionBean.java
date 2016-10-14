@@ -10,6 +10,7 @@ import ejb.card.entity.DebitCardType;
 import ejb.deposit.entity.BankAccount;
 import java.math.BigInteger;
 import java.security.SecureRandom;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -55,13 +56,34 @@ public class DebitCardSessionBean implements DebitCardSessionBeanLocal {
 
         int expiryYearToInt = Integer.valueOf(applicationYear) + 5;
         String expiryYear = String.valueOf(expiryYearToInt);
-        String debitCardExpiryDate = applicationMonth +"/" +expiryYear;
+        String debitCardExpiryDate = applicationMonth + "/" + expiryYear;
 
         debitCard.setDebitCardExpiryDate(debitCardExpiryDate);
 
         em.persist(debitCard);
         return "success";
 
+    }
+
+    @Override
+    public String debitCardNumValiadation(String debitCardNum, String cardHolderName, String debitCardSecurityCode) {
+        //check if the debitCard exist by debit card number
+        if (getCardByCardNum(debitCardNum) == null) {
+            return "debit card not exist";
+        } else {
+            DebitCard findDebitCard = getCardByCardNum(debitCardNum);
+            System.out.println("debug!! card holder name "+findDebitCard.getCardHolderName());
+            if (!findDebitCard.getCardHolderName().equals(cardHolderName)) {
+                return "cardHolderName not match";
+            } else {
+                if (!findDebitCard.getCardSecurityCode().equals(debitCardSecurityCode)) {
+                    return "csc not match";
+                } else {
+                    return "valid";
+                }
+            }//card holder name match
+
+        }//debit card exist
     }
 
     private BankAccount findDepositAccountByAccountNum(String bankAccountNum) {
@@ -140,6 +162,34 @@ public class DebitCardSessionBean implements DebitCardSessionBeanLocal {
             DebitCardType findDebitCardType = (DebitCardType) query.getResultList().get(0);
             System.out.println("****** card/DebitCardSessionBean: find cardType: " + findDebitCardType);
             return findDebitCardType;
+        }
+    }
+
+    @Override
+    public String checkDebitCardTypeForDepositAccount(String bankAccountNum, String cardTypeName) {
+        System.out.println("debug debitCardsOfType "+cardTypeName);
+        System.out.println("debug debitCardsOfAccount "+bankAccountNum);
+        
+        BankAccount depositAccount = findDepositAccountByAccountNum(bankAccountNum);
+        System.out.println("debug depositAccount "+depositAccount);
+        DebitCardType debitCardType = findCardTypeByTypeName(cardTypeName);
+        System.out.println("debug debit card type "+debitCardType);
+        System.out.println("debug debitCardsOfType "+debitCardType.getDebitCards());
+        System.out.println("debug debitCardsOfAccount"+depositAccount.getDebitCards());
+        if (debitCardType.getDebitCards() == null || depositAccount.getDebitCards() == null) {
+            return "not existing";
+        } else {
+            List<DebitCard> debitCardsOfType = debitCardType.getDebitCards();
+            List<DebitCard> debitCardsOfAccount = depositAccount.getDebitCards();
+
+            for (int i = 0; i < debitCardsOfAccount.size(); i++) {
+                DebitCard debitCard = debitCardsOfAccount.get(i);
+                if (debitCardsOfType.contains(debitCard)) {
+                    return "existing";
+                }
+            }
+
+            return "not existing";
         }
     }
 }

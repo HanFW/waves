@@ -28,10 +28,10 @@ public class DebitCard implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long debitCardId;
 
-    @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER)
     private BankAccount bankAccount;
 
-    @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER)
     private DebitCardType debitCardType;
 
     private String debitCardNum;
