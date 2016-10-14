@@ -40,7 +40,7 @@
                     </p:selectOneMenu>
 
                     <p:message for="caseType" />                
-                    <p:inputTextarea id="caseDetail" placeholder="Enquiry Detail" value="#{customerWriteEnquiryManagedBean.caseDetail}" required="true" rows="5" cols="80" counter="display" maxlength="1000" counterTemplate="{0} characters remaining." autoResize="false" />
+                    <p:inputTextarea id="caseDetail" placeholder="Enquiry Detail" value="#{customerWriteEnquiryManagedBean.caseDetail}" required="true" requiredMessage="Please provide enquiry case detail" rows="5" cols="80" counter="display" maxlength="1000" counterTemplate="{0} characters remaining." autoResize="false" />
 
                     <h:outputText id="display" />
 
