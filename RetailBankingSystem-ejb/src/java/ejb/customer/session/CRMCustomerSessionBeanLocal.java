@@ -25,7 +25,7 @@ public interface CRMCustomerSessionBeanLocal {
             String customerPostal);
 
     public String updateCustomerAdvancedProfile(Long customerAdvancedId, String education, String incomeMonthly, String jobDuration, String jobStatus, String jobIndustry, String jobType,
-            String numOfDependent, String residencialStatus, String yearInResidence);
+            String numOfDependent, String residentialStatus, String yearInResidence);
 
     public Long addNewCustomerBasic(String customerName, String customerSalutation,
             String customerIdentificationNum, String customerGender,

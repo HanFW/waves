@@ -565,7 +565,6 @@
                     </h:panelGrid>
 
                     <p:panelGrid>
-
                         <p:outputLabel for="customerEducation" style="font-weight: bold" value="Highest Education: "/>
                         <p:selectOneMenu id="customerEducation" value="#{publicHDBLoanApplication.customerEducation}"
                                          required="true" requiredMessage="Required Field">
@@ -631,7 +630,7 @@
                             <f:validateDoubleRange minimum="100000" maximum="999999" />
                         </p:inputText>
                         <p:message for="customerPostal" />
-                        
+
                         <p:outputLabel for="customerResidentialStatus" style="font-weight: bold" value="Residential Ownership: "/>
                         <p:selectOneMenu id="customerResidentialStatus" value="#{publicHDBLoanApplication.customerResidentialStatus}"
                                          required="true" requiredMessage="Required Field">
@@ -643,7 +642,7 @@
                             <f:selectItem itemLabel="Employer's" itemValue="Employers" />
                         </p:selectOneMenu>
                         <p:message for="customerResidentialStatus"/>
-                        
+
                         <p:outputLabel for="customerResidentialType" style="font-weight: bold" value="Residential Type: "/>
                         <p:selectOneMenu id="customerResidentialType" value="#{publicHDBLoanApplication.customerResidentialType}"
                                          required="true" requiredMessage="Required Field">
@@ -653,9 +652,14 @@
                             <f:selectItem itemLabel="Landed Properties" itemValue="Landed" />
                         </p:selectOneMenu>
                         <p:message for="customerResidentialType"/>
-                        
-                        <p:outputLabel for="customerLengthOfResidence" style="font-weight: bold" value="Length of Stay in Residence: "/>
-                        
+
+                        <p:outputLabel for="customerLengthOfResidence" style="font-weight: bold" value="Years of Stay in Residence: "/>
+                        <p:inputText id="customerLengthOfResidence" value="#{publicHDBLoanApplication.customerLengthOfResidence}"
+                                     required="true" requiredMessage="Required Field" validatorMessage="Please enter a valid number between 0-100" converterMessage="Please enter a valid number">
+                            <f:validateLongRange minimum="0" maximum="100"/>
+                            <f:convertNumber integerOnly="true"/>
+                        </p:inputText>
+                        <p:message for="customerLengthOfResidence"/>
                     </p:panelGrid>
 
                     <h:panelGrid columns="2" class="ui-lg-6"> 
@@ -675,6 +679,39 @@
                             <p:menuitem value="Supporting Documents"/>
                         </p:steps>
                     </h:panelGrid>
+
+                    <p:panelGrid>
+                        <p:outputLabel for="customerEmploymentStatus" style="font-weight: bold" value="Employment Status: "/>
+                        <p:selectOneMenu id="customerEmploymentStatus" value="#{publicHDBLoanApplication.customerEmploymentStatus}"
+                                         required="true" requiredMessage="Required Field">
+                            <f:selectItem itemLabel="Please Select" itemValue="" />
+                            <f:selectItem itemLabel="Employee" itemValue="Employee" />
+                            <f:selectItem itemLabel="Self-Employed" itemValue="Self-Employed" />
+                            <f:selectItem itemLabel="Unemployed" itemValue="Unemployed" />
+                        </p:selectOneMenu>
+                        <p:message for="customerEmploymentStatus"/>
+
+                        <p:outputLabel for="customerCompanyName" style="font-weight: bold" value="Company Name: "/>
+                        <p:inputText id="customerCompanyName" value="#{publicHDBLoanApplication.customerCompanyName}"
+                                     required="true" requiredMessage="Required Field"/>
+                        <p:message for="customerCompanyName"/>
+
+                        <p:outputLabel for="customerCompanyAddress" style="font-weight: bold" value="Company Address: "/>
+                        <p:inputText id="customerCompanyAddress" value="#{publicHDBLoanApplication.customerCompanyAddress}"
+                                     required="true" requiredMessage="Required Field"/>
+                        <p:message for="customerCompanyAddress"/>
+
+                        <p:outputLabel for="customerCompanyPostal" style="font-weight: bold" value="Company Postal Code: "/>
+                        <p:inputText id="customerCompanyPostal" value="#{publicHDBLoanApplication.customerPostal}"
+                                     required="true" requiredMessage="Required Field" validatorMessage="Invalid postal code">
+                            <f:validateDoubleRange minimum="100000" maximum="999999" />
+                        </p:inputText>
+                        <p:message for="customerCompanyPostal"/>
+                        
+                        <p:outputLabel for="customerIndustryType" style="font-weight: bold" value="Company Industry Type: "/>
+                        
+                    </p:panelGrid>
+
                     <h:panelGrid columns="2" class="ui-lg-6"> 
                         <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('hdbLoanWizard').back()"/>
                         <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" ajax="false" actionListener="#{publicHDBLoanApplication.checkEmploymentDetails}"/>

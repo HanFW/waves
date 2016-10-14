@@ -23,6 +23,7 @@ import org.primefaces.event.FlowEvent;
 @ViewScoped
 public class PublicHDBLoanApplicationManagedBean implements Serializable {
 
+    //basic information
     private String customerSalutation;
     private String customerSalutationOthers;
     private String customerName;
@@ -33,11 +34,13 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
     private String customerIdentificationNum;
     private String customerCountryOfResidence;
     private String customerRace;
-    private String customerMaritalStatus;
-    private Integer customerNumOfDependents;
-    private String customerEducation;
     private String customerMobile;
     private String customerEmail;
+    
+    //personal details
+    private String customerEducation;
+    private String customerMaritalStatus;
+    private Integer customerNumOfDependents;
     private String customerStreetName;
     private String customerBlockNum;
     private String customerUnitNum;
@@ -45,12 +48,32 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
     private String customerResidentialStatus;
     private String customerResidentialType;
     private Integer customerLengthOfResidence;
-
+    
+    //employment details
+    private String customerEmploymentStatus;
+    private String customerCompanyName;
+    private String customerCompanyAddress;
+    private String customerCompanyPostal;
+    private String customerIndustryType;
+    private String customerIndustryTypeOthers;
+    private String customerCurrentPosition;
+    private String customerCurrentJobTitle;
+    private String customerLengthOfCurrentJob;
+    private String customerPreviousCompany;
+    private String customerPreviousJobTitle;
+    private String customerLengthOfPreviousJob;
+    private String customerMonthlyFixedIncome;
+    private String customerOtherMonthlyIncome;
+    private String customerOtherMonthlyIncomeSource;
+    
+    //basic information
     private boolean salutationPanelVisible;
     private boolean nationalitySGPanelVisible;
     private boolean nationalityOthersPanelVisible;
     private boolean nricPanelVisible;
     private boolean passportPanelVisible;
+    
+    //personal details
 
     /**
      * Creates a new instance of PublicHDBLoanApplication
@@ -331,5 +354,125 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
 
     public void setCustomerLengthOfResidence(Integer customerLengthOfResidence) {
         this.customerLengthOfResidence = customerLengthOfResidence;
+    }
+
+    public String getCustomerEmploymentStatus() {
+        return customerEmploymentStatus;
+    }
+
+    public void setCustomerEmploymentStatus(String customerEmploymentStatus) {
+        this.customerEmploymentStatus = customerEmploymentStatus;
+    }
+
+    public String getCustomerCompanyName() {
+        return customerCompanyName;
+    }
+
+    public void setCustomerCompanyName(String customerCompanyName) {
+        this.customerCompanyName = customerCompanyName;
+    }
+
+    public String getCustomerCompanyAddress() {
+        return customerCompanyAddress;
+    }
+
+    public void setCustomerCompanyAddress(String customerCompanyAddress) {
+        this.customerCompanyAddress = customerCompanyAddress;
+    }
+
+    public String getCustomerCompanyPostal() {
+        return customerCompanyPostal;
+    }
+
+    public void setCustomerCompanyPostal(String customerCompanyPostal) {
+        this.customerCompanyPostal = customerCompanyPostal;
+    }
+
+    public String getCustomerIndustryType() {
+        return customerIndustryType;
+    }
+
+    public void setCustomerIndustryType(String customerIndustryType) {
+        this.customerIndustryType = customerIndustryType;
+    }
+
+    public String getCustomerIndustryTypeOthers() {
+        return customerIndustryTypeOthers;
+    }
+
+    public void setCustomerIndustryTypeOthers(String customerIndustryTypeOthers) {
+        this.customerIndustryTypeOthers = customerIndustryTypeOthers;
+    }
+
+    public String getCustomerCurrentPosition() {
+        return customerCurrentPosition;
+    }
+
+    public void setCustomerCurrentPosition(String customerCurrentPosition) {
+        this.customerCurrentPosition = customerCurrentPosition;
+    }
+
+    public String getCustomerCurrentJobTitle() {
+        return customerCurrentJobTitle;
+    }
+
+    public void setCustomerCurrentJobTitle(String customerCurrentJobTitle) {
+        this.customerCurrentJobTitle = customerCurrentJobTitle;
+    }
+
+    public String getCustomerLengthOfCurrentJob() {
+        return customerLengthOfCurrentJob;
+    }
+
+    public void setCustomerLengthOfCurrentJob(String customerLengthOfCurrentJob) {
+        this.customerLengthOfCurrentJob = customerLengthOfCurrentJob;
+    }
+
+    public String getCustomerPreviousCompany() {
+        return customerPreviousCompany;
+    }
+
+    public void setCustomerPreviousCompany(String customerPreviousCompany) {
+        this.customerPreviousCompany = customerPreviousCompany;
+    }
+
+    public String getCustomerPreviousJobTitle() {
+        return customerPreviousJobTitle;
+    }
+
+    public void setCustomerPreviousJobTitle(String customerPreviousJobTitle) {
+        this.customerPreviousJobTitle = customerPreviousJobTitle;
+    }
+
+    public String getCustomerLengthOfPreviousJob() {
+        return customerLengthOfPreviousJob;
+    }
+
+    public void setCustomerLengthOfPreviousJob(String customerLengthOfPreviousJob) {
+        this.customerLengthOfPreviousJob = customerLengthOfPreviousJob;
+    }
+
+    public String getCustomerMonthlyFixedIncome() {
+        return customerMonthlyFixedIncome;
+    }
+
+    public void setCustomerMonthlyFixedIncome(String customerMonthlyFixedIncome) {
+        this.customerMonthlyFixedIncome = customerMonthlyFixedIncome;
+    }
+
+    public String getCustomerOtherMonthlyIncome() {
+        return customerOtherMonthlyIncome;
+    }
+
+    public void setCustomerOtherMonthlyIncome(String customerOtherMonthlyIncome) {
+        this.customerOtherMonthlyIncome = customerOtherMonthlyIncome;
+    }
+
+    public String getCustomerOtherMonthlyIncomeSource() {
+        return customerOtherMonthlyIncomeSource;
+    }
+
+    public void setCustomerOtherMonthlyIncomeSource(String customerOtherMonthlyIncomeSource) {
+        this.customerOtherMonthlyIncomeSource = customerOtherMonthlyIncomeSource;
     }
 }
