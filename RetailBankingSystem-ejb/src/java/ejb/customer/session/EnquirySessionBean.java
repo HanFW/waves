@@ -41,7 +41,6 @@ public class EnquirySessionBean implements EnquirySessionBeanLocal {
     public List<EnquiryCase> getEnquiryByCaseId(Long caseId) {
         Query query = entityManager.createQuery("SELECT ec FROM EnquiryCase ec WHERE ec.caseId = :caseId");
         query.setParameter("caseId", caseId);
-        System.out.println("+++++++++++" + query.getResultList().isEmpty() + "+++++++");
         return query.getResultList();
     }
     

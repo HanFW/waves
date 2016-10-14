@@ -10,18 +10,16 @@
     <ui:define name="content">
 
         <h:form>
-            <p:messages/>
             <div align="center">
                 <h:outputText value="You have logged in as: Counter Teller "/>
                 <br/>      
+                <p:messages/>
                 
                 <h:panelGrid columns="1" cellpadding="5" styleClass="ui-panelgrid-blank form-group"> 
-                   
                     <p:outputLabel for="CaseID"  value="Customer Case ID:" />
-                    <p:inputText id="CaseID" value="#{employeeRecordEnquiryManagedBean.caseIdStr}" />
-                    <p:commandButton value="Search" actionListener="#{employeeRecordEnquiryManagedBean.retrieveCaseByCaseRef}" />
+                    <p:inputText id="CaseID" value="#{employeeRecordEnquiryManagedBean.caseId}" required="true" requiredMessage="Please enter case ID"/>
+                    <p:commandButton value="Search" actionListener="#{employeeRecordEnquiryManagedBean.retrieveCaseByCaseRef}" update="@form" />
                 </h:panelGrid>  
-
             </div>
         </h:form>
     </ui:define>

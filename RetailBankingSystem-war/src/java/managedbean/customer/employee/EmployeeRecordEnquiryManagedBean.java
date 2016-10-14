@@ -394,13 +394,10 @@ public class EmployeeRecordEnquiryManagedBean implements Serializable {
         FacesMessage message = null;
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext externalContext = context.getExternalContext();
-        caseId = Long.valueOf(caseIdStr);
-        
+       
         if (enquirySessionBeanLocal.getEnquiryByCaseId(caseId).isEmpty()) {
-         
-           message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Incorrect enquiry case ID!", "No case found");
-           System.out.println("+++++++++" + message.toString());
-           context.addMessage(null, message);
+           message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Incorrect enquiry case ID", "No case found");
+           context.addMessage("CaseID", message);
         } else {
             ec = enquirySessionBeanLocal.getEnquiryByCaseId(caseId).get(0);
             externalContext.redirect(externalContext.getRequestContextPath() + "/web/internalSystem/enquiry/counterTellerSearchCaseDone.xhtml?faces-redirect=true");
