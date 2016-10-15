@@ -25,7 +25,9 @@
                     <p:panelGrid columns="3">
 
                         <p:outputLabel id="debitCardNum" value="Debit Card Number: "/>
-                        <p:inputText required="true" requiredMessage="Please enter your debit card number" value="#{customerActivateDebitCardManagedBean.debitCardNum}"/>
+                        <p:inputText validatorMessage="Card number is 16-digit" required="true" requiredMessage="Please enter your debit card number" value="#{customerActivateDebitCardManagedBean.debitCardNum}">
+                        <f:validateLength minimum="16" maximum="16" /> 
+                        </p:inputText>
                         <p:messages for="debitCardNum"/>
 
                         <p:outputLabel id="cardHolderName" value="Card Holder Name: "/>
@@ -33,7 +35,9 @@
                         <p:messages for="cardHolderName"/>
 
                         <p:outputLabel  id="csc" value="3-digit Card Security Code: "/>
-                        <p:inputText required="true" requiredMessage="Please enter the card security code" value="#{customerActivateDebitCardManagedBean.debitCardSecurityCode}"/>
+                        <p:inputText validatorMessage="Card Security Code is 3-digit" required="true" requiredMessage="Please enter the card security code" value="#{customerActivateDebitCardManagedBean.debitCardSecurityCode}">
+                           <f:validateLength minimum="3" maximum="3" /> 
+                        </p:inputText> 
                         <p:messages for="csc"/>
 
                     </p:panelGrid> 

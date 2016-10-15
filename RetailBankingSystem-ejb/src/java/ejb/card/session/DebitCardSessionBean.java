@@ -9,8 +9,14 @@ import ejb.card.entity.DebitCard;
 import ejb.card.entity.DebitCardType;
 import ejb.deposit.entity.BankAccount;
 import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -47,7 +53,15 @@ public class DebitCardSessionBean implements DebitCardSessionBeanLocal {
         debitCard.setCardNum(cardNum);
 
         String debitCardSecurityCode = generateCardSecurityCode();
-        debitCard.setCardSecurityCode(debitCardSecurityCode);
+        try {
+            System.out.println("debug cardNum:"+cardNum);
+            System.out.println("debug csc initial:"+debitCardSecurityCode);
+            String hashedDebitCardSecurityCode = md5Hashing(debitCardSecurityCode + cardNum.substring(0, 3));
+            System.out.println("debug:"+hashedDebitCardSecurityCode);
+            debitCard.setCardSecurityCode(hashedDebitCardSecurityCode);
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(DebitCardSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
 //        String[] applicationDateToString = changeDateFormat(applicationDate);
         String[] applicationDateToString = applicationDate.split("/");
@@ -58,7 +72,12 @@ public class DebitCardSessionBean implements DebitCardSessionBeanLocal {
         String expiryYear = String.valueOf(expiryYearToInt);
         String debitCardExpiryDate = applicationMonth + "/" + expiryYear;
 
-        debitCard.setCardExpiryDate(debitCardExpiryDate);
+        debitCard.setDebitCardExpiryDate(debitCardExpiryDate);
+        
+        debitCard.setStatus("not activated");
+        
+        debitCard.setTransactionLimit(500);
+        
 
         em.persist(debitCard);
         return "success";
@@ -67,23 +86,35 @@ public class DebitCardSessionBean implements DebitCardSessionBeanLocal {
 
     @Override
     public String debitCardNumValiadation(String debitCardNum, String cardHolderName, String debitCardSecurityCode) {
-        //check if the debitCard exist by debit card number
-        if (getCardByCardNum(debitCardNum) == null) {
-            return "debit card not exist";
-        } else {
-            DebitCard findDebitCard = getCardByCardNum(debitCardNum);
-            System.out.println("debug!! card holder name "+findDebitCard.getCardHolderName());
-            if (!findDebitCard.getCardHolderName().equals(cardHolderName)) {
-                return "cardHolderName not match";
+        try {
+            //check if the debitCard exist by debit card number
+            if (getCardByCardNum(debitCardNum) == null) {
+                return "debit card not exist";
             } else {
-                if (!findDebitCard.getCardSecurityCode().equals(debitCardSecurityCode)) {
-                    return "csc not match";
+                DebitCard findDebitCard = getCardByCardNum(debitCardNum);
+                System.out.println("debug!! card holder name " + findDebitCard.getCardHolderName());
+                if (!findDebitCard.getCardHolderName().equals(cardHolderName)) {
+                    return "cardHolderName not match";
                 } else {
-                    return "valid";
-                }
-            }//card holder name match
+                    String hashedCSC;
+                    System.out.println("debug check hashed csc - csc:"+debitCardSecurityCode);
+                    System.out.println("debug check hashed csc - debitCardNum:"+debitCardNum);
+                    hashedCSC = md5Hashing(debitCardSecurityCode + debitCardNum.substring(0, 3));
+                    System.out.println("debug check hashed csc:"+hashedCSC);
+                    if (!findDebitCard.getCardSecurityCode().equals(hashedCSC)) {
+                        return "csc not match";
+                    } else {
+                        findDebitCard.setStatus("activated");
+                        return "valid";
+                    }
 
-        }//debit card exist
+                }//card holder name match
+
+            }//debit card exist
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(DebitCardSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
     private BankAccount findDepositAccountByAccountNum(String bankAccountNum) {
@@ -97,15 +128,32 @@ public class DebitCardSessionBean implements DebitCardSessionBeanLocal {
     private String generateCardNum() {
         System.out.println("*");
         System.out.println("****** card/DebitCardSessionBean: generateDebitCardNumber() ******");
-        SecureRandom random = new SecureRandom();
-        String cardNumber = new BigInteger(48, random).toString(8);
-
+//        SecureRandom random = new SecureRandom();
+//        String cardNumber = new BigInteger(48, random).toString(8);
+//
+//        while (getCardByCardNum(cardNumber) != null) {
+//            cardNumber = new BigInteger(48, random).toString(8);
+//        }
+        String cardNumber = generateNdigitNumber(16);
+        //check duplicate
         while (getCardByCardNum(cardNumber) != null) {
-            cardNumber = new BigInteger(48, random).toString(8);
+            cardNumber = generateNdigitNumber(16);
         }
 
-        System.out.println("****** card/DebitCardSessionBean: generateDebitCardNumber(): debit card number generated");
+        System.out.println("****** card/DebitCardSessionBean: generateDebitCardNumber(): debit card number generated" + cardNumber);
         return cardNumber;
+
+    }
+
+    private String generateNdigitNumber(int n) {
+        Random rnd = new Random();
+
+        final char[] ch = new char[n];
+        for (int i = 0; i < n; i++) {
+            ch[i] = (char) ('0' + (i == 0 ? rnd.nextInt(9) + 1 : rnd.nextInt(10)));
+        }
+        String nDigitNumber = String.valueOf(ch);
+        return nDigitNumber;
     }
 
     private DebitCard getCardByCardNum(String cardNum) {
@@ -132,23 +180,13 @@ public class DebitCardSessionBean implements DebitCardSessionBeanLocal {
         }
     }
 
-//change date to string
-//    private String[] changeDateFormat(Date date) {
-//        String dateToString = date.toString();
-//        String[] changedDate = dateToString.split("/");
-//        return changedDate;
-//    }
     private String generateCardSecurityCode() {
         System.out.println("*");
         System.out.println("****** card/DebitCardSessionBean: generateCardSecurityCode() ******");
-        SecureRandom random = new SecureRandom();
-        String csc = new BigInteger(9, random).toString(8);
+        //no need to check duplicate for debit card security code
+        String csc = generateNdigitNumber(3);
 
-        while (getCardBySecurityCode(csc) != null) {
-            csc = new BigInteger(9, random).toString(8);
-        }
-
-        System.out.println("****** card/DebitCardSessionBean: generateCardSecurityCode(): debit CSC generated");
+        System.out.println("****** card/DebitCardSessionBean: generateCardSecurityCode(): debit CSC generated " + csc);
         return csc;
     }
 
@@ -167,15 +205,15 @@ public class DebitCardSessionBean implements DebitCardSessionBeanLocal {
 
     @Override
     public String checkDebitCardTypeForDepositAccount(String bankAccountNum, String cardTypeName) {
-        System.out.println("debug debitCardsOfType "+cardTypeName);
-        System.out.println("debug debitCardsOfAccount "+bankAccountNum);
-        
+        System.out.println("debug debitCardsOfType " + cardTypeName);
+        System.out.println("debug debitCardsOfAccount " + bankAccountNum);
+
         BankAccount depositAccount = findDepositAccountByAccountNum(bankAccountNum);
-        System.out.println("debug depositAccount "+depositAccount);
+        System.out.println("debug depositAccount " + depositAccount);
         DebitCardType debitCardType = findCardTypeByTypeName(cardTypeName);
-        System.out.println("debug debit card type "+debitCardType);
-        System.out.println("debug debitCardsOfType "+debitCardType.getDebitCards());
-        System.out.println("debug debitCardsOfAccount"+depositAccount.getDebitCards());
+        System.out.println("debug debit card type " + debitCardType);
+        System.out.println("debug debitCardsOfType " + debitCardType.getDebitCards());
+        System.out.println("debug debitCardsOfAccount" + depositAccount.getDebitCards());
         if (debitCardType.getDebitCards() == null || depositAccount.getDebitCards() == null) {
             return "not existing";
         } else {
@@ -191,5 +229,11 @@ public class DebitCardSessionBean implements DebitCardSessionBeanLocal {
 
             return "not existing";
         }
+    }
+
+    private String md5Hashing(String stringToHash) throws NoSuchAlgorithmException {
+        System.out.println("md5 hashing- string to hash "+stringToHash);
+        MessageDigest md = MessageDigest.getInstance("MD5");
+        return Arrays.toString(md.digest(stringToHash.getBytes()));
     }
 }

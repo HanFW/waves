@@ -13,6 +13,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -29,6 +30,9 @@ public class DebitCardManagementSessionBean implements DebitCardManagementSessio
     // "Insert Code > Add Business Method")
     @PersistenceContext
     private EntityManager em;
+    
+    @EJB
+    private DebitCardSessionBeanLocal debitCardSessionBeanLocal;
 
     @Override
     public String CancelDebitCard(String debitCardNum, String debitCardPassword) {
@@ -64,6 +68,56 @@ public class DebitCardManagementSessionBean implements DebitCardManagementSessio
         return null;
 
     }
+    
+    @Override
+    public String reportDebitCardLoss(String debitCardNum, String debitCardPassword, String reportLossTime){
+        
+          if (getCardByCardNum(debitCardNum) == null) {
+            return "debit card not exist";
+        } else {
+            DebitCard findDebitCard = getCardByCardNum(debitCardNum);
+            String debitCardPwd = debitCardPassword;
+
+            //check if pwd matches
+            String hashedInputPwd;
+            try {
+                hashedInputPwd = md5Hashing(debitCardPwd + findDebitCard.getDebitCardNum().substring(0, 3));
+
+                if (!findDebitCard.getDebitCardPwd().equals(hashedInputPwd)) {
+                    return "wrong pwd";
+                } else {
+                    //cancel debit card
+                    BankAccount depositAccount = findDebitCard.getBankAccount();
+                    DebitCardType debitCardType = findDebitCard.getDebitCardType();
+                    
+                    //store debit card info before removing the card & for later use to issue a new debit card
+                    String bankAccountNum=depositAccount.getBankAccountNum();
+                    String cardHolderName=findDebitCard.getCardHolderName();
+                    String cardTypeName=debitCardType.getDebitCardTypeName();
+                    String applicationDate=reportLossTime;
+                    
+                    depositAccount.removeDebitCard(findDebitCard);
+                    debitCardType.removeDebitCard(findDebitCard);
+
+                    em.remove(findDebitCard);
+                    
+                    //issue a new debit card
+                    debitCardSessionBeanLocal.createDebitCard(bankAccountNum, cardHolderName,applicationDate,cardTypeName);
+                    System.out.println("Debit Card management session bean: issue a new card after reporting debit card loss");
+                    
+                    return "success";
+
+                }
+            } catch (NoSuchAlgorithmException ex) {
+                Logger.getLogger(DebitCardManagementSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+        return null;
+
+    }
+    
+   
 
     private DebitCard getCardByCardNum(String cardNum) {
         Query query = em.createQuery("SELECT d FROM DebitCard d WHERE d.debitCardNum = :cardNum");

@@ -12,9 +12,9 @@ import javax.ejb.Local;
  * @author Jingyuan
  */
 @Local
-public interface DebitCardManagementSessionBeanLocal {
-    public String CancelDebitCard(String debitCardNum, String debitCardPwd);
+public interface DebitCardTransactionSessionBeanLocal {
     
-    public String reportDebitCardLoss(String debitCardNum, String debitCardPwd, String reportLossTime);
-    
+   public void setTransactionLimit(String selectedDebitCard, int newTransactionLimit);  
+   
+   public int getTransactionLimitByDebitCardNum(String selectedDebitCard);
 }

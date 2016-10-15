@@ -1,0 +1,161 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/onlineBankingTemplate.xhtml"
+                xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
+    <ui:define name="content">
+
+        <h:body>
+
+            <div align="center">
+                <h:form>
+                    <p:panel>
+                        <p:outputLabel value="Welcome "/>
+                        <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
+                    </p:panel>
+
+                    <p:growl id="growl" showDetail="true" globalOnly="true"/>
+                    <p:wizard widgetVar ="changeTransactionLimitWizard" flowListener="#{customerApplyDebitCardManagedBean.onFlowProcess}" class="ui-lg-12" showNavBar="false">
+
+                        <p:tab id="inputDetails">
+
+                            <h:panelGrid columns="1">
+                                <p:steps activeIndex="0">
+                                    <p:menuitem value="1. Input Details" />
+                                    <p:menuitem value="2. Verify Details" />
+                                    <p:menuitem value="3. Completion" />
+                                </p:steps>
+                            </h:panelGrid>
+
+                            <p:messages autoUpdate="true"/>   
+
+                            <h:panelGrid columns="1" class="ui-lg-6">                          
+
+                                <p:outputLabel style="font-size: 50px;font-weight: bold" value="Change Debit Card Limit"/>
+                                <br/>
+                                <br/>
+
+                                <p:outputLabel style="font-size: 20px" value="Manage your daily transaction limit for your Visa and Mastercard Debit Card."/>
+                                <br/>
+
+                                <p:outputLabel style="font-size: 40px" value="I would like to set a limit for"/>
+                                <br/>
+
+                            </h:panelGrid>
+
+                            <p:panelGrid columns="2" class="ui-lg-12" style="border: none">
+
+                                <p:outputLabel value="Debit Card"/>
+                                <p:selectOneMenu id="selectDebitCard" required="true" requiredMessage="Please select a debit card" style="text-align:left" value="#{customerSetTransactionLimitForDebitCard.selectedDebitCard}">
+                                    <f:selectItem itemLabel="Please select..." itemValue=""/>
+                                    <f:selectItems value="#{customerSetTransactionLimitForDebitCard.debitCards}"/> 
+                                    <p:ajax listener="#{customerSetTransactionLimitForDebitCard.findExistingLimit}" update="existingTransactionLimit"/>
+                                </p:selectOneMenu>
+                                <!--<p:messages for="selectDebitCard"/>-->
+
+
+                                <p:outputLabel value="Existing Daily Card Limit: S$"/>
+                                <p:outputLabel id="existingTransactionLimit" value="#{customerSetTransactionLimitForDebitCard.existingTransactionLimit}"/>
+
+
+                                <p:outputLabel value="New Daily Card Limit: S$"/>
+                                <!--                                <p:outputLabel value="S$"/>-->
+                                <p:selectOneMenu id="selectNewTransactionLimit" value="#{customerSetTransactionLimitForDebitCard.newTransactionLimit}">
+                                    <f:selectItem itemLabel="Please Select ..." itemValue=""/>
+                                    <f:selectItem itemLabel="5000" itemValue="5000"/>
+                                    <f:selectItem itemLabel="2000" itemValue="2000"/>
+                                    <f:selectItem itemLabel="1000" itemValue="1000"/>
+                                    <f:selectItem itemLabel="500" itemValue="500"/>
+                                    <f:selectItem itemLabel="0" itemValue="0"/>
+                                </p:selectOneMenu>
+
+
+                            </p:panelGrid>
+
+                            <h:panelGrid columns="2" class="ui-lg-6"> 
+                                <p:commandButton  value="Cancel" icon="ui-icon-arrow-1-e" iconPos="right" actionListener="#{customerSetTransactionLimitForDebitCard.cancelUpdateTransactionLimit}"/>
+                                <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('changeTransactionLimitWizard').next();" />
+                            </h:panelGrid>
+
+                        </p:tab>
+
+                        <p:tab id="verifyDetails">
+                            <h:panelGrid columns="1">
+                                <p:steps activeIndex="1">
+                                    <p:menuitem value="1. Input Details" />
+                                    <p:menuitem value="2. Verify Details" />
+                                    <p:menuitem value="3. Completion" />
+                                </p:steps>
+                            </h:panelGrid> 
+
+                            <h:panelGrid>
+
+                                <p:outputLabel style="font-size: 60px;font-weight: bold" value="Change Debit Card Limit"/>
+                                <br/>
+                                <br/>
+
+                                <p:outputLabel style="font-size: 20px" value="Please ensure that the details below are correct and click 'Submit' to complete this transaction."/>
+                                <br/>
+
+                                <p:outputLabel style="font-size: 40px" value="I would like to set a limit for"/>
+                                <br/>
+
+                            </h:panelGrid>
+
+                            <h:panelGrid columns="2" class="ui-lg-6">  
+
+                                <p:outputLabel value="Debit Card: "/>
+                                <p:outputLabel value="#{customerSetTransactionLimitForDebitCard.selectedDebitCard}"/>
+
+                                <p:outputLabel value="Existing Daily Card Limit: "/>
+                                <p:outputLabel value="#{customerSetTransactionLimitForDebitCard.existingTransactionLimit}"/>
+
+                                <p:outputLabel value="New Daily Card Limit: "/>
+                                <p:outputLabel value="#{customerSetTransactionLimitForDebitCard.newTransactionLimit}"/>
+
+                            </h:panelGrid>
+
+                            <h:panelGrid columns="2" class="ui-lg-6"> 
+                                <p:commandButton  value="Cancel" icon="ui-icon-arrow-1-w" iconPos="left" actionListener="#{customerSetTransactionLimitForDebitCard.cancelUpdateTransactionLimit}"/>
+                                <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" actionListener="#{customerSetTransactionLimitForDebitCard.updateTransactionLimit}"/>
+                            </h:panelGrid>
+
+                        </p:tab>
+
+                        <p:tab id="completion">
+                            <h:panelGrid columns="1">
+                                <p:steps activeIndex="2">
+                                    <p:menuitem value="1. Input Details" />
+                                    <p:menuitem value="2. Verify Details" />
+                                    <p:menuitem value="3. Completion" />
+                                </p:steps>
+                            </h:panelGrid>
+
+                            <p:messages autoUpdate="true"/> 
+
+                            <h:outputText style="font-size: 40px" value="Change Successful!"/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <h:outputText value="Your transaction limit has been succesfully changed!"/>
+                            <br/>
+                            <br/>
+                            <br/>
+
+                        </p:tab>
+
+
+
+                    </p:wizard>
+
+                </h:form>
+            </div>
+        </h:body>
+
+    </ui:define>
+</ui:composition>
+
