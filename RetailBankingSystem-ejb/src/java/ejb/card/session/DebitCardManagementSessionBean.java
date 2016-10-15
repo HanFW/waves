@@ -41,7 +41,7 @@ public class DebitCardManagementSessionBean implements DebitCardManagementSessio
             //check if pwd matches
             String hashedInputPwd;
             try {
-                hashedInputPwd = md5Hashing(debitCardPwd + findDebitCard.getDebitCardNum().substring(0, 3));
+                hashedInputPwd = md5Hashing(debitCardPwd + findDebitCard.getCardNum().substring(0, 3));
 
                 if (!findDebitCard.getDebitCardPwd().equals(hashedInputPwd)) {
                     return "wrong pwd";
