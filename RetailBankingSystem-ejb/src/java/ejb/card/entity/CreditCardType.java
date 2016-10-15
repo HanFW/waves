@@ -37,6 +37,7 @@ public class CreditCardType implements Serializable {
     private double latePaymentCharge;
     private double interestCharge;
     private double minSum;
+    private double maxLiability;
 
     public Long getCreditCardTypeId() {
         return creditCardTypeId;
@@ -117,6 +118,16 @@ public class CreditCardType implements Serializable {
     public void setMinSum(double minSum) {
         this.minSum = minSum;
     }
+
+    public double getMaxLiability() {
+        return maxLiability;
+    }
+
+    public void setMaxLiability(double maxLiability) {
+        this.maxLiability = maxLiability;
+    }
+    
+    
 
     
 

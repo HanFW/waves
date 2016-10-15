@@ -27,6 +27,7 @@ public class Card implements Serializable {
     private String cardHolderName;
     private String cardExpiryDate;
     private String cardSecurityCode;
+    private String status;
 
     public Long getCardId() {
         return cardId;
@@ -67,6 +68,15 @@ public class Card implements Serializable {
     public void setCardSecurityCode(String cardSecurityCode) {
         this.cardSecurityCode = cardSecurityCode;
     }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+    
 
     @Override
     public int hashCode() {

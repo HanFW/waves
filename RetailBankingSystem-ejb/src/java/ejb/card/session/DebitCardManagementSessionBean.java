@@ -81,7 +81,7 @@ public class DebitCardManagementSessionBean implements DebitCardManagementSessio
             //check if pwd matches
             String hashedInputPwd;
             try {
-                hashedInputPwd = md5Hashing(debitCardPwd + findDebitCard.getDebitCardNum().substring(0, 3));
+                hashedInputPwd = md5Hashing(debitCardPwd + findDebitCard.getCardNum().substring(0, 3));
 
                 if (!findDebitCard.getDebitCardPwd().equals(hashedInputPwd)) {
                     return "wrong pwd";
@@ -120,7 +120,7 @@ public class DebitCardManagementSessionBean implements DebitCardManagementSessio
    
 
     private DebitCard getCardByCardNum(String cardNum) {
-        Query query = em.createQuery("SELECT d FROM DebitCard d WHERE d.debitCardNum = :cardNum");
+        Query query = em.createQuery("SELECT d FROM DebitCard d WHERE d.cardNum = :cardNum");
         query.setParameter("cardNum", cardNum);
 
         if (query.getResultList().isEmpty()) {

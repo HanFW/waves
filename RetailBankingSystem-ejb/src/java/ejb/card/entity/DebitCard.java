@@ -29,19 +29,8 @@ public class DebitCard extends Card implements Serializable {
 
     
     private String debitCardPwd;
-    private String debitCardExpiryDate;
-    private String cardHolderName;
-    private String cardSecurityCode;
-    private String status;
     private int transactionLimit;
 
-    public Long getDebitCardId() {
-        return debitCardId;
-    }
-
-    public void setDebitCardId(Long debitCardId) {
-        this.debitCardId = debitCardId;
-    }
 
     public BankAccount getBankAccount() {
         return bankAccount;
@@ -68,14 +57,6 @@ public class DebitCard extends Card implements Serializable {
         this.debitCardType = debitCardType;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     public int getTransactionLimit() {
         return transactionLimit;
     }
@@ -84,29 +65,6 @@ public class DebitCard extends Card implements Serializable {
         this.transactionLimit = transactionLimit;
     }     
 
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (debitCardId != null ? debitCardId.hashCode() : 0);
-        return hash;
-    }
 
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof DebitCard)) {
-            return false;
-        }
-        DebitCard other = (DebitCard) object;
-        if ((this.debitCardId == null && other.debitCardId != null) || (this.debitCardId != null && !this.debitCardId.equals(other.debitCardId))) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public String toString() {
-        return "ejb.card.entity.DebitCard[ id=" + debitCardId + " ]";
-    }
 
 }

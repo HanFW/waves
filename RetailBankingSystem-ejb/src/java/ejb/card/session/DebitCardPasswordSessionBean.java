@@ -46,7 +46,7 @@ public class DebitCardPasswordSessionBean implements DebitCardPasswordSessionBea
     }
 
     private DebitCard getCardByCardNum(String cardNum) {
-        Query query = em.createQuery("SELECT d FROM DebitCard d WHERE d.debitCardNum = :cardNum");
+        Query query = em.createQuery("SELECT d FROM DebitCard d WHERE d.cardNum = :cardNum");
         query.setParameter("cardNum", cardNum);
 
         if (query.getResultList().isEmpty()) {
