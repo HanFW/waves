@@ -40,6 +40,7 @@ public class DebitCard implements Serializable {
     private String cardHolderName;
     private String cardSecurityCode;
     private String status;
+    private int transactionLimit;
 
     public Long getDebitCardId() {
         return debitCardId;
@@ -112,7 +113,14 @@ public class DebitCard implements Serializable {
     public void setStatus(String status) {
         this.status = status;
     }
-       
+
+    public int getTransactionLimit() {
+        return transactionLimit;
+    }
+
+    public void setTransactionLimit(int transactionLimit) {
+        this.transactionLimit = transactionLimit;
+    }     
 
     @Override
     public int hashCode() {
