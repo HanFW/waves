@@ -44,7 +44,7 @@ public class DebitCardSessionBean implements DebitCardSessionBeanLocal {
         debitCard.setDebitCardType(debitCardType);
 
         String cardNum = generateCardNum();
-        debitCard.setDebitCardNum(cardNum);
+        debitCard.setCardNum(cardNum);
 
         String debitCardSecurityCode = generateCardSecurityCode();
         debitCard.setCardSecurityCode(debitCardSecurityCode);
@@ -58,7 +58,7 @@ public class DebitCardSessionBean implements DebitCardSessionBeanLocal {
         String expiryYear = String.valueOf(expiryYearToInt);
         String debitCardExpiryDate = applicationMonth + "/" + expiryYear;
 
-        debitCard.setDebitCardExpiryDate(debitCardExpiryDate);
+        debitCard.setCardExpiryDate(debitCardExpiryDate);
 
         em.persist(debitCard);
         return "success";
