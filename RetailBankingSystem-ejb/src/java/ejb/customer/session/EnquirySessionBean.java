@@ -41,7 +41,6 @@ public class EnquirySessionBean implements EnquirySessionBeanLocal {
     public List<EnquiryCase> getEnquiryByCaseId(Long caseId) {
         Query query = entityManager.createQuery("SELECT ec FROM EnquiryCase ec WHERE ec.caseId = :caseId");
         query.setParameter("caseId", caseId);
-
         return query.getResultList();
     }
     
@@ -193,7 +192,9 @@ public class EnquirySessionBean implements EnquirySessionBeanLocal {
 
         if (customerBasics.isEmpty()) {
             return "No Customer is detected";
-        } else {
+        } else if (detail.isEmpty()) {
+            return "Please provide enquiry details";
+        }else {
             CustomerBasic customerBasic = (CustomerBasic) customerBasics.get(0);
             enquiryCase.setCustomerBasic(customerBasic);
             customerBasic.getEnquiryCase().add(enquiryCase);
