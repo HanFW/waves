@@ -49,8 +49,8 @@ public class CustomerActivateDebitCardManagedBean implements Serializable {
 
     private String customerOTP;
 
-    private Integer debitCardPwd;
-    private Integer debitCardPwd1;
+    private int debitCardPwd;
+    private int debitCardPwd1;
 
     public CustomerActivateDebitCardManagedBean() {
     }
@@ -85,24 +85,21 @@ public class CustomerActivateDebitCardManagedBean implements Serializable {
         ExternalContext ec = context.getExternalContext();
         FacesMessage message = null;
 
-        System.out.println("pwd1 "+debitCardPwd);
-        System.out.println("pwd2 "+debitCardPwd1);
-        if (debitCardPwd != debitCardPwd1) {
-            message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Password does not match!", null);
-            context.addMessage(null, message);
-        }else{
-
         String debitCardNumber = (String) ec.getSessionMap().get("debitCardNumber");
 
-        System.out.println("test " + debitCardPwd);
-        System.out.println("test 2 " + debitCardNumber);
+        System.out.println("pwd1 " + debitCardPwd);
+        System.out.println("pwd2 " + debitCardPwd1);
+        if (debitCardPwd != debitCardPwd1) {
+            message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Password does not match!", null);
+            context.addMessage(null, message);
+        } else {
 
-        String debitCardPwdToString = debitCardPwd.toString();
-        debitCardPasswordSessionBeanLocal.setPassword(debitCardPwdToString, debitCardNumber);
+            String debitCardPwdToString = String.valueOf(debitCardPwd);
+            debitCardPasswordSessionBeanLocal.setPassword(debitCardPwdToString, debitCardNumber);
 
-        System.out.println("====== card/debitCard/CustomerActivateDebitCardManagedBean: set password for debit Card");
-        message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Password has been successfully set for your debit card!", null);
-        context.addMessage(null, message);
+            System.out.println("====== card/debitCard/CustomerActivateDebitCardManagedBean: set password for debit Card");
+            message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Password has been successfully set for your debit card!", null);
+            context.addMessage(null, message);
         }
 
     }
@@ -188,19 +185,19 @@ public class CustomerActivateDebitCardManagedBean implements Serializable {
         this.customerOTP = customerOTP;
     }
 
-    public Integer getDebitCardPwd() {
+    public int getDebitCardPwd() {
         return debitCardPwd;
     }
 
-    public void setDebitCardPwd(Integer debitCardPwd) {
+    public void setDebitCardPwd(int debitCardPwd) {
         this.debitCardPwd = debitCardPwd;
     }
 
-    public Integer getDebitCardPwd1() {
+    public int getDebitCardPwd1() {
         return debitCardPwd1;
     }
 
-    public void setDebitCardPwd1(Integer debitCardPwd1) {
+    public void setDebitCardPwd1(int debitCardPwd1) {
         this.debitCardPwd1 = debitCardPwd1;
     }
 
