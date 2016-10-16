@@ -32,12 +32,12 @@ public class CreditCardType implements Serializable {
     private String creditCardTypeName;
     private String cardNetwork;
     private String rebateType;
-    private double rebate;
-    private double annualFee;
-    private double latePaymentCharge;
-    private double interestCharge;
-    private double minSum;
-    private double maxLiability;
+    private Double rebate;
+    private Double annualFee;
+    private Double latePaymentCharge;
+    private Double interestCharge;
+    private Double minSum;
+    private Double maxLiability;
 
     public Long getCreditCardTypeId() {
         return creditCardTypeId;
@@ -79,53 +79,55 @@ public class CreditCardType implements Serializable {
         this.rebateType = rebateType;
     }
 
-    public double getRebate() {
+    public Double getRebate() {
         return rebate;
     }
 
-    public void setRebate(double rebate) {
+    public void setRebate(Double rebate) {
         this.rebate = rebate;
     }
 
-    public double getAnnualFee() {
+    public Double getAnnualFee() {
         return annualFee;
     }
 
-    public void setAnnualFee(double annualFee) {
+    public void setAnnualFee(Double annualFee) {
         this.annualFee = annualFee;
     }
 
-    public double getLatePaymentCharge() {
+    public Double getLatePaymentCharge() {
         return latePaymentCharge;
     }
 
-    public void setLatePaymentCharge(double latePaymentCharge) {
+    public void setLatePaymentCharge(Double latePaymentCharge) {
         this.latePaymentCharge = latePaymentCharge;
     }
 
-    public double getInterestCharge() {
+    public Double getInterestCharge() {
         return interestCharge;
     }
 
-    public void setInterestCharge(double interestCharge) {
+    public void setInterestCharge(Double interestCharge) {
         this.interestCharge = interestCharge;
     }
 
-    public double getMinSum() {
+    public Double getMinSum() {
         return minSum;
     }
 
-    public void setMinSum(double minSum) {
+    public void setMinSum(Double minSum) {
         this.minSum = minSum;
     }
 
-    public double getMaxLiability() {
+    public Double getMaxLiability() {
         return maxLiability;
     }
 
-    public void setMaxLiability(double maxLiability) {
+    public void setMaxLiability(Double maxLiability) {
         this.maxLiability = maxLiability;
     }
+
+    
     
     
 

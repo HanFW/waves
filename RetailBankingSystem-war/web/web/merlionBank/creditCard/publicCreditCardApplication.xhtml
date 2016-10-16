@@ -26,6 +26,7 @@
                     </h:panelGrid>
 
                     <p:panelGrid>
+                        <p:messages />
                         <p:outputLabel style="font-weight: bold" for="customerSalutation" value="Salutation: " />
                         <p:selectOneMenu id="customerSalutation" value="#{publicCreditCardApplicationManagedBean.customerSalutation}" 
                                          required="true" requiredMessage="Required Field">
@@ -52,7 +53,7 @@
                         <p:outputLabel for="customerDateOfBirth" style="font-weight: bold" value="Date of Birth: "/>
                         <p:calendar id="customerDateOfBirth" value="#{publicCreditCardApplicationManagedBean.customerDateOfBirth}" 
                                     showOn="button" locale="de" navigator="true" pattern="dd/MM/yyyy" 
-                                    yearRange="c-200:c+200" required="true" requiredMessage="Required Field"/>
+                                    yearRange="c-200:c" required="true" requiredMessage="Required Field" />
                         <p:message for="customerDateOfBirth"/>
 
                         <p:outputLabel for="customerGender" style="font-weight: bold" value="Gender: "/>
@@ -302,7 +303,7 @@
                                          value="#{publicCreditCardApplicationManagedBean.customerIdentificationNum}" requiredMessage="Required Field"/>
                             <p:message for="customerPassport" />
                         </p:panel>
-                        
+
                         <p:outputLabel for="customerCountryOfResidence" style="font-weight: bold" value="Country of Residence: " />
                         <p:selectOneMenu id="customerCountryOfResidence" value="#{publicCreditCardApplicationManagedBean.customerCountryOfResidence}" 
                                          required="true" requiredMessage="Required Field">
@@ -583,7 +584,7 @@
 
                         <p:outputLabel for="customerNumOfDepedents" style="font-weight: bold" value="Number of Dependents: "/>
                         <p:selectOneMenu id="customerNumOfDepedents" value="#{publicCreditCardApplicationManagedBean.customerNumOfDependents}"
-                                         required="true" requiredMessage="Required Field">
+                                         required="true" requiredMessage="Required Field" >
                             <f:selectItem itemLabel="Please Select" itemValue="" />
                             <f:selectItem itemLabel="0" itemValue="0" />
                             <f:selectItem itemLabel="1" itemValue="1" />
@@ -661,7 +662,7 @@
                     </h:panelGrid>
                 </p:tab>
 
-                <p:tab id="employement">
+                <p:tab id="employment">
                     <h:panelGrid columns="1">
                         <p:steps activeIndex="2">
                             <p:menuitem value="Basic Information" />
@@ -673,6 +674,7 @@
                     </h:panelGrid>
 
                     <p:panelGrid>
+                        <p:messages/>
                         <p:outputLabel for="customerEmploymentStatus" style="font-weight: bold" value="Employment Status: "/>
                         <p:selectOneMenu id="customerEmploymentStatus" value="#{publicCreditCardApplicationManagedBean.customerEmploymentStatus}"
                                          required="true" requiredMessage="Required Field">
@@ -757,8 +759,7 @@
 
                         <p:outputLabel for="customerMonthlyFixedIncome" style="font-weight: bold" value="Monthly Fixed Income(SGD): "/>
                         <p:inputText id="customerMonthlyFixedIncome" value="#{publicCreditCardApplicationManagedBean.customerMonthlyFixedIncome}"
-                                       required="true" requiredMessage="Required Field" converterMessage="Please enter a valid number">
-                            <f:convertNumber type="number"/>
+                                     required="true" requiredMessage="Required Field" converterMessage="Please enter a valid number">
                         </p:inputText>
                         <p:message for="customerMonthlyFixedIncome"/>
 
@@ -769,7 +770,7 @@
                         <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('hdbLoanWizard').next();"/>
                     </h:panelGrid>
                 </p:tab>
-                
+
                 <p:tab id="requests">
                     <h:panelGrid columns="1">
                         <p:steps activeIndex="3">
@@ -780,10 +781,34 @@
                             <p:menuitem value="Supporting Documents"/>
                         </p:steps>
                     </h:panelGrid>
-                    
+
                     <p:panelGrid>
-                        
+                        <p:outputLabel for="customerPreferredName" style="font-weight: bold" value="Your preferred name on your card: "/>
+                        <p:inputText id="customerPreferredName" value="#{publicCreditCardApplicationManagedBean.cardHolderName}"
+                                     required="true" requiredMessage="Required Field" validatorMessage="Sorry, the name on your card is limited to 20 characters">
+                            <f:validateLength maximum="20"/>
+                        </p:inputText>
+                        <p:message for="customerPreferredName"/>
+
+                        <p:outputLabel for="customerPreferredLimit" style="font-weight: bold" value="Do you have a preffered credit limit? "/>
+                        <p:selectOneRadio id="hasCreditLimit" value="#{publicCreditCardApplicationManagedBean.hasCreditLimit}"
+                                          required="true" requiredMessage="Please indicate your choice">
+                            <f:selectItem itemLabel="Yes" itemValue="Yes" />
+                            <f:selectItem itemLabel="No" itemValue="No" />
+                            <p:ajax event="change" update="panelCreditLimit" listener="#{publicCreditCardApplicationManagedBean.showCreditLimitPanel}"/>
+                        </p:selectOneRadio>
+                        <p:message for="hasCreditLimit"/>
+                        <p:panel style="border: none;" id="panelCreditLimit" visible="#{publicCreditCardApplicationManagedBean.creditLimitPanelVisible}">
+                            <p:inputText id="customerPreferredLimit" placeholder="Tell us your preffered credit limit" value="#{publicCreditCardApplicationManagedBean.creditLimit}"
+                                         required="#{publicCreditCardApplicationManagedBean.creditLimitPanelVisible}" requiredMessage="Required Field" converterMessage="Please enter a valid number" />
+
+                            <p:message for="customerPreferredLimit"/>
+                        </p:panel>
                     </p:panelGrid>
+                    <h:panelGrid columns="2" class="ui-lg-6"> 
+                        <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('hdbLoanWizard').back()" />
+                        <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('hdbLoanWizard').next();" />
+                    </h:panelGrid>
                 </p:tab>
 
                 <p:tab id="documents">

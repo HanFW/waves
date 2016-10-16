@@ -6,7 +6,11 @@
 package managedbean.card.customer;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Date;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import org.primefaces.event.FlowEvent;
@@ -17,7 +21,7 @@ import org.primefaces.event.FlowEvent;
  */
 @Named(value = "publicCreditCardApplicationManagedBean")
 @ViewScoped
-public class PublicCreditCardApplicationManagedBean implements Serializable{
+public class PublicCreditCardApplicationManagedBean implements Serializable {
 
     //basic information
     private String customerSalutation;
@@ -32,7 +36,7 @@ public class PublicCreditCardApplicationManagedBean implements Serializable{
     private String customerRace;
     private String customerMobile;
     private String customerEmail;
-    
+
     //personal details
     private String customerEducation;
     private String customerMaritalStatus;
@@ -44,7 +48,7 @@ public class PublicCreditCardApplicationManagedBean implements Serializable{
     private String customerResidentialStatus;
     private String customerResidentialType;
     private Integer customerLengthOfResidence;
-    
+
     //employment details
     private String customerEmploymentStatus;
     private String customerCompanyName;
@@ -56,11 +60,13 @@ public class PublicCreditCardApplicationManagedBean implements Serializable{
     private String customerCurrentPositionOthers;
     private String customerCurrentJobTitle;
     private Integer customerLengthOfCurrentJob;
-    private Double customerMonthlyFixedIncome;
-    
+    private BigDecimal customerMonthlyFixedIncome;
+
     //credit card details
-    private Double creditLimit;
+    private BigDecimal creditLimit;
+    private String hasCreditLimit;
     private String creditCardTypeName;
+    private String cardHolderName;
 
     //basic information
     private boolean salutationPanelVisible;
@@ -68,16 +74,66 @@ public class PublicCreditCardApplicationManagedBean implements Serializable{
     private boolean nationalityOthersPanelVisible;
     private boolean nricPanelVisible;
     private boolean passportPanelVisible;
-    
+
     //personal details
     private boolean industryTypePanelVisible;
     private boolean currentPositionPanelVisible;
+    private boolean creditLimitPanelVisible;
 
     public PublicCreditCardApplicationManagedBean() {
     }
 
     public String onFlowProcess(FlowEvent event) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        FacesMessage message = null;
+        if (event.getOldStep().equals("basic")) {
+            if (getAge(customerDateOfBirth) < 21) {
+                message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Credit card applicant must be at least 21 years old", null);
+                context.addMessage(null, message);
+                return event.getOldStep();
+            }
+        }
+
+        if (event.getOldStep().equals("employment")) {
+            if (customerNationality.equals("Singapore")) {
+                if (customerMonthlyFixedIncome.doubleValue() * 12 < 30000) {
+                    message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Singaporean must earn at least $30,000 annually to apply credit card", null);
+                    context.addMessage(null, message);
+                    return event.getOldStep();
+                }
+            } else if (customerIsPR.equals("Yes")) {
+                if (customerMonthlyFixedIncome.doubleValue() * 12 < 30000) {
+                    message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Singapore PR must earn at least $30,000 annually to apply credit card", null);
+                    context.addMessage(null, message);
+                    return event.getOldStep();
+                }
+            } else {
+                if (customerMonthlyFixedIncome.doubleValue() * 12 < 45000) {
+                    message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Foreigner must earn at least $45,000 annually to apply credit card", null);
+                    context.addMessage(null, message);
+                    return event.getOldStep();
+                }
+            }
+        }
+
         return event.getNewStep();
+
+    }
+
+    private int getAge(Date customerDateOfBirth) {
+        Date now = new Date();
+        int yearDif = now.getYear() - customerDateOfBirth.getYear();
+        int monthDif = now.getMonth() - customerDateOfBirth.getMonth();
+        int dayDif = now.getDate() - customerDateOfBirth.getDate();
+        if (monthDif < 0) {
+            yearDif--;
+        }
+        if (monthDif == 0) {
+            if (dayDif < 0) {
+                yearDif--;
+            }
+        }
+        return yearDif;
     }
 
     public void showSalutationPanel() {
@@ -114,13 +170,20 @@ public class PublicCreditCardApplicationManagedBean implements Serializable{
             nricPanelVisible = false;
         }
     }
-    
-    public void showIndustryTypePanel(){
+
+    public void showIndustryTypePanel() {
         industryTypePanelVisible = customerIndustryType.equals("Others");
     }
-    
-    public void showCurrentPositionPanel(){
+
+    public void showCurrentPositionPanel() {
         currentPositionPanelVisible = customerCurrentPosition.equals("Others");
+    }
+
+    public void showCreditLimitPanel() {
+        creditLimitPanelVisible = hasCreditLimit.equals("Yes");
+        if (creditLimitPanelVisible == false) {
+            creditLimit = new BigDecimal("0");
+        }
     }
 
     public String getCustomerSalutation() {
@@ -235,14 +298,6 @@ public class PublicCreditCardApplicationManagedBean implements Serializable{
         this.customerMaritalStatus = customerMaritalStatus;
     }
 
-    public Integer getCustomerNumOfDependents() {
-        return customerNumOfDependents;
-    }
-
-    public void setCustomerNumOfDependents(Integer customerNumOfDependents) {
-        this.customerNumOfDependents = customerNumOfDependents;
-    }
-
     public String getCustomerStreetName() {
         return customerStreetName;
     }
@@ -289,14 +344,6 @@ public class PublicCreditCardApplicationManagedBean implements Serializable{
 
     public void setCustomerResidentialType(String customerResidentialType) {
         this.customerResidentialType = customerResidentialType;
-    }
-
-    public Integer getCustomerLengthOfResidence() {
-        return customerLengthOfResidence;
-    }
-
-    public void setCustomerLengthOfResidence(Integer customerLengthOfResidence) {
-        this.customerLengthOfResidence = customerLengthOfResidence;
     }
 
     public String getCustomerEmploymentStatus() {
@@ -371,36 +418,20 @@ public class PublicCreditCardApplicationManagedBean implements Serializable{
         this.customerCurrentJobTitle = customerCurrentJobTitle;
     }
 
-    public Integer getCustomerLengthOfCurrentJob() {
-        return customerLengthOfCurrentJob;
-    }
-
-    public void setCustomerLengthOfCurrentJob(Integer customerLengthOfCurrentJob) {
-        this.customerLengthOfCurrentJob = customerLengthOfCurrentJob;
-    }
-
-    public Double getCustomerMonthlyFixedIncome() {
-        return customerMonthlyFixedIncome;
-    }
-
-    public void setCustomerMonthlyFixedIncome(Double customerMonthlyFixedIncome) {
-        this.customerMonthlyFixedIncome = customerMonthlyFixedIncome;
-    }
-
-    public Double getCreditLimit() {
-        return creditLimit;
-    }
-
-    public void setCreditLimit(Double creditLimit) {
-        this.creditLimit = creditLimit;
-    }
-
     public String getCreditCardTypeName() {
         return creditCardTypeName;
     }
 
     public void setCreditCardTypeName(String creditCardTypeName) {
         this.creditCardTypeName = creditCardTypeName;
+    }
+
+    public String getCardHolderName() {
+        return cardHolderName;
+    }
+
+    public void setCardHolderName(String cardHolderName) {
+        this.cardHolderName = cardHolderName;
     }
 
     public boolean isSalutationPanelVisible() {
@@ -458,5 +489,61 @@ public class PublicCreditCardApplicationManagedBean implements Serializable{
     public void setCurrentPositionPanelVisible(boolean currentPositionPanelVisible) {
         this.currentPositionPanelVisible = currentPositionPanelVisible;
     }
-    
+
+    public boolean isCreditLimitPanelVisible() {
+        return creditLimitPanelVisible;
+    }
+
+    public void setCreditLimitPanelVisible(boolean creditLimitPanelVisible) {
+        this.creditLimitPanelVisible = creditLimitPanelVisible;
+    }
+
+    public String getHasCreditLimit() {
+        return hasCreditLimit;
+    }
+
+    public void setHasCreditLimit(String hasCreditLimit) {
+        this.hasCreditLimit = hasCreditLimit;
+    }
+
+    public Integer getCustomerNumOfDependents() {
+        return customerNumOfDependents;
+    }
+
+    public void setCustomerNumOfDependents(Integer customerNumOfDependents) {
+        this.customerNumOfDependents = customerNumOfDependents;
+    }
+
+    public Integer getCustomerLengthOfResidence() {
+        return customerLengthOfResidence;
+    }
+
+    public void setCustomerLengthOfResidence(Integer customerLengthOfResidence) {
+        this.customerLengthOfResidence = customerLengthOfResidence;
+    }
+
+    public Integer getCustomerLengthOfCurrentJob() {
+        return customerLengthOfCurrentJob;
+    }
+
+    public void setCustomerLengthOfCurrentJob(Integer customerLengthOfCurrentJob) {
+        this.customerLengthOfCurrentJob = customerLengthOfCurrentJob;
+    }
+
+    public BigDecimal getCustomerMonthlyFixedIncome() {
+        return customerMonthlyFixedIncome;
+    }
+
+    public void setCustomerMonthlyFixedIncome(BigDecimal customerMonthlyFixedIncome) {
+        this.customerMonthlyFixedIncome = customerMonthlyFixedIncome;
+    }
+
+    public BigDecimal getCreditLimit() {
+        return creditLimit;
+    }
+
+    public void setCreditLimit(BigDecimal creditLimit) {
+        this.creditLimit = creditLimit;
+    }
+
 }
