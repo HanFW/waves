@@ -11,6 +11,8 @@ import ejb.customer.entity.CustomerBasic;
 import ejb.infrastructure.session.SMSSessionBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
@@ -43,9 +45,11 @@ public class CustomerActivateDebitCardManagedBean implements Serializable {
     DebitCardPasswordSessionBeanLocal debitCardPasswordSessionBeanLocal;
 
     private CustomerBasic customer;
-    private String debitCardNum;
     private String cardHolderName;
     private String debitCardSecurityCode;
+
+    private List<String> debitCards = new ArrayList<String>();
+    private String selectedDebitCard;
 
     private String customerOTP;
 
@@ -104,14 +108,6 @@ public class CustomerActivateDebitCardManagedBean implements Serializable {
 
     }
 
-    public String getDebitCardNum() {
-        return debitCardNum;
-    }
-
-    public void setDebitCardNum(String debitCardNum) {
-        this.debitCardNum = debitCardNum;
-    }
-
     public CustomerBasic getCustomerViaSessionMap() {
         FacesContext context = FacesContext.getCurrentInstance();
         customer = (CustomerBasic) context.getExternalContext().getSessionMap().get("customer");
@@ -147,6 +143,9 @@ public class CustomerActivateDebitCardManagedBean implements Serializable {
     public void checkDebitCardNum(ActionEvent event) throws IOException {
         FacesMessage message = null;
         FacesContext context = FacesContext.getCurrentInstance();
+
+        String[] debitCardInfo = selectedDebitCard.split("-");
+        String debitCardNum = debitCardInfo[1];
 
         System.out.println("check debit card num when activating debit card");
         String result = debitCardSessionBeanLocal.debitCardNumValiadation(debitCardNum, cardHolderName, debitCardSecurityCode);
@@ -199,6 +198,29 @@ public class CustomerActivateDebitCardManagedBean implements Serializable {
 
     public void setDebitCardPwd1(int debitCardPwd1) {
         this.debitCardPwd1 = debitCardPwd1;
+    }
+
+    public List<String> getDebitCards() {
+        System.out.println("test " + debitCards);
+        if (debitCards.isEmpty()) {
+
+            customer = getCustomerViaSessionMap();
+            debitCards = debitCardSessionBeanLocal.getAllNonActivatedDebitCards(customer);
+
+        }
+        return debitCards;
+    }
+
+    public void setDebitCards(List<String> debitCards) {
+        this.debitCards = debitCards;
+    }
+
+    public String getSelectedDebitCard() {
+        return selectedDebitCard;
+    }
+
+    public void setSelectedDebitCard(String selectedDebitCard) {
+        this.selectedDebitCard = selectedDebitCard;
     }
 
 }

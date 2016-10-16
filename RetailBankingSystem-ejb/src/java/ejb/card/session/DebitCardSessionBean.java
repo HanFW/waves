@@ -7,11 +7,13 @@ package ejb.card.session;
 
 import ejb.card.entity.DebitCard;
 import ejb.card.entity.DebitCardType;
+import ejb.customer.entity.CustomerBasic;
 import ejb.deposit.entity.BankAccount;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -73,7 +75,7 @@ public class DebitCardSessionBean implements DebitCardSessionBeanLocal {
         String debitCardExpiryDate = applicationMonth + "/" + expiryYear;
 
         debitCard.setCardExpiryDate(debitCardExpiryDate);
-        
+
         debitCard.setRemainingExpirationMonths(60);
 
         debitCard.setStatus("not activated");
@@ -237,5 +239,95 @@ public class DebitCardSessionBean implements DebitCardSessionBeanLocal {
         System.out.println("md5 hashing- string to hash " + stringToHash);
         MessageDigest md = MessageDigest.getInstance("MD5");
         return Arrays.toString(md.digest(stringToHash.getBytes()));
+    }
+
+    //get all debit cards of a customer
+    @Override
+    public List<String> getAllDebitCards(CustomerBasic customer) {
+        List<String> debitCards = new ArrayList();
+
+        int index = 0;
+        System.out.println("check customer" + customer);
+        List<BankAccount> depositAccountsOfCustomer = customer.getBankAccount();
+        System.out.println("test depositAccountsOfCustomer " + depositAccountsOfCustomer);
+        for (int i = 0; i < depositAccountsOfCustomer.size(); i++) {
+
+            List<DebitCard> debitCardsOfDepositAccount = depositAccountsOfCustomer.get(i).getDebitCards();
+            System.out.println("test debitCardsOfDepositAccount " + debitCardsOfDepositAccount);
+            int size = debitCardsOfDepositAccount.size();
+            System.out.println("test size" + size);
+
+            for (int j = 0; j < size; j++) {
+                DebitCard debitCard = debitCardsOfDepositAccount.get(j);
+
+                String info = debitCard.getDebitCardType().getDebitCardTypeName() + "-" + debitCard.getCardNum();
+                debitCards.add(index, info);
+                System.out.println("test debitcards" + debitCards);
+                index++;
+
+            }//get a list of debit cards 
+        }// get a list of deposit accounts
+
+        return debitCards;
+    }
+
+    //get all activated debit cards of a customer
+    @Override
+    public List<String> getAllActivatedDebitCards(CustomerBasic customer) {
+        List<String> debitCards = new ArrayList();
+
+        int index = 0;
+        System.out.println("check customer" + customer);
+        List<BankAccount> depositAccountsOfCustomer = customer.getBankAccount();
+        System.out.println("test depositAccountsOfCustomer " + depositAccountsOfCustomer);
+        for (int i = 0; i < depositAccountsOfCustomer.size(); i++) {
+
+            List<DebitCard> debitCardsOfDepositAccount = depositAccountsOfCustomer.get(i).getDebitCards();
+            System.out.println("test debitCardsOfDepositAccount " + debitCardsOfDepositAccount);
+            int size = debitCardsOfDepositAccount.size();
+            System.out.println("test size" + size);
+
+            for (int j = 0; j < size; j++) {
+                DebitCard debitCard = debitCardsOfDepositAccount.get(j);
+                if (debitCard.getStatus().equals("activated")) {
+                    String info = debitCard.getDebitCardType().getDebitCardTypeName() + "-" + debitCard.getCardNum();
+                    debitCards.add(index, info);
+                    System.out.println("test debitcards" + debitCards);
+                    index++;
+                }
+            }//get a list of debit cards 
+        }// get a list of deposit accounts
+
+        return debitCards;
+    }
+
+    //get all non-activated debit cards of a customer
+    @Override
+    public List<String> getAllNonActivatedDebitCards(CustomerBasic customer) {
+        List<String> debitCards = new ArrayList();
+
+        int index = 0;
+        System.out.println("check customer" + customer);
+        List<BankAccount> depositAccountsOfCustomer = customer.getBankAccount();
+        System.out.println("test depositAccountsOfCustomer " + depositAccountsOfCustomer);
+        for (int i = 0; i < depositAccountsOfCustomer.size(); i++) {
+
+            List<DebitCard> debitCardsOfDepositAccount = depositAccountsOfCustomer.get(i).getDebitCards();
+            System.out.println("test debitCardsOfDepositAccount " + debitCardsOfDepositAccount);
+            int size = debitCardsOfDepositAccount.size();
+            System.out.println("test size" + size);
+
+            for (int j = 0; j < size; j++) {
+                DebitCard debitCard = debitCardsOfDepositAccount.get(j);
+                if (debitCard.getStatus().equals("not activated")) {
+                    String info = debitCard.getDebitCardType().getDebitCardTypeName() + "-" + debitCard.getCardNum();
+                    debitCards.add(index, info);
+                    System.out.println("test debitcards" + debitCards);
+                    index++;
+                }
+            }//get a list of debit cards 
+        }// get a list of deposit accounts
+
+        return debitCards;
     }
 }
