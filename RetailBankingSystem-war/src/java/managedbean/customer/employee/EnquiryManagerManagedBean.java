@@ -242,12 +242,17 @@ public class EnquiryManagerManagedBean implements Serializable {
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext ec = context.getExternalContext();
         FacesMessage message = null;
-        
+
         if (msg.equals("Box unchecked")) {
             message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please select the follow-ups you wish to reply", "Empty followup");
             context.addMessage(null, message);
         }
-        
+
+        if (msg.equals("Empty reply")) {
+            message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please do not leave reply empty", "Empty reply");
+            context.addMessage(null, message);
+        }
+
         if (msg.equals("Successful")) {
             Calendar cal = Calendar.getInstance();
             receivedDate = cal.getTime();
@@ -331,7 +336,6 @@ public class EnquiryManagerManagedBean implements Serializable {
 //        ExternalContext ec = context.getExternalContext();
 //        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/enquiryProcessorViewEnquiryDone.xhtml?faces-redirect=true");
 //    }
-
     public void redirectToReplyCase() throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext ec = context.getExternalContext();
