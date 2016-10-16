@@ -41,6 +41,7 @@ public class DebitCard implements Serializable {
     private String cardSecurityCode;
     private String status;
     private int transactionLimit;
+    private int remainingExpirationMonths;
 
     public Long getDebitCardId() {
         return debitCardId;
@@ -120,7 +121,16 @@ public class DebitCard implements Serializable {
 
     public void setTransactionLimit(int transactionLimit) {
         this.transactionLimit = transactionLimit;
-    }     
+    }
+
+    public int getRemainingExpirationMonths() {
+        return remainingExpirationMonths;
+    }
+
+    public void setRemainingExpirationMonths(int remainingExpirationMonths) {
+        this.remainingExpirationMonths = remainingExpirationMonths;
+    }
+   
 
     @Override
     public int hashCode() {

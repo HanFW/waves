@@ -75,6 +75,7 @@ public class CustomerEmailSessionBean implements CustomerEmailSessionBeanLocal {
                 emailText += "Please login to your online banking account to view our reply in detail. \n";
                 emailText += "We look forward to serving you again. \n";
                 break;
+            
         }
 
         try {
