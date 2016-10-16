@@ -86,7 +86,7 @@ public class CustomerSetTransactionLimitForDebitCardManagedBean implements Seria
 
                 for (int j = 0; j < size; j++) {
                     DebitCard debitCard = debitCardsOfDepositAccount.get(j);
-                    String info = debitCard.getDebitCardType().getDebitCardTypeName() + "-" + debitCard.getDebitCardNum();
+                    String info = debitCard.getDebitCardType().getDebitCardTypeName() + "-" + debitCard.getCardNum();
                     debitCards.add(index, info);
                     index++;
                 }//get a list of debit cards 

@@ -50,7 +50,7 @@ public class DebitCardSessionBean implements DebitCardSessionBeanLocal {
         debitCard.setDebitCardType(debitCardType);
 
         String cardNum = generateCardNum();
-        debitCard.setDebitCardNum(cardNum);
+        debitCard.setCardNum(cardNum);
 
         String debitCardSecurityCode = generateCardSecurityCode();
         try {
@@ -72,7 +72,7 @@ public class DebitCardSessionBean implements DebitCardSessionBeanLocal {
         String expiryYear = String.valueOf(expiryYearToInt);
         String debitCardExpiryDate = applicationMonth + "/" + expiryYear;
 
-        debitCard.setDebitCardExpiryDate(debitCardExpiryDate);
+        debitCard.setCardExpiryDate(debitCardExpiryDate);
         
         debitCard.setStatus("not activated");
         
@@ -157,7 +157,7 @@ public class DebitCardSessionBean implements DebitCardSessionBeanLocal {
     }
 
     private DebitCard getCardByCardNum(String cardNum) {
-        Query query = em.createQuery("SELECT d FROM DebitCard d WHERE d.debitCardNum = :cardNum");
+        Query query = em.createQuery("SELECT d FROM DebitCard d WHERE d.cardNum = :cardNum");
         query.setParameter("cardNum", cardNum);
 
         if (query.getResultList().isEmpty()) {

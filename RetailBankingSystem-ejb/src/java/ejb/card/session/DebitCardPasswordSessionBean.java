@@ -36,7 +36,7 @@ public class DebitCardPasswordSessionBean implements DebitCardPasswordSessionBea
     public void setPassword(String debitCardPwd, String debitCardNum) {
         DebitCard findDebitCard = getCardByCardNum(debitCardNum);
         try {
-            String hashedPwd = md5Hashing(debitCardPwd + findDebitCard.getDebitCardNum().substring(0, 3));
+            String hashedPwd = md5Hashing(debitCardPwd + findDebitCard.getCardNum().substring(0, 3));
             findDebitCard.setDebitCardPwd(hashedPwd);
             em.flush();
         } catch (NoSuchAlgorithmException ex) {
@@ -46,7 +46,7 @@ public class DebitCardPasswordSessionBean implements DebitCardPasswordSessionBea
     }
 
     private DebitCard getCardByCardNum(String cardNum) {
-        Query query = em.createQuery("SELECT d FROM DebitCard d WHERE d.debitCardNum = :cardNum");
+        Query query = em.createQuery("SELECT d FROM DebitCard d WHERE d.cardNum = :cardNum");
         query.setParameter("cardNum", cardNum);
 
         if (query.getResultList().isEmpty()) {
