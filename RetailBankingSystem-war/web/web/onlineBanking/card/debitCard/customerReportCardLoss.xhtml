@@ -47,17 +47,18 @@
                         </p:selectOneRadio>
                         <p:messages for="cardType"/>
 
-                        <p:outputLabel value="Card Number:" />
-                        <p:inputText validatorMessage="Card number is 16-digit" required="true" requiredMessage="Please input your card number" id="cardNo" value="#{customerReportLossManagedBean.debitCardNum}">
-                            <f:validateLength minimum="16" maximum="16" /> 
-                        </p:inputText>
-                        <p:messages for="cardNo"/>   
+                        <p:outputLabel value="Debit Card"/>
+                        <p:selectOneMenu id="selectCard" required="true" requiredMessage="Please select a debit card" style="text-align:left" value="#{customerReportLossManagedBean.selectedDebitCard}">
+                            <f:selectItem itemLabel="Please select..." itemValue=""/>
+                            <f:selectItems value="#{customerReportLossManagedBean.debitCards}"/> 
+                        </p:selectOneMenu>
+                        <p:message for="selectCard"/>
 
                         <p:outputLabel value="Card Password:" />
                         <p:inputText validatorMessage="Card password is 6-digit" required="true" requiredMessage="Please input your card password" id="cardPwd" value="#{customerReportLossManagedBean.debitCardPwd}">
                             <f:validateLength minimum="6" maximum="6" /> 
                         </p:inputText>
-                        <p:messages for="cardPwd"/>
+                        <p:message for="cardPwd"/>
 
                     </h:panelGrid>
 
