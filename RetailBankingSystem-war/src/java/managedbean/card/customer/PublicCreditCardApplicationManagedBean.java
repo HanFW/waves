@@ -5,6 +5,7 @@
  */
 package managedbean.card.customer;
 
+import java.io.Serializable;
 import java.util.Date;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
@@ -16,7 +17,7 @@ import org.primefaces.event.FlowEvent;
  */
 @Named(value = "publicCreditCardApplicationManagedBean")
 @ViewScoped
-public class PublicCreditCardApplicationManagedBean {
+public class PublicCreditCardApplicationManagedBean implements Serializable{
 
     //basic information
     private String customerSalutation;

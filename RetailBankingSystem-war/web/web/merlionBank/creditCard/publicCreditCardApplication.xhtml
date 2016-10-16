@@ -13,7 +13,7 @@
 
     <ui:define name="content">  
         <h:form>
-            <p:wizard widgetVar ="hdbLoanWizard" flowListener="#{publicHDBLoanApplication.onFlowProcess}" showNavBar="false">
+            <p:wizard widgetVar ="hdbLoanWizard" flowListener="#{publicCreditCardApplicationManagedBean.onFlowProcess}" showNavBar="false">
                 <p:tab id="basic">
                     <h:panelGrid columns="1">
                         <p:steps activeIndex="0">
@@ -27,7 +27,7 @@
 
                     <p:panelGrid>
                         <p:outputLabel style="font-weight: bold" for="customerSalutation" value="Salutation: " />
-                        <p:selectOneMenu id="customerSalutation" value="#{publicHDBLoanApplication.customerSalutation}" 
+                        <p:selectOneMenu id="customerSalutation" value="#{publicCreditCardApplicationManagedBean.customerSalutation}" 
                                          required="true" requiredMessage="Required Field">
                             <f:selectItem itemLabel="Please Select" itemValue="" noSelectionOption="true"/>
                             <f:selectItem itemLabel="Dr" itemValue="Dr" />
@@ -36,27 +36,27 @@
                             <f:selectItem itemLabel="Ms" itemValue="Ms" />
                             <f:selectItem itemLabel="Mdm" itemValue="Mdm" />
                             <f:selectItem itemLabel="Others" itemValue="Others" />
-                            <p:ajax event="change" update="panelCustomerSalutation" listener="#{publicHDBLoanApplication.showSalutationPanel()}"/>
+                            <p:ajax event="change" update="panelCustomerSalutation" listener="#{publicCreditCardApplicationManagedBean.showSalutationPanel()}"/>
                         </p:selectOneMenu>
-                        <p:panel style="border: none;" id="panelCustomerSalutation" visible="#{publicHDBLoanApplication.salutationPanelVisible}">
+                        <p:panel style="border: none;" id="panelCustomerSalutation" visible="#{publicCreditCardApplicationManagedBean.salutationPanelVisible}">
                             <p:inputText id="customerSalutationOthers" requiredMessage="Required Field" 
-                                         value="#{publicHDBLoanApplication.customerSalutationOthers}" required="#{publicHDBLoanApplication.salutationPanelVisible}"/>  
+                                         value="#{publicCreditCardApplicationManagedBean.customerSalutationOthers}" required="#{publicCreditCardApplicationManagedBean.salutationPanelVisible}"/>  
                         </p:panel>
                         <p:message for="customerSalutation"/>
                         <p:message for="customerSalutationOthers" />
 
                         <p:outputLabel for="customerName" style="font-weight: bold" value="Name(As per NRIC/Passport): "/>
-                        <p:inputText id="customerName" value="#{publicHDBLoanApplication.customerName}" required="true" requiredMessage="Required Field"/>
+                        <p:inputText id="customerName" value="#{publicCreditCardApplicationManagedBean.customerName}" required="true" requiredMessage="Required Field"/>
                         <p:message for="customerName"/>
 
                         <p:outputLabel for="customerDateOfBirth" style="font-weight: bold" value="Date of Birth: "/>
-                        <p:calendar id="customerDateOfBirth" value="#{publicHDBLoanApplication.customerDateOfBirth}" 
+                        <p:calendar id="customerDateOfBirth" value="#{publicCreditCardApplicationManagedBean.customerDateOfBirth}" 
                                     showOn="button" locale="de" navigator="true" pattern="dd/MM/yyyy" 
                                     yearRange="c-200:c+200" required="true" requiredMessage="Required Field"/>
                         <p:message for="customerDateOfBirth"/>
 
                         <p:outputLabel for="customerGender" style="font-weight: bold" value="Gender: "/>
-                        <p:selectOneRadio id="customerGender" value="#{publicHDBLoanApplication.customerGender}"
+                        <p:selectOneRadio id="customerGender" value="#{publicCreditCardApplicationManagedBean.customerGender}"
                                           required="true" requiredMessage="Required Field">
                             <f:selectItem itemLabel="Male" itemValue="Male" />
                             <f:selectItem itemLabel="Female" itemValue="Female" />
@@ -64,7 +64,7 @@
                         <p:message for="customerGender"/>
 
                         <p:outputLabel for="customerNationality" style="font-weight: bold" value="Nationality: "/>
-                        <p:selectOneMenu id="customerNationality" value="#{publicHDBLoanApplication.customerNationality}" 
+                        <p:selectOneMenu id="customerNationality" value="#{publicCreditCardApplicationManagedBean.customerNationality}" 
                                          required="true" requiredMessage="Required Field">
                             <f:selectItem itemLabel="Please Select" itemValue="" noSelectionOption="true"/>
                             <f:selectItem itemLabel="Afghanistan" itemValue="Afghanistan" />
@@ -269,42 +269,42 @@
                             <f:selectItem itemLabel="Yemen" itemValue="Yemen" />
                             <f:selectItem itemLabel="Zambia" itemValue="Zambia" />
                             <f:selectItem itemLabel="Zimbabwe" itemValue="Zimbabwe" />
-                            <p:ajax event="change" update="panelCustomerNationalitySG panelCustomerNationalityOthers panelCustomerNRIC panelPassport" listener="#{publicHDBLoanApplication.showNationalityPanel}"/>
+                            <p:ajax event="change" update="panelCustomerNationalitySG panelCustomerNationalityOthers panelCustomerNRIC panelPassport" listener="#{publicCreditCardApplicationManagedBean.showNationalityPanel}"/>
                         </p:selectOneMenu>
                         <p:message for="customerNationality" />
 
-                        <p:panel style="border: none;" id="panelCustomerNationalitySG" visible="#{publicHDBLoanApplication.nationalitySGPanelVisible}">
+                        <p:panel style="border: none;" id="panelCustomerNationalitySG" visible="#{publicCreditCardApplicationManagedBean.nationalitySGPanelVisible}">
                             <p:outputLabel for="customerNRICSG" style="font-weight: bold" value="NRIC No.: " />
-                            <p:inputText id="customerNRICSG" value="#{publicHDBLoanApplication.customerIdentificationNum}" requiredMessage="Required Field"/>
+                            <p:inputText id="customerNRICSG" value="#{publicCreditCardApplicationManagedBean.customerIdentificationNum}" requiredMessage="Required Field"/>
                             <p:message for="customerNRICSG"/>
                         </p:panel>
 
-                        <p:panel style="border: none;" id="panelCustomerNationalityOthers" visible="#{publicHDBLoanApplication.nationalityOthersPanelVisible}">
+                        <p:panel style="border: none;" id="panelCustomerNationalityOthers" visible="#{publicCreditCardApplicationManagedBean.nationalityOthersPanelVisible}">
                             <p:outputLabel for="singaporePR" style="font-weight: bold" value="Singapore PR: " />
-                            <p:selectOneRadio id="singaporePR" value="#{publicHDBLoanApplication.customerIsPR}"
-                                              required="#{publicHDBLoanApplication.nationalityOthersPanelVisible}" requiredMessage="Required Field">
+                            <p:selectOneRadio id="singaporePR" value="#{publicCreditCardApplicationManagedBean.customerIsPR}"
+                                              required="#{publicCreditCardApplicationManagedBean.nationalityOthersPanelVisible}" requiredMessage="Required Field">
                                 <f:selectItem itemLabel="Yes" itemValue="Yes" />
                                 <f:selectItem itemLabel="No" itemValue="No" />
-                                <p:ajax event="change" update="panelCustomerNRIC panelPassport" listener="#{publicHDBLoanApplication.showIdentificationPanel}"/>
+                                <p:ajax event="change" update="panelCustomerNRIC panelPassport" listener="#{publicCreditCardApplicationManagedBean.showIdentificationPanel}"/>
                             </p:selectOneRadio>
                             <p:message for="singaporePR" />
                         </p:panel>
 
-                        <p:panel style="border: none;" id="panelCustomerNRIC" visible="#{publicHDBLoanApplication.nricPanelVisible}">
+                        <p:panel style="border: none;" id="panelCustomerNRIC" visible="#{publicCreditCardApplicationManagedBean.nricPanelVisible}">
                             <p:outputLabel for="customerNRIC" style="font-weight: bold" value="NRIC No.: " />
-                            <p:inputText id="customerNRIC" required="#{publicHDBLoanApplication.nricPanelVisible}" requiredMessage="Required Field"/>
+                            <p:inputText id="customerNRIC" required="#{publicCreditCardApplicationManagedBean.nricPanelVisible}" requiredMessage="Required Field"/>
                             <p:message for="customerNRIC" />
                         </p:panel>
 
-                        <p:panel style="border: none;" id="panelPassport" visible="#{publicHDBLoanApplication.passportPanelVisible}">
+                        <p:panel style="border: none;" id="panelPassport" visible="#{publicCreditCardApplicationManagedBean.passportPanelVisible}">
                             <p:outputLabel for="customerPassport" style="font-weight: bold" value="Passport No. " />
-                            <p:inputText id="customerPassport" required="#{publicHDBLoanApplication.passportPanelVisible}"
-                                         value="#{publicHDBLoanApplication.customerIdentificationNum}" requiredMessage="Required Field"/>
+                            <p:inputText id="customerPassport" required="#{publicCreditCardApplicationManagedBean.passportPanelVisible}"
+                                         value="#{publicCreditCardApplicationManagedBean.customerIdentificationNum}" requiredMessage="Required Field"/>
                             <p:message for="customerPassport" />
                         </p:panel>
                         
                         <p:outputLabel for="customerCountryOfResidence" style="font-weight: bold" value="Country of Residence: " />
-                        <p:selectOneMenu id="customerCountryOfResidence" value="#{publicHDBLoanApplication.customerCountryOfResidence}" 
+                        <p:selectOneMenu id="customerCountryOfResidence" value="#{publicCreditCardApplicationManagedBean.customerCountryOfResidence}" 
                                          required="true" requiredMessage="Required Field">
                             <f:selectItem itemLabel="Please Select" itemValue="" />
                             <f:selectItem itemLabel="Afghanistan" itemValue="Afghanistan" />
@@ -513,7 +513,7 @@
                         <p:message for="customerCountryOfResidence" />
 
                         <p:outputLabel for="customerRace" style="font-weight: bold" value="Race: " />
-                        <p:selectOneMenu id="customerRace" value="#{publicHDBLoanApplication.customerRace}" 
+                        <p:selectOneMenu id="customerRace" value="#{publicCreditCardApplicationManagedBean.customerRace}" 
                                          required="true" requiredMessage="Required Field">
                             <f:selectItem itemLabel="Please Select" itemValue="" />
                             <f:selectItem itemLabel="Chinese" itemValue="Chinese" />
@@ -524,7 +524,7 @@
                         <p:message for="customerRace" />
 
                         <p:outputLabel for="customerMobile" style="font-weight: bold" value="Mobile Number: " />
-                        <p:inputText id="customerMobile" value="#{publicHDBLoanApplication.customerMobile}"
+                        <p:inputText id="customerMobile" value="#{publicCreditCardApplicationManagedBean.customerMobile}"
                                      required="true" requiredMessage="Required Field" validatorMessage="Invalid Moblie Number"
                                      converterMessage="Invalid Input">
                             <f:validateDoubleRange minimum="10000000" maximum="99999999" />
@@ -533,7 +533,7 @@
 
                         <p:outputLabel for="customerEmail" style="font-weight: bold" value="Email: " />
                         <p:inputText label="Email" id="customerEmail" validatorMessage="Invalid email format"
-                                     value="#{publicHDBLoanApplication.customerEmail}" required="true" requiredMessage="Required Field">
+                                     value="#{publicCreditCardApplicationManagedBean.customerEmail}" required="true" requiredMessage="Required Field">
                             <f:validateRegex
                                 pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
                         </p:inputText>
@@ -559,7 +559,7 @@
 
                     <p:panelGrid>
                         <p:outputLabel for="customerEducation" style="font-weight: bold" value="Highest Education: "/>
-                        <p:selectOneMenu id="customerEducation" value="#{publicHDBLoanApplication.customerEducation}"
+                        <p:selectOneMenu id="customerEducation" value="#{publicCreditCardApplicationManagedBean.customerEducation}"
                                          required="true" requiredMessage="Required Field">
                             <f:selectItem itemLabel="Please Select" itemValue="" />
                             <f:selectItem itemLabel="Primary" itemValue="Primary" />
@@ -571,7 +571,7 @@
                         <p:message for="customerEducation"/>
 
                         <p:outputLabel for="customerMaritalStatus" style="font-weight: bold" value="Marital Status: " />
-                        <p:selectOneMenu id="customerMaritalStatus" value="#{publicHDBLoanApplication.customerMaritalStatus}" 
+                        <p:selectOneMenu id="customerMaritalStatus" value="#{publicCreditCardApplicationManagedBean.customerMaritalStatus}" 
                                          required="true" requiredMessage="Required Field">
                             <f:selectItem itemLabel="Please Select" itemValue="" />
                             <f:selectItem itemLabel="Single" itemValue="Single" />
@@ -582,7 +582,7 @@
                         <p:message for="customerMaritalStatus" />
 
                         <p:outputLabel for="customerNumOfDepedents" style="font-weight: bold" value="Number of Dependents: "/>
-                        <p:selectOneMenu id="customerNumOfDepedents" value="#{publicHDBLoanApplication.customerNumOfDependents}"
+                        <p:selectOneMenu id="customerNumOfDepedents" value="#{publicCreditCardApplicationManagedBean.customerNumOfDependents}"
                                          required="true" requiredMessage="Required Field">
                             <f:selectItem itemLabel="Please Select" itemValue="" />
                             <f:selectItem itemLabel="0" itemValue="0" />
@@ -600,32 +600,32 @@
                         <p:message for="customerNumOfDepedents"/>
 
                         <p:outputLabel for="customerStreetName" style="font-weight: bold" value="Residential Street Name: " />
-                        <p:inputText label="Residential Address" id="customerStreetName" value="#{publicHDBLoanApplication.customerStreetName}"
+                        <p:inputText label="Residential Address" id="customerStreetName" value="#{publicCreditCardApplicationManagedBean.customerStreetName}"
                                      required="true" requiredMessage="Required Field">
                         </p:inputText>
                         <p:message for="customerStreetName" />
 
                         <p:outputLabel for="customerBlockNum" style="font-weight: bold" value="Residential Block/House No.: " />
-                        <p:inputText label="Residential Address" id="customerBlockNum" value="#{publicHDBLoanApplication.customerBlockNum}" 
+                        <p:inputText label="Residential Address" id="customerBlockNum" value="#{publicCreditCardApplicationManagedBean.customerBlockNum}" 
                                      required="true" requiredMessage="Required Field">
                         </p:inputText>
                         <p:message for="customerBlockNum" />
 
                         <p:outputLabel for="customerUnitNum" style="font-weight: bold" value="Residential Unit No.: " />
-                        <p:inputText id="customerUnitNum" value="#{publicHDBLoanApplication.customerUnitNum}"
+                        <p:inputText id="customerUnitNum" value="#{publicCreditCardApplicationManagedBean.customerUnitNum}"
                                      required="true" requiredMessage="Required Field">
                         </p:inputText>
                         <p:message for="customerUnitNum" />
 
                         <p:outputLabel for="customerPostal" style="font-weight: bold" value="Postal Code" />
-                        <p:inputText label="Postal Code" id="customerPostal" value="#{publicHDBLoanApplication.customerPostal}" validatorMessage="Invalid Postal Code"
+                        <p:inputText label="Postal Code" id="customerPostal" value="#{publicCreditCardApplicationManagedBean.customerPostal}" validatorMessage="Invalid Postal Code"
                                      required="true" requiredMessage="Required Field" converterMessage="Invalid Input">
                             <f:validateDoubleRange minimum="100000" maximum="999999" />
                         </p:inputText>
                         <p:message for="customerPostal" />
 
                         <p:outputLabel for="customerResidentialStatus" style="font-weight: bold" value="Residential Ownership: "/>
-                        <p:selectOneMenu id="customerResidentialStatus" value="#{publicHDBLoanApplication.customerResidentialStatus}"
+                        <p:selectOneMenu id="customerResidentialStatus" value="#{publicCreditCardApplicationManagedBean.customerResidentialStatus}"
                                          required="true" requiredMessage="Required Field">
                             <f:selectItem itemLabel="Please Select" itemValue="" />
                             <f:selectItem itemLabel="Fully owned" itemValue="Owned" />
@@ -637,7 +637,7 @@
                         <p:message for="customerResidentialStatus"/>
 
                         <p:outputLabel for="customerResidentialType" style="font-weight: bold" value="Residential Type: "/>
-                        <p:selectOneMenu id="customerResidentialType" value="#{publicHDBLoanApplication.customerResidentialType}"
+                        <p:selectOneMenu id="customerResidentialType" value="#{publicCreditCardApplicationManagedBean.customerResidentialType}"
                                          required="true" requiredMessage="Required Field">
                             <f:selectItem itemLabel="Please Select" itemValue="" />
                             <f:selectItem itemLabel="HDB" itemValue="HDB" />
@@ -647,7 +647,7 @@
                         <p:message for="customerResidentialType"/>
 
                         <p:outputLabel for="customerLengthOfResidence" style="font-weight: bold" value="Years of Stay in Residence: "/>
-                        <p:inputText id="customerLengthOfResidence" value="#{publicHDBLoanApplication.customerLengthOfResidence}"
+                        <p:inputText id="customerLengthOfResidence" value="#{publicCreditCardApplicationManagedBean.customerLengthOfResidence}"
                                      required="true" requiredMessage="Required Field" validatorMessage="Please enter a valid number between 0-100" converterMessage="Please enter a valid number">
                             <f:validateLongRange minimum="0" maximum="100"/>
                             <f:convertNumber integerOnly="true"/>
@@ -674,7 +674,7 @@
 
                     <p:panelGrid>
                         <p:outputLabel for="customerEmploymentStatus" style="font-weight: bold" value="Employment Status: "/>
-                        <p:selectOneMenu id="customerEmploymentStatus" value="#{publicHDBLoanApplication.customerEmploymentStatus}"
+                        <p:selectOneMenu id="customerEmploymentStatus" value="#{publicCreditCardApplicationManagedBean.customerEmploymentStatus}"
                                          required="true" requiredMessage="Required Field">
                             <f:selectItem itemLabel="Please Select" itemValue="" />
                             <f:selectItem itemLabel="Employee" itemValue="Employee" />
@@ -684,24 +684,24 @@
                         <p:message for="customerEmploymentStatus"/>
 
                         <p:outputLabel for="customerCompanyName" style="font-weight: bold" value="Company Name: "/>
-                        <p:inputText id="customerCompanyName" value="#{publicHDBLoanApplication.customerCompanyName}"
+                        <p:inputText id="customerCompanyName" value="#{publicCreditCardApplicationManagedBean.customerCompanyName}"
                                      required="true" requiredMessage="Required Field"/>
                         <p:message for="customerCompanyName"/>
 
                         <p:outputLabel for="customerCompanyAddress" style="font-weight: bold" value="Company Address: "/>
-                        <p:inputText id="customerCompanyAddress" value="#{publicHDBLoanApplication.customerCompanyAddress}"
+                        <p:inputText id="customerCompanyAddress" value="#{publicCreditCardApplicationManagedBean.customerCompanyAddress}"
                                      required="true" requiredMessage="Required Field"/>
                         <p:message for="customerCompanyAddress"/>
 
                         <p:outputLabel for="customerCompanyPostal" style="font-weight: bold" value="Company Postal Code: "/>
-                        <p:inputText id="customerCompanyPostal" value="#{publicHDBLoanApplication.customerCompanyPostal}"
+                        <p:inputText id="customerCompanyPostal" value="#{publicCreditCardApplicationManagedBean.customerCompanyPostal}"
                                      required="true" requiredMessage="Required Field" validatorMessage="Invalid postal code">
                             <f:validateDoubleRange minimum="100000" maximum="999999" />
                         </p:inputText>
                         <p:message for="customerCompanyPostal"/>
 
                         <p:outputLabel for="customerIndustryType" style="font-weight: bold" value="Company Industry Type: "/>
-                        <p:selectOneMenu id="customerIndustryType" value="#{publicHDBLoanApplication.customerIndustryType}"
+                        <p:selectOneMenu id="customerIndustryType" value="#{publicCreditCardApplicationManagedBean.customerIndustryType}"
                                          required="true" requiredMessage="Required Field">
                             <f:selectItem itemLabel="Please Select" itemValue="" />
                             <f:selectItem itemLabel="Banking/Finance" itemValue="Banking/Finance" />
@@ -714,17 +714,17 @@
                             <f:selectItem itemLabel="Shipping/Transport" itemValue="Shipping/Transport" />
                             <f:selectItem itemLabel="Entertainment" itemValue="Entertainment" />
                             <f:selectItem itemLabel="Others" itemValue="Others" />
-                            <p:ajax partialSubmit="true" event="change" update="panelCustomerIndustryType" listener="#{publicHDBLoanApplication.showIndustryTypePanel}"/>
+                            <p:ajax partialSubmit="true" event="change" update="panelCustomerIndustryType" listener="#{publicCreditCardApplicationManagedBean.showIndustryTypePanel}"/>
                         </p:selectOneMenu>
                         <p:message for="customerIndustryType"/>
-                        <p:panel style="border: none;" id="panelCustomerIndustryType" visible="#{publicHDBLoanApplication.industryTypePanelVisible}">
+                        <p:panel style="border: none;" id="panelCustomerIndustryType" visible="#{publicCreditCardApplicationManagedBean.industryTypePanelVisible}">
                             <p:inputText id="customerIndustryTypeOthers" requiredMessage="Required Field" 
-                                         value="#{publicHDBLoanApplication.customerIndustryTypeOthers}" required="#{publicHDBLoanApplication.industryTypePanelVisible}"/>
+                                         value="#{publicCreditCardApplicationManagedBean.customerIndustryTypeOthers}" required="#{publicCreditCardApplicationManagedBean.industryTypePanelVisible}"/>
                             <p:message for="customerIndustryTypeOthers"/>
                         </p:panel>
 
                         <p:outputLabel for="customerCurrentPosition" style="font-weight: bold" value="Current Position: "/>
-                        <p:selectOneMenu id="customerCurrentPosition" value="#{publicHDBLoanApplication.customerCurrentPosition}"
+                        <p:selectOneMenu id="customerCurrentPosition" value="#{publicCreditCardApplicationManagedBean.customerCurrentPosition}"
                                          required="true" requiredMessage="Required Field">
                             <f:selectItem itemLabel="Please Select" itemValue="" />
                             <f:selectItem itemLabel="Senior Management" itemValue="Senior Management" />
@@ -733,22 +733,22 @@
                             <f:selectItem itemLabel="Executive" itemValue="Executive" />
                             <f:selectItem itemLabel="Skilled Trades/Clerica" itemValue="Skilled Trades/Clerica" />
                             <f:selectItem itemLabel="Others" itemValue="Others" />
-                            <p:ajax event="change" update="panelCustomerCurrentPosition" listener="#{publicHDBLoanApplication.showCurrentPositionPanel}"/>
+                            <p:ajax event="change" update="panelCustomerCurrentPosition" listener="#{publicCreditCardApplicationManagedBean.showCurrentPositionPanel}"/>
                         </p:selectOneMenu>
                         <p:message for="customerCurrentPosition"/>
-                        <p:panel style="border: none;" id="panelCustomerCurrentPosition" visible="#{publicHDBLoanApplication.currentPositionPanelVisible}">
+                        <p:panel style="border: none;" id="panelCustomerCurrentPosition" visible="#{publicCreditCardApplicationManagedBean.currentPositionPanelVisible}">
                             <p:inputText id="customerCurrentPositionOthers" requiredMessage="Required Field" 
-                                         value="#{publicHDBLoanApplication.customerCurrentPositionOthers}" required="#{publicHDBLoanApplication.currentPositionPanelVisible}"/>  
+                                         value="#{publicCreditCardApplicationManagedBean.customerCurrentPositionOthers}" required="#{publicCreditCardApplicationManagedBean.currentPositionPanelVisible}"/>  
                             <p:message for="customerCurrentPositionOthers"/>
                         </p:panel>
 
                         <p:outputLabel for="customerCurrentJobTitle" style="font-weight: bold" value="Current Job Title: "/>
-                        <p:inputText id="customerCurrentJobTitle" value="#{publicHDBLoanApplication.customerCurrentJobTitle}"
+                        <p:inputText id="customerCurrentJobTitle" value="#{publicCreditCardApplicationManagedBean.customerCurrentJobTitle}"
                                      required="true" requiredMessage="Required Field"/>
                         <p:message for="customerCurrentJobTitle"/>
 
                         <p:outputLabel for="customerLengthOfCurrentJob" style="font-weight: bold" value="Years of Current Employment/Business: "/>
-                        <p:inputText id="customerLengthOfCurrentJob" value="#{publicHDBLoanApplication.customerLengthOfCurrentJob}"
+                        <p:inputText id="customerLengthOfCurrentJob" value="#{publicCreditCardApplicationManagedBean.customerLengthOfCurrentJob}"
                                      required="true" requiredMessage="Required Field" validatorMessage="Please enter a valid number between 0-100" converterMessage="Please enter a valid number">
                             <f:validateLongRange minimum="0" maximum="100"/>
                             <f:convertNumber integerOnly="true"/>
@@ -756,37 +756,12 @@
                         <p:message for="customerLengthOfCurrentJob"/>
 
                         <p:outputLabel for="customerMonthlyFixedIncome" style="font-weight: bold" value="Monthly Fixed Income(SGD): "/>
-                        <p:inputText id="customerMonthlyFixedIncome" value="#{publicHDBLoanApplication.customerMonthlyFixedIncome}"
+                        <p:inputText id="customerMonthlyFixedIncome" value="#{publicCreditCardApplicationManagedBean.customerMonthlyFixedIncome}"
                                        required="true" requiredMessage="Required Field" converterMessage="Please enter a valid number">
                             <f:convertNumber type="number"/>
                         </p:inputText>
                         <p:message for="customerMonthlyFixedIncome"/>
-                        
-                        <p:outputLabel for="customerOtherMonthlyIncome" style="font-weight: bold" value="Other Monthly Income(SGD): "/>
-                        <p:inputText id="customerOtherMonthlyIncome" value="#{publicHDBLoanApplication.customerOtherMonthlyIncome}"
-                                       required="true" requiredMessage="Required Field" converterMessage="Please enter a valid number">
-                            <f:convertNumber type="number"/>
-                        </p:inputText>
-                        <p:message for="customerOtherMonthlyIncome"/>
-                        
-                        <p:outputLabel for="customerOtherMonthlyIncomeSource" style="font-weight: bold" value="Source of Other Income: "/>
-                        <p:inputText id="customerOtherMonthlyIncomeSource" value="#{publicHDBLoanApplication.customerOtherMonthlyIncomeSource}"
-                                     required="true" requiredMessage="Required Field"/>
-                        <p:message for="customerOtherMonthlyIncomeSource"/>
 
-                        <p:outputLabel for="customerPreviousCompany" style="font-weight: bold" value="Name of Previous Company"/>
-                        <p:inputText id="customerPreviousCompany" value="#{publicHDBLoanApplication.customerPreviousCompany}"
-                                     required="true" requiredMessage="Required Field">
-                        </p:inputText>
-                        <p:message for="customerPreviousCompany"/>
-
-                        <p:outputLabel for="customerLengthOfPreviousJob" style="font-weight: bold" value="Years of Previous Employment/Business: "/>
-                        <p:inputText id="customerLengthOfPreviousJob" value="#{publicHDBLoanApplication.customerLengthOfPreviousJob}"
-                                     required="true" requiredMessage="Required Field" validatorMessage="Please enter a valid number between 0-100" converterMessage="Please enter a valid number">
-                            <f:validateLongRange minimum="0" maximum="100"/>
-                            <f:convertNumber integerOnly="true"/>
-                        </p:inputText>
-                        <p:message for="customerLengthOfPreviousJob"/>
                     </p:panelGrid>
 
                     <h:panelGrid columns="2" class="ui-lg-6"> 
