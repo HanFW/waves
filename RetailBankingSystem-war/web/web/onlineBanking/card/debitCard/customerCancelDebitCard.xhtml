@@ -45,9 +45,7 @@
 
                         </h:panelGrid>
 
-                        <p:growl id="message" globalOnly="true" />
-
-                        <p:commandButton value="Cancel My Card" actionListener="#{customerCancelCardManagedBean.cancelCard}" update="message">
+                        <p:commandButton value="Cancel My Card" actionListener="#{customerCancelCardManagedBean.cancelCard}">
                             <p:confirm header="Confirmation" message="Are you sure to cancel the card? This action is not reversible" icon="ui-icon-alert" />
                         </p:commandButton>
 

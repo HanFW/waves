@@ -30,7 +30,7 @@
 
                         <h:outputLabel for="pwd2" value="Password *" />
 
-                        <p:password validatorMessage="Please enter a 6-digit PIN" id="pwd2" value="#{customerActivateDebitCardManagedBean.debitCardPwd}" match="pwd3" label="Password 2" required="true" feedback="true">
+                        <p:password validatorMessage="Please enter a 6-digit PIN" id="pwd2" value="#{customerActivateDebitCardManagedBean.debitCardPwd}" match="pwd3" label="Password 2" required="true">
                             <f:validateLength minimum="6" maximum="6" /> 
                         </p:password>
 
@@ -38,7 +38,7 @@
 
                         <h:outputLabel for="pwd3" value="Confirm Password: *" />
 
-                        <p:password validatorMessage="Please enter a 6-digit PIN" id="pwd3" value="#{customerActivateDebitCardManagedBean.debitCardPwd}" label="Password 3" required="true" feedback="true">
+                        <p:password validatorMessage="Please enter a 6-digit PIN" id="pwd3" value="#{customerActivateDebitCardManagedBean.debitCardPwd1}" label="Password 3" required="true">
                             <f:validateLength minimum="6" maximum="6" /> 
                         </p:password>
 

@@ -28,6 +28,7 @@ public class Card implements Serializable {
     private String cardExpiryDate;
     private String cardSecurityCode;
     private String status;
+    private int remainingExpirationMonths;
 
     public Long getCardId() {
         return cardId;
@@ -76,7 +77,14 @@ public class Card implements Serializable {
     public void setStatus(String status) {
         this.status = status;
     }
-    
+
+    public int getRemainingExpirationMonths() {
+        return remainingExpirationMonths;
+    }
+
+    public void setRemainingExpirationMonths(int remainingExpirationMonths) {
+        this.remainingExpirationMonths = remainingExpirationMonths;
+    }
 
     @Override
     public int hashCode() {

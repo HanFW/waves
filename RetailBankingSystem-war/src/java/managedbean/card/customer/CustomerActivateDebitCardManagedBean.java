@@ -49,7 +49,8 @@ public class CustomerActivateDebitCardManagedBean implements Serializable {
 
     private String customerOTP;
 
-    private String debitCardPwd;
+    private Integer debitCardPwd;
+    private Integer debitCardPwd1;
 
     public CustomerActivateDebitCardManagedBean() {
     }
@@ -84,16 +85,25 @@ public class CustomerActivateDebitCardManagedBean implements Serializable {
         ExternalContext ec = context.getExternalContext();
         FacesMessage message = null;
 
+        System.out.println("pwd1 "+debitCardPwd);
+        System.out.println("pwd2 "+debitCardPwd1);
+        if (debitCardPwd != debitCardPwd1) {
+            message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Password does not match!", null);
+            context.addMessage(null, message);
+        }else{
+
         String debitCardNumber = (String) ec.getSessionMap().get("debitCardNumber");
 
         System.out.println("test " + debitCardPwd);
         System.out.println("test 2 " + debitCardNumber);
 
-        debitCardPasswordSessionBeanLocal.setPassword(debitCardPwd, debitCardNumber);
+        String debitCardPwdToString = debitCardPwd.toString();
+        debitCardPasswordSessionBeanLocal.setPassword(debitCardPwdToString, debitCardNumber);
 
         System.out.println("====== card/debitCard/CustomerActivateDebitCardManagedBean: set password for debit Card");
         message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Password has been successfully set for your debit card!", null);
         context.addMessage(null, message);
+        }
 
     }
 
@@ -161,9 +171,9 @@ public class CustomerActivateDebitCardManagedBean implements Serializable {
                 System.out.println("*** ActivateDebitCardManagedBean: card security code is wrong!");
                 break;
             case "valid":
-                System.out.println("put in map: "+debitCardNum);
+                System.out.println("put in map: " + debitCardNum);
                 context.getExternalContext().getSessionMap().put("debitCardNumber", debitCardNum);
-                context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() +"/web/onlineBanking/card/debitCard/customerActivateDebitCardDone.xhtml?faces-redirect=true");
+                context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/web/onlineBanking/card/debitCard/customerActivateDebitCardDone.xhtml?faces-redirect=true");
                 System.out.println("*** ActivateDebitCardManagedBean: correct!");
                 break;
         }
@@ -178,13 +188,20 @@ public class CustomerActivateDebitCardManagedBean implements Serializable {
         this.customerOTP = customerOTP;
     }
 
-    public String getDebitCardPwd() {
+    public Integer getDebitCardPwd() {
         return debitCardPwd;
     }
 
-    public void setDebitCardPwd(String debitCardPwd) {
+    public void setDebitCardPwd(Integer debitCardPwd) {
         this.debitCardPwd = debitCardPwd;
-        System.out.println("debug set debit card pwd: " + debitCardPwd);
+    }
+
+    public Integer getDebitCardPwd1() {
+        return debitCardPwd1;
+    }
+
+    public void setDebitCardPwd1(Integer debitCardPwd1) {
+        this.debitCardPwd1 = debitCardPwd1;
     }
 
 }

@@ -30,7 +30,7 @@ public class DebitCard extends Card implements Serializable {
     
     private String debitCardPwd;
     private int transactionLimit;
-    private int remainingExpirationMonths;
+    
 
 
     public BankAccount getBankAccount() {
@@ -65,15 +65,6 @@ public class DebitCard extends Card implements Serializable {
     public void setTransactionLimit(int transactionLimit) {
         this.transactionLimit = transactionLimit;
     }
-
-    public int getRemainingExpirationMonths() {
-        return remainingExpirationMonths;
-    }
-
-    public void setRemainingExpirationMonths(int remainingExpirationMonths) {
-        this.remainingExpirationMonths = remainingExpirationMonths;
-    }
-   
 
 
 

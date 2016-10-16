@@ -80,14 +80,19 @@ public class CustomerSetTransactionLimitForDebitCardManagedBean implements Seria
             customer = getCustomerViaSessionMap();
             System.out.println("check customer" + customer);
             List<BankAccount> depositAccountsOfCustomer = customer.getBankAccount();
+            System.out.println("test depositAccountsOfCustomer "+depositAccountsOfCustomer);
             for (int i = 0; i < depositAccountsOfCustomer.size(); i++) {
+                
                 List<DebitCard> debitCardsOfDepositAccount = depositAccountsOfCustomer.get(i).getDebitCards();
+                System.out.println("test debitCardsOfDepositAccount "+debitCardsOfDepositAccount);
                 int size = debitCardsOfDepositAccount.size();
-
+                System.out.println("test size" + size);
+                
                 for (int j = 0; j < size; j++) {
                     DebitCard debitCard = debitCardsOfDepositAccount.get(j);
                     String info = debitCard.getDebitCardType().getDebitCardTypeName() + "-" + debitCard.getCardNum();
                     debitCards.add(index, info);
+                    System.out.println("test debitcards" + debitCards);
                     index++;
                 }//get a list of debit cards 
             }// get a list of deposit accounts

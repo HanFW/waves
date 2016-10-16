@@ -54,10 +54,10 @@ public class DebitCardSessionBean implements DebitCardSessionBeanLocal {
 
         String debitCardSecurityCode = generateCardSecurityCode();
         try {
-            System.out.println("debug cardNum:"+cardNum);
-            System.out.println("debug csc initial:"+debitCardSecurityCode);
+            System.out.println("debug cardNum:" + cardNum);
+            System.out.println("debug csc initial:" + debitCardSecurityCode);
             String hashedDebitCardSecurityCode = md5Hashing(debitCardSecurityCode + cardNum.substring(0, 3));
-            System.out.println("debug:"+hashedDebitCardSecurityCode);
+            System.out.println("debug:" + hashedDebitCardSecurityCode);
             debitCard.setCardSecurityCode(hashedDebitCardSecurityCode);
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(DebitCardSessionBean.class.getName()).log(Level.SEVERE, null, ex);
@@ -74,12 +74,14 @@ public class DebitCardSessionBean implements DebitCardSessionBeanLocal {
 
         debitCard.setCardExpiryDate(debitCardExpiryDate);
         
+        debitCard.setRemainingExpirationMonths(60);
+
         debitCard.setStatus("not activated");
-        
+
         debitCard.setTransactionLimit(500);
-        
 
         em.persist(debitCard);
+        depositAccount.addDebitCard(debitCard);
         return "success";
 
     }
@@ -97,10 +99,10 @@ public class DebitCardSessionBean implements DebitCardSessionBeanLocal {
                     return "cardHolderName not match";
                 } else {
                     String hashedCSC;
-                    System.out.println("debug check hashed csc - csc:"+debitCardSecurityCode);
-                    System.out.println("debug check hashed csc - debitCardNum:"+debitCardNum);
+                    System.out.println("debug check hashed csc - csc:" + debitCardSecurityCode);
+                    System.out.println("debug check hashed csc - debitCardNum:" + debitCardNum);
                     hashedCSC = md5Hashing(debitCardSecurityCode + debitCardNum.substring(0, 3));
-                    System.out.println("debug check hashed csc:"+hashedCSC);
+                    System.out.println("debug check hashed csc:" + hashedCSC);
                     if (!findDebitCard.getCardSecurityCode().equals(hashedCSC)) {
                         return "csc not match";
                     } else {
@@ -232,7 +234,7 @@ public class DebitCardSessionBean implements DebitCardSessionBeanLocal {
     }
 
     private String md5Hashing(String stringToHash) throws NoSuchAlgorithmException {
-        System.out.println("md5 hashing- string to hash "+stringToHash);
+        System.out.println("md5 hashing- string to hash " + stringToHash);
         MessageDigest md = MessageDigest.getInstance("MD5");
         return Arrays.toString(md.digest(stringToHash.getBytes()));
     }
