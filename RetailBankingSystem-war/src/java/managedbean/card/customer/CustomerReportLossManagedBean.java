@@ -113,7 +113,8 @@ public class CustomerReportLossManagedBean implements Serializable {
         if (debitCards.isEmpty()) {
 
             customer = getCustomerViaSessionMap();
-            debitCards = debitCardSessionBeanLocal.getAllActivatedDebitCards(customer);
+            Long id=customer.getCustomerBasicId();
+            debitCards = debitCardSessionBeanLocal.getAllActivatedDebitCards(id);
 
         }
         return debitCards;

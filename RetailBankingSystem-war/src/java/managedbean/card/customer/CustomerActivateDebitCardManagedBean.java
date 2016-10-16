@@ -205,7 +205,8 @@ public class CustomerActivateDebitCardManagedBean implements Serializable {
         if (debitCards.isEmpty()) {
 
             customer = getCustomerViaSessionMap();
-            debitCards = debitCardSessionBeanLocal.getAllNonActivatedDebitCards(customer);
+            Long id=customer.getCustomerBasicId();
+            debitCards = debitCardSessionBeanLocal.getAllNonActivatedDebitCards(id);
 
         }
         return debitCards;

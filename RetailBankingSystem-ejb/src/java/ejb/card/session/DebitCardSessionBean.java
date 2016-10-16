@@ -243,8 +243,9 @@ public class DebitCardSessionBean implements DebitCardSessionBeanLocal {
 
     //get all debit cards of a customer
     @Override
-    public List<String> getAllDebitCards(CustomerBasic customer) {
+    public List<String> getAllDebitCards(Long customerId) {
         List<String> debitCards = new ArrayList();
+        CustomerBasic customer = em.find(CustomerBasic.class, customerId);
 
         int index = 0;
         System.out.println("check customer" + customer);
@@ -273,8 +274,9 @@ public class DebitCardSessionBean implements DebitCardSessionBeanLocal {
 
     //get all activated debit cards of a customer
     @Override
-    public List<String> getAllActivatedDebitCards(CustomerBasic customer) {
+    public List<String> getAllActivatedDebitCards(Long customerId) {
         List<String> debitCards = new ArrayList();
+        CustomerBasic customer = em.find(CustomerBasic.class, customerId);
 
         int index = 0;
         System.out.println("check customer" + customer);
@@ -303,8 +305,9 @@ public class DebitCardSessionBean implements DebitCardSessionBeanLocal {
 
     //get all non-activated debit cards of a customer
     @Override
-    public List<String> getAllNonActivatedDebitCards(CustomerBasic customer) {
+    public List<String> getAllNonActivatedDebitCards(Long customerId) {
         List<String> debitCards = new ArrayList();
+        CustomerBasic customer = em.find(CustomerBasic.class, customerId);
 
         int index = 0;
         System.out.println("check customer" + customer);

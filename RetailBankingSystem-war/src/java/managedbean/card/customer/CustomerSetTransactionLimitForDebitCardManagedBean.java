@@ -82,7 +82,8 @@ public class CustomerSetTransactionLimitForDebitCardManagedBean implements Seria
         if (debitCards.isEmpty()) {
             
             customer = getCustomerViaSessionMap();
-            debitCards=debitCardSessionBeanLocal.getAllActivatedDebitCards(customer);
+            Long id=customer.getCustomerBasicId();
+            debitCards=debitCardSessionBeanLocal.getAllActivatedDebitCards(id);
                
         }
         return debitCards;

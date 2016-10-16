@@ -22,10 +22,10 @@ public interface DebitCardSessionBeanLocal {
     
     public String debitCardNumValiadation(String debitCardNum, String cardHolderName, String debitCardSecurityCode);
     
-    public List<String> getAllActivatedDebitCards(CustomerBasic customer);
+    public List<String> getAllActivatedDebitCards(Long customerId);
     
-    public List<String> getAllNonActivatedDebitCards(CustomerBasic customer);
+    public List<String> getAllNonActivatedDebitCards(Long customerId);
     
-    public List<String> getAllDebitCards(CustomerBasic customer);
+    public List<String> getAllDebitCards(Long customerId);
     
 }

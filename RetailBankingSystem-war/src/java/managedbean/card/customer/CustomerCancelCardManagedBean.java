@@ -6,7 +6,11 @@
 package managedbean.card.customer;
 
 import ejb.card.session.DebitCardManagementSessionBeanLocal;
+import ejb.card.session.DebitCardSessionBeanLocal;
+import ejb.customer.entity.CustomerBasic;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
@@ -28,16 +32,22 @@ public class CustomerCancelCardManagedBean implements Serializable {
      */
     @EJB
     private DebitCardManagementSessionBeanLocal debitCardManagementSessionBeanLocal;
+    
+    @EJB
+    private DebitCardSessionBeanLocal debitCardSessionBeanLocal;
 
     private String cardType;
-    private String debitCardNum;
     private String debitCardPwd;
+
+    private List<String> debitCards = new ArrayList<String>();
+    private String selectedDebitCard;
+    private CustomerBasic customer;
 
     public CustomerCancelCardManagedBean() {
     }
 
     public void cancelCard(ActionEvent event) {
-        
+
         System.out.println("debug: cancel card");
         if (cardType.equals("debit")) {
             cancelDebitCard();
@@ -48,6 +58,9 @@ public class CustomerCancelCardManagedBean implements Serializable {
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext ec = context.getExternalContext();
         FacesMessage message = null;
+        
+        String[] debitCardInfo=selectedDebitCard.split("-");
+        String debitCardNum=debitCardInfo[1];
 
         System.out.println("debug:cancelDebitCard- debit card num " + debitCardNum);
         System.out.println("debug: cancelDebitCard- debit card num " + debitCardPwd);
@@ -80,15 +93,6 @@ public class CustomerCancelCardManagedBean implements Serializable {
         System.out.println("debug: set card type " + cardType);
     }
 
-    public String getDebitCardNum() {
-        return debitCardNum;
-    }
-
-    public void setDebitCardNum(String debitCardNum) {
-        this.debitCardNum = debitCardNum;
-        System.out.println("debug: set debit card num " + debitCardNum);
-    }
-
     public String getDebitCardPwd() {
         return debitCardPwd;
     }
@@ -96,6 +100,39 @@ public class CustomerCancelCardManagedBean implements Serializable {
     public void setDebitCardPwd(String debitCardPwd) {
         this.debitCardPwd = debitCardPwd;
         System.out.println("debug: set debit Card Pwd " + debitCardPwd);
+    }
+
+    public List<String> getDebitCards() {
+        System.out.println("test " + debitCards);
+        if (debitCards.isEmpty()) {
+
+            customer = getCustomerViaSessionMap();
+            Long id=customer.getCustomerBasicId();
+            debitCards = debitCardSessionBeanLocal.getAllDebitCards(id);
+
+        }
+        return debitCards;
+    }
+
+    public void setDebitCards(List<String> debitCards) {
+        this.debitCards = debitCards;
+    }
+
+    public String getSelectedDebitCard() {
+        return selectedDebitCard;
+    }
+
+    public void setSelectedDebitCard(String selectedDebitCard) {
+        this.selectedDebitCard = selectedDebitCard;
+        System.out.println("debug: set selectedDebitCard " + selectedDebitCard);
+    }
+
+    public CustomerBasic getCustomerViaSessionMap() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        customer = (CustomerBasic) context.getExternalContext().getSessionMap().get("customer");
+
+        return customer;
+
     }
 
 }
