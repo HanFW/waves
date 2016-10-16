@@ -55,7 +55,7 @@
                                         <p:outputLabel for="customerDateOfBirth" style="font-weight: bold" value="Date of Birth: "/>
                                         <p:calendar id="customerDateOfBirth" value="#{publicHDBLoanApplication.customerDateOfBirth}" 
                                                     showOn="button" locale="de" navigator="true" pattern="dd/MM/yyyy" 
-                                                    yearRange="c-200:c+200" required="true" requiredMessage="Required Field"/>
+                                                    yearRange="c-200:c+0" required="true" requiredMessage="Required Field"/>
                                         <p:message for="customerDateOfBirth"/>
                 
                                         <p:outputLabel for="customerGender" style="font-weight: bold" value="Gender: "/>
@@ -667,7 +667,7 @@
                                     </h:panelGrid>
                                 </p:tab>
                 
-                                <p:tab id="employement">
+                                <p:tab id="employment">
                                     <h:panelGrid columns="1">
                                         <p:steps activeIndex="2">
                                             <p:menuitem value="Basic Information" />
@@ -767,14 +767,12 @@
                                         <p:outputLabel for="customerMonthlyFixedIncome" style="font-weight: bold" value="Monthly Fixed Income(SGD): "/>
                                         <p:inputText id="customerMonthlyFixedIncome" value="#{publicHDBLoanApplication.customerMonthlyFixedIncome}"
                                                        required="true" requiredMessage="Required Field" converterMessage="Please enter a valid number">
-                                            <f:convertNumber type="number"/>
                                         </p:inputText>
                                         <p:message for="customerMonthlyFixedIncome"/>
                                         
                                         <p:outputLabel for="customerOtherMonthlyIncome" style="font-weight: bold" value="Other Monthly Income(SGD): "/>
                                         <p:inputText id="customerOtherMonthlyIncome" value="#{publicHDBLoanApplication.customerOtherMonthlyIncome}"
                                                        required="true" requiredMessage="Required Field" converterMessage="Please enter a valid number">
-                                            <f:convertNumber type="number"/>
                                         </p:inputText>
                                         <p:message for="customerOtherMonthlyIncome"/>
                                         
@@ -841,14 +839,12 @@
             <p:outputLabel for="customerLoanAmount" style="font-weight: bold" value="Loan Amount/Credit Limit: "/>
             <p:inputText id="customerLoanAmount" value="#{publicHDBLoanApplication.customerLoanAmount}"
                          required="true" requiredMessage="Required Field" converterMessage="Please enter a valid number">
-                <f:convertNumber type="number"/>
             </p:inputText>
             <p:message for="customerLoanAmount"/>
             
             <p:outputLabel for="customerMonthlyInstalment" style="font-weight: bold" value="Monthly Instalment: "/>
             <p:inputText id="customerMonthlyInstalment" value="#{publicHDBLoanApplication.customerMonthlyInstalment}"
                          required="true" requiredMessage="Required Field" converterMessage="Please enter a valid number">
-                <f:convertNumber type="number"/>
             </p:inputText>
             <p:message for="customerMonthlyInstalment"/>
             
@@ -926,14 +922,12 @@
             <p:outputLabel for="customerPropertyBuiltUpArea" style="font-weight: bold" value="Build-in Area (sq m): "/>
             <p:inputText id="customerPropertyBuiltUpArea" value="#{publicHDBLoanApplication.customerPropertyBuiltUpArea}"
                          required="true" requiredMessage="Required Field" converterMessage="Please enter a valid number">
-                <f:convertNumber type="number"/>
             </p:inputText>
             <p:message for="customerPropertyBuiltUpArea"/>
 
             <p:outputLabel for="customerPropertyLandArea" style="font-weight: bold" value="Land Area (sq m): "/>
             <p:inputText id="customerPropertyLandArea" value="#{publicHDBLoanApplication.customerPropertyLandArea}"
                          required="true" requiredMessage="Required Field" converterMessage="Please enter a valid number">
-                <f:convertNumber type="number"/>
             </p:inputText>
             <p:message for="customerPropertyLandArea"/>
 
@@ -995,34 +989,10 @@
             <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('hdbLoanWizard').next();" />
         </h:panelGrid>
     </p:tab>
-
-    <p:tab id="loan">
-        <h:panelGrid columns="1">
-            <p:steps activeIndex="5">
-                <p:menuitem value="Basic Information" />
-                <p:menuitem value="Personal Details" />
-                <p:menuitem value="Employment Details" />
-                <p:menuitem value="Financial Commitments" />
-                <p:menuitem value="Property Details" />
-                <p:menuitem value="Financial Request" />
-                <p:menuitem value="Supporting Documents"/>
-                <p:menuitem value="Confirmation"/>
-            </p:steps>
-        </h:panelGrid>
-
-        <p:panelGrid>
-
-        </p:panelGrid>
-
-        <h:panelGrid columns="2" class="ui-lg-6"> 
-            <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('hdbLoanWizard').back()"/>
-            <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('hdbLoanWizard').next();" />
-        </h:panelGrid>
-    </p:tab>-->
-
-                <p:tab id="documents">
+                -->    
+                <p:tab id="loan">
                     <h:panelGrid columns="1">
-                        <p:steps activeIndex="6">
+                        <p:steps activeIndex="5">
                             <p:menuitem value="Basic Information" />
                             <p:menuitem value="Personal Details" />
                             <p:menuitem value="Employment Details" />
@@ -1034,28 +1004,230 @@
                         </p:steps>
                     </h:panelGrid>
 
-                    <h:panelGrid>
-                        <p:outputLabel value="Please provide your signature"/>
-                        <p:fileUpload id="fileUpload" update="fileUpload"
-                        
-                        <p:outputLabel value="Please provide your signature" />
-                        <p:signature id="input" style="width:300px;height:200px" widgetVar="sig" value="#{signatureViewManagedBean.customerSignature}" 
-                                     guideline="true"/>
-                        <p:commandButton process="@this input output" value="Submit" icon="ui-icon-check" update="output"/>
-                        <p:commandButton process="@this input output" value="Clear" icon="ui-icon-close" type="button" onclick="PF('sig').clear()"/>
-                        <p:outputPanel id="output">
-                            <h:outputText rendered="#{not empty signatureViewManagedBean.customerSignature}" style="font-size:20px;display:block" value="Your Signature" />
-                            <p:signature style="width:300px;height:200px;" value="#{signatureViewManagedBean.customerSignature}" readonly="true"
-                                         rendered="#{not empty signatureViewManagedBean.customerSignature}" backgroundColor="#eaeaea" color="#03a9f4"/>
-                        </p:outputPanel>
+                    <p:panelGrid>
+                        <p:outputLabel for="customerFinancialRequest" style="font-weight: bold" value="Financial Request: "/>
+                        <p:selectOneMenu id="customerFinancialRequest" value="#{publicHDBLoanApplication.customerFinancialRequest}"
+                                         required="true" requiredMessage="Required Field">
+                            <f:selectItem itemLabel="Please Select" itemValue="" />
+                            <f:selectItem itemLabel="New Purchase" itemValue="purchase" />
+                            <f:selectItem itemLabel="Refinancing" itemValue="refinancing" />
+                            <p:ajax event="change" update="newPurchasePanel refinancingPanel" listener="#{publicHDBLoanApplication.showFinancialRequestPanel}"/>
+                        </p:selectOneMenu>
+                        <p:message for="customerFinancialRequest"/>
 
-                    </h:panelGrid>
+                        <p:panel style="border: none;" id="newPurchasePanel" visible="#{publicHDBLoanApplication.propertyNewPurchasePanelVisible}">
+                            <p:outputLabel for="customerPropertyPurchasePrice" style="font-weight: bold" value="Property Purchase Price: "/>
+                            <p:inputText id="customerPropertyPurchasePrice" value="#{publicHDBLoanApplication.customerPropertyPurchasePrice}"
+                                         required="#{publicHDBLoanApplication.propertyNewPurchasePanelVisible}" requiredMessage="Required Field" converterMessage="Please enter a valid number">
+                            </p:inputText>
+                            <p:message for="customerPropertyPurchasePrice"/>
+
+                            <p:outputLabel for="customerPropertyDateOfPurchase" style="font-weight: bold" value="Property Date of Purchase: "/>
+                            <p:calendar id="customerPropertyDateOfPurchase" value="#{publicHDBLoanApplication.customerPropertyDateOfPurchase}" 
+                                        showOn="button" locale="de" navigator="true" pattern="dd/MM/yyyy" 
+                                        yearRange="c-200:c+0" required="#{publicHDBLoanApplication.propertyNewPurchasePanelVisible}" requiredMessage="Required Field"/>
+                            <p:message for="customerPropertyDateOfPurchase"/>
+
+                            <p:outputLabel for="customerPropertySource" style="font-weight: bold" value="Property Purchased From:  "/>
+                            <p:selectOneMenu id="customerPropertySource" value="#{publicHDBLoanApplication.customerPropertySource}"
+                                             required="#{publicHDBLoanApplication.propertyNewPurchasePanelVisible}" requiredMessage="Required Field">
+                                <f:selectItem itemLabel="Please Select" itemValue="" />
+                                <f:selectItem itemLabel="Developer/HDB" itemValue="Developer/HDB" />
+                                <f:selectItem itemLabel="Secondary Market" itemValue="Secondary Market" />
+                            </p:selectOneMenu>
+                            <p:message for="customerPropertySource"/>
+
+                            <p:outputLabel for="customerPropertyWithOTP" style="font-weight: bold" value="Property OTP Granted:  "/>
+                            <p:selectOneMenu id="customerPropertyWithOTP" value="#{publicHDBLoanApplication.customerPropertyWithOTP}"
+                                             required="#{publicHDBLoanApplication.propertyNewPurchasePanelVisible}" requiredMessage="Required Field">
+                                <f:selectItem itemLabel="Please Select" itemValue="" />
+                                <f:selectItem itemLabel="Yes" itemValue="yes" />
+                                <f:selectItem itemLabel="No" itemValue="no" />
+                                <p:ajax event="change" update="panelCustomreOTP" listener="#{publicHDBLoanApplication.showPropertyOTPPanel}"/>
+                            </p:selectOneMenu>
+                            <p:message for="customerPropertyWithOTP"/>
+                            <p:panel style="border: none;" id="panelCustomreOTP" visible="#{publicHDBLoanApplication.propertyOTPPanelVisible}">
+                                <p:outputLabel for="customerPropertyOTPDate" style="font-weight: bold" value="Date of OTP (Option to Purchase):"/>
+                                <p:calendar id="customerPropertyOTPDate" value="#{publicHDBLoanApplication.customerPropertyOTPDate}" 
+                                            showOn="button" locale="de" navigator="true" pattern="dd/MM/yyyy" 
+                                            yearRange="c-0:c+200" required="#{publicHDBLoanApplication.propertyOTPPanelVisible}" requiredMessage="Required Field"/>
+                                <p:message for="customerPropertyOTPDate"/>
+                            </p:panel>
+
+                            <p:outputLabel for="customerPropertyWithTenancy" style="font-weight: bold" value="Property Purchase with Tenancy:  "/>
+                            <p:selectOneMenu id="customerPropertyWithTenancy" value="#{publicHDBLoanApplication.customerPropertyWithTenancy}"
+                                             required="#{publicHDBLoanApplication.propertyNewPurchasePanelVisible}" requiredMessage="Required Field">
+                                <f:selectItem itemLabel="Please Select" itemValue="" />
+                                <f:selectItem itemLabel="Yes" itemValue="yes" />
+                                <f:selectItem itemLabel="No" itemValue="no" />
+                                <p:ajax event="change" update="panelCustomreTenancy" listener="#{publicHDBLoanApplication.showPropertyTenancyPanel}"/>
+                            </p:selectOneMenu>
+                            <p:message for="customerPropertyWithTenancy"/>
+                            <p:panel style="border: none;" id="panelCustomreTenancy" visible="#{publicHDBLoanApplication.propertyTenancyPanelVisible}">
+                                <p:outputLabel for="customerPropertyTenancyIncome" style="font-weight: bold" value="Rental Income(SGD):"/>
+                                <p:inputText id="customerPropertyTenancyIncome" value="#{publicHDBLoanApplication.customerPropertyTenancyIncome}"
+                                             required="#{publicHDBLoanApplication.propertyTenancyPanelVisible}" requiredMessage="Required Field" converterMessage="Please enter a valid number"/>
+                                <p:message for="customerPropertyTenancyIncome"/>
+                                <p:outputLabel for="customerPropertyTenancyExpiryYear" style="font-weight: bold" value="Expiry Year: "/>
+                                <p:inputText id="customerPropertyTenancyExpiryYear" value="#{publicHDBLoanApplication.customerPropertyTenancyExpiryYear}"
+                                             required="#{publicHDBLoanApplication.propertyTenancyPanelVisible}" requiredMessage="Required Field" validatorMessage="Please enter a valid year (yyyy)" converterMessage="Please enter a valid number">
+                                    <f:validateLongRange minimum="2016" maximum="2100"/>
+                                    <f:convertNumber integerOnly="true"/>
+                                </p:inputText>
+                                <p:message for="customerPropertyTenancyExpiryYear"/>
+                            </p:panel>
+
+                            <p:outputLabel for="customerWithBenefitsFromVendor" style="font-weight: bold" value="Have you received benefits from vendor?  "/>
+                            <p:selectOneMenu id="customerWithBenefitsFromVendor" value="#{publicHDBLoanApplication.customerWithBenefitsFromVendor}"
+                                             required="#{publicHDBLoanApplication.propertyNewPurchasePanelVisible}" requiredMessage="Required Field">
+                                <f:selectItem itemLabel="Please Select" itemValue="" />
+                                <f:selectItem itemLabel="Yes" itemValue="yes" />
+                                <f:selectItem itemLabel="No" itemValue="no" />
+                                <p:ajax event="change" update="panelCustomerPropertyBenefits" listener="#{publicHDBLoanApplication.showBenefitsPanel}"/>
+                            </p:selectOneMenu>
+                            <p:message for="customerWithBenefitsFromVendor"/>
+                            <p:panel style="border: none;" id="panelCustomerPropertyBenefits" visible="#{publicHDBLoanApplication.propertyBenefitsPanelVisible}">
+                                <p:outputLabel for="customerBenefitsFromVendor" style="font-weight: bold" value="Amount Received (SGD) :"/>
+                                <p:inputText id="customerBenefitsFromVendor" value="#{publicHDBLoanApplication.customerBenefitsFromVendor}"
+                                             required="#{publicHDBLoanApplication.propertyBenefitsPanelVisible}" requiredMessage="Required Field" converterMessage="Please enter a valid number"/>
+                                <p:message for="customerBenefitsFromVendor"/>
+                            </p:panel>
+
+                            <p:outputLabel for="customerCashDownpayment" style="font-weight: bold" value="Cash Downpayment (SGD): "/>
+                            <p:inputText id="customerCashDownpayment" value="#{publicHDBLoanApplication.customerCashDownpayment}"
+                                         required="#{publicHDBLoanApplication.propertyNewPurchasePanelVisible}" requiredMessage="Required Field" converterMessage="Please enter a valid number">
+                            </p:inputText>
+                            <p:message for="customerCashDownpayment"/>
+
+                            <p:outputLabel for="customerCPFDownpayment" style="font-weight: bold" value="CPF Downpayment (SGD): "/>
+                            <p:inputText id="customerCPFDownpayment" value="#{publicHDBLoanApplication.customerCPFDownpayment}"
+                                         required="#{publicHDBLoanApplication.propertyNewPurchasePanelVisible}" requiredMessage="Required Field" converterMessage="Please enter a valid number">
+                            </p:inputText>
+                            <p:message for="customerCPFDownpayment"/>
+
+                            <p:outputLabel for="customerLoanAmountRequired" style="font-weight: bold" value="Loan Amount Required (SGD): "/>
+                            <p:inputText id="customerLoanAmountRequired" value="#{publicHDBLoanApplication.customerLoanAmountRequired}"
+                                         required="#{publicHDBLoanApplication.propertyNewPurchasePanelVisible}" requiredMessage="Required Field" converterMessage="Please enter a valid number">
+                            </p:inputText>
+                            <p:message for="customerLoanAmountRequired"/>
+
+                            <p:outputLabel for="customerLoanTenure" style="font-weight: bold" value="Loan Tenure: "/>
+                            <p:inputText id="customerLoanTenure" value="#{publicHDBLoanApplication.customerLoanTenure}"
+                                         required="#{publicHDBLoanApplication.propertyNewPurchasePanelVisible}" requiredMessage="Required Field" validatorMessage="Please enter a valid number between 0-30" converterMessage="Please enter a valid number">
+                                <f:validateLongRange minimum="0" maximum="30"/>
+                                <f:convertNumber integerOnly="true"/>
+                            </p:inputText>
+                            <p:message for="customerLoanTenure"/>
+                        </p:panel>
+
+                        <p:panel style="border:none" id="refinancingPanel" visible="#{publicHDBLoanApplication.propertyRefinancingPanelVisible}">
+                            <p:outputLabel for="customerExistingFinancer" style="font-weight: bold" value="Name of Existing Financier: "/>
+                            <p:inputText id="customerExistingFinancer" value="#{publicHDBLoanApplication.customerExistingFinancer}"
+                                         required="#{publicHDBLoanApplication.propertyRefinancingPanelVisible}" requiredMessage="Required Field" converterMessage="Please enter a valid number">
+                            </p:inputText>
+                            <p:message for="customerExistingFinancer"/>
+
+                            <p:outputLabel for="customerOutstandingLoan" style="font-weight: bold" value="Outstanding Loan Amount (SGD): "/>
+                            <p:inputText id="customerOutstandingLoan" value="#{publicHDBLoanApplication.customerOutstandingLoan}"
+                                         required="#{publicHDBLoanApplication.propertyRefinancingPanelVisible}" requiredMessage="Required Field" converterMessage="Please enter a valid number">
+                            </p:inputText>
+                            <p:message for="customerOutstandingLoan"/>
+                            
+                            <p:outputLabel for="customerOutstandingYear" style="font-weight: bold" value="Remaining Years: "/>
+                            <p:inputText id="customerOutstandingYear" value="#{publicHDBLoanApplication.customerOutstandingYear}"
+                                         required="#{publicHDBLoanApplication.propertyRefinancingPanelVisible}" requiredMessage="Required Field" validatorMessage="Please enter a valid number" converterMessage="Please enter a valid number">
+                                <f:validateLongRange minimum="0" maximum="30"/>
+                                <f:convertNumber integerOnly="true"/>
+                            </p:inputText>
+                            <p:message for="customerOutstandingYear"/>
+
+                            <p:outputLabel for="customerOutstandingMonth" style="font-weight: bold" value="Remaining Months: "/>
+                            <p:inputText id="customerOutstandingMonth" value="#{publicHDBLoanApplication.customerOutstandingMonth}"
+                                         required="#{publicHDBLoanApplication.propertyRefinancingPanelVisible}" requiredMessage="Required Field" validatorMessage="Please enter a valid number" converterMessage="Please enter a valid number">
+                                <f:validateLongRange minimum="0" maximum="12"/>
+                                <f:convertNumber integerOnly="true"/>
+                            </p:inputText>
+                            <p:message for="customerOutstandingMonth"/>
+                            
+                            <p:outputLabel for="customerTotalCPFWithdrawal" style="font-weight: bold" value="Total CPF Withdrawal to-date (for all registered owners):"/>
+                            <p:inputText id="customerTotalCPFWithdrawal" value="#{publicHDBLoanApplication.customerTotalCPFWithdrawal}"
+                                         required="#{publicHDBLoanApplication.propertyRefinancingPanelVisible}" requiredMessage="Required Field" converterMessage="Please enter a valid number">
+                            </p:inputText>
+                            <p:message for="customerTotalCPFWithdrawal"/>
+                        </p:panel>
+                    </p:panelGrid>
 
                     <h:panelGrid columns="2" class="ui-lg-6"> 
                         <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('hdbLoanWizard').back()"/>
                         <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('hdbLoanWizard').next();" />
                     </h:panelGrid>
                 </p:tab>
+
+                <!--                <p:tab id="documents">
+                                    <h:panelGrid columns="1">
+                                        <p:steps activeIndex="6">
+                                            <p:menuitem value="Basic Information" />
+                                            <p:menuitem value="Personal Details" />
+                                            <p:menuitem value="Employment Details" />
+                                            <p:menuitem value="Financial Commitments" />
+                                            <p:menuitem value="Property Details" />
+                                            <p:menuitem value="Financial Request" />
+                                            <p:menuitem value="Supporting Documents"/>
+                                            <p:menuitem value="Confirmation"/>
+                                        </p:steps>
+                                    </h:panelGrid>
+                
+                                    <h:panelGrid>
+                                        <p:outputLabel value="Please upload all the files in PDF format"/>
+                
+                                        <p:outputLabel value="Please upload photocopy of NRIC/Passport for all Applicants and Owners:"/>
+                                        <p:outputLabel value="(Please upload all photocopies in one single PDF file)"/>
+                                        <p:messages id="identificationUploadMessage"/>
+                                        <p:fileUpload id="identificationUpload" update="identificationUploadMessage" fileUploadListener="#{publicHDBLoanApplication.identificationUpload}"
+                                                      mode="advanced" skinSimple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(pdf)$/" multiple="false"/>
+                                        <p:outputLabel value="Please upload your Option to Purchase"/>
+                                        <p:messages id="otpUploadMessage"/>
+                                        <p:fileUpload id="otpUpload" update="otpUploadMessage" fileUploadListener="#{publicHDBLoanApplication.otpUpload}"
+                                                      mode="advanced" skinSimple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(pdf)$/" multiple="false"/>
+                                        <p:outputLabel value="Please upload your Purchase Agreement"/>
+                                        <p:messages id="purchaseAgreementUploadMessage"/>
+                                        <p:fileUpload id="purchaseAgreementUpload" update="purchaseAgreementUploadMessage" fileUploadListener="#{publicHDBLoanApplication.purchaseAgreementUpload}"
+                                                      mode="advanced" skinSimple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(pdf)$/" multiple="false"/>
+                                        <p:outputLabel value="Please upload your Loan Statement from existing financial institution - Latest 12 months"/>
+                                        <p:messages id="existingLoanUploadMessage"/>
+                                        <p:fileUpload id="existingLoanUpload" update="existingLoanUploadMessage" fileUploadListener="#{publicHDBLoanApplication.existingLoanUpload}"
+                                                      mode="advanced" skinSimple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(pdf)$/" multiple="false"/>
+                                        <p:outputLabel value="Please upload your CPF Withdrawal Statement"/>
+                                        <p:messages id="cpfWithdrawalUploadMessage"/>
+                                        <p:fileUpload id="cpfWithdrawalUpload" update="cpfWithdrawalUploadMessage" fileUploadListener="#{publicHDBLoanApplication.cpfWithdrawalUpload}"
+                                                      mode="advanced" skinSimple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(pdf)$/" multiple="false"/>
+                                        <p:outputLabel value="Please upload Evidence of sale of your existing property"/>
+                                        <p:messages id="evidenceOfSaleUploadMessage"/>
+                                        <p:fileUpload id="evidenceOfSaleUpload" update="evidenceOfSaleUploadMessage" fileUploadListener="#{publicHDBLoanApplication.evidenceOfSaleUpload}"
+                                                      mode="advanced" skinSimple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(pdf)$/" multiple="false"/>
+                                        <p:outputLabel value="Please upload your tenancy agreement"/>
+                                        <p:messages id="tenancyUploadMessage"/>
+                                        <p:fileUpload id="tenancyUpload" update="tenancyUploadMessage" fileUploadListener="#{publicHDBLoanApplication.tenancyUpload}"
+                                                      mode="advanced" skinSimple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(pdf)$/" multiple="false"/>
+                                        <p:outputLabel value="Please upload your lastest tax assessment"/>
+                                        <p:messages id="employeeTaxUploadMessage"/>
+                                        <p:fileUpload id="employeeTaxUpload" update="employeeTaxUploadMessage" fileUploadListener="#{publicHDBLoanApplication.employeeTaxUpload}"
+                                                      mode="advanced" skinSimple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(pdf)$/" multiple="false"/>
+                                        <p:outputLabel value="Please upload your lastest CPF statement"/>
+                                        <p:messages id="employeeCPFUploadMessage"/>
+                                        <p:fileUpload id="employeeCPFUpload" update="employeeCPFUploadMessage" fileUploadListener="#{publicHDBLoanApplication.employeeCPFUpload}"
+                                                      mode="advanced" skinSimple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(pdf)$/" multiple="false"/>
+                                        <p:outputLabel value="Please upload your lastest 2 years income tax assessment"/>
+                                        <p:messages id="selfEmployedTaxUploadMessage"/>
+                                        <p:fileUpload id="selfEmployedTaxUpload" update="selfEmployedTaxUploadMessage" fileUploadListener="#{publicHDBLoanApplication.selfEmployedTaxUpload}"
+                                                      mode="advanced" skinSimple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(pdf)$/" multiple="false"/>
+                                    </h:panelGrid>
+                
+                                    <h:panelGrid columns="2" class="ui-lg-6"> 
+                                        <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('hdbLoanWizard').back()"/>
+                                        <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('hdbLoanWizard').next();" />
+                                    </h:panelGrid>
+                                </p:tab>-->
 
                 <p:tab id="confirmation">
                     <h:panelGrid columns="1">
@@ -1070,6 +1242,21 @@
                             <p:menuitem value="Confirmation"/>
                         </p:steps>
                     </h:panelGrid>
+
+                    <p:panelGrid>
+                        <p:outputLabel value="Please provide your signature" />
+                        <br/>
+                        <p:signature id="input" style="width:300px;height:200px" widgetVar="sig" value="#{signatureViewManagedBean.customerSignature}" 
+                                     guideline="true"/>
+                        <p:commandButton process="@this input output" value="Submit" icon="ui-icon-check" update="output"/>
+                        <p:commandButton process="@this input output" value="Clear" icon="ui-icon-close" type="button" onclick="PF('sig').clear()"/>
+                        <p:outputPanel id="output">
+                            <h:outputText rendered="#{not empty signatureViewManagedBean.customerSignature}" style="font-size:20px;display:block" value="Your Signature" />
+                            <p:signature style="width:300px;height:200px;" value="#{signatureViewManagedBean.customerSignature}" readonly="true"
+                                         rendered="#{not empty signatureViewManagedBean.customerSignature}" backgroundColor="#eaeaea" color="#03a9f4"/>
+                        </p:outputPanel>
+                    </p:panelGrid>
+
                     <h:panelGrid columns="2" class="ui-lg-6"> 
                         <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('hdbLoanWizard').back()"/>
                         <p:commandButton id="saveBtn" value="Submit Request" actionListener="#{accountManagedBean.saveAccount}" ajax="true"/>                        

@@ -5,13 +5,25 @@
  */
 package managedbean.loan.customer;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import org.apache.commons.io.IOUtils;
+import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.FlowEvent;
+import org.primefaces.model.UploadedFile;
 
 /**
  *
@@ -34,7 +46,7 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
     private String customerRace;
     private String customerMobile;
     private String customerEmail;
-    
+
     //personal details
     private String customerEducation;
     private String customerMaritalStatus;
@@ -46,7 +58,7 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
     private String customerResidentialStatus;
     private String customerResidentialType;
     private Integer customerLengthOfResidence;
-    
+
     //employment details
     private String customerEmploymentStatus;
     private String customerCompanyName;
@@ -60,18 +72,18 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
     private Integer customerLengthOfCurrentJob;
     private String customerPreviousCompany;
     private Integer customerLengthOfPreviousJob;
-    private Double customerMonthlyFixedIncome;
-    private Double customerOtherMonthlyIncome;
+    private BigDecimal customerMonthlyFixedIncome;
+    private BigDecimal customerOtherMonthlyIncome;
     private String customerOtherMonthlyIncomeSource;
-    
+
     //commitments
     private ArrayList<HashMap> customerFinancialCommitments = new ArrayList<HashMap>();
     private String customerFacilityType;
     private String customerFinancialInstitution;
-    private Double customerLoanAmount;
-    private Double customerMonthlyInstalment;
+    private BigDecimal customerLoanAmount;
+    private BigDecimal customerMonthlyInstalment;
     private HashMap customerFinancialCommitment = new HashMap();
-    
+
     //property details
     private String customerPropertyStreetName;
     private String customerPropertyBlockNum;
@@ -80,64 +92,93 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
     private ArrayList<String> customerPropertyOwners = new ArrayList<String>();
     private String customerPropertyOwner;
     private String customerPropertyType;
-    private Double customerPropertyBuiltUpArea;
-    private Double customerPropertyLandArea;
+    private BigDecimal customerPropertyBuiltUpArea;
+    private BigDecimal customerPropertyLandArea;
     private String customrePropertyStatus;
     private Date customerPropertyTOPDate;
     private String customerPropertyUsage;
     private String customerPropertyTenureType;
     private Integer customerPropertyTenureDuration;
     private Integer customerPropertyTunureFromYear;
-    
-    //loan
-    private Double customerPropertyPurchasePrice;
+
+    //loan - new purchase
+    private BigDecimal customerPropertyPurchasePrice;
     private Date customerPropertyDateOfPurchase;
     private String customerPropertySource;
-    private String customerPropertyTransactionType;
     private String customerPropertyWithOTP;
-    private String customerPropertyOTPDate;
+    private Date customerPropertyOTPDate;
     private String customerPropertyWithTenancy;
-    private Double customerPropertyTenancyIncome;
+    private BigDecimal customerPropertyTenancyIncome;
     private Integer customerPropertyTenancyExpiryYear;
     private String customerWithBenefitsFromVendor;
-    private Double customerBenefitsFromVendor;
-    private Double customerCashDownpayment;
-    private Double customerCPFDownpayment;
-
+    private BigDecimal customerBenefitsFromVendor;
+    private BigDecimal customerCashDownpayment;
+    private BigDecimal customerCPFDownpayment;
+    private String customerFinancialRequest;
+    private BigDecimal customerLoanAmountRequired;
+    private Integer customerLoanTenure;
     
+    private String customerExistingFinancer;
+    private BigDecimal customerOutstandingLoan;
+    private Integer customerOutstandingYear;
+    private Integer customerOutstandingMonth;
+    private BigDecimal customerTotalCPFWithdrawal;
+    
+
+    //documents
+    private UploadedFile file;
+    private HashMap uploads = new HashMap();
+
     //basic information
     private boolean salutationPanelVisible;
     private boolean nationalitySGPanelVisible;
     private boolean nationalityOthersPanelVisible;
     private boolean nricPanelVisible;
     private boolean passportPanelVisible;
-    
+
     //personal details
     private boolean industryTypePanelVisible;
     private boolean currentPositionPanelVisible;
-    
+
     //property details
     private boolean propertyTOPPanelVisible;
     private boolean propertyTenurePanelVisible;
+    
+    //loan
+    private boolean propertyNewPurchasePanelVisible;
+    private boolean propertyRefinancingPanelVisible;
+    private boolean propertyOTPPanelVisible;
+    private boolean propertyTenancyPanelVisible;
+    private boolean propertyBenefitsPanelVisible;
     
 
     /**
      * Creates a new instance of PublicHDBLoanApplication
      */
     public PublicHDBLoanApplicationManagedBean() {
+        uploads.put("identification", false);
+        uploads.put("otp", false);
+        uploads.put("purchaseAgreement", false);
+        uploads.put("existingLoan", false);
+        uploads.put("cpfWithdrawal", false);
+        uploads.put("evidenceOfSale", false);
+        uploads.put("tenancy", false);
+        uploads.put("employeeTax", false);
+        uploads.put("employeeCPF", false);
+        uploads.put("selfEmployedTax", false);
     }
 
     public String onFlowProcess(FlowEvent event) {
         return event.getNewStep();
     }
-    
-    public void addCustomerPropertyOwner(){
+
+    public void addCustomerPropertyOwner() {
         System.out.println("====== loan/PublicHDBLoanApplicationManagedBean: addCustomerPropertyOwner() ======");
         customerPropertyOwners.add(customerPropertyOwner);
         customerPropertyOwner = null;
     }
-    
-    public void addCustomerFinancialCommitment(){
+
+    public void addCustomerFinancialCommitment() {
         System.out.println("====== loan/PublicHDBLoanApplicationManagedBean: addCustomerFinancialCommitment() ======");
         customerFinancialCommitment.put("institution", customerFinancialInstitution);
         customerFinancialCommitment.put("type", customerFacilityType);
@@ -150,20 +191,20 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
         customerMonthlyInstalment = null;
         customerFinancialCommitment = new HashMap();
     }
-    
-    public void deleteCustomerPropertyOwner(String owner){
+
+    public void deleteCustomerPropertyOwner(String owner) {
         System.out.println("====== loan/PublicHDBLoanApplicationManagedBean: deleteCustomerPropertyOwner() ======");
         customerPropertyOwners.remove(owner);
     }
-    
-    public void deleteCustomerFinancialCommitment(HashMap commitment){
+
+    public void deleteCustomerFinancialCommitment(HashMap commitment) {
         System.out.println("====== loan/PublicHDBLoanApplicationManagedBean: deleteCustomerFinancialCommitment() ======");
         customerFinancialCommitments.remove(commitment);
     }
 
     public void showSalutationPanel() {
         salutationPanelVisible = customerSalutation.equals("Others");
-    } 
+    }
 
     public void showNationalityPanel() {
         customerIdentificationNum = null;
@@ -191,23 +232,250 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
             nricPanelVisible = false;
         }
     }
+
+    public void identificationUpload(FileUploadEvent event) throws FileNotFoundException, IOException {
+        this.file = event.getFile();
+        if (file != null) {
+            String filename = customerIdentificationNum + ".pdf";
+            InputStream input = file.getInputstream();
+            OutputStream output = new FileOutputStream(new File("/Users/hanfengwei/NetBeansProjects/waves/RetailBankingSystem-war/web/resources/customerIdentification", filename));
+            try {
+                IOUtils.copy(input, output);
+            } finally {
+                IOUtils.closeQuietly(input);
+                IOUtils.closeQuietly(output);
+            }
+            uploads.replace("identification", true);
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, file.getFileName() + " uploaded successfully.", "");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        } else {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cannot find the file, please upload again.", "");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        }
+    }
     
-    public void showIndustryTypePanel(){
+    public void otpUpload(FileUploadEvent event) throws FileNotFoundException, IOException {
+        this.file = event.getFile();
+        if (file != null) {
+            String filename = customerIdentificationNum + "-otp.pdf";
+            InputStream input = file.getInputstream();
+            OutputStream output = new FileOutputStream(new File("/Users/hanfengwei/NetBeansProjects/waves/RetailBankingSystem-war/web/resources/customerDocuments", filename));
+            try {
+                IOUtils.copy(input, output);
+            } finally {
+                IOUtils.closeQuietly(input);
+                IOUtils.closeQuietly(output);
+            }
+            uploads.replace("otp", true);
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, file.getFileName() + " uploaded successfully.", "");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        } else {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cannot find the file, please upload again.", "");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        }
+    }
+    
+    public void purchaseAgreementUpload(FileUploadEvent event) throws FileNotFoundException, IOException {
+        this.file = event.getFile();
+        if (file != null) {
+            String filename = customerIdentificationNum + "-purchase_agreement.pdf";
+            InputStream input = file.getInputstream();
+            OutputStream output = new FileOutputStream(new File("/Users/hanfengwei/NetBeansProjects/waves/RetailBankingSystem-war/web/resources/customerDocuments", filename));
+            try {
+                IOUtils.copy(input, output);
+            } finally {
+                IOUtils.closeQuietly(input);
+                IOUtils.closeQuietly(output);
+            }
+            uploads.replace("purchaseAgreement", true);
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, file.getFileName() + " uploaded successfully.", "");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        } else {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cannot find the file, please upload again.", "");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        }
+    }
+    
+    public void existingLoanUpload(FileUploadEvent event) throws FileNotFoundException, IOException {
+        this.file = event.getFile();
+        if (file != null) {
+            String filename = customerIdentificationNum + "-existing_loan.pdf";
+            InputStream input = file.getInputstream();
+            OutputStream output = new FileOutputStream(new File("/Users/hanfengwei/NetBeansProjects/waves/RetailBankingSystem-war/web/resources/customerDocuments", filename));
+            try {
+                IOUtils.copy(input, output);
+            } finally {
+                IOUtils.closeQuietly(input);
+                IOUtils.closeQuietly(output);
+            }
+            uploads.replace("existingLoan", true);
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, file.getFileName() + " uploaded successfully.", "");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        } else {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cannot find the file, please upload again.", "");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        }
+    }
+    
+    public void cpfWithdrawalUpload(FileUploadEvent event) throws FileNotFoundException, IOException {
+        this.file = event.getFile();
+        if (file != null) {
+            String filename = customerIdentificationNum + "-cpf_withdrawal.pdf";
+            InputStream input = file.getInputstream();
+            OutputStream output = new FileOutputStream(new File("/Users/hanfengwei/NetBeansProjects/waves/RetailBankingSystem-war/web/resources/customerDocuments", filename));
+            try {
+                IOUtils.copy(input, output);
+            } finally {
+                IOUtils.closeQuietly(input);
+                IOUtils.closeQuietly(output);
+            }
+            uploads.replace("cpfWithdrawal", true);
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, file.getFileName() + " uploaded successfully.", "");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        } else {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cannot find the file, please upload again.", "");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        }
+    }
+    
+    public void evidenceOfSaleUpload(FileUploadEvent event) throws FileNotFoundException, IOException {
+        this.file = event.getFile();
+        if (file != null) {
+            String filename = customerIdentificationNum + "-evidence_of_sale.pdf";
+            InputStream input = file.getInputstream();
+            OutputStream output = new FileOutputStream(new File("/Users/hanfengwei/NetBeansProjects/waves/RetailBankingSystem-war/web/resources/customerDocuments", filename));
+            try {
+                IOUtils.copy(input, output);
+            } finally {
+                IOUtils.closeQuietly(input);
+                IOUtils.closeQuietly(output);
+            }
+            uploads.replace("evidenceOfSale", true);
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, file.getFileName() + " uploaded successfully.", "");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        } else {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cannot find the file, please upload again.", "");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        }
+    }
+    
+    public void tenancyUpload(FileUploadEvent event) throws FileNotFoundException, IOException {
+        this.file = event.getFile();
+        if (file != null) {
+            String filename = customerIdentificationNum + "-tenancy.pdf";
+            InputStream input = file.getInputstream();
+            OutputStream output = new FileOutputStream(new File("/Users/hanfengwei/NetBeansProjects/waves/RetailBankingSystem-war/web/resources/customerDocuments", filename));
+            try {
+                IOUtils.copy(input, output);
+            } finally {
+                IOUtils.closeQuietly(input);
+                IOUtils.closeQuietly(output);
+            }
+            uploads.replace("tenancy", true);
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, file.getFileName() + " uploaded successfully.", "");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        } else {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cannot find the file, please upload again.", "");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        }
+    }
+    
+    public void employeeTaxUpload(FileUploadEvent event) throws FileNotFoundException, IOException {
+        this.file = event.getFile();
+        if (file != null) {
+            String filename = customerIdentificationNum + "-employee_tax.pdf";
+            InputStream input = file.getInputstream();
+            OutputStream output = new FileOutputStream(new File("/Users/hanfengwei/NetBeansProjects/waves/RetailBankingSystem-war/web/resources/customerDocuments", filename));
+            try {
+                IOUtils.copy(input, output);
+            } finally {
+                IOUtils.closeQuietly(input);
+                IOUtils.closeQuietly(output);
+            }
+            uploads.replace("employeeTax", true);
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, file.getFileName() + " uploaded successfully.", "");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        } else {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cannot find the file, please upload again.", "");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        }
+    }
+    
+    public void employeeCPFUpload(FileUploadEvent event) throws FileNotFoundException, IOException {
+        this.file = event.getFile();
+        if (file != null) {
+            String filename = customerIdentificationNum + "-employee_cpf.pdf";
+            InputStream input = file.getInputstream();
+            OutputStream output = new FileOutputStream(new File("/Users/hanfengwei/NetBeansProjects/waves/RetailBankingSystem-war/web/resources/customerDocuments", filename));
+            try {
+                IOUtils.copy(input, output);
+            } finally {
+                IOUtils.closeQuietly(input);
+                IOUtils.closeQuietly(output);
+            }
+            uploads.replace("employeeCPF", true);
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, file.getFileName() + " uploaded successfully.", "");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        } else {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cannot find the file, please upload again.", "");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        }
+    }
+    
+    public void selfEmployedTaxUpload(FileUploadEvent event) throws FileNotFoundException, IOException {
+        this.file = event.getFile();
+        if (file != null) {
+            String filename = customerIdentificationNum + "-self-employed_tax.pdf";
+            InputStream input = file.getInputstream();
+            OutputStream output = new FileOutputStream(new File("/Users/hanfengwei/NetBeansProjects/waves/RetailBankingSystem-war/web/resources/customerDocuments", filename));
+            try {
+                IOUtils.copy(input, output);
+            } finally {
+                IOUtils.closeQuietly(input);
+                IOUtils.closeQuietly(output);
+            }
+            uploads.replace("selfEmployedTax", true);
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, file.getFileName() + " uploaded successfully.", "");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        } else {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cannot find the file, please upload again.", "");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        }
+    }
+
+    public void showIndustryTypePanel() {
         industryTypePanelVisible = customerIndustryType.equals("Others");
     }
-    
-    public void showCurrentPositionPanel(){
+
+    public void showCurrentPositionPanel() {
         currentPositionPanelVisible = customerCurrentPosition.equals("Others");
     }
-    
-    public void showPropertyTOPDatePanel(){
+
+    public void showPropertyTOPDatePanel() {
         propertyTOPPanelVisible = customrePropertyStatus.equals("Under construction");
     }
-    
-    public void showPropertyTenurePanel(){
+
+    public void showPropertyTenurePanel() {
         propertyTenurePanelVisible = customerPropertyTenureType.equals("Leasehold");
     }
     
+    public void showPropertyOTPPanel(){
+        propertyOTPPanelVisible = customerPropertyWithOTP.equals("yes");
+    }
+    
+    public void showPropertyTenancyPanel(){
+        propertyTenancyPanelVisible = customerPropertyWithTenancy.equals("yes");
+    }
+    
+    public void showBenefitsPanel(){
+        propertyBenefitsPanelVisible = customerWithBenefitsFromVendor.equals("yes");
+    }
+    
+    public void showFinancialRequestPanel(){
+        propertyNewPurchasePanelVisible = customerFinancialRequest.equals("purchase");
+        propertyRefinancingPanelVisible = customerFinancialRequest.equals("refinancing");
+    }
+
     public String getCustomerSalutation() {
         return customerSalutation;
     }
@@ -599,21 +867,13 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
     public void setPropertyTOPPanelVisible(boolean propertyTOPPanelVisible) {
         this.propertyTOPPanelVisible = propertyTOPPanelVisible;
     }
- 
+
     public Date getCustomerPropertyDateOfPurchase() {
         return customerPropertyDateOfPurchase;
     }
 
     public void setCustomerPropertyDateOfPurchase(Date customerPropertyDateOfPurchase) {
         this.customerPropertyDateOfPurchase = customerPropertyDateOfPurchase;
-    }
-
-    public String getCustomerPropertyTransactionType() {
-        return customerPropertyTransactionType;
-    }
-
-    public void setCustomerPropertyTransactionType(String customerPropertyTransactionType) {
-        this.customerPropertyTransactionType = customerPropertyTransactionType;
     }
 
     public String getCustomerPropertyTenureType() {
@@ -640,11 +900,11 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
         this.customerPropertyWithOTP = customerPropertyWithOTP;
     }
 
-    public String getCustomerPropertyOTPDate() {
+    public Date getCustomerPropertyOTPDate() {
         return customerPropertyOTPDate;
     }
 
-    public void setCustomerPropertyOTPDate(String customerPropertyOTPDate) {
+    public void setCustomerPropertyOTPDate(Date customerPropertyOTPDate) {
         this.customerPropertyOTPDate = customerPropertyOTPDate;
     }
 
@@ -704,38 +964,6 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
         this.customerLengthOfPreviousJob = customerLengthOfPreviousJob;
     }
 
-    public Double getCustomerMonthlyFixedIncome() {
-        return customerMonthlyFixedIncome;
-    }
-
-    public void setCustomerMonthlyFixedIncome(Double customerMonthlyFixedIncome) {
-        this.customerMonthlyFixedIncome = customerMonthlyFixedIncome;
-    }
-
-    public Double getCustomerOtherMonthlyIncome() {
-        return customerOtherMonthlyIncome;
-    }
-
-    public void setCustomerOtherMonthlyIncome(Double customerOtherMonthlyIncome) {
-        this.customerOtherMonthlyIncome = customerOtherMonthlyIncome;
-    }
-
-    public Double getCustomerPropertyBuiltUpArea() {
-        return customerPropertyBuiltUpArea;
-    }
-
-    public void setCustomerPropertyBuiltUpArea(Double customerPropertyBuiltUpArea) {
-        this.customerPropertyBuiltUpArea = customerPropertyBuiltUpArea;
-    }
-
-    public Double getCustomerPropertyLandArea() {
-        return customerPropertyLandArea;
-    }
-
-    public void setCustomerPropertyLandArea(Double customerPropertyLandArea) {
-        this.customerPropertyLandArea = customerPropertyLandArea;
-    }
-
     public Integer getCustomerPropertyTenureDuration() {
         return customerPropertyTenureDuration;
     }
@@ -752,52 +980,12 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
         this.customerPropertyTunureFromYear = customerPropertyTunureFromYear;
     }
 
-    public Double getCustomerPropertyPurchasePrice() {
-        return customerPropertyPurchasePrice;
-    }
-
-    public void setCustomerPropertyPurchasePrice(Double customerPropertyPurchasePrice) {
-        this.customerPropertyPurchasePrice = customerPropertyPurchasePrice;
-    }
-
-    public Double getCustomerPropertyTenancyIncome() {
-        return customerPropertyTenancyIncome;
-    }
-
-    public void setCustomerPropertyTenancyIncome(Double customerPropertyTenancyIncome) {
-        this.customerPropertyTenancyIncome = customerPropertyTenancyIncome;
-    }
-
     public Integer getCustomerPropertyTenancyExpiryYear() {
         return customerPropertyTenancyExpiryYear;
     }
 
     public void setCustomerPropertyTenancyExpiryYear(Integer customerPropertyTenancyExpiryYear) {
         this.customerPropertyTenancyExpiryYear = customerPropertyTenancyExpiryYear;
-    }
-
-    public Double getCustomerBenefitsFromVendor() {
-        return customerBenefitsFromVendor;
-    }
-
-    public void setCustomerBenefitsFromVendor(Double customerBenefitsFromVendor) {
-        this.customerBenefitsFromVendor = customerBenefitsFromVendor;
-    }
-
-    public Double getCustomerCashDownpayment() {
-        return customerCashDownpayment;
-    }
-
-    public void setCustomerCashDownpayment(Double customerCashDownpayment) {
-        this.customerCashDownpayment = customerCashDownpayment;
-    }
-
-    public Double getCustomerCPFDownpayment() {
-        return customerCPFDownpayment;
-    }
-
-    public void setCustomerCPFDownpayment(Double customerCPFDownpayment) {
-        this.customerCPFDownpayment = customerCPFDownpayment;
     }
 
     public ArrayList<HashMap> getCustomerFinancialCommitments() {
@@ -824,27 +1012,219 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
         this.customerFinancialInstitution = customerFinancialInstitution;
     }
 
-    public Double getCustomerLoanAmount() {
-        return customerLoanAmount;
-    }
-
-    public void setCustomerLoanAmount(Double customerLoanAmount) {
-        this.customerLoanAmount = customerLoanAmount;
-    }
-
-    public Double getCustomerMonthlyInstalment() {
-        return customerMonthlyInstalment;
-    }
-
-    public void setCustomerMonthlyInstalment(Double customerMonthlyInstalment) {
-        this.customerMonthlyInstalment = customerMonthlyInstalment;
-    }
-
     public HashMap getCustomerFinancialCommitment() {
         return customerFinancialCommitment;
     }
 
     public void setCustomerFinancialCommitment(HashMap customerFinancialCommitment) {
         this.customerFinancialCommitment = customerFinancialCommitment;
+    }
+
+    public UploadedFile getFile() {
+        return file;
+    }
+
+    public void setFile(UploadedFile file) {
+        this.file = file;
+    }
+
+    public BigDecimal getCustomerMonthlyFixedIncome() {
+        return customerMonthlyFixedIncome;
+    }
+
+    public void setCustomerMonthlyFixedIncome(BigDecimal customerMonthlyFixedIncome) {
+        this.customerMonthlyFixedIncome = customerMonthlyFixedIncome;
+    }
+
+    public BigDecimal getCustomerOtherMonthlyIncome() {
+        return customerOtherMonthlyIncome;
+    }
+
+    public void setCustomerOtherMonthlyIncome(BigDecimal customerOtherMonthlyIncome) {
+        this.customerOtherMonthlyIncome = customerOtherMonthlyIncome;
+    }
+
+    public BigDecimal getCustomerLoanAmount() {
+        return customerLoanAmount;
+    }
+
+    public void setCustomerLoanAmount(BigDecimal customerLoanAmount) {
+        this.customerLoanAmount = customerLoanAmount;
+    }
+
+    public BigDecimal getCustomerMonthlyInstalment() {
+        return customerMonthlyInstalment;
+    }
+
+    public void setCustomerMonthlyInstalment(BigDecimal customerMonthlyInstalment) {
+        this.customerMonthlyInstalment = customerMonthlyInstalment;
+    }
+
+    public BigDecimal getCustomerPropertyBuiltUpArea() {
+        return customerPropertyBuiltUpArea;
+    }
+
+    public void setCustomerPropertyBuiltUpArea(BigDecimal customerPropertyBuiltUpArea) {
+        this.customerPropertyBuiltUpArea = customerPropertyBuiltUpArea;
+    }
+
+    public BigDecimal getCustomerPropertyLandArea() {
+        return customerPropertyLandArea;
+    }
+
+    public void setCustomerPropertyLandArea(BigDecimal customerPropertyLandArea) {
+        this.customerPropertyLandArea = customerPropertyLandArea;
+    }
+
+    public BigDecimal getCustomerPropertyPurchasePrice() {
+        return customerPropertyPurchasePrice;
+    }
+
+    public void setCustomerPropertyPurchasePrice(BigDecimal customerPropertyPurchasePrice) {
+        this.customerPropertyPurchasePrice = customerPropertyPurchasePrice;
+    }
+
+    public BigDecimal getCustomerPropertyTenancyIncome() {
+        return customerPropertyTenancyIncome;
+    }
+
+    public void setCustomerPropertyTenancyIncome(BigDecimal customerPropertyTenancyIncome) {
+        this.customerPropertyTenancyIncome = customerPropertyTenancyIncome;
+    }
+
+    public BigDecimal getCustomerBenefitsFromVendor() {
+        return customerBenefitsFromVendor;
+    }
+
+    public void setCustomerBenefitsFromVendor(BigDecimal customerBenefitsFromVendor) {
+        this.customerBenefitsFromVendor = customerBenefitsFromVendor;
+    }
+
+    public BigDecimal getCustomerCashDownpayment() {
+        return customerCashDownpayment;
+    }
+
+    public void setCustomerCashDownpayment(BigDecimal customerCashDownpayment) {
+        this.customerCashDownpayment = customerCashDownpayment;
+    }
+
+    public BigDecimal getCustomerCPFDownpayment() {
+        return customerCPFDownpayment;
+    }
+
+    public void setCustomerCPFDownpayment(BigDecimal customerCPFDownpayment) {
+        this.customerCPFDownpayment = customerCPFDownpayment;
+    }
+
+    public HashMap getUploads() {
+        return uploads;
+    }
+
+    public void setUploads(HashMap uploads) {
+        this.uploads = uploads;
+    }
+
+    public boolean isPropertyOTPPanelVisible() {
+        return propertyOTPPanelVisible;
+    }
+
+    public void setPropertyOTPPanelVisible(boolean propertyOTPPanelVisible) {
+        this.propertyOTPPanelVisible = propertyOTPPanelVisible;
+    }
+
+    public boolean isPropertyTenancyPanelVisible() {
+        return propertyTenancyPanelVisible;
+    }
+
+    public void setPropertyTenancyPanelVisible(boolean propertyTenancyPanelVisible) {
+        this.propertyTenancyPanelVisible = propertyTenancyPanelVisible;
+    }
+
+    public boolean isPropertyBenefitsPanelVisible() {
+        return propertyBenefitsPanelVisible;
+    }
+
+    public void setPropertyBenefitsPanelVisible(boolean propertyBenefitsPanelVisible) {
+        this.propertyBenefitsPanelVisible = propertyBenefitsPanelVisible;
+    }
+
+    public BigDecimal getCustomerLoanAmountRequired() {
+        return customerLoanAmountRequired;
+    }
+
+    public void setCustomerLoanAmountRequired(BigDecimal customerLoanAmountRequired) {
+        this.customerLoanAmountRequired = customerLoanAmountRequired;
+    }
+
+    public Integer getCustomerLoanTenure() {
+        return customerLoanTenure;
+    }
+
+    public void setCustomerLoanTenure(Integer customerLoanTenure) {
+        this.customerLoanTenure = customerLoanTenure;
+    }
+
+    public String getCustomerFinancialRequest() {
+        return customerFinancialRequest;
+    }
+
+    public void setCustomerFinancialRequest(String customerFinancialRequest) {
+        this.customerFinancialRequest = customerFinancialRequest;
+    }
+
+    public boolean isPropertyNewPurchasePanelVisible() {
+        return propertyNewPurchasePanelVisible;
+    }
+
+    public void setPropertyNewPurchasePanelVisible(boolean propertyNewPurchasePanelVisible) {
+        this.propertyNewPurchasePanelVisible = propertyNewPurchasePanelVisible;
+    }
+
+    public boolean isPropertyRefinancingPanelVisible() {
+        return propertyRefinancingPanelVisible;
+    }
+
+    public void setPropertyRefinancingPanelVisible(boolean propertyRefinancingPanelVisible) {
+        this.propertyRefinancingPanelVisible = propertyRefinancingPanelVisible;
+    }
+
+    public String getCustomerExistingFinancer() {
+        return customerExistingFinancer;
+    }
+
+    public void setCustomerExistingFinancer(String customerExistingFinancer) {
+        this.customerExistingFinancer = customerExistingFinancer;
+    }
+
+    public BigDecimal getCustomerOutstandingLoan() {
+        return customerOutstandingLoan;
+    }
+
+    public void setCustomerOutstandingLoan(BigDecimal customerOutstandingLoan) {
+        this.customerOutstandingLoan = customerOutstandingLoan;
+    }
+
+    public Integer getCustomerOutstandingYear() {
+        return customerOutstandingYear;
+    }
+
+    public void setCustomerOutstandingYear(Integer customerOutstandingYear) {
+        this.customerOutstandingYear = customerOutstandingYear;
+    }
+
+    public BigDecimal getCustomerTotalCPFWithdrawal() {
+        return customerTotalCPFWithdrawal;
+    }
+
+    public void setCustomerTotalCPFWithdrawal(BigDecimal customerTotalCPFWithdrawal) {
+        this.customerTotalCPFWithdrawal = customerTotalCPFWithdrawal;
+    }
+
+    public Integer getCustomerOutstandingMonth() {
+        return customerOutstandingMonth;
+    }
+
+    public void setCustomerOutstandingMonth(Integer customerOutstandingMonth) {
+        this.customerOutstandingMonth = customerOutstandingMonth;
     }
 }
