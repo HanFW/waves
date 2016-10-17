@@ -165,6 +165,7 @@ public class DebitCardSessionBean implements DebitCardSessionBeanLocal {
                         if(findDebitCard.getPredecessor()!=null){
                             Long predecessorId=findDebitCard.getPredecessor();
                             debitCardManagementSessionBeanLocal.CancelDebitCardAfterReplacement(predecessorId);
+                            findDebitCard.setPredecessor(null);
                         }//if the card has a predecessor, then delete the predecessor from database
                         return "valid";
                     }
