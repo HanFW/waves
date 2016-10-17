@@ -144,6 +144,7 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
         bankAccountId = bankAccount.getBankAccountId();
 
         if (bankAccountId == null) {
+            System.out.println(accTransactionId);
             return accTransactionId;
         } else {
             if (bankAccount.getBankAccountType().equals("Monthly Savings Account")) {
