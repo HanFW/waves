@@ -124,6 +124,8 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
     private Integer customerOutstandingMonth;
     private BigDecimal customerTotalCPFWithdrawal;
     
+    //confirmation
+    private boolean agreement;
 
     //documents
     private UploadedFile file;
@@ -1226,5 +1228,13 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
 
     public void setCustomerOutstandingMonth(Integer customerOutstandingMonth) {
         this.customerOutstandingMonth = customerOutstandingMonth;
+    }
+
+    public boolean isAgreement() {
+        return agreement;
+    }
+
+    public void setAgreement(boolean agreement) {
+        this.agreement = agreement;
     }
 }

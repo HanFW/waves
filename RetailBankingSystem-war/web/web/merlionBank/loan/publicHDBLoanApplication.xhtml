@@ -1132,7 +1132,7 @@
                                          required="#{publicHDBLoanApplication.propertyRefinancingPanelVisible}" requiredMessage="Required Field" converterMessage="Please enter a valid number">
                             </p:inputText>
                             <p:message for="customerOutstandingLoan"/>
-                            
+
                             <p:outputLabel for="customerOutstandingYear" style="font-weight: bold" value="Remaining Years: "/>
                             <p:inputText id="customerOutstandingYear" value="#{publicHDBLoanApplication.customerOutstandingYear}"
                                          required="#{publicHDBLoanApplication.propertyRefinancingPanelVisible}" requiredMessage="Required Field" validatorMessage="Please enter a valid number" converterMessage="Please enter a valid number">
@@ -1148,7 +1148,7 @@
                                 <f:convertNumber integerOnly="true"/>
                             </p:inputText>
                             <p:message for="customerOutstandingMonth"/>
-                            
+
                             <p:outputLabel for="customerTotalCPFWithdrawal" style="font-weight: bold" value="Total CPF Withdrawal to-date (for all registered owners):"/>
                             <p:inputText id="customerTotalCPFWithdrawal" value="#{publicHDBLoanApplication.customerTotalCPFWithdrawal}"
                                          required="#{publicHDBLoanApplication.propertyRefinancingPanelVisible}" requiredMessage="Required Field" converterMessage="Please enter a valid number">
@@ -1163,71 +1163,90 @@
                     </h:panelGrid>
                 </p:tab>
 
-                <!--                <p:tab id="documents">
-                                    <h:panelGrid columns="1">
-                                        <p:steps activeIndex="6">
-                                            <p:menuitem value="Basic Information" />
-                                            <p:menuitem value="Personal Details" />
-                                            <p:menuitem value="Employment Details" />
-                                            <p:menuitem value="Financial Commitments" />
-                                            <p:menuitem value="Property Details" />
-                                            <p:menuitem value="Financial Request" />
-                                            <p:menuitem value="Supporting Documents"/>
-                                            <p:menuitem value="Confirmation"/>
-                                        </p:steps>
-                                    </h:panelGrid>
-                
-                                    <h:panelGrid>
-                                        <p:outputLabel value="Please upload all the files in PDF format"/>
-                
-                                        <p:outputLabel value="Please upload photocopy of NRIC/Passport for all Applicants and Owners:"/>
-                                        <p:outputLabel value="(Please upload all photocopies in one single PDF file)"/>
-                                        <p:messages id="identificationUploadMessage"/>
-                                        <p:fileUpload id="identificationUpload" update="identificationUploadMessage" fileUploadListener="#{publicHDBLoanApplication.identificationUpload}"
-                                                      mode="advanced" skinSimple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(pdf)$/" multiple="false"/>
-                                        <p:outputLabel value="Please upload your Option to Purchase"/>
-                                        <p:messages id="otpUploadMessage"/>
-                                        <p:fileUpload id="otpUpload" update="otpUploadMessage" fileUploadListener="#{publicHDBLoanApplication.otpUpload}"
-                                                      mode="advanced" skinSimple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(pdf)$/" multiple="false"/>
-                                        <p:outputLabel value="Please upload your Purchase Agreement"/>
-                                        <p:messages id="purchaseAgreementUploadMessage"/>
-                                        <p:fileUpload id="purchaseAgreementUpload" update="purchaseAgreementUploadMessage" fileUploadListener="#{publicHDBLoanApplication.purchaseAgreementUpload}"
-                                                      mode="advanced" skinSimple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(pdf)$/" multiple="false"/>
-                                        <p:outputLabel value="Please upload your Loan Statement from existing financial institution - Latest 12 months"/>
-                                        <p:messages id="existingLoanUploadMessage"/>
-                                        <p:fileUpload id="existingLoanUpload" update="existingLoanUploadMessage" fileUploadListener="#{publicHDBLoanApplication.existingLoanUpload}"
-                                                      mode="advanced" skinSimple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(pdf)$/" multiple="false"/>
-                                        <p:outputLabel value="Please upload your CPF Withdrawal Statement"/>
-                                        <p:messages id="cpfWithdrawalUploadMessage"/>
-                                        <p:fileUpload id="cpfWithdrawalUpload" update="cpfWithdrawalUploadMessage" fileUploadListener="#{publicHDBLoanApplication.cpfWithdrawalUpload}"
-                                                      mode="advanced" skinSimple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(pdf)$/" multiple="false"/>
-                                        <p:outputLabel value="Please upload Evidence of sale of your existing property"/>
-                                        <p:messages id="evidenceOfSaleUploadMessage"/>
-                                        <p:fileUpload id="evidenceOfSaleUpload" update="evidenceOfSaleUploadMessage" fileUploadListener="#{publicHDBLoanApplication.evidenceOfSaleUpload}"
-                                                      mode="advanced" skinSimple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(pdf)$/" multiple="false"/>
-                                        <p:outputLabel value="Please upload your tenancy agreement"/>
-                                        <p:messages id="tenancyUploadMessage"/>
-                                        <p:fileUpload id="tenancyUpload" update="tenancyUploadMessage" fileUploadListener="#{publicHDBLoanApplication.tenancyUpload}"
-                                                      mode="advanced" skinSimple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(pdf)$/" multiple="false"/>
-                                        <p:outputLabel value="Please upload your lastest tax assessment"/>
-                                        <p:messages id="employeeTaxUploadMessage"/>
-                                        <p:fileUpload id="employeeTaxUpload" update="employeeTaxUploadMessage" fileUploadListener="#{publicHDBLoanApplication.employeeTaxUpload}"
-                                                      mode="advanced" skinSimple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(pdf)$/" multiple="false"/>
-                                        <p:outputLabel value="Please upload your lastest CPF statement"/>
-                                        <p:messages id="employeeCPFUploadMessage"/>
-                                        <p:fileUpload id="employeeCPFUpload" update="employeeCPFUploadMessage" fileUploadListener="#{publicHDBLoanApplication.employeeCPFUpload}"
-                                                      mode="advanced" skinSimple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(pdf)$/" multiple="false"/>
-                                        <p:outputLabel value="Please upload your lastest 2 years income tax assessment"/>
-                                        <p:messages id="selfEmployedTaxUploadMessage"/>
-                                        <p:fileUpload id="selfEmployedTaxUpload" update="selfEmployedTaxUploadMessage" fileUploadListener="#{publicHDBLoanApplication.selfEmployedTaxUpload}"
-                                                      mode="advanced" skinSimple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(pdf)$/" multiple="false"/>
-                                    </h:panelGrid>
-                
-                                    <h:panelGrid columns="2" class="ui-lg-6"> 
-                                        <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('hdbLoanWizard').back()"/>
-                                        <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('hdbLoanWizard').next();" />
-                                    </h:panelGrid>
-                                </p:tab>-->
+                <p:tab id="documents">
+                    <h:panelGrid columns="1">
+                        <p:steps activeIndex="6">
+                            <p:menuitem value="Basic Information" />
+                            <p:menuitem value="Personal Details" />
+                            <p:menuitem value="Employment Details" />
+                            <p:menuitem value="Financial Commitments" />
+                            <p:menuitem value="Property Details" />
+                            <p:menuitem value="Financial Request" />
+                            <p:menuitem value="Supporting Documents"/>
+                            <p:menuitem value="Confirmation"/>
+                        </p:steps>
+                    </h:panelGrid>
+
+                    <h:panelGrid>
+                        <p:outputLabel value="Please upload all the files in PDF format"/>
+                        <p:panel>
+                            <p:outputLabel value="Please upload photocopy of NRIC/Passport for all Applicants and Owners:"/>
+                            <p:outputLabel value="(Please upload all photocopies in one single PDF file)"/>
+                            <p:messages id="identificationUploadMessage"/>
+                            <p:fileUpload id="identificationUpload" update="identificationUploadMessage" fileUploadListener="#{publicHDBLoanApplication.identificationUpload}"
+                                          mode="advanced" skinSimple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(pdf)$/" multiple="false"/>
+                        </p:panel>
+
+                        <p:panel visible="#{publicHDBLoanApplication.propertyOTPPanelVisible}">
+                            <p:outputLabel value="Please upload your Option to Purchase"/>
+                            <p:messages id="otpUploadMessage"/>
+                            <p:fileUpload id="otpUpload" update="otpUploadMessage" fileUploadListener="#{publicHDBLoanApplication.otpUpload}"
+                                          mode="advanced" skinSimple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(pdf)$/" multiple="false"/>
+                            <p:outputLabel value="Please upload your Purchase Agreement"/>
+                            <p:messages id="purchaseAgreementUploadMessage"/>
+                            <p:fileUpload id="purchaseAgreementUpload" update="purchaseAgreementUploadMessage" fileUploadListener="#{publicHDBLoanApplication.purchaseAgreementUpload}"
+                                          mode="advanced" skinSimple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(pdf)$/" multiple="false"/>
+                        </p:panel>
+
+                        <p:panel>
+                            <p:outputLabel value="Please upload your Loan Statement from existing financial institution - Latest 12 months"/>
+                            <p:messages id="existingLoanUploadMessage"/>
+                            <p:fileUpload id="existingLoanUpload" update="existingLoanUploadMessage" fileUploadListener="#{publicHDBLoanApplication.existingLoanUpload}"
+                                          mode="advanced" skinSimple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(pdf)$/" multiple="false"/>
+                            <p:outputLabel value="Please upload your CPF Withdrawal Statement"/>
+                            <p:messages id="cpfWithdrawalUploadMessage"/>
+                            <p:fileUpload id="cpfWithdrawalUpload" update="cpfWithdrawalUploadMessage" fileUploadListener="#{publicHDBLoanApplication.cpfWithdrawalUpload}"
+                                          mode="advanced" skinSimple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(pdf)$/" multiple="false"/>
+                        </p:panel>
+
+                        <p:panel>
+                            <p:outputLabel value="Please upload Evidence of sale of your existing property"/>
+                            <p:messages id="evidenceOfSaleUploadMessage"/>
+                            <p:fileUpload id="evidenceOfSaleUpload" update="evidenceOfSaleUploadMessage" fileUploadListener="#{publicHDBLoanApplication.evidenceOfSaleUpload}"
+                                          mode="advanced" skinSimple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(pdf)$/" multiple="false"/>
+                        </p:panel>
+
+                        <p:panel>
+                            <p:outputLabel value="Please upload your tenancy agreement"/>
+                            <p:messages id="tenancyUploadMessage"/>
+                            <p:fileUpload id="tenancyUpload" update="tenancyUploadMessage" fileUploadListener="#{publicHDBLoanApplication.tenancyUpload}"
+                                          mode="advanced" skinSimple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(pdf)$/" multiple="false"/>
+                        </p:panel>
+
+                        <p:panel>
+                            <p:outputLabel value="Please upload your lastest tax assessment"/>
+                            <p:messages id="employeeTaxUploadMessage"/>
+                            <p:fileUpload id="employeeTaxUpload" update="employeeTaxUploadMessage" fileUploadListener="#{publicHDBLoanApplication.employeeTaxUpload}"
+                                          mode="advanced" skinSimple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(pdf)$/" multiple="false"/>
+                            <p:outputLabel value="Please upload your lastest CPF statement"/>
+                            <p:messages id="employeeCPFUploadMessage"/>
+                            <p:fileUpload id="employeeCPFUpload" update="employeeCPFUploadMessage" fileUploadListener="#{publicHDBLoanApplication.employeeCPFUpload}"
+                                          mode="advanced" skinSimple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(pdf)$/" multiple="false"/>
+                        </p:panel>
+
+                        <p:panel>
+                            <p:outputLabel value="Please upload your lastest 2 years income tax assessment"/>
+                            <p:messages id="selfEmployedTaxUploadMessage"/>
+                            <p:fileUpload id="selfEmployedTaxUpload" update="selfEmployedTaxUploadMessage" fileUploadListener="#{publicHDBLoanApplication.selfEmployedTaxUpload}"
+                                          mode="advanced" skinSimple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(pdf)$/" multiple="false"/>
+                        </p:panel>                       
+                    </h:panelGrid>
+
+                    <h:panelGrid columns="2" class="ui-lg-6"> 
+                        <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('hdbLoanWizard').back()"/>
+                        <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('hdbLoanWizard').next();" />
+                    </h:panelGrid>
+                </p:tab>
 
                 <p:tab id="confirmation">
                     <h:panelGrid columns="1">
@@ -1244,8 +1263,14 @@
                     </h:panelGrid>
 
                     <p:panelGrid>
+                        <p:messages id="agreementMessages" />
+                        <p:selectBooleanCheckbox id = "agreement" value="#{publicHDBLoanApplication.agreement}" 
+                                                 style="margin-top:5px"/>
+                        <h:outputText value="I have read and agree to the terms of Customer Declaration and Confirmation." />
+                        <p:captcha/>
                         <p:outputLabel value="Please provide your signature" />
                         <br/>
+                        <p:messages id="signatureMessages" />
                         <p:signature id="input" style="width:300px;height:200px" widgetVar="sig" value="#{signatureViewManagedBean.customerSignature}" 
                                      guideline="true"/>
                         <p:commandButton process="@this input output" value="Submit" icon="ui-icon-check" update="output"/>
