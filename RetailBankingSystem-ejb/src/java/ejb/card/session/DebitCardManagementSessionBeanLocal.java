@@ -15,6 +15,10 @@ import javax.ejb.Local;
 public interface DebitCardManagementSessionBeanLocal {
     public String CancelDebitCard(String debitCardNum, String debitCardPwd);
     
+    public void CancelDebitCardAfterReplacement(Long debitCardId);
+    
     public String reportDebitCardLoss(String debitCardNum, String debitCardPwd, String reportLossTime);
+    
+    public String requestForDebitCardReplacement(String debitCardNum, String debitCardPWd, String requestForReplacementTime);
     
 }

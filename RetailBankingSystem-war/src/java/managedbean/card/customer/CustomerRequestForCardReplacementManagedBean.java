@@ -6,10 +6,14 @@
 package managedbean.card.customer;
 
 import ejb.card.session.DebitCardManagementSessionBeanLocal;
+import ejb.card.session.DebitCardSessionBeanLocal;
+import ejb.customer.entity.CustomerBasic;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
@@ -32,9 +36,15 @@ public class CustomerRequestForCardReplacementManagedBean implements Serializabl
     @EJB
     private DebitCardManagementSessionBeanLocal debitCardManagementSessionBeanLocal;
 
+    @EJB
+    private DebitCardSessionBeanLocal debitCardSessionBeanLocal;
+
     private String cardType;
-    private String debitCardNum;
     private String debitCardPwd;
+
+    private List<String> debitCards = new ArrayList<String>();
+    private String selectedDebitCard;
+    private CustomerBasic customer;
 
     public CustomerRequestForCardReplacementManagedBean() {
     }
@@ -51,16 +61,18 @@ public class CustomerRequestForCardReplacementManagedBean implements Serializabl
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext ec = context.getExternalContext();
         FacesMessage message = null;
-        
-        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-        Date reportLossDate1 = new Date();
-        String reportLossDate = df.format(reportLossDate1);
 
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        Date requestCardReplacementDate1 = new Date();
+        String requestCardReplacementDate = df.format(requestCardReplacementDate1);
+
+        String[] debitCardInfo = selectedDebitCard.split("-");
+        String debitCardNum = debitCardInfo[1];
 
         System.out.println("debug: ReportDebitCardLoss- debit card num " + debitCardNum);
         System.out.println("debug: ReportDebitCardLoss- debit card Pwd " + debitCardPwd);
-        System.out.println("debug: ReportDebitCardLoss- report loss date " + reportLossDate);
-        String result = debitCardManagementSessionBeanLocal.reportDebitCardLoss(debitCardNum, debitCardPwd,reportLossDate);
+        System.out.println("debug: ReportDebitCardLoss- request card replacement date " + requestCardReplacementDate);
+        String result = debitCardManagementSessionBeanLocal.requestForDebitCardReplacement(debitCardNum, debitCardPwd, requestCardReplacementDate);
 
         switch (result) {
             case "success":
@@ -87,20 +99,42 @@ public class CustomerRequestForCardReplacementManagedBean implements Serializabl
         this.cardType = cardType;
     }
 
-    public String getDebitCardNum() {
-        return debitCardNum;
-    }
-
-    public void setDebitCardNum(String debitCardNum) {
-        this.debitCardNum = debitCardNum;
-    }
-
     public String getDebitCardPwd() {
         return debitCardPwd;
     }
 
     public void setDebitCardPwd(String debitCardPwd) {
         this.debitCardPwd = debitCardPwd;
+    }
+
+    public List<String> getDebitCards() {
+        System.out.println("test " + debitCards);
+
+        customer = getCustomerViaSessionMap();
+        Long id = customer.getCustomerBasicId();
+        debitCards = debitCardSessionBeanLocal.getAllActivatedDebitCards(id);
+        return debitCards;
+    }
+
+    public void setDebitCards(List<String> debitCards) {
+        this.debitCards = debitCards;
+    }
+
+    public String getSelectedDebitCard() {
+        return selectedDebitCard;
+    }
+
+    public void setSelectedDebitCard(String selectedDebitCard) {
+        this.selectedDebitCard = selectedDebitCard;
+        System.out.println("debug: set selectedDebitCard " + selectedDebitCard);
+    }
+
+    public CustomerBasic getCustomerViaSessionMap() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        customer = (CustomerBasic) context.getExternalContext().getSessionMap().get("customer");
+
+        return customer;
+
     }
 
 }
