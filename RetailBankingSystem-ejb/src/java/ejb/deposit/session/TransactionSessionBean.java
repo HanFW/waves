@@ -13,8 +13,6 @@ import javax.persistence.Query;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Calendar;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.persistence.EntityNotFoundException;
@@ -144,9 +142,9 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
         bankAccountId = bankAccount.getBankAccountId();
 
         if (bankAccountId == null) {
-            System.out.println(accTransactionId);
             return accTransactionId;
         } else {
+
             if (bankAccount.getBankAccountType().equals("Monthly Savings Account")) {
                 if (Double.valueOf(depositAmt) >= 50) {
                     bankAccount.setBankAccountMinSaving("Sufficient");
@@ -158,10 +156,7 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
             String transactionRef = "Merlion Bank Branch";
 
             Calendar cal = Calendar.getInstance();
-//            int year = cal.get(Calendar.YEAR);
-//            int month = cal.get(Calendar.MONTH);
-//            int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
-//            String transactionDate = dayOfMonth + "-" + (month + 1) + "-" + year;
+
             Long transactionDateMilis = cal.getTimeInMillis();
 
             accTransactionId = addNewTransaction(cal.getTime().toString(), transactionCode, transactionRef,
@@ -193,15 +188,13 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
         if (bankAccountId == null) {
             return accTransactionId;
         } else {
+            
             String accountCredit = " ";
             String transactionCode = "AWL";
             String transactionRef = "Merlion Bank Branch";
 
             Calendar cal = Calendar.getInstance();
-//            int year = cal.get(Calendar.YEAR);
-//            int month = cal.get(Calendar.MONTH);
-//            int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
-//            String transactionDate = dayOfMonth + "-" + (month + 1) + "-" + year;
+
             Long transactionDateMilis = cal.getTimeInMillis();
 
             accTransactionId = addNewTransaction(cal.getTime().toString(), transactionCode, transactionRef,
@@ -238,14 +231,11 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
         Long bankAccountToId = bankAccountTo.getBankAccountId();
 
         String transactionCode = "TRF";
-        String transactionRefFrom = bankAccountTo.getBankAccountType()+"-"+toAccount;
-        String transactionRefTo = bankAccountFrom.getBankAccountType()+"-"+fromAccount;
+        String transactionRefFrom = bankAccountTo.getBankAccountType() + "-" + toAccount;
+        String transactionRefTo = bankAccountFrom.getBankAccountType() + "-" + fromAccount;
 
         Calendar cal = Calendar.getInstance();
-//        int year = cal.get(Calendar.YEAR);
-//        int month = cal.get(Calendar.MONTH);
-//        int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
-//        String transactionDate = dayOfMonth + "-" + (month + 1) + "-" + year;
+
         Long transactionDateMilis = cal.getTimeInMillis();
 
         Long fromTransactionId = addNewTransaction(cal.getTime().toString(), transactionCode, transactionRefFrom,
@@ -305,11 +295,11 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
 
         return "Activated successfully.";
     }
-    
+
     @Override
     public void deleteAccTransaction(Long transactionId) {
         AccTransaction transaction = bankAccountSessionLocal.retrieveAccTransactionById(transactionId);
-        
+
         entityManager.remove(transaction);
         entityManager.flush();
     }
