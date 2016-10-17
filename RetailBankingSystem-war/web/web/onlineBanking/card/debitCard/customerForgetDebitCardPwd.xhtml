@@ -18,10 +18,42 @@
                         <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
                     </p:panel>
                     
+                    <p:messages autoUpdate="true" globalOnly="true"/>
+
+                    <h:panelGrid columns="3" class="ui-lg-6"> 
+
+                        <p:outputLabel value="Debit Card"/>
+                        <p:selectOneMenu id="selectCard" required="true" requiredMessage="Please select a debit card" style="text-align:left" value="#{customerForgetDebitCardPwdManagedBean.selectedDebitCard}">
+                            <f:selectItem itemLabel="Please select..." itemValue=""/>
+                            <f:selectItems value="#{customerForgetDebitCardPwdManagedBean.debitCards}"/> 
+                        </p:selectOneMenu>
+                        <p:message for="selectCard"/>
+
+
+                        <h:outputLabel for="pwd2" value="Password *" />
+
+                        <p:password converterMessage="Please enter a 6-digit PIN which consists of digit only" validatorMessage="Please enter a 6-digit PIN which consists of digit only" id="pwd2" value="#{customerForgetDebitCardPwdManagedBean.debitCardPwd}" label="Password 2" required="true">
+                            <f:validateLength minimum="6" maximum="6" /> 
+                        </p:password>
+
+                        <p:message for="pwd2"/>
+
+                        <h:outputLabel for="pwd3" value="Confirm Password: *" />
+
+                        <p:password converterMessage="Please enter a 6-digit PIN which consists of digit only" validatorMessage="Please enter a 6-digit PIN which consists of digit only" id="pwd3" value="#{customerForgetDebitCardPwdManagedBean.debitCardPwd1}" label="Password 3" required="true">
+                            <f:validateLength minimum="6" maximum="6" /> 
+                        </p:password>
+
+                        <p:message for="pwd3"/>
+
+                        <p:commandButton value="Set Password" type="submit" actionListener="#{customerForgetDebitCardPwdManagedBean.setDebitCardPassword}" update="@form"/>
+
+                    </h:panelGrid>
+
                 </h:form>
-                </div>
+            </div>
         </h:body>
-        
+
     </ui:define>
 </ui:composition>
 

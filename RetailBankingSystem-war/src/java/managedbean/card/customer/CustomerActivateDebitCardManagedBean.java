@@ -42,7 +42,7 @@ public class CustomerActivateDebitCardManagedBean implements Serializable {
     private SMSSessionBeanLocal smsSessionBeanLocal;
 
     @EJB
-    DebitCardPasswordSessionBeanLocal debitCardPasswordSessionBeanLocal;
+    private DebitCardPasswordSessionBeanLocal debitCardPasswordSessionBeanLocal;
 
     private CustomerBasic customer;
     private String cardHolderName;
