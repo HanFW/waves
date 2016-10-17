@@ -47,8 +47,8 @@
                                                 <p:outputLabel for="depositAmt" style="font-weight: bold" value="Deposit Amount(S$): " />
                                             </p:column>
                                             <p:column>
-                                                <p:inputText required="true" label="Deposit Amount" requiredMessage="Deposit amount is required." id="depositAmt"
-                                                             value="#{employeeCashManagedBean.depositAmt}" converterMessage="Invalid input">
+                                                <p:inputText required="true" label="Deposit Amount" requiredMessage="Required Field" id="depositAmt"
+                                                             value="#{employeeCashManagedBean.depositAmt}" converterMessage="Invalid input" validatorMessage="Invalid input">
                                                     <f:validateDoubleRange minimum="0.0" maximum="99999999.0" />
                                                 </p:inputText>
                                             </p:column>

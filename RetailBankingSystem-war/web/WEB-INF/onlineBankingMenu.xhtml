@@ -8,8 +8,6 @@
 
     <h:form id="menuform"> 
         <div class="layout-menu #{guestPreferences.menuClass}">
-
-
             <pu:menu widgetVar="me">
 
                 <p:submenu label="My Account">
@@ -19,22 +17,23 @@
                     <p:menuitem value="View Account" url="/web/onlineBanking/deposit/customerViewAccount.xhtml" />
                     <p:menuitem value="View Transaction" url="/web/onlineBanking/deposit/customerViewTransaction.xhtml" />
                     <p:menuitem value="View Statement" url="/web/onlineBanking/deposit/customerViewStatement.xhtml" />
-                    <p:menuitem value="Activate Fixed Deposit Account" url="/web/onlineBanking/deposit/customerActivateFixedDepositAccount.xhtml" />
-                    <p:menuitem value="Change Bank Account Password" url="/web/onlineBanking/deposit/customerChangeBankAccountPwd.xhtml" />
-                    <p:menuitem value="Forgot Bank Account Password" url="/web/onlineBanking/deposit/customerForgotPassword.xhtml" />
+                    <p:menuitem value="Reactivate Fixed Deposit Account" url="/web/onlineBanking/deposit/customerActivateFixedDepositAccount.xhtml" />
 
                 </p:submenu>
 
                 <p:submenu label="Transfer" >
                     <p:menuitem value="To My Account" url="/web/onlineBanking/deposit/customerToMyAccount.xhtml" />
                     <p:menuitem value="To Other Merlion Accounts" url="/web/onlineBanking/deposit/customerToOthersAccount.xhtml" />
-                    <p:menuitem value="To Other Bank Accounts(FAST)" url="/web/onlineBanking/payment/customerTransferFast.xhtml" />
                     <p:menuitem value="To Other Merlion Accuonts(One-time)" url="/web/onlineBanking/deposit/customerOneTimeTransfer.xhtml" />
+                    <p:menuitem value="To Other Bank Accounts(FAST)" url="/web/onlineBanking/payment/customerTransferFast.xhtml" />
                     <p:menuitem value="Add Recipient" url="/web/onlineBanking/deposit/customerAddRecipient.xhtml" />
-                    <p:menuitem value="Add Recipient(FAST)" url="/web/onlineBanking/payment/customerAddFastPayee.xhtml" />
                     <p:menuitem value="Delete Recipient" url="/web/onlineBanking/deposit/customerDeleteRecipient.xhtml" />
+                    <p:menuitem value="Add Recipient(FAST)" url="/web/onlineBanking/payment/customerAddFastPayee.xhtml" />
                     <p:menuitem value="Delete Recipient(FAST)" url="/web/onlineBanking/payment/customerDeleteFastPayee.xhtml" />
                     <p:menuitem value="Change Daily Transfer Limit" url="/web/onlineBanking/deposit/customerDailyTransferLimit.xhtml" />
+                    <p:menuitem value="Add GIRO Arrangement" url="/web/onlineBanking/payment/customerAddNewGIRO.xhtml" />
+                    <p:menuitem value="View GIRO Arrangement" url="/web/onlineBanking/payment/customerDeleteGIRO.xhtml" />
+                    <p:menuitem value="Set Up Standing Instruction" url="/web/onlineBanking/payment/customerSetUpStandingInstruction.xhtml" />
                 </p:submenu>
 
                 <p:submenu label="Enquiry">
@@ -42,14 +41,19 @@
                     <p:menuitem value="View enquiry" url="/web/onlineBanking/customer/CRMCustomerViewEnquiry.xhtml"/>
                 </p:submenu>
 
-                <p:submenu label="My profile">
-                    <p:menuitem value="Change password" url="/web/onlineBanking/customer/customerChangePIN.xhtml" />
-                    <p:menuitem value="Update basic profile" url="/web/onlineBanking/customer/customerUpdateBasicProfile.xhtml" />
-                    <p:menuitem value="Delete iBanking Account" url="/web/onlineBanking/infrastructure/customerDeleteIBAccount.xhtml" />
+                <p:submenu label="Pay">
+                    <p:menuitem value="XXX" url="" />
+                </p:submenu>
+
+                <p:submenu label="Cards">
+                    <p:menuitem value="XXX" url="" />
+                </p:submenu>
+
+                <p:submenu label="Wealth">
+                    <p:menuitem value="XXX" url="" />
                 </p:submenu>
 
             </pu:menu>
-
         </div>
     </h:form>
 </ui:composition>

@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/onlineBankingTemplate.xhtml"
+                xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
+
+    <ui:define name="content">
+        <h:form>
+            <p:panel>
+                <p:outputLabel value="Welcome "/>
+                <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
+            </p:panel>
+            <p:messages globalOnly="true"/>
+            <br/>
+            <p:outputLabel value="View GRIO Arrangement" style="font-weight: bold;font-size: 26px" />
+            <br/>
+            <br/>
+            <p:dataTable var="giro" value="#{deleteGIROManagedBean.GIROs}" 
+                         reflow="true" paginator="true" rows="10" 
+                         emptyMessage="No GIRO Arrangement">
+                <p:column headerText="Billing Organization" >
+                    <h:outputText value="#{giro.billingOrganization}" /> 
+                </p:column>
+
+                <p:column headerText="Bill Reference No" >
+                    <h:outputText value="#{giro.billReference}" /> 
+                </p:column>
+
+                <p:column headerText="Payment Limit(S$)" style="width: 13%">
+                    <h:outputText value="#{giro.paymentLimit}" />
+                </p:column>
+
+                <p:column headerText="Status" style="width: 10%">
+                    <center>
+                        <h:outputText value="#{giro.giroStatus}" /> 
+                    </center>
+                </p:column>
+
+                <p:column headerText="Account" >
+                    <h:outputText value="#{giro.bankAccountNumWithType}" /> 
+                </p:column>
+
+                <p:column headerText="Action" style="width: 10%"> 
+                    <center>
+                        <p:commandButton process="@this" action="#{deleteGIROManagedBean.deleteGIRO()}"
+                                         icon="ui-icon-trash" ajax="false">
+                            <f:setPropertyActionListener target="#{deleteGIROManagedBean.giroId}" value="#{giro.giroId}" />
+                        </p:commandButton>
+                    </center>
+                </p:column>
+            </p:dataTable>
+
+        </h:form>
+        <ezcomp:CCTimeout/>
+    </ui:define>
+</ui:composition>
+

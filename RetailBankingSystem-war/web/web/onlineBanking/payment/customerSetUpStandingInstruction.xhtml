@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/onlineBankingTemplate.xhtml"
+                xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
+
+    <ui:define name="content">
+        <h:form>
+            <p:panel>
+                <p:outputLabel value="Welcome "/>
+                <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
+            </p:panel>
+            <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                <p:panel id="panel"> 
+
+                    <p:outputLabel value="Set Up Standing Instruction" style="font-weight: bold;font-size: 26px" />
+                    <br/>
+                    <br/>
+                    <br/>
+                    <p:outputLabel value="Set up a standing instruction to transfer money." />
+                    <br/>
+                    <br/>
+                    <br/>
+                    <p:outputLabel value="Important Note" style="font-weight: bold;font-size: 20px" />
+                    <br/>
+                    <br/>
+                    <p:outputLabel value="• A new standing instruction takes 3 working days to be in effect." />
+                    <br/>
+                    <br/>
+                    <br/>
+                    <p:outputLabel value="To" style="font-weight: bold;font-size: 26px" />
+                    <br/>
+                    <br/>
+                    <p:outputLabel style="font-weight: bold" value="" />
+                    <p:selectOneRadio id="transferMethodToMyAccounts" value="#{standingInstructionManagedBean.existingCustomer}"
+                                      required="true" requiredMessage="Required Field">
+                        <f:selectItem itemLabel="My Accounts" itemValue="My Accounts" />
+                        <f:selectItem itemLabel="Merlion Bank" itemValue="Merlion Bank"/>
+                        <f:selectItem itemLabel="Other Bank" itemValue="Other Bank"/>
+                        <p:ajax event="change" update="panelCustomerSalutationOthers" listener="#{standingInstructionManagedBean.show()}"/>
+                    </p:selectOneRadio>
+                    <p:message for="transferMethodToMyAccounts" />
+
+                    <p:panel>
+                        <p:outputLabel for="bankAccounts" style="font-weight: bold" value="" />
+                        <p:selectOneMenu id="bankAccounts" value="#{standingInstructionManagedBean.customerSalutation}" 
+                                         required="true" requiredMessage="Required Field">
+                        </p:selectOneMenu>
+                        <p:message for="bankAccounts" />
+                    </p:panel>
+
+                </p:panel>
+            </p:panelGrid>
+        </h:form>
+        <ezcomp:CCTimeout/>
+    </ui:define>
+</ui:composition>

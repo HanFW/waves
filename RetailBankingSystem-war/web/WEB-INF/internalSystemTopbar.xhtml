@@ -10,58 +10,47 @@
         <div class="topbar-left">
             <h:link outcome="/web/internalSystem/infrastructure/employeeMainPage.xhtml"><div class="logo"></div></h:link>      
         </div>
-        
+
         <div class="topbar-right">
-            <a id="menu-button" href="#">
+            <a id="menu-button" href="">
                 <i></i>
             </a>
-            
-            <a id="topbar-menu-button" href="#">
+
+            <a id="topbar-menu-button" href="">
                 <i class="material-icons">menu</i>
             </a>
-            <ul class="topbar-items fadeInDown animated">
-             
-
-                
-                <li>
-                    <a href="#">
-                        <i class="topbar-icon material-icons">&#xE315;</i>
-                       
+            <ul class="topbar-items fadeInDown animated">                          
+                <li>                    
+                    <p:commandLink actionListener="#{employeeLoginManagedBean.doLogOut}">
+                        <i class="topbar-icon material-icons animated swing">&#xE879;</i>
                         <span class="topbar-item-name">Logout</span>
-                    </a>
-                    <ul class="ultima-menu animated">
-                        <li role="menuitem">
-                            
-                            <p:commandButton value="Logout" actionListener="#{employeeLoginManagedBean.doLogOut}" styleClass="secondary"/>
-                        </li>
-                   
-                    </ul>
+                    </p:commandLink>
+
                 </li>
-                
+
                 <li>
-                    <a href="#">
+                    <a href="">
                         <i class="topbar-icon material-icons animated swing">&#xE0C9;</i>
                         <span class="topbar-badge animated rubberBand">6</span>
                         <span class="topbar-item-name">Messages</span>
                     </a>
                     <ul class="ultima-menu animated">
                         <li role="menuitem">
-                            
-                                <span> <h:link outcome="/web/onlineBanking/infrastructure/customerViewMessage.xhtml">Check your message box</h:link></span>
-                           
+                            <a href="">
+                                <i class="material-icons" style="color:#273746">&#xE0BE;</i>
+                                <span style="color:#273746">Check Mailbox </span>
+                            </a>
                         </li>
-                    
-              
                     </ul>
                 </li>
-                
+
                 <li class="search-item">
                     <h:panelGroup styleClass="md-inputfield">
                         <p:inputText />
                         <label>Search</label>
                         <i class="topbar-icon material-icons">&#xE8B6;</i>
                     </h:panelGroup>
-                    
+
                 </li>
             </ul>
         </div>

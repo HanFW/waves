@@ -17,11 +17,11 @@
             </p:panel>
 
             <p:messages globalOnly="true"/>
-            
+
             <p:dataTable var="fastPayee" value="#{deleteFastPayeeManagedBean.fastPayees}" 
                          reflow="true" paginator="true" rows="10" emptyMessage="No Recipient">
                 <f:facet name="header">
-                    Delete Recipient
+                    View FAST Recipient
                 </f:facet>
                 <p:column headerText="Recipient's Name" >
                     <h:outputText value="#{fastPayee.fastPayeeName}" /> 
@@ -39,11 +39,13 @@
                     <h:outputText value="#{fastPayee.lastTransactionDate}" />
                 </p:column>
 
-                <p:column headerText="Action"> 
-                    <p:commandButton process="@this" action="#{deleteFastPayeeManagedBean.deletePayee()}"
-                                     icon="ui-icon-trash" ajax="false">
-                        <f:setPropertyActionListener target="#{deleteFastPayeeManagedBean.payeeAccountNum}" value="#{fastPayee.fastPayeeAccountNum}" />
-                    </p:commandButton>
+                <p:column headerText="Action" style="width: 10%">
+                    <center>
+                        <p:commandButton process="@this" action="#{deleteFastPayeeManagedBean.deletePayee()}"
+                                         icon="ui-icon-trash" ajax="false">
+                            <f:setPropertyActionListener target="#{deleteFastPayeeManagedBean.payeeAccountNum}" value="#{fastPayee.fastPayeeAccountNum}" />
+                        </p:commandButton>
+                    </center>
                 </p:column>
 
             </p:dataTable>

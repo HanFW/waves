@@ -13,8 +13,13 @@ import javax.persistence.Column;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
+@XmlRootElement(name = "bankAccount")
+@XmlAccessorType (XmlAccessType.FIELD)
 public class BankAccount implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -58,6 +63,14 @@ public class BankAccount implements Serializable {
         this.bankAccountId = bankAccountId;
     }
 
+    public String getBankAccountType() {
+        return bankAccountType;
+    }
+
+    public void setBankAccountType(String bankAccountType) {
+        this.bankAccountType = bankAccountType;
+    }
+
     public String getBankAccountNum() {
         return bankAccountNum;
     }
@@ -70,16 +83,8 @@ public class BankAccount implements Serializable {
         return bankAccountPwd;
     }
 
-    public void setBankAccountPwd(String bankAccountPwd) {
+        public void setBankAccountPwd(String bankAccountPwd) {
         this.bankAccountPwd = bankAccountPwd;
-    }
-
-    public String getBankAccountType() {
-        return bankAccountType;
-    }
-
-    public void setBankAccountTyep(String bankAccountType) {
-        this.bankAccountType = bankAccountType;
     }
 
     public List<AccTransaction> getAccTransaction() {

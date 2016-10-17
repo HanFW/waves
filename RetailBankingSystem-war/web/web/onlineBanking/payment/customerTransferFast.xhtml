@@ -18,7 +18,7 @@
 
             <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
                 <p:messages globalOnly="true"/>
-                
+
                 <p:panel id="panel" header="Fund Transfer to Other Bank Account(FAST)"> 
                     <p:messages globalOnly="true"/>
 
@@ -32,7 +32,9 @@
                             <p:outputLabel for="transferToAccount" style="font-weight: bold" value="Account: " />
                         </p:column>
                         <p:column>
-                            <p:selectOneMenu id="transferToAccount" value="#{fastTransferManagedBean.toBankAccountNumWithType}" effect="fold" editable="true">
+                            <p:selectOneMenu id="transferToAccount" value="#{fastTransferManagedBean.toBankAccountNumWithType}" 
+                                             effect="fold" editable="false">
+                                <f:selectItem itemLabel="Please Select One" itemValue="" />
                                 <f:selectItems value="#{fastTransferManagedBean.customerFastPayee}" />
                             </p:selectOneMenu>
                         </p:column>
@@ -71,7 +73,9 @@
                             <p:outputLabel for="transferFromAccount" style="font-weight: bold" value="Account: " />
                         </p:column>
                         <p:column>
-                            <p:selectOneMenu id="transferFromAccount" value="#{fastTransferManagedBean.fromBankAccountNumWithType}" effect="fold" editable="true">
+                            <p:selectOneMenu id="transferFromAccount" value="#{fastTransferManagedBean.fromBankAccountNumWithType}" 
+                                             effect="fold" editable="false">
+                                <f:selectItem itemLabel="Please Select One" itemValue="" />
                                 <f:selectItems value="#{fastTransferManagedBean.fromAccounts}" />
                             </p:selectOneMenu>
                         </p:column>

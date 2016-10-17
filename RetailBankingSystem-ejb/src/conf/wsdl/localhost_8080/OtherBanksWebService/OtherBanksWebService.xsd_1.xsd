@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI (http://jax-ws.java.net). RI's version is Metro/2.3.1-b419 (branches/2.3.1.x-7937; 2014-08-04T08:11:03+0000) JAXWS-RI/2.2.10-b140803.1500 JAXWS-API/2.2.11 JAXB-RI/2.2.10-b140802.1033 JAXB-API/2.2.12-b140109.1041 svn-revision#unknown. --><xs:schema xmlns:tns="http://session.ws.ejb/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://session.ws.ejb/">
+
+<xs:element name="persist" type="tns:persist"/>
+
+<xs:element name="persistResponse" type="tns:persistResponse"/>
+
+<xs:element name="retrieveBankAccountByNum" type="tns:retrieveBankAccountByNum"/>
+
+<xs:element name="retrieveBankAccountByNumResponse" type="tns:retrieveBankAccountByNumResponse"/>
+
+<xs:complexType name="retrieveBankAccountByNum">
+<xs:sequence>
+<xs:element name="otherBankAccountNum" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="retrieveBankAccountByNumResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:otherBankAccount" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="otherBankAccount">
+<xs:sequence>
+<xs:element name="bankName" type="xs:string" minOccurs="0"/>
+<xs:element name="otherBankAccountBalance" type="xs:string" minOccurs="0"/>
+<xs:element name="otherBankAccountId" type="xs:long" minOccurs="0"/>
+<xs:element name="otherBankAccountNum" type="xs:string" minOccurs="0"/>
+<xs:element name="otherBankAccountTransaction" type="tns:otherBankAccountTransaction" nillable="true" minOccurs="0" maxOccurs="unbounded"/>
+<xs:element name="otherBankAccountType" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="otherBankAccountTransaction">
+<xs:sequence>
+<xs:element name="otherAccountCredit" type="xs:string" minOccurs="0"/>
+<xs:element name="otherAccountDebit" type="xs:string" minOccurs="0"/>
+<xs:element name="otherBankAccount" type="tns:otherBankAccount" minOccurs="0"/>
+<xs:element name="otherTransactionCode" type="xs:string" minOccurs="0"/>
+<xs:element name="otherTransactionDate" type="xs:string" minOccurs="0"/>
+<xs:element name="otherTransactionId" type="xs:long" minOccurs="0"/>
+<xs:element name="otherTransactionRef" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="persist">
+<xs:sequence>
+<xs:element name="arg0" type="xs:anyType" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="persistResponse">
+<xs:sequence/>
+</xs:complexType>
+</xs:schema>

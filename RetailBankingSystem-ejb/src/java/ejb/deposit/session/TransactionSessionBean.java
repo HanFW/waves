@@ -3,8 +3,6 @@ package ejb.deposit.session;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.entity.AccTransaction;
 import ejb.deposit.entity.Interest;
-import ejb.payement.session.OtherBankAccountSessionBeanLocal;
-import ejb.payment.entity.OtherBankAccount;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -21,16 +19,18 @@ import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.NonUniqueResultException;
+import javax.xml.ws.WebServiceRef;
+import ws.client.otherbanks.OtherBankAccount;
+import ws.client.otherbanks.OtherBanksWebService_Service;
 
 @Stateless
 @LocalBean
 public class TransactionSessionBean implements TransactionSessionBeanLocal {
+    @WebServiceRef(wsdlLocation = "META-INF/wsdl/localhost_8080/OtherBanksWebService/OtherBanksWebService.wsdl")
+    private OtherBanksWebService_Service service;
 
     @EJB
     private BankAccountSessionBeanLocal bankAccountSessionBeanLocal;
-
-    @EJB
-    private OtherBankAccountSessionBeanLocal otherBankAccountSessionBeanLocal;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -162,10 +162,7 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
             String transactionRef = "Merlion Bank Branch";
 
             Calendar cal = Calendar.getInstance();
-//            int year = cal.get(Calendar.YEAR);
-//            int month = cal.get(Calendar.MONTH);
-//            int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
-//            String transactionDate = dayOfMonth + "-" + (month + 1) + "-" + year;
+            
             Long transactionDateMilis = cal.getTimeInMillis();
 
             accTransactionId = addNewTransaction(cal.getTime().toString(), transactionCode, transactionRef,
@@ -202,10 +199,7 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
             String transactionRef = "Merlion Bank Branch";
 
             Calendar cal = Calendar.getInstance();
-//            int year = cal.get(Calendar.YEAR);
-//            int month = cal.get(Calendar.MONTH);
-//            int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
-//            String transactionDate = dayOfMonth + "-" + (month + 1) + "-" + year;
+            
             Long transactionDateMilis = cal.getTimeInMillis();
 
             accTransactionId = addNewTransaction(cal.getTime().toString(), transactionCode, transactionRef,
@@ -273,10 +267,7 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
         String transactionRefTo = bankAccountFrom.getBankAccountType() + "-" + fromAccount;
 
         Calendar cal = Calendar.getInstance();
-//        int year = cal.get(Calendar.YEAR);
-//        int month = cal.get(Calendar.MONTH);
-//        int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
-//        String transactionDate = dayOfMonth + "-" + (month + 1) + "-" + year;
+        
         Long transactionDateMilis = cal.getTimeInMillis();
 
         Long fromTransactionId = addNewTransaction(cal.getTime().toString(), transactionCode, transactionRefFrom,
@@ -348,7 +339,7 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
     @Override
     public void fastTransfer(String fromBankAccount, String toBankAccount, Double transferAmt) {
 
-        OtherBankAccount otherBankAccount = otherBankAccountSessionBeanLocal.retrieveBankAccountByNum(fromBankAccount);
+        OtherBankAccount otherBankAccount = retrieveBankAccountByNum_other(fromBankAccount);
         BankAccount bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountByNum(toBankAccount);
         Double balance = Double.valueOf(bankAccount.getBankAccountBalance()) + transferAmt;
 
@@ -365,5 +356,12 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
 
         bankAccount.setBankAccountBalance(balance.toString());
 
+    }
+
+    private OtherBankAccount retrieveBankAccountByNum_other(java.lang.String otherBankAccountNum) {
+        // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
+        // If the calling of port operations may lead to race condition some synchronization is required.
+        ws.client.otherbanks.OtherBanksWebService port = service.getOtherBanksWebServicePort();
+        return port.retrieveBankAccountByNum(otherBankAccountNum);
     }
 }

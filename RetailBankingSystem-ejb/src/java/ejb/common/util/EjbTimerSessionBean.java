@@ -13,20 +13,16 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import ejb.deposit.session.StatementSessionBeanLocal;
-import ejb.payement.session.MEPSMasterBankAccountSessionBeanLocal;
-import ejb.payement.session.SACHSessionBeanLocal;
 import java.util.Calendar;
+import javax.xml.ws.WebServiceRef;
+import ws.client.meps.MEPSWebService_Service;
 
 @Stateless
 @LocalBean
 
 public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
-
-    @EJB
-    private MEPSMasterBankAccountSessionBeanLocal mEPSMasterBankAccountSessionBeanLocal;
-
-    @EJB
-    private SACHSessionBeanLocal sACHSessionBeanLocal;
+    @WebServiceRef(wsdlLocation = "META-INF/wsdl/localhost_8080/MEPSWebService/MEPSWebService.wsdl")
+    private MEPSWebService_Service service;
 
     @EJB
     private StatementSessionBeanLocal statementSessionBeanLocal;
@@ -217,7 +213,7 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
 
         bankAccountSessionLocal.interestCrediting();
         statementSessionBeanLocal.generateStatement();
-        mEPSMasterBankAccountSessionBeanLocal.maintainDailyBalance();
+        maintainDailyBalance();
     }
 
     private void handleTimeout_15000ms() {
@@ -236,6 +232,13 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
 //        System.out.println("*** 20000MS Timer timeout");
         Calendar cal = Calendar.getInstance();
 
-        sACHSessionBeanLocal.addNewSACH(0.0, 0.0, cal.getTime().toString(), "DBS&Merlion");
+//        sACHSessionBeanLocal.addNewSACH(0.0, 0.0, cal.getTime().toString(), "DBS&Merlion");
+    }
+
+    private void maintainDailyBalance() {
+        // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
+        // If the calling of port operations may lead to race condition some synchronization is required.
+        ws.client.meps.MEPSWebService port = service.getMEPSWebServicePort();
+        port.maintainDailyBalance();
     }
 }

@@ -1,9 +1,5 @@
 package ejb.common.util;
 
-import ejb.payement.session.MEPSMasterBankAccountSessionBeanLocal;
-import ejb.payement.session.SACHSessionBeanLocal;
-import ejb.payment.entity.MEPSMasterBankAccount;
-import java.util.Calendar;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
@@ -14,11 +10,11 @@ import javax.ejb.Startup;
 @LocalBean
 @Startup
 public class InitSessionBean {
-    @EJB
-    private SACHSessionBeanLocal sACHSessionBeanLocal;
-    
-    @EJB
-    private MEPSMasterBankAccountSessionBeanLocal sACHMasterBankAccountSessionBeanLocal;
+//    @EJB
+//    private SACHSessionBeanLocal sACHSessionBeanLocal;
+//    
+//    @EJB
+//    private MEPSMasterBankAccountSessionBeanLocal sACHMasterBankAccountSessionBeanLocal;
     
     @EJB
     private EjbTimerSessionBeanLocal ejbTimerSessionLocal;
