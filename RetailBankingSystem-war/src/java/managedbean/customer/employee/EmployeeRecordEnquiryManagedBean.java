@@ -355,7 +355,6 @@ public class EmployeeRecordEnquiryManagedBean implements Serializable {
     public void setReplacedCustomerMobile(String replacedCustomerMobile) {
         this.replacedCustomerMobile = replacedCustomerMobile;
     }
-    
 
     public List<EnquiryCase> getEnquiryCase() {
         List<EnquiryCase> enquiryCases = enquirySessionBeanLocal.getCustomerEnquiry(cb.getCustomerBasicId());
@@ -364,13 +363,15 @@ public class EmployeeRecordEnquiryManagedBean implements Serializable {
 
     public void saveEnquiryCase() throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
-        context.addMessage(null, new FacesMessage(enquirySessionBeanLocal.addNewCase(cb.getCustomerBasicId(), caseType, caseDetail), " "));
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, enquirySessionBeanLocal.addNewCase(cb.getCustomerBasicId(), caseType, caseDetail), " "));
         ExternalContext ec = context.getExternalContext();
+        if (!caseDetail.isEmpty()) {
         ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/counterTellerAddEnquiryDone.xhtml");
         caseType = null;
         caseDetail = null;
         identificationNum = null;
         cb = null;
+        }
     }
 
 //    public void saveFollowUp() throws IOException {
@@ -385,18 +386,22 @@ public class EmployeeRecordEnquiryManagedBean implements Serializable {
 //        cb = null;
 //        ec = null;
 //    }
-
 //    public void retieveCustomerByIdentification() {
 //        cb = cRMCustomerSessionBeanLocal.retrieveCustomerBasicByIC(identificationNum);
 //        visible = true;
 //    }
-
     public void retrieveCaseByCaseRef() throws IOException {
-        caseId = Long.valueOf(caseIdStr);
-        ec = enquirySessionBeanLocal.getEnquiryByCaseId(caseId).get(0);
+        FacesMessage message = null;
         FacesContext context = FacesContext.getCurrentInstance();
-        ExternalContext ec = context.getExternalContext();
-        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/counterTellerSearchCaseDone.xhtml?faces-redirect=true");
+        ExternalContext externalContext = context.getExternalContext();
+       
+        if (enquirySessionBeanLocal.getEnquiryByCaseId(caseId).isEmpty()) {
+           message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Incorrect enquiry case ID", "No case found");
+           context.addMessage("CaseID", message);
+        } else {
+            ec = enquirySessionBeanLocal.getEnquiryByCaseId(caseId).get(0);
+            externalContext.redirect(externalContext.getRequestContextPath() + "/web/internalSystem/enquiry/counterTellerSearchCaseDone.xhtml?faces-redirect=true");
+        }
     }
 
 //    public void helpCustomerRecordEnquiry() throws IOException {
@@ -412,7 +417,6 @@ public class EmployeeRecordEnquiryManagedBean implements Serializable {
 //        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/CRM/counterTellerUpdateCustomerBasic.xhtml");
 //        visible = false;
 //    }
-
 //    public CustomerBasic getCustomerBasicInfo() {
 //
 //        cb = cRMCustomerSessionBeanLocal.retrieveCustomerBasicByIC(identificationNum);
@@ -470,5 +474,4 @@ public class EmployeeRecordEnquiryManagedBean implements Serializable {
 //        customerEmailAfterReplaced = inputCustomerEmail.substring(0, 1) + "**" + inputCustomerEmail.substring(3);
 //        return customerEmailAfterReplaced;
 //    }
-
 }

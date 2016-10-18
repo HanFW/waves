@@ -16,37 +16,37 @@
                 <p:outputLabel value="Welcome "/>
                 <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
             </p:panel>
-            
+
             <div align="center">
-            <p:panelGrid columns="1" styleClass="ui-panelgrid-blank form-group ui-lg-4">
-                
+                <p:panelGrid id="casePanel" columns="1" styleClass="ui-panelgrid-blank form-group ui-lg-4">
+
                     <p:messages />
 
-                   <p:outputLabel for="caseType" style="font-size:15pt;text-align: center" value="What is it regarding?" />
-         
-                        <br/>
-                       
-                       
-                            <p:selectOneMenu id="caseType" value="#{customerWriteEnquiryManagedBean.caseType}" 
-                                             style="margin-bottom:10pxs" styleClass="form-group ui-panelgrid-blank">
-                                <f:selectItem itemLabel="Please Select" itemValue="" />
-                                <f:selectItem itemLabel="Credit Card" itemValue="Credit Card" />
-                                <f:selectItem itemLabel="Saving Account" itemValue="Saving Account" />
-                                <f:selectItem itemLabel="Loan" itemValue="Loan" />
-                                <f:selectItem itemLabel="Online Banking" itemValue="Online Banking" />
-                                <f:selectItem itemLabel="Fund Transfer" itemValue="Fund Transfer" />
-                                <f:selectItem itemLabel="Wealth Management" itemValue="Wealth Management" />
-                                <f:selectItem itemLabel="Others" itemValue="Others" />
-                            </p:selectOneMenu>
-                      
-                            <p:message for="caseType" />                
-                        <p:inputTextarea id="caseDetail" placeholder="Enquiry Detail" value="#{customerWriteEnquiryManagedBean.caseDetail}" required="true" rows="5" cols="80" counter="display" maxlength="1000" counterTemplate="{0} characters remaining." autoResize="false" />
-                      
-                        <h:outputText id="display" />
+                    <p:outputLabel for="caseType" style="font-size:15pt;text-align: center" value="What is it regarding?" />
 
-                    <p:commandButton value="Save" update="@form" actionListener="#{customerWriteEnquiryManagedBean.saveEnquiryCase}" ajax="false" />
-              
-            </p:panelGrid>
+                    <br/>
+
+
+                    <p:selectOneMenu id="caseType" value="#{customerWriteEnquiryManagedBean.caseType}" 
+                                     style="margin-bottom:10pxs" styleClass="form-group ui-panelgrid-blank">
+                        <f:selectItem itemLabel="Please Select" itemValue="" />
+                        <f:selectItem itemLabel="Credit Card" itemValue="Credit Card" />
+                        <f:selectItem itemLabel="Saving Account" itemValue="Saving Account" />
+                        <f:selectItem itemLabel="Loan" itemValue="Loan" />
+                        <f:selectItem itemLabel="Online Banking" itemValue="Online Banking" />
+                        <f:selectItem itemLabel="Fund Transfer" itemValue="Fund Transfer" />
+                        <f:selectItem itemLabel="Wealth Management" itemValue="Wealth Management" />
+                        <f:selectItem itemLabel="Others" itemValue="Others" />
+                    </p:selectOneMenu>
+
+                    <p:message for="caseType" />                
+                    <p:inputTextarea id="caseDetail" placeholder="Enquiry Detail" value="#{customerWriteEnquiryManagedBean.caseDetail}" required="true" requiredMessage="Please provide enquiry case detail" rows="5" cols="80" counter="display" maxlength="1000" counterTemplate="{0} characters remaining." autoResize="false" />
+
+                    <h:outputText id="display" />
+
+                    <p:commandButton type="submit" value="Save" update="casePanel" actionListener="#{customerWriteEnquiryManagedBean.saveEnquiryCase}" ajax="true"/>
+
+                </p:panelGrid>
             </div>
         </h:form>
         <ezcomp:CCTimeout/>

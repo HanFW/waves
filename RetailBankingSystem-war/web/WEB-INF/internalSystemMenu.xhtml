@@ -81,7 +81,7 @@
                         </p:submenu>
 
                         <p:submenu label="Enquiry Processor" rendered="#{employeeAccountManagedBean.hasRoleEnquiryProcessor()}">
-                            <p:menuitem value="Create Enquiry Case" url="/web/internalSystem/enquiry/counterTellerSearchCustomer.xhtml" />
+                            <p:menuitem value="View Pending Enquiry" url="/web/internalSystem/enquiry/enquiryProcessorViewEnquiry.xhtml" />
                         </p:submenu>
 
                         <p:submenu label="Operation Department Manager" rendered="#{employeeAccountManagedBean.hasRoleOperationDepartmentManager()}">
@@ -146,7 +146,7 @@
                         </p:submenu>
 
                         <p:submenu label="Deposit Account Verifier" rendered="#{employeeAccountManagedBean.hasRoleDepositAccountVerifier()}">
-                            <p:menuitem value="Home" url="/web/onlineBanking/deposit/customerDepositIndex.xhtml" />
+                            <p:menuitem value="Verify Deposit Account Info" url="/web/internalSystem/deposit/employeeApproveOpenAccount.xhtml" />
                         </p:submenu>
 
                         <p:submenu label="Deposit Department Manager" rendered="#{employeeAccountManagedBean.hasRoleDepositDepartmentManager()}">

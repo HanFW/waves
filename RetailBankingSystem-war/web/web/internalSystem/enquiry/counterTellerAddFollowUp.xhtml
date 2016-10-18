@@ -21,7 +21,7 @@
                         <p:row>
                             <h:outputLabel style="font-weight: bold" value="Record more about customer's previous enquiry" />
                             <h:outputText value="&lt;br/&gt;" escape="false" />
-                            <p:inputTextarea id="followUpDetail" value="#{employeeAddFollowUpManagedBean.followUpDetail}" required="true" rows="5" cols="50" counter="display" maxlength="500" counterTemplate="{0} characters remaining." autoResize="false" />
+                            <p:inputTextarea id="followUpDetail" value="#{employeeAddFollowUpManagedBean.followUpDetail}" required="true" requiredMessage="Please provide follow-up detail" rows="5" cols="50" counter="display" maxlength="500" counterTemplate="{0} characters remaining." autoResize="false" />
                             <h:outputText value="&lt;br/&gt;" escape="false" />
                             <h:outputText id="display" />
                         </p:row>
