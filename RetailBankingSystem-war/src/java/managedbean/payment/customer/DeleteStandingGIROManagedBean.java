@@ -1,8 +1,8 @@
 package managedbean.payment.customer;
 
 import ejb.customer.entity.CustomerBasic;
-import ejb.payement.session.GIROSessionBeanLocal;
-import ejb.payment.entity.GIRO;
+import ejb.payement.session.StandingGIROSessionBeanLocal;
+import ejb.payment.entity.StandingGIRO;
 import java.io.IOException;
 import java.util.List;
 import javax.ejb.EJB;
@@ -12,19 +12,19 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
-@Named(value = "deleteGIROManagedBean")
+@Named(value = "deleteStandingGIROManagedBean")
 @RequestScoped
 
-public class DeleteGIROManagedBean {
-    
+public class DeleteStandingGIROManagedBean {
+
     @EJB
-    private GIROSessionBeanLocal gIROSessionBeanLocal;
+    private StandingGIROSessionBeanLocal standingGIROSessionBeanLocal;
 
     private ExternalContext ec;
-    
+
     private Long giroId;
-    
-    public DeleteGIROManagedBean() {
+
+    public DeleteStandingGIROManagedBean() {
     }
 
     public Long getGiroId() {
@@ -35,21 +35,21 @@ public class DeleteGIROManagedBean {
         this.giroId = giroId;
     }
 
-    public List<GIRO> getGIROs() throws IOException {
+    public List<StandingGIRO> getStandingGIROs() throws IOException {
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
         CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
 
-        List<GIRO> giro = gIROSessionBeanLocal.retrieveGIROByCusId(customerBasic.getCustomerBasicId());
+        List<StandingGIRO> standingGiro = standingGIROSessionBeanLocal.retrieveStandingGIROByCusId(customerBasic.getCustomerBasicId());
 
-        return giro;
+        return standingGiro;
     }
-    
-    public void deleteGIRO() throws IOException{
+
+    public void deleteStandingGIRO() throws IOException {
         ec = FacesContext.getCurrentInstance().getExternalContext();
-        
-        gIROSessionBeanLocal.deleteGIRO(giroId);
-        
+
+        standingGIROSessionBeanLocal.deleteStandingGIRO(giroId);
+
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Successfuly! GIRO Arrangement deleted Successfully.", "Successfuly!"));
     }
 }

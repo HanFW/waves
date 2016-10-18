@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:body>
+
+        <h:form id="formMain">
+            <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+
+                <p:panel id="panel"> 
+                    <p:messages globalOnly="true"/>
+
+                    <p:outputLabel for="billingOrganizationName" style="font-weight: bold" value="Billing Organization: " />
+                    <p:inputText required="true" label="Billing Organization Name" requiredMessage="Required Field" id="billingOrganizationName"
+                                 value="#{employeeEnterBillingOrganizationManagedBean.billingOrganizationName}">
+                    </p:inputText>
+                    <p:message for="billingOrganizationName" />
+
+                    <p:outputLabel for="bankAccountNum" style="font-weight: bold" value="Bank Account Number: " />
+                    <p:inputText required="true" label="Bank Account Number" requiredMessage="Required Field" id="bankAccountNum"
+                                 value="#{employeeEnterBillingOrganizationManagedBean.bankAccountNum}">
+                    </p:inputText>
+                    <p:message for="bankAccountNum" />
+
+                    <p:outputLabel for="bankAccountType" style="font-weight: bold" value="Bank Account Type: " />
+                    <p:inputText required="true" label="Bank Account Type" requiredMessage="Required Field" id="bankAccountType"
+                                 value="#{employeeEnterBillingOrganizationManagedBean.bankAccountType}">
+                    </p:inputText>
+                    <p:message for="bankAccountType" />
+
+                    <p:outputLabel for="bankName" style="font-weight: bold" value="Bank: " />
+                    <p:inputText required="true" label="Bank" requiredMessage="Required Field" id="bankName"
+                                 value="#{employeeEnterBillingOrganizationManagedBean.bankName}">
+                    </p:inputText>
+                    <p:message for="bankName" />
+
+                    <p:commandButton id="submitBtn" value="Submit" update="panel" 
+                                     actionListener="#{employeeEnterBillingOrganizationManagedBean.submit()}" ajax="true"/>
+                </p:panel>
+
+            </p:panelGrid>
+
+        </h:form>
+    </h:body>
+</html>

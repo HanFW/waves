@@ -4,7 +4,7 @@ import ejb.customer.entity.CustomerBasic;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import ejb.payement.session.BillingOrganizationSessionBeanLocal;
-import ejb.payement.session.GIROSessionBeanLocal;
+import ejb.payement.session.StandingGIROSessionBeanLocal;
 import ejb.payment.entity.BillingOrganization;
 import java.io.Serializable;
 import java.util.HashMap;
@@ -19,16 +19,15 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import org.primefaces.event.FlowEvent;
 
-@Named(value = "addNewGIROManagedBean")
+@Named(value = "addNewStandingGIROManagedBean")
 @ViewScoped
 
-public class AddNewGIROManagedBean implements Serializable {
+public class AddNewStandingGIROManagedBean implements Serializable {
+    @EJB
+    private StandingGIROSessionBeanLocal standingGIROSessionBeanLocal;
 
     @EJB
     private BillingOrganizationSessionBeanLocal billingOrganizationSessionBeanLocal;
-
-    @EJB
-    private GIROSessionBeanLocal gIROSessionBeanLocal;
 
     @EJB
     private BankAccountSessionBeanLocal bankAccountSessionBeanLocal;
@@ -42,11 +41,11 @@ public class AddNewGIROManagedBean implements Serializable {
     private String bankAccountNumWithType;
     private Map<String, String> myAccounts = new HashMap<String, String>();
     private Map<String, String> billingOrganizations = new HashMap<String, String>();
-    private String giroStatus;
+    private String standingGiroStatus;
 
     private ExternalContext ec;
 
-    public AddNewGIROManagedBean() {
+    public AddNewStandingGIROManagedBean() {
     }
 
     @PostConstruct
@@ -148,12 +147,12 @@ public class AddNewGIROManagedBean implements Serializable {
         return event.getNewStep();
     }
 
-    public String getGiroStatus() {
-        return giroStatus;
+    public String getStandingGiroStatus() {
+        return standingGiroStatus;
     }
 
-    public void setGiroStatus(String giroStatus) {
-        this.giroStatus = giroStatus;
+    public void setStandingGiroStatus(String standingGiroStatus) {
+        this.standingGiroStatus = standingGiroStatus;
     }
 
     public Map<String, String> getBillingOrganizations() {
@@ -164,15 +163,15 @@ public class AddNewGIROManagedBean implements Serializable {
         this.billingOrganizations = billingOrganizations;
     }
 
-    public void addNewGiro() {
+    public void addNewStandingGiro() {
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
         CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
-        giroStatus = "Inactive";
+        standingGiroStatus = "Inactive";
 
         bankAccountNum = handleAccountString(bankAccountNumWithType);
-        gIROSessionBeanLocal.addNewGIRO(billingOrganization, billReference, paymentLimit.toString(),
-                customerName, customerMobile, bankAccountNum, giroStatus,
+        standingGIROSessionBeanLocal.addNewStandingGIRO(billingOrganization, billReference, paymentLimit.toString(),
+                customerName, customerMobile, bankAccountNum, standingGiroStatus,
                 bankAccountNumWithType, customerBasic.getCustomerBasicId());
 
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Add GIRO Arrangement Successfully", ""));

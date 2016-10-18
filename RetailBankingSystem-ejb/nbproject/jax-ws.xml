@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jax-ws xmlns="http://www.netbeans.org/ns/jax-ws/1">
   <services>
-    <service name="FastTransferWebService">
-      <implementation-class>ejb.ws.session.FastTransferWebService</implementation-class>
-    </service>
     <service name="MerlionBankWebService">
       <implementation-class>ejb.ws.session.MerlionBankWebService</implementation-class>
+    </service>
+    <service name="FastTransferWebService">
+      <implementation-class>ejb.ws.session.FastTransferWebService</implementation-class>
     </service>
   </services>
   <clients>
