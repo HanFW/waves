@@ -348,6 +348,14 @@ public class InternalOpenAccountManagedBean {
         this.accountApproval = accountApproval;
     }
 
+    public BankAccount getBankAccount() {
+        return bankAccount;
+    }
+
+    public void setBankAccount(BankAccount bankAccount) {
+        this.bankAccount = bankAccount;
+    }
+
     public void saveAccount() throws IOException {
 
         ec = FacesContext.getCurrentInstance().getExternalContext();

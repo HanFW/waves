@@ -24,7 +24,6 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;
-import javax.ejb.LocalBean;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.NonUniqueResultException;
 

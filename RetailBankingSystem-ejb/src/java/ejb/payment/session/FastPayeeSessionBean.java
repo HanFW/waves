@@ -1,4 +1,4 @@
-package ejb.payement.session;
+package ejb.payment.session;
 
 import ejb.customer.entity.CustomerBasic;
 import ejb.deposit.session.BankAccountSessionBeanLocal;

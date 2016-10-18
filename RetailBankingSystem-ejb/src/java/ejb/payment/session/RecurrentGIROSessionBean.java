@@ -1,4 +1,4 @@
-package ejb.payement.session;
+package ejb.payment.session;
 
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import ejb.payment.entity.RecurrentGIRO;

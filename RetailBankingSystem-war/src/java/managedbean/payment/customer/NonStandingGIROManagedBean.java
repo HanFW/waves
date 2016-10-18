@@ -1,7 +1,7 @@
 package managedbean.payment.customer;
 
 import ejb.customer.entity.CustomerBasic;
-import ejb.payement.session.GIROSessionBeanLocal;
+import ejb.payment.session.GIROSessionBeanLocal;
 import ejb.payment.entity.FastPayee;
 import ejb.payment.entity.GIRO;
 import java.io.IOException;

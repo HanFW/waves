@@ -1,4 +1,4 @@
-package ejb.payement.session;
+package ejb.payment.session;
 
 import ejb.payment.entity.GIRO;
 import java.util.List;

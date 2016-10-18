@@ -3,9 +3,9 @@ package managedbean.payment.customer;
 import ejb.customer.entity.CustomerBasic;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
-import ejb.payement.session.BillingOrganizationSessionBeanLocal;
-import ejb.payement.session.OneTimeGIROSessionBeanLocal;
-import ejb.payement.session.RecurrentGIROSessionBeanLocal;
+import ejb.payment.session.BillingOrganizationSessionBeanLocal;
+import ejb.payment.session.OneTimeGIROSessionBeanLocal;
+import ejb.payment.session.RecurrentGIROSessionBeanLocal;
 import ejb.payment.entity.BillingOrganization;
 import java.io.IOException;
 import java.util.Calendar;
@@ -211,7 +211,7 @@ public class AddNonStandingGIROManagedBean {
             giroId = oneTimeGIROSessionBeanLocal.addNewOneTimeGIRO(billingOrganization,
                     billReference, bankAccountNumWithType, bankAccountNumWithType,
                     paymentAmt, giroType, customerBasic.getCustomerBasicId());
-            
+
             statusMessage = "Your new billing organization has been added!";
             Calendar cal = Calendar.getInstance();
             updateDate = cal.getTime().toString();
@@ -225,10 +225,10 @@ public class AddNonStandingGIROManagedBean {
             ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/payment/customerAddNonStandingGIRODone.xhtml?faces-redirect=true");
 
         } else {
-            recurrentGIROSessionBeanLocal.addNewRecurrentGIRO(billingOrganization, billReference,
+            giroId = recurrentGIROSessionBeanLocal.addNewRecurrentGIRO(billingOrganization, billReference,
                     bankAccountNumWithType, bankAccountNumWithType, transferFrequency,
                     paymentAmt, giroType, customerBasic.getCustomerBasicId());
-            
+
             statusMessage = "Your new billing organization has been added!";
             Calendar cal = Calendar.getInstance();
             updateDate = cal.getTime().toString();

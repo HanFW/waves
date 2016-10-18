@@ -1,6 +1,6 @@
 package managedbean.payment.employee;
 
-import ejb.payement.session.BillingOrganizationSessionBeanLocal;
+import ejb.payment.session.BillingOrganizationSessionBeanLocal;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;

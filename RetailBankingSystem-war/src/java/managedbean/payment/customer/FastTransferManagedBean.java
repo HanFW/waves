@@ -4,7 +4,7 @@ import ejb.customer.entity.CustomerBasic;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import ejb.deposit.session.TransactionSessionBeanLocal;
-import ejb.payement.session.FastPayeeSessionBeanLocal;
+import ejb.payment.session.FastPayeeSessionBeanLocal;
 import ejb.payment.entity.FastPayee;
 import java.io.IOException;
 import java.util.Calendar;

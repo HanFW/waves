@@ -2,7 +2,7 @@ package managedbean.payment.customer;
 
 import ejb.customer.entity.CustomerBasic;
 import ejb.deposit.entity.Payee;
-import ejb.payement.session.FastPayeeSessionBeanLocal;
+import ejb.payment.session.FastPayeeSessionBeanLocal;
 import ejb.payment.entity.FastPayee;
 import java.io.IOException;
 import java.util.List;
