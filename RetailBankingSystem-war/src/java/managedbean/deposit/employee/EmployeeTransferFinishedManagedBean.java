@@ -18,7 +18,6 @@ public class EmployeeTransferFinishedManagedBean {
     private String toBankAccountNumWithType;
     private String fromBankAccountNumWithType;
     private String fromBankAccountBalance;
-    private String toBankAccountBalance;
 
     public EmployeeTransferFinishedManagedBean() {
     }
@@ -33,7 +32,6 @@ public class EmployeeTransferFinishedManagedBean {
         fromAccount = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("fromAccount").toString();
         toAccount = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("toAccount").toString();
         fromBankAccountBalance = "S$"+FacesContext.getCurrentInstance().getExternalContext().getFlash().get("fromAccountBalance").toString();
-        toBankAccountBalance = "S$"+FacesContext.getCurrentInstance().getExternalContext().getFlash().get("toAccountBalance").toString();
     }
 
     public String getStatusMessage() {
@@ -98,13 +96,5 @@ public class EmployeeTransferFinishedManagedBean {
 
     public void setFromBankAccountBalance(String fromBankAccountBalance) {
         this.fromBankAccountBalance = fromBankAccountBalance;
-    }
-
-    public String getToBankAccountBalance() {
-        return toBankAccountBalance;
-    }
-
-    public void setToBankAccountBalance(String toBankAccountBalance) {
-        this.toBankAccountBalance = toBankAccountBalance;
     }
 }

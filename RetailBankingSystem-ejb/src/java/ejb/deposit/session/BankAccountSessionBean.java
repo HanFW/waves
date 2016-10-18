@@ -24,14 +24,15 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;
-import javax.ejb.LocalBean;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.NonUniqueResultException;
 
 @Stateless
-@LocalBean
 
 public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
+    
+    @EJB
+    private TransactionSessionBeanLocal transactionSessionBeanLocal;
 
     @EJB
     private CustomerEmailSessionBeanLocal customerEmailSessionBeanLocal;
@@ -44,9 +45,6 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
 
     @EJB
     private CustomerAdminSessionBeanLocal adminSessionBeanLocal;
-
-    @EJB
-    private TransactionSessionBeanLocal transactionSessionLocal;
 
     @EJB
     private InterestSessionBeanLocal interestSessionLocal;
@@ -222,7 +220,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
         BankAccount bankAccount = new BankAccount();
 
         bankAccount.setBankAccountNum(bankAccountNum);
-        bankAccount.setBankAccountTyep(bankAccountType);
+        bankAccount.setBankAccountType(bankAccountType);
         bankAccount.setBankAccountBalance(bankAccountBalance);
         bankAccount.setTransferDailyLimit(transferDailyLimit);
         bankAccount.setTransferBalance(transferBalance);
@@ -237,7 +235,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
 
         Interest interest = interestSessionLocal.retrieveInterestById(interestId);
         interest.setBankAccount(bankAccount);
-        
+
         entityManager.persist(bankAccount);
         entityManager.persist(interest);
         entityManager.flush();
@@ -260,7 +258,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
 
         if (!bankAccount.getAccTransaction().isEmpty()) {
             for (int i = bankAccount.getAccTransaction().size() - 1; i > 0; i--) {
-                transactionSessionLocal.deleteAccTransaction(bankAccount.getAccTransaction().get(i).getTransactionId());
+                transactionSessionBeanLocal.deleteAccTransaction(bankAccount.getAccTransaction().get(i).getTransactionId());
             }
         }
 
@@ -320,7 +318,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
 //                    String transactionDate = dayOfMonth + "-" + (month + 1) + "-" + year;
                     Long transactionDateMilis = cal.getTimeInMillis();
 
-                    Long newAccTransactionId = transactionSessionLocal.addNewTransaction(cal.getTime().toString(), transactionCode, transactionRef,
+                    Long newAccTransactionId = transactionSessionBeanLocal.addNewTransaction(cal.getTime().toString(), transactionCode, transactionRef,
                             accountDebit, finalInterest.toString(), transactionDateMilis, activatedBankAccount.getBankAccountId());
 
                 } else {
@@ -358,7 +356,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
 //                        String transactionDate = dayOfMonth + "-" + (month + 1) + "-" + year;
                         Long transactionDateMilis = cal.getTimeInMillis();
 
-                        Long newAccTransactionId = transactionSessionLocal.addNewTransaction(cal.getTime().toString(), transactionCode, transactionRef,
+                        Long newAccTransactionId = transactionSessionBeanLocal.addNewTransaction(cal.getTime().toString(), transactionCode, transactionRef,
                                 accountDebit, accuredInterest.toString(), transactionDateMilis, activatedBankAccount.getBankAccountId());
                     } else {
                         interest.setDailyInterest(totalInterest.toString());
@@ -432,7 +430,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
 //                String transactionDate = dayOfMonth + "-" + (month + 1) + "-" + year;
                 Long transactionDateMilis = cal.getTimeInMillis();
 
-                Long newAccTransactionId = transactionSessionLocal.addNewTransaction(cal.getTime().toString(), transactionCode, transactionRef,
+                Long newAccTransactionId = transactionSessionBeanLocal.addNewTransaction(cal.getTime().toString(), transactionCode, transactionRef,
                         accountDebit, creditedInterest.toString(), transactionDateMilis, activatedBankAccount.getBankAccountId());
 
             } else if (currentBalance > 0) {
@@ -472,7 +470,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
                     interest.setMonthlyInterest(totalInterest.toString());
                     activatedBankAccount.setBankAccountBalance(df.format(finalBalance));
 
-                    Long newAccTransactionId = transactionSessionLocal.addNewTransaction(cal.getTime().toString(), transactionCode, transactionRef,
+                    Long newAccTransactionId = transactionSessionBeanLocal.addNewTransaction(cal.getTime().toString(), transactionCode, transactionRef,
                             accountDebit, creditedInterest.toString(), transactionDateMilis, activatedBankAccount.getBankAccountId());
                 } else {
                     interest.setDailyInterest("0");
@@ -692,7 +690,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
         BankAccount bankAccount = new BankAccount();
 
         bankAccount.setBankAccountNum(bankAccountNum);
-        bankAccount.setBankAccountTyep(bankAccountType);
+        bankAccount.setBankAccountType(bankAccountType);
         bankAccount.setBankAccountBalance(bankAccountBalance);
         bankAccount.setTransferDailyLimit(transferDailyLimit);
         bankAccount.setTransferBalance(transferBalance);
@@ -713,6 +711,13 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
         entityManager.flush();
 
         return bankAccount.getBankAccountId();
+    }
+
+    @Override
+    public void updateBankAccountBalance(String bankAccountNum, String bankAccountBalance) {
+        BankAccount bankAccount = retrieveBankAccountByNum(bankAccountNum);
+
+        bankAccount.setBankAccountBalance(bankAccountBalance);
     }
 
     @Override

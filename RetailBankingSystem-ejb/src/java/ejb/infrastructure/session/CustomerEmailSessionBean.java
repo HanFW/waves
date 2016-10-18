@@ -63,7 +63,7 @@ public class CustomerEmailSessionBean implements CustomerEmailSessionBeanLocal {
                 emailText += "Initial User ID: " + actions.get("userId") + "\n";
                 emailText += "Initial PIN: " + actions.get("pin") + "\n";
                 emailText += "Please login with your initial User ID and PIN to activate your online banking account.";
-                break;
+                break;   
             case "rejectOpenAccount":
                 emailText += "I regret to inform that your open account application have not been approved. \n";
                 emailText += "Please verify your identification number with your IC/Passport. \n";
