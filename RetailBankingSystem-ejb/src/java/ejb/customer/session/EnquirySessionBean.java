@@ -290,6 +290,8 @@ public class EnquirySessionBean implements EnquirySessionBeanLocal {
         } else {
             if (selectedFollowUp.isEmpty() && !followUps.isEmpty()) {
                 return "Box unchecked";
+            } else if (caseReply.isEmpty()) {
+                return "Empty reply";
             } else {
                 for (int i = 0; i < selectedFollowUp.size(); i++) {
                     Query query = entityManager.createQuery("SELECT fu FROM FollowUp fu WHERE fu.followUpId = :followUpId");
