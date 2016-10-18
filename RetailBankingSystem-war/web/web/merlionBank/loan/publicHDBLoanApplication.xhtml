@@ -29,6 +29,8 @@
                                     </h:panelGrid>
                 
                                     <p:panelGrid>
+                                        <p:messages globalOnly="true"/>
+                
                                         <p:outputLabel style="font-weight: bold" for="customerSalutation" value="Salutation: " />
                                         <p:selectOneMenu id="customerSalutation" value="#{publicHDBLoanApplication.customerSalutation}" 
                                                          required="true" requiredMessage="Required Field">
@@ -305,7 +307,7 @@
                                                          value="#{publicHDBLoanApplication.customerIdentificationNum}" requiredMessage="Required Field"/>
                                             <p:message for="customerPassport" />
                                         </p:panel>
-                                        
+                
                                         <p:outputLabel for="customerCountryOfResidence" style="font-weight: bold" value="Country of Residence: " />
                                         <p:selectOneMenu id="customerCountryOfResidence" value="#{publicHDBLoanApplication.customerCountryOfResidence}" 
                                                          required="true" requiredMessage="Required Field">
@@ -547,9 +549,9 @@
                                         <p:commandButton value="Back" icon="ui-icon-arrow-1-w" iconPos="left" disabled="true"/>
                                         <p:commandButton value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('hdbLoanWizard').next();"/>
                                     </h:panelGrid>
-                                </p:tab>-->
-
-                <!--                <p:tab id="personal">
+                                </p:tab>
+                
+                                <p:tab id="personal">
                                     <h:panelGrid columns="1">
                                         <p:steps activeIndex="1">
                                             <p:menuitem value="Basic Information" />
@@ -667,329 +669,371 @@
                                     </h:panelGrid>
                                 </p:tab>
                 
-                                <p:tab id="employment">
-                                    <h:panelGrid columns="1">
-                                        <p:steps activeIndex="2">
-                                            <p:menuitem value="Basic Information" />
-                                            <p:menuitem value="Personal Details" />
-                                            <p:menuitem value="Employment Details" />
-                                            <p:menuitem value="Financial Commitments" />
-                                            <p:menuitem value="Property Details" />
-                                            <p:menuitem value="Financial Request" />
-                                            <p:menuitem value="Supporting Documents"/>
-                                            <p:menuitem value="Confirmation"/>
-                                        </p:steps>
-                                    </h:panelGrid>
-                
-                                    <p:panelGrid>
-                                        <p:outputLabel for="customerEmploymentStatus" style="font-weight: bold" value="Employment Status: "/>
-                                        <p:selectOneMenu id="customerEmploymentStatus" value="#{publicHDBLoanApplication.customerEmploymentStatus}"
-                                                         required="true" requiredMessage="Required Field">
-                                            <f:selectItem itemLabel="Please Select" itemValue="" />
-                                            <f:selectItem itemLabel="Employee" itemValue="Employee" />
-                                            <f:selectItem itemLabel="Self-Employed" itemValue="Self-Employed" />
-                                            <f:selectItem itemLabel="Unemployed" itemValue="Unemployed" />
-                                        </p:selectOneMenu>
-                                        <p:message for="customerEmploymentStatus"/>
-                
-                                        <p:outputLabel for="customerCompanyName" style="font-weight: bold" value="Company Name: "/>
-                                        <p:inputText id="customerCompanyName" value="#{publicHDBLoanApplication.customerCompanyName}"
-                                                     required="true" requiredMessage="Required Field"/>
-                                        <p:message for="customerCompanyName"/>
-                
-                                        <p:outputLabel for="customerCompanyAddress" style="font-weight: bold" value="Company Address: "/>
-                                        <p:inputText id="customerCompanyAddress" value="#{publicHDBLoanApplication.customerCompanyAddress}"
-                                                     required="true" requiredMessage="Required Field"/>
-                                        <p:message for="customerCompanyAddress"/>
-                
-                                        <p:outputLabel for="customerCompanyPostal" style="font-weight: bold" value="Company Postal Code: "/>
-                                        <p:inputText id="customerCompanyPostal" value="#{publicHDBLoanApplication.customerCompanyPostal}"
-                                                     required="true" requiredMessage="Required Field" validatorMessage="Invalid postal code">
-                                            <f:validateDoubleRange minimum="100000" maximum="999999" />
-                                        </p:inputText>
-                                        <p:message for="customerCompanyPostal"/>
-                
-                                        <p:outputLabel for="customerIndustryType" style="font-weight: bold" value="Company Industry Type: "/>
-                                        <p:selectOneMenu id="customerIndustryType" value="#{publicHDBLoanApplication.customerIndustryType}"
-                                                         required="true" requiredMessage="Required Field">
-                                            <f:selectItem itemLabel="Please Select" itemValue="" />
-                                            <f:selectItem itemLabel="Banking/Finance" itemValue="Banking/Finance" />
-                                            <f:selectItem itemLabel="Building/Construction" itemValue="Building/Construction" />
-                                            <f:selectItem itemLabel="Government" itemValue="Government" />
-                                            <f:selectItem itemLabel="IT/Communications" itemValue="IT/Communications" />
-                                            <f:selectItem itemLabel="Manufacturing" itemValue="Manufacturing" />
-                                            <f:selectItem itemLabel="Retail/F&amp;B" itemValue="Retail/F&amp;B" />
-                                            <f:selectItem itemLabel="Travel/Hospitality" itemValue="Travel/Hospitality" />
-                                            <f:selectItem itemLabel="Shipping/Transport" itemValue="Shipping/Transport" />
-                                            <f:selectItem itemLabel="Entertainment" itemValue="Entertainment" />
-                                            <f:selectItem itemLabel="Others" itemValue="Others" />
-                                            <p:ajax partialSubmit="true" event="change" update="panelCustomerIndustryType" listener="#{publicHDBLoanApplication.showIndustryTypePanel}"/>
-                                        </p:selectOneMenu>
-                                        <p:message for="customerIndustryType"/>
-                                        <p:panel style="border: none;" id="panelCustomerIndustryType" visible="#{publicHDBLoanApplication.industryTypePanelVisible}">
-                                            <p:inputText id="customerIndustryTypeOthers" requiredMessage="Required Field" 
-                                                         value="#{publicHDBLoanApplication.customerIndustryTypeOthers}" required="#{publicHDBLoanApplication.industryTypePanelVisible}"/>
-                                            <p:message for="customerIndustryTypeOthers"/>
-                                        </p:panel>
-                
-                                        <p:outputLabel for="customerCurrentPosition" style="font-weight: bold" value="Current Position: "/>
-                                        <p:selectOneMenu id="customerCurrentPosition" value="#{publicHDBLoanApplication.customerCurrentPosition}"
-                                                         required="true" requiredMessage="Required Field">
-                                            <f:selectItem itemLabel="Please Select" itemValue="" />
-                                            <f:selectItem itemLabel="Senior Management" itemValue="Senior Management" />
-                                            <f:selectItem itemLabel="Professional" itemValue="Professional" />
-                                            <f:selectItem itemLabel="Middle Management" itemValue="Middle Management" />
-                                            <f:selectItem itemLabel="Executive" itemValue="Executive" />
-                                            <f:selectItem itemLabel="Skilled Trades/Clerica" itemValue="Skilled Trades/Clerica" />
-                                            <f:selectItem itemLabel="Others" itemValue="Others" />
-                                            <p:ajax event="change" update="panelCustomerCurrentPosition" listener="#{publicHDBLoanApplication.showCurrentPositionPanel}"/>
-                                        </p:selectOneMenu>
-                                        <p:message for="customerCurrentPosition"/>
-                                        <p:panel style="border: none;" id="panelCustomerCurrentPosition" visible="#{publicHDBLoanApplication.currentPositionPanelVisible}">
-                                            <p:inputText id="customerCurrentPositionOthers" requiredMessage="Required Field" 
-                                                         value="#{publicHDBLoanApplication.customerCurrentPositionOthers}" required="#{publicHDBLoanApplication.currentPositionPanelVisible}"/>  
-                                            <p:message for="customerCurrentPositionOthers"/>
-                                        </p:panel>
-                
-                                        <p:outputLabel for="customerCurrentJobTitle" style="font-weight: bold" value="Current Job Title: "/>
-                                        <p:inputText id="customerCurrentJobTitle" value="#{publicHDBLoanApplication.customerCurrentJobTitle}"
-                                                     required="true" requiredMessage="Required Field"/>
-                                        <p:message for="customerCurrentJobTitle"/>
-                
-                                        <p:outputLabel for="customerLengthOfCurrentJob" style="font-weight: bold" value="Years of Current Employment/Business: "/>
-                                        <p:inputText id="customerLengthOfCurrentJob" value="#{publicHDBLoanApplication.customerLengthOfCurrentJob}"
-                                                     required="true" requiredMessage="Required Field" validatorMessage="Please enter a valid number between 0-100" converterMessage="Please enter a valid number">
-                                            <f:validateLongRange minimum="0" maximum="100"/>
-                                            <f:convertNumber integerOnly="true"/>
-                                        </p:inputText>
-                                        <p:message for="customerLengthOfCurrentJob"/>
-                
-                                        <p:outputLabel for="customerMonthlyFixedIncome" style="font-weight: bold" value="Monthly Fixed Income(SGD): "/>
-                                        <p:inputText id="customerMonthlyFixedIncome" value="#{publicHDBLoanApplication.customerMonthlyFixedIncome}"
-                                                       required="true" requiredMessage="Required Field" converterMessage="Please enter a valid number">
-                                        </p:inputText>
-                                        <p:message for="customerMonthlyFixedIncome"/>
-                                        
-                                        <p:outputLabel for="customerOtherMonthlyIncome" style="font-weight: bold" value="Other Monthly Income(SGD): "/>
-                                        <p:inputText id="customerOtherMonthlyIncome" value="#{publicHDBLoanApplication.customerOtherMonthlyIncome}"
-                                                       required="true" requiredMessage="Required Field" converterMessage="Please enter a valid number">
-                                        </p:inputText>
-                                        <p:message for="customerOtherMonthlyIncome"/>
-                                        
-                                        <p:outputLabel for="customerOtherMonthlyIncomeSource" style="font-weight: bold" value="Source of Other Income: "/>
-                                        <p:inputText id="customerOtherMonthlyIncomeSource" value="#{publicHDBLoanApplication.customerOtherMonthlyIncomeSource}"
-                                                     required="true" requiredMessage="Required Field"/>
-                                        <p:message for="customerOtherMonthlyIncomeSource"/>
-                
-                                        <p:outputLabel for="customerPreviousCompany" style="font-weight: bold" value="Name of Previous Company"/>
-                                        <p:inputText id="customerPreviousCompany" value="#{publicHDBLoanApplication.customerPreviousCompany}"
-                                                     required="true" requiredMessage="Required Field">
-                                        </p:inputText>
-                                        <p:message for="customerPreviousCompany"/>
-                
-                                        <p:outputLabel for="customerLengthOfPreviousJob" style="font-weight: bold" value="Years of Previous Employment/Business: "/>
-                                        <p:inputText id="customerLengthOfPreviousJob" value="#{publicHDBLoanApplication.customerLengthOfPreviousJob}"
-                                                     required="true" requiredMessage="Required Field" validatorMessage="Please enter a valid number between 0-100" converterMessage="Please enter a valid number">
-                                            <f:validateLongRange minimum="0" maximum="100"/>
-                                            <f:convertNumber integerOnly="true"/>
-                                        </p:inputText>
-                                        <p:message for="customerLengthOfPreviousJob"/>
-                                    </p:panelGrid>
-                
-                                    <h:panelGrid columns="2" class="ui-lg-6"> 
-                                        <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('hdbLoanWizard').back()"/>
-                                        <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('hdbLoanWizard').next();"/>
-                                    </h:panelGrid>
-                                </p:tab>-->
+                -->                <p:tab id="employment">
+                    <h:panelGrid columns="1">
+                        <p:steps activeIndex="2">
+                            <p:menuitem value="Basic Information" />
+                            <p:menuitem value="Personal Details" />
+                            <p:menuitem value="Employment Details" />
+                            <p:menuitem value="Financial Commitments" />
+                            <p:menuitem value="Property Details" />
+                            <p:menuitem value="Financial Request" />
+                            <p:menuitem value="Supporting Documents"/>
+                            <p:menuitem value="Confirmation"/>
+                        </p:steps>
+                    </h:panelGrid>
 
-                <!--                <p:tab id="commitments">
-                                    <h:panelGrid columns="1">
-                                        <p:steps activeIndex="3">
-                                            <p:menuitem value="Basic Information" />
-                                            <p:menuitem value="Personal Details" />
-                                            <p:menuitem value="Employment Details" />
-                                            <p:menuitem value="Financial Commitments" />
-                                            <p:menuitem value="Property Details" />
-                                            <p:menuitem value="Financial Request" />
-                                            <p:menuitem value="Supporting Documents"/>
-                                            <p:menuitem value="Confirmation"/>
-                                        </p:steps>
-                                    </h:panelGrid>
-                
-                                    <p:panelGrid>
-                                        <p:outputLabel value="Please list ALL your credit facilities with other financial institutions, e.g. credit card, residential property loan, car loan, personal credit line"/>
-                                        <p:dataList id="commitmentTable" var="customerFinancialCommitment" value="#{publicHDBLoanApplication.customerFinancialCommitments}">
-                #{customerFinancialCommitment.get('institution')}, #{customerFinancialCommitment.get('type')}, #{customerFinancialCommitment.get('amount')}, #{customerFinancialCommitment.get('instalment')}
-                <p:commandLink value="Remove" process="@this" update="commitmentTable" action="#{publicHDBLoanApplication.deleteCustomerFinancialCommitment(customerFinancialCommitment)}"/>
-            </p:dataList>
-            <p:separator/>
-            <br/>
-            <p:outputLabel value="Add a new financial commitment here: "/>
-            <br/>
-            <p:outputLabel for="customerFinancialInstitution" style="font-weight: bold" value="Financial Institution: "/>
-            <p:inputText id="customerFinancialInstitution" value="#{publicHDBLoanApplication.customerFinancialInstitution}"
-                         required="true" requiredMessage="Requied Field"/>
-            <p:message for="customerFinancialInstitution"/>
-            
-            <p:outputLabel for="customerFacilityType" style="font-weight: bold" value="Facility Type: "/>
-            <p:inputText id="customerFacilityType" value="#{publicHDBLoanApplication.customerFacilityType}"
-                         required="true" requiredMessage="Required Field"/>
-            <p:message for="customerFacilityType"/>
-            
-            <p:outputLabel for="customerLoanAmount" style="font-weight: bold" value="Loan Amount/Credit Limit: "/>
-            <p:inputText id="customerLoanAmount" value="#{publicHDBLoanApplication.customerLoanAmount}"
-                         required="true" requiredMessage="Required Field" converterMessage="Please enter a valid number">
-            </p:inputText>
-            <p:message for="customerLoanAmount"/>
-            
-            <p:outputLabel for="customerMonthlyInstalment" style="font-weight: bold" value="Monthly Instalment: "/>
-            <p:inputText id="customerMonthlyInstalment" value="#{publicHDBLoanApplication.customerMonthlyInstalment}"
-                         required="true" requiredMessage="Required Field" converterMessage="Please enter a valid number">
-            </p:inputText>
-            <p:message for="customerMonthlyInstalment"/>
-            
-            <p:commandLink partialSubmit="true" value="Add Commitment" process="@this" ajax="false" update="commitments" actionListener="#{publicHDBLoanApplication.addCustomerFinancialCommitment}"/>
-        </p:panelGrid>
+                    <p:panelGrid>
+                        <p:messages globalOnly="true"/>
 
-        <h:panelGrid columns="2" class="ui-lg-6"> 
-            <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('hdbLoanWizard').back()"/>
-            <p:commandButton  value="Next" ajax="false" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('hdbLoanWizard').next();"/>
-        </h:panelGrid>
-    </p:tab>-->
+                        <p:outputLabel for="customerEmploymentStatus" style="font-weight: bold" value="Employment Status: "/>
+                        <p:selectOneMenu id="customerEmploymentStatus" value="#{publicHDBLoanApplication.customerEmploymentStatus}"
+                                         required="true" requiredMessage="Required Field">
+                            <f:selectItem itemLabel="Please Select" itemValue="" />
+                            <f:selectItem itemLabel="Employee" itemValue="Employee" />
+                            <f:selectItem itemLabel="Self-Employed" itemValue="Self-Employed" />
+                            <f:selectItem itemLabel="Unemployed" itemValue="Unemployed" />
+                            <p:ajax event="change" update="panelCustomerOccupation panelCustomerEmployment" listener="#{publicHDBLoanApplication.changeEmployeeStatus}"/>
+                        </p:selectOneMenu>
+                        <p:message for="customerEmploymentStatus"/>
+                        <p:panel style="border: none;" id="panelCustomerOccupation" visible="#{publicHDBLoanApplication.occupationPanelVisible}">
+                            <p:outputLabel for="customerOccupation" style="font-weight: bold" value="Occupation: " />
+                            <p:selectOneMenu id="customerOccupation" value="#{publicHDBLoanApplication.customerOccupation}" 
+                                             required="#{publicHDBLoanApplication.occupationPanelVisible}" requiredMessage="Required Field">
+                                <f:selectItem itemLabel="Please Select" itemValue="" />
+                                <f:selectItem itemLabel="Accountant" itemValue="Accountant" />
+                                <f:selectItem itemLabel="Architect" itemValue="Architect" />
+                                <f:selectItem itemLabel="Armed Forces" itemValue="Armed Forces" />
+                                <f:selectItem itemLabel="Auditor" itemValue="Auditor" />
+                                <f:selectItem itemLabel="Cook/Baker/Chef" itemValue="Cook/Baker/Chef" />
+                                <f:selectItem itemLabel="Clerical/Admin" itemValue="Clerical/Admin" />
+                                <f:selectItem itemLabel="Construction Worker" itemValue="Construction Worker" />
+                                <f:selectItem itemLabel="Consultant" itemValue="Consultant" />
+                                <f:selectItem itemLabel="Diplomat" itemValue="Diplomat" />
+                                <f:selectItem itemLabel="Director" itemValue="Director" />
+                                <f:selectItem itemLabel="Electrician" itemValue="Electrician" />
+                                <f:selectItem itemLabel="Engineer" itemValue="Engineer" />
+                                <f:selectItem itemLabel="Fund Manager" itemValue="Fund Manager" />
+                                <f:selectItem itemLabel="Headmaster/Principal" itemValue="Headmaster/Principal" />
+                                <f:selectItem itemLabel="Insurance Agent" itemValue="Insurance Agent" />
+                                <f:selectItem itemLabel="IT Systems Analyst/Programmer" itemValue="IT Systems Analyst/Programmer" />
+                                <f:selectItem itemLabel="Journalist/Reporter" itemValue="Journalist/Reporter" />
+                                <f:selectItem itemLabel="Lawyer" itemValue="Lawyer" />
+                                <f:selectItem itemLabel="Lecturer" itemValue="Lecturer" />
+                                <f:selectItem itemLabel="Legal Advisor (of a company)" itemValue="Legal Advisor (of a company)" />
+                                <f:selectItem itemLabel="Medical Professional" itemValue="Medical Professional" />
+                                <f:selectItem itemLabel="Managerial(AVP,VP ETC)" itemValue="Managerial(AVP,VP ETC)" />
+                                <f:selectItem itemLabel="Pawnbrokers" itemValue="Pawnbrokers" />
+                                <f:selectItem itemLabel="Pilot/Ship Master" itemValue="Pilot/Ship Master" />
+                                <f:selectItem itemLabel="Politician" itemValue="Politician" />
+                                <f:selectItem itemLabel="Self-Employed" itemValue="Self-Employed" />
+                                <f:selectItem itemLabel="Sales/Marketing Exclusive" itemValue="Sales/Marketing Exclusive" />
+                                <f:selectItem itemLabel="Student" itemValue="Student" />
+                                <f:selectItem itemLabel="Teacher" itemValue="Teacher" />
+                                <f:selectItem itemLabel="Technician/Mechanics" itemValue="Technician/Mechanics" />
+                                <f:selectItem itemLabel="Tutor" itemValue="Tutor" />
+                            </p:selectOneMenu>
+                            <p:message for="customerOccupation" />
+                        </p:panel>
+                        <p:panel style="border: none;" id="panelCustomerEmployment" visible="#{publicHDBLoanApplication.employmentPanelVisible}">
+                            <p:outputLabel for="customerCompanyName" style="font-weight: bold" value="Company Name: "/>
+                            <p:inputText id="customerCompanyName" value="#{publicHDBLoanApplication.customerCompanyName}"
+                                         required="#{publicHDBLoanApplication.employmentPanelVisible}" requiredMessage="Required Field"/>
+                            <p:message for="customerCompanyName"/>
 
-                <!--                <p:tab id="property">
-                                    <h:panelGrid columns="1">
-                                        <p:steps activeIndex="4">
-                                            <p:menuitem value="Basic Information" />
-                                            <p:menuitem value="Personal Details" />
-                                            <p:menuitem value="Employment Details" />
-                                            <p:menuitem value="Financial Commitments" />
-                                            <p:menuitem value="Property Details" />
-                                            <p:menuitem value="Financial Request" />
-                                            <p:menuitem value="Supporting Documents"/>
-                                            <p:menuitem value="Confirmation"/>
-                                        </p:steps>
-                                    </h:panelGrid>
-                
-                                    <p:panelGrid>
-                                        <p:outputLabel for="customerPropertyType" style="font-weight: bold" value="Property Type:  "/>
-                                        <p:selectOneMenu id="customerPropertyType" value="#{publicHDBLoanApplication.customerPropertyType}"
-                                                         required="true" requiredMessage="Required Field">
-                                            <f:selectItem itemLabel="Please Select" itemValue="" />
-                                            <f:selectItem itemLabel="3-Room" itemValue="3-Room" />
-                                            <f:selectItem itemLabel="4-Room" itemValue="4-Room" />
-                                            <f:selectItem itemLabel="5-Room" itemValue="5-Room" />
-                                            <f:selectItem itemLabel="Executive Apartment/Mansionette" itemValue="Executive Apartment/Mansionette" />
-                                            <f:selectItem itemLabel="HUDC (unprivatised)" itemValue="HUDC" />
-                                        </p:selectOneMenu>
-                                        <p:message for="customerPropertyType"/>
-                
-                                        <p:outputLabel for="customerPropertyOwners" style="font-weight: bold" value="Property Owners: " />
-                                        <p:dataList emptyMessage="Please add owners' names" id="customerPropertyOwners" value="#{publicHDBLoanApplication.customerPropertyOwners}" var="owner">
-                #{owner}
-                <p:commandLink value="Remove" process="@this" update="customerPropertyOwners" action="#{publicHDBLoanApplication.deleteCustomerPropertyOwner(owner)}"/>
-            </p:dataList>
-            <p:inputText placeholder="Enter owner's name here" id="customerPropertyOwner" value="#{publicHDBLoanApplication.customerPropertyOwner}"/>
-            <p:commandLink value="Add Owner" update="customerPropertyOwners customerPropertyOwner" process="@this customerPropertyOwner" actionListener="#{publicHDBLoanApplication.addCustomerPropertyOwner}"/>
-            <br/>
-            <br/>
+                            <p:outputLabel for="customerCompanyAddress" style="font-weight: bold" value="Company Address: "/>
+                            <p:inputText id="customerCompanyAddress" value="#{publicHDBLoanApplication.customerCompanyAddress}"
+                                         required="#{publicHDBLoanApplication.employmentPanelVisible}" requiredMessage="Required Field"/>
+                            <p:message for="customerCompanyAddress"/>
 
-            <p:outputLabel for="customerPropertyStreetName" style="font-weight: bold" value="Property Street Name: " />
-            <p:inputText id="customerPropertyStreetName" value="#{publicHDBLoanApplication.customerPropertyStreetName}"
-                         required="true" requiredMessage="Required Field">
-            </p:inputText>
-            <p:message for="customerPropertyStreetName" />
+                            <p:outputLabel for="customerCompanyPostal" style="font-weight: bold" value="Company Postal Code: "/>
+                            <p:inputText id="customerCompanyPostal" value="#{publicHDBLoanApplication.customerCompanyPostal}"
+                                         required="#{publicHDBLoanApplication.employmentPanelVisible}" requiredMessage="Required Field" validatorMessage="Invalid postal code">
+                                <f:validateDoubleRange minimum="100000" maximum="999999" />
+                            </p:inputText>
+                            <p:message for="customerCompanyPostal"/>
 
-            <p:outputLabel for="customerPropertyBlockNum" style="font-weight: bold" value="Property Block/House No.: " />
-            <p:inputText id="customerPropertyBlockNum" value="#{publicHDBLoanApplication.customerPropertyBlockNum}" 
-                         required="true" requiredMessage="Required Field">
-            </p:inputText>
-            <p:message for="customerPropertyBlockNum" />
+                            <p:outputLabel for="customerIndustryType" style="font-weight: bold" value="Company Industry Type: "/>
+                            <p:selectOneMenu id="customerIndustryType" value="#{publicHDBLoanApplication.customerIndustryType}"
+                                             required="#{publicHDBLoanApplication.employmentPanelVisible}" requiredMessage="Required Field">
+                                <f:selectItem itemLabel="Please Select" itemValue="" />
+                                <f:selectItem itemLabel="Banking/Finance" itemValue="Banking/Finance" />
+                                <f:selectItem itemLabel="Building/Construction" itemValue="Building/Construction" />
+                                <f:selectItem itemLabel="Government" itemValue="Government" />
+                                <f:selectItem itemLabel="IT/Communications" itemValue="IT/Communications" />
+                                <f:selectItem itemLabel="Manufacturing" itemValue="Manufacturing" />
+                                <f:selectItem itemLabel="Retail/F&amp;B" itemValue="Retail/F&amp;B" />
+                                <f:selectItem itemLabel="Travel/Hospitality" itemValue="Travel/Hospitality" />
+                                <f:selectItem itemLabel="Shipping/Transport" itemValue="Shipping/Transport" />
+                                <f:selectItem itemLabel="Entertainment" itemValue="Entertainment" />
+                                <f:selectItem itemLabel="Others" itemValue="Others" />
+                                <p:ajax partialSubmit="true" event="change" update="panelCustomerIndustryType" listener="#{publicHDBLoanApplication.showIndustryTypePanel}"/>
+                            </p:selectOneMenu>
+                            <p:message for="customerIndustryType"/>
+                            <p:panel style="border: none;" id="panelCustomerIndustryType" visible="#{publicHDBLoanApplication.industryTypePanelVisible}">
+                                <p:inputText id="customerIndustryTypeOthers" requiredMessage="Required Field" 
+                                             value="#{publicHDBLoanApplication.customerIndustryTypeOthers}" required="#{publicHDBLoanApplication.industryTypePanelVisible}"/>
+                                <p:message for="customerIndustryTypeOthers"/>
+                            </p:panel>
 
-            <p:outputLabel for="customerPropertyUnitNum" style="font-weight: bold" value="Property Unit No.: " />
-            <p:inputText id="customerPropertyUnitNum" value="#{publicHDBLoanApplication.customerPropertyUnitNum}"
-                         required="true" requiredMessage="Required Field">
-            </p:inputText>
-            <p:message for="customerPropertyUnitNum" />
+                            <p:outputLabel for="customerCurrentPosition" style="font-weight: bold" value="Current Position: "/>
+                            <p:selectOneMenu id="customerCurrentPosition" value="#{publicHDBLoanApplication.customerCurrentPosition}"
+                                             required="#{publicHDBLoanApplication.employmentPanelVisible}" requiredMessage="Required Field">
+                                <f:selectItem itemLabel="Please Select" itemValue="" />
+                                <f:selectItem itemLabel="Senior Management" itemValue="Senior Management" />
+                                <f:selectItem itemLabel="Professional" itemValue="Professional" />
+                                <f:selectItem itemLabel="Middle Management" itemValue="Middle Management" />
+                                <f:selectItem itemLabel="Executive" itemValue="Executive" />
+                                <f:selectItem itemLabel="Skilled Trades/Clerica" itemValue="Skilled Trades/Clerica" />
+                                <f:selectItem itemLabel="Others" itemValue="Others" />
+                                <p:ajax event="change" update="panelCustomerCurrentPosition" listener="#{publicHDBLoanApplication.showCurrentPositionPanel}"/>
+                            </p:selectOneMenu>
+                            <p:message for="customerCurrentPosition"/>
+                            <p:panel style="border: none;" id="panelCustomerCurrentPosition" visible="#{publicHDBLoanApplication.currentPositionPanelVisible}">
+                                <p:inputText id="customerCurrentPositionOthers" requiredMessage="Required Field" 
+                                             value="#{publicHDBLoanApplication.customerCurrentPositionOthers}" required="#{publicHDBLoanApplication.currentPositionPanelVisible}"/>  
+                                <p:message for="customerCurrentPositionOthers"/>
+                            </p:panel>
 
-            <p:outputLabel for="customerPropertyPostal" style="font-weight: bold" value="Property Postal Code: " />
-            <p:inputText id="customerPropertyPostal" value="#{publicHDBLoanApplication.customerPropertyPostal}" validatorMessage="Invalid Postal Code"
-                         required="true" requiredMessage="Required Field" converterMessage="Invalid Input">
-                <f:validateDoubleRange minimum="100000" maximum="999999" />
-            </p:inputText>
-            <p:message for="customerPropertyPostal" />
+                            <p:outputLabel for="customerCurrentJobTitle" style="font-weight: bold" value="Current Job Title: "/>
+                            <p:inputText id="customerCurrentJobTitle" value="#{publicHDBLoanApplication.customerCurrentJobTitle}"
+                                         required="#{publicHDBLoanApplication.employmentPanelVisible}" requiredMessage="Required Field"/>
+                            <p:message for="customerCurrentJobTitle"/>
 
-            <p:outputLabel for="customerPropertyBuiltUpArea" style="font-weight: bold" value="Build-in Area (sq m): "/>
-            <p:inputText id="customerPropertyBuiltUpArea" value="#{publicHDBLoanApplication.customerPropertyBuiltUpArea}"
-                         required="true" requiredMessage="Required Field" converterMessage="Please enter a valid number">
-            </p:inputText>
-            <p:message for="customerPropertyBuiltUpArea"/>
+                            <p:outputLabel for="customerLengthOfCurrentJob" style="font-weight: bold" value="Years of Current Employment/Business: "/>
+                            <p:inputText id="customerLengthOfCurrentJob" value="#{publicHDBLoanApplication.customerLengthOfCurrentJob}"
+                                         required="#{publicHDBLoanApplication.employmentPanelVisible}" requiredMessage="Required Field" validatorMessage="Please enter a valid number between 0-100" converterMessage="Please enter a valid number">
+                                <f:validateLongRange minimum="0" maximum="100"/>
+                                <f:convertNumber integerOnly="true"/>
+                            </p:inputText>
+                            <p:message for="customerLengthOfCurrentJob"/>
 
-            <p:outputLabel for="customerPropertyLandArea" style="font-weight: bold" value="Land Area (sq m): "/>
-            <p:inputText id="customerPropertyLandArea" value="#{publicHDBLoanApplication.customerPropertyLandArea}"
-                         required="true" requiredMessage="Required Field" converterMessage="Please enter a valid number">
-            </p:inputText>
-            <p:message for="customerPropertyLandArea"/>
+                            <p:outputLabel for="customerPreviousCompany" style="font-weight: bold" value="Name of Previous Company"/>
+                            <p:inputText id="customerPreviousCompany" value="#{publicHDBLoanApplication.customerPreviousCompany}"
+                                         required="#{publicHDBLoanApplication.employmentPanelVisible}" requiredMessage="Required Field">
+                            </p:inputText>
+                            <p:message for="customerPreviousCompany"/>
 
-            <p:outputLabel for="customerPropertyTenureType" style="font-weight: bold" value="Property Tenure:  "/>
-            <p:selectOneMenu id="customerPropertyTenureType" value="#{publicHDBLoanApplication.customerPropertyTenureType}"
-                             required="true" requiredMessage="Required Field">
-                <f:selectItem itemLabel="Please Select" itemValue="" />
-                <f:selectItem itemLabel="Freehold" itemValue="Freehold" />
-                <f:selectItem itemLabel="Leasehold" itemValue="Leasehold" />
-                <p:ajax event="change" update="panelCustomreTenure" listener="#{publicHDBLoanApplication.showPropertyTenurePanel}"/>
-            </p:selectOneMenu>
-            <p:message for="customerPropertyTenureType"/>
-            <p:panel style="border: none;" id="panelCustomreTenure" visible="#{publicHDBLoanApplication.propertyTenurePanelVisible}">
-                <p:outputLabel for="customerPropertyTenureDuration" style="font-weight: bold" value="Expected TOP Date:"/>
-                <p:selectOneMenu id="customerPropertyTenureDuration" value="#{publicHDBLoanApplication.customerPropertyTenureDuration}"
-                                 required="true" requiredMessage="Required Field">
-                    <f:selectItem itemLabel="Please Select" itemValue="" />
-                    <f:selectItem itemLabel="99 years" itemValue="99" />
-                    <f:selectItem itemLabel="999 years" itemValue="999" />
-                </p:selectOneMenu>
-                <p:message for="customerPropertyTenureDuration"/>
-                <p:outputLabel for="customerPropertyTunureFromYear" style="font-weight: bold" value="Tenure From Year: "/>
-                <p:inputText id="customerPropertyTunureFromYear" value="#{publicHDBLoanApplication.customerPropertyTunureFromYear}"
-                             required="true" requiredMessage="Required Field" validatorMessage="Please enter a valid year (yyyy)">
-                    <f:validateDoubleRange minimum="1900" maximum="2020" />
-                </p:inputText>
-                <p:message for="customerPropertyTunureFromYear"/>
-            </p:panel>
+                            <p:outputLabel for="customerLengthOfPreviousJob" style="font-weight: bold" value="Years of Previous Employment/Business: "/>
+                            <p:inputText id="customerLengthOfPreviousJob" value="#{publicHDBLoanApplication.customerLengthOfPreviousJob}"
+                                         required="#{publicHDBLoanApplication.employmentPanelVisible}" requiredMessage="Required Field" validatorMessage="Please enter a valid number between 0-100" converterMessage="Please enter a valid number">
+                                <f:validateLongRange minimum="0" maximum="100"/>
+                                <f:convertNumber integerOnly="true"/>
+                            </p:inputText>
+                            <p:message for="customerLengthOfPreviousJob"/>
+                        </p:panel>
 
-            <p:outputLabel for="customerPropertyUsage" style="font-weight: bold" value="Usage of Property: "/>
-            <p:selectOneMenu id="customerPropertyUsage" value="#{publicHDBLoanApplication.customerPropertyUsage}"
-                             required="true" requiredMessage="Required Field">
-                <f:selectItem itemLabel="Please Select" itemValue="" />
-                <f:selectItem itemLabel="Owner Occupation" itemValue="Owner Occupation" />
-                <f:selectItem itemLabel="Investment" itemValue="Investment" />
-            </p:selectOneMenu>
-            <p:message for="customerPropertyUsage"/>
+                        <p:outputLabel for="customerMonthlyFixedIncome" style="font-weight: bold" value="Monthly Fixed Income(SGD): "/>
+                        <p:inputText id="customerMonthlyFixedIncome" value="#{publicHDBLoanApplication.customerMonthlyFixedIncome}"
+                                     required="true" requiredMessage="Required Field" converterMessage="Please enter a valid number">
+                        </p:inputText>
+                        <p:message for="customerMonthlyFixedIncome"/>
 
-            <p:outputLabel for="customrePropertyStatus" style="font-weight: bold" value="Property Status:  "/>
-            <p:selectOneMenu id="customrePropertyStatus" value="#{publicHDBLoanApplication.customrePropertyStatus}"
-                             required="true" requiredMessage="Required Field">
-                <f:selectItem itemLabel="Please Select" itemValue="" />
-                <f:selectItem itemLabel="Completed" itemValue="Completed" />
-                <f:selectItem itemLabel="Under construction" itemValue="Under construction" />
-                <p:ajax event="change" update="panelCustomreTOPDate" listener="#{publicHDBLoanApplication.showPropertyTOPDatePanel}"/>
-            </p:selectOneMenu>
-            <p:message for="customrePropertyStatus"/>
-            <p:panel style="border: none;" id="panelCustomreTOPDate" visible="#{publicHDBLoanApplication.propertyTOPPanelVisible}">
-                <p:outputLabel for="customerPropertyTOPDate" style="font-weight: bold" value="Expected TOP Date:"/>
-                <p:calendar id="customerPropertyTOPDate" value="#{publicHDBLoanApplication.customerPropertyTOPDate}" 
-                            showOn="button" locale="de" navigator="true" pattern="dd/MM/yyyy" 
-                            yearRange="c-0:c+200" required="true" requiredMessage="Required Field"/>
-                <p:message for="customerPropertyTOPDate"/>
-            </p:panel>
-        </p:panelGrid>
+                        <p:outputLabel for="customerOtherMonthlyIncome" style="font-weight: bold" value="Other Monthly Income(SGD): "/>
+                        <p:inputText id="customerOtherMonthlyIncome" value="#{publicHDBLoanApplication.customerOtherMonthlyIncome}"
+                                     required="true" requiredMessage="Required Field" converterMessage="Please enter a valid number">
+                        </p:inputText>
+                        <p:message for="customerOtherMonthlyIncome"/>
 
-        <h:panelGrid columns="2" class="ui-lg-6"> 
-            <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('hdbLoanWizard').back()"/>
-            <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('hdbLoanWizard').next();" />
-        </h:panelGrid>
-    </p:tab>
-                -->    
+                        <p:outputLabel for="customerOtherMonthlyIncomeSource" style="font-weight: bold" value="Source of Other Income: "/>
+                        <p:inputText id="customerOtherMonthlyIncomeSource" value="#{publicHDBLoanApplication.customerOtherMonthlyIncomeSource}"
+                                     required="true" requiredMessage="Required Field"/>
+                        <p:message for="customerOtherMonthlyIncomeSource"/>
+
+                    </p:panelGrid>
+
+                    <h:panelGrid columns="2" class="ui-lg-6"> 
+                        <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('hdbLoanWizard').back()"/>
+                        <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('hdbLoanWizard').next();"/>
+                    </h:panelGrid>
+                </p:tab>
+
+                <p:tab id="commitments">
+                    <h:panelGrid columns="1">
+                        <p:steps activeIndex="3">
+                            <p:menuitem value="Basic Information" />
+                            <p:menuitem value="Personal Details" />
+                            <p:menuitem value="Employment Details" />
+                            <p:menuitem value="Financial Commitments" />
+                            <p:menuitem value="Property Details" />
+                            <p:menuitem value="Financial Request" />
+                            <p:menuitem value="Supporting Documents"/>
+                            <p:menuitem value="Confirmation"/>
+                        </p:steps>
+                    </h:panelGrid>
+
+                    <p:panelGrid>
+                        <p:dataList id="commitmentTable" var="customerFinancialCommitment" value="#{publicHDBLoanApplication.customerFinancialCommitments}"
+                                    emptyMessage="Please list ALL your credit facilities with other financial institutions, e.g. credit card, residential property loan, car loan, personal credit line">
+                            #{customerFinancialCommitment.get('institution')}, #{customerFinancialCommitment.get('type')}, #{customerFinancialCommitment.get('amount')}, #{customerFinancialCommitment.get('instalment')}
+                            <p:commandLink value="Remove" process="@this" update="commitmentTable" action="#{publicHDBLoanApplication.deleteCustomerFinancialCommitment(customerFinancialCommitment)}"/>
+                        </p:dataList>
+                        <p:separator/>
+                        <p:messages globalOnly="true"/>
+                        <p:outputLabel value="Add a new financial commitment here: "/>
+                        <br/>
+                        <p:outputLabel for="customerFinancialInstitution" style="font-weight: bold" value="Financial Institution: "/>
+                        <p:inputText id="customerFinancialInstitution" value="#{publicHDBLoanApplication.customerFinancialInstitution}"/>
+                        <p:message for="customerFinancialInstitution"/>
+
+                        <p:outputLabel for="customerFacilityType" style="font-weight: bold" value="Facility Type: "/>
+                        <p:inputText id="customerFacilityType" value="#{publicHDBLoanApplication.customerFacilityType}"/>
+                        <p:message for="customerFacilityType"/>
+
+                        <p:outputLabel for="customerLoanAmount" style="font-weight: bold" value="Loan Amount/Credit Limit: "/>
+                        <p:inputText id="customerLoanAmount" value="#{publicHDBLoanApplication.customerLoanAmount}"
+                                     converterMessage="Please enter a valid number">
+                        </p:inputText>
+                        <p:message for="customerLoanAmount"/>
+
+                        <p:outputLabel for="customerMonthlyInstalment" style="font-weight: bold" value="Monthly Instalment: "/>
+                        <p:inputText id="customerMonthlyInstalment" value="#{publicHDBLoanApplication.customerMonthlyInstalment}"
+                                     converterMessage="Please enter a valid number">
+                        </p:inputText>
+                        <p:message for="customerMonthlyInstalment"/>
+
+                        <p:commandLink partialSubmit="true" value="Add Commitment" process="@this" ajax="false" update="commitments" actionListener="#{publicHDBLoanApplication.addCustomerFinancialCommitment}"/>
+                    </p:panelGrid>
+
+                    <h:panelGrid columns="2" class="ui-lg-6"> 
+                        <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('hdbLoanWizard').back()"/>
+                        <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('hdbLoanWizard').next();"/>
+                    </h:panelGrid>
+                </p:tab>
+
+                <p:tab id="property">
+                    <h:panelGrid columns="1">
+                        <p:steps activeIndex="4">
+                            <p:menuitem value="Basic Information" />
+                            <p:menuitem value="Personal Details" />
+                            <p:menuitem value="Employment Details" />
+                            <p:menuitem value="Financial Commitments" />
+                            <p:menuitem value="Property Details" />
+                            <p:menuitem value="Financial Request" />
+                            <p:menuitem value="Supporting Documents"/>
+                            <p:menuitem value="Confirmation"/>
+                        </p:steps>
+                    </h:panelGrid>
+
+                    <p:panelGrid>
+                        <p:messages globalOnly="true"/>
+                        <p:outputLabel for="customerPropertyType" style="font-weight: bold" value="Property Type:  "/>
+                        <p:selectOneMenu id="customerPropertyType" value="#{publicHDBLoanApplication.customerPropertyType}"
+                                         required="true" requiredMessage="Required Field">
+                            <f:selectItem itemLabel="Please Select" itemValue="" />
+                            <f:selectItem itemLabel="3-Room" itemValue="3-Room" />
+                            <f:selectItem itemLabel="4-Room" itemValue="4-Room" />
+                            <f:selectItem itemLabel="5-Room" itemValue="5-Room" />
+                            <f:selectItem itemLabel="Executive Apartment/Mansionette" itemValue="Executive Apartment/Mansionette" />
+                            <f:selectItem itemLabel="HUDC (unprivatised)" itemValue="HUDC" />
+                        </p:selectOneMenu>
+                        <p:message for="customerPropertyType"/>
+
+                        <p:outputLabel for="customerPropertyOwners" style="font-weight: bold" value="Property Owners: " />
+                        <p:dataList emptyMessage="Please add owners' names" id="customerPropertyOwners" value="#{publicHDBLoanApplication.customerPropertyOwners}" var="owner">
+                            #{owner}
+                            <p:commandLink value="Remove" process="@this" update="customerPropertyOwners" action="#{publicHDBLoanApplication.deleteCustomerPropertyOwner(owner)}"/>
+                        </p:dataList>
+                        <p:inputText placeholder="Enter owner's name here" id="customerPropertyOwner" value="#{publicHDBLoanApplication.customerPropertyOwner}"/>
+                        <p:commandLink value="Add Owner" update="customerPropertyOwners customerPropertyOwner ownerMessage" process="@this customerPropertyOwner" actionListener="#{publicHDBLoanApplication.addCustomerPropertyOwner}"/>
+                        <p:messages for="customerPropertyOwner" id="ownerMessage"/>
+
+                        <p:outputLabel for="customerPropertyStreetName" style="font-weight: bold" value="Property Street Name: " />
+                        <p:inputText id="customerPropertyStreetName" value="#{publicHDBLoanApplication.customerPropertyStreetName}"
+                                     required="true" requiredMessage="Required Field">
+                        </p:inputText>
+                        <p:message for="customerPropertyStreetName" />
+
+                        <p:outputLabel for="customerPropertyBlockNum" style="font-weight: bold" value="Property Block/House No.: " />
+                        <p:inputText id="customerPropertyBlockNum" value="#{publicHDBLoanApplication.customerPropertyBlockNum}" 
+                                     required="true" requiredMessage="Required Field">
+                        </p:inputText>
+                        <p:message for="customerPropertyBlockNum" />
+
+                        <p:outputLabel for="customerPropertyUnitNum" style="font-weight: bold" value="Property Unit No.: " />
+                        <p:inputText id="customerPropertyUnitNum" value="#{publicHDBLoanApplication.customerPropertyUnitNum}"
+                                     required="true" requiredMessage="Required Field">
+                        </p:inputText>
+                        <p:message for="customerPropertyUnitNum" />
+
+                        <p:outputLabel for="customerPropertyPostal" style="font-weight: bold" value="Property Postal Code: " />
+                        <p:inputText id="customerPropertyPostal" value="#{publicHDBLoanApplication.customerPropertyPostal}" validatorMessage="Invalid Postal Code"
+                                     required="true" requiredMessage="Required Field" converterMessage="Invalid Input">
+                            <f:validateDoubleRange minimum="100000" maximum="999999" />
+                        </p:inputText>
+                        <p:message for="customerPropertyPostal" />
+
+                        <p:outputLabel for="customerPropertyBuiltUpArea" style="font-weight: bold" value="Build-in Area (sq m): "/>
+                        <p:inputText id="customerPropertyBuiltUpArea" value="#{publicHDBLoanApplication.customerPropertyBuiltUpArea}"
+                                     required="true" requiredMessage="Required Field" converterMessage="Please enter a valid number">
+                        </p:inputText>
+                        <p:message for="customerPropertyBuiltUpArea"/>
+
+                        <p:outputLabel for="customerPropertyLandArea" style="font-weight: bold" value="Land Area (sq m): "/>
+                        <p:inputText id="customerPropertyLandArea" value="#{publicHDBLoanApplication.customerPropertyLandArea}"
+                                     required="true" requiredMessage="Required Field" converterMessage="Please enter a valid number">
+                        </p:inputText>
+                        <p:message for="customerPropertyLandArea"/>
+
+                        <p:outputLabel for="customerPropertyTenureType" style="font-weight: bold" value="Property Tenure:  "/>
+                        <p:selectOneMenu id="customerPropertyTenureType" value="#{publicHDBLoanApplication.customerPropertyTenureType}"
+                                         required="true" requiredMessage="Required Field">
+                            <f:selectItem itemLabel="Please Select" itemValue="" />
+                            <f:selectItem itemLabel="Freehold" itemValue="Freehold" />
+                            <f:selectItem itemLabel="Leasehold" itemValue="Leasehold" />
+                            <p:ajax event="change" update="panelCustomreTenure" listener="#{publicHDBLoanApplication.showPropertyTenurePanel}"/>
+                        </p:selectOneMenu>
+                        <p:message for="customerPropertyTenureType"/>
+                        <p:panel style="border: none;" id="panelCustomreTenure" visible="#{publicHDBLoanApplication.propertyTenurePanelVisible}">
+                            <p:outputLabel for="customerPropertyTenureDuration" style="font-weight: bold" value="Tenure Duration:"/>
+                            <p:selectOneMenu id="customerPropertyTenureDuration" value="#{publicHDBLoanApplication.customerPropertyTenureDuration}"
+                                             required="#{publicHDBLoanApplication.propertyTenurePanelVisible}" requiredMessage="Required Field">
+                                <f:selectItem itemLabel="Please Select" itemValue="" />
+                                <f:selectItem itemLabel="99 years" itemValue="99" />
+                                <f:selectItem itemLabel="999 years" itemValue="999" />
+                            </p:selectOneMenu>
+                            <p:message for="customerPropertyTenureDuration"/>
+                            <p:outputLabel for="customerPropertyTunureFromYear" style="font-weight: bold" value="With Effect From: "/>
+                            <p:inputText id="customerPropertyTunureFromYear" value="#{publicHDBLoanApplication.customerPropertyTunureFromYear}"
+                                         required="#{publicHDBLoanApplication.propertyTenurePanelVisible}" requiredMessage="Required Field" validatorMessage="Please enter a valid year (yyyy)">
+                                <f:validateDoubleRange minimum="1900" maximum="2020" />
+                            </p:inputText>
+                            <p:message for="customerPropertyTunureFromYear"/>
+                        </p:panel>
+
+                        <p:outputLabel for="customerPropertyUsage" style="font-weight: bold" value="Usage of Property: "/>
+                        <p:selectOneMenu id="customerPropertyUsage" value="#{publicHDBLoanApplication.customerPropertyUsage}"
+                                         required="true" requiredMessage="Required Field">
+                            <f:selectItem itemLabel="Please Select" itemValue="" />
+                            <f:selectItem itemLabel="Owner Occupation" itemValue="Owner Occupation" />
+                            <f:selectItem itemLabel="Investment" itemValue="Investment" />
+                        </p:selectOneMenu>
+                        <p:message for="customerPropertyUsage"/>
+
+                        <p:outputLabel for="customrePropertyStatus" style="font-weight: bold" value="Property Status:  "/>
+                        <p:selectOneMenu id="customrePropertyStatus" value="#{publicHDBLoanApplication.customrePropertyStatus}"
+                                         required="true" requiredMessage="Required Field">
+                            <f:selectItem itemLabel="Please Select" itemValue="" />
+                            <f:selectItem itemLabel="Completed" itemValue="Completed" />
+                            <f:selectItem itemLabel="Under construction" itemValue="Under construction" />
+                            <p:ajax event="change" update="panelCustomreTOPDate" listener="#{publicHDBLoanApplication.showPropertyTOPDatePanel}"/>
+                        </p:selectOneMenu>
+                        <p:message for="customrePropertyStatus"/>
+                        <p:panel style="border: none;" id="panelCustomreTOPDate" visible="#{publicHDBLoanApplication.propertyTOPPanelVisible}">
+                            <p:outputLabel for="customerPropertyTOPDate" style="font-weight: bold" value="Expected TOP Date:"/>
+                            <p:calendar id="customerPropertyTOPDate" value="#{publicHDBLoanApplication.customerPropertyTOPDate}" 
+                                        showOn="button" locale="de" navigator="true" pattern="dd/MM/yyyy" 
+                                        yearRange="c-0:c+200" required="#{publicHDBLoanApplication.propertyTOPPanelVisible}" requiredMessage="Required Field"/>
+                            <p:message for="customerPropertyTOPDate"/>
+                        </p:panel>
+                    </p:panelGrid>
+
+                    <h:panelGrid columns="2" class="ui-lg-6"> 
+                        <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('hdbLoanWizard').back();"/>
+                        <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('hdbLoanWizard').next();" />
+                    </h:panelGrid>
+                </p:tab>
+
                 <p:tab id="loan">
                     <h:panelGrid columns="1">
                         <p:steps activeIndex="5">
@@ -1178,65 +1222,66 @@
                     </h:panelGrid>
 
                     <h:panelGrid>
+                        <p:messages globalOnly="true"/>
                         <p:outputLabel value="Please upload all the files in PDF format"/>
                         <p:panel>
                             <p:outputLabel value="Please upload photocopy of NRIC/Passport for all Applicants and Owners:"/>
                             <p:outputLabel value="(Please upload all photocopies in one single PDF file)"/>
-                            <p:messages id="identificationUploadMessage"/>
+                            <p:messages id="identificationUploadMessage" for="identificationUpload"/>
                             <p:fileUpload id="identificationUpload" update="identificationUploadMessage" fileUploadListener="#{publicHDBLoanApplication.identificationUpload}"
                                           mode="advanced" skinSimple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(pdf)$/" multiple="false"/>
                         </p:panel>
 
                         <p:panel visible="#{publicHDBLoanApplication.propertyOTPPanelVisible}">
                             <p:outputLabel value="Please upload your Option to Purchase"/>
-                            <p:messages id="otpUploadMessage"/>
+                            <p:messages id="otpUploadMessage" for="otpUpload"/>
                             <p:fileUpload id="otpUpload" update="otpUploadMessage" fileUploadListener="#{publicHDBLoanApplication.otpUpload}"
                                           mode="advanced" skinSimple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(pdf)$/" multiple="false"/>
                             <p:outputLabel value="Please upload your Purchase Agreement"/>
-                            <p:messages id="purchaseAgreementUploadMessage"/>
+                            <p:messages id="purchaseAgreementUploadMessage" for="purchaseAgreementUpload"/>
                             <p:fileUpload id="purchaseAgreementUpload" update="purchaseAgreementUploadMessage" fileUploadListener="#{publicHDBLoanApplication.purchaseAgreementUpload}"
                                           mode="advanced" skinSimple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(pdf)$/" multiple="false"/>
                         </p:panel>
 
-                        <p:panel>
+                        <p:panel visible="#{publicHDBLoanApplication.propertyRefinancingPanelVisible}">
                             <p:outputLabel value="Please upload your Loan Statement from existing financial institution - Latest 12 months"/>
-                            <p:messages id="existingLoanUploadMessage"/>
+                            <p:messages id="existingLoanUploadMessage" for="existingLoanUpload"/>
                             <p:fileUpload id="existingLoanUpload" update="existingLoanUploadMessage" fileUploadListener="#{publicHDBLoanApplication.existingLoanUpload}"
                                           mode="advanced" skinSimple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(pdf)$/" multiple="false"/>
                             <p:outputLabel value="Please upload your CPF Withdrawal Statement"/>
-                            <p:messages id="cpfWithdrawalUploadMessage"/>
+                            <p:messages id="cpfWithdrawalUploadMessage" for="cpfWithdrawalUpload"/>
                             <p:fileUpload id="cpfWithdrawalUpload" update="cpfWithdrawalUploadMessage" fileUploadListener="#{publicHDBLoanApplication.cpfWithdrawalUpload}"
                                           mode="advanced" skinSimple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(pdf)$/" multiple="false"/>
                         </p:panel>
 
                         <p:panel>
                             <p:outputLabel value="Please upload Evidence of sale of your existing property"/>
-                            <p:messages id="evidenceOfSaleUploadMessage"/>
+                            <p:messages id="evidenceOfSaleUploadMessage" for="evidenceOfSaleUpload"/>
                             <p:fileUpload id="evidenceOfSaleUpload" update="evidenceOfSaleUploadMessage" fileUploadListener="#{publicHDBLoanApplication.evidenceOfSaleUpload}"
                                           mode="advanced" skinSimple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(pdf)$/" multiple="false"/>
                         </p:panel>
 
-                        <p:panel>
+                        <p:panel visible="#{publicHDBLoanApplication.propertyTenancyPanelVisible}">
                             <p:outputLabel value="Please upload your tenancy agreement"/>
-                            <p:messages id="tenancyUploadMessage"/>
+                            <p:messages id="tenancyUploadMessage" for="tenancyUpload"/>
                             <p:fileUpload id="tenancyUpload" update="tenancyUploadMessage" fileUploadListener="#{publicHDBLoanApplication.tenancyUpload}"
                                           mode="advanced" skinSimple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(pdf)$/" multiple="false"/>
                         </p:panel>
 
-                        <p:panel>
+                        <p:panel visible="#{publicHDBLoanApplication.customerEmploymentStatus eq 'Employee'}">
                             <p:outputLabel value="Please upload your lastest tax assessment"/>
-                            <p:messages id="employeeTaxUploadMessage"/>
+                            <p:messages id="employeeTaxUploadMessage" for="employeeTaxUpload"/>
                             <p:fileUpload id="employeeTaxUpload" update="employeeTaxUploadMessage" fileUploadListener="#{publicHDBLoanApplication.employeeTaxUpload}"
                                           mode="advanced" skinSimple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(pdf)$/" multiple="false"/>
                             <p:outputLabel value="Please upload your lastest CPF statement"/>
-                            <p:messages id="employeeCPFUploadMessage"/>
+                            <p:messages id="employeeCPFUploadMessage" for="employeeCPFUpload"/>
                             <p:fileUpload id="employeeCPFUpload" update="employeeCPFUploadMessage" fileUploadListener="#{publicHDBLoanApplication.employeeCPFUpload}"
                                           mode="advanced" skinSimple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(pdf)$/" multiple="false"/>
                         </p:panel>
 
-                        <p:panel>
+                        <p:panel visible="#{publicHDBLoanApplication.customerEmploymentStatus eq 'Self-Employed'}">
                             <p:outputLabel value="Please upload your lastest 2 years income tax assessment"/>
-                            <p:messages id="selfEmployedTaxUploadMessage"/>
+                            <p:messages id="selfEmployedTaxUploadMessage" for="selfEmployedTaxUpload"/>
                             <p:fileUpload id="selfEmployedTaxUpload" update="selfEmployedTaxUploadMessage" fileUploadListener="#{publicHDBLoanApplication.selfEmployedTaxUpload}"
                                           mode="advanced" skinSimple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(pdf)$/" multiple="false"/>
                         </p:panel>                       
@@ -1244,7 +1289,7 @@
 
                     <h:panelGrid columns="2" class="ui-lg-6"> 
                         <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('hdbLoanWizard').back()"/>
-                        <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('hdbLoanWizard').next();" />
+                        <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('hdbLoanWizard').next();"/>
                     </h:panelGrid>
                 </p:tab>
 
@@ -1263,14 +1308,16 @@
                     </h:panelGrid>
 
                     <p:panelGrid>
-                        <p:messages id="agreementMessages" />
+                        <p:messages id="agreementMessages" for="agreement"/>
+                        <p:message for="agreement"/>
                         <p:selectBooleanCheckbox id = "agreement" value="#{publicHDBLoanApplication.agreement}" 
                                                  style="margin-top:5px"/>
                         <h:outputText value="I have read and agree to the terms of Customer Declaration and Confirmation." />
-                        <p:captcha/>
+                        <p:message for="captcha"/>
+                        <p:captcha id="captcha"/>
                         <p:outputLabel value="Please provide your signature" />
                         <br/>
-                        <p:messages id="signatureMessages" />
+                        <p:messages id="signatureMessages" for="input"/>
                         <p:signature id="input" style="width:300px;height:200px" widgetVar="sig" value="#{signatureViewManagedBean.customerSignature}" 
                                      guideline="true"/>
                         <p:commandButton process="@this input output" value="Submit" icon="ui-icon-check" update="output"/>
@@ -1284,7 +1331,7 @@
 
                     <h:panelGrid columns="2" class="ui-lg-6"> 
                         <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('hdbLoanWizard').back()"/>
-                        <p:commandButton id="saveBtn" value="Submit Request" actionListener="#{accountManagedBean.saveAccount}" ajax="true"/>                        
+                        <p:commandButton id="saveBtn" value="Submit Request" ajax="false" update="@form" actionListener="#{publicHDBLoanApplication.addLoanApplication}"/>                        
                     </h:panelGrid>
                 </p:tab>
             </p:wizard>

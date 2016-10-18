@@ -5,6 +5,9 @@
  */
 package managedbean.loan.customer;
 
+import ejb.customer.entity.CustomerAdvanced;
+import ejb.customer.entity.CustomerBasic;
+import ejb.loan.session.LoanApplicationSessionBeanLocal;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -16,7 +19,9 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
@@ -32,6 +37,9 @@ import org.primefaces.model.UploadedFile;
 @Named(value = "publicHDBLoanApplication")
 @ViewScoped
 public class PublicHDBLoanApplicationManagedBean implements Serializable {
+
+    @EJB
+    private LoanApplicationSessionBeanLocal loanApplicationSessionBeanLocal;
 
     //basic information
     private String customerSalutation;
@@ -61,6 +69,7 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
 
     //employment details
     private String customerEmploymentStatus;
+    private String customerOccupation;
     private String customerCompanyName;
     private String customerCompanyAddress;
     private String customerCompanyPostal;
@@ -117,15 +126,16 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
     private String customerFinancialRequest;
     private BigDecimal customerLoanAmountRequired;
     private Integer customerLoanTenure;
-    
+    //loan - refinancing
     private String customerExistingFinancer;
     private BigDecimal customerOutstandingLoan;
     private Integer customerOutstandingYear;
     private Integer customerOutstandingMonth;
     private BigDecimal customerTotalCPFWithdrawal;
-    
+
     //confirmation
     private boolean agreement;
+    private String customerSignature;
 
     //documents
     private UploadedFile file;
@@ -141,18 +151,21 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
     //personal details
     private boolean industryTypePanelVisible;
     private boolean currentPositionPanelVisible;
+    
+    //employement
+    private boolean occupationPanelVisible;
+    private boolean employmentPanelVisible;
 
     //property details
     private boolean propertyTOPPanelVisible;
     private boolean propertyTenurePanelVisible;
-    
+
     //loan
     private boolean propertyNewPurchasePanelVisible;
     private boolean propertyRefinancingPanelVisible;
     private boolean propertyOTPPanelVisible;
     private boolean propertyTenancyPanelVisible;
     private boolean propertyBenefitsPanelVisible;
-    
 
     /**
      * Creates a new instance of PublicHDBLoanApplication
@@ -170,28 +183,135 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
         uploads.put("selfEmployedTax", false);
     }
 
+    public void addLoanApplication() {
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        customerSignature = ec.getSessionMap().get("customerSignature").toString();
+        if (customerSignature.equals("") || !agreement) {
+            if (customerSignature.equals("")) {
+                FacesContext.getCurrentInstance().addMessage("input", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Please provide your digital signature", "Failed!"));
+            }
+            if (!agreement) {
+                FacesContext.getCurrentInstance().addMessage("agreement", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Please agree to terms to proceed", "Failed!"));
+            }
+        } else {
+            CustomerBasic customer = createCustomer();
+            CustomerAdvanced ca = createCustomerAdvanced(customer);
+            loanApplicationSessionBeanLocal.submitLoanApplication(customer);
+        }
+    }
+
+    private CustomerBasic createCustomer() {
+        CustomerBasic customer = new CustomerBasic();
+        customer.setCustomerSalutation(customerSalutation);
+        customer.setCustomerName(customerName);
+        customer.setCustomerGender(customerGender);
+        customer.setCustomerEmail(customerEmail);
+        customer.setCustomerMobile(customerMobile);
+        String dateOfBirth = changeDateFormat(customerDateOfBirth);
+        customer.setCustomerDateOfBirth(dateOfBirth);
+        customer.setCustomerNationality(customerNationality);
+        customer.setCustomerCountryOfResidence(customerCountryOfResidence);
+        customer.setCustomerRace(customerRace);
+        customer.setCustomerMaritalStatus(customerMaritalStatus);
+        customer.setCustomerOccupation(customerSalutation);
+        return customer;
+    }
+
+    private CustomerAdvanced createCustomerAdvanced(CustomerBasic customer) {
+        CustomerAdvanced ca = new CustomerAdvanced();
+        ca.setCustomerBasic(customer);
+        ca.setEducation("primary");
+        customer.setCustomerAdvanced(ca);
+        return ca;
+    }
+
     public String onFlowProcess(FlowEvent event) {
-        return event.getNewStep();
+        String nextStep = event.getNewStep();
+
+        if (event.getOldStep().equals("basic")) {
+            Date today = new Date();
+            int age = today.getYear() - customerDateOfBirth.getYear();
+            if (today.getMonth() < customerDateOfBirth.getMonth()) {
+                age--;
+            } else if (today.getMonth() == customerDateOfBirth.getMonth()) {
+                if (today.getDate() <= customerDateOfBirth.getDate()) {
+                    age--;
+                }
+            }
+
+            if (age < 16 || age > 65) {
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Your age is not qualified to apply for this type of loan", "");
+                FacesContext.getCurrentInstance().addMessage(null, message);
+                nextStep = event.getOldStep();
+            } else if (customerIdentificationNum.length() != 9) {
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please enter a valid indentification number", "");
+                FacesContext.getCurrentInstance().addMessage(null, message);
+                nextStep = event.getOldStep();
+            }
+        } else if (event.getOldStep().equals("employment")) {
+            double grossIncome = customerOtherMonthlyIncome.doubleValue() + customerMonthlyFixedIncome.doubleValue();
+            if (grossIncome <= 6000) {
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "The minimum gross monthly income required is S$6,000", "");
+                FacesContext.getCurrentInstance().addMessage(null, message);
+                nextStep = event.getOldStep();
+            }
+        } else if (event.getOldStep().equals("property")) {
+            if (customerPropertyOwners.isEmpty()) {
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please enter all the names of owners", "");
+                FacesContext.getCurrentInstance().addMessage(null, message);
+                nextStep = event.getOldStep();
+            }
+        } else if (event.getOldStep().equals("documents")) {
+            String pendingDocs = "Please submit following documents: ";
+            boolean allSubmitted = true;
+
+            for (Object entry : uploads.keySet()) {
+                String map = (String) entry;
+                boolean uploaded = (boolean) uploads.get(map);
+                if (!uploaded) {
+                    pendingDocs += map + ", ";
+                    allSubmitted = false;
+                }
+            }
+            pendingDocs = pendingDocs.substring(0, pendingDocs.length() - 2);
+
+            if (!allSubmitted) {
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, pendingDocs, "");
+                FacesContext.getCurrentInstance().addMessage(null, message);
+                nextStep = event.getOldStep();
+            }
+        }
+        return nextStep;
     }
 
     public void addCustomerPropertyOwner() {
         System.out.println("====== loan/PublicHDBLoanApplicationManagedBean: addCustomerPropertyOwner() ======");
-        customerPropertyOwners.add(customerPropertyOwner);
-        customerPropertyOwner = null;
+        if (!customerPropertyOwner.equals("")) {
+            customerPropertyOwners.add(customerPropertyOwner);
+            customerPropertyOwner = "";
+        } else {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Required Field", "");
+            FacesContext.getCurrentInstance().addMessage("customerPropertyOwner", message);
+        }
     }
 
     public void addCustomerFinancialCommitment() {
         System.out.println("====== loan/PublicHDBLoanApplicationManagedBean: addCustomerFinancialCommitment() ======");
-        customerFinancialCommitment.put("institution", customerFinancialInstitution);
-        customerFinancialCommitment.put("type", customerFacilityType);
-        customerFinancialCommitment.put("amount", customerLoanAmount);
-        customerFinancialCommitment.put("instalment", customerMonthlyInstalment);
-        customerFinancialCommitments.add(customerFinancialCommitment);
-        customerFinancialInstitution = null;
-        customerFacilityType = null;
-        customerLoanAmount = null;
-        customerMonthlyInstalment = null;
-        customerFinancialCommitment = new HashMap();
+        if (customerFinancialInstitution==null || customerFacilityType==null || customerLoanAmount == null || customerMonthlyInstalment == null) {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please fill in all the fields", "");
+            FacesContext.getCurrentInstance().addMessage(null, message);
+        } else {
+            customerFinancialCommitment.put("institution", customerFinancialInstitution);
+            customerFinancialCommitment.put("type", customerFacilityType);
+            customerFinancialCommitment.put("amount", customerLoanAmount);
+            customerFinancialCommitment.put("instalment", customerMonthlyInstalment);
+            customerFinancialCommitments.add(customerFinancialCommitment);
+            customerFinancialInstitution = null;
+            customerFacilityType = null;
+            customerLoanAmount = null;
+            customerMonthlyInstalment = null;
+            customerFinancialCommitment = new HashMap();
+        }
     }
 
     public void deleteCustomerPropertyOwner(String owner) {
@@ -249,13 +369,13 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
             }
             uploads.replace("identification", true);
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, file.getFileName() + " uploaded successfully.", "");
-            FacesContext.getCurrentInstance().addMessage(null, message);
+            FacesContext.getCurrentInstance().addMessage("identificationUpload", message);
         } else {
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cannot find the file, please upload again.", "");
-            FacesContext.getCurrentInstance().addMessage(null, message);
+            FacesContext.getCurrentInstance().addMessage("identificationUpload", message);
         }
     }
-    
+
     public void otpUpload(FileUploadEvent event) throws FileNotFoundException, IOException {
         this.file = event.getFile();
         if (file != null) {
@@ -270,13 +390,13 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
             }
             uploads.replace("otp", true);
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, file.getFileName() + " uploaded successfully.", "");
-            FacesContext.getCurrentInstance().addMessage(null, message);
+            FacesContext.getCurrentInstance().addMessage("otpUpload", message);
         } else {
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cannot find the file, please upload again.", "");
-            FacesContext.getCurrentInstance().addMessage(null, message);
+            FacesContext.getCurrentInstance().addMessage("otpUpload", message);
         }
     }
-    
+
     public void purchaseAgreementUpload(FileUploadEvent event) throws FileNotFoundException, IOException {
         this.file = event.getFile();
         if (file != null) {
@@ -291,13 +411,13 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
             }
             uploads.replace("purchaseAgreement", true);
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, file.getFileName() + " uploaded successfully.", "");
-            FacesContext.getCurrentInstance().addMessage(null, message);
+            FacesContext.getCurrentInstance().addMessage("purchaseAgreementUpload", message);
         } else {
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cannot find the file, please upload again.", "");
-            FacesContext.getCurrentInstance().addMessage(null, message);
+            FacesContext.getCurrentInstance().addMessage("purchaseAgreementUpload", message);
         }
     }
-    
+
     public void existingLoanUpload(FileUploadEvent event) throws FileNotFoundException, IOException {
         this.file = event.getFile();
         if (file != null) {
@@ -312,13 +432,13 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
             }
             uploads.replace("existingLoan", true);
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, file.getFileName() + " uploaded successfully.", "");
-            FacesContext.getCurrentInstance().addMessage(null, message);
+            FacesContext.getCurrentInstance().addMessage("existingLoanUpload", message);
         } else {
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cannot find the file, please upload again.", "");
-            FacesContext.getCurrentInstance().addMessage(null, message);
+            FacesContext.getCurrentInstance().addMessage("existingLoanUpload", message);
         }
     }
-    
+
     public void cpfWithdrawalUpload(FileUploadEvent event) throws FileNotFoundException, IOException {
         this.file = event.getFile();
         if (file != null) {
@@ -333,13 +453,13 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
             }
             uploads.replace("cpfWithdrawal", true);
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, file.getFileName() + " uploaded successfully.", "");
-            FacesContext.getCurrentInstance().addMessage(null, message);
+            FacesContext.getCurrentInstance().addMessage("cpfWithdrawalUpload", message);
         } else {
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cannot find the file, please upload again.", "");
-            FacesContext.getCurrentInstance().addMessage(null, message);
+            FacesContext.getCurrentInstance().addMessage("cpfWithdrawalUpload", message);
         }
     }
-    
+
     public void evidenceOfSaleUpload(FileUploadEvent event) throws FileNotFoundException, IOException {
         this.file = event.getFile();
         if (file != null) {
@@ -354,13 +474,13 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
             }
             uploads.replace("evidenceOfSale", true);
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, file.getFileName() + " uploaded successfully.", "");
-            FacesContext.getCurrentInstance().addMessage(null, message);
+            FacesContext.getCurrentInstance().addMessage("evidenceOfSaleUpload", message);
         } else {
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cannot find the file, please upload again.", "");
-            FacesContext.getCurrentInstance().addMessage(null, message);
+            FacesContext.getCurrentInstance().addMessage("evidenceOfSaleUpload", message);
         }
     }
-    
+
     public void tenancyUpload(FileUploadEvent event) throws FileNotFoundException, IOException {
         this.file = event.getFile();
         if (file != null) {
@@ -375,13 +495,13 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
             }
             uploads.replace("tenancy", true);
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, file.getFileName() + " uploaded successfully.", "");
-            FacesContext.getCurrentInstance().addMessage(null, message);
+            FacesContext.getCurrentInstance().addMessage("tenancyUpload", message);
         } else {
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cannot find the file, please upload again.", "");
-            FacesContext.getCurrentInstance().addMessage(null, message);
+            FacesContext.getCurrentInstance().addMessage("tenancyUpload", message);
         }
     }
-    
+
     public void employeeTaxUpload(FileUploadEvent event) throws FileNotFoundException, IOException {
         this.file = event.getFile();
         if (file != null) {
@@ -396,13 +516,13 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
             }
             uploads.replace("employeeTax", true);
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, file.getFileName() + " uploaded successfully.", "");
-            FacesContext.getCurrentInstance().addMessage(null, message);
+            FacesContext.getCurrentInstance().addMessage("employeeTaxUpload", message);
         } else {
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cannot find the file, please upload again.", "");
-            FacesContext.getCurrentInstance().addMessage(null, message);
+            FacesContext.getCurrentInstance().addMessage("employeeTaxUpload", message);
         }
     }
-    
+
     public void employeeCPFUpload(FileUploadEvent event) throws FileNotFoundException, IOException {
         this.file = event.getFile();
         if (file != null) {
@@ -417,13 +537,13 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
             }
             uploads.replace("employeeCPF", true);
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, file.getFileName() + " uploaded successfully.", "");
-            FacesContext.getCurrentInstance().addMessage(null, message);
+            FacesContext.getCurrentInstance().addMessage("employeeCPFUpload", message);
         } else {
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cannot find the file, please upload again.", "");
-            FacesContext.getCurrentInstance().addMessage(null, message);
+            FacesContext.getCurrentInstance().addMessage("employeeCPFUpload", message);
         }
     }
-    
+
     public void selfEmployedTaxUpload(FileUploadEvent event) throws FileNotFoundException, IOException {
         this.file = event.getFile();
         if (file != null) {
@@ -438,10 +558,10 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
             }
             uploads.replace("selfEmployedTax", true);
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, file.getFileName() + " uploaded successfully.", "");
-            FacesContext.getCurrentInstance().addMessage(null, message);
+            FacesContext.getCurrentInstance().addMessage("selfEmployedTaxUpload", message);
         } else {
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cannot find the file, please upload again.", "");
-            FacesContext.getCurrentInstance().addMessage(null, message);
+            FacesContext.getCurrentInstance().addMessage("selfEmployedTaxUpload", message);
         }
     }
 
@@ -460,22 +580,70 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
     public void showPropertyTenurePanel() {
         propertyTenurePanelVisible = customerPropertyTenureType.equals("Leasehold");
     }
-    
-    public void showPropertyOTPPanel(){
+
+    public void showPropertyOTPPanel() {
         propertyOTPPanelVisible = customerPropertyWithOTP.equals("yes");
     }
-    
-    public void showPropertyTenancyPanel(){
-        propertyTenancyPanelVisible = customerPropertyWithTenancy.equals("yes");
+
+    public void showPropertyTenancyPanel() {
+        if (customerPropertyWithTenancy.equals("yes")) {
+            propertyTenancyPanelVisible = true;
+            uploads.replace("tenancy", false);
+        } else {
+            propertyTenancyPanelVisible = false;
+            uploads.replace("tenancy", true);
+        }
     }
-    
-    public void showBenefitsPanel(){
+
+    public void showBenefitsPanel() {
         propertyBenefitsPanelVisible = customerWithBenefitsFromVendor.equals("yes");
     }
+
+    public void showFinancialRequestPanel() {
+        if (customerFinancialRequest.equals("purchase")) {
+            propertyNewPurchasePanelVisible = true;
+            propertyRefinancingPanelVisible = false;
+            uploads.replace("existingLoan", true);
+            uploads.replace("cpfWithdrawal", true);
+            uploads.replace("otp", false);
+            uploads.replace("purchaseAgreement", false);
+        } else if(customerFinancialRequest.equals("refinancing")){
+            propertyNewPurchasePanelVisible = false;
+            propertyRefinancingPanelVisible = true;
+            uploads.replace("otp", true);
+            uploads.replace("purchaseAgreement", true);
+            uploads.replace("existingLoan", false);
+            uploads.replace("cpfWithdrawal", false);
+        } else{
+            propertyNewPurchasePanelVisible = false;
+            propertyRefinancingPanelVisible = false;
+        }
+    }
     
-    public void showFinancialRequestPanel(){
-        propertyNewPurchasePanelVisible = customerFinancialRequest.equals("purchase");
-        propertyRefinancingPanelVisible = customerFinancialRequest.equals("refinancing");
+    public void changeEmployeeStatus() {
+        if (customerEmploymentStatus.equals("Employee")) {
+            employmentPanelVisible = true;
+            occupationPanelVisible = true;
+            uploads.replace("selfEmployedTax", true);
+            uploads.replace("employeeTax", false);
+            uploads.replace("employeeCPF", false);
+        } else if (customerEmploymentStatus.equals("Self-Employed")) {
+            employmentPanelVisible = true;
+            occupationPanelVisible = false;
+            uploads.replace("selfEmployedTax", false);
+            uploads.replace("employeeTax", true);
+            uploads.replace("employeeCPF", true);
+        } else{
+            occupationPanelVisible = false;
+            employmentPanelVisible = false;
+        }
+    }
+
+    private String changeDateFormat(Date inputDate) {
+        String dateString = inputDate.toString();
+        String[] dateSplit = dateString.split(" ");
+        String outputDate = dateSplit[2] + "/" + dateSplit[1] + "/" + dateSplit[5];
+        return outputDate;
     }
 
     public String getCustomerSalutation() {
@@ -1236,5 +1404,37 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
 
     public void setAgreement(boolean agreement) {
         this.agreement = agreement;
+    }
+
+    public String getCustomerOccupation() {
+        return customerOccupation;
+    }
+
+    public void setCustomerOccupation(String customerOccupation) {
+        this.customerOccupation = customerOccupation;
+    }
+
+    public String getCustomerSignature() {
+        return customerSignature;
+    }
+
+    public void setCustomerSignature(String customerSignature) {
+        this.customerSignature = customerSignature;
+    }
+
+    public boolean isOccupationPanelVisible() {
+        return occupationPanelVisible;
+    }
+
+    public void setOccupationPanelVisible(boolean occupationPanelVisible) {
+        this.occupationPanelVisible = occupationPanelVisible;
+    }
+
+    public boolean isEmploymentPanelVisible() {
+        return employmentPanelVisible;
+    }
+
+    public void setEmploymentPanelVisible(boolean employmentPanelVisible) {
+        this.employmentPanelVisible = employmentPanelVisible;
     }
 }
