@@ -6,21 +6,22 @@ import ejb.deposit.session.BankAccountSessionBeanLocal;
 import ejb.deposit.session.InterestSessionBeanLocal;
 import ejb.infrastructure.session.MessageSessionBeanLocal;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
-import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import org.primefaces.event.FlowEvent;
 
 @Named(value = "internalOpenAccountManagedBean")
-@RequestScoped
+@ViewScoped
 
-public class InternalOpenAccountManagedBean {
+public class InternalOpenAccountManagedBean implements Serializable  {
 
     @EJB
     private MessageSessionBeanLocal messageSessionBeanLocal;

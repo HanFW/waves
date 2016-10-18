@@ -45,25 +45,19 @@
                     <h:outputLabel value="Open a New Account" style="font-weight: bold; font-size: 24px" />
                     <p:separator/>
                     <br/>
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel for="bankAccountType" style="font-weight: bold" value="Account Type: " />
-                        </p:column>
-                        <p:column>
-                            <p:selectOneMenu id="bankAccountType" value="#{internalOpenAccountManagedBean.bankAccountType}" 
-                                             required="true" requiredMessage="Required Field">
-                                <f:selectItem itemLabel="Please Select" itemValue="" noSelectionOption="true"/>
-                                <f:selectItem itemLabel="Monthly Savings Account" itemValue="Monthly Savings Account" />
-                                <f:selectItem itemLabel="Bonus Savings Account" itemValue="Bonus Savings Account" />
-                                <f:selectItem itemLabel="Basic Savings Account" itemValue="Basic Savings Account" />
-                                <f:selectItem itemLabel="Fixed Deposit Account" itemValue="Fixed Deposit Account" />
-                                <p:ajax event="change" update="fixedDepositDurationPanel" listener="#{internalOpenAccountManagedBean.show()}"/>
-                            </p:selectOneMenu>
-                        </p:column>
-                        <p:column>
-                            <p:message for="bankAccountType" />
-                        </p:column>
-                    </p:row>
+                    <p:outputLabel for="bankAccountType" style="font-weight: bold" value="Account Type: " />
+
+                    <p:selectOneMenu id="bankAccountType" value="#{internalOpenAccountManagedBean.bankAccountType}" 
+                                     required="true" requiredMessage="Required Field">
+                        <f:selectItem itemLabel="Please Select" itemValue="" noSelectionOption="true"/>
+                        <f:selectItem itemLabel="Monthly Savings Account" itemValue="Monthly Savings Account" />
+                        <f:selectItem itemLabel="Bonus Savings Account" itemValue="Bonus Savings Account" />
+                        <f:selectItem itemLabel="Basic Savings Account" itemValue="Basic Savings Account" />
+                        <f:selectItem itemLabel="Fixed Deposit Account" itemValue="Fixed Deposit Account" />
+                        <p:ajax event="change" update="fixedDepositDurationPanel" listener="#{internalOpenAccountManagedBean.show()}"/>
+                    </p:selectOneMenu>
+
+                    <p:message for="bankAccountType" />
 
                     <p:panel style="border: none;" id="fixedDepositDurationPanel" visible="#{internalOpenAccountManagedBean.visible}">
                         <p:outputLabel for="fixedDepositPeriod" style="font-weight: bold" value="Deposit Period: " />
@@ -71,7 +65,7 @@
                         <p:selectOneMenu id="fixedDepositPeriod" value="#{internalOpenAccountManagedBean.bankAccountDepositPeriod}" 
                                          style="width:125px" required="#{internalOpenAccountManagedBean.fixedDepositRender}" 
                                          requiredMessage="Required Field">
-                            <f:selectItem itemLabel="Please Select" itemValue=""/>
+                            <f:selectItem itemLabel="Please Select" itemValue="" />
                             <f:selectItem itemLabel="1 Month" itemValue="1 Month" />
                             <f:selectItem itemLabel="2 Month" itemValue="2 Month" />
                             <f:selectItem itemLabel="3 Month" itemValue="3 Month" />

@@ -8,6 +8,7 @@ import ejb.payment.session.OneTimeGIROSessionBeanLocal;
 import ejb.payment.session.RecurrentGIROSessionBeanLocal;
 import ejb.payment.entity.BillingOrganization;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -15,14 +16,14 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
-import javax.enterprise.context.RequestScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 
 @Named(value = "addNonStandingGIROManagedBean")
-@RequestScoped
+@ViewScoped
 
-public class AddNonStandingGIROManagedBean {
+public class AddNonStandingGIROManagedBean implements Serializable {
 
     @EJB
     private RecurrentGIROSessionBeanLocal recurrentGIROSessionBeanLocal;
@@ -83,10 +84,10 @@ public class AddNonStandingGIROManagedBean {
     public void show() {
         if (transferMethod.equals("One Time")) {
             visible = false;
-            transferMethodRender = true;
+            transferMethodRender = false;
         } else {
             visible = true;
-            transferMethodRender = false;
+            transferMethodRender = true;
         }
     }
 
