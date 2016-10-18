@@ -865,7 +865,7 @@ public class AccountManagedBean implements Serializable {
                             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Eligibility of openning account is 16 years old and above.", "Failed!"));
                         } else {
 
-                            bankAccountBalance = "0";
+                            bankAccountBalance = "0.0";
                             transferDailyLimit = "3000.0";
                             transferBalance = "3000.0";
                             bankAccountMinSaving = "";
@@ -949,7 +949,7 @@ public class AccountManagedBean implements Serializable {
                             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Eligibility of openning account is 16 years old and above.", "Failed!"));
                         } else {
 
-                            bankAccountBalance = "0";
+                            bankAccountBalance = "0.0";
                             transferDailyLimit = "3000.0";
                             transferBalance = "3000.0";
                             bankAccountMinSaving = "";
@@ -1110,7 +1110,7 @@ public class AccountManagedBean implements Serializable {
         //Bank Account Details
         bankAccountNum = bankAccountSessionLocal.generateBankAccount();
         bankAccountType = "Bonus Savings Account";
-        bankAccountBalance = "10000";
+        bankAccountBalance = "10000.0";
         transferDailyLimit = "3000.0";
         transferBalance = "3000.0";
         bankAccountMinSaving = "";
