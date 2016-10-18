@@ -749,7 +749,7 @@
                             <p:outputLabel for="customerCompanyPostal" style="font-weight: bold" value="Company Postal Code: "/>
                             <p:inputText id="customerCompanyPostal" value="#{publicHDBLoanApplication.customerCompanyPostal}"
                                          required="#{publicHDBLoanApplication.employmentPanelVisible}" requiredMessage="Required Field" validatorMessage="Invalid postal code">
-                                <f:validateDoubleRange minimum="100000" maximum="999999" />
+                                <!--<f:validateDoubleRange minimum="100000" maximum="999999" />-->
                             </p:inputText>
                             <p:message for="customerCompanyPostal"/>
 
