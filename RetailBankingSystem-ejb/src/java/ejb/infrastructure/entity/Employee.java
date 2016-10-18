@@ -41,6 +41,7 @@ public class Employee implements Serializable {
     private String employeeEmail;
     private String employeeStatus;
     private String logInStatus;
+    private String employeeGender;
     
     @ManyToMany(cascade = {CascadeType.PERSIST})
     @JoinTable(name = "EMPLOYEE_ROLE")
@@ -155,6 +156,14 @@ public class Employee implements Serializable {
 
     public void setLogInStatus(String logInStatus) {
         this.logInStatus = logInStatus;
+    }
+
+    public String getEmployeeGender() {
+        return employeeGender;
+    }
+
+    public void setEmployeeGender(String employeeGender) {
+        this.employeeGender = employeeGender;
     }
     
     @Override

@@ -63,6 +63,9 @@ public class EmployeeEmailSessionBean implements EmployeeEmailSessionBeanLocal {
         try {
             System.out.println("***SendEmailSessionBean: send resetPwd to " + employeeEmail);
             Employee findEmployee = findEmployeeByNRIC(employeeNRIC);
+            if (!employeeEmail.equals(findEmployee.getEmployeeEmail())) {
+                return "emailInvalid";
+            }
             findEmployee.setLogInStatus("true");
             String emailCase = "resetPwd";
             sendPwdEmail(findEmployee, emailCase, employeeEmail);
@@ -122,7 +125,7 @@ public class EmployeeEmailSessionBean implements EmployeeEmailSessionBeanLocal {
             String emailFromAddress = "Han Fengwei Test Send<merlionbankes05@gmail.com>";
             String toEmailAddress = "Han Fengwei Test Receive<" + employeeEmail + ">";
             String mailer = "JavaMailer";
-            String emailText = "Dear "+employee.getEmployeeName()+",\n";
+            String emailText = "Dear " + employee.getEmployeeName() + ",\n";
             if (emailCase.equals("initialPwd")) {
                 emailText += "Your user account has been successfully created.\n";
                 emailText += "Your account number is: " + employee.getEmployeeAccountNum() + "\n";

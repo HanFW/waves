@@ -8,43 +8,20 @@
                 template="/WEB-INF/internalSystemTemplate.xhtml">
 
     <ui:define name="content">
-    <h:body>
         <h:form>
-            <p:menubar>
-                <p:submenu label="Home">
-                    <p:menuitem value="Home" url="/web/internalSystem/infrastructure/employeeCounterTellerMainPage.xhtml"/>
-                </p:submenu>
 
-                <p:submenu label="Log Out">
-                    <p:menuitem value="Logout" actionListener="#{employeeLoginManagedBean.doLogOut}" />
-                </p:submenu>
-            </p:menubar>
+            <div align="center">
+
+                <h:outputText value="You have logged in as: Counter Teller "/>
+                <br/>
+                <h1>
+                    Customer Enquiry Has Been Recorded Successfully!
+                </h1>
+                
+            </div>
+
         </h:form>
 
-<h:form>
-                <div class="ui-g ui-fluid">
-                    <div class="ui-g-12 ui-lg-12">
-                        <div class="card card-w-title"> 
-                            <div align="center">
-                                <h:outputText value="Welcome " />
-                                <h:outputText value="#{employeeAccountManagedBean.userName}!"/>
-                                <br/>
-                                <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
-                                <br/>
-                                <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
-                                <br/>
-                                <h:outputText value="You have logged in as: Counter Teller "/>
-                                <br/>
-        <h1>
-            Customer Enquiry Has Been Recorded Successfully!
-        </h1>
-                                 <p:button value="Back" style="width:40%" outcome="/web/internalSystem/enquiry/counterTellerAddFollowUp.xhtml"  />
-                                  </div>
-                        </div>
-                    </div>
-                </div>
-            </h:form>
-    </h:body>
     </ui:define>
 </ui:composition>
 

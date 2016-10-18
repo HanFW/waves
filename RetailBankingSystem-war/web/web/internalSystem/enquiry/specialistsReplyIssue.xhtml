@@ -8,56 +8,31 @@
                 template="/WEB-INF/internalSystemTemplate.xhtml">
 
     <ui:define name="content">
-        <h:body>
-            <h:form>
-                <p:menubar>
-                    <p:submenu label="Home">
-                        <p:menuitem value="Home" url="/web/internalSystem/infrastructure/employeeMainPage.xhtml"/>
-                    </p:submenu>
-
-                    <p:submenu label="Log Out">
-                        <p:menuitem value="Logout" actionListener="#{employeeLoginManagedBean.doLogOut}" />
-                    </p:submenu>
-                </p:menubar>
-                <div class="ui-g ui-fluid">
-                    <div class="ui-g-12 ui-lg-12">
-                        <div class="card card-w-title"> 
-                            <div align="center">
-                                <h:outputText value="Welcome " />
-                                <h:outputText value="#{employeeAccountManagedBean.userName}!"/>
-                                <br/>
-                                <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
-                                <br/>
-                                <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
-                                <br/>
-
-                                <p:panel header="Issue ID: #{specialistReplyIssueManagedBean.issueId}" >
-                                    <p:row>
-                                        <p:column colspan="2">
-                                            <h:outputText value="Detail:   " style="font-weight: bold" />
-                                        </p:column>
-                                        <p:column>
-                                            <h:outputText value="#{specialistReplyIssueManagedBean.issueDetailById}" />
-                                        </p:column>
-                                    </p:row>
-                                    <p:panel header="Reply Issue:">
-                                        <p:row>
-                                            <p:inputTextarea  value="#{specialistReplyIssueManagedBean.issueSolution}"  rows="5" cols="30" autoResize="false" />
-                                            <h:outputText value="&lt;br/&gt;" escape="false" />
-                                        </p:row>
-                                    </p:panel>
-                                    <p:row>
-                                        <p:column colspan="2">
-                                            <p:commandButton value="Send" actionListener="#{specialistReplyIssueManagedBean.departmentReplyIssue}" ajax="false"/>
-                                        </p:column>
-                                    </p:row>
-                                </p:panel>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </h:form>
-        </h:body>
+        <h:form>
+            <div align="center">
+                <p:panel header="Issue ID: #{specialistReplyIssueManagedBean.issueId}" >
+                    <p:row>
+                        <p:column colspan="2">
+                            <h:outputText value="Detail:   " style="font-weight: bold" />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{specialistReplyIssueManagedBean.issueDetailById}" />
+                        </p:column>
+                    </p:row>
+                    <p:panel header="Reply Issue:">
+                        <p:row>
+                            <p:inputTextarea  value="#{specialistReplyIssueManagedBean.issueSolution}" required="true" requiredMessage="Please do not leave reply as a blank message" rows="5" cols="30" autoResize="false" />
+                            <h:outputText value="&lt;br/&gt;" escape="false" />
+                        </p:row>
+                    </p:panel>
+                    <p:row>
+                        <p:column colspan="2">
+                            <p:commandButton value="Send" actionListener="#{specialistReplyIssueManagedBean.departmentReplyIssue}" ajax="false"/>
+                        </p:column>
+                    </p:row>
+                </p:panel>
+            </div>
+        </h:form>
     </ui:define>
 </ui:composition>
 

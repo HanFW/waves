@@ -23,14 +23,13 @@
             <div class="card login-panel ui-fluid">
                 <div class="ui-g">
                     <div class="ui-g-12">
-                        <p:graphicImage name="images/login/logo.png" library="ultima-layout" style="width:100px;height:100px" />
+                        <p:graphicImage name="images/login/logo.png" library="ultima-layout" style="width:80px;height:80px" />
                         <br/>
-                        <label style="font-family: Eurostile;font-size:16px; color:#022A5A">Welcome to MB Internal System!</label>
+                        <label style="font-family: Eurostile;font-size:26px; color:#022A5A">Welcome Staff</label>
                     </div>
                     <p:messages/>
 
                     <h:panelGrid columns="2" id="matchGrid" cellpadding="5" styleClass="ui-panelgrid-blank form-group">
-
 
                         <p:outputLabel for="employeeAccountNum" value="Account number: "/>
 
@@ -40,21 +39,16 @@
 
                         <p:inputText type="password" id= "employeePassword" value="#{employeeLoginManagedBean.employeePassword}" required="true" requiredMessage="Please enter your password."/>
 
-
-                        <p:commandButton value="Login" type="submit" actionListener="#{employeeLoginManagedBean.doLogin}" update="@form"/>
-
-
-
                         <p:link value="Forget Pasword" outcome="/web/internalSystem/infrastructure/employeeForgetPassword"/>
 
-
+                        <p:commandButton value="Login" type="submit" actionListener="#{employeeLoginManagedBean.doLogin}" update="@form"/>
                     </h:panelGrid>
 
                 </div>
             </div>
 
             <h:outputStylesheet name="css/ripple.css" library="ultima-layout" />
-            <h:outputStylesheet name="css/layout-#{guestPreferences.theme}.css" library="ultima-layout" />
+            <h:outputStylesheet name="css/layout-#{employeePreferences.theme}.css" library="ultima-layout" />
 
 
         </h:form>

@@ -62,18 +62,18 @@ public class EmployeeTransferManagedBean {
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
         CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum.toUpperCase());
-        
+
         if (customerBasic.getCustomerBasicId() == null) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Customer does not exist.", "Failed!"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Customer does not exist.", "Failed!"));
         } else {
             String name = customerBasic.getCustomerName();
             String customerDateOfBirthString = customerBasic.getCustomerDateOfBirth();
             String dateOfBirth = bankAccountSessionBeanLocal.changeDateFormat(customerDateOfBirth);
 
             if (!name.toUpperCase().equals(customerName.toUpperCase())) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Customer Name is Wrong.", "Failed!"));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Customer Name is Wrong.", "Failed!"));
             } else if (!dateOfBirth.equals(customerDateOfBirthString)) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Customer Date of Birth is Wrong.", "Failed!"));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Customer Date of Birth is Wrong.", "Failed!"));
             } else {
                 ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/deposit/employeeTransferDone.xhtml?faces-redirect=true");
             }

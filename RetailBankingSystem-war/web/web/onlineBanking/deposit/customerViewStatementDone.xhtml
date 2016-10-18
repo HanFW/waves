@@ -9,51 +9,39 @@
                 xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
 
     <ui:define name="content">
-
         <h:form>
-            <div class="ui-g">
-                <div class="ui-g-12 ui-lg-12">
-                    <div class="card card-w-title">
+            <p:panel>
+                <p:outputLabel value="Welcome "/>
+                <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
+            </p:panel>
+            <p:dataTable var="statement" reflow="true" paginator="true" rows="10"
+                         value="#{viewStatementManagedBean.statement}"
+                         emptyMessage="No Statement">
+                <f:facet name="header">
+                    View My eStatement
+                </f:facet>
+                <p:column headerText="Date"> 
+                    <h:outputText value="#{statement.statementDate}" />
+                </p:column>
 
-                        <p:panel>
-                            <p:outputLabel value="Welcome "/>
-                            <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
-                        </p:panel>
+                <p:column headerText="Statemenet Type(s)"> 
+                    <h:outputText value="#{statement.statementType}" />
+                </p:column>
 
-                        <p:dataTable var="statement" reflow="true" paginator="true" rows="10"
-                                     value="#{viewStatementManagedBean.statement}"
-                                     emptyMessage="No Statement">
-                            <f:facet name="header">
-                                View My eStatement
-                            </f:facet>
-                            <p:column headerText="Date"> 
-                                <h:outputText value="#{statement.statementDate}" />
-                            </p:column>
+                <p:column headerText="Account Details"> 
+                    <h:outputText value="#{statement.accountDetails}" />
+                </p:column>
 
-                            <p:column headerText="Statemenet Type(s)"> 
-                                <h:outputText value="#{statement.statementType}" />
-                            </p:column>
-
-                            <p:column headerText="Account Details"> 
-                                <h:outputText value="#{statement.accountDetails}" />
-                            </p:column>
-
-                            <p:column headerText="View"> 
-                                <center>
-                                    <p:commandButton ajax="false" process="@this" action="#{viewStatementDoneManagedBean.viewStatement}" icon="ui-icon-document">
-                                        <f:setPropertyActionListener value="#{statement.statementId}" target="#{viewStatementDoneManagedBean.statementId}" />
-                                    </p:commandButton>
-                                </center>
-                            </p:column>
-
-                        </p:dataTable>
-                    </div>
-                </div>
-            </div>
-
+                <p:column headerText="View"> 
+                    <center>
+                        <p:commandButton ajax="false" process="@this" action="#{viewStatementDoneManagedBean.viewStatement}" icon="ui-icon-document">
+                            <f:setPropertyActionListener value="#{statement.statementId}" target="#{viewStatementDoneManagedBean.statementId}" />
+                        </p:commandButton>
+                    </center>
+                </p:column>
+            </p:dataTable>       
         </h:form>
         <ezcomp:CCTimeout/>
-
     </ui:define>
 </ui:composition>
 

@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/internalSystemTemplate.xhtml">
+
+    <ui:define name="content">
+        <h:form id="formMain">
+            <div align="center">
+                <h:outputText value="You have logged in as: Counter Teller"/>
+                <br/>
+                <p:panel id="panel" header="Save Account"> 
+                    <p:messages />
+
+                    <h:panelGrid columns="1" cellpadding="5" styleClass="ui-panelgrid-blank form-group">     
+                        <h:outputLabel value="We have received customer open account application." 
+                                       style="font-weight:bold;font-size: 18px"/>
+
+                        <h:outputLabel value="We will process customer application and send a confirmation emial to his/her within 2-5 working days." 
+                                       style="font-weight:bold;font-size: 18px"/>
+                    </h:panelGrid>
+                </p:panel>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

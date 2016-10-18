@@ -1,7 +1,7 @@
 package ejb.customer.entity;
 
 import ejb.deposit.entity.BankAccount;
-import ejb.deposit.entity.MessageBox;
+import ejb.infrastructure.entity.MessageBox;
 import ejb.deposit.entity.Payee;
 import ejb.payment.entity.FastPayee;
 import ejb.payment.entity.GIRO;
@@ -46,6 +46,7 @@ public class CustomerBasic implements Serializable {
     private String customerAge;
     private String customerOTPSecret;
     private String customerOnlineBankingAccountLocked;
+    private String newCustomer;
 
     private byte[] customerSignature;
 
@@ -321,7 +322,15 @@ public class CustomerBasic implements Serializable {
     public void setGiro(List<GIRO> giro) {
         this.giro = giro;
     }
+    
+    public String getNewCustomer() {
+        return newCustomer;
+    }
 
+    public void setNewCustomer(String newCustomer) {
+        this.newCustomer = newCustomer;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;

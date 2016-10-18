@@ -40,75 +40,85 @@ public class EmployeeAdminSessionBean implements EmployeeAdminSessionBeanLocal {
 
     private final static String[] departments;
     private final static String[] positions;
-    private final static String[] roles;
-
-    private final static String[] permissionList1;
-//    private final static String[] permissionList2;
-//    private final static String[] permissionList3;
+    private final static String[] positions1;
+    private final static String[] positions2;
+    private final static String[] genders;
+    private final static String[] roles1;
+    private final static String[] roles2;
+    private final static String[] roles3;
+    private final static String[] roles4;
+    private final static String[] roles5;
+    private final static String[] roles6;
 
     static {
-        departments = new String[5];
-        departments[0] = "CEO";
+        departments = new String[6];
+        departments[0] = "Board of Directors";
         departments[1] = "Card Department";
         departments[2] = "Loan Department";
         departments[3] = "Sales Department";
         departments[4] = "Operation Department";
+        departments[5] = "Deposit Department";
 
-        positions = new String[8];
-        positions[0] = "CEO";
-        positions[1] = "Manager";
-        positions[2] = "Officer";
-        positions[3] = "Mortgage Appraiser";
-        positions[4] = "Underwriter";
-        positions[5] = "Relationship Manager";
-        positions[6] = "Counter Teller";
-        positions[7] = "Call Center Staff";
+        positions = new String[9];
+        positions[0] = "Staff";
+        positions[1] = "Officer";
+        positions[2] = "Manager";
+        positions[3] = "Chief Executive Officer";
+        positions[4] = "Chief Operation Officer";
+        positions[5] = "Chief Financial Officer";
+        positions[6] = "Chief Marketing Officer";
+        positions[7] = "Chief Information Officer";
+        positions[8] = "Chief Technology Officer";
 
-        roles = new String[15];
-        roles[0] = "CEO";
-        roles[1] = "Loan Officer";
-        roles[2] = "Card Department Manager";
-        roles[3] = "Mortgage Appraiser";
-        roles[4] = "Underwriter";
-        roles[5] = "Relationship Manager";
-        roles[6] = "Sales Department Manager";
-        roles[7] = "Counter Teller";
-        roles[8] = "Call Center Staff";
-        roles[9] = "Card Specialist";
-        roles[10] = "Loan Specialist";
-        roles[11] = "Deposit Specialist";
-        roles[12] = "Operation Specialist";
-        roles[13] = "Wealth Management Specialist";
-        roles[14] = "Enquiry Manager";
+        positions1 = new String[3];
+        positions1[0] = "Staff";
+        positions1[1] = "Officer";
+        positions1[2] = "Manager";
 
-        permissionList1 = new String[27];
-        permissionList1[0] = "View Customer Accounts Information";
-        permissionList1[1] = "Create Enquiry Case";
-        permissionList1[2] = "Add Follow Up Questions";
-        permissionList1[3] = "Search Enquiry";
-        permissionList1[4] = "Edit Customer Basic Information";
-        permissionList1[5] = "View Enquiry";
-        permissionList1[6] = "Add A New Account";
-        permissionList1[7] = "Delete An Account";
-        permissionList1[8] = "View Transaction History";
-        permissionList1[9] = "View Bank Statement";
-        permissionList1[10] = "Fund-transfer";
-        permissionList1[11] = "Cash Deposit";
-        permissionList1[12] = "Cash Withdraw";
-        permissionList1[13] = "Forward Enquiry To Specialist";
-        permissionList1[14] = "Edit Customer Advanced Information";
-        permissionList1[15] = "View Customer Advanced Information";
-        permissionList1[16] = "User Account Management";
-        permissionList1[17] = "Manage Permissions of Roles";
-        permissionList1[18] = "View Deposit Department Issue";
-        permissionList1[19] = "View Card Department Issue";
-        permissionList1[20] = "View Loan Department Issue";
-        permissionList1[21] = "View Operation Department Issue";
-        permissionList1[22] = "View Wealth Management Issue";
-        permissionList1[23] = "Change Deposit Account PassWord";
-        permissionList1[24] = "Retrieve Deposit Account Password";
-        permissionList1[25] = "Activate Fixed Deposit";
-        permissionList1[26] = "Change Daily Transfer Limit";
+        positions2 = new String[6];
+        positions2[0] = "Chief Executive Officer";
+        positions2[1] = "Chief Operation Officer";
+        positions2[2] = "Chief Financial Officer";
+        positions2[3] = "Chief Marketing Officer";
+        positions2[4] = "Chief Information Officer";
+        positions2[5] = "Chief Technology Officer";
+
+        genders = new String[2];
+        genders[0] = "Female";
+        genders[1] = "Male";
+
+        roles1 = new String[1];
+        roles1[0] = "Director";
+
+        roles2 = new String[4];
+        roles2[0] = "Credit Card Manager";
+        roles2[1] = "Credit Card Verifier";
+        roles2[2] = "Card Department Manager";
+        roles2[3] = "Card Specialist";
+
+        roles3 = new String[5];
+        roles3[0] = "Loan Officer";
+        roles3[1] = "Mortgage Appraiser";
+        roles3[2] = "Underwriter";
+        roles3[3] = "Loan Specialist";
+        roles3[4] = "Loan Department Manager";
+
+        roles4 = new String[3];
+        roles4[0] = "Relationship Manager";
+        roles4[1] = "Sales Department Manager";
+        roles4[2] = "Wealth Management Specialist";
+
+        roles5 = new String[5];
+        roles5[0] = "Counter Teller";
+        roles5[1] = "Customer Service Agent";
+        roles5[2] = "Enquiry Processor";
+        roles5[3] = "Operation Specialist";
+        roles5[4] = "Operation Department Manager";
+
+        roles6 = new String[3];
+        roles6[0] = "Deposit Department Manager";
+        roles6[1] = "Deposit Account Verifier";
+        roles6[2] = "Deposit Specialist";
     }
 
     @Override
@@ -127,7 +137,7 @@ public class EmployeeAdminSessionBean implements EmployeeAdminSessionBeanLocal {
     }
 
     @Override
-    public String createEmployeeAccount(String employeeName, String employeeDepartment,
+    public String createEmployeeAccount(String employeeName, String employeeGender, String employeeDepartment,
             String employeePosition, String employeeNRIC, String employeeMobileNum, String employeeEmail, Set<String> selectedRoles) {
 
         String account = null;
@@ -146,6 +156,7 @@ public class EmployeeAdminSessionBean implements EmployeeAdminSessionBeanLocal {
             Employee employee = new Employee();
 
             employee.setEmployeeName(employeeName);
+            employee.setEmployeeGender(employeeGender);
             employee.setEmployeeDepartment(employeeDepartment);
             employee.setEmployeePosition(employeePosition);
             employee.setEmployeeNRIC(employeeNRIC);
@@ -422,15 +433,37 @@ public class EmployeeAdminSessionBean implements EmployeeAdminSessionBeanLocal {
     }
 
     @Override
-    public List<String> getRoles() {
-        System.out.println("*** adminSessionBean: Display all roles");
-        return Arrays.asList(roles);
+    public List<String> getEmployeeGenders() {
+        System.out.println("*** adminSessionBean: Display all employee genders");
+        return Arrays.asList(genders);
     }
 
     @Override
-    public String[] getPermissionList1() {
-        System.out.println("*** adminSessionBean: Display all permissions" + permissionList1);
-        return permissionList1;
+    public List<String> getPositionsByDepartment(String department) {
+        if (department.equals("Board of Directors")) {
+            return Arrays.asList(positions2);
+        } else {
+            return Arrays.asList(positions1);
+        }
+    }
+
+    @Override
+    public List<String> getRolesByDepartment(String department) {
+        switch (department) {
+            case "Board of Directors":
+                return Arrays.asList(roles1);
+            case "Card Department":
+                return Arrays.asList(roles2);
+            case "Loan Department":
+                return Arrays.asList(roles3);
+            case "Sales Department":
+                return Arrays.asList(roles4);
+            case "Deposit Department":
+                return Arrays.asList(roles6);
+            default:
+                return Arrays.asList(roles5);
+        }
+
     }
 
     //edit user account info
@@ -489,14 +522,7 @@ public class EmployeeAdminSessionBean implements EmployeeAdminSessionBeanLocal {
 
     //Generate initial account number for employee account
     private String generateAccountNumber(String employeeNRIC) {
-//        String hash = employeeNRIC;
-//        System.out.println(hash.concat(employeeName.substring(0, 3)));
-//        try {
-//            return md5Hashing(hash);
-//        } catch (NoSuchAlgorithmException ex) {
-//            Logger.getLogger(EmployeeAdminSessionBean.class.getName()).log(Level.SEVERE, null, ex);
-//            return Integer.toString(hash.hashCode());
-//        }
+
         System.out.println("*** employeeAdminSessionBean: employeeNRIC" + employeeNRIC);
         Query query = em.createQuery("SELECT e FROM Employee e WHERE e.employeeNRIC= :NRIC");
         query.setParameter("NRIC", employeeNRIC);

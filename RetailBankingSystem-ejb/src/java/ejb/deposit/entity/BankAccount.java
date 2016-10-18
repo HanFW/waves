@@ -30,7 +30,6 @@ public class BankAccount implements Serializable {
     @Column(unique = true)
     private String bankAccountNum;
 
-    private String bankAccountPwd;
     private String bankAccountType;
     private String bankAccountBalance;
     private String transferDailyLimit;
@@ -77,14 +76,6 @@ public class BankAccount implements Serializable {
 
     public void setBankAccountNum(String bankAccountNum) {
         this.bankAccountNum = bankAccountNum;
-    }
-
-    public String getBankAccountPwd() {
-        return bankAccountPwd;
-    }
-
-        public void setBankAccountPwd(String bankAccountPwd) {
-        this.bankAccountPwd = bankAccountPwd;
     }
 
     public List<AccTransaction> getAccTransaction() {

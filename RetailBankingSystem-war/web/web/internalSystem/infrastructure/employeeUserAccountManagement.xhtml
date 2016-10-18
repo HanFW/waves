@@ -8,144 +8,125 @@
                 template="/WEB-INF/internalSystemTemplate.xhtml">
 
     <ui:define name="content">
-        <h:body>
-            <h:form>
-                <p:menubar>
-                    <p:submenu label="Home">
-                        <p:menuitem value="Home" action="/web/internalSystem/infrastructure/employeeMainPage.xhtml?faces-redirect=true"/>
-                    </p:submenu>
+        <h:form>
+            <div align="center">
+                <h:outputText value="You have logged in as System Admin"/>
+                <br/>    
+                <p:tabView id='tabview' cache="false" dynamic='true' >
+                    <p:tab title="Current Employee" id='currentTab'>
 
-                    <p:submenu label="Task">
-                        <p:menuitem value="View Logging" url="/web/internalSystem/infrastructure/employeeViewLogging.xhtml?faces-redirect=true"/>
-                        <p:menuitem value="Assign Permisison to role" url="/web/internalSystem/infrastructure/employeeSystemAdminAssignPermission.xhtml?faces-redirect=true"/>
-                    </p:submenu>
+                        <p:growl id="msgs" showDetail="true"/>
 
-                    <p:submenu label="Manage My Account">
-                        <p:menuitem value="Change Password" actionListener="#{employeeLoginManagedBean.changePassword}" />
-                    </p:submenu>
+                        <p:dataTable var="employee" id="userAccountTable" editable="true" value="#{employeeAccountManagedBean.employees}" reflow="true" widgetVar="userAccounts" filteredValue="#{employeeAccountManagedBean.filteredEmployees}">
+                            <f:facet name="header">
+                                Current Employee
+                            </f:facet>
 
-                    <p:submenu label="Log Out">
-                        <p:menuitem value="Logout" actionListener="#{employeeLoginManagedBean.doLogOut}" />
-                    </p:submenu>
+                            <p:column headerText="Name">
+                                <h:outputText value="#{employee.employeeName}" />
+                            </p:column>
 
-                </p:menubar>
-            </h:form>
+                            <p:column filterBy="#{employee.employeeGender}" filterMatchMode="in">
+                                <f:facet name="filter">
+                                    <p:selectCheckboxMenu label="Gender" onchange="PF('userAccounts').filter()" scrollHeight="150">
+                                        <f:selectItems value="#{employeeAccountManagedBean.genders}" />
+                                    </p:selectCheckboxMenu>
+                                </f:facet>
+                                <h:outputText value="#{employee.employeeGender}" />
+                            </p:column>
 
-            <h:form>
-                <div class="ui-g ui-fluid">
-                    <div class="ui-g-12 ui-lg-12">
-                        <div class="card card-w-title"> 
-                            <div align="center">
-                                <h:outputText value="Welcome " />
-                                <h:outputText value="#{employeeAccountManagedBean.userName}!"/>
-                                <br/>
-                                <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
-                                <br/>
-                                <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
-                                <br/>
-                                <h:outputText value="You have logged in as System Admin"/>
-                                <br/>
+                            <p:column filterBy="#{employee.employeeDepartment}" filterMatchMode="in">
+                                <f:facet name="filter">
+                                    <p:selectCheckboxMenu label="Department" onchange="PF('userAccounts').filter()" scrollHeight="150">
+                                        <f:selectItems value="#{employeeAccountManagedBean.departments}" />
+                                    </p:selectCheckboxMenu>
+                                </f:facet>
+                                <h:outputText value="#{employee.employeeDepartment}" />
+                            </p:column>
 
-                                <p:tabView id='tabview' cache="false" dynamic='true' >
-                                    <p:tab title="Current Employee" id='currentTab'>
+                            <p:column filterBy="#{employee.employeePosition}" filterMatchMode="in">
+                                <f:facet name="filter">
+                                    <p:selectCheckboxMenu label="Position" onchange="PF('userAccounts').filter()" scrollHeight="150">
+                                        <f:selectItems value="#{employeeAccountManagedBean.positions}" />
+                                    </p:selectCheckboxMenu>
+                                </f:facet>
+                                <h:outputText value="#{employee.employeePosition}" />
+                            </p:column>
 
-                                        <p:growl id="msgs" showDetail="true"/>
+                            <p:column headerText="Mobile Number">
+                                <h:outputText value="#{employee.employeeMobileNum}" />
+                            </p:column>
 
-                                        <p:dataTable var="employee" id="userAccountTable" editable="true" value="#{employeeAccountManagedBean.employees}" style="margin-bottom:20px" widgetVar="userAccounts" filteredValue="#{employeeAccountManagedBean.filteredEmployees}">
-                                            <f:facet name="header">
-                                                Current Employee
-                                            </f:facet>
+                            <p:column headerText="Email">
+                                <h:outputText value="#{employee.employeeEmail}" />
+                            </p:column>
 
-                                            <p:column headerText="Name">
-                                                <h:outputText value="#{employee.employeeName}" />
-                                            </p:column>                                           
+                            <p:column>
+                                <div align="center">
+                                    <p:commandButton action="/web/internalSystem/infrastructure/employeeEditAccountInfo.xhtml?faces-redirect=true" icon="ui-icon-pencil">
+                                        <f:setPropertyActionListener value="#{employee.employeeId}" target="#{systemAdminEditUserAccountManagedBean.employeeId}"/>
+                                    </p:commandButton>
+                                </div>
+                            </p:column>  
 
-                                            <p:column filterBy="#{employee.employeeDepartment}" style="width:15%" filterMatchMode="in">
-                                                <f:facet name="filter">
-                                                    <p:selectCheckboxMenu label="Department" onchange="PF('userAccounts').filter()" panelStyle="width:125px" scrollHeight="150">
-                                                        <f:selectItems value="#{employeeAccountManagedBean.departments}" />
-                                                    </p:selectCheckboxMenu>
-                                                </f:facet>
-                                                <h:outputText value="#{employee.employeeDepartment}" />
-                                            </p:column>
+                            <p:column>
+                                <div align="center">
+                                    <!--                                <p:growl showDetail="true" />-->
+                                    <p:commandButton id="delete" icon="ui-icon-trash" action="#{employeeDeleteUserAccountManagedBean.deleteAccount(employee)}">
+                                    </p:commandButton>
+                                </div>
+                            </p:column>
+                        </p:dataTable>
 
-                                            <p:column filterBy="#{employee.employeePosition}" style="width:15%" filterMatchMode="in">
-                                                <f:facet name="filter">
-                                                    <p:selectCheckboxMenu label="Position" onchange="PF('userAccounts').filter()" panelStyle="width:125px" scrollHeight="150">
-                                                        <f:selectItems value="#{employeeAccountManagedBean.positions}" />
-                                                    </p:selectCheckboxMenu>
-                                                </f:facet>
-                                                <h:outputText value="#{employee.employeePosition}" />
-                                            </p:column>
+                        <br/>
+                        <p:row>
+                            <p:button outcome="/web/internalSystem/infrastructure/employeeCreateAccount"  style="width:40%" value="Add">
+                            </p:button>
+                        </p:row>
+                    </p:tab>
 
-                                            <p:column headerText="Mobile Number">
-                                                <h:outputText value="#{employee.employeeMobileNum}" />
-                                            </p:column>
-
-                                            <p:column headerText="Email" style="width: 20%">
-                                                <h:outputText value="#{employee.employeeEmail}" />
-                                            </p:column>
-
-                                            <p:column style="width: 10%">
-                                                <p:commandButton value="Edit" action="/web/internalSystem/infrastructure/employeeEditAccountInfo.xhtml?faces-redirect=true" icon="ui-icon-pencil">
-                                                    <f:setPropertyActionListener value="#{employee.employeeId}" target="#{systemAdminEditUserAccountManagedBean.employeeId}"/>
-                                                </p:commandButton>
-                                            </p:column>  
-
-                                            <p:column style="width: 10%">
-                                                <p:growl showDetail="true" />
-                                                <p:commandButton id="delete" value="Archive" icon="ui-icon ui-icon-trash" action="#{employeeDeleteUserAccountManagedBean.deleteAccount(employee)}">
-                                                </p:commandButton>
-                                            </p:column>
-                                        </p:dataTable>
-
-                                        <h:form>
-                                            <p:row>
-                                                <p:button outcome="/web/internalSystem/infrastructure/employeeCreateAccount" style="width:50%" value="Add">
-                                                </p:button>
-                                            </p:row>
-                                        </h:form>
-
-                                    </p:tab>
-                                    <p:tab title="Archived Employee" id='archiveTab'>
-                                        <p:dataTable var="employee" id="archivedUserAccountTable" editable="true" value="#{employeeDisplayArchivedEmployeesManagedBean.archivedEmployees}" style="margin-bottom:20px" widgetVar="archivedUserAccounts">
-                                            <f:facet name="header">
-                                                Archived Employee
-                                            </f:facet>
-                                            <p:column headerText="Name" style="width: 20%">
-                                                <h:outputText value="#{employee.employeeName}" />
-                                            </p:column>
-                                            <p:column filterBy="#{employee.employeeDepartment}" style="width:15%" filterMatchMode="in">
-                                                <f:facet name="filter">
-                                                    <p:selectCheckboxMenu label="Department" onchange="PF('archivedUserAccounts').filter()" panelStyle="width:125px" scrollHeight="150">
-                                                        <f:selectItems value="#{employeeAccountManagedBean.departments}" />
-                                                    </p:selectCheckboxMenu>
-                                                </f:facet>
-                                                <h:outputText value="#{employee.employeeDepartment}" />
-                                            </p:column>
-                                            <p:column filterBy="#{employee.employeePosition}" style="width:15%" filterMatchMode="in">
-                                                <f:facet name="filter">
-                                                    <p:selectCheckboxMenu label="Position" onchange="PF('userAccounts').filter()" panelStyle="width:125px" scrollHeight="150">
-                                                        <f:selectItems value="#{employeeAccountManagedBean.positions}" />
-                                                    </p:selectCheckboxMenu>
-                                                </f:facet>
-                                                <h:outputText value="#{employee.employeePosition}" />
-                                            </p:column>
-                                            <p:column headerText="Mobile Number">
-                                                <h:outputText value="#{employee.employeeMobileNum}" />
-                                            </p:column>
-                                            <p:column headerText="Email">
-                                                <h:outputText value="#{employee.employeeEmail}" />
-                                            </p:column>
-                                        </p:dataTable>
-                                    </p:tab>
-                                </p:tabView>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </h:form>
-
-        </h:body>
+                    <p:tab title="Archived Employee" id='archiveTab'>
+                        <p:dataTable var="employee" id="archivedUserAccountTable" editable="true" value="#{employeeDisplayArchivedEmployeesManagedBean.archivedEmployees}" reflow="true" widgetVar="archivedUserAccounts">
+                            <f:facet name="header">
+                                Archived Employee
+                            </f:facet>
+                            <p:column headerText="Name">
+                                <h:outputText value="#{employee.employeeName}" />
+                            </p:column>
+                            <p:column filterBy="#{employee.employeeGender}" filterMatchMode="in">
+                                <f:facet name="filter">
+                                    <p:selectCheckboxMenu label="Gender" onchange="PF('archivedUserAccounts').filter()" scrollHeight="150">
+                                        <f:selectItems value="#{employeeAccountManagedBean.genders}" />
+                                    </p:selectCheckboxMenu>
+                                </f:facet>
+                                <h:outputText value="#{employee.employeeGender}" />
+                            </p:column>
+                            <p:column filterBy="#{employee.employeeDepartment}" filterMatchMode="in">
+                                <f:facet name="filter">
+                                    <p:selectCheckboxMenu label="Department" onchange="PF('archivedUserAccounts').filter()" scrollHeight="150">
+                                        <f:selectItems value="#{employeeAccountManagedBean.departments}" />
+                                    </p:selectCheckboxMenu>
+                                </f:facet>
+                                <h:outputText value="#{employee.employeeDepartment}" />
+                            </p:column>
+                            <p:column filterBy="#{employee.employeePosition}" filterMatchMode="in">
+                                <f:facet name="filter">
+                                    <p:selectCheckboxMenu label="Position" onchange="PF('userAccounts').filter()" scrollHeight="150">
+                                        <f:selectItems value="#{employeeAccountManagedBean.positions}" />
+                                    </p:selectCheckboxMenu>
+                                </f:facet>
+                                <h:outputText value="#{employee.employeePosition}" />
+                            </p:column>
+                            <p:column headerText="Mobile Number">
+                                <h:outputText value="#{employee.employeeMobileNum}" />
+                            </p:column>
+                            <p:column headerText="Email">
+                                <h:outputText value="#{employee.employeeEmail}" />
+                            </p:column>
+                        </p:dataTable>
+                    </p:tab>
+                </p:tabView>
+            </div>
+        </h:form>
     </ui:define>
 </ui:composition>

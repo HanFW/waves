@@ -14,7 +14,6 @@ public interface TransactionSessionBeanLocal {
     public BankAccount retrieveBankAccountById(Long bankAccountId);
     public List<AccTransaction> retrieveAccTransactionByBankNum(String bankAccountNum);
     public BankAccount retrieveBankAccountByNum(String bankAccountNum);
-    public String checkPassword(String bankAccountNum,String bankAccountPwd);
     public Long cashWithdraw(String bankAccountNum,String withdrawAmt);
     public Long fundTransfer(String fromAccount,String toAccount,String transferAmt);
     public String checkAccountActivation(String bankAccountNum,String initialDepositAmount);
