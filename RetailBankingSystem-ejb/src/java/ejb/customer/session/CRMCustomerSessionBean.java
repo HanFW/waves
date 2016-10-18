@@ -147,7 +147,6 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
         Query query = entityManager.createQuery("SELECT ca FROM CustomerAdvanced ca WHERE ca.customerOnlineBankingAccountNum = :onlineBankingAccountNum");
         query.setParameter("onlineBankingAccountNum", onlineBankingAccountNum);
         List resultList = query.getResultList();
-        System.out.println("%%%%%" + resultList.isEmpty());
         if (resultList.isEmpty()) {
             return null;
         } else {

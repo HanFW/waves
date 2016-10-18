@@ -12,7 +12,7 @@
             <div align="center">
                 <h:outputText value="You have logged in as: Counter Teller"/>
                 <br/>
-
+                <p:messages />
                 <h:outputText value="&lt;br /&gt;" escape="false" /> 
                 <h:outputText value="&lt;br /&gt;" escape="false" /> 
                 <p:outputLabel for="customerID"  value="Customer NRIC/Passport:" />
@@ -24,7 +24,7 @@
 
 
                 <p:panelGrid rendered="#{counterTellerSearchCustomerManagedBean.visible}" >
-
+                    
                     <p:row>
                         <p:column colspan="2">
                             <h:outputText value="Customer Basic Information" />
