@@ -17,6 +17,11 @@
             </p:panel>
             <p:messages globalOnly="true"/>
 
+            <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group" class="ui-lg-6">
+                <p:outputLabel value="Pay Bills" style="font-weight: bold;font-size: 26px"/>
+                <br/>
+            </p:panelGrid>
+
             <p:dataTable var="nonStandingGIRO" value="#{nonStandingGIROManagedBean.nonStandingGIROs}" 
                          reflow="true" paginator="true" rows="10" emptyMessage="No Recipient">
                 <p:column headerText="Billing Organization" >
@@ -28,15 +33,14 @@
                 </p:column>
 
                 <p:column headerText="Amount(SGD)" >
-                    <p:inputText label="transfer amount" id="paymentAmt" value="#{nonStandingGIROManagedBean.paymentAmt}"
-                                 required="true" requiredMessage="Required Field">
+                    <p:inputText label="transfer amount" id="paymentAmt" value="#{nonStandingGIROManagedBean.paymentAmt}">
                     </p:inputText>
                 </p:column>
-                
+
                 <p:column headerText="Transfer Frequency" >
                     <h:outputText value="#{nonStandingGIRO.paymentFrequency}" /> 
                 </p:column>
-                
+
                 <p:column headerText="Action" style="width: 10%">
                     <center>
                         <p:commandButton process="@this" action="#{nonStandingGIROManagedBean.nonStandingGIROTransfer()}"
@@ -45,7 +49,7 @@
                         </p:commandButton>
                     </center>
                 </p:column>
-                
+
             </p:dataTable>
         </h:form>
         <ezcomp:CCTimeout/>

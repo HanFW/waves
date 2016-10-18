@@ -38,6 +38,7 @@ public class AddNonStandingGIROManagedBean implements Serializable {
     private Map<String, String> billingOrganizations = new HashMap<String, String>();
     private String paymentAmt;
     private String bankAccountNumWithType;
+    private String bankAccountNum;
     private String transferMethod;
     private String transferFrequency;
     private boolean visible = false;
@@ -207,6 +208,14 @@ public class AddNonStandingGIROManagedBean implements Serializable {
         this.paymentFrequency = paymentFrequency;
     }
 
+    public String getBankAccountNum() {
+        return bankAccountNum;
+    }
+
+    public void setBankAccountNum(String bankAccountNum) {
+        this.bankAccountNum = bankAccountNum;
+    }
+
     public void addNewBillingOrganization() throws IOException {
 
         ec = FacesContext.getCurrentInstance().getExternalContext();
@@ -216,8 +225,10 @@ public class AddNonStandingGIROManagedBean implements Serializable {
 
         if (transferMethod.equals("One Time")) {
             paymentFrequency = "One Time";
+            bankAccountNum = handleAccountString(bankAccountNumWithType);
+            
             giroId = nonStandingGIROSessionBeanLocal.addNewNonStandingGIRO(billingOrganization,
-                    billReference, bankAccountNumWithType, bankAccountNumWithType,
+                    billReference, bankAccountNum, bankAccountNumWithType,
                     paymentFrequency, paymentAmt, giroType, customerBasic.getCustomerBasicId());
 
             statusMessage = "Your new billing organization has been added!";
@@ -233,8 +244,10 @@ public class AddNonStandingGIROManagedBean implements Serializable {
             ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/payment/customerAddBillingOrganizationDone.xhtml?faces-redirect=true");
 
         } else {
+            bankAccountNum = handleAccountString(bankAccountNumWithType);
+            
             giroId = nonStandingGIROSessionBeanLocal.addNewNonStandingGIRO(billingOrganization, billReference,
-                    bankAccountNumWithType, bankAccountNumWithType, transferFrequency,
+                    bankAccountNum, bankAccountNumWithType, transferFrequency,
                     paymentAmt, giroType, customerBasic.getCustomerBasicId());
 
             statusMessage = "Your new billing organization has been added!";
@@ -249,5 +262,13 @@ public class AddNonStandingGIROManagedBean implements Serializable {
 
             ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/payment/customerAddBillingOrganizationDone.xhtml?faces-redirect=true");
         }
+    }
+    
+    private String handleAccountString(String bankAccountNumWithType) {
+
+        String[] bankAccountNums = bankAccountNumWithType.split("-");
+        String bankAccountNum = bankAccountNums[1];
+
+        return bankAccountNum;
     }
 }

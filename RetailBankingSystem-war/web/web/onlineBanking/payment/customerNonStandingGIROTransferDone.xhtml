@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/onlineBankingTemplate.xhtml"
+                xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
+
+    <ui:define name="content">
+        <h:form>
+            <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+
+                <p:panel>
+                    <p:outputLabel value="Welcome "/>
+                    <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
+                </p:panel>
+                <p:messages globalOnly="true"/>
+
+                <p:panel header="Bill Payment Summary">
+
+                    <h:outputText value="#{nonStandingGIROTransferDoneManagedBean.statusMessage}" style="font-size: 24px"/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <h:outputText style="font-weight: bold" value="Please note this transaction reference number
+                                  for your records: " />
+                    <h:outputText value="#{nonStandingGIROTransferDoneManagedBean.transactionId}" />
+                    <br/>
+                    <h:outputText style="font-weight: bold" value="To Account Number: "/>
+                    <h:outputText value="#{nonStandingGIROTransferDoneManagedBean.toBankAccountNumWithType}"/>
+                    <br/>
+                    <h:outputText style="font-weight: bold" value="Transfer Amount: "/>
+                    <h:outputText value="#{nonStandingGIROTransferDoneManagedBean.transferAmt}"/>
+                    <br/>
+                    <br/>
+                    <p:accordionPanel activeIndex="-1" style="">
+                        <p:tab title="View Transaction Details">
+                            <h:outputText value="From" style="font-size: 24px" />
+                            <p:separator />
+                            <br/>
+                            <br/>
+                            <h:outputText style="font-weight: bold" value="Account Number: "/>
+                            <h:outputText value="#{nonStandingGIROTransferDoneManagedBean.fromBankAccountNumWithType}"/>
+                            <br/>
+                            <h:outputText style="font-weight: bold" value="Lastest Account Balance: "/>
+                            <h:outputText value="#{nonStandingGIROTransferDoneManagedBean.fromBankAccountBalance}"/>
+                            <br/>
+                            <br/>
+                            <h:outputText value="To" style="font-size: 24px" />
+                            <p:separator />
+                            <br/>
+                            <br/>
+                            <h:outputText style="font-weight: bold" value="Account Number: "/>
+                            <h:outputText value="#{nonStandingGIROTransferDoneManagedBean.toBankAccountNumWithType}"/>
+                            <br/>
+                            <h:outputText style="font-weight: bold" value="Transfer Amount: "/>
+                            <h:outputText value="#{nonStandingGIROTransferDoneManagedBean.transferAmt}"/>
+                            <br/>
+                            <h:outputText style="font-weight: bold" value="Transaction Reference Number: "/>
+                            <h:outputText value="#{nonStandingGIROTransferDoneManagedBean.transactionId}" />
+                        </p:tab>
+                    </p:accordionPanel>
+                </p:panel>
+
+            </p:panelGrid>
+
+        </h:form>
+        <ezcomp:CCTimeout/>
+    </ui:define>
+</ui:composition>
+
+

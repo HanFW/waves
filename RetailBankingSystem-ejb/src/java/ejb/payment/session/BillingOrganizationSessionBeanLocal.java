@@ -9,4 +9,5 @@ public interface BillingOrganizationSessionBeanLocal {
     public Long addNewBillingOrganization(String billingOrganizationName, String bankAccountNum, 
             String bankAccountType, String bankName);
     public List<BillingOrganization> getAllBillingOrganization();
+    public BillingOrganization retrieveBillingOrganizationByName(String billingOrganizationName);
 }

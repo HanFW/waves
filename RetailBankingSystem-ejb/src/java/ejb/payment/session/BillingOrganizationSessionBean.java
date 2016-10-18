@@ -4,6 +4,8 @@ import ejb.payment.entity.BillingOrganization;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityNotFoundException;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
@@ -34,6 +36,29 @@ public class BillingOrganizationSessionBean implements BillingOrganizationSessio
     public List<BillingOrganization> getAllBillingOrganization() {
         Query query = entityManager.createQuery("SELECT b FROM BillingOrganization b");
         return query.getResultList();
+    }
+    
+    @Override
+    public BillingOrganization retrieveBillingOrganizationByName(String billingOrganizationName) {
+        BillingOrganization billingOrganization = new BillingOrganization();
+
+        try {
+            Query query = entityManager.createQuery("Select b From BillingOrganization b Where b.billingOrganizationName=:billingOrganizationName");
+            query.setParameter("billingOrganizationName", billingOrganizationName);
+
+            if (query.getResultList().isEmpty()) {
+                return new BillingOrganization();
+            } else {
+                billingOrganization = (BillingOrganization) query.getSingleResult();
+            }
+        } catch (EntityNotFoundException enfe) {
+            System.out.println("Entity not found error: " + enfe.getMessage());
+            return new BillingOrganization();
+        } catch (NonUniqueResultException nure) {
+            System.out.println("Non unique result error: " + nure.getMessage());
+        }
+
+        return billingOrganization;
     }
 
 }
