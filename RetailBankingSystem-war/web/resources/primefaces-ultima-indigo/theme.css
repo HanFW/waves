@@ -3169,7 +3169,7 @@ body {
     body .ui-panel .ui-panel-content {
       height: 10%;
       box-sizing: border-box;
-      padding: 10px 16px; 
+      padding: 0px 0px; 
       margin:0 auto;
 /*      width:50%;*/}
     body .ui-panel .ui-panel-footer {

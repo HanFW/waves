@@ -8,123 +8,82 @@
                 template="/WEB-INF/internalSystemTemplate.xhtml">
 
     <ui:define name="content">
-        <h:body>
+
+        <div align="center">
+            <h:form> 
+                <h:outputText value="You have logged in as: System Admin"/>
+                <br/>
+                <h:panelGrid columns="3" id="matchGrid" cellpadding="5" styleClass="ui-panelgrid-blank form-group">
+
+                    <p:outputLabel for="employeeRole" style="font-weight: bold" value="Role: " />
+
+                    <h:selectOneMenu id="employeeRole" value="#{employeeAssignPermissionManagedBean.roleName}" 
+                                     style="width:125px">
+                        <f:selectItem itemLabel="Please Select" itemValue=" " />
+                        <f:selectItem itemLabel="CEO" itemValue="CEO" />
+                        <f:selectItem itemLabel="Loan Officer" itemValue="Loan Officer" />
+                        <f:selectItem itemLabel="Call Center Staff" itemValue="Call Center Staff" />
+                        <f:selectItem itemLabel="Mortgage Appraiser" itemValue="Mortgage Appraiser" />
+                        <f:selectItem itemLabel="Underwriter" itemValue="Underwriter" />
+                        <f:selectItem itemLabel="Relationship Manager" itemValue="Relationship Manager" />
+                        <f:selectItem itemLabel="Counter Teller" itemValue="Counter Teller" />
+                        <f:selectItem itemLabel="Sales Department Manager" itemValue="Sales Department Manager" />
+                        <f:selectItem itemLabel="Card Department Manager" itemValue="Card Department Manager"/>
+                        <f:selectItem itemLabel="Enquiry Manager" itemValue="Enquiry Manager"/>
+                        <f:selectItem itemLabel="Deposit Specialist" itemValue="Deposit Specialist"/>
+                        <f:selectItem itemLabel="Card Specialist" itemValue="Card Specialist"/>
+                        <f:selectItem itemLabel="Operation Specialist" itemValue="Operation Specialist"/>
+                        <f:selectItem itemLabel="Loan Specialist" itemValue="Loan Specialist"/>
+                        <f:selectItem itemLabel="Wealth Department Specialist" itemValue="Wealth Department Specialist"/>        
+                    </h:selectOneMenu>
+
+                    <p:commandButton type="submit" value="Confirm" update="permissionTable" actionListener="#{employeeAssignPermissionManagedBean.getListOfPermissions}" ajax="false"/>
+                </h:panelGrid>
+            </h:form>
+            <br/>
+            
+            <h:form id="table">
+                <p:dataTable id="permissionTable" var="permission" value="#{employeeAssignPermissionManagedBean.permissions}" rendered="#{employeeAssignPermissionManagedBean.visible}" widgetVar="theWidget" style="width:60%">
+
+                    <f:facet name="header">
+                        Current Permissions 
+                    </f:facet>
+
+                    <p:column headerText="Permission" style="width:10%">
+                        <h:outputText value="#{permission.permissionName}" />
+                    </p:column>
+
+                    <p:column style="width:10%">
+                        <p:growl showDetail="true" />
+                        <p:commandButton id="delete" value="Delete" icon="ui-icon ui-icon-trash" action="#{employeeAssignPermissionManagedBean.deletePermission(permission)}" ajax="false" oncomplete="PF('theWidget').show()">
+                        </p:commandButton>
+                    </p:column>
+
+                </p:dataTable>
+
+            </h:form>
+            <br/>
 
             <h:form>
-                <p:menubar>
+                <p:row>
+                    <p:commandButton value="Add Permission" type="button" style="width:50%" onclick="PF('dlg1').show();" />
+                </p:row>
+                <p:dialog header="Add a New Permission" widgetVar="dlg1" minHeight="40" >
+                    <h:panelGrid columns="3" id="matchGrid" cellpadding="5" styleClass="ui-panelgrid-blank form-group">
+                        <p:outputLabel for="rolePermission" style="font-weight: bold" value="Permission: " />
 
-                    <p:submenu label="Home">
-                        <p:menuitem value="Home" action="/web/internalSystem/infrastructure/employeeUserAccountManagement.xhtml?faces-redirect=true"/>
-                    </p:submenu>
+                        <h:selectOneMenu id="rolePermission" value="#{employeeAssignPermissionManagedBean.permissionName}" 
+                                         style="width:125px">
+                            <f:selectItems value="#{employeeAssignPermissionManagedBean.permissionList1}" var="permission" itemLabel="#{permission}" itemValue="#{permissionName}" />
+                        </h:selectOneMenu>
 
-                    <p:submenu label="Manage My Account">
-                        <p:menuitem value="Change Password" actionListener="#{employeeLoginManagedBean.changePassword}" />
-                    </p:submenu>
 
-                    <p:submenu label="Log Out">
-                        <p:menuitem value="Logout" actionListener="#{employeeLoginManagedBean.doLogOut}" />
-                    </p:submenu>
-                </p:menubar>
+                        <p:commandButton type="submit" value="Add" update="PermissionTable" actionListener="#{employeeAssignPermissionManagedBean.addNewPermissionToRole}" ajax="false"/>                 
+
+                    </h:panelGrid>
+                </p:dialog>
             </h:form>
-
-
-
-
-            <div class="ui-g ui-fluid">
-                <div class="ui-g-12 ui-lg-12">
-                    <div class="card card-w-title"> 
-                        <div align="center">
-                            <h:form> 
-                                <h:outputText value="Welcome " />
-                                <h:outputText value="#{employeeAccountManagedBean.userName}!"/>
-                                <br/>
-                                <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
-                                <br/>
-                                <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
-                                <br/>
-                                <h:outputText value="You have logged in as: System Admin"/>
-                                <br/>
-
-                                <h:panelGrid columns="3" id="matchGrid" cellpadding="5" styleClass="ui-panelgrid-blank form-group">
-
-                                    <p:outputLabel for="employeeRole" style="font-weight: bold" value="Role: " />
-
-                                    <h:selectOneMenu id="employeeRole" value="#{employeeAssignPermissionManagedBean.roleName}" 
-                                                     style="width:125px">
-                                        <f:selectItem itemLabel="Please Select" itemValue=" " />
-                                        <f:selectItem itemLabel="CEO" itemValue="CEO" />
-                                        <f:selectItem itemLabel="Loan Officer" itemValue="Loan Officer" />
-                                        <f:selectItem itemLabel="Call Center Staff" itemValue="Call Center Staff" />
-                                        <f:selectItem itemLabel="Mortgage Appraiser" itemValue="Mortgage Appraiser" />
-                                        <f:selectItem itemLabel="Underwriter" itemValue="Underwriter" />
-                                        <f:selectItem itemLabel="Relationship Manager" itemValue="Relationship Manager" />
-                                        <f:selectItem itemLabel="Counter Teller" itemValue="Counter Teller" />
-                                        <f:selectItem itemLabel="Sales Department Manager" itemValue="Sales Department Manager" />
-                                        <f:selectItem itemLabel="Card Department Manager" itemValue="Card Department Manager"/>
-                                        <f:selectItem itemLabel="Enquiry Manager" itemValue="Enquiry Manager"/>
-                                        <f:selectItem itemLabel="Deposit Specialist" itemValue="Deposit Specialist"/>
-                                        <f:selectItem itemLabel="Card Specialist" itemValue="Card Specialist"/>
-                                        <f:selectItem itemLabel="Operation Specialist" itemValue="Operation Specialist"/>
-                                        <f:selectItem itemLabel="Loan Specialist" itemValue="Loan Specialist"/>
-                                        <f:selectItem itemLabel="Wealth Department Specialist" itemValue="Wealth Department Specialist"/>        
-                                    </h:selectOneMenu>
-
-                                    <p:commandButton type="submit" value="Confirm" update="permissionTable" actionListener="#{employeeAssignPermissionManagedBean.getListOfPermissions}" ajax="false"/>                 
-
-
-                                </h:panelGrid>
-
-
-                            </h:form>
-                            <br/>
-                            <h:form id="table">
-                                <p:dataTable id="permissionTable" var="permission" value="#{employeeAssignPermissionManagedBean.permissions}" rendered="#{employeeAssignPermissionManagedBean.visible}" widgetVar="theWidget" style="width:60%">
-
-                                    <f:facet name="header">
-                                        Current Permissions 
-                                    </f:facet>
-
-                                    <p:column headerText="Permission" style="width:10%">
-                                        <h:outputText value="#{permission.permissionName}" />
-                                    </p:column>
-
-                                    <p:column style="width:10%">
-                                        <p:growl showDetail="true" />
-                                        <p:commandButton id="delete" value="Delete" icon="ui-icon ui-icon-trash" action="#{employeeAssignPermissionManagedBean.deletePermission(permission)}" ajax="false" oncomplete="PF('theWidget').show()">
-                                        </p:commandButton>
-                                    </p:column>
-
-                                </p:dataTable>
-
-                            </h:form>
-                            <br/>
-
-                            <h:form>
-                                <p:row>
-                                    <p:commandButton value="Add Permission" type="button" style="width:50%" onclick="PF('dlg1').show();" />
-                                </p:row>
-                                <p:dialog header="Add a New Permission" widgetVar="dlg1" minHeight="40" >
-                                    <h:panelGrid columns="3" id="matchGrid" cellpadding="5" styleClass="ui-panelgrid-blank form-group">
-                                        <p:outputLabel for="rolePermission" style="font-weight: bold" value="Permission: " />
-
-                                        <h:selectOneMenu id="rolePermission" value="#{employeeAssignPermissionManagedBean.permissionName}" 
-                                                         style="width:125px">
-                                            <f:selectItems value="#{employeeAssignPermissionManagedBean.permissionList1}" var="permission" itemLabel="#{permission}" itemValue="#{permissionName}" />
-                                        </h:selectOneMenu>
-
-
-                                        <p:commandButton type="submit" value="Add" update="PermissionTable" actionListener="#{employeeAssignPermissionManagedBean.addNewPermissionToRole}" ajax="false"/>                 
-
-                                    </h:panelGrid>
-                                </p:dialog>
-
-                            </h:form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </h:body>
+        </div>
     </ui:define>
 </ui:composition>
 

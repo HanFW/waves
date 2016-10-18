@@ -11,7 +11,7 @@
             <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
             <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
             <meta name="apple-mobile-web-app-capable" content="yes" />
-            <meta name="theme-color" content="#{guestPreferences.themeColors[guestPreferences.theme]}" />
+            <meta name="theme-color" content="#{employeePreferences.themeColors[employeePreferences.theme]}" />
         </f:facet>
 
         <!-- Favicon -->
@@ -24,46 +24,41 @@
         <ui:insert name="head"/>
     </h:head>
 
-    <h:body styleClass="main-body #{guestPreferences.compact ? 'layout-compact' : null}">
+    <h:body styleClass="main-body #{employeePreferences.compact ? 'layout-compact' : null}">
 
-        <div class="layout-wrapper menu-layout-static menu-layout-horizontal">
-         
+        <div class="layout-wrapper menu-layout-static">
+
             <ui:include src="./internalSystemTopbar.xhtml" />
-           
-           
+            <ui:include src="./internalSystemMenu.xhtml"/>
 
             <div class="layout-main">
-                  <div class="ui-g ui-fluid">
-                        <div class="ui-g-12 ui-lg-12">
+                <div class="ui-g ui-fluid">
+                    <div class="ui-g-12 ui-lg-12">
 
-                            <div class="card card-w-title">
-                <ui:insert name="content"/>
+                        <div class="card card-w-title">
+                            <ui:insert name="content"/>
 
-                <ui:include src="./footer.xhtml" />
-                  </div>
+                            <ui:include src="./footer.xhtml" />
                         </div>
                     </div>
+                </div>
             </div>
 
-            </div>
+            <p:ajaxStatus style="width:32px;height:32px;position:fixed;right:7px;bottom:7px">
+                <f:facet name="start">
+                    <i class="fa fa-circle-o-notch fa-spin ajax-loader" aria-hidden="true"></i>
+                </f:facet>
 
+                <f:facet name="complete">
+                    <h:outputText value="" />
+                </f:facet>
+            </p:ajaxStatus>
+
+
+            <h:outputStylesheet name="css/nanoscroller.css" library="ultima-layout" />
+            <h:outputStylesheet name="css/animate.css" library="ultima-layout" />
+            <h:outputStylesheet name="css/ripple.css" library="ultima-layout" />
+            <h:outputStylesheet name="css/layout-#{employeePreferences.theme}.css" library="ultima-layout" />
         </div>
-
-        <p:ajaxStatus style="width:32px;height:32px;position:fixed;right:7px;bottom:7px">
-            <f:facet name="start">
-                <i class="fa fa-circle-o-notch fa-spin ajax-loader" aria-hidden="true"></i>
-            </f:facet>
-
-            <f:facet name="complete">
-                <h:outputText value="" />
-            </f:facet>
-        </p:ajaxStatus>
-
-
-        <h:outputStylesheet name="css/nanoscroller.css" library="ultima-layout" />
-        <h:outputStylesheet name="css/animate.css" library="ultima-layout" />
-        <h:outputStylesheet name="css/ripple.css" library="ultima-layout" />
-        <h:outputStylesheet name="css/layout-#{guestPreferences.theme}.css" library="ultima-layout" />
     </h:body>
-
 </html>

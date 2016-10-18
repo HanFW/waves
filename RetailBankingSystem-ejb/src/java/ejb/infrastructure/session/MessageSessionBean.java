@@ -2,7 +2,7 @@ package ejb.infrastructure.session;
 
 import ejb.customer.entity.CustomerBasic;
 import ejb.customer.session.CRMCustomerSessionBeanLocal;
-import ejb.deposit.entity.MessageBox;
+import ejb.infrastructure.entity.MessageBox;
 import ejb.deposit.entity.Payee;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import java.util.ArrayList;
@@ -46,18 +46,20 @@ public class MessageSessionBean implements MessageSessionBeanLocal {
     @Override
     public List<MessageBox> retrieveMessageBoxByCusIC(String customerIdentificationNum) {
         CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum);
-
-        if (customerBasic.getCustomerBasicId() == null) {
-            return new ArrayList<MessageBox>();
-        }
-        try {
-            Query query = entityManager.createQuery("Select m From MessageBox m Where m.customerBasic=:customerBasic");
-            query.setParameter("customerBasic", customerBasic);
-            return query.getResultList();
-        } catch (EntityNotFoundException enfe) {
-            System.out.println("\nEntity not found error: " + enfe.getMessage());
-            return new ArrayList<MessageBox>();
-        }
+        
+        return customerBasic.getMessageBox();
+//        if (customerBasic.getCustomerBasicId() == null) {
+//            return new ArrayList<MessageBox>();
+//        }
+//        try {
+//            Query query = entityManager.createQuery("Select m From MessageBox m Where m.customerBasic =:customerBasic");
+//            query.setParameter("customerBasic", customerBasic);
+//            System.out.println("////////////list size = " + query.getResultList().size());
+//            return query.getResultList();
+//        } catch (EntityNotFoundException enfe) {
+//            System.out.println("\nEntity not found error: " + enfe.getMessage());
+//            return new ArrayList<MessageBox>();
+//        }
     }
     
     @Override
@@ -96,7 +98,7 @@ public class MessageSessionBean implements MessageSessionBeanLocal {
     @Override
     public void sendMessage(String fromWhere, String messageType, String subject, String receivedDate, String messageContent, Long customerBasicId) {
         CustomerBasic customerBasic = bankAccountSessionBeanLocal.retrieveCustomerBasicById(customerBasicId);
-
+        
         MessageBox messageBox = addNewMessage(fromWhere, messageType, subject, receivedDate, messageContent, customerBasicId);
         customerBasic.getMessageBox().add(messageBox);
     }

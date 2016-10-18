@@ -1,7 +1,7 @@
 package ejb.customer.entity;
 
 import ejb.deposit.entity.BankAccount;
-import ejb.deposit.entity.MessageBox;
+import ejb.infrastructure.entity.MessageBox;
 import ejb.deposit.entity.Payee;
 import ejb.payment.entity.FastPayee;
 import java.io.Serializable;
@@ -45,6 +45,7 @@ public class CustomerBasic implements Serializable {
     private String customerAge;
     private String customerOTPSecret;
     private String customerOnlineBankingAccountLocked;
+    private String newCustomer;
 
     private byte[] customerSignature;
 
@@ -308,6 +309,14 @@ public class CustomerBasic implements Serializable {
 
     public void setFastPayee(List<FastPayee> fastPayee) {
         this.fastPayee = fastPayee;
+    }
+    
+    public String getNewCustomer() {
+        return newCustomer;
+    }
+
+    public void setNewCustomer(String newCustomer) {
+        this.newCustomer = newCustomer;
     }
     
     @Override

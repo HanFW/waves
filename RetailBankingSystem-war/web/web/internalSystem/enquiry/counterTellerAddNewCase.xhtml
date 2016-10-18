@@ -8,153 +8,126 @@
                 template="/WEB-INF/internalSystemTemplate.xhtml">
 
     <ui:define name="content">
-        <h:body>
-            <h:form>
-                <p:menubar>
-                    <p:submenu label="Home">
-                        <p:menuitem value="Home" url="/web/internalSystem/infrastructure/employeeCounterTellerMainPage.xhtml"/>
-                    </p:submenu>
+        <h:form>
+            <div align="center">
+                <h:outputText value="You have logged in as: Counter Teller"/>
+                <br/>
+                <p:panel >
+                    <p:messages />
 
-                    <p:submenu label="Log Out">
-                        <p:menuitem value="Logout" actionListener="#{employeeLoginManagedBean.doLogOut}" />
-                    </p:submenu>
-                </p:menubar>
-            </h:form>
+                    <h:panelGrid columns="2" id="matchGrid" cellpadding="5">
 
-            <h:form>
-                <div class="ui-g ui-fluid">
-                    <div class="ui-g-12 ui-lg-12">
-                        <div class="card card-w-title"> 
-                            <div align="center">
-                                <h:outputText value="Welcome " />
-                                <h:outputText value="#{employeeAccountManagedBean.userName}!"/>
-                                <br/>
-                                <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
-                                <br/>
-                                <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
-                                <br/>
-                                <h:outputText value="You have logged in as: Counter Teller"/>
-                                <br/>
-                                <p:panel >
-                                    <p:messages />
+                        <p:panel>
+                            <p:row>
+                                <h:outputText value="Record a Case" style="font-weight: bolder"/>
+                            </p:row>
 
-                                    <h:panelGrid columns="2" id="matchGrid" cellpadding="5">
+                            <p:row>
+                                <p:column>
+                                    <p:outputLabel for="caseType" style="font-weight: bold" value="What is it regarding?" />
+                                </p:column>
+                                <h:outputText value="&lt;br/&gt;" escape="false" />
+                                <p:column>
+                                    <p:selectOneMenu id="caseType" value="#{employeeRecordEnquiryManagedBean.caseType}" 
+                                                     style="width:125px">
+                                        <f:selectItem itemLabel="Please Select" itemValue=" " />
+                                        <f:selectItem itemLabel="Credit Card" itemValue="Credit Card" />
+                                        <f:selectItem itemLabel="Saving Account" itemValue="Saving Account" />
+                                        <f:selectItem itemLabel="Loan" itemValue="Loan" />
+                                        <f:selectItem itemLabel="Online Banking" itemValue="Online Banking" />
+                                        <f:selectItem itemLabel="Fund Transfer" itemValue="Fund Transfer" />
+                                        <f:selectItem itemLabel="Wealth Management" itemValue="Wealth Management" />
+                                        <f:selectItem itemLabel="Others" itemValue="Others" />
+                                    </p:selectOneMenu>
+                                </p:column>
+                                <p:column>
+                                    <p:message for="caseType" />
+                                </p:column>
+                            </p:row>
 
-                                        <p:panel>
-                                            <p:row>
-                                                <h:outputText value="Record a Case" style="font-weight: bolder"/>
-                                            </p:row>
+                            <h:outputText value="&lt;br/&gt;" escape="false" />
+                            <p:row>
+                                <h:outputLabel style="font-weight: bold" value="Enquiry Details" />
+                                <h:outputText value="&lt;br/&gt;" escape="false" />
+                                <p:inputTextarea id="caseDetail" value="#{employeeRecordEnquiryManagedBean.caseDetail}"  rows="5" cols="50"  autoResize="false" />
+                            </p:row>
+                        </p:panel>
+                        <p:commandButton value="Send Enquiry" update="@form" actionListener="#{employeeRecordEnquiryManagedBean.saveEnquiryCase}" ajax="false" />
+                    </h:panelGrid>
+                </p:panel>
 
-                                            <p:row>
-                                                <p:column>
-                                                    <p:outputLabel for="caseType" style="font-weight: bold" value="What is it regarding?" />
-                                                </p:column>
-                                                <h:outputText value="&lt;br/&gt;" escape="false" />
-                                                <p:column>
-                                                    <p:selectOneMenu id="caseType" value="#{employeeRecordEnquiryManagedBean.caseType}" 
-                                                                     style="width:125px">
-                                                        <f:selectItem itemLabel="Please Select" itemValue=" " />
-                                                        <f:selectItem itemLabel="Credit Card" itemValue="Credit Card" />
-                                                        <f:selectItem itemLabel="Saving Account" itemValue="Saving Account" />
-                                                        <f:selectItem itemLabel="Loan" itemValue="Loan" />
-                                                        <f:selectItem itemLabel="Online Banking" itemValue="Online Banking" />
-                                                        <f:selectItem itemLabel="Fund Transfer" itemValue="Fund Transfer" />
-                                                        <f:selectItem itemLabel="Wealth Management" itemValue="Wealth Management" />
-                                                        <f:selectItem itemLabel="Others" itemValue="Others" />
-                                                    </p:selectOneMenu>
-                                                </p:column>
-                                                <p:column>
-                                                    <p:message for="caseType" />
-                                                </p:column>
-                                            </p:row>
+                <p:accordionPanel value="#{employeeRecordEnquiryManagedBean.enquiryCase}" var="enquiryCase">
+                    <p:tab title="Enquiry Case ID: #{enquiryCase.caseId} - created time: #{enquiryCase.createdTime}">
+                        <h:panelGrid cellpadding="5">
+                            <p:panel>
+                                <p:row>
+                                    <p:column colspan="2">
+                                        <h:outputText value="Detail:   " style="font-weight: bold" />
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{enquiryCase.caseDetail}" />
+                                    </p:column>
+                                </p:row>
+                                <h:outputText value="&lt;br/&gt;" escape="false" />
+                                <p:row>
+                                    <p:column colspan="2">
+                                        <h:outputText value="Status:  " style="font-weight: bold" />
+                                    </p:column>
 
-                                            <h:outputText value="&lt;br/&gt;" escape="false" />
-                                            <p:row>
-                                                <h:outputLabel style="font-weight: bold" value="Enquiry Details" />
-                                                <h:outputText value="&lt;br/&gt;" escape="false" />
-                                                <p:inputTextarea id="caseDetail" value="#{employeeRecordEnquiryManagedBean.caseDetail}"  rows="5" cols="50"  autoResize="false" />
-                                            </p:row>
-                                        </p:panel>
-                                        <p:commandButton value="Send Enquiry" update="@form" actionListener="#{employeeRecordEnquiryManagedBean.saveEnquiryCase()}" ajax="false" />
-                                    </h:panelGrid>
+                                    <p:column>
+                                        <h:outputText value="#{enquiryCase.caseStatus}" />
+                                    </p:column>
+                                </p:row>
+                                <h:outputText value="&lt;br/&gt;" escape="false" />
+                                <p:row>
+                                    <p:column colspan="2">
+                                        <h:outputText value="Reply:   " style="font-weight: bold" />
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{enquiryCase.caseReply}" />
+                                    </p:column>
+                                </p:row>
+                            </p:panel>
+
+                            <p:row>
+                                <p:panel header="Customer Follow-up Questions">
+                                    <p:dataTable var="followUp" value="#{enquiryCase.followUp}" 
+                                                 paginator="true" rows="10" emptyMessage="No Follow-up Questions">
+                                        <p:column headerText="Follow Up ID">
+                                            <h:outputText value="#{followUp.followUpId}" />
+                                        </p:column>
+                                        <p:column headerText="Created Time">
+                                            <h:outputText value="#{followUp.sendTime}" />
+                                        </p:column>
+
+                                        <p:column headerText="Detail" >
+                                            <h:outputText value="#{followUp.followUpDetail}" /> 
+                                        </p:column>
+
+                                        <p:column headerText="Status"> 
+                                            <h:outputText value="#{followUp.followUpStatus}" />
+                                        </p:column>
+
+                                        <p:column headerText="Reply"> 
+                                            <h:outputText value="#{followUp.followUpSolution}" />
+                                        </p:column>
+                                    </p:dataTable>
                                 </p:panel>
+                            </p:row>
 
-                                <p:accordionPanel value="#{employeeRecordEnquiryManagedBean.enquiryCase}" var="enquiryCase">
-                                    <p:tab title="Enquiry Case ID: #{enquiryCase.caseId} - created time: #{enquiryCase.createdTime}">
-                                        <h:panelGrid cellpadding="5">
-                                            <p:panel>
-                                                <p:row>
-                                                    <p:column colspan="2">
-                                                        <h:outputText value="Detail:   " style="font-weight: bold" />
-                                                    </p:column>
-                                                    <p:column>
-                                                        <h:outputText value="#{enquiryCase.caseDetail}" />
-                                                    </p:column>
-                                                </p:row>
-                                                <h:outputText value="&lt;br/&gt;" escape="false" />
-                                                <p:row>
-                                                    <p:column colspan="2">
-                                                        <h:outputText value="Status:  " style="font-weight: bold" />
-                                                    </p:column>
+                            <p:row>
+                                <p:column colspan="2">
+                                    <p:commandButton value="Add Follow Up Question" action="counterTellerAddFollowUp.xhtml?faces-redirect=true" ajax="false">
+                                        <f:setPropertyActionListener target="#{employeeAddFollowUpManagedBean.caseId}" value="#{enquiryCase.caseId}" />
+                                    </p:commandButton>
+                                </p:column>
+                            </p:row>
+                        </h:panelGrid>
+                    </p:tab>
+                </p:accordionPanel>
 
-                                                    <p:column>
-                                                        <h:outputText value="#{enquiryCase.caseStatus}" />
-                                                    </p:column>
-                                                </p:row>
-                                                <h:outputText value="&lt;br/&gt;" escape="false" />
-                                                <p:row>
-                                                    <p:column colspan="2">
-                                                        <h:outputText value="Reply:   " style="font-weight: bold" />
-                                                    </p:column>
-                                                    <p:column>
-                                                        <h:outputText value="#{enquiryCase.caseReply}" />
-                                                    </p:column>
-                                                </p:row>
-                                            </p:panel>
-
-                                            <p:row>
-                                                <p:panel header="Customer Follow-up Questions">
-                                                    <p:dataTable var="followUp" value="#{enquiryCase.followUp}" 
-                                                                 paginator="true" rows="10" emptyMessage="No Follow-up Questions">
-                                                        <p:column headerText="Follow Up ID">
-                                                            <h:outputText value="#{followUp.followUpId}" />
-                                                        </p:column>
-                                                        <p:column headerText="Created Time">
-                                                            <h:outputText value="#{followUp.sendTime}" />
-                                                        </p:column>
-
-                                                        <p:column headerText="Detail" >
-                                                            <h:outputText value="#{followUp.followUpDetail}" /> 
-                                                        </p:column>
-
-                                                        <p:column headerText="Status"> 
-                                                            <h:outputText value="#{followUp.followUpStatus}" />
-                                                        </p:column>
-
-                                                        <p:column headerText="Reply"> 
-                                                            <h:outputText value="#{followUp.followUpSolution}" />
-                                                        </p:column>
-                                                    </p:dataTable>
-                                                </p:panel>
-                                            </p:row>
-
-                                            <p:row>
-                                                <p:column colspan="2">
-                                                    <p:commandButton value="Add Follow Up Question" action="counterTellerAddFollowUp.xhtml" ajax="false">
-                                                        <f:setPropertyActionListener target="#{employeeAddFollowUpManagedBean.caseId}" value="#{enquiryCase.caseId}" />
-                                                    </p:commandButton>
-                                                </p:column>
-                                            </p:row>
-                                        </h:panelGrid>
-                                    </p:tab>
-                                </p:accordionPanel>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </h:form>
-        </h:body>
+            </div>
+        </h:form>
     </ui:define>
 </ui:composition>
 

@@ -8,75 +8,45 @@
                 template="/WEB-INF/internalSystemTemplate.xhtml">
 
     <ui:define name="content">
-        <h:body>
-            <h:form>
-                <p:menubar>
-                    <p:submenu label="Home">
-                        <p:menuitem value="Home" url="/web/internalSystem/infrastructure/employeeCounterTellerMainPage.xhtml"/>
-                    </p:submenu>
+        <h:form id="formMain">          
+            <div align="center">
+                <h:outputText value="You have logged in as: Counter Teller"/>
+                <br/>
+                <p:panel header="View Transaction">
+                    <p:dataTable var="accTransaction" value="#{employeeViewTransactionFinalManagedBean.accTransaction}" 
+                                 paginator="true" rows="20" emptyMessage="No Transaction Record">
 
-                    <p:submenu label="Log Out">
-                        <p:menuitem value="Logout" actionListener="#{employeeLoginManagedBean.doLogOut}" />
-                    </p:submenu>
-                </p:menubar>
-            </h:form>
+                        <p:column headerText="Transaction ID">
+                            <h:outputText value="#{accTransaction.transactionId}" /> 
+                        </p:column>
 
-            <h:form id="formMain">
+                        <p:column headerText="Transaction Date">
+                            <h:outputText value="#{accTransaction.transactionDate}" />
+                        </p:column>
 
-                <div class="ui-g ui-fluid">
-                    <div class="ui-g-12 ui-lg-12">
-                        <div class="card card-w-title"> 
-                            <div align="center">
-                                <h:outputText value="Welcome " />
-                                <h:outputText value="#{employeeAccountManagedBean.userName}!"/>
-                                <br/>
-                                <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
-                                <br/>
-                                <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
-                                <br/>
-                                <h:outputText value="You have logged in as: Counter Teller"/>
-                                <br/>
-                                <br/>
-                                <p:panel header="View Transaction">
-                                    <p:dataTable var="accTransaction" value="#{employeeViewTransactionFinalManagedBean.accTransaction}" 
-                                                 paginator="true" rows="20" emptyMessage="No Transaction Record">
+                        <p:column headerText="Transaction Code"> 
+                            <h:outputText value="#{accTransaction.transactionCode}" />
+                        </p:column>
 
-                                        <p:column headerText="Transaction ID">
-                                            <h:outputText value="#{accTransaction.transactionId}" /> 
-                                        </p:column>
+                        <p:column headerText="Transaction Ref"> 
+                            <h:outputText value="#{accTransaction.transactionRef}" />
+                        </p:column>
 
-                                        <p:column headerText="Transaction Date">
-                                            <h:outputText value="#{accTransaction.transactionDate}" />
-                                        </p:column>
+                        <p:column headerText="Account Debit(Withdrawal)"> 
+                            <h:outputText value="#{accTransaction.accountDebit}">
+                                <f:convertNumber type="currency" currencyCode="$" minFractionDigits="2" />
+                            </h:outputText>
+                        </p:column>
 
-                                        <p:column headerText="Transaction Code"> 
-                                            <h:outputText value="#{accTransaction.transactionCode}" />
-                                        </p:column>
+                        <p:column headerText="Account Credit(Deposit)"> 
+                            <h:outputText value="#{accTransaction.accountCredit}">
+                                <f:convertNumber type="currency" currencyCode="SGD" />
+                            </h:outputText>
+                        </p:column>
 
-                                        <p:column headerText="Transaction Ref"> 
-                                            <h:outputText value="#{accTransaction.transactionRef}" />
-                                        </p:column>
-
-                                        <p:column headerText="Account Debit(Withdrawal)"> 
-                                            <h:outputText value="#{accTransaction.accountDebit}">
-                                                <f:convertNumber type="currency" currencyCode="$" minFractionDigits="2" />
-                                            </h:outputText>
-                                        </p:column>
-
-                                        <p:column headerText="Account Credit(Deposit)"> 
-                                            <h:outputText value="#{accTransaction.accountCredit}">
-                                                <f:convertNumber type="currency" currencyCode="SGD" />
-                                            </h:outputText>
-                                        </p:column>
-
-                                    </p:dataTable>
-                                </p:panel>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </h:form>
-        </h:body>
+                    </p:dataTable>
+                </p:panel>
+            </div>
+        </h:form>
     </ui:define>
 </ui:composition>

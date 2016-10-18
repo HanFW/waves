@@ -97,7 +97,7 @@ public class EmployeeChangeDailyTransferLimitDone {
         bankAccountSessionLocal.updateDailyTransferLimit(bankAccountNum, dailyTransferLimit);
 
         loggingSessionBeanLocal.createNewLogging("employee", null, "update daily transfer limit", "successful", null);
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("You have updated your daily transfer limit successfully.", " Successfully"));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "You have updated your daily transfer limit successfully.", " Successfully"));
     }
 
     private String handleAccountString(String bankAccountNumWithType) {

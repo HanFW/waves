@@ -16,6 +16,7 @@ import ejb.infrastructure.session.LoggingSessionBeanLocal;
 @RequestScoped
 
 public class EmployeeCashManagedBean {
+
     @EJB
     private LoggingSessionBeanLocal loggingSessionBeanLocal;
 
@@ -140,21 +141,17 @@ public class EmployeeCashManagedBean {
         System.out.println("====== deposit/EmployeeCashManagedBean: cashDeposit() ======");
         ec = FacesContext.getCurrentInstance().getExternalContext();
         BankAccount bankAccount = bankAccountSessionLocal.retrieveBankAccountByNum(depositAccountNum);
-        String passwordCheck = transactionSessionLocal.checkPassword(depositAccountNum, depositAccountPwd);
         String activationCheck;
 
-        if (passwordCheck.equals("Password is incorrect!")) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!Your password is incorrect.", "Your password is incorrect!"));
-        } else if (passwordCheck.equals("Error! Bank account does not exist!")) {
-            withdrawAccountNum = null;
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!Your bank account does not exits.", "Bank account does not exist!"));
+        if (bankAccount.getBankAccountId() == null) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Bank account does not exist.", "Failed"));
         } else {
 
-            if (bankAccount.getBankAccountStatus().equals("Activated")) {
+            if (bankAccount.getBankAccountStatus().equals("Active")) {
                 transactionId = transactionSessionLocal.cashDeposit(depositAccountNum, depositAmt.toString());
 
                 statusMessage = "Cash deposit Successfully!";
-                loggingSessionBeanLocal.createNewLogging("employee", null, "cash deposit","successful",null);
+                loggingSessionBeanLocal.createNewLogging("employee", null, "cash deposit", "successful", null);
 
                 ec.getFlash().put("statusMessage", statusMessage);
                 ec.getFlash().put("depositAccountNum", depositAccountNum);
@@ -162,26 +159,26 @@ public class EmployeeCashManagedBean {
                 ec.getFlash().put("transactionId", transactionId);
 
                 ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/deposit/employeeDepositDone.xhtml?faces-redirect=true");
-            } else if (bankAccount.getBankAccountStatus().equals("Inactivated")) {
+            } else if (bankAccount.getBankAccountStatus().equals("Inactive")) {
 
                 activationCheck = transactionSessionLocal.checkAccountActivation(depositAccountNum, depositAmt.toString());
 
                 if (activationCheck.equals("Initial deposit amount is insufficient.")) {
                     if (bankAccount.getBankAccountType().equals("Bonus Savings Account")) {
-                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Dear customer, minimum initial deposit amount is S$3000", "Failed"));
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Minimum initial deposit amount is S$3000", "Failed"));
                     } else if (bankAccount.getBankAccountType().equals("Basic Savings Account")) {
-                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!Dear customer, minimum initial deposit amount is S$1", "Failed"));
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Minimum initial deposit amount is S$1", "Failed"));
                     } else if (bankAccount.getBankAccountType().equals("Fixed Deposit Account")) {
-                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!Dear customer, minimum initial deposit amount is S$1000", "Failed"));
+                        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Minimum initial deposit amount is S$1000", "Failed"));
                     }
                 } else if (activationCheck.equals("Please declare your deposit period")) {
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Please declare your fixed deposit period first.", "Failed"));
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Please declare your fixed deposit period first.", "Failed"));
                 } else if (activationCheck.equals("Activated successfully.")) {
 
                     transactionId = transactionSessionLocal.cashDeposit(depositAccountNum, depositAmt.toString());
 
                     statusMessage = "Cash deposit Successfully!";
-                    loggingSessionBeanLocal.createNewLogging("employee", null, "cash deposit","successful",null);
+                    loggingSessionBeanLocal.createNewLogging("employee", null, "cash deposit", "successful", null);
 
                     ec.getFlash().put("statusMessage", statusMessage);
                     ec.getFlash().put("depositAccountNum", depositAccountNum);
@@ -191,7 +188,6 @@ public class EmployeeCashManagedBean {
                     ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/deposit/employeeDepositDone.xhtml?faces-redirect=true");
                 }
             }
-
         }
     }
 
@@ -202,31 +198,28 @@ public class EmployeeCashManagedBean {
 
         BankAccount bankAccount = bankAccountSessionLocal.retrieveBankAccountByNum(withdrawAccountNum);
 
-        if (bankAccount.getBankAccountStatus().equals("Inactivated")) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed!Your account has not been activated.", "Failed"));
-        }
-
-        String passwordCheck = transactionSessionLocal.checkPassword(withdrawAccountNum, withdrawAccountPwd);
-
-        if (passwordCheck.equals("Password is incorrect!")) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Your password is incorrect.", "Your password is incorrect!"));
-        } else if (passwordCheck.equals("Error! Bank account does not exist!")) {
-            withdrawAccountNum = null;
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Your bank account does not exist.", "Bank account does not exist!"));
+        if (bankAccount.getBankAccountId() == null) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Bank account does not exist.", "Failed"));
         } else {
-            Double diffAmt = Double.valueOf(bankAccount.getBankAccountBalance()) - withdrawAmt;
-            if (diffAmt >= 0) {
-                transactionId = transactionSessionLocal.cashWithdraw(withdrawAccountNum, withdrawAmt.toString());
-                statusMessage = "Cash withdraw Successfully!";
 
-                ec.getFlash().put("statusMessage", statusMessage);
-                ec.getFlash().put("withdrawAccountNum", withdrawAccountNum);
-                ec.getFlash().put("withdrawAmt", withdrawAmt);
-                ec.getFlash().put("transactionId", transactionId);
-
-                ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/deposit/employeeWithdrawDone.xhtml?faces-redirect=true");
+            if (bankAccount.getBankAccountStatus().equals("Inactive")) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Customer account has not been activated.", "Failed"));
             } else {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Your account balance is insufficient.", "Your account balance is insufficient."));
+
+                Double diffAmt = Double.valueOf(bankAccount.getBankAccountBalance()) - withdrawAmt;
+                if (diffAmt >= 0) {
+                    transactionId = transactionSessionLocal.cashWithdraw(withdrawAccountNum, withdrawAmt.toString());
+                    statusMessage = "Cash withdraw Successfully!";
+
+                    ec.getFlash().put("statusMessage", statusMessage);
+                    ec.getFlash().put("withdrawAccountNum", withdrawAccountNum);
+                    ec.getFlash().put("withdrawAmt", withdrawAmt);
+                    ec.getFlash().put("transactionId", transactionId);
+
+                    ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/deposit/employeeWithdrawDone.xhtml?faces-redirect=true");
+                } else {
+                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Customer account balance is insufficient.", ""));
+                }
             }
         }
     }

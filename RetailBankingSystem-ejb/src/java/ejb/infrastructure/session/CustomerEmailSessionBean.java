@@ -29,12 +29,12 @@ public class CustomerEmailSessionBean implements CustomerEmailSessionBeanLocal {
     public void sendEmail(CustomerBasic customer, String subject, Map actions) {
         System.out.println("@");
         System.out.println("@@@@@@ infrastructure/CustomerEmailSessionBean: sendEmail() @@@@@@");
-        
+
         String emailServerName = "smtp.gmail.com";
         String emailFromAddress = "Han Fengwei Test Send<merlionbankes05@gmail.com>";
         String toEmailAddress = "Han Fengwei Test Receive<" + customer.getCustomerEmail() + ">";
         String mailer = "JavaMailer";
-        String emailText = "Dear customer, \n";
+        String emailText = "Dear " + customer.getCustomerName() + ", \n";
 
         switch (subject) {
             //deposit: open deposit account
@@ -44,7 +44,13 @@ public class CustomerEmailSessionBean implements CustomerEmailSessionBeanLocal {
                     emailText += "Your online banking account has been successfully created.\n";
                     emailText += "Initial User ID: " + customer.getCustomerOnlineBankingAccountNum() + "\n";
                     emailText += "Initial PIN: " + actions.get("onlineBankingPassword") + "\n";
-                    emailText += "Please login with your initial User ID and PIN to activate your online banking account.";
+                    emailText += "Please login with your initial User ID and PIN. \n\n";
+                    emailText += "If your bank account type is Monthly Saving Account, please remember minimum monthly saving is S$50.";
+                    emailText += "Otherwise, you are not able to get bonus interest.\n\n";
+                    emailText += "If your bank account type is not Monthly Saving Account, please check your bank account status under 'My Account' after you login.\n";
+                    emailText += "Please deposit/transfer sufficient amount to your account to activate your bank account, if your bank account status is inactive.\n";
+                    emailText += "Please activate your bank account within one week.\n";
+                    emailText += "Otherwise, our system will automatically close your account after one week.\n";
                 }
                 break;
             case "resetOnlineBankingPassword":
@@ -57,7 +63,18 @@ public class CustomerEmailSessionBean implements CustomerEmailSessionBeanLocal {
                 emailText += "Initial User ID: " + actions.get("userId") + "\n";
                 emailText += "Initial PIN: " + actions.get("pin") + "\n";
                 emailText += "Please login with your initial User ID and PIN to activate your online banking account.";
-                break;           
+                break;   
+            case "rejectOpenAccount":
+                emailText += "I regret to inform that your open account application have not been approved. \n";
+                emailText += "Please verify your identification number with your IC/Passport. \n";
+                emailText += "If you have any enquiry, please contact us at 800 820 8820. \n";
+                emailText += "We look forward to serving you again. \n";
+                break;
+            case "enquiryReplied":
+                emailText += "Your recent enquiry (Case ID: " + actions.get("caseId") + ") has been replied by us. \n";
+                emailText += "Please login to your online banking account to view our reply in detail. \n";
+                emailText += "We look forward to serving you again. \n";
+                break;
         }
 
         try {

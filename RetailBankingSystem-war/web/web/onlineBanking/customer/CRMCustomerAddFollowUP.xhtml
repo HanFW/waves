@@ -10,19 +10,19 @@
                 xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
 
     <ui:define name="content">
-        
+
         <h:body>
             <h:form>
                 <p:menubar>
                     <p:submenu label="My Account">
-                        <p:menuitem value="Home" url="/web/onlineBanking/deposit/customerDepositIndex.xhtml" />
-                        <p:menuitem value="Open Account" url="/web/onlineBanking/deposit/customerOpenAccount.xhtml" />
-                        <p:menuitem value="Close Account" url="/web/onlineBanking/deposit/customerCloseAccount.xhtml" />
-                        <p:menuitem value="View Account" url="/web/onlineBanking/deposit/customerViewAccount.xhtml" />
-                        <p:menuitem value="Cash Deposit" url="/web/onlineBanking/deposit/customerCashDeposit.xhtml" />
-                        <p:menuitem value="Cash Withdraw" url="/web/onlineBanking/deposit/customerCashWithdraw.xhtml" />
-                        <p:menuitem value="View Transaction" url="/web/onlineBanking/deposit/customerViewTransaction.xhtml" />
-                        <p:menuitem value="Activate Fixed Deposit Account" url="/web/onlineBanking/deposit/customerActivateFixedDepositAccount.xhtml" />
+                        <p:menuitem value="Home" url="/web/onlineBanking/deposit/customerDepositIndex.xhtml?faces-redirect=true" />
+                        <p:menuitem value="Open Account" url="/web/onlineBanking/deposit/customerOpenAccount.xhtml?faces-redirect=true" />
+                        <p:menuitem value="Close Account" url="/web/onlineBanking/deposit/customerCloseAccount.xhtml?faces-redirect=true" />
+                        <p:menuitem value="View Account" url="/web/onlineBanking/deposit/customerViewAccount.xhtml?faces-redirect=true" />
+                        <p:menuitem value="Cash Deposit" url="/web/onlineBanking/deposit/customerCashDeposit.xhtml?faces-redirect=true" />
+                        <p:menuitem value="Cash Withdraw" url="/web/onlineBanking/deposit/customerCashWithdraw.xhtml?faces-redirect=true" />
+                        <p:menuitem value="View Transaction" url="/web/onlineBanking/deposit/customerViewTransaction.xhtml?faces-redirect=true" />
+                        <p:menuitem value="Activate Fixed Deposit Account" url="/web/onlineBanking/deposit/customerActivateFixedDepositAccount.xhtml?faces-redirect=true" />
                     </p:submenu>
                 </p:menubar>
 
@@ -42,21 +42,17 @@
                                         <h:outputText value="&lt;br/&gt;" escape="false" />
                                         <br/>
 
-                                        <p:inputTextarea id="followUpDetail" placeholder="Enquiry Detail" value="#{customerFollowUpManagedBean.followUpDetail}" required="true" rows="9"  counter="display" maxlength="500" counterTemplate="{0} characters remaining." autoResize="false" />
+                                        <p:inputTextarea id="followUpDetail" placeholder="Enquiry Detail" value="#{customerFollowUpManagedBean.followUpDetail}" required="true" requiredMessage="Please provide follow-up detail" rows="9"  counter="display" maxlength="500" counterTemplate="{0} characters remaining." autoResize="false" />
                                         <h:outputText value="&lt;br/&gt;" escape="false" />
                                         <h:outputText id="display" />
 
                                     </p:row>
                                     <p:commandButton value="Send Follow-up" actionListener="#{customerFollowUpManagedBean.saveFollowUp}" ajax="false" />
-
-
                                 </p:panel>
-
                             </p:panelGrid>
                         </div>
                     </div>
                 </div>
-
             </h:form>
             <ezcomp:CCTimeout/>
         </h:body>

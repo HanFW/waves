@@ -15,8 +15,6 @@ import javax.persistence.Query;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Calendar;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.persistence.EntityNotFoundException;
@@ -151,6 +149,7 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
         if (bankAccountId == null) {
             return accTransactionId;
         } else {
+
             if (bankAccount.getBankAccountType().equals("Monthly Savings Account")) {
                 if (Double.valueOf(depositAmt) >= 50) {
                     bankAccount.setBankAccountMinSaving("Sufficient");
@@ -162,10 +161,7 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
             String transactionRef = "Merlion Bank Branch";
 
             Calendar cal = Calendar.getInstance();
-//            int year = cal.get(Calendar.YEAR);
-//            int month = cal.get(Calendar.MONTH);
-//            int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
-//            String transactionDate = dayOfMonth + "-" + (month + 1) + "-" + year;
+
             Long transactionDateMilis = cal.getTimeInMillis();
 
             accTransactionId = addNewTransaction(cal.getTime().toString(), transactionCode, transactionRef,
@@ -197,15 +193,13 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
         if (bankAccountId == null) {
             return accTransactionId;
         } else {
+            
             String accountCredit = " ";
             String transactionCode = "AWL";
             String transactionRef = "Merlion Bank Branch";
 
             Calendar cal = Calendar.getInstance();
-//            int year = cal.get(Calendar.YEAR);
-//            int month = cal.get(Calendar.MONTH);
-//            int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
-//            String transactionDate = dayOfMonth + "-" + (month + 1) + "-" + year;
+
             Long transactionDateMilis = cal.getTimeInMillis();
 
             accTransactionId = addNewTransaction(cal.getTime().toString(), transactionCode, transactionRef,
@@ -220,33 +214,6 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
 
             return accTransactionId;
         }
-    }
-
-    @Override
-    public String checkPassword(String bankAccountNum, String bankAccountPwd) {
-        System.out.println("*");
-        System.out.println("****** deposit/TransactionSessionBean: checkPassword() ******");
-
-        BankAccount bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountByNum(bankAccountNum);
-        String hashedPwd = "";
-
-        try {
-            hashedPwd = md5Hashing(bankAccountPwd);
-        } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(BankAccountSessionBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-        if (bankAccount.getBankAccountId() == null) {
-            System.out.println("****** deposit/TransactionSessionBean: checkPassword(): invalid bank account number: no result found");
-            return "Error! Bank account does not exist!";
-        } else {
-            if (!hashedPwd.equals(bankAccount.getBankAccountPwd())) {
-                System.out.println("****** deposit/TransactionSessionBean: checkPassword(): bank account password is wrong");
-                return "Password is incorrect!";
-            }
-        }
-        System.out.println("****** deposit/TransactionSessionBean: checkPassword(): bank account password is correct");
-        return "Password is correct!";
     }
 
     @Override
@@ -273,10 +240,7 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
         String transactionRefTo = bankAccountFrom.getBankAccountType() + "-" + fromAccount;
 
         Calendar cal = Calendar.getInstance();
-//        int year = cal.get(Calendar.YEAR);
-//        int month = cal.get(Calendar.MONTH);
-//        int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
-//        String transactionDate = dayOfMonth + "-" + (month + 1) + "-" + year;
+
         Long transactionDateMilis = cal.getTimeInMillis();
 
         Long fromTransactionId = addNewTransaction(cal.getTime().toString(), transactionCode, transactionRefFrom,
@@ -310,13 +274,13 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
             if (Double.valueOf(initialDepositAmount) < 3000) {
                 return "Initial deposit amount is insufficient.";
             } else {
-                bankAccount.setBankAccountStatus("Activated");
+                bankAccount.setBankAccountStatus("Active");
             }
         } else if (bankAccountType.equals("Basic Savings Account")) {
             if (Double.valueOf(initialDepositAmount) < 1) {
                 return "Initial deposit amount is insufficient.";
             } else {
-                bankAccount.setBankAccountStatus("Activated");
+                bankAccount.setBankAccountStatus("Active");
             }
         } else if (bankAccountType.equals("Fixed Deposit Account")) {
 
@@ -329,7 +293,7 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
                 } else if (Double.valueOf(initialDepositAmount) > 999999) {
                     return "Please contact us at 800 820 8820 or visit our branch.";
                 } else {
-                    bankAccount.setBankAccountStatus("Activated");
+                    bankAccount.setBankAccountStatus("Active");
                 }
             }
         }

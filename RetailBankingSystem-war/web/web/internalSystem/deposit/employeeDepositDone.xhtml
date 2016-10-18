@@ -8,59 +8,28 @@
                 template="/WEB-INF/internalSystemTemplate.xhtml">
 
     <ui:define name="content">
-        <h:body>
-            <h:form>
-                <p:menubar>
-                    <p:submenu label="Home">
-                        <p:menuitem value="Home" url="/web/internalSystem/infrastructure/employeeCounterTellerMainPage.xhtml"/>
-                    </p:submenu>
-
-                    <p:submenu label="Log Out">
-                        <p:menuitem value="Logout" actionListener="#{employeeLoginManagedBean.doLogOut}" />
-                    </p:submenu>
-                </p:menubar>
-            </h:form>
-
-
-            <h:form id="formMain">
-                <div class="ui-g ui-fluid">
-                    <div class="ui-g-12 ui-lg-12">
-                        <div class="card card-w-title"> 
-                            <div align="center">
-                                <h:outputText value="Welcome " />
-                                <h:outputText value="#{employeeAccountManagedBean.userName}!"/>
-                                <br/>
-                                <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
-                                <br/>
-                                <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
-                                <br/>
-                                <h:outputText value="You have logged in as: Counter Teller"/>
-                                <br/>
-                                <br/>
-                                <br/>
-                                <p:panel id="panel" header="Cash Deposit"> 
-                                    <p:panelGrid>
-                                        <h:form id="formMain">
-                                            <h:outputText style="font-weight: bold" value="Transaction Id: "/>
-                                            <h:outputText value="#{employeeDepositDoneManagedBean.transactionId}"/>
-                                            <br/>
-                                            <h:outputText style="font-weight: bold" value="Status Message: " />
-                                            <h:outputText value="#{employeeDepositDoneManagedBean.statusMessage}" />
-                                            <br/>
-                                            <h:outputText style="font-weight: bold" value="Bank Account Number: "/>
-                                            <h:outputText value="#{employeeDepositDoneManagedBean.depositAccountNum}"/>
-                                            <br/>
-                                            <h:outputText style="font-weight: bold" value="Deposit Amount: "/>
-                                            <h:outputText value="#{employeeDepositDoneManagedBean.depositAmt}"/>
-                                        </h:form>
-                                    </p:panelGrid>
-                                </p:panel>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </h:form>
-        </h:body>
+        <h:form id="formMain">
+            <div align="center">
+                <h:outputText value="You have logged in as: Counter Teller"/>
+                <br/>
+                <p:panel id="panel" header="Cash Deposit"> 
+                    <p:panelGrid>
+                        <h:form id="formMain">
+                            <h:outputText style="font-weight: bold" value="Transaction Id: "/>
+                            <h:outputText value="#{employeeDepositDoneManagedBean.transactionId}"/>
+                            <br/>
+                            <h:outputText style="font-weight: bold" value="Status Message: " />
+                            <h:outputText value="#{employeeDepositDoneManagedBean.statusMessage}" />
+                            <br/>
+                            <h:outputText style="font-weight: bold" value="Bank Account Number: "/>
+                            <h:outputText value="#{employeeDepositDoneManagedBean.depositAccountNum}"/>
+                            <br/>
+                            <h:outputText style="font-weight: bold" value="Deposit Amount: "/>
+                            <h:outputText value="#{employeeDepositDoneManagedBean.depositAmt}"/>
+                        </h:form>
+                    </p:panelGrid>
+                </p:panel>
+            </div>
+        </h:form>
     </ui:define>
 </ui:composition>

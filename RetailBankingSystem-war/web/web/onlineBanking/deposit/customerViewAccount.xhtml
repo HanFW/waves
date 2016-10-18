@@ -12,58 +12,52 @@
 
     <ui:define name="content">
 
-        <h:form>
-            <div class="ui-g">
-                <div class="ui-g-12 ui-lg-12">
-                    <div class="card card-w-title">                      
+        <h:form>             
+            <p:panel>
+                <p:outputLabel value="Welcome "/>
+                <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
+            </p:panel>
 
-                        <p:messages globalOnly="true"/>
-                        
-                        <p:panel>
-                            <p:outputLabel value="Welcome "/>
-                            <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
-                        </p:panel>
+            <p:messages globalOnly="true"/>
 
-                        <p:messages globalOnly="true"/>
+            <p:dataTable var="bankAccount" value="#{accountDataTableBean.bankAccount}" reflow="true" paginator="true" rows="10" emptyMessage="No Account">
+                <f:facet name="header">
+                    View My Account
+                </f:facet>
+                <p:column headerText="Bank Account Type"> 
+                    <h:outputText value="#{bankAccount.bankAccountType}" />
+                </p:column>
 
-                        <p:dataTable var="bankAccount" value="#{accountDataTableBean.bankAccount}" reflow="true" paginator="true" rows="10" emptyMessage="No Account">
-                            <f:facet name="header">
-                                View My Account
-                            </f:facet>
-                            <p:column headerText="Bank Account Type"> 
-                                <h:outputText value="#{bankAccount.bankAccountType}" />
-                            </p:column>
+                <p:column headerText="Bank Account Number" >
+                    <h:outputText value="#{bankAccount.bankAccountNum}" /> 
+                </p:column>
 
-                            <p:column headerText="Bank Account Number" >
-                                <h:outputText value="#{bankAccount.bankAccountNum}" /> 
-                            </p:column>
+                <p:column headerText="Balance"> 
+                    <h:outputText value="S$#{bankAccount.bankAccountBalance}" />
+                </p:column>
 
-                            <p:column headerText="Balance"> 
-                                <h:outputText value="S$#{bankAccount.bankAccountBalance}" />
-                            </p:column>
+                <p:column headerText="Status"> 
+                    <h:outputText value="#{bankAccount.bankAccountStatus}" />
+                </p:column>
 
-                            <p:column headerText="Transfer"> 
-                                <center>
-                                    <p:menuButton value="Select One ">
-                                        <p:menuitem value="Transfer To My Account" action="/web/onlineBanking/deposit/customerToMyAccount.xhtml?faces-redirect=true"/>
-                                        <p:menuitem value="Transfer To Other Merlion Accounts" action="/web/onlineBanking/deposit/ToOthersAccount.xhtml?faces-redirect=true"/>
-                                        <p:menuitem value="One-Time Transfer" action="/web/onlineBanking/deposit/OneTimeTransfer.xhtml?faces-redirect=true"/>
-                                    </p:menuButton>
-                                </center>
-                            </p:column>
+                <p:column headerText="Transfer"> 
+                    <center>
+                        <p:menuButton value="Select One ">
+                            <p:menuitem value="Transfer To My Account" action="/web/onlineBanking/deposit/customerToMyAccount.xhtml?faces-redirect=true"/>
+                            <p:menuitem value="Transfer To Other Merlion Accounts" action="/web/onlineBanking/deposit/ToOthersAccount.xhtml?faces-redirect=true"/>
+                            <p:menuitem value="One-Time Transfer" action="/web/onlineBanking/deposit/OneTimeTransfer.xhtml?faces-redirect=true"/>
+                        </p:menuButton>
+                    </center>
+                </p:column>
 
-                            <p:column headerText="Statement"> 
-                                <center>
-                                    <p:commandButton process="@this" action="/web/onlineBanking/deposit/customerViewStatement.xhtml?faces-redirect=true" icon="ui-icon-document">
-                                    </p:commandButton>
-                                </center>
-                            </p:column>
+                <p:column headerText="Statement"> 
+                    <center>
+                        <p:commandButton process="@this" action="/web/onlineBanking/deposit/customerViewStatement.xhtml?faces-redirect=true" icon="ui-icon-document">
+                        </p:commandButton>
+                    </center>
+                </p:column>
 
-                        </p:dataTable>
-
-                    </div>
-                </div>
-            </div>
+            </p:dataTable>
         </h:form>
         <ezcomp:CCTimeout/>
     </ui:define>
