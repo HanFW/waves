@@ -1,5 +1,6 @@
 package ejb.deposit.entity;
 
+import ejb.card.entity.DebitCard;
 import ejb.customer.entity.CustomerBasic;
 import java.io.Serializable;
 import javax.persistence.Entity;
@@ -13,8 +14,13 @@ import javax.persistence.Column;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
+@XmlRootElement(name = "bankAccount")
+@XmlAccessorType (XmlAccessType.FIELD)
 public class BankAccount implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -36,6 +42,9 @@ public class BankAccount implements Serializable {
     private String fixedDepositStatus;
 
     private Double statementDateDouble;
+    
+    @OneToMany(cascade={CascadeType.ALL}, fetch=FetchType.EAGER, mappedBy="bankAccount")
+    private List<DebitCard> debitCards;
 
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "bankAccount")
     private List<AccTransaction> accTransaction;
@@ -57,20 +66,20 @@ public class BankAccount implements Serializable {
         this.bankAccountId = bankAccountId;
     }
 
+    public String getBankAccountType() {
+        return bankAccountType;
+    }
+
+    public void setBankAccountType(String bankAccountType) {
+        this.bankAccountType = bankAccountType;
+    }
+
     public String getBankAccountNum() {
         return bankAccountNum;
     }
 
     public void setBankAccountNum(String bankAccountNum) {
         this.bankAccountNum = bankAccountNum;
-    }
-
-    public String getBankAccountType() {
-        return bankAccountType;
-    }
-
-    public void setBankAccountTyep(String bankAccountType) {
-        this.bankAccountType = bankAccountType;
     }
 
     public List<AccTransaction> getAccTransaction() {
@@ -176,6 +185,23 @@ public class BankAccount implements Serializable {
     public void setStatementDateDouble(Double statementDateDouble) {
         this.statementDateDouble = statementDateDouble;
     }
+
+    public List<DebitCard> getDebitCards() {
+        return debitCards;
+    }
+
+    public void setDebitCards(List<DebitCard> debitCards) {
+        this.debitCards = debitCards;
+    }
+    
+    public void addDebitCard(DebitCard debitCard){
+        this.debitCards.add(debitCard);
+    }
+    
+    public void removeDebitCard(DebitCard debitCard){
+        this.debitCards.remove(debitCard);
+    }
+       
 
     @Override
     public int hashCode() {

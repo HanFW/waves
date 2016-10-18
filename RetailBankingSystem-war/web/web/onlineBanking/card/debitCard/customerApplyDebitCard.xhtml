@@ -1,0 +1,349 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/onlineBankingTemplate.xhtml"
+                xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
+    <ui:define name="content">
+
+        <h:body>
+
+            <div align="center">
+                <h:form>
+                    <p:panel>
+                        <p:outputLabel value="Welcome "/>
+                        <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
+                    </p:panel>
+
+                    <p:growl id="growl" showDetail="true" globalOnly="true"/>
+                    <p:wizard widgetVar ="applyDebitCardWizard" flowListener="#{customerApplyDebitCardManagedBean.onFlowProcess}" class="ui-lg-12" showNavBar="false">
+
+                        <p:tab id="selectCard">
+
+                            <h:panelGrid columns="1">
+                                <p:steps activeIndex="0">
+                                    <p:menuitem value="1. Select Card" />
+                                    <p:menuitem value="2. Input Details" />
+                                    <p:menuitem value="3. Declaration" />
+                                    <p:menuitem value="4. Verify Details" />
+                                    <p:menuitem value="5. Completion" />
+                                </p:steps>
+                            </h:panelGrid>
+
+                            <p:messages autoUpdate="true"/>   
+
+                            <h:panelGrid columns="1" class="ui-lg-6">                          
+
+                                <p:outputLabel style="font-size: 20px;font-weight: bold" value="Important"/>
+                                <br/>
+                                <br/>
+
+                                <p:outputLabel style="font-size: 20px" value="Applicants must be 16 years of age 16 and above."/>
+                                <br/>
+
+                                <p:outputLabel style="font-size: 20px" value="You will receive your Debit Card(s) within 3 to 5 working days upon successful application."/>
+                                <br/>
+
+                                <p:outputLabel style="font-size: 20px" value="Purchases are directly deducted from your Bank account.There are potential risks of unauthorized signature-based, contactless payment with MasterCard® Contactless / Visa payWave or card-not-present transactions (such as online, phone and mail orders)."/>
+                                <br/>
+
+                                <p:outputLabel style="font-size: 20px" value="Your signature will be verified against any of your signature records with the Bank. Please ensure that the signature on the application form matches the Bank's record."/>
+                                <br/>
+
+                            </h:panelGrid>
+
+
+                            <p:outputLabel style="font-size: 40px" value="I would to apply for"/>
+
+                            <h:panelGrid>
+                                <p:row>
+                                    <p:column>
+                                        <h:outputText style="font-size: 30px" value="Most Popular Cards"/>
+                                    </p:column>
+                                </p:row>
+
+
+                                <p:selectOneRadio id="selectDebitCard" required="true" requiredMessage="Please select a debit card type" style="text-align:left" value="#{customerApplyDebitCardManagedBean.cardType}">
+                                    <f:selectItem itemLabel="Merlion Bank Visa PayWave Debit Card" itemValue="Visa PayWave" /> 
+                                    <f:selectItem itemLabel="Watsons Merlion Bank Mastercard Debit Card" itemValue="Watsons Mastercard" />                                   
+                                    <f:selectItem itemLabel="Merlion Bank NUS Visa Debit Card" itemValue="NUS Visa" />  
+                                </p:selectOneRadio>
+                                <p:messages for="selectDebitCard"/>
+
+                                <p:panelGrid columns="3" class="ui-lg-12" style="border: none">
+
+                                    <p:commandLink value="View Details" oncomplete="PF('debitCard1').show()"/>
+                                    <p:commandLink value="View Details" oncomplete="PF('debitCard2').show();"/>
+                                    <p:commandLink value="View Details" oncomplete="PF('debitCard3').show();"/>  
+
+                                </p:panelGrid>
+                                <br/>
+                                <br/>
+
+                                <p:panelGrid>
+                                    <p:selectOneMenu required="true" requiredMessage="Please select a deposit account" id="depositAccount" value="#{customerApplyDebitCardManagedBean.selectedDepositAccount}">
+                                        <f:selectItem itemLabel="Please Select Depoit Account"/>
+                                        <f:selectItems value="#{customerApplyDebitCardManagedBean.depositAccounts}"/>
+                                    </p:selectOneMenu>
+                                </p:panelGrid>
+                                <p:messages for="depositAccount"/>
+
+                            </h:panelGrid>
+
+                            <!--<h:form>-->
+                            <p:dialog  header="Merlion Bank Visa PayWave Debit Card" widgetVar="debitCard1" minHeight="400">
+                                <h:outputText value="Annual Fee(Inclusive of GST)"/>
+                                <br/>
+                                <h:outputText value="Principal: S$5.00"/>
+                                <br/>
+                                <h:outputText value="Annual Fee Waiver: 3 year"/>  
+                                <br/>
+                                <h:outputText value="5% cashback for contactless transactions"/>
+                                <br/>
+                                <h:outputText value="Conditions: not withdraw more than 3 times at Merlion Bank ATMs across all your Merlion Bank Cards as well as local Merlion Bank branches in the same month." />                              
+                            </p:dialog>
+                            <!--</h:form>-->
+
+                            <!--<h:form>-->
+                            <p:dialog header="Watsons Merlion Bank Mastercard Debit Card" widgetVar="debitCard2" minHeight="400">
+                                <h:outputText value="Annual Fee(Inclusive of GST)"/>
+                                <br/>
+                                <h:outputText value="Principal: S$5.00"/>
+                                <br/>
+                                <h:outputText value="Annual Fee Waiver: 5 year"/>  
+                                <br/>
+                                <h:outputText value="3% cashback for contactless transactions"/>                                                  
+                            </p:dialog>
+                            <!--</h:form>-->
+
+                            <!--<h:form>-->
+                            <p:dialog header="Watsons Merlion Bank Mastercard Debit Card" widgetVar="debitCard3" minHeight="400">
+                                <h:outputText value="Annual Fee(Inclusive of GST)"/>
+                                <br/>
+                                <h:outputText value="Principal: S$0.00"/>
+                                <br/>
+                                <h:outputText value="Annual Fee Waiver: 4 year"/>  
+                                <br/>
+                                <h:outputText value="3% cashback for contactless transactions"/>                                                  
+                            </p:dialog>
+                            <!--</h:form>-->
+
+                            <h:panelGrid columns="2" class="ui-lg-6"> 
+                                <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" actionListener="#{customerApplyDebitCardManagedBean.checkExistingDebitCard}" />
+                            </h:panelGrid>
+
+                        </p:tab>
+
+                        <p:tab id="inputDetails">
+                            <h:panelGrid columns="1">
+                                <p:steps activeIndex="1">
+                                    <p:menuitem value="1. Select Card" />
+                                    <p:menuitem value="2. Input Details" />
+                                    <p:menuitem value="3. Declaration" />
+                                    <p:menuitem value="4. Verify Details" />
+                                    <p:menuitem value="5. Completion" />
+                                </p:steps>
+                            </h:panelGrid> 
+
+                            <h:panelGrid columns="1" class="ui-lg-6">  
+                                <p:messages globalOnly="true"/>
+
+                                <h1>Personal Details</h1>
+                                <p:row>
+                                    <p:outputLabel value="Name: "/>
+                                    <p:outputLabel value="#{customerApplyDebitCardManagedBean.customerViaSessionMap.customerName}"/>
+                                </p:row>
+
+                                <p:row>
+                                    <p:outputLabel value="Name to appear on Card: "/>
+                                    <p:inputText value="#{customerApplyDebitCardManagedBean.cardHolderName}"/>
+                                </p:row>
+
+                                <p:row>
+                                    <p:outputLabel value="NRIC/Passport: "/>
+                                    <p:outputLabel value="#{customerApplyDebitCardManagedBean.customerViaSessionMap.customerIdentificationNum}"/>
+                                </p:row>
+
+                                <p:row>
+                                    <p:outputLabel value="Date of Birth: "/>
+                                    <p:outputLabel value="#{customerApplyDebitCardManagedBean.customerViaSessionMap.customerDateOfBirth}"/>
+                                </p:row>
+
+                            </h:panelGrid>                            
+
+                            <h:panelGrid columns="1" class="ui-lg-6">  
+
+                                <h1>Contact Details</h1>
+                                <p:row>
+                                    <p:outputLabel value="Address: "/>
+                                    <p:outputLabel value="#{customerApplyDebitCardManagedBean.customer.customerAddress}"/>
+                                </p:row>
+
+                                <p:row>
+                                    <p:outputLabel value="Email: " />
+                                    <p:inputText value="#{customerApplyDebitCardManagedBean.customerEmail}"/>
+                                </p:row>
+
+                                <p:row>
+                                    <p:outputLabel value="Mobile: "/>
+                                    <p:inputText value="#{customerApplyDebitCardManagedBean.customerMobileNum}"/>
+                                </p:row>
+
+                                <p:row>
+                                    <p:outputLabel value="We will send ALL official bank alerts and One-Time Password(OTP) 
+                                                   for iBanking and online purchases to this mobile number. This mobile number will 
+                                                   supersede all existing mobile number(s) currently on our records."/>
+                                </p:row>
+
+                            </h:panelGrid>
+
+                            <h:panelGrid columns="2" class="ui-lg-6"> 
+                                <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('applyDebitCardWizard').back();" />
+                                <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('applyDebitCardWizard').next();" />
+                            </h:panelGrid>
+
+                        </p:tab>
+
+                        <p:tab id="Declaration">
+                            <h:panelGrid columns="1">
+                                <p:steps activeIndex="2">
+                                    <p:menuitem value="1. Select Card" />
+                                    <p:menuitem value="2. Input Details" />
+                                    <p:menuitem value="3. Declaration" />
+                                    <p:menuitem value="4. Verify Details" />
+                                    <p:menuitem value="5. Completion" />
+                                </p:steps>
+                            </h:panelGrid>
+
+                            <p:messages autoUpdate="true"/> 
+
+                            <h1>Declaration</h1>
+                            <p:selectBooleanCheckbox id="declaration" value="#{customerApplyDebitCardManagedBean.agreement}"/>
+                            <p:outputLabel value="I have read and agree to be bound by the terms of this application,
+                                           the Merlion Bank Debit Card Agreement and the above Declaration"/>
+
+                            <h:panelGrid columns="2" class="ui-lg-6"> 
+                                <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('applyDebitCardWizard').back();" />
+                                <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" actionListener="#{customerApplyDebitCardManagedBean.checkReadAgreement}"/>
+                            </h:panelGrid>
+
+                        </p:tab>
+
+                        <p:tab id="verifyDetails">
+                            <h:panelGrid columns="1">
+                                <p:steps activeIndex="3">
+                                    <p:menuitem value="1. Select Card" />
+                                    <p:menuitem value="2. Input Details" />
+                                    <p:menuitem value="3. Declaration" />
+                                    <p:menuitem value="4. Verify Details" />
+                                    <p:menuitem value="5. Completion" />
+                                </p:steps>
+                            </h:panelGrid>
+
+                            <h:outputText style="font-size: 40px" value="Apply for New Debit Cards"/>
+                            <h:panelGrid columns="1" class="ui-lg-6">  
+                                <h1>Personal Details</h1>
+                                <p:row>
+                                    <p:outputLabel style="font-weight: bold" value="Card: "/>
+                                    <p:outputLabel value="#{customerApplyDebitCardManagedBean.cardType}"/>
+                                </p:row>
+
+                                <p:row>
+                                    <p:outputLabel style="font-weight: bold" value="Depost Account for Selected Card: "/>
+                                    <p:outputLabel value="#{customerApplyDebitCardManagedBean.selectedDepositAccount}"/>
+                                </p:row>
+
+                                <p:row>
+                                    <p:outputLabel style="font-weight: bold" value="Name: "/>
+                                    <p:outputLabel value="#{customerApplyDebitCardManagedBean.customerViaSessionMap.customerName}"/>
+                                </p:row>
+
+                                <p:row>
+                                    <p:outputLabel style="font-weight: bold" value="Saluation: "/>
+                                    <p:outputLabel value="#{customerApplyDebitCardManagedBean.customerViaSessionMap.customerSalutation}"/>
+                                </p:row>
+
+                                <p:row>
+                                    <p:outputLabel style="font-weight: bold" value="Name to appear on Card: "/>
+                                    <p:outputLabel value="#{customerApplyDebitCardManagedBean.cardHolderName}"/>
+                                </p:row>
+
+                                <p:row>
+                                    <p:outputLabel style="font-weight: bold" value="NRIC/Passwort: "/>
+                                    <p:outputLabel value="#{customerApplyDebitCardManagedBean.customerViaSessionMap.customerIdentificationNum}"/>
+                                </p:row>
+
+                                <p:row>
+                                    <p:outputLabel style="font-weight: bold" value="Date of Birth: "/>
+                                    <p:outputLabel value="#{customerApplyDebitCardManagedBean.customerViaSessionMap.customerDateOfBirth}"/>
+                                </p:row>
+                            </h:panelGrid>
+
+                            <h:panelGrid columns="1" class="ui-lg-6">
+                                <h1>Contact Details</h1>
+                                <p:row>
+                                    <p:outputLabel style="font-weight: bold" value="Address: "/>
+                                    <p:outputLabel value="#{customerApplyDebitCardManagedBean.customerViaSessionMap.customerAddress}"/>
+                                </p:row>
+
+                                <p:row>
+                                    <p:outputLabel style="font-weight: bold" value="Email: "/>
+                                    <p:outputLabel value="#{customerApplyDebitCardManagedBean.customerEmail}"/>
+                                </p:row>
+
+                                <p:row>
+                                    <p:outputLabel style="font-weight: bold" value="Mobile: "/>
+                                    <p:outputLabel value="#{customerApplyDebitCardManagedBean.customerMobileNum}"/>
+                                </p:row>
+                            </h:panelGrid>
+
+                            <h:panelGrid columns="2" class="ui-lg-6"> 
+                                <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('applyDebitCardWizard').back();" />
+                                <p:commandButton  value="Confirm" icon="ui-icon-arrow-1-e" iconPos="right" actionListener="#{customerApplyDebitCardManagedBean.createDebitCard}"/>
+                            </h:panelGrid>
+
+
+                        </p:tab>
+
+                        <p:tab id="completion">
+                            <h:panelGrid columns="1">
+                                <p:steps activeIndex="4">
+                                    <p:menuitem value="1. Select Card" />
+                                    <p:menuitem value="2. Input Details" />
+                                    <p:menuitem value="3. Declaration" />
+                                    <p:menuitem value="4. Verify Details" />
+                                    <p:menuitem value="5. Completion" />
+                                </p:steps>
+                            </h:panelGrid>
+
+                            <h:outputText style="font-size: 40px" value="Application Successful!"/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <h:outputText value="Your application has been succesfuly submitted."/>
+                            <br/>
+                            <h:outputText value="It will take 2-3 working days for processing your application."/>
+                            <br/>
+                            <h:outputText value="Once your application is successful, we will inform you via email and your
+                                          debit card will be mailed to your address immediately."/>
+                            <br/>
+                            <br/>
+                            <br/>
+
+
+                        </p:tab>
+                    </p:wizard>
+                </h:form>
+
+
+            </div>
+
+
+        </h:body>
+    </ui:define>
+</ui:composition>
+
+

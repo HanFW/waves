@@ -13,8 +13,10 @@
 
     <ui:define name="content">
 
+        <p:messages id="message" globalOnly="true"/>
+
         <h:form>
-            <p:commandButton id="oneTimeBtn" value="Open Account"
+            <p:commandButton id="oneTimeBtn" value="Open Account" update="message"
                              actionListener="#{accountManagedBean.openAccountOneClick()}" ajax="true"/>
         </h:form>
 
@@ -23,7 +25,6 @@
 
             <div align="center">
                 <p:wizard widgetVar ="openAccountWizard" flowListener="#{accountManagedBean.onFlowProcess}" class="ui-lg-12" showNavBar="false">
-
                     <p:tab id="account">
                         <h:panelGrid columns="1">
                             <p:steps activeIndex="0">
@@ -1042,7 +1043,7 @@
 
                         <h:panelGrid columns="2" class="ui-lg-6">     
                             <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('openAccountWizard').back()"/>
-                            
+
                             <p:commandButton id="saveBtn" value="Open Account" update="growl"
                                              actionListener="#{accountManagedBean.saveAccount}" ajax="true"/>
                         </h:panelGrid> 

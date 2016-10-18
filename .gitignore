@@ -10,5 +10,6 @@
 /nbproject/private/
 /RetailBankingSystem-war/nbproject/private/
 /RetailBankingSystem-ejb/nbproject/private/
-/RetailBankingSystem-ejb/build/
-/build/
+/RetailBankingSystem-ejb/build/classes
+/RetailBankingSystem-ejb/build/empty
+#/build/

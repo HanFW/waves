@@ -18,7 +18,6 @@ public class TransferDoneManagedBean {
     private String toBankAccountNumWithType;
     private String fromBankAccountNumWithType;
     private String fromBankAccountBalance;
-    private String toBankAccountBalance;
 
     private boolean visible;
 
@@ -35,7 +34,6 @@ public class TransferDoneManagedBean {
         fromAccount = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("fromAccount").toString();
         toAccount = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("toAccount").toString();
         fromBankAccountBalance = "S$" + FacesContext.getCurrentInstance().getExternalContext().getFlash().get("fromAccountBalance").toString();
-        toBankAccountBalance = "S$" + FacesContext.getCurrentInstance().getExternalContext().getFlash().get("toAccountBalance").toString();
     }
 
     public void show() {
@@ -116,13 +114,5 @@ public class TransferDoneManagedBean {
 
     public void setFromBankAccountBalance(String fromBankAccountBalance) {
         this.fromBankAccountBalance = fromBankAccountBalance;
-    }
-
-    public String getToBankAccountBalance() {
-        return toBankAccountBalance;
-    }
-
-    public void setToBankAccountBalance(String toBankAccountBalance) {
-        this.toBankAccountBalance = toBankAccountBalance;
     }
 }
