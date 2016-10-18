@@ -10,7 +10,7 @@ import javax.persistence.Id;
 public class BillingOrganization implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long billingOrganizationId;
     private String billingOrganizationName;
     private String bankAccountNum;

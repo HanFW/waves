@@ -15,6 +15,7 @@ import javax.persistence.Query;
 
 @Stateless
 public class StandingGIROSessionBean implements StandingGIROSessionBeanLocal {
+
     @EJB
     private GIROSessionBeanLocal gIROSessionBeanLocal;
 
@@ -67,8 +68,9 @@ public class StandingGIROSessionBean implements StandingGIROSessionBeanLocal {
             return new ArrayList<StandingGIRO>();
         }
         try {
-            Query query = entityManager.createQuery("Select s From StandingGIRO s Where s.customerBasic=:customerBasic");
+            Query query = entityManager.createQuery("Select s From StandingGIRO s Where s.customerBasic=:customerBasic And s.giroType=:giroType");
             query.setParameter("customerBasic", customerBasic);
+            query.setParameter("giroType", "Standing");
 
             if (query.getResultList().isEmpty()) {
                 return new ArrayList<StandingGIRO>();

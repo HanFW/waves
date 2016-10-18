@@ -1,9 +1,8 @@
 package managedbean.payment.customer;
 
 import ejb.customer.entity.CustomerBasic;
-import ejb.payment.session.GIROSessionBeanLocal;
-import ejb.payment.entity.FastPayee;
-import ejb.payment.entity.GIRO;
+import ejb.payment.entity.NonStandingGIRO;
+import ejb.payment.session.NonStandingGIROSessionBeanLocal;
 import java.io.IOException;
 import java.util.List;
 import javax.ejb.EJB;
@@ -16,22 +15,44 @@ import javax.faces.context.FacesContext;
 @RequestScoped
 
 public class NonStandingGIROManagedBean {
-
+    
     @EJB
-    private GIROSessionBeanLocal gIROSessionBeanLocal;
+    private NonStandingGIROSessionBeanLocal nonStandingGIROSessionBeanLocal;
     
     private ExternalContext ec;
+    private String paymentAmt;
+    private Long giroId;
 
     public NonStandingGIROManagedBean() {
     }
 
-    public List<GIRO> getNonStandingGIROs() throws IOException {
+    public String getPaymentAmt() {
+        return paymentAmt;
+    }
+
+    public void setPaymentAmt(String paymentAmt) {
+        this.paymentAmt = paymentAmt;
+    }
+
+    public Long getGiroId() {
+        return giroId;
+    }
+
+    public void setGiroId(Long giroId) {
+        this.giroId = giroId;
+    }
+
+    public List<NonStandingGIRO> getNonStandingGIROs() throws IOException {
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
         CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
 
-        List<GIRO> standingGiros = gIROSessionBeanLocal.retrieveNonStandingGIROByCusId(customerBasic.getCustomerBasicId());
+        List<NonStandingGIRO> nonStandingGiros = nonStandingGIROSessionBeanLocal.retrieveNonStandingGIROByCusId(customerBasic.getCustomerBasicId());
 
-        return standingGiros;
+        return nonStandingGiros;
+    }
+    
+    public void nonStandingGIROTransfer() {
+        
     }
 }

@@ -4,9 +4,8 @@ import ejb.customer.entity.CustomerBasic;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import ejb.payment.session.BillingOrganizationSessionBeanLocal;
-import ejb.payment.session.OneTimeGIROSessionBeanLocal;
-import ejb.payment.session.RecurrentGIROSessionBeanLocal;
 import ejb.payment.entity.BillingOrganization;
+import ejb.payment.session.NonStandingGIROSessionBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Calendar;
@@ -24,12 +23,8 @@ import javax.faces.view.ViewScoped;
 @ViewScoped
 
 public class AddNonStandingGIROManagedBean implements Serializable {
-
     @EJB
-    private RecurrentGIROSessionBeanLocal recurrentGIROSessionBeanLocal;
-
-    @EJB
-    private OneTimeGIROSessionBeanLocal oneTimeGIROSessionBeanLocal;
+    private NonStandingGIROSessionBeanLocal nonStandingGIROSessionBeanLocal;
 
     @EJB
     private BankAccountSessionBeanLocal bankAccountSessionBeanLocal;
@@ -52,6 +47,7 @@ public class AddNonStandingGIROManagedBean implements Serializable {
     private Long giroId;
     private String updateDate;
     private String giroType;
+    private String paymentFrequency;
 
     private ExternalContext ec;
 
@@ -203,15 +199,26 @@ public class AddNonStandingGIROManagedBean implements Serializable {
         this.giroType = giroType;
     }
 
+    public String getPaymentFrequency() {
+        return paymentFrequency;
+    }
+
+    public void setPaymentFrequency(String paymentFrequency) {
+        this.paymentFrequency = paymentFrequency;
+    }
+
     public void addNewBillingOrganization() throws IOException {
 
+        ec = FacesContext.getCurrentInstance().getExternalContext();
+        
         CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
         giroType = "Non Standing";
 
         if (transferMethod.equals("One Time")) {
-            giroId = oneTimeGIROSessionBeanLocal.addNewOneTimeGIRO(billingOrganization,
+            paymentFrequency = "One Time";
+            giroId = nonStandingGIROSessionBeanLocal.addNewNonStandingGIRO(billingOrganization,
                     billReference, bankAccountNumWithType, bankAccountNumWithType,
-                    paymentAmt, giroType, customerBasic.getCustomerBasicId());
+                    paymentFrequency, paymentAmt, giroType, customerBasic.getCustomerBasicId());
 
             statusMessage = "Your new billing organization has been added!";
             Calendar cal = Calendar.getInstance();
@@ -223,10 +230,10 @@ public class AddNonStandingGIROManagedBean implements Serializable {
             ec.getFlash().put("billingOrganization", billingOrganization);
             ec.getFlash().put("billReference", billReference);
 
-            ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/payment/customerAddNonStandingGIRODone.xhtml?faces-redirect=true");
+            ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/payment/customerAddBillingOrganizationDone.xhtml?faces-redirect=true");
 
         } else {
-            giroId = recurrentGIROSessionBeanLocal.addNewRecurrentGIRO(billingOrganization, billReference,
+            giroId = nonStandingGIROSessionBeanLocal.addNewNonStandingGIRO(billingOrganization, billReference,
                     bankAccountNumWithType, bankAccountNumWithType, transferFrequency,
                     paymentAmt, giroType, customerBasic.getCustomerBasicId());
 
@@ -240,7 +247,7 @@ public class AddNonStandingGIROManagedBean implements Serializable {
             ec.getFlash().put("billingOrganization", billingOrganization);
             ec.getFlash().put("billReference", billReference);
 
-            ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/payment/customerAddNonStandingGIRODone.xhtml?faces-redirect=true");
+            ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/payment/customerAddBillingOrganizationDone.xhtml?faces-redirect=true");
         }
     }
 }
