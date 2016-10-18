@@ -4,9 +4,7 @@ import ejb.deposit.entity.BankAccount;
 import ejb.deposit.entity.MessageBox;
 import ejb.deposit.entity.Payee;
 import ejb.payment.entity.FastPayee;
-import ejb.payment.entity.OneTimeGIRO;
-import ejb.payment.entity.RecurrentGIRO;
-import ejb.payment.entity.StandingGIRO;
+import ejb.payment.entity.GIRO;
 import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -70,13 +68,7 @@ public class CustomerBasic implements Serializable {
     private List<FastPayee> fastPayee;
 
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
-    private List<OneTimeGIRO> oneTimeGiro;
-    
-    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
-    private List<RecurrentGIRO> recurrentGiro;
-    
-    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
-    private List<StandingGIRO> standingGiro;
+    private List<GIRO> giro;
 
     public Long getCustomerBasicId() {
         return customerBasicId;
@@ -322,28 +314,12 @@ public class CustomerBasic implements Serializable {
         this.fastPayee = fastPayee;
     }
 
-    public List<OneTimeGIRO> getOneTimeGiro() {
-        return oneTimeGiro;
+    public List<GIRO> getGiro() {
+        return giro;
     }
 
-    public void setOneTimeGiro(List<OneTimeGIRO> oneTimeGiro) {
-        this.oneTimeGiro = oneTimeGiro;
-    }
-
-    public List<RecurrentGIRO> getRecurrentGiro() {
-        return recurrentGiro;
-    }
-
-    public void setRecurrentGiro(List<RecurrentGIRO> recurrentGiro) {
-        this.recurrentGiro = recurrentGiro;
-    }
-
-    public List<StandingGIRO> getStandingGiro() {
-        return standingGiro;
-    }
-
-    public void setStandingGiro(List<StandingGIRO> standingGiro) {
-        this.standingGiro = standingGiro;
+    public void setGiro(List<GIRO> giro) {
+        this.giro = giro;
     }
 
     @Override

@@ -17,7 +17,7 @@ public class OneTimeGIROSessionBean implements OneTimeGIROSessionBeanLocal {
 
     @Override
     public Long addNewOneTimeGIRO (String billingOrganization, String billReference, String bankAccountNum,
-            String bankAccountNumWithType, String paymentAmt, Long customerBasicId) {
+            String bankAccountNumWithType, String paymentAmt, String giroType, Long customerBasicId) {
         OneTimeGIRO oneTimeGiro = new OneTimeGIRO();
         
         oneTimeGiro.setBankAccountNum(bankAccountNum);
@@ -25,6 +25,7 @@ public class OneTimeGIROSessionBean implements OneTimeGIROSessionBeanLocal {
         oneTimeGiro.setBillReference(billReference);
         oneTimeGiro.setBillingOrganization(billingOrganization);
         oneTimeGiro.setPaymentAmt(paymentAmt);
+        oneTimeGiro.setGiroType(giroType);
         oneTimeGiro.setCustomerBasic(bankAccountSessionBeanLocal.retrieveCustomerBasicById(customerBasicId));
         
         entityManager.persist(oneTimeGiro);

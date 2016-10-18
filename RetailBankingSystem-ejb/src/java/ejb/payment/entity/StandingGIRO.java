@@ -16,9 +16,6 @@ public class StandingGIRO extends GIRO implements Serializable {
     private String customerName;
     private String customerMobile;
     private String standingGiroStatus;
-
-    @ManyToOne(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER)
-    private CustomerBasic customerBasic;
     
     public String getPaymentLimit() {
         return paymentLimit;
@@ -50,13 +47,5 @@ public class StandingGIRO extends GIRO implements Serializable {
 
     public void setStandingGiroStatus(String standingGiroStatus) {
         this.standingGiroStatus = standingGiroStatus;
-    }
-
-    public CustomerBasic getCustomerBasic() {
-        return customerBasic;
-    }
-
-    public void setCustomerBasic(CustomerBasic customerBasic) {
-        this.customerBasic = customerBasic;
     }
 }

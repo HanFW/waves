@@ -1,10 +1,14 @@
 package ejb.payment.entity;
 
+import ejb.customer.entity.CustomerBasic;
 import java.io.Serializable;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class GIRO implements Serializable {
@@ -17,7 +21,11 @@ public class GIRO implements Serializable {
     private String billReference;
     private String bankAccountNum;
     private String bankAccountNumWithType;
+    private String giroType;
 
+    @ManyToOne(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER)
+    private CustomerBasic customerBasic;
+    
     public Long getGiroId() {
         return giroId;
     }
@@ -56,6 +64,22 @@ public class GIRO implements Serializable {
 
     public void setBankAccountNumWithType(String bankAccountNumWithType) {
         this.bankAccountNumWithType = bankAccountNumWithType;
+    }
+
+    public String getGiroType() {
+        return giroType;
+    }
+
+    public void setGiroType(String giroType) {
+        this.giroType = giroType;
+    }
+
+    public CustomerBasic getCustomerBasic() {
+        return customerBasic;
+    }
+
+    public void setCustomerBasic(CustomerBasic customerBasic) {
+        this.customerBasic = customerBasic;
     }
 
     @Override

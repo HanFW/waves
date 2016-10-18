@@ -12,9 +12,6 @@ public class OneTimeGIRO extends GIRO implements Serializable {
     private static final long serialVersionUID = 1L;
     
     private String paymentAmt;
-
-    @ManyToOne(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER)
-    private CustomerBasic customerBasic;
     
     public String getPaymentAmt() {
         return paymentAmt;
@@ -22,13 +19,5 @@ public class OneTimeGIRO extends GIRO implements Serializable {
 
     public void setPaymentAmt(String paymentAmt) {
         this.paymentAmt = paymentAmt;
-    }
-
-    public CustomerBasic getCustomerBasic() {
-        return customerBasic;
-    }
-
-    public void setCustomerBasic(CustomerBasic customerBasic) {
-        this.customerBasic = customerBasic;
     }
 }

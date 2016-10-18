@@ -12,10 +12,7 @@ public class RecurrentGIRO extends GIRO implements Serializable {
     private static final long serialVersionUID = 1L;
     
     private String paymentAmt;
-    private String transferDate;
-
-    @ManyToOne(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER)
-    private CustomerBasic customerBasic;
+    private String paymentFrequency;
     
     public String getPaymentAmt() {
         return paymentAmt;
@@ -25,19 +22,11 @@ public class RecurrentGIRO extends GIRO implements Serializable {
         this.paymentAmt = paymentAmt;
     }
 
-    public String getTransferDate() {
-        return transferDate;
+    public String getPaymentFrequency() {
+        return paymentFrequency;
     }
 
-    public void setTransferDate(String transferDate) {
-        this.transferDate = transferDate;
-    }
-
-    public CustomerBasic getCustomerBasic() {
-        return customerBasic;
-    }
-
-    public void setCustomerBasic(CustomerBasic customerBasic) {
-        this.customerBasic = customerBasic;
+    public void setPaymentFrequency(String paymentFrequency) {
+        this.paymentFrequency = paymentFrequency;
     }
 }

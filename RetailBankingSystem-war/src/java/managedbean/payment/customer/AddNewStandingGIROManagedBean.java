@@ -42,6 +42,7 @@ public class AddNewStandingGIROManagedBean implements Serializable {
     private Map<String, String> myAccounts = new HashMap<String, String>();
     private Map<String, String> billingOrganizations = new HashMap<String, String>();
     private String standingGiroStatus;
+    private String giroType;
 
     private ExternalContext ec;
 
@@ -163,16 +164,25 @@ public class AddNewStandingGIROManagedBean implements Serializable {
         this.billingOrganizations = billingOrganizations;
     }
 
+    public String getGiroType() {
+        return giroType;
+    }
+
+    public void setGiroType(String giroType) {
+        this.giroType = giroType;
+    }
+
     public void addNewStandingGiro() {
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
         CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
         standingGiroStatus = "Inactive";
+        giroType = "Standing";
 
         bankAccountNum = handleAccountString(bankAccountNumWithType);
         standingGIROSessionBeanLocal.addNewStandingGIRO(billingOrganization, billReference, paymentLimit.toString(),
                 customerName, customerMobile, bankAccountNum, standingGiroStatus,
-                bankAccountNumWithType, customerBasic.getCustomerBasicId());
+                bankAccountNumWithType, giroType, customerBasic.getCustomerBasicId());
 
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Add GIRO Arrangement Successfully", ""));
     }
