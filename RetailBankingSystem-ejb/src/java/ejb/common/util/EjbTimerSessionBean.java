@@ -22,7 +22,6 @@ import ws.client.meps.MEPSWebService_Service;
 @LocalBean
 
 public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
-
     @WebServiceRef(wsdlLocation = "META-INF/wsdl/localhost_8080/MEPSWebService/MEPSWebService.wsdl")
     private MEPSWebService_Service service;
 

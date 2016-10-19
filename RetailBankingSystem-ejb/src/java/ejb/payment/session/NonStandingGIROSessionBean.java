@@ -19,7 +19,6 @@ import ws.client.sach.SACHWebService_Service;
 
 @Stateless
 public class NonStandingGIROSessionBean implements NonStandingGIROSessionBeanLocal {
-
     @WebServiceRef(wsdlLocation = "META-INF/wsdl/localhost_8080/SACHWebService/SACHWebService.wsdl")
     private SACHWebService_Service service;
 
