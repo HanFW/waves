@@ -13,15 +13,14 @@ public class InitSessionBean {
     
     @EJB
     private EjbTimerSessionBeanLocal ejbTimerSessionLocal;
-    
+
     @PostConstruct
-    public void init()
-    {
+    public void init() {
 //        ejbTimerSessionLocal.createTimer10000MS();
 //        ejbTimerSessionLocal.createTimer300000MS();
 //        ejbTimerSessionLocal.createTimer15000MS();
         ejbTimerSessionLocal.createTimer70000MS();
-//        createSACH();
-//        ejbTimerSessionLocal.createTimer20000MS();
+//        ejbTimerSessionLocal.createTimer15000MS();s
+//        ejbTimerSessionLocal.createTimer70000MS();
     }
 }

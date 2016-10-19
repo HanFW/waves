@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/onlineBankingTemplate.xhtml"
+                xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
+    <ui:define name="content">
+
+        <h:body>
+
+            <div align="center">
+                <h:form>
+                    
+                    <h:panelGrid columns="1" class="ui-lg-6">                          
+
+                        <p:outputLabel style="font-size: 40px;font-weight: bold" value="Apply Dedit Card"/>
+                        <br/>
+                        <br/>
+
+                        <p:outputLabel style="font-weight: bold" value="Are you an existing Merlion Bank customer?"/>
+                        <p:selectOneRadio id="hasMerlionAcc" value="#{publicDebitCardCustomerIdentityManagedBean.hasMerlionAcc}"
+                                          required="true" requiredMessage="Please select">
+                            <p:message for="hasMerlionAcc"/>
+                            <f:selectItem itemLabel="Yes" itemValue="Yes" />
+                            <f:selectItem itemLabel="No" itemValue="No" />
+                            <p:ajax event="change" update="panelExistingCustomer panelNewCustomer" listener="#{publicDebitCardCustomerIdentityManagedBean.showPanel}"/>
+                        </p:selectOneRadio>
+
+                        <p:panel style="border: none;" id="panelExistingCustomer" visible="#{publicDebitCardCustomerIdentityManagedBean.existingCustomerVisible}">
+                            <h:outputText value="Please "/>
+                            <p:button value="Login" href="/web/onlineBanking/infrastructure/customerLogin.xhtml?faces-redirect=true"/>
+                            <h:outputText value="to your Merlion iBanking Website with User ID and PIN to make your application faster"/>
+                        </p:panel>
+                        <p:panel style="border: none;" id="panelNewCustomer" visible="#{publicDebitCardCustomerIdentityManagedBean.newCustomerVisible}">
+                            <p:button value="Start Application" href="/web/merlionBank/deposit/publicOpenAccount.xhtml?faces-redirect=true"/>
+                        </p:panel>
+
+                    </h:panelGrid>
+
+                </h:form>
+            </div>
+        </h:body>
+
+    </ui:define>
+</ui:composition>
+
+

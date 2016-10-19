@@ -217,7 +217,7 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
 
     @Override
     public String updateCustomerAdvancedProfile(Long customerAdvancedId, String education, String incomeMonthly, String jobDuration, String jobStatus, String jobIndustry, String jobType,
-            String numOfDependent, String residencialStatus, String yearInResidence) {
+            String numOfDependent, String residentialStatus, String yearInResidence) {
         Query query = entityManager.createQuery("SELECT ca FROM CustomerAdvanced ca WHERE ca.customerAdvancedId = :customerAdvancedId");
         query.setParameter("customerAdvancedId", customerAdvancedId);
         List resultList = query.getResultList();
@@ -232,7 +232,7 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
             ca.setJobIndustry(jobIndustry);
             ca.setJobType(jobType);
             ca.setNumOfDependent(numOfDependent);
-            ca.setResidencialStatus(residencialStatus);
+            ca.setResidentialStatus(residentialStatus);
             ca.setYearInResidence(yearInResidence);
             
             entityManager.flush();

@@ -69,8 +69,8 @@ public class DeletePayeeManagedBean implements Serializable {
     public void deletePayee() throws IOException {
         System.out.println("=");
         System.out.println("====== deposit/DeletePayeeManagedBean: deletePayee() ======");
-        CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
         ec = FacesContext.getCurrentInstance().getExternalContext();
+        CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
 
         Payee payee = payeeSessionLocal.retrievePayeeByNum(payeeAccountNum);
 
