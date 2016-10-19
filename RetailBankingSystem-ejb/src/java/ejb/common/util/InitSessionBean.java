@@ -10,11 +10,6 @@ import javax.ejb.Startup;
 @LocalBean
 @Startup
 public class InitSessionBean {
-//    @EJB
-//    private SACHSessionBeanLocal sACHSessionBeanLocal;
-//    
-//    @EJB
-//    private MEPSMasterBankAccountSessionBeanLocal sACHMasterBankAccountSessionBeanLocal;
     
     @EJB
     private EjbTimerSessionBeanLocal ejbTimerSessionLocal;
@@ -25,19 +20,8 @@ public class InitSessionBean {
 //        ejbTimerSessionLocal.createTimer10000MS();
 //        ejbTimerSessionLocal.createTimer300000MS();
 //        ejbTimerSessionLocal.createTimer15000MS();
-//        ejbTimerSessionLocal.createTimer70000MS();
+        ejbTimerSessionLocal.createTimer70000MS();
 //        createSACH();
 //        ejbTimerSessionLocal.createTimer20000MS();
     }
-    
-//    private void createSACH() {
-//        
-//        MEPSMasterBankAccount dbsMasterBankAccount = sACHMasterBankAccountSessionBeanLocal.retrieveSACHMasterBankAccountByBankName("DBS");
-//        MEPSMasterBankAccount merlionMasterBankAccount = sACHMasterBankAccountSessionBeanLocal.retrieveSACHMasterBankAccountByBankName("Merlion");
-//        
-//        Calendar cal = Calendar.getInstance();
-//        
-//        sACHSessionBeanLocal.addNewSACH(dbsMasterBankAccount.getMasterBankAccountBalance(), 
-//                merlionMasterBankAccount.getMasterBankAccountBalance(), 0.0, 0.0, cal.getTime().toString(), "DBS&Merlion");
-//    }
 }

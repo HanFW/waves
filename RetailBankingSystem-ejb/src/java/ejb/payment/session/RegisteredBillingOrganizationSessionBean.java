@@ -1,6 +1,6 @@
 package ejb.payment.session;
 
-import ejb.payment.entity.BillingOrganization;
+import ejb.payment.entity.RegisteredBillingOrganization;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -10,16 +10,16 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 @Stateless
-public class BillingOrganizationSessionBean implements BillingOrganizationSessionBeanLocal {
+public class RegisteredBillingOrganizationSessionBean implements RegisteredBillingOrganizationSessionBeanLocal {
 
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager entityManager;
 
     @Override
-    public Long addNewBillingOrganization(String billingOrganizationName, String bankAccountNum,
+    public Long addNewRegisteredBillingOrganization(String billingOrganizationName, String bankAccountNum,
             String bankAccountType, String bankName) {
 
-        BillingOrganization billOrg = new BillingOrganization();
+        RegisteredBillingOrganization billOrg = new RegisteredBillingOrganization();
 
         billOrg.setBankAccountNum(bankAccountNum);
         billOrg.setBankAccountType(bankAccountType);
@@ -33,27 +33,27 @@ public class BillingOrganizationSessionBean implements BillingOrganizationSessio
     }
 
     @Override
-    public List<BillingOrganization> getAllBillingOrganization() {
-        Query query = entityManager.createQuery("SELECT b FROM BillingOrganization b");
+    public List<RegisteredBillingOrganization> getAllRegisteredBillingOrganization() {
+        Query query = entityManager.createQuery("SELECT r FROM RegisteredBillingOrganization r");
         return query.getResultList();
     }
     
     @Override
-    public BillingOrganization retrieveBillingOrganizationByName(String billingOrganizationName) {
-        BillingOrganization billingOrganization = new BillingOrganization();
+    public RegisteredBillingOrganization retrieveRegisteredBillingOrganizationByName(String billingOrganizationName) {
+        RegisteredBillingOrganization billingOrganization = new RegisteredBillingOrganization();
 
         try {
             Query query = entityManager.createQuery("Select b From BillingOrganization b Where b.billingOrganizationName=:billingOrganizationName");
             query.setParameter("billingOrganizationName", billingOrganizationName);
 
             if (query.getResultList().isEmpty()) {
-                return new BillingOrganization();
+                return new RegisteredBillingOrganization();
             } else {
-                billingOrganization = (BillingOrganization) query.getSingleResult();
+                billingOrganization = (RegisteredBillingOrganization) query.getSingleResult();
             }
         } catch (EntityNotFoundException enfe) {
             System.out.println("Entity not found error: " + enfe.getMessage());
-            return new BillingOrganization();
+            return new RegisteredBillingOrganization();
         } catch (NonUniqueResultException nure) {
             System.out.println("Non unique result error: " + nure.getMessage());
         }

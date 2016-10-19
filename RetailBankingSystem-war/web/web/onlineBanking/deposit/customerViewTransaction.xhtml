@@ -36,9 +36,16 @@
                     </p:commandLink>
                 </p:column>
 
-                <p:column headerText="Balance"> 
+                <p:column headerText="Available Balance"> 
                     <p:commandLink process="@this" action="/web/onlineBanking/deposit/customerViewTransactionDone.xhtml" >
-                        <h:outputText value="S$#{bankAccount.bankAccountBalance}" />
+                        <h:outputText value="S$#{bankAccount.availableBankAccountBalance}" />
+                        <f:setPropertyActionListener value="#{bankAccount.bankAccountNum}" target="#{transactionManagedBean.bankAccountNum}" />
+                    </p:commandLink>
+                </p:column>
+                
+                <p:column headerText="Total Balance"> 
+                    <p:commandLink process="@this" action="/web/onlineBanking/deposit/customerViewTransactionDone.xhtml" >
+                        <h:outputText value="S$#{bankAccount.totalBankAccountBalance}" />
                         <f:setPropertyActionListener value="#{bankAccount.bankAccountNum}" target="#{transactionManagedBean.bankAccountNum}" />
                     </p:commandLink>
                 </p:column>

@@ -4,10 +4,10 @@ import ejb.customer.entity.CustomerBasic;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import ejb.deposit.session.TransactionSessionBeanLocal;
-import ejb.payment.entity.BillingOrganization;
 import ejb.payment.entity.GIRO;
 import ejb.payment.entity.NonStandingGIRO;
-import ejb.payment.session.BillingOrganizationSessionBeanLocal;
+import ejb.payment.entity.RegisteredBillingOrganization;
+import ejb.payment.session.RegisteredBillingOrganizationSessionBeanLocal;
 import ejb.payment.session.GIROSessionBeanLocal;
 import ejb.payment.session.NonStandingGIROSessionBeanLocal;
 import java.io.IOException;
@@ -41,7 +41,7 @@ public class NonStandingGIROManagedBean {
     private BankAccountSessionBeanLocal bankAccountSessionBeanLocal;
 
     @EJB
-    private BillingOrganizationSessionBeanLocal billingOrganizationSessionBeanLocal;
+    private RegisteredBillingOrganizationSessionBeanLocal registeredBillingOrganizationSessionBeanLocal;
 
     @EJB
     private GIROSessionBeanLocal gIROSessionBeanLocal;
@@ -138,12 +138,13 @@ public class NonStandingGIROManagedBean {
     }
 
     public void nonStandingGIROTransfer() throws IOException {
-        
+
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
         GIRO giro = gIROSessionBeanLocal.retrieveGIROById(giroId);
+        NonStandingGIRO nonStandingGiro = nonStandingGIROSessionBeanLocal.retrieveNonStandingGIROById(giroId);
 
-        String billingOrganizationName = giro.getBillingOrganization();
+        String billingOrganizationName = giro.getBillingOrganizationName();
         String bankAccountNum = giro.getBankAccountNum();
 
         BankAccount bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountByNum(bankAccountNum);
@@ -153,34 +154,60 @@ public class NonStandingGIROManagedBean {
         String transactionCode = "BILL";
         String transactionRef = "Pay bills to " + billingOrganizationName;
 
+        if(paymentAmt==null) {
+            System.out.println("null");
+        } else {
+            System.out.println("not null");
+            System.out.println("*************"+paymentAmt);
+        }
+        
         Long transactionId = transactionSessionBeanLocal.addNewTransaction(transactionDate,
                 transactionCode, transactionRef, paymentAmt, " ", cal.getTimeInMillis(), bankAccount.getBankAccountId());
 
-        Double currentBankAccountBalance = Double.valueOf(bankAccount.getBankAccountBalance()) - Double.valueOf(paymentAmt);
+        Double currentBankAccountBalance = Double.valueOf(bankAccount.getAvailableBankAccountBalance()) - Double.valueOf(paymentAmt);
         bankAccountSessionBeanLocal.updateBankAccountBalance(bankAccountNum, currentBankAccountBalance.toString());
 
-        BillingOrganization billOrg = billingOrganizationSessionBeanLocal.retrieveBillingOrganizationByName(billingOrganizationName);
+        RegisteredBillingOrganization billOrg = registeredBillingOrganizationSessionBeanLocal.retrieveRegisteredBillingOrganizationByName(billingOrganizationName);
         String bankName = billOrg.getBankName();
         String billOrgBankAccountNum = billOrg.getBankAccountNum();
 
-        if (bankName.equals("DBS")) {
+        if (bankName.equals("DBS") && nonStandingGiro.getPaymentFrequency().equals("One Time")) {
             sachNonStandingGIROTransferMTD(bankAccount.getBankAccountNum(), billOrgBankAccountNum, Double.valueOf(paymentAmt));
 
             OtherBankAccount dbsBankAccount = retrieveBankAccountByNum(billOrg.getBankAccountNum());
             toBankAccountNumWithType = dbsBankAccount.getOtherBankAccountType() + "-" + dbsBankAccount.getOtherBankAccountNum();
-            fromBankAccountNumWithType = bankAccount.getBankAccountType()+"-"+bankAccount.getBankAccountNum();
+            fromBankAccountNumWithType = bankAccount.getBankAccountType() + "-" + bankAccount.getBankAccountNum();
             statusMessage = "Successfully Pay Bills";
-            fromAccountBalance = bankAccount.getBankAccountBalance();
-            
+            fromAccountBalance = bankAccount.getAvailableBankAccountBalance();
+
             ec.getFlash().put("statusMessage", statusMessage);
             ec.getFlash().put("transactionId", transactionId.toString());
             ec.getFlash().put("toBankAccountNumWithType", toBankAccountNumWithType);
             ec.getFlash().put("fromBankAccountNumWithType", fromBankAccountNumWithType);
             ec.getFlash().put("transferAmt", paymentAmt);
             ec.getFlash().put("fromAccountBalance", fromAccountBalance);
-            
+
             ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/payment/customerNonStandingGIROTransferDone.xhtml?faces-redirect=true");
-            
+
+        } else if (bankName.equals("DBS") && !nonStandingGiro.getPaymentFrequency().equals("One Time")) {
+            sachNonStandingGIROTransferMTD(bankAccount.getBankAccountNum(), billOrgBankAccountNum, Double.valueOf(paymentAmt));
+
+            nonStandingGIROSessionBeanLocal.updatePaymentAmt(giroId, paymentAmt);
+
+            OtherBankAccount dbsBankAccount = retrieveBankAccountByNum(billOrg.getBankAccountNum());
+            toBankAccountNumWithType = dbsBankAccount.getOtherBankAccountType() + "-" + dbsBankAccount.getOtherBankAccountNum();
+            fromBankAccountNumWithType = bankAccount.getBankAccountType() + "-" + bankAccount.getBankAccountNum();
+            statusMessage = "Successfully Pay Bills";
+            fromAccountBalance = bankAccount.getAvailableBankAccountBalance();
+
+            ec.getFlash().put("statusMessage", statusMessage);
+            ec.getFlash().put("transactionId", transactionId.toString());
+            ec.getFlash().put("toBankAccountNumWithType", toBankAccountNumWithType);
+            ec.getFlash().put("fromBankAccountNumWithType", fromBankAccountNumWithType);
+            ec.getFlash().put("transferAmt", paymentAmt);
+            ec.getFlash().put("fromAccountBalance", fromAccountBalance);
+
+            ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/payment/customerNonStandingGIROTransferDone.xhtml?faces-redirect=true");
         } else if (bankName.equals("OCBC")) {
 
         }

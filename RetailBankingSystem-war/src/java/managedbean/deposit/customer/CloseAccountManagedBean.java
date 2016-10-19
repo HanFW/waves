@@ -191,7 +191,7 @@ public class CloseAccountManagedBean {
         checkOnlyOneAccount = bankAccountSessionLocal.checkOnlyOneAccount(customerBasic.getCustomerIdentificationNum());
 
         if (onlyOneAccount.equals("Yes") && !checkOnlyOneAccount) {
-            if (!bankAccount.getBankAccountBalance().equals("0.0")) {
+            if (!bankAccount.getAvailableBankAccountBalance().equals("0.0")) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Please withdraw all your money.", "Failed!"));
             } else {
 
@@ -212,7 +212,7 @@ public class CloseAccountManagedBean {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! You only have one account.", "Failed!"));
         } else if (onlyOneAccount.equals("No") && checkOnlyOneAccount) {
 
-            if (!bankAccount.getBankAccountBalance().equals("0.0")) {
+            if (!bankAccount.getAvailableBankAccountBalance().equals("0.0")) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Please withdraw all your money.", "Failed!"));
             } else {
 

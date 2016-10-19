@@ -3,8 +3,8 @@ package managedbean.payment.customer;
 import ejb.customer.entity.CustomerBasic;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
-import ejb.payment.session.BillingOrganizationSessionBeanLocal;
-import ejb.payment.entity.BillingOrganization;
+import ejb.payment.entity.RegisteredBillingOrganization;
+import ejb.payment.session.RegisteredBillingOrganizationSessionBeanLocal;
 import ejb.payment.session.NonStandingGIROSessionBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
@@ -30,7 +30,7 @@ public class AddNonStandingGIROManagedBean implements Serializable {
     private BankAccountSessionBeanLocal bankAccountSessionBeanLocal;
 
     @EJB
-    private BillingOrganizationSessionBeanLocal billingOrganizationSessionBeanLocal;
+    private RegisteredBillingOrganizationSessionBeanLocal registeredBillingOrganizationSessionBeanLocal;
 
     private String billingOrganization;
     private String billReference;
@@ -70,7 +70,7 @@ public class AddNonStandingGIROManagedBean implements Serializable {
             }
 
             billingOrganizations = new HashMap<String, String>();
-            List<BillingOrganization> billOrgans = billingOrganizationSessionBeanLocal.getAllBillingOrganization();
+            List<RegisteredBillingOrganization> billOrgans = registeredBillingOrganizationSessionBeanLocal.getAllRegisteredBillingOrganization();
 
             for (int j = 0; j < billOrgans.size(); j++) {
                 billingOrganizations.put(billOrgans.get(j).getBillingOrganizationName(), billOrgans.get(j).getBillingOrganizationName());

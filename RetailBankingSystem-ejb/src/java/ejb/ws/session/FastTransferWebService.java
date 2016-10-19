@@ -32,7 +32,7 @@ public class FastTransferWebService {
         
         OtherBankAccount otherBankAccount = retrieveBankAccountByNum(fromBankAccountNum);
         BankAccount bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountByNum(toBankAccountNum);
-        Double balance = Double.valueOf(bankAccount.getBankAccountBalance()) + transferAmt;
+        Double balance = Double.valueOf(bankAccount.getAvailableBankAccountBalance()) + transferAmt;
 
         Calendar cal = Calendar.getInstance();
         String transactionCode = "ICT";
@@ -45,7 +45,7 @@ public class FastTransferWebService {
                 transactionCode, transactionRef, accountDebit, accountCredit,
                 transactionDateMilis, bankAccount.getBankAccountId());
 
-        bankAccount.setBankAccountBalance(balance.toString());      
+        bankAccount.setAvailableBankAccountBalance(balance.toString());      
     }
 
     private OtherBankAccount retrieveBankAccountByNum(java.lang.String otherBankAccountNum) {

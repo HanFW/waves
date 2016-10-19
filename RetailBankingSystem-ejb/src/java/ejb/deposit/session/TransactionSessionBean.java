@@ -167,11 +167,11 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
             accTransactionId = addNewTransaction(cal.getTime().toString(), transactionCode, transactionRef,
                     accountDebit, depositAmt, transactionDateMilis, bankAccountId);
 
-            Double preBalance = Double.valueOf(bankAccount.getBankAccountBalance());
+            Double preBalance = Double.valueOf(bankAccount.getAvailableBankAccountBalance());
             Double depositAmtDouble = Double.valueOf(depositAmt);
             Double totalBalance = preBalance + depositAmtDouble;
             String balance = totalBalance.toString();
-            bankAccount.setBankAccountBalance(balance);
+            bankAccount.setAvailableBankAccountBalance(balance);
 
             return accTransactionId;
         }
@@ -205,11 +205,11 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
             accTransactionId = addNewTransaction(cal.getTime().toString(), transactionCode, transactionRef,
                     withdrawAmt, accountCredit, transactionDateMilis, bankAccountId);
 
-            Double preBalance = Double.valueOf(bankAccount.getBankAccountBalance());
+            Double preBalance = Double.valueOf(bankAccount.getAvailableBankAccountBalance());
             Double withdrawAmtDouble = Double.valueOf(withdrawAmt);
             Double totalBalance = preBalance - withdrawAmtDouble;
             String balance = totalBalance.toString();
-            bankAccount.setBankAccountBalance(balance);
+            bankAccount.setAvailableBankAccountBalance(balance);
             interest.setIsWithdraw("1");
 
             return accTransactionId;
@@ -229,8 +229,8 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
                 bankAccountTo.setBankAccountMinSaving("Sufficient");
             }
         }
-        Double balanceAccountFrom = Double.valueOf(bankAccountFrom.getBankAccountBalance()) - Double.valueOf(transferAmt);
-        Double balanceAccountTo = Double.valueOf(bankAccountTo.getBankAccountBalance()) + Double.valueOf(transferAmt);
+        Double balanceAccountFrom = Double.valueOf(bankAccountFrom.getAvailableBankAccountBalance()) - Double.valueOf(transferAmt);
+        Double balanceAccountTo = Double.valueOf(bankAccountTo.getAvailableBankAccountBalance()) + Double.valueOf(transferAmt);
 
         Long bankAccountFromId = bankAccountFrom.getBankAccountId();
         Long bankAccountToId = bankAccountTo.getBankAccountId();
@@ -248,8 +248,8 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
         Long toTransactionId = addNewTransaction(cal.getTime().toString(), transactionCode, transactionRefTo,
                 " ", transferAmt, transactionDateMilis, bankAccountToId);
 
-        bankAccountFrom.setBankAccountBalance(balanceAccountFrom.toString());
-        bankAccountTo.setBankAccountBalance(balanceAccountTo.toString());
+        bankAccountFrom.setAvailableBankAccountBalance(balanceAccountFrom.toString());
+        bankAccountTo.setAvailableBankAccountBalance(balanceAccountTo.toString());
         bankAccountFrom.getInterest().setIsTransfer("1");
 
         Double currentDailyTransferLimit = Double.valueOf(bankAccountFrom.getTransferBalance()) - Double.valueOf(transferAmt);
@@ -314,7 +314,7 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
 
         OtherBankAccount otherBankAccount = retrieveBankAccountByNum_other(fromBankAccount);
         BankAccount bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountByNum(toBankAccount);
-        Double balance = Double.valueOf(bankAccount.getBankAccountBalance()) + transferAmt;
+        Double balance = Double.valueOf(bankAccount.getAvailableBankAccountBalance()) + transferAmt;
 
         Calendar cal = Calendar.getInstance();
         String transactionCode = "ICT";
@@ -327,7 +327,7 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
                 transactionCode, transactionRef, accountDebit, accountCredit,
                 transactionDateMilis, bankAccount.getBankAccountId());
 
-        bankAccount.setBankAccountBalance(balance.toString());
+        bankAccount.setAvailableBankAccountBalance(balance.toString());
 
     }
     
@@ -336,7 +336,7 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
 
         OtherBankAccount otherBankAccount = retrieveBankAccountByNum_other(fromAccountNum);
         BankAccount bankAccount = retrieveBankAccountByNum(toAccountNum);
-        Double balance = Double.valueOf(bankAccount.getBankAccountBalance()) + transferAmt;
+        Double balance = Double.valueOf(bankAccount.getAvailableBankAccountBalance()) + transferAmt;
 
         Calendar cal = Calendar.getInstance();
         String transactionCode = "ICT";
@@ -349,7 +349,7 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
                 transactionCode, transactionRef, accountDebit, accountCredit, 
                 transactionDateMilis, bankAccount.getBankAccountId());
 
-        bankAccount.setBankAccountBalance(balance.toString());
+        bankAccount.setAvailableBankAccountBalance(balance.toString());
     }
 
     private OtherBankAccount retrieveBankAccountByNum_other(java.lang.String otherBankAccountNum) {

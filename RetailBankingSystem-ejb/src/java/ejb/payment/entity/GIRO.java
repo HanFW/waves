@@ -17,7 +17,7 @@ public class GIRO implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long giroId;
-    private String billingOrganization;
+    private String billingOrganizationName;
     private String billReference;
     private String bankAccountNum;
     private String bankAccountNumWithType;
@@ -34,12 +34,12 @@ public class GIRO implements Serializable {
         this.giroId = giroId;
     }
 
-    public String getBillingOrganization() {
-        return billingOrganization;
+    public String getBillingOrganizationName() {
+        return billingOrganizationName;
     }
 
-    public void setBillingOrganization(String billingOrganization) {
-        this.billingOrganization = billingOrganization;
+    public void setBillingOrganizationName(String billingOrganizationName) {
+        this.billingOrganizationName = billingOrganizationName;
     }
 
     public String getBillReference() {

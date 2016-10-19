@@ -6,8 +6,11 @@ import javax.ejb.Local;
 
 @Local
 public interface NonStandingGIROSessionBeanLocal {
-    public Long addNewNonStandingGIRO(String billingOrganization, String billReference, String bankAccountNum,
+    public Long addNewNonStandingGIRO(String billingOrganizationName, String billReference, String bankAccountNum,
             String bankAccountNumWithType, String paymentFrequency, String paymentAmt, 
             String giroType, Long customerBasicId);
     public List<NonStandingGIRO> retrieveNonStandingGIROByCusId(Long customerBasicId);
+    public NonStandingGIRO retrieveNonStandingGIROById(Long giroId);
+    public void updatePaymentAmt(Long giroId, String paymentAmt);
+    public void weeklyRecurrentPayment();
 }

@@ -183,10 +183,10 @@ public class FastTransferManagedBean {
         BankAccount merlionBankAccountFrom = bankAccountSessionBeanLocal.retrieveBankAccountByNum(fromBankAccount);
         OtherBankAccount otherBankAccountTo = retrieveBankAccountByNum(toBankAccount);
 
-        Double diffAmt = Double.valueOf(merlionBankAccountFrom.getBankAccountBalance()) - transferAmt;
+        Double diffAmt = Double.valueOf(merlionBankAccountFrom.getAvailableBankAccountBalance()) - transferAmt;
         if (diffAmt >= 0) {
 
-            Double currentBalance = Double.valueOf(merlionBankAccountFrom.getBankAccountBalance()) - transferAmt;
+            Double currentBalance = Double.valueOf(merlionBankAccountFrom.getAvailableBankAccountBalance()) - transferAmt;
             bankAccountSessionBeanLocal.updateBankAccountBalance(fromBankAccount, currentBalance.toString());
 
             Calendar cal = Calendar.getInstance();

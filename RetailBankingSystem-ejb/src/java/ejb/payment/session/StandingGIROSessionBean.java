@@ -26,7 +26,7 @@ public class StandingGIROSessionBean implements StandingGIROSessionBeanLocal {
     private EntityManager entityManager;
 
     @Override
-    public Long addNewStandingGIRO(String billingOrganization, String billReference, String paymemtLimit,
+    public Long addNewStandingGIRO(String billingOrganizationName, String billReference, String paymemtLimit,
             String customerName, String customerMobile, String bankAccountNum, String standingGiroStatus,
             String bankAccountNumWithType, String giroType, Long customerBasicId) {
 
@@ -34,7 +34,7 @@ public class StandingGIROSessionBean implements StandingGIROSessionBeanLocal {
 
         standingGiro.setBankAccountNum(bankAccountNum);
         standingGiro.setBillReference(billReference);
-        standingGiro.setBillingOrganization(billingOrganization);
+        standingGiro.setBillingOrganizationName(billingOrganizationName);
         standingGiro.setCustomerMobile(customerMobile);
         standingGiro.setCustomerName(customerName);
         standingGiro.setPaymentLimit(paymemtLimit);
