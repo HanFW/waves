@@ -18,4 +18,6 @@ public interface TransactionSessionBeanLocal {
     public Long fundTransfer(String fromAccount,String toAccount,String transferAmt);
     public String checkAccountActivation(String bankAccountNum,String initialDepositAmount);
     public void deleteAccTransaction(Long transactionId);
+    public void fastTransfer(String fromBankAccount,String toBankAccount,Double transferAmt);
+    public void actualTransfer(String fromAccountNum, String toAccountNum, Double transferAmt);
 }

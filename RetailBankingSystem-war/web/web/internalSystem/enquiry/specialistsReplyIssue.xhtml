@@ -21,7 +21,7 @@
                     </p:row>
                     <p:panel header="Reply Issue:">
                         <p:row>
-                            <p:inputTextarea  value="#{specialistReplyIssueManagedBean.issueSolution}"  rows="5" cols="30" autoResize="false" />
+                            <p:inputTextarea  value="#{specialistReplyIssueManagedBean.issueSolution}" required="true" requiredMessage="Please do not leave reply as a blank message" rows="5" cols="30" autoResize="false" />
                             <h:outputText value="&lt;br/&gt;" escape="false" />
                         </p:row>
                     </p:panel>

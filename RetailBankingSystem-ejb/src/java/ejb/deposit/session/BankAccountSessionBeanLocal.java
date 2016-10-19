@@ -59,8 +59,10 @@ public interface BankAccountSessionBeanLocal {
             String bankAccountType, String bankAccountBalance, String transferDailyLimit,
             String transferBalance, String bankAccountStatus, String bankAccountMinSaving,
             String bankAccountDepositPeriod, String currentFixedDepositPeriod,
-            String fixedDepositStatus, Double statementDateDouble,
-            Long customerBasicId, Long interestId);
+            String fixedDepositStatus, Double statementDateDouble, Long customerBasicId,
+            Long interestId);
+    
+    public void updateBankAccountBalance(String bankAccountNum,String bankAccountBalance);
     
     public void approveAccount(String customerIdentificationNum);
     

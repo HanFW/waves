@@ -1,4 +1,4 @@
-package managedbean.deposit.customer;
+package managedbean.common;
 
 import java.io.Serializable;
 import java.util.Map;

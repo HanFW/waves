@@ -12,7 +12,6 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import ejb.infrastructure.session.LoggingSessionBeanLocal;
-import java.util.ArrayList;
 
 @Named(value = "accountDataTableBean")
 @RequestScoped

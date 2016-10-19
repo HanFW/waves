@@ -13,19 +13,22 @@ import javax.persistence.Query;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Calendar;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.NonUniqueResultException;
+import javax.xml.ws.WebServiceRef;
+import ws.client.otherbanks.OtherBankAccount;
+import ws.client.otherbanks.OtherBanksWebService_Service;
 
 @Stateless
 @LocalBean
 public class TransactionSessionBean implements TransactionSessionBeanLocal {
+    @WebServiceRef(wsdlLocation = "META-INF/wsdl/localhost_8080/OtherBanksWebService/OtherBanksWebService.wsdl")
+    private OtherBanksWebService_Service service;
 
     @EJB
-    private BankAccountSessionBeanLocal bankAccountSessionLocal;
+    private BankAccountSessionBeanLocal bankAccountSessionBeanLocal;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -88,7 +91,7 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
     public List<AccTransaction> retrieveAccTransactionByBankNum(String bankAccountNum) {
         System.out.println("*");
         System.out.println("****** deposit/TransactionSessionBean: retrieveAccTransactionByBankNum() ******");
-        BankAccount bankAccount = bankAccountSessionLocal.retrieveBankAccountByNum(bankAccountNum);
+        BankAccount bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountByNum(bankAccountNum);
 
         if (bankAccount == null) {
             System.out.println("****** deposit/TransactionSessionBean: retrieveAccTransactionByBankNum(): invalid bank account number: no result found, return new transaction");
@@ -146,6 +149,7 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
         if (bankAccountId == null) {
             return accTransactionId;
         } else {
+
             if (bankAccount.getBankAccountType().equals("Monthly Savings Account")) {
                 if (Double.valueOf(depositAmt) >= 50) {
                     bankAccount.setBankAccountMinSaving("Sufficient");
@@ -157,10 +161,7 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
             String transactionRef = "Merlion Bank Branch";
 
             Calendar cal = Calendar.getInstance();
-//            int year = cal.get(Calendar.YEAR);
-//            int month = cal.get(Calendar.MONTH);
-//            int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
-//            String transactionDate = dayOfMonth + "-" + (month + 1) + "-" + year;
+            
             Long transactionDateMilis = cal.getTimeInMillis();
 
             accTransactionId = addNewTransaction(cal.getTime().toString(), transactionCode, transactionRef,
@@ -192,15 +193,13 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
         if (bankAccountId == null) {
             return accTransactionId;
         } else {
+            
             String accountCredit = " ";
             String transactionCode = "AWL";
             String transactionRef = "Merlion Bank Branch";
 
             Calendar cal = Calendar.getInstance();
-//            int year = cal.get(Calendar.YEAR);
-//            int month = cal.get(Calendar.MONTH);
-//            int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
-//            String transactionDate = dayOfMonth + "-" + (month + 1) + "-" + year;
+            
             Long transactionDateMilis = cal.getTimeInMillis();
 
             accTransactionId = addNewTransaction(cal.getTime().toString(), transactionCode, transactionRef,
@@ -222,8 +221,8 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
         System.out.println("*");
         System.out.println("****** deposit/TransactionSessionBean: fundTransfer() ******");
 
-        BankAccount bankAccountFrom = bankAccountSessionLocal.retrieveBankAccountByNum(fromAccount);
-        BankAccount bankAccountTo = bankAccountSessionLocal.retrieveBankAccountByNum(toAccount);
+        BankAccount bankAccountFrom = bankAccountSessionBeanLocal.retrieveBankAccountByNum(fromAccount);
+        BankAccount bankAccountTo = bankAccountSessionBeanLocal.retrieveBankAccountByNum(toAccount);
 
         if (bankAccountTo.getBankAccountType().equals("Monthly Savings Account")) {
             if (Double.valueOf(transferAmt) >= 50) {
@@ -237,14 +236,11 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
         Long bankAccountToId = bankAccountTo.getBankAccountId();
 
         String transactionCode = "TRF";
-        String transactionRefFrom = bankAccountTo.getBankAccountType()+"-"+toAccount;
-        String transactionRefTo = bankAccountFrom.getBankAccountType()+"-"+fromAccount;
+        String transactionRefFrom = bankAccountTo.getBankAccountType() + "-" + toAccount;
+        String transactionRefTo = bankAccountFrom.getBankAccountType() + "-" + fromAccount;
 
         Calendar cal = Calendar.getInstance();
-//        int year = cal.get(Calendar.YEAR);
-//        int month = cal.get(Calendar.MONTH);
-//        int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
-//        String transactionDate = dayOfMonth + "-" + (month + 1) + "-" + year;
+        
         Long transactionDateMilis = cal.getTimeInMillis();
 
         Long fromTransactionId = addNewTransaction(cal.getTime().toString(), transactionCode, transactionRefFrom,
@@ -271,7 +267,7 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
     public String checkAccountActivation(String bankAccountNum, String initialDepositAmount) {
         System.out.println("*");
         System.out.println("****** deposit/TransactionSessionBean: checkAccountActivation() ******");
-        BankAccount bankAccount = bankAccountSessionLocal.retrieveBankAccountByNum(bankAccountNum);
+        BankAccount bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountByNum(bankAccountNum);
         String bankAccountType = bankAccount.getBankAccountType();
 
         if (bankAccountType.equals("Bonus Savings Account")) {
@@ -304,12 +300,62 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
 
         return "Activated successfully.";
     }
-    
+
     @Override
     public void deleteAccTransaction(Long transactionId) {
-        AccTransaction transaction = bankAccountSessionLocal.retrieveAccTransactionById(transactionId);
-        
+        AccTransaction transaction = bankAccountSessionBeanLocal.retrieveAccTransactionById(transactionId);
+
         entityManager.remove(transaction);
         entityManager.flush();
+    }
+
+    @Override
+    public void fastTransfer(String fromBankAccount, String toBankAccount, Double transferAmt) {
+
+        OtherBankAccount otherBankAccount = retrieveBankAccountByNum_other(fromBankAccount);
+        BankAccount bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountByNum(toBankAccount);
+        Double balance = Double.valueOf(bankAccount.getBankAccountBalance()) + transferAmt;
+
+        Calendar cal = Calendar.getInstance();
+        String transactionCode = "ICT";
+        String transactionRef = "Transfer from " + otherBankAccount.getOtherBankAccountType() + "-" + otherBankAccount.getOtherBankAccountNum();
+        String accountDebit = " ";
+        String accountCredit = transferAmt.toString();
+        Long transactionDateMilis = cal.getTimeInMillis();
+
+        Long transactionId = addNewTransaction(cal.getTime().toString(),
+                transactionCode, transactionRef, accountDebit, accountCredit,
+                transactionDateMilis, bankAccount.getBankAccountId());
+
+        bankAccount.setBankAccountBalance(balance.toString());
+
+    }
+    
+    @Override
+    public void actualTransfer(String fromAccountNum, String toAccountNum, Double transferAmt) {
+
+        OtherBankAccount otherBankAccount = retrieveBankAccountByNum_other(fromAccountNum);
+        BankAccount bankAccount = retrieveBankAccountByNum(toAccountNum);
+        Double balance = Double.valueOf(bankAccount.getBankAccountBalance()) + transferAmt;
+
+        Calendar cal = Calendar.getInstance();
+        String transactionCode = "ICT";
+        String transactionRef = "Transfer from " + otherBankAccount.getOtherBankAccountType() + "-" + otherBankAccount.getOtherBankAccountNum();
+        String accountDebit = " ";
+        String accountCredit = transferAmt.toString();
+        Long transactionDateMilis = cal.getTimeInMillis();
+
+        Long transactionId = addNewTransaction(cal.getTime().toString(),
+                transactionCode, transactionRef, accountDebit, accountCredit, 
+                transactionDateMilis, bankAccount.getBankAccountId());
+
+        bankAccount.setBankAccountBalance(balance.toString());
+    }
+
+    private OtherBankAccount retrieveBankAccountByNum_other(java.lang.String otherBankAccountNum) {
+        // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
+        // If the calling of port operations may lead to race condition some synchronization is required.
+        ws.client.otherbanks.OtherBanksWebService port = service.getOtherBanksWebServicePort();
+        return port.retrieveBankAccountByNum(otherBankAccountNum);
     }
 }

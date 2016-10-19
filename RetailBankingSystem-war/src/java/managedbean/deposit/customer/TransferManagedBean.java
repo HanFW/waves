@@ -81,7 +81,7 @@ public class TransferManagedBean {
             }
 
             for (int a = 0; a < bankAccounts.size(); a++) {
-                if(!bankAccounts.get(a).getBankAccountType().equals("Fixed Deposit Account")) {
+                if (!bankAccounts.get(a).getBankAccountType().equals("Fixed Deposit Account")) {
                     toAccounts.put(bankAccounts.get(a).getBankAccountType() + "-" + bankAccounts.get(a).getBankAccountNum(), bankAccounts.get(a).getBankAccountType() + "-" + bankAccounts.get(a).getBankAccountNum());
                 }
             }
@@ -337,7 +337,6 @@ public class TransferManagedBean {
                         loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "transfer to my account", "successful", null);
 
                         fromAccountBalance = bankAccountFrom.getBankAccountBalance();
-                        toAccountBalance = bankAccountTo.getBankAccountBalance();
 
                         ec.getFlash().put("statusMessage", statusMessage);
                         ec.getFlash().put("newTransactionId", newTransactionId);
@@ -347,7 +346,6 @@ public class TransferManagedBean {
                         ec.getFlash().put("fromAccount", fromAccount);
                         ec.getFlash().put("toAccount", toAccount);
                         ec.getFlash().put("fromAccountBalance", fromAccountBalance);
-                        ec.getFlash().put("toAccountBalance", toAccountBalance);
 
                         ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerTransferDone.xhtml?faces-redirect=true");
                     } else {
@@ -410,7 +408,6 @@ public class TransferManagedBean {
                             loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "transfer to other account", "successful", null);
 
                             fromAccountBalance = bankAccountFrom.getBankAccountBalance();
-                            toAccountBalance = bankAccountTo.getBankAccountBalance();
 
                             ec.getFlash().put("statusMessage", statusMessage);
                             ec.getFlash().put("newTransactionId", newTransactionId);
@@ -420,7 +417,6 @@ public class TransferManagedBean {
                             ec.getFlash().put("fromAccount", fromAccount);
                             ec.getFlash().put("toAccount", toAccount);
                             ec.getFlash().put("fromAccountBalance", fromAccountBalance);
-                            ec.getFlash().put("toAccountBalance", toAccountBalance);
 
                             ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerTransferDone.xhtml?faces-redirect=true");
                         } else {
@@ -446,7 +442,6 @@ public class TransferManagedBean {
                         loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "transfer to other account", "successful", null);
 
                         fromAccountBalance = bankAccountFrom.getBankAccountBalance();
-                        toAccountBalance = bankAccountTo.getBankAccountBalance();
 
                         ec.getFlash().put("statusMessage", statusMessage);
                         ec.getFlash().put("newTransactionId", newTransactionId);
@@ -456,7 +451,6 @@ public class TransferManagedBean {
                         ec.getFlash().put("fromAccount", fromAccount);
                         ec.getFlash().put("toAccount", toAccount);
                         ec.getFlash().put("fromAccountBalance", fromAccountBalance);
-                        ec.getFlash().put("toAccountBalance", toAccountBalance);
 
                         ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerTransferDone.xhtml?faces-redirect=true");
                     } else {
@@ -517,7 +511,6 @@ public class TransferManagedBean {
                             loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "one time transfer", "successful", null);
 
                             fromAccountBalance = bankAccountFrom.getBankAccountBalance();
-                            toAccountBalance = bankAccountTo.getBankAccountBalance();
                             toBankAccountNumWithType = bankAccountTo.getBankAccountType() + "-" + bankAccountTo.getBankAccountNum();
 
                             ec.getFlash().put("statusMessage", statusMessage);
@@ -528,7 +521,6 @@ public class TransferManagedBean {
                             ec.getFlash().put("fromAccount", fromAccount);
                             ec.getFlash().put("toAccount", toAccount);
                             ec.getFlash().put("fromAccountBalance", fromAccountBalance);
-                            ec.getFlash().put("toAccountBalance", toAccountBalance);
 
                             ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerTransferDone.xhtml?faces-redirect=true");
 
@@ -549,6 +541,7 @@ public class TransferManagedBean {
 
                         fromAccountBalance = bankAccountFrom.getBankAccountBalance();
                         toAccountBalance = bankAccountTo.getBankAccountBalance();
+                        toBankAccountNumWithType = bankAccountTo.getBankAccountType() + "-" + bankAccountTo.getBankAccountNum();
 
                         ec.getFlash().put("statusMessage", statusMessage);
                         ec.getFlash().put("newTransactionId", newTransactionId);
@@ -558,7 +551,6 @@ public class TransferManagedBean {
                         ec.getFlash().put("fromAccount", fromAccount);
                         ec.getFlash().put("toAccount", toAccount);
                         ec.getFlash().put("fromAccountBalance", fromAccountBalance);
-                        ec.getFlash().put("toAccountBalance", toAccountBalance);
 
                         ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerTransferDone.xhtml?faces-redirect=true");
                     } else {

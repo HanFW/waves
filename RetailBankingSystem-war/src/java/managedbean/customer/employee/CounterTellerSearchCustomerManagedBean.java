@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
 import javax.inject.Named;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -65,16 +66,24 @@ public class CounterTellerSearchCustomerManagedBean implements Serializable {
     public void setCb(CustomerBasic cb) {
         this.cb = cb;
     }
-    
+
     public void retieveCustomerByIdentification() {
+        FacesMessage message = null;
+        FacesContext context = FacesContext.getCurrentInstance();
         cb = cRMCustomerSessionBeanLocal.retrieveCustomerBasicByIC(identificationNum);
-        visible = true;
+        if (cb.getCustomerBasicId() != null) {
+            visible = true;
+            identificationNum = null;
+        } else {
+            message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Incorrect identification number!", "No customer found");
+            context.addMessage(null, message);
+        }
     }
 
     public void helpCustomerRecordEnquiry() throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext ec = context.getExternalContext();
-        
+
         ec.getRequestMap().put("customerBasic", cb);
         ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/counterTellerAddNewCase.xhtml?faces-redirect=true");
         visible = false;
