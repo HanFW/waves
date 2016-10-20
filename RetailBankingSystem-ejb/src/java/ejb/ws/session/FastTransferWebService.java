@@ -27,8 +27,8 @@ public class FastTransferWebService {
     @EJB
     private BankAccountSessionBeanLocal bankAccountSessionBeanLocal;
 
-    @WebMethod(operationName = "fastTransfer")
-    public void fastTransfer(@WebParam(name = "fromBankAccountNum") String fromBankAccountNum, @WebParam(name = "toBankAccountNum") String toBankAccountNum, @WebParam(name = "transferAmt") Double transferAmt) {
+    @WebMethod(operationName = "actualOTMFastTransfer")
+    public void actualOTMFastTransfer(@WebParam(name = "fromBankAccountNum") String fromBankAccountNum, @WebParam(name = "toBankAccountNum") String toBankAccountNum, @WebParam(name = "transferAmt") Double transferAmt) {
 
         OtherBankAccount otherBankAccount = retrieveBankAccountByNum(fromBankAccountNum);
         BankAccount bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountByNum(toBankAccountNum);

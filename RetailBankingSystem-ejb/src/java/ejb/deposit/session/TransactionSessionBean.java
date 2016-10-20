@@ -352,29 +352,6 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
 
     }
 
-    @Override
-    public void actualTransfer(String fromAccountNum, String toAccountNum, Double transferAmt) {
-
-        OtherBankAccount otherBankAccount = retrieveBankAccountByNum_other(fromAccountNum);
-        BankAccount bankAccount = retrieveBankAccountByNum(toAccountNum);
-        Double totalBalance = Double.valueOf(bankAccount.getTotalBankAccountBalance()) + transferAmt;
-        Double availableBalance = Double.valueOf(bankAccount.getAvailableBankAccountBalance()) + transferAmt;
-
-        Calendar cal = Calendar.getInstance();
-        String transactionCode = "ICT";
-        String transactionRef = "Transfer from " + otherBankAccount.getOtherBankAccountType() + "-" + otherBankAccount.getOtherBankAccountNum();
-        String accountDebit = " ";
-        String accountCredit = transferAmt.toString();
-        Long transactionDateMilis = cal.getTimeInMillis();
-
-        Long transactionId = addNewTransaction(cal.getTime().toString(),
-                transactionCode, transactionRef, accountDebit, accountCredit,
-                transactionDateMilis, bankAccount.getBankAccountId());
-
-        bankAccount.setAvailableBankAccountBalance(availableBalance.toString());
-        bankAccount.setTotalBankAccountBalance(totalBalance.toString());
-    }
-
     private OtherBankAccount retrieveBankAccountByNum_other(java.lang.String otherBankAccountNum) {
         // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
         // If the calling of port operations may lead to race condition some synchronization is required.
