@@ -164,8 +164,9 @@ public class NonStandingGIROManagedBean {
         Long transactionId = transactionSessionBeanLocal.addNewTransaction(transactionDate,
                 transactionCode, transactionRef, paymentAmt, " ", cal.getTimeInMillis(), bankAccount.getBankAccountId());
 
-        Double currentBankAccountBalance = Double.valueOf(bankAccount.getAvailableBankAccountBalance()) - Double.valueOf(paymentAmt);
-        bankAccountSessionBeanLocal.updateBankAccountBalance(bankAccountNum, currentBankAccountBalance.toString());
+        Double currentAvailableBankAccountBalance = Double.valueOf(bankAccount.getAvailableBankAccountBalance()) - Double.valueOf(paymentAmt);
+        Double currentTotalBankAccountBalance = Double.valueOf(bankAccount.getTotalBankAccountBalance()) - Double.valueOf(paymentAmt);
+        bankAccountSessionBeanLocal.updateBankAccountBalance(bankAccountNum, currentAvailableBankAccountBalance.toString(), currentTotalBankAccountBalance.toString());
 
         RegisteredBillingOrganization billOrg = registeredBillingOrganizationSessionBeanLocal.retrieveRegisteredBillingOrganizationByName(billingOrganizationName);
         String bankName = billOrg.getBankName();

@@ -186,8 +186,9 @@ public class FastTransferManagedBean {
         Double diffAmt = Double.valueOf(merlionBankAccountFrom.getAvailableBankAccountBalance()) - transferAmt;
         if (diffAmt >= 0) {
 
-            Double currentBalance = Double.valueOf(merlionBankAccountFrom.getAvailableBankAccountBalance()) - transferAmt;
-            bankAccountSessionBeanLocal.updateBankAccountBalance(fromBankAccount, currentBalance.toString());
+            Double currentAvailableBalance = Double.valueOf(merlionBankAccountFrom.getAvailableBankAccountBalance()) - transferAmt;
+            Double currentTotalBalance = Double.valueOf(merlionBankAccountFrom.getTotalBankAccountBalance()) - transferAmt;
+            bankAccountSessionBeanLocal.updateBankAccountBalance(fromBankAccount, currentAvailableBalance.toString(),currentTotalBalance.toString());
 
             Calendar cal = Calendar.getInstance();
             String transactionCode = "ICT";
@@ -200,7 +201,7 @@ public class FastTransferManagedBean {
             sachTransferMTD(fromBankAccount, toBankAccount, transferAmt);
 
             statusMessage = "Your transaction has been completed.";
-            fromAccountBalance = currentBalance.toString();
+            fromAccountBalance = currentAvailableBalance.toString();
 
             ec.getFlash().put("statusMessage", statusMessage);
             ec.getFlash().put("transactionId", transactionId);

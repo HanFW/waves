@@ -716,10 +716,12 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
     }
 
     @Override
-    public void updateBankAccountBalance(String bankAccountNum, String bankAccountBalance) {
+    public void updateBankAccountBalance(String bankAccountNum, String availableBankAccountBalance, 
+            String totalBankAccountBalance) {
         BankAccount bankAccount = retrieveBankAccountByNum(bankAccountNum);
 
-        bankAccount.setAvailableBankAccountBalance(bankAccountBalance);
+        bankAccount.setAvailableBankAccountBalance(availableBankAccountBalance);
+        bankAccount.setTotalBankAccountBalance(totalBankAccountBalance);
     }
 
     @Override
