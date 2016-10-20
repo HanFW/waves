@@ -9,10 +9,43 @@
 
     <ui:define name="content">
         <h:form>
-            <div align="center">           
-                Welcome to Merlion Bank Internal System!               
+            <div align="center">
+            <p:growl id="messages" showDetail="true" />
+
+            <h:panelGrid columnClasses="value">
+                <p:schedule id="schedule" value="#{employeeCalendarManagedBean.eventModel}" widgetVar="myschedule" timeZone="GMT+8">
+                    <p:ajax event="dateSelect" listener="#{employeeCalendarManagedBean.onDateSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
+                    <p:ajax event="eventSelect" listener="#{employeeCalendarManagedBean.onEventSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
+                    <p:ajax event="eventMove" listener="#{employeeCalendarManagedBean.onEventMove}" update="messages" />
+                    <p:ajax event="eventResize" listener="#{employeeCalendarManagedBean.onEventResize}" update="messages" />
+                </p:schedule>
+            </h:panelGrid>
+
+            <p:dialog widgetVar="eventDialog" header="Event Details" showEffect="clip" hideEffect="clip">
+                <h:panelGrid id="eventDetails" columns="2">
+                    <p:outputLabel for="title" value="Titles:" />
+                    <p:inputText id="title" value="#{employeeCalendarManagedBean.event.title}" required="true" />
+
+                    <p:outputLabel for="from" value="From:" />
+                    <p:calendar id="from" value="#{employeeCalendarManagedBean.event.startDate}" timeZone="GMT+2" pattern="dd/MM/yyyy HH:mm"/>
+
+                    <p:outputLabel for="to" value="To:" />
+                    <p:calendar id="to" value="#{employeeCalendarManagedBean.event.endDate}" timeZone="GMT+2" pattern="dd/MM/yyyy HH:mm"/>
+
+                    <p:outputLabel for="allDay" value="All Day:" />
+                    <h:selectBooleanCheckbox id="allDay" value="#{employeeCalendarManagedBean.event.allDay}" />
+
+                    <p:commandButton type="reset" value="Reset" />
+                    <p:commandButton id="addButton" value="Save" actionListener="#{employeeCalendarManagedBean.addEvent}" oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />
+                </h:panelGrid>
+            </p:dialog>
             </div>
         </h:form>
+        <style type="text/css">
+            .value {
+                width: 800px;
+            }
+        </style>
     </ui:define>
 </ui:composition>
 
