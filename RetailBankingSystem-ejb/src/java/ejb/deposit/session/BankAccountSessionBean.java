@@ -280,17 +280,20 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
         for (BankAccount activatedBankAccount : activatedBankAccounts) {
 
             Double currentInterest = 0.0;
-            Double currentBalance = 0.0;
+            Double currentTotalBalance = 0.0;
+            Double currentAvailableBalance = 0.0;
             Double totalInterest = 0.0;
             Double accuredInterest = 0.0;
-            Double finalBalance = 0.0;
+            Double finalTotalBalance = 0.0;
+            Double finalAvailableBalance = 0.0;
             Double finalInterest = 0.0;
             Interest interest = activatedBankAccount.getInterest();
 
-            currentBalance = Double.valueOf(activatedBankAccount.getAvailableBankAccountBalance());
+            currentAvailableBalance = Double.valueOf(activatedBankAccount.getAvailableBankAccountBalance());
+            currentTotalBalance = Double.valueOf(activatedBankAccount.getTotalBankAccountBalance());
 
             if (activatedBankAccount.getFixedDepositStatus().equals("Deposited") && activatedBankAccount.getBankAccountType().equals("Fixed Deposit Account")
-                    && currentBalance > 0) {
+                    && currentAvailableBalance > 0) {
 
                 if (activatedBankAccount.getInterest().getIsTransfer().equals("1") || activatedBankAccount.getInterest().getIsWithdraw().equals("1")) {
 
@@ -304,19 +307,18 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
 
                     finalInterest = currentInterest * 0.4;
 
-                    currentBalance = Double.valueOf(activatedBankAccount.getAvailableBankAccountBalance());
-                    finalBalance = currentBalance + finalInterest;
-                    activatedBankAccount.setAvailableBankAccountBalance(df.format(finalBalance));
+                    finalAvailableBalance = currentAvailableBalance + finalInterest;
+                    finalTotalBalance = currentTotalBalance + finalInterest;
+                    
+                    activatedBankAccount.setAvailableBankAccountBalance(df.format(finalAvailableBalance));
+                    activatedBankAccount.setTotalBankAccountBalance(df.format(finalTotalBalance));
 
                     String accountDebit = " ";
                     String transactionCode = "DEFI";
                     String transactionRef = "Interest Crediting";
 
                     Calendar cal = Calendar.getInstance();
-//                    int year = cal.get(Calendar.YEAR);
-//                    int month = cal.get(Calendar.MONTH);
-//                    int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
-//                    String transactionDate = dayOfMonth + "-" + (month + 1) + "-" + year;
+                    
                     Long transactionDateMilis = cal.getTimeInMillis();
 
                     Long newAccTransactionId = transactionSessionBeanLocal.addNewTransaction(cal.getTime().toString(), transactionCode, transactionRef,
@@ -329,19 +331,25 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
                     activatedBankAccount.setCurrentFixedDepositPeriod(finalPeriod.toString());
 
                     currentInterest = Double.valueOf(activatedBankAccount.getInterest().getDailyInterest());
-                    currentBalance = Double.valueOf(activatedBankAccount.getTotalBankAccountBalance());
+                    currentAvailableBalance = Double.valueOf(activatedBankAccount.getAvailableBankAccountBalance());
+                    currentTotalBalance = Double.valueOf(activatedBankAccount.getTotalBankAccountBalance());
+                            
                     String interestRate = checkInterestRate(activatedBankAccount.getBankAccountDepositPeriod());
 
-                    totalInterest = currentInterest + currentBalance * Double.valueOf(interestRate) / 360;
+                    totalInterest = currentInterest + currentAvailableBalance * Double.valueOf(interestRate) / 360;
                     accuredInterest = Double.valueOf(df.format(totalInterest));
 
                     if (activatedBankAccount.getCurrentFixedDepositPeriod().equals(activatedBankAccount.getBankAccountDepositPeriod())) {
 
                         interest.setDailyInterest(totalInterest.toString());
-                        finalBalance = currentBalance + totalInterest;
+                        finalAvailableBalance = currentAvailableBalance + totalInterest;
+                        finalTotalBalance = currentTotalBalance + totalInterest;
 
                         interest.setDailyInterest("0");
-                        activatedBankAccount.setAvailableBankAccountBalance(df.format(finalBalance));
+                        
+                        activatedBankAccount.setAvailableBankAccountBalance(df.format(finalAvailableBalance));
+                        activatedBankAccount.setTotalBankAccountBalance(df.format(finalTotalBalance));
+                        
                         activatedBankAccount.setFixedDepositStatus("Withdrawn");
                         activatedBankAccount.setBankAccountDepositPeriod("None");
                         activatedBankAccount.setBankAccountStatus("Inactive");
@@ -351,10 +359,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
                         String transactionRef = "Interest Crediting";
 
                         Calendar cal = Calendar.getInstance();
-//                        int year = cal.get(Calendar.YEAR);
-//                        int month = cal.get(Calendar.MONTH);
-//                        int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
-//                        String transactionDate = dayOfMonth + "-" + (month + 1) + "-" + year;
+                        
                         Long transactionDateMilis = cal.getTimeInMillis();
 
                         Long newAccTransactionId = transactionSessionBeanLocal.addNewTransaction(cal.getTime().toString(), transactionCode, transactionRef,
@@ -364,21 +369,21 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
                     }
                 }
             } else if (activatedBankAccount.getFixedDepositStatus().equals("Withdrawn") && activatedBankAccount.getBankAccountType().equals("Fixed Deposit Account")
-                    && currentBalance > 0) {
+                    && currentAvailableBalance > 0) {
 
                 currentInterest = Double.valueOf(activatedBankAccount.getInterest().getDailyInterest());
-                currentBalance = Double.valueOf(activatedBankAccount.getAvailableBankAccountBalance());
+                currentAvailableBalance = Double.valueOf(activatedBankAccount.getAvailableBankAccountBalance());
 
-                totalInterest = currentInterest + currentBalance * 0.0005 / 360;
+                totalInterest = currentInterest + currentAvailableBalance * 0.0005 / 360;
 
                 interest.setDailyInterest(totalInterest.toString());
 
-            } else if (currentBalance > 0) {
+            } else if (currentAvailableBalance > 0) {
 
                 currentInterest = Double.valueOf(interest.getDailyInterest());
-                currentBalance = Double.valueOf(activatedBankAccount.getAvailableBankAccountBalance());
+                currentAvailableBalance = Double.valueOf(activatedBankAccount.getAvailableBankAccountBalance());
 
-                totalInterest = currentInterest + currentBalance * 0.0005 / 360;
+                totalInterest = currentInterest + currentAvailableBalance * 0.0005 / 360;
 
                 interest.setDailyInterest(totalInterest.toString());
             }
@@ -402,39 +407,42 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
             Double bonusInterest = 0.0;
             Double totalInterest = 0.0;
             Double creditedInterest = 0.0;
-            Double finalBalance = 0.0;
-            Double currentBalance = 0.0;
+            Double finalAvailableBalance = 0.0;
+            Double finalTotalBalance = 0.0;
+            Double currentTotalBalance = 0.0;
+            Double currentAvailableBalance = 0.0;
 
-            currentBalance = Double.valueOf(activatedBankAccount.getAvailableBankAccountBalance());
+            currentAvailableBalance = Double.valueOf(activatedBankAccount.getAvailableBankAccountBalance());
+            currentTotalBalance = Double.valueOf(activatedBankAccount.getTotalBankAccountBalance());
 
             if (activatedBankAccount.getBankAccountType().equals("Fixed Deposit Account") && !activatedBankAccount.getFixedDepositStatus().equals("Withdrawn")) {
                 System.out.println("One Month Gone");
             } else if (activatedBankAccount.getBankAccountType().equals("Fixed Deposit Account") && activatedBankAccount.getFixedDepositStatus().equals("Withdrawn")
-                    && currentBalance > 0) {
+                    && currentAvailableBalance > 0) {
 
                 bonusInterest = 0.0;
                 totalInterest = dailyInterest + bonusInterest;
                 creditedInterest = Double.valueOf(df.format(totalInterest));
-                finalBalance = Double.valueOf(activatedBankAccount.getAvailableBankAccountBalance()) + totalInterest;
+                finalAvailableBalance = Double.valueOf(activatedBankAccount.getAvailableBankAccountBalance()) + totalInterest;
+                finalTotalBalance = Double.valueOf(activatedBankAccount.getTotalBankAccountBalance()) + totalInterest;
 
                 interest.setMonthlyInterest(totalInterest.toString());
-                activatedBankAccount.setAvailableBankAccountBalance(df.format(finalBalance));
+                
+                activatedBankAccount.setAvailableBankAccountBalance(df.format(finalAvailableBalance));
+                activatedBankAccount.setTotalBankAccountBalance(df.format(finalTotalBalance));
 
                 String accountDebit = " ";
                 String transactionCode = "DEFI";
                 String transactionRef = "Interest Crediting";
 
                 Calendar cal = Calendar.getInstance();
-//                int year = cal.get(Calendar.YEAR);
-//                int month = cal.get(Calendar.MONTH);
-//                int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
-//                String transactionDate = dayOfMonth + "-" + (month + 1) + "-" + year;
+                
                 Long transactionDateMilis = cal.getTimeInMillis();
 
                 Long newAccTransactionId = transactionSessionBeanLocal.addNewTransaction(cal.getTime().toString(), transactionCode, transactionRef,
                         accountDebit, creditedInterest.toString(), transactionDateMilis, activatedBankAccount.getBankAccountId());
 
-            } else if (currentBalance > 0) {
+            } else if (currentAvailableBalance > 0) {
 
                 if ((interest.getIsTransfer().equals("0")) && (interest.getIsWithdraw().equals("0"))) {
                     interest.setDailyInterest("0");
@@ -455,21 +463,21 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
 
                     totalInterest = dailyInterest + bonusInterest;
                     creditedInterest = Double.valueOf(df.format(totalInterest));
-                    finalBalance = Double.valueOf(activatedBankAccount.getAvailableBankAccountBalance()) + totalInterest;
+                    
+                    finalAvailableBalance = Double.valueOf(activatedBankAccount.getAvailableBankAccountBalance()) + totalInterest;
+                    finalTotalBalance = Double.valueOf(activatedBankAccount.getTotalBankAccountBalance()) + totalInterest;
 
                     String accountDebit = " ";
                     String transactionCode = "DEFI";
                     String transactionRef = "Interest Crediting";
 
                     Calendar cal = Calendar.getInstance();
-//                    int year = cal.get(Calendar.YEAR);
-//                    int month = cal.get(Calendar.MONTH);
-//                    int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
-//                    String transactionDate = dayOfMonth + "-" + (month + 1) + "-" + year;
+                    
                     Long transactionDateMilis = cal.getTimeInMillis();
 
                     interest.setMonthlyInterest(totalInterest.toString());
-                    activatedBankAccount.setAvailableBankAccountBalance(df.format(finalBalance));
+                    activatedBankAccount.setAvailableBankAccountBalance(df.format(finalAvailableBalance));
+                    activatedBankAccount.setAvailableBankAccountBalance(df.format(finalTotalBalance));
 
                     Long newAccTransactionId = transactionSessionBeanLocal.addNewTransaction(cal.getTime().toString(), transactionCode, transactionRef,
                             accountDebit, creditedInterest.toString(), transactionDateMilis, activatedBankAccount.getBankAccountId());
