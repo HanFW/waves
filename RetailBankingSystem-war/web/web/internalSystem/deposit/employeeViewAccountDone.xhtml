@@ -24,8 +24,12 @@
                             <h:outputText value="#{bankAccount.bankAccountNum}" /> 
                         </p:column>
 
-                        <p:column headerText="Balance"> 
-                            <h:outputText value="S$#{bankAccount.bankAccountBalance}" />
+                        <p:column headerText="Available Balance"> 
+                            <h:outputText value="S$#{bankAccount.availableBankAccountBalance}" />
+                        </p:column>
+                        
+                        <p:column headerText="Total Balance"> 
+                            <h:outputText value="S$#{bankAccount.totalBankAccountBalance}" />
                         </p:column>
 
                         <p:column headerText="Authorised Daily Limit"> 

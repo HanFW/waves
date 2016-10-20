@@ -31,7 +31,6 @@ public class EmployeeTransferDoneManagedBean {
     private String toBankAccountNumWithType;
     private Long newTransactionId;
     private String fromAccountBalance;
-    private String toAccountBalance;
 
     private String statusMessage;
     private String customerIdentificationNum;
@@ -113,14 +112,6 @@ public class EmployeeTransferDoneManagedBean {
         this.fromAccountBalance = fromAccountBalance;
     }
 
-    public String getToAccountBalance() {
-        return toAccountBalance;
-    }
-
-    public void setToAccountBalance(String toAccountBalance) {
-        this.toAccountBalance = toAccountBalance;
-    }
-
     public String getStatusMessage() {
         return statusMessage;
     }
@@ -182,11 +173,12 @@ public class EmployeeTransferDoneManagedBean {
 
                             if (diffAmt >= 0) {
 
+                                Double currentBalance = Double.valueOf(bankAccountFrom.getAvailableBankAccountBalance());
                                 newTransactionId = transactionSessionBeanLocal.fundTransfer(fromAccount, toAccount, transferAmt.toString());
                                 statusMessage = "Your transaction has been completed.";
 
-                                fromAccountBalance = bankAccountFrom.getAvailableBankAccountBalance();
-                                toAccountBalance = bankAccountTo.getAvailableBankAccountBalance();
+                                Double fromAccountBalanceDouble = currentBalance - transferAmt;
+                                fromAccountBalance = fromAccountBalanceDouble.toString();
 
                                 ec.getFlash().put("statusMessage", statusMessage);
                                 ec.getFlash().put("newTransactionId", newTransactionId);
@@ -196,7 +188,6 @@ public class EmployeeTransferDoneManagedBean {
                                 ec.getFlash().put("fromAccount", fromAccount);
                                 ec.getFlash().put("toAccount", toAccount);
                                 ec.getFlash().put("fromAccountBalance", fromAccountBalance);
-                                ec.getFlash().put("toAccountBalance", toAccountBalance);
 
                                 ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/deposit/employeeTransferFinished.xhtml?faces-redirect=true");
                             } else {
@@ -213,11 +204,12 @@ public class EmployeeTransferDoneManagedBean {
 
                         if (diffAmt >= 0) {
 
+                            Double currentBalance = Double.valueOf(bankAccountFrom.getAvailableBankAccountBalance());
                             newTransactionId = transactionSessionBeanLocal.fundTransfer(fromAccount, toAccount, transferAmt.toString());
                             statusMessage = "Your transaction has been completed.";
 
-                            fromAccountBalance = bankAccountFrom.getAvailableBankAccountBalance();
-                            toAccountBalance = bankAccountTo.getAvailableBankAccountBalance();
+                            Double fromAccountBalanceDouble = currentBalance - transferAmt;
+                            fromAccountBalance = fromAccountBalanceDouble.toString();
 
                             ec.getFlash().put("statusMessage", statusMessage);
                             ec.getFlash().put("newTransactionId", newTransactionId);
