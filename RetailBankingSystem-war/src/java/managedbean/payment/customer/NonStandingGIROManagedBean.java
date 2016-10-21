@@ -1,57 +1,28 @@
 package managedbean.payment.customer;
 
 import ejb.customer.entity.CustomerBasic;
-import ejb.deposit.entity.BankAccount;
-import ejb.deposit.session.BankAccountSessionBeanLocal;
-import ejb.deposit.session.TransactionSessionBeanLocal;
-import ejb.payment.entity.GIRO;
 import ejb.payment.entity.NonStandingGIRO;
-import ejb.payment.entity.RegisteredBillingOrganization;
-import ejb.payment.session.RegisteredBillingOrganizationSessionBeanLocal;
-import ejb.payment.session.GIROSessionBeanLocal;
 import ejb.payment.session.NonStandingGIROSessionBeanLocal;
 import java.io.IOException;
-import java.util.Calendar;
+import java.io.Serializable;
 import java.util.List;
 import javax.ejb.EJB;
-import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Named;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.xml.ws.WebServiceRef;
-import ws.client.otherbanks.OtherBankAccount;
-import ws.client.otherbanks.OtherBanksWebService_Service;
-import ws.client.sach.SACHWebService_Service;
 
 @Named(value = "nonStandingGIROManagedBean")
 @RequestScoped
 
-public class NonStandingGIROManagedBean {
-
-    @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_8080/OtherBanksWebService/OtherBanksWebService.wsdl")
-    private OtherBanksWebService_Service service_1;
-
-    @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_8080/SACHWebService/SACHWebService.wsdl")
-    private SACHWebService_Service service;
-
-    @EJB
-    private TransactionSessionBeanLocal transactionSessionBeanLocal;
-
-    @EJB
-    private BankAccountSessionBeanLocal bankAccountSessionBeanLocal;
-
-    @EJB
-    private RegisteredBillingOrganizationSessionBeanLocal registeredBillingOrganizationSessionBeanLocal;
-
-    @EJB
-    private GIROSessionBeanLocal gIROSessionBeanLocal;
+public class NonStandingGIROManagedBean implements Serializable{
 
     @EJB
     private NonStandingGIROSessionBeanLocal nonStandingGIROSessionBeanLocal;
 
     private ExternalContext ec;
+    
     private String paymentAmt;
-    private Long giroId;
 
     private String statusMessage;
     private String toBankAccountNumWithType;
@@ -69,14 +40,6 @@ public class NonStandingGIROManagedBean {
 
     public void setPaymentAmt(String paymentAmt) {
         this.paymentAmt = paymentAmt;
-    }
-
-    public Long getGiroId() {
-        return giroId;
-    }
-
-    public void setGiroId(Long giroId) {
-        this.giroId = giroId;
     }
 
     public String getStatusMessage() {
@@ -127,104 +90,23 @@ public class NonStandingGIROManagedBean {
         this.fromAccountBalance = fromAccountBalance;
     }
 
-    public List<NonStandingGIRO> getNonStandingGIROs() throws IOException {
+    public List<NonStandingGIRO> getOneTimeGIROs() throws IOException {
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
         CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
 
-        List<NonStandingGIRO> nonStandingGiros = nonStandingGIROSessionBeanLocal.retrieveNonStandingGIROByCusId(customerBasic.getCustomerBasicId());
+        List<NonStandingGIRO> oneTimeGiros = nonStandingGIROSessionBeanLocal.retrieveOneTimeGIROByCusId(customerBasic.getCustomerBasicId());
 
-        return nonStandingGiros;
+        return oneTimeGiros;
     }
-
-    public void nonStandingGIROTransfer() throws IOException {
-
+    
+        public List<NonStandingGIRO> getRecurrentGIROs() throws IOException {
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
-        GIRO giro = gIROSessionBeanLocal.retrieveGIROById(giroId);
-        NonStandingGIRO nonStandingGiro = nonStandingGIROSessionBeanLocal.retrieveNonStandingGIROById(giroId);
+        CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
 
-        String billingOrganizationName = giro.getBillingOrganizationName();
-        String bankAccountNum = giro.getBankAccountNum();
+        List<NonStandingGIRO> recurrentTimeGiros = nonStandingGIROSessionBeanLocal.retrieveRecurrentGIROByCusId(customerBasic.getCustomerBasicId());
 
-        BankAccount bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountByNum(bankAccountNum);
-
-        Calendar cal = Calendar.getInstance();
-        String transactionDate = cal.getTime().toString();
-        String transactionCode = "BILL";
-        String transactionRef = "Pay bills to " + billingOrganizationName;
-
-        if(paymentAmt==null) {
-            System.out.println("null");
-        } else {
-            System.out.println("not null");
-            System.out.println("*************"+paymentAmt);
-        }
-        
-        Long transactionId = transactionSessionBeanLocal.addNewTransaction(transactionDate,
-                transactionCode, transactionRef, paymentAmt, " ", cal.getTimeInMillis(), bankAccount.getBankAccountId());
-
-        Double currentAvailableBankAccountBalance = Double.valueOf(bankAccount.getAvailableBankAccountBalance()) - Double.valueOf(paymentAmt);
-        Double currentTotalBankAccountBalance = Double.valueOf(bankAccount.getTotalBankAccountBalance()) - Double.valueOf(paymentAmt);
-        bankAccountSessionBeanLocal.updateBankAccountBalance(bankAccountNum, currentAvailableBankAccountBalance.toString(), currentTotalBankAccountBalance.toString());
-
-        RegisteredBillingOrganization billOrg = registeredBillingOrganizationSessionBeanLocal.retrieveRegisteredBillingOrganizationByName(billingOrganizationName);
-        String bankName = billOrg.getBankName();
-        String billOrgBankAccountNum = billOrg.getBankAccountNum();
-
-        if (bankName.equals("DBS") && nonStandingGiro.getPaymentFrequency().equals("One Time")) {
-            sachNonStandingGIROTransferMTD(bankAccount.getBankAccountNum(), billOrgBankAccountNum, Double.valueOf(paymentAmt));
-
-            OtherBankAccount dbsBankAccount = retrieveBankAccountByNum(billOrg.getBankAccountNum());
-            toBankAccountNumWithType = dbsBankAccount.getOtherBankAccountType() + "-" + dbsBankAccount.getOtherBankAccountNum();
-            fromBankAccountNumWithType = bankAccount.getBankAccountType() + "-" + bankAccount.getBankAccountNum();
-            statusMessage = "Successfully Pay Bills";
-            fromAccountBalance = bankAccount.getAvailableBankAccountBalance();
-
-            ec.getFlash().put("statusMessage", statusMessage);
-            ec.getFlash().put("transactionId", transactionId.toString());
-            ec.getFlash().put("toBankAccountNumWithType", toBankAccountNumWithType);
-            ec.getFlash().put("fromBankAccountNumWithType", fromBankAccountNumWithType);
-            ec.getFlash().put("transferAmt", paymentAmt);
-            ec.getFlash().put("fromAccountBalance", fromAccountBalance);
-
-            ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/payment/customerNonStandingGIROTransferDone.xhtml?faces-redirect=true");
-
-        } else if (bankName.equals("DBS") && !nonStandingGiro.getPaymentFrequency().equals("One Time")) {
-            sachNonStandingGIROTransferMTD(bankAccount.getBankAccountNum(), billOrgBankAccountNum, Double.valueOf(paymentAmt));
-
-            nonStandingGIROSessionBeanLocal.updatePaymentAmt(giroId, paymentAmt);
-
-            OtherBankAccount dbsBankAccount = retrieveBankAccountByNum(billOrg.getBankAccountNum());
-            toBankAccountNumWithType = dbsBankAccount.getOtherBankAccountType() + "-" + dbsBankAccount.getOtherBankAccountNum();
-            fromBankAccountNumWithType = bankAccount.getBankAccountType() + "-" + bankAccount.getBankAccountNum();
-            statusMessage = "Successfully Pay Bills";
-            fromAccountBalance = bankAccount.getAvailableBankAccountBalance();
-
-            ec.getFlash().put("statusMessage", statusMessage);
-            ec.getFlash().put("transactionId", transactionId.toString());
-            ec.getFlash().put("toBankAccountNumWithType", toBankAccountNumWithType);
-            ec.getFlash().put("fromBankAccountNumWithType", fromBankAccountNumWithType);
-            ec.getFlash().put("transferAmt", paymentAmt);
-            ec.getFlash().put("fromAccountBalance", fromAccountBalance);
-
-            ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/payment/customerNonStandingGIROTransferDone.xhtml?faces-redirect=true");
-        } else if (bankName.equals("OCBC")) {
-
-        }
-    }
-
-    private void sachNonStandingGIROTransferMTD(java.lang.String fromBankAccountNum, java.lang.String toBankAccountNum, java.lang.Double transferAmt) {
-        // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
-        // If the calling of port operations may lead to race condition some synchronization is required.
-        ws.client.sach.SACHWebService port = service.getSACHWebServicePort();
-        port.sachNonStandingGIROTransferMTD(fromBankAccountNum, toBankAccountNum, transferAmt);
-    }
-
-    private OtherBankAccount retrieveBankAccountByNum(java.lang.String otherBankAccountNum) {
-        // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
-        // If the calling of port operations may lead to race condition some synchronization is required.
-        ws.client.otherbanks.OtherBanksWebService port = service_1.getOtherBanksWebServicePort();
-        return port.retrieveBankAccountByNum(otherBankAccountNum);
+        return recurrentTimeGiros;
     }
 }

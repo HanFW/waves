@@ -19,6 +19,7 @@ import ws.client.sach.SACHWebService_Service;
 
 @Stateless
 public class NonStandingGIROSessionBean implements NonStandingGIROSessionBeanLocal {
+
     @WebServiceRef(wsdlLocation = "META-INF/wsdl/localhost_8080/SACHWebService/SACHWebService.wsdl")
     private SACHWebService_Service service;
 
@@ -128,6 +129,56 @@ public class NonStandingGIROSessionBean implements NonStandingGIROSessionBeanLoc
             if (bankName.equals("DBS")) {
                 sachNonStandingGIROTransferMTD(bankAccount.getBankAccountNum(), billOrgBankAccountNum, Double.valueOf(paymentAmt));
             }
+        }
+    }
+
+    @Override
+    public List<NonStandingGIRO> retrieveOneTimeGIROByCusId(Long customerBasicId) {
+
+        CustomerBasic customerBasic = bankAccountSessionBeanLocal.retrieveCustomerBasicById(customerBasicId);
+
+        if (customerBasic.getCustomerBasicId() == null) {
+            return new ArrayList<NonStandingGIRO>();
+        }
+        try {
+            Query query = entityManager.createQuery("Select g From NonStandingGIRO g Where g.customerBasic=:customerBasic And g.giroType=:giroType And g.paymentFrequency=:paymentFrequency");
+            query.setParameter("customerBasic", customerBasic);
+            query.setParameter("giroType", "Non Standing");
+            query.setParameter("paymentFrequency", "One Time");
+
+            if (query.getResultList().isEmpty()) {
+                return new ArrayList<NonStandingGIRO>();
+            } else {
+                return query.getResultList();
+            }
+        } catch (EntityNotFoundException enfe) {
+            System.out.println("Entity not found error: " + enfe.getMessage());
+            return new ArrayList<NonStandingGIRO>();
+        }
+    }
+
+    @Override
+    public List<NonStandingGIRO> retrieveRecurrentGIROByCusId(Long customerBasicId) {
+
+        CustomerBasic customerBasic = bankAccountSessionBeanLocal.retrieveCustomerBasicById(customerBasicId);
+
+        if (customerBasic.getCustomerBasicId() == null) {
+            return new ArrayList<NonStandingGIRO>();
+        }
+        try {
+            Query query = entityManager.createQuery("Select g From NonStandingGIRO g Where g.customerBasic=:customerBasic And g.giroType=:giroType And g.paymentFrequency<>:paymentFrequency");
+            query.setParameter("customerBasic", customerBasic);
+            query.setParameter("giroType", "Non Standing");
+            query.setParameter("paymentFrequency", "One Time");
+
+            if (query.getResultList().isEmpty()) {
+                return new ArrayList<NonStandingGIRO>();
+            } else {
+                return query.getResultList();
+            }
+        } catch (EntityNotFoundException enfe) {
+            System.out.println("Entity not found error: " + enfe.getMessage());
+            return new ArrayList<NonStandingGIRO>();
         }
     }
 

@@ -13,4 +13,6 @@ public interface NonStandingGIROSessionBeanLocal {
     public NonStandingGIRO retrieveNonStandingGIROById(Long giroId);
     public void updatePaymentAmt(Long giroId, String paymentAmt);
     public void weeklyRecurrentPayment();
+    public List<NonStandingGIRO> retrieveOneTimeGIROByCusId(Long customerBasicId);
+    public List<NonStandingGIRO> retrieveRecurrentGIROByCusId(Long customerBasicId);
 }

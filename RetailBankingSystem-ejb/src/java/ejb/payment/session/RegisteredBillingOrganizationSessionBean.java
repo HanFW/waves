@@ -43,7 +43,7 @@ public class RegisteredBillingOrganizationSessionBean implements RegisteredBilli
         RegisteredBillingOrganization billingOrganization = new RegisteredBillingOrganization();
 
         try {
-            Query query = entityManager.createQuery("Select b From BillingOrganization b Where b.billingOrganizationName=:billingOrganizationName");
+            Query query = entityManager.createQuery("Select r From RegisteredBillingOrganization r Where r.billingOrganizationName=:billingOrganizationName");
             query.setParameter("billingOrganizationName", billingOrganizationName);
 
             if (query.getResultList().isEmpty()) {
