@@ -212,14 +212,16 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
     private void handleTimeout_10000ms() {
 //        System.out.println("*** 10000MS Timer timeout");
         bankAccountSessionLocal.interestAccuring();
+        nonStandingGIROSessionBeanLocal.dailyRecurrentPayment();
     }
 
     private void handleTimeout_300000ms() {
-//        System.out.println("*** 300000MS Timer timeout");
+        System.out.println("*** 300000MS Timer timeout");
 
         bankAccountSessionLocal.interestCrediting();
         statementSessionBeanLocal.generateStatement();
         maintainDailyBalance();
+        nonStandingGIROSessionBeanLocal.monthlyRecurrentPayment();
     }
 
     private void handleTimeout_15000ms() {
