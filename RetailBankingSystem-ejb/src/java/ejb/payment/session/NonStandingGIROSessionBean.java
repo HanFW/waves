@@ -3,9 +3,11 @@ package ejb.payment.session;
 import ejb.customer.entity.CustomerBasic;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
+import ejb.deposit.session.TransactionSessionBeanLocal;
 import ejb.payment.entity.NonStandingGIRO;
 import ejb.payment.entity.RegisteredBillingOrganization;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -20,8 +22,11 @@ import ws.client.sach.SACHWebService_Service;
 @Stateless
 public class NonStandingGIROSessionBean implements NonStandingGIROSessionBeanLocal {
 
+    @EJB
+    private TransactionSessionBeanLocal transactionSessionBeanLocal;
+
     @WebServiceRef(wsdlLocation = "META-INF/wsdl/localhost_8080/SACHWebService/SACHWebService.wsdl")
-    private SACHWebService_Service service;
+    private SACHWebService_Service service_sach;
 
     @EJB
     private RegisteredBillingOrganizationSessionBeanLocal registeredBillingOrganizationSessionBeanLocal;
@@ -126,6 +131,21 @@ public class NonStandingGIROSessionBean implements NonStandingGIROSessionBeanLoc
             String billOrgBankAccountNum = billOrg.getBankAccountNum();
             String paymentAmt = nonStandingGiro.getPaymentAmt();
 
+            Double currentAvailableBalance = Double.valueOf(bankAccount.getAvailableBankAccountBalance()) - Double.valueOf(paymentAmt);
+            Double currentTotalBalance = Double.valueOf(bankAccount.getTotalBankAccountBalance()) - Double.valueOf(paymentAmt);
+
+            bankAccount.setAvailableBankAccountBalance(currentAvailableBalance.toString());
+            bankAccount.setTotalBankAccountBalance(currentTotalBalance.toString());
+
+            Calendar cal = Calendar.getInstance();
+            String currentTime = cal.getTime().toString();
+            String transactionCode = "BILL";
+            String transactionRef = "Pay bills to " + billingOrganizationName;
+            String accountDebit = paymentAmt;
+
+            Long transactionId = transactionSessionBeanLocal.addNewTransaction(currentTime, transactionCode,
+                    transactionRef, accountDebit, " ", cal.getTimeInMillis(), bankAccount.getBankAccountId());
+
             if (bankName.equals("DBS")) {
                 sachNonStandingGIROTransferMTD(bankAccount.getBankAccountNum(), billOrgBankAccountNum, Double.valueOf(paymentAmt));
             }
@@ -185,7 +205,7 @@ public class NonStandingGIROSessionBean implements NonStandingGIROSessionBeanLoc
     private void sachNonStandingGIROTransferMTD(java.lang.String fromBankAccountNum, java.lang.String toBankAccountNum, java.lang.Double transferAmt) {
         // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
         // If the calling of port operations may lead to race condition some synchronization is required.
-        ws.client.sach.SACHWebService port = service.getSACHWebServicePort();
+        ws.client.sach.SACHWebService port = service_sach.getSACHWebServicePort();
         port.sachNonStandingGIROTransferMTD(fromBankAccountNum, toBankAccountNum, transferAmt);
     }
 }

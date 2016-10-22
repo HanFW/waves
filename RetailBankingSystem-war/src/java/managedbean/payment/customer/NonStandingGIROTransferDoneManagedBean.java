@@ -201,7 +201,7 @@ public class NonStandingGIROTransferDoneManagedBean implements Serializable {
 
             fromBankAccountAvailableBalance = currentAvailableBankAccountBalance - paymentAmt;
             fromBankAccountTotalBalance = currentTotalBankAccountBalance;
-
+            
             ec.getFlash().put("statusMessage", statusMessage);
             ec.getFlash().put("transactionId", transactionId.toString());
             ec.getFlash().put("toBankAccountNumWithType", toBankAccountNumWithType);
@@ -210,6 +210,8 @@ public class NonStandingGIROTransferDoneManagedBean implements Serializable {
             ec.getFlash().put("fromBankAccountAvailableBalance", fromBankAccountAvailableBalance.toString());
             ec.getFlash().put("fromBankAccountTotalBalance", fromBankAccountTotalBalance.toString());
 
+            paymentAmt = null;
+            
             ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/payment/customerNonStandingGIROTransferFinished.xhtml?faces-redirect=true");
 
         } else if (bankName.equals("DBS") && !nonStandingGiro.getPaymentFrequency().equals("One Time")) {
@@ -224,7 +226,7 @@ public class NonStandingGIROTransferDoneManagedBean implements Serializable {
             
             fromBankAccountAvailableBalance = currentAvailableBankAccountBalance - paymentAmt;
             fromBankAccountTotalBalance = currentTotalBankAccountBalance;
-
+            
             ec.getFlash().put("statusMessage", statusMessage);
             ec.getFlash().put("transactionId", transactionId.toString());
             ec.getFlash().put("toBankAccountNumWithType", toBankAccountNumWithType);
@@ -233,6 +235,8 @@ public class NonStandingGIROTransferDoneManagedBean implements Serializable {
             ec.getFlash().put("fromBankAccountAvailableBalance", fromBankAccountAvailableBalance.toString());
             ec.getFlash().put("fromBankAccountTotalBalance", fromBankAccountTotalBalance.toString());
 
+            paymentAmt = null;
+            
             ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/payment/customerNonStandingGIROTransferFinished.xhtml?faces-redirect=true");
         } else if (bankName.equals("OCBC")) {
 

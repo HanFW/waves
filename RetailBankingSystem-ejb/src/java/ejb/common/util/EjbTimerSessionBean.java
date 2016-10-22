@@ -229,7 +229,7 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
     }
 
     private void handleTimeout_70000ms() {
-//        System.out.println("*** 70000MS Timer timeout");
+        System.out.println("*** 70000MS Timer timeout");
 
         bankAccountSessionLocal.autoCloseAccount();
         nonStandingGIROSessionBeanLocal.weeklyRecurrentPayment();
