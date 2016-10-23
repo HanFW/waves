@@ -45,7 +45,8 @@ public class InternalOpenAccountManagedBean implements Serializable  {
     private String isWithdraw;
     private Long newInterestId;
 
-    private String bankAccountBalance;
+    private String totalBankAccountBalance;
+    private String availableBankAccountBalance;
     private String transferDailyLimit;
     private String transferBalance;
     private String bankAccountMinSaving;
@@ -205,14 +206,6 @@ public class InternalOpenAccountManagedBean implements Serializable  {
         this.newInterestId = newInterestId;
     }
 
-    public String getBankAccountBalance() {
-        return bankAccountBalance;
-    }
-
-    public void setBankAccountBalance(String bankAccountBalance) {
-        this.bankAccountBalance = bankAccountBalance;
-    }
-
     public String getTransferDailyLimit() {
         return transferDailyLimit;
     }
@@ -357,6 +350,22 @@ public class InternalOpenAccountManagedBean implements Serializable  {
         this.bankAccount = bankAccount;
     }
 
+    public String getTotalBankAccountBalance() {
+        return totalBankAccountBalance;
+    }
+
+    public void setTotalBankAccountBalance(String totalBankAccountBalance) {
+        this.totalBankAccountBalance = totalBankAccountBalance;
+    }
+
+    public String getAvailableBankAccountBalance() {
+        return availableBankAccountBalance;
+    }
+
+    public void setAvailableBankAccountBalance(String availableBankAccountBalance) {
+        this.availableBankAccountBalance = availableBankAccountBalance;
+    }
+
     public void saveAccount() throws IOException {
 
         ec = FacesContext.getCurrentInstance().getExternalContext();
@@ -367,7 +376,8 @@ public class InternalOpenAccountManagedBean implements Serializable  {
         System.out.println(agreement);
         if (agreement) {
 
-            bankAccountBalance = "0";
+            totalBankAccountBalance = "0.0";
+            availableBankAccountBalance = "0.0";
             transferDailyLimit = "3000.0";
             transferBalance = "3000.0";
             bankAccountMinSaving = "";
@@ -395,7 +405,7 @@ public class InternalOpenAccountManagedBean implements Serializable  {
             }
 
             newAccountId = bankAccountSessionBeanLocal.addNewAccount(bankAccountNum, bankAccountType,
-                    bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
+                    totalBankAccountBalance, availableBankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
                     bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
                     statementDateDouble, customerBasicId, newInterestId);
 

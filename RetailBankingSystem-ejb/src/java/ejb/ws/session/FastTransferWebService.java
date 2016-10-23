@@ -17,7 +17,7 @@ import ws.client.otherbanks.OtherBanksWebService_Service;
 @Stateless()
 
 public class FastTransferWebService {
-    
+
     @WebServiceRef(wsdlLocation = "META-INF/wsdl/localhost_8080/OtherBanksWebService/OtherBanksWebService.wsdl")
     private OtherBanksWebService_Service service;
 
@@ -27,12 +27,13 @@ public class FastTransferWebService {
     @EJB
     private BankAccountSessionBeanLocal bankAccountSessionBeanLocal;
 
-    @WebMethod(operationName = "fastTransfer")
-    public void fastTransfer(@WebParam(name = "fromBankAccountNum") String fromBankAccountNum, @WebParam(name = "toBankAccountNum") String toBankAccountNum, @WebParam(name = "transferAmt") Double transferAmt) {
-        
+    @WebMethod(operationName = "actualOTMFastTransfer")
+    public void actualOTMFastTransfer(@WebParam(name = "fromBankAccountNum") String fromBankAccountNum, @WebParam(name = "toBankAccountNum") String toBankAccountNum, @WebParam(name = "transferAmt") Double transferAmt) {
+
         OtherBankAccount otherBankAccount = retrieveBankAccountByNum(fromBankAccountNum);
         BankAccount bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountByNum(toBankAccountNum);
-        Double balance = Double.valueOf(bankAccount.getBankAccountBalance()) + transferAmt;
+        Double totalBalance = Double.valueOf(bankAccount.getTotalBankAccountBalance()) + transferAmt;
+        Double availableBalance = Double.valueOf(bankAccount.getAvailableBankAccountBalance()) + transferAmt;
 
         Calendar cal = Calendar.getInstance();
         String transactionCode = "ICT";
@@ -45,7 +46,8 @@ public class FastTransferWebService {
                 transactionCode, transactionRef, accountDebit, accountCredit,
                 transactionDateMilis, bankAccount.getBankAccountId());
 
-        bankAccount.setBankAccountBalance(balance.toString());      
+        bankAccount.setAvailableBankAccountBalance(availableBalance.toString());
+        bankAccount.setTotalBankAccountBalance(totalBalance.toString());
     }
 
     private OtherBankAccount retrieveBankAccountByNum(java.lang.String otherBankAccountNum) {

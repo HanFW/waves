@@ -3,10 +3,9 @@ package managedbean.payment.customer;
 import ejb.customer.entity.CustomerBasic;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
-import ejb.payment.session.BillingOrganizationSessionBeanLocal;
-import ejb.payment.session.OneTimeGIROSessionBeanLocal;
-import ejb.payment.session.RecurrentGIROSessionBeanLocal;
-import ejb.payment.entity.BillingOrganization;
+import ejb.payment.entity.RegisteredBillingOrganization;
+import ejb.payment.session.RegisteredBillingOrganizationSessionBeanLocal;
+import ejb.payment.session.NonStandingGIROSessionBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Calendar;
@@ -24,18 +23,14 @@ import javax.faces.view.ViewScoped;
 @ViewScoped
 
 public class AddNonStandingGIROManagedBean implements Serializable {
-
     @EJB
-    private RecurrentGIROSessionBeanLocal recurrentGIROSessionBeanLocal;
-
-    @EJB
-    private OneTimeGIROSessionBeanLocal oneTimeGIROSessionBeanLocal;
+    private NonStandingGIROSessionBeanLocal nonStandingGIROSessionBeanLocal;
 
     @EJB
     private BankAccountSessionBeanLocal bankAccountSessionBeanLocal;
 
     @EJB
-    private BillingOrganizationSessionBeanLocal billingOrganizationSessionBeanLocal;
+    private RegisteredBillingOrganizationSessionBeanLocal registeredBillingOrganizationSessionBeanLocal;
 
     private String billingOrganization;
     private String billReference;
@@ -43,6 +38,7 @@ public class AddNonStandingGIROManagedBean implements Serializable {
     private Map<String, String> billingOrganizations = new HashMap<String, String>();
     private String paymentAmt;
     private String bankAccountNumWithType;
+    private String bankAccountNum;
     private String transferMethod;
     private String transferFrequency;
     private boolean visible = false;
@@ -52,6 +48,7 @@ public class AddNonStandingGIROManagedBean implements Serializable {
     private Long giroId;
     private String updateDate;
     private String giroType;
+    private String paymentFrequency;
 
     private ExternalContext ec;
 
@@ -73,7 +70,7 @@ public class AddNonStandingGIROManagedBean implements Serializable {
             }
 
             billingOrganizations = new HashMap<String, String>();
-            List<BillingOrganization> billOrgans = billingOrganizationSessionBeanLocal.getAllBillingOrganization();
+            List<RegisteredBillingOrganization> billOrgans = registeredBillingOrganizationSessionBeanLocal.getAllRegisteredBillingOrganization();
 
             for (int j = 0; j < billOrgans.size(); j++) {
                 billingOrganizations.put(billOrgans.get(j).getBillingOrganizationName(), billOrgans.get(j).getBillingOrganizationName());
@@ -203,15 +200,36 @@ public class AddNonStandingGIROManagedBean implements Serializable {
         this.giroType = giroType;
     }
 
+    public String getPaymentFrequency() {
+        return paymentFrequency;
+    }
+
+    public void setPaymentFrequency(String paymentFrequency) {
+        this.paymentFrequency = paymentFrequency;
+    }
+
+    public String getBankAccountNum() {
+        return bankAccountNum;
+    }
+
+    public void setBankAccountNum(String bankAccountNum) {
+        this.bankAccountNum = bankAccountNum;
+    }
+
     public void addNewBillingOrganization() throws IOException {
 
+        ec = FacesContext.getCurrentInstance().getExternalContext();
+        
         CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
         giroType = "Non Standing";
 
         if (transferMethod.equals("One Time")) {
-            giroId = oneTimeGIROSessionBeanLocal.addNewOneTimeGIRO(billingOrganization,
-                    billReference, bankAccountNumWithType, bankAccountNumWithType,
-                    paymentAmt, giroType, customerBasic.getCustomerBasicId());
+            paymentFrequency = "One Time";
+            bankAccountNum = handleAccountString(bankAccountNumWithType);
+            
+            giroId = nonStandingGIROSessionBeanLocal.addNewNonStandingGIRO(billingOrganization,
+                    billReference, bankAccountNum, bankAccountNumWithType,
+                    paymentFrequency, paymentAmt, giroType, customerBasic.getCustomerBasicId());
 
             statusMessage = "Your new billing organization has been added!";
             Calendar cal = Calendar.getInstance();
@@ -223,11 +241,13 @@ public class AddNonStandingGIROManagedBean implements Serializable {
             ec.getFlash().put("billingOrganization", billingOrganization);
             ec.getFlash().put("billReference", billReference);
 
-            ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/payment/customerAddNonStandingGIRODone.xhtml?faces-redirect=true");
+            ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/payment/customerAddBillingOrganizationDone.xhtml?faces-redirect=true");
 
         } else {
-            giroId = recurrentGIROSessionBeanLocal.addNewRecurrentGIRO(billingOrganization, billReference,
-                    bankAccountNumWithType, bankAccountNumWithType, transferFrequency,
+            bankAccountNum = handleAccountString(bankAccountNumWithType);
+            
+            giroId = nonStandingGIROSessionBeanLocal.addNewNonStandingGIRO(billingOrganization, billReference,
+                    bankAccountNum, bankAccountNumWithType, transferFrequency,
                     paymentAmt, giroType, customerBasic.getCustomerBasicId());
 
             statusMessage = "Your new billing organization has been added!";
@@ -240,7 +260,15 @@ public class AddNonStandingGIROManagedBean implements Serializable {
             ec.getFlash().put("billingOrganization", billingOrganization);
             ec.getFlash().put("billReference", billReference);
 
-            ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/payment/customerAddNonStandingGIRODone.xhtml?faces-redirect=true");
+            ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/payment/customerAddBillingOrganizationDone.xhtml?faces-redirect=true");
         }
+    }
+    
+    private String handleAccountString(String bankAccountNumWithType) {
+
+        String[] bankAccountNums = bankAccountNumWithType.split("-");
+        String bankAccountNum = bankAccountNums[1];
+
+        return bankAccountNum;
     }
 }

@@ -27,12 +27,14 @@
                         <br/>
                         <p:outputLabel for="transferFromAccount" style="font-weight: bold" value="Account: " />
 
-                        <p:selectOneMenu id="transferFromAccount" value="#{transferManagedBean.fromBankAccountNumWithType}" effect="fold" editable="true">
+                        <p:selectOneMenu id="transferFromAccount" value="#{transferManagedBean.fromBankAccountNumWithType}" 
+                                         effect="fold" editable="false">
+                            <f:selectItem itemLabel="Please Select One" itemValue=""/> 
                             <f:selectItems value="#{transferManagedBean.fromAccounts}" />
                         </p:selectOneMenu>
 
                         <p:message for="transferFromAccount" />
-                        
+
                         <p:outputLabel for="transferFromCurrency" style="font-weight: bold" value="Currency: " />
 
                         <p:selectOneMenu id="transferFromCurrency" value="#{transferManagedBean.fromCurrency}" 
@@ -42,12 +44,14 @@
 
                         <p:message for="transferFromCurrency" />
                         <br/>
-                        
+
                         <p:outputLabel style="font-weight: bold;font-size: 24px" value="To:" />
                         <br/>
                         <p:outputLabel for="transferToAccount" style="font-weight: bold" value="Account: " />
 
-                        <p:selectOneMenu id="transferToAccount" value="#{transferManagedBean.toBankAccountNumWithType}" effect="fold" editable="true">
+                        <p:selectOneMenu id="transferToAccount" value="#{transferManagedBean.toBankAccountNumWithType}" 
+                                         effect="fold" editable="false">
+                            <f:selectItem itemLabel="Please Select One" itemValue=""/> 
                             <f:selectItems value="#{transferManagedBean.toAccounts}" />
                         </p:selectOneMenu>
 

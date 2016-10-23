@@ -22,8 +22,10 @@
                                 <p:outputLabel for="bankAccountNum" style="font-weight: bold" value="Account Number: " />
                             </p:column>
                             <p:column>
-                                <p:selectOneMenu id="bankAccountNum" value="#{employeeCloseAccountDoneManagedBean.bankAccountNumWithType}" effect="fold" editable="true"
+                                <p:selectOneMenu id="bankAccountNum" value="#{employeeCloseAccountDoneManagedBean.bankAccountNumWithType}" 
+                                                 effect="fold" editable="false"
                                                  required="true" requiredMessage="Required Field">
+                                    <f:selectItem itemLabel="Please Select One" itemValue="" />
                                     <f:selectItems value="#{employeeCloseAccountDoneManagedBean.myBankAccounts}" />
                                 </p:selectOneMenu>
                             </p:column>

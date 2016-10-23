@@ -30,8 +30,8 @@ public class EmployeeTransferDoneManagedBean {
     private String fromBankAccountNumWithType;
     private String toBankAccountNumWithType;
     private Long newTransactionId;
-    private String fromAccountBalance;
-    private String toAccountBalance;
+    private String fromAccountAvailableBalance;
+    private String fromAccountTotalBalance;
 
     private String statusMessage;
     private String customerIdentificationNum;
@@ -105,22 +105,6 @@ public class EmployeeTransferDoneManagedBean {
         this.newTransactionId = newTransactionId;
     }
 
-    public String getFromAccountBalance() {
-        return fromAccountBalance;
-    }
-
-    public void setFromAccountBalance(String fromAccountBalance) {
-        this.fromAccountBalance = fromAccountBalance;
-    }
-
-    public String getToAccountBalance() {
-        return toAccountBalance;
-    }
-
-    public void setToAccountBalance(String toAccountBalance) {
-        this.toAccountBalance = toAccountBalance;
-    }
-
     public String getStatusMessage() {
         return statusMessage;
     }
@@ -135,6 +119,22 @@ public class EmployeeTransferDoneManagedBean {
 
     public void setCustomerIdentificationNum(String customerIdentificationNum) {
         this.customerIdentificationNum = customerIdentificationNum;
+    }
+
+    public String getFromAccountAvailableBalance() {
+        return fromAccountAvailableBalance;
+    }
+
+    public void setFromAccountAvailableBalance(String fromAccountAvailableBalance) {
+        this.fromAccountAvailableBalance = fromAccountAvailableBalance;
+    }
+
+    public String getFromAccountTotalBalance() {
+        return fromAccountTotalBalance;
+    }
+
+    public void setFromAccountTotalBalance(String fromAccountTotalBalance) {
+        this.fromAccountTotalBalance = fromAccountTotalBalance;
     }
 
     public void transfer() throws IOException {
@@ -175,18 +175,24 @@ public class EmployeeTransferDoneManagedBean {
                         } else if (activationCheck.equals("Please declare your deposit period")) {
                             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Please declare your fixed deposit period first.", "Failed"));
                         } else if (activationCheck.equals("Activated successfully.")) {
-                            Double diffAmt = Double.valueOf(bankAccountFrom.getBankAccountBalance()) - transferAmt;
+                            Double diffAmt = Double.valueOf(bankAccountFrom.getAvailableBankAccountBalance()) - transferAmt;
 
                             toBankAccountNumWithType = toAccount + "-" + bankAccountTo.getBankAccountType();
                             fromBankAccountNumWithType = fromAccount + "-" + bankAccountFrom.getBankAccountType();
 
                             if (diffAmt >= 0) {
 
+                                Double currentAvailableBalance = Double.valueOf(bankAccountFrom.getAvailableBankAccountBalance());
+                                Double currentTotalBalance = Double.valueOf(bankAccountFrom.getTotalBankAccountBalance());
+
                                 newTransactionId = transactionSessionBeanLocal.fundTransfer(fromAccount, toAccount, transferAmt.toString());
                                 statusMessage = "Your transaction has been completed.";
 
-                                fromAccountBalance = bankAccountFrom.getBankAccountBalance();
-                                toAccountBalance = bankAccountTo.getBankAccountBalance();
+                                Double fromAccountAvailableBalanceDouble = currentAvailableBalance - transferAmt;
+                                Double fromAccountTotalBalanceDouble = currentTotalBalance - transferAmt;
+
+                                fromAccountAvailableBalance = fromAccountAvailableBalanceDouble.toString();
+                                fromAccountTotalBalance = fromAccountTotalBalanceDouble.toString();
 
                                 ec.getFlash().put("statusMessage", statusMessage);
                                 ec.getFlash().put("newTransactionId", newTransactionId);
@@ -195,8 +201,8 @@ public class EmployeeTransferDoneManagedBean {
                                 ec.getFlash().put("transferAmt", transferAmt);
                                 ec.getFlash().put("fromAccount", fromAccount);
                                 ec.getFlash().put("toAccount", toAccount);
-                                ec.getFlash().put("fromAccountBalance", fromAccountBalance);
-                                ec.getFlash().put("toAccountBalance", toAccountBalance);
+                                ec.getFlash().put("fromAccountAvailableBalance", fromAccountAvailableBalance);
+                                ec.getFlash().put("fromAccountTotalBalance", fromAccountTotalBalance);
 
                                 ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/deposit/employeeTransferFinished.xhtml?faces-redirect=true");
                             } else {
@@ -206,18 +212,24 @@ public class EmployeeTransferDoneManagedBean {
                     } else if (bankAccountFrom.getBankAccountStatus().equals("Inactive") && bankAccountTo.getBankAccountStatus().equals("Active")) {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! You account(from) has not been activated.", "Failed!"));
                     } else if (bankAccountFrom.getBankAccountStatus().equals("Active") && bankAccountTo.getBankAccountStatus().equals("Active")) {
-                        Double diffAmt = Double.valueOf(bankAccountFrom.getBankAccountBalance()) - transferAmt;
+                        Double diffAmt = Double.valueOf(bankAccountFrom.getAvailableBankAccountBalance()) - transferAmt;
 
                         toBankAccountNumWithType = toAccount + "-" + bankAccountTo.getBankAccountType();
                         fromBankAccountNumWithType = fromAccount + "-" + bankAccountFrom.getBankAccountType();
 
                         if (diffAmt >= 0) {
 
+                            Double currentAvailableBalance = Double.valueOf(bankAccountFrom.getAvailableBankAccountBalance());
+                            Double currentTotalBalance = Double.valueOf(bankAccountFrom.getTotalBankAccountBalance());
+
                             newTransactionId = transactionSessionBeanLocal.fundTransfer(fromAccount, toAccount, transferAmt.toString());
                             statusMessage = "Your transaction has been completed.";
 
-                            fromAccountBalance = bankAccountFrom.getBankAccountBalance();
-                            toAccountBalance = bankAccountTo.getBankAccountBalance();
+                            Double fromAccountAvailableBalanceDouble = currentAvailableBalance - transferAmt;
+                            Double fromAccountTotalBalanceDouble = currentTotalBalance - transferAmt;
+
+                            fromAccountAvailableBalance = fromAccountAvailableBalanceDouble.toString();
+                            fromAccountTotalBalance = fromAccountTotalBalanceDouble.toString();
 
                             ec.getFlash().put("statusMessage", statusMessage);
                             ec.getFlash().put("newTransactionId", newTransactionId);
@@ -226,7 +238,8 @@ public class EmployeeTransferDoneManagedBean {
                             ec.getFlash().put("transferAmt", transferAmt);
                             ec.getFlash().put("fromAccount", fromAccount);
                             ec.getFlash().put("toAccount", toAccount);
-                            ec.getFlash().put("fromAccountBalance", fromAccountBalance);
+                            ec.getFlash().put("fromAccountAvailableBalance", fromAccountAvailableBalance);
+                            ec.getFlash().put("fromAccountTotalBalance", fromAccountTotalBalance);
 
                             ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/deposit/employeeTransferFinished.xhtml?faces-redirect=true");
                         } else {

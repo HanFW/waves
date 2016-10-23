@@ -206,7 +206,7 @@ public class EmployeeCashManagedBean {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Customer account has not been activated.", "Failed"));
             } else {
 
-                Double diffAmt = Double.valueOf(bankAccount.getBankAccountBalance()) - withdrawAmt;
+                Double diffAmt = Double.valueOf(bankAccount.getAvailableBankAccountBalance()) - withdrawAmt;
                 if (diffAmt >= 0) {
                     transactionId = transactionSessionLocal.cashWithdraw(withdrawAccountNum, withdrawAmt.toString());
                     statusMessage = "Cash withdraw Successfully!";

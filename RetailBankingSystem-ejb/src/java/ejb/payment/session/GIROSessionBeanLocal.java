@@ -8,7 +8,5 @@ import javax.ejb.Local;
 public interface GIROSessionBeanLocal {
 
     public GIRO retrieveGIROById(Long giroId);
-    public List<GIRO> retrieveStandingGIROByCusId(Long customerBasicId);
     public String deleteGIRO(Long giroId);
-    public List<GIRO> retrieveNonStandingGIROByCusId(Long customerBasicId);
 }

@@ -32,7 +32,8 @@ public class BankAccount implements Serializable {
     private String bankAccountNum;
 
     private String bankAccountType;
-    private String bankAccountBalance;
+    private String totalBankAccountBalance;
+    private String availableBankAccountBalance;
     private String transferDailyLimit;
     private String transferBalance;
     private String bankAccountStatus;
@@ -98,12 +99,20 @@ public class BankAccount implements Serializable {
         this.customerBasic = customerBasic;
     }
 
-    public String getBankAccountBalance() {
-        return bankAccountBalance;
+    public String getTotalBankAccountBalance() {
+        return totalBankAccountBalance;
     }
 
-    public void setBankAccountBalance(String bankAccountBalance) {
-        this.bankAccountBalance = bankAccountBalance;
+    public void setTotalBankAccountBalance(String totalBankAccountBalance) {
+        this.totalBankAccountBalance = totalBankAccountBalance;
+    }
+
+    public String getAvailableBankAccountBalance() {
+        return availableBankAccountBalance;
+    }
+
+    public void setAvailableBankAccountBalance(String availableBankAccountBalance) {
+        this.availableBankAccountBalance = availableBankAccountBalance;
     }
 
     public Interest getInterest() {

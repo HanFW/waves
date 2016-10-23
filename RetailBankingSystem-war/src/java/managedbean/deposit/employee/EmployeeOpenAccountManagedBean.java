@@ -43,7 +43,8 @@ public class EmployeeOpenAccountManagedBean implements Serializable {
     private String bankAccountNum;
     private String confirmBankAccountPwd;
     private String bankAccountType;
-    private String bankAccountBalance;
+    private String totalBankAccountBalance;
+    private String availableBankAccountBalance;
     private Long newAccountId;
     private String transferDailyLimit;
     private String bankAccountStatus;
@@ -482,14 +483,6 @@ public class EmployeeOpenAccountManagedBean implements Serializable {
         this.customerOnlineBankingPassword = customerOnlineBankingPassword;
     }
 
-    public String getBankAccountBalance() {
-        return bankAccountBalance;
-    }
-
-    public void setBankAccountBalance(String bankAccountBalance) {
-        this.bankAccountBalance = bankAccountBalance;
-    }
-
     public String getConfirmBankAccountPwd() {
         return confirmBankAccountPwd;
     }
@@ -766,6 +759,22 @@ public class EmployeeOpenAccountManagedBean implements Serializable {
         this.fixedDepositRender = fixedDepositRender;
     }
 
+    public String getTotalBankAccountBalance() {
+        return totalBankAccountBalance;
+    }
+
+    public void setTotalBankAccountBalance(String totalBankAccountBalance) {
+        this.totalBankAccountBalance = totalBankAccountBalance;
+    }
+
+    public String getAvailableBankAccountBalance() {
+        return availableBankAccountBalance;
+    }
+
+    public void setAvailableBankAccountBalance(String availableBankAccountBalance) {
+        this.availableBankAccountBalance = availableBankAccountBalance;
+    }
+
     public void saveAccount() throws IOException {
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
@@ -782,7 +791,8 @@ public class EmployeeOpenAccountManagedBean implements Serializable {
 
             customerBasicId = customerSessionBean.retrieveCustomerBasicByIC(customerIdentificationNum.toUpperCase()).getCustomerBasicId();
 
-            bankAccountBalance = "0";
+            totalBankAccountBalance = "0.0";
+            availableBankAccountBalance = "0.0";
             transferDailyLimit = "3000";
             transferBalance = "3000";
             bankAccountMinSaving = "";
@@ -802,7 +812,7 @@ public class EmployeeOpenAccountManagedBean implements Serializable {
             }
 
             newAccountId = bankAccountSessionLocal.addNewAccount(bankAccountNum, bankAccountType,
-                    bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
+                    totalBankAccountBalance, availableBankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
                     bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
                     statementDateDouble, customerBasicId, newInterestId);
 
@@ -837,7 +847,8 @@ public class EmployeeOpenAccountManagedBean implements Serializable {
                     customerAddress, customerPostal, customerOnlineBankingAccountNum,
                     customerOnlineBankingPassword, customerSignature.getBytes(), newCustomer);
 
-            bankAccountBalance = "0";
+            totalBankAccountBalance = "0.0";
+            availableBankAccountBalance = "0.0";
             transferDailyLimit = "3000";
             transferBalance = "3000";
             bankAccountMinSaving = "";
@@ -857,7 +868,7 @@ public class EmployeeOpenAccountManagedBean implements Serializable {
             }
 
             newAccountId = bankAccountSessionLocal.addNewAccount(bankAccountNum, bankAccountType,
-                    bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
+                    totalBankAccountBalance, availableBankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
                     bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
                     statementDateDouble, newCustomerBasicId, newInterestId);
 

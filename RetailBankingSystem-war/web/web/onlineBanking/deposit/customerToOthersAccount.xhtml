@@ -29,7 +29,9 @@
 
                         <p:outputLabel for="transferToAccount" style="font-weight: bold" value="Account: " />
 
-                        <p:selectOneMenu id="transferToAccount" value="#{transferManagedBean.toBankAccountNumWithType}" effect="fold" editable="true">
+                        <p:selectOneMenu id="transferToAccount" value="#{transferManagedBean.toBankAccountNumWithType}" 
+                                         effect="fold" editable="false">
+                            <f:selectItem itemLabel="Please Select One" itemValue=""/> 
                             <f:selectItems value="#{transferManagedBean.customerPayees}" />
                         </p:selectOneMenu>
 
@@ -55,7 +57,9 @@
 
                         <p:outputLabel for="transferFromAccount" style="font-weight: bold" value="Account: " />
 
-                        <p:selectOneMenu id="transferFromAccount" value="#{transferManagedBean.fromBankAccountNumWithType}" effect="fold" editable="true">
+                        <p:selectOneMenu id="transferFromAccount" value="#{transferManagedBean.fromBankAccountNumWithType}" 
+                                         effect="fold" editable="false">
+                            <f:selectItem itemLabel="Please Select One" itemValue=""/> 
                             <f:selectItems value="#{transferManagedBean.fromAccounts}" />
                             <p:ajax event="change" update="dailytransferLimitPanel" listener="#{transferManagedBean.show()}"/>
                         </p:selectOneMenu>

@@ -4,6 +4,7 @@ import ejb.card.entity.CreditCard;
 import ejb.deposit.entity.BankAccount;
 import ejb.infrastructure.entity.MessageBox;
 import ejb.deposit.entity.Payee;
+import ejb.payment.entity.Cheque;
 import ejb.payment.entity.FastPayee;
 import ejb.payment.entity.GIRO;
 import java.io.Serializable;
@@ -74,6 +75,9 @@ public class CustomerBasic implements Serializable {
 
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
     private List<GIRO> giro;
+    
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
+    private List<Cheque> cheque;
 
     public Long getCustomerBasicId() {
         return customerBasicId;
@@ -341,6 +345,14 @@ public class CustomerBasic implements Serializable {
 
     public void setNewCustomer(String newCustomer) {
         this.newCustomer = newCustomer;
+    }
+
+    public List<Cheque> getCheque() {
+        return cheque;
+    }
+
+    public void setCheque(List<Cheque> cheque) {
+        this.cheque = cheque;
     }
     
     @Override
