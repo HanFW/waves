@@ -62,12 +62,14 @@ public interface BankAccountSessionBeanLocal {
             String fixedDepositStatus, Double statementDateDouble, Long customerBasicId,
             Long interestId);
 
-    public void updateBankAccountBalance(String bankAccountNum, String availableBankAccountBalance,
-            String totalBankAccountBalance);
+    public void updateBankAccountAvailableBalance(String bankAccountNum, String availableBankAccountBalance);
 
     public void approveAccount(String customerIdentificationNum);
 
     public void sendEmailToRejectCustomer(String customerIdentificationNum);
 
     public void debitBankAccount(String debitBankAccountNum, Double debitAmt);
+
+    public void updateBankAccountBalance(String bankAccountNum, String availableBankAccountBalance,
+            String totalBankAccountBalance);
 }

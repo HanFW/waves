@@ -11,7 +11,6 @@ import javax.faces.context.FacesContext;
 public class NonStandingGIROTransferFinishedManagedBean {
 
     private String statusMessage;
-    private String transactionId;
     private String toBankAccountNumWithType;
     private String transferAmt;
     private String fromBankAccountNumWithType;
@@ -24,7 +23,6 @@ public class NonStandingGIROTransferFinishedManagedBean {
     @PostConstruct
     public void init() {
         statusMessage = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("statusMessage").toString();
-        transactionId = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("transactionId").toString();
         toBankAccountNumWithType = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("toBankAccountNumWithType").toString();
         fromBankAccountNumWithType = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("fromBankAccountNumWithType").toString();
         transferAmt = "S$" + FacesContext.getCurrentInstance().getExternalContext().getFlash().get("transferAmt").toString();
@@ -62,14 +60,6 @@ public class NonStandingGIROTransferFinishedManagedBean {
 
     public void setFromBankAccountNumWithType(String fromBankAccountNumWithType) {
         this.fromBankAccountNumWithType = fromBankAccountNumWithType;
-    }
-
-    public String getTransactionId() {
-        return transactionId;
-    }
-
-    public void setTransactionId(String transactionId) {
-        this.transactionId = transactionId;
     }
 
     public String getFromBankAccountAvailableBalance() {
