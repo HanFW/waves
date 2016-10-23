@@ -29,6 +29,7 @@ public class Card implements Serializable {
     private String cardSecurityCode;
     private String status;
     private int remainingExpirationMonths;
+    private int remainingActivationDays;
     private Long predecessor;
 
     public Long getCardId() {
@@ -93,6 +94,14 @@ public class Card implements Serializable {
 
     public void setPredecessor(Long predecessor) {
         this.predecessor = predecessor;
+    }
+
+    public int getRemainingActivationDays() {
+        return remainingActivationDays;
+    }
+
+    public void setRemainingActivationDays(int remainingActivationDays) {
+        this.remainingActivationDays = remainingActivationDays;
     }
 
     @Override
