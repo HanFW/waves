@@ -18,20 +18,20 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.xml.ws.WebServiceRef;
-import ws.client.otherbanks.OtherBankAccount;
-import ws.client.otherbanks.OtherBanksWebService_Service;
-import ws.client.sach.SACHWebService_Service;
+//import ws.client.otherbanks.OtherBankAccount;
+//import ws.client.otherbanks.OtherBanksWebService_Service;
+//import ws.client.sach.SACHWebService_Service;
 
 @Named(value = "nonStandingGIROTransferDoneManagedBean")
 @SessionScoped
 
 public class NonStandingGIROTransferDoneManagedBean implements Serializable {
 
-    @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_8080/OtherBanksWebService/OtherBanksWebService.wsdl")
-    private OtherBanksWebService_Service service_otherBanks;
-
-    @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_8080/SACHWebService/SACHWebService.wsdl")
-    private SACHWebService_Service service_sach;
+//    @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_8080/OtherBanksWebService/OtherBanksWebService.wsdl")
+//    private OtherBanksWebService_Service service_otherBanks;
+//
+//    @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_8080/SACHWebService/SACHWebService.wsdl")
+//    private SACHWebService_Service service_sach;
 
     @EJB
     private TransactionSessionBeanLocal transactionSessionBeanLocal;
@@ -192,10 +192,10 @@ public class NonStandingGIROTransferDoneManagedBean implements Serializable {
         String billOrgBankAccountNum = billOrg.getBankAccountNum();
 
         if (bankName.equals("DBS") && nonStandingGiro.getPaymentFrequency().equals("One Time")) {
-            sachNonStandingGIROTransferMTD(bankAccount.getBankAccountNum(), billOrgBankAccountNum, paymentAmt);
-
-            OtherBankAccount dbsBankAccount = retrieveBankAccountByNum(billOrg.getBankAccountNum());
-            toBankAccountNumWithType = dbsBankAccount.getOtherBankAccountType() + "-" + dbsBankAccount.getOtherBankAccountNum();
+//            sachNonStandingGIROTransferMTD(bankAccount.getBankAccountNum(), billOrgBankAccountNum, paymentAmt);
+//
+//            OtherBankAccount dbsBankAccount = retrieveBankAccountByNum(billOrg.getBankAccountNum());
+//            toBankAccountNumWithType = dbsBankAccount.getOtherBankAccountType() + "-" + dbsBankAccount.getOtherBankAccountNum();
             fromBankAccountNumWithType = bankAccount.getBankAccountType() + "-" + bankAccount.getBankAccountNum();
             statusMessage = "Successfully Pay Bills";
 
@@ -215,12 +215,12 @@ public class NonStandingGIROTransferDoneManagedBean implements Serializable {
             ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/payment/customerNonStandingGIROTransferFinished.xhtml?faces-redirect=true");
 
         } else if (bankName.equals("DBS") && !nonStandingGiro.getPaymentFrequency().equals("One Time")) {
-            sachNonStandingGIROTransferMTD(bankAccount.getBankAccountNum(), billOrgBankAccountNum, paymentAmt);
-
-            nonStandingGIROSessionBeanLocal.updatePaymentAmt(giroId, paymentAmt.toString());
-
-            OtherBankAccount dbsBankAccount = retrieveBankAccountByNum(billOrg.getBankAccountNum());
-            toBankAccountNumWithType = dbsBankAccount.getOtherBankAccountType() + "-" + dbsBankAccount.getOtherBankAccountNum();
+//            sachNonStandingGIROTransferMTD(bankAccount.getBankAccountNum(), billOrgBankAccountNum, paymentAmt);
+//
+//            nonStandingGIROSessionBeanLocal.updatePaymentAmt(giroId, paymentAmt.toString());
+//
+//            OtherBankAccount dbsBankAccount = retrieveBankAccountByNum(billOrg.getBankAccountNum());
+//            toBankAccountNumWithType = dbsBankAccount.getOtherBankAccountType() + "-" + dbsBankAccount.getOtherBankAccountNum();
             fromBankAccountNumWithType = bankAccount.getBankAccountType() + "-" + bankAccount.getBankAccountNum();
             statusMessage = "Successfully Pay Bills";
             
@@ -243,17 +243,17 @@ public class NonStandingGIROTransferDoneManagedBean implements Serializable {
         }
     }
 
-    private void sachNonStandingGIROTransferMTD(java.lang.String fromBankAccountNum, java.lang.String toBankAccountNum, java.lang.Double transferAmt) {
-        // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
-        // If the calling of port operations may lead to race condition some synchronization is required.
-        ws.client.sach.SACHWebService port = service_sach.getSACHWebServicePort();
-        port.sachNonStandingGIROTransferMTD(fromBankAccountNum, toBankAccountNum, transferAmt);
-    }
-
-    private OtherBankAccount retrieveBankAccountByNum(java.lang.String otherBankAccountNum) {
-        // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
-        // If the calling of port operations may lead to race condition some synchronization is required.
-        ws.client.otherbanks.OtherBanksWebService port = service_otherBanks.getOtherBanksWebServicePort();
-        return port.retrieveBankAccountByNum(otherBankAccountNum);
-    }
+//    private void sachNonStandingGIROTransferMTD(java.lang.String fromBankAccountNum, java.lang.String toBankAccountNum, java.lang.Double transferAmt) {
+//        // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
+//        // If the calling of port operations may lead to race condition some synchronization is required.
+//        ws.client.sach.SACHWebService port = service_sach.getSACHWebServicePort();
+//        port.sachNonStandingGIROTransferMTD(fromBankAccountNum, toBankAccountNum, transferAmt);
+//    }
+//
+//    private OtherBankAccount retrieveBankAccountByNum(java.lang.String otherBankAccountNum) {
+//        // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
+//        // If the calling of port operations may lead to race condition some synchronization is required.
+//        ws.client.otherbanks.OtherBanksWebService port = service_otherBanks.getOtherBanksWebServicePort();
+//        return port.retrieveBankAccountByNum(otherBankAccountNum);
+//    }
 }

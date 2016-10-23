@@ -220,7 +220,7 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
 
         bankAccountSessionLocal.interestCrediting();
         statementSessionBeanLocal.generateStatement();
-        maintainDailyBalance();
+//        maintainDailyBalance();
         nonStandingGIROSessionBeanLocal.monthlyRecurrentPayment();
     }
 
