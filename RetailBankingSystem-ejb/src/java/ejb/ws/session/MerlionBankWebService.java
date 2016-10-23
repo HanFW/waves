@@ -48,4 +48,19 @@ public class MerlionBankWebService {
         return bankAccount;
     }
 
+    @WebMethod(operationName = "debitBankAccount")
+//    @Oneway
+    public void debitBankAccount(@WebParam(name = "debitBankAccountNum") String debitBankAccountNum, 
+            @WebParam(name = "debitAmt") Double debitAmt) {
+        
+        BankAccount bankAccount = retrieveBankAccountByNum(debitBankAccountNum);
+
+        Double currentAvailableBalance = Double.valueOf(bankAccount.getAvailableBankAccountBalance());
+        Double currentTotalBalance = Double.valueOf(bankAccount.getAvailableBankAccountBalance());
+        Double totalAvailableBalance = currentAvailableBalance - debitAmt;
+
+        bankAccount.setAvailableBankAccountBalance(totalAvailableBalance.toString());
+        bankAccount.setTotalBankAccountBalance(currentTotalBalance.toString());
+    }
+
 }

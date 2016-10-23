@@ -11,7 +11,6 @@ import ejb.payment.session.NonStandingGIROSessionBeanLocal;
 import ejb.payment.session.RegisteredBillingOrganizationSessionBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.Calendar;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -175,17 +174,15 @@ public class NonStandingGIROTransferDoneManagedBean implements Serializable {
 
         BankAccount bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountByNum(bankAccountNum);
 
-        Calendar cal = Calendar.getInstance();
-        String transactionDate = cal.getTime().toString();
-        String transactionCode = "BILL";
-        String transactionRef = "Pay bills to " + billingOrganizationName;
-
-        Long transactionId = transactionSessionBeanLocal.addNewTransaction(transactionDate,
-                transactionCode, transactionRef, paymentAmt.toString(), " ", cal.getTimeInMillis(), bankAccount.getBankAccountId());
-
+//        Calendar cal = Calendar.getInstance();
+//        String transactionDate = cal.getTime().toString();
+//        String transactionCode = "BILL";
+//        String transactionRef = "Pay bills to " + billingOrganizationName;
+//        Long transactionId = transactionSessionBeanLocal.addNewTransaction(transactionDate,
+//                transactionCode, transactionRef, paymentAmt.toString(), " ", cal.getTimeInMillis(), bankAccount.getBankAccountId());
         Double currentAvailableBankAccountBalance = Double.valueOf(bankAccount.getAvailableBankAccountBalance()) - paymentAmt;
-        Double currentTotalBankAccountBalance = Double.valueOf(bankAccount.getTotalBankAccountBalance()) - paymentAmt;
-        bankAccountSessionBeanLocal.updateBankAccountBalance(bankAccountNum, currentAvailableBankAccountBalance.toString(), currentTotalBankAccountBalance.toString());
+//        Double currentTotalBankAccountBalance = Double.valueOf(bankAccount.getTotalBankAccountBalance()) - paymentAmt;
+        bankAccountSessionBeanLocal.updateBankAccountAvailableBalance(bankAccountNum, currentAvailableBankAccountBalance.toString());
 
         RegisteredBillingOrganization billOrg = registeredBillingOrganizationSessionBeanLocal.retrieveRegisteredBillingOrganizationByName(billingOrganizationName);
         String bankName = billOrg.getBankName();
@@ -199,11 +196,10 @@ public class NonStandingGIROTransferDoneManagedBean implements Serializable {
             fromBankAccountNumWithType = bankAccount.getBankAccountType() + "-" + bankAccount.getBankAccountNum();
             statusMessage = "Successfully Pay Bills";
 
-            fromBankAccountAvailableBalance = currentAvailableBankAccountBalance - paymentAmt;
-            fromBankAccountTotalBalance = currentTotalBankAccountBalance;
-            
+            fromBankAccountAvailableBalance = currentAvailableBankAccountBalance;
+            fromBankAccountTotalBalance = Double.valueOf(bankAccount.getTotalBankAccountBalance());
+
             ec.getFlash().put("statusMessage", statusMessage);
-            ec.getFlash().put("transactionId", transactionId.toString());
             ec.getFlash().put("toBankAccountNumWithType", toBankAccountNumWithType);
             ec.getFlash().put("fromBankAccountNumWithType", fromBankAccountNumWithType);
             ec.getFlash().put("transferAmt", paymentAmt);
@@ -211,7 +207,7 @@ public class NonStandingGIROTransferDoneManagedBean implements Serializable {
             ec.getFlash().put("fromBankAccountTotalBalance", fromBankAccountTotalBalance.toString());
 
             paymentAmt = null;
-            
+
             ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/payment/customerNonStandingGIROTransferFinished.xhtml?faces-redirect=true");
 
         } else if (bankName.equals("DBS") && !nonStandingGiro.getPaymentFrequency().equals("One Time")) {
@@ -223,12 +219,11 @@ public class NonStandingGIROTransferDoneManagedBean implements Serializable {
             toBankAccountNumWithType = dbsBankAccount.getOtherBankAccountType() + "-" + dbsBankAccount.getOtherBankAccountNum();
             fromBankAccountNumWithType = bankAccount.getBankAccountType() + "-" + bankAccount.getBankAccountNum();
             statusMessage = "Successfully Pay Bills";
-            
+
             fromBankAccountAvailableBalance = currentAvailableBankAccountBalance - paymentAmt;
-            fromBankAccountTotalBalance = currentTotalBankAccountBalance;
-            
+            fromBankAccountTotalBalance = Double.valueOf(bankAccount.getTotalBankAccountBalance());
+
             ec.getFlash().put("statusMessage", statusMessage);
-            ec.getFlash().put("transactionId", transactionId.toString());
             ec.getFlash().put("toBankAccountNumWithType", toBankAccountNumWithType);
             ec.getFlash().put("fromBankAccountNumWithType", fromBankAccountNumWithType);
             ec.getFlash().put("transferAmt", paymentAmt);
@@ -236,7 +231,7 @@ public class NonStandingGIROTransferDoneManagedBean implements Serializable {
             ec.getFlash().put("fromBankAccountTotalBalance", fromBankAccountTotalBalance.toString());
 
             paymentAmt = null;
-            
+
             ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/payment/customerNonStandingGIROTransferFinished.xhtml?faces-redirect=true");
         } else if (bankName.equals("OCBC")) {
 
