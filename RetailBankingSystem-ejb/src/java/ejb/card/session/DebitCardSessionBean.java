@@ -7,11 +7,13 @@ package ejb.card.session;
 
 import ejb.card.entity.DebitCard;
 import ejb.card.entity.DebitCardType;
+import ejb.customer.entity.CustomerBasic;
 import ejb.deposit.entity.BankAccount;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -34,6 +36,9 @@ public class DebitCardSessionBean implements DebitCardSessionBeanLocal {
     // "Insert Code > Add Business Method")
     @EJB
     private DebitCardSessionBeanLocal debitCardSessionBeanLocal;
+    
+    @EJB
+    private DebitCardManagementSessionBeanLocal debitCardManagementSessionBeanLocal;
 
     @PersistenceContext
     private EntityManager em;
@@ -54,10 +59,10 @@ public class DebitCardSessionBean implements DebitCardSessionBeanLocal {
 
         String debitCardSecurityCode = generateCardSecurityCode();
         try {
-            System.out.println("debug cardNum:"+cardNum);
-            System.out.println("debug csc initial:"+debitCardSecurityCode);
+            System.out.println("debug cardNum:" + cardNum);
+            System.out.println("debug csc initial:" + debitCardSecurityCode);
             String hashedDebitCardSecurityCode = md5Hashing(debitCardSecurityCode + cardNum.substring(0, 3));
-            System.out.println("debug:"+hashedDebitCardSecurityCode);
+            System.out.println("debug:" + hashedDebitCardSecurityCode);
             debitCard.setCardSecurityCode(hashedDebitCardSecurityCode);
         } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(DebitCardSessionBean.class.getName()).log(Level.SEVERE, null, ex);
@@ -73,15 +78,67 @@ public class DebitCardSessionBean implements DebitCardSessionBeanLocal {
         String debitCardExpiryDate = applicationMonth + "/" + expiryYear;
 
         debitCard.setCardExpiryDate(debitCardExpiryDate);
-        
+
+        debitCard.setRemainingExpirationMonths(60);
+
         debitCard.setStatus("not activated");
-        
+
         debitCard.setTransactionLimit(500);
-        
 
         em.persist(debitCard);
+        depositAccount.addDebitCard(debitCard);
         return "success";
 
+    }
+
+    @Override
+    public void issueDebitCardForCardReplacement(String bankAccountNum, String cardHolderName, String applicationDate, String cardTypeName, Long predecessorId) {
+        DebitCard debitCard = new DebitCard();
+        debitCard.setCardHolderName(cardHolderName);
+
+        BankAccount depositAccount = findDepositAccountByAccountNum(bankAccountNum);
+        debitCard.setBankAccount(depositAccount);
+
+        DebitCardType debitCardType = findCardTypeByTypeName(cardTypeName);
+        debitCard.setDebitCardType(debitCardType);
+
+        String cardNum = generateCardNum();
+        debitCard.setCardNum(cardNum);
+
+        String debitCardSecurityCode = generateCardSecurityCode();
+        try {
+            System.out.println("debug cardNum:" + cardNum);
+            System.out.println("debug csc initial:" + debitCardSecurityCode);
+            String hashedDebitCardSecurityCode = md5Hashing(debitCardSecurityCode + cardNum.substring(0, 3));
+            System.out.println("debug:" + hashedDebitCardSecurityCode);
+            debitCard.setCardSecurityCode(hashedDebitCardSecurityCode);
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(DebitCardSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+//        String[] applicationDateToString = changeDateFormat(applicationDate);
+        String[] applicationDateToString = applicationDate.split("/");
+        String applicationYear = applicationDateToString[2];
+        String applicationMonth = applicationDateToString[1];
+
+        int expiryYearToInt = Integer.valueOf(applicationYear) + 5;
+        String expiryYear = String.valueOf(expiryYearToInt);
+        String debitCardExpiryDate = applicationMonth + "/" + expiryYear;
+
+        debitCard.setCardExpiryDate(debitCardExpiryDate);
+
+        debitCard.setRemainingExpirationMonths(60);
+
+        debitCard.setStatus("not activated");
+
+        debitCard.setTransactionLimit(500);
+
+        debitCard.setPredecessor(predecessorId);
+
+        em.persist(debitCard);
+        depositAccount.addDebitCard(debitCard);
+        debitCardType.addDebitCard(debitCard);
+      
     }
 
     @Override
@@ -97,14 +154,19 @@ public class DebitCardSessionBean implements DebitCardSessionBeanLocal {
                     return "cardHolderName not match";
                 } else {
                     String hashedCSC;
-                    System.out.println("debug check hashed csc - csc:"+debitCardSecurityCode);
-                    System.out.println("debug check hashed csc - debitCardNum:"+debitCardNum);
+                    System.out.println("debug check hashed csc - csc:" + debitCardSecurityCode);
+                    System.out.println("debug check hashed csc - debitCardNum:" + debitCardNum);
                     hashedCSC = md5Hashing(debitCardSecurityCode + debitCardNum.substring(0, 3));
-                    System.out.println("debug check hashed csc:"+hashedCSC);
+                    System.out.println("debug check hashed csc:" + hashedCSC);
                     if (!findDebitCard.getCardSecurityCode().equals(hashedCSC)) {
                         return "csc not match";
                     } else {
                         findDebitCard.setStatus("activated");
+                        if(findDebitCard.getPredecessor()!=null){
+                            Long predecessorId=findDebitCard.getPredecessor();
+                            debitCardManagementSessionBeanLocal.CancelDebitCardAfterReplacement(predecessorId);
+                            findDebitCard.setPredecessor(null);
+                        }//if the card has a predecessor, then delete the predecessor from database
                         return "valid";
                     }
 
@@ -232,8 +294,101 @@ public class DebitCardSessionBean implements DebitCardSessionBeanLocal {
     }
 
     private String md5Hashing(String stringToHash) throws NoSuchAlgorithmException {
-        System.out.println("md5 hashing- string to hash "+stringToHash);
+        System.out.println("md5 hashing- string to hash " + stringToHash);
         MessageDigest md = MessageDigest.getInstance("MD5");
         return Arrays.toString(md.digest(stringToHash.getBytes()));
+    }
+
+    //get all debit cards of a customer
+    @Override
+    public List<String> getAllDebitCards(Long customerId) {
+        List<String> debitCards = new ArrayList();
+        CustomerBasic customer = em.find(CustomerBasic.class, customerId);
+
+        int index = 0;
+        System.out.println("check customer" + customer);
+        List<BankAccount> depositAccountsOfCustomer = customer.getBankAccount();
+        System.out.println("test depositAccountsOfCustomer " + depositAccountsOfCustomer);
+        for (int i = 0; i < depositAccountsOfCustomer.size(); i++) {
+
+            List<DebitCard> debitCardsOfDepositAccount = depositAccountsOfCustomer.get(i).getDebitCards();
+            System.out.println("test debitCardsOfDepositAccount " + debitCardsOfDepositAccount);
+            int size = debitCardsOfDepositAccount.size();
+            System.out.println("test size" + size);
+
+            for (int j = 0; j < size; j++) {
+                DebitCard debitCard = debitCardsOfDepositAccount.get(j);
+
+                String info = debitCard.getDebitCardType().getDebitCardTypeName() + "-" + debitCard.getCardNum();
+                debitCards.add(index, info);
+                System.out.println("test debitcards" + debitCards);
+                index++;
+
+            }//get a list of debit cards 
+        }// get a list of deposit accounts
+
+        return debitCards;
+    }
+
+    //get all activated debit cards of a customer
+    @Override
+    public List<String> getAllActivatedDebitCards(Long customerId) {
+        List<String> debitCards = new ArrayList();
+        CustomerBasic customer = em.find(CustomerBasic.class, customerId);
+
+        int index = 0;
+        System.out.println("check customer" + customer);
+        List<BankAccount> depositAccountsOfCustomer = customer.getBankAccount();
+        System.out.println("test depositAccountsOfCustomer " + depositAccountsOfCustomer);
+        for (int i = 0; i < depositAccountsOfCustomer.size(); i++) {
+
+            List<DebitCard> debitCardsOfDepositAccount = depositAccountsOfCustomer.get(i).getDebitCards();
+            System.out.println("test debitCardsOfDepositAccount " + debitCardsOfDepositAccount);
+            int size = debitCardsOfDepositAccount.size();
+            System.out.println("test size" + size);
+
+            for (int j = 0; j < size; j++) {
+                DebitCard debitCard = debitCardsOfDepositAccount.get(j);
+                if (debitCard.getStatus().equals("activated")) {
+                    String info = debitCard.getDebitCardType().getDebitCardTypeName() + "-" + debitCard.getCardNum();
+                    debitCards.add(index, info);
+                    System.out.println("test debitcards" + debitCards);
+                    index++;
+                }
+            }//get a list of debit cards 
+        }// get a list of deposit accounts
+
+        return debitCards;
+    }
+
+    //get all non-activated debit cards of a customer
+    @Override
+    public List<String> getAllNonActivatedDebitCards(Long customerId) {
+        List<String> debitCards = new ArrayList();
+        CustomerBasic customer = em.find(CustomerBasic.class, customerId);
+
+        int index = 0;
+        System.out.println("check customer" + customer);
+        List<BankAccount> depositAccountsOfCustomer = customer.getBankAccount();
+        System.out.println("test depositAccountsOfCustomer " + depositAccountsOfCustomer);
+        for (int i = 0; i < depositAccountsOfCustomer.size(); i++) {
+
+            List<DebitCard> debitCardsOfDepositAccount = depositAccountsOfCustomer.get(i).getDebitCards();
+            System.out.println("test debitCardsOfDepositAccount " + debitCardsOfDepositAccount);
+            int size = debitCardsOfDepositAccount.size();
+            System.out.println("test size" + size);
+
+            for (int j = 0; j < size; j++) {
+                DebitCard debitCard = debitCardsOfDepositAccount.get(j);
+                if (debitCard.getStatus().equals("not activated")) {
+                    String info = debitCard.getDebitCardType().getDebitCardTypeName() + "-" + debitCard.getCardNum();
+                    debitCards.add(index, info);
+                    System.out.println("test debitcards" + debitCards);
+                    index++;
+                }
+            }//get a list of debit cards 
+        }// get a list of deposit accounts
+
+        return debitCards;
     }
 }

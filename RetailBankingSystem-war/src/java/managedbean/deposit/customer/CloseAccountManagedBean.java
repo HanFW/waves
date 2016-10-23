@@ -5,7 +5,6 @@ import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import ejb.deposit.session.InterestSessionBeanLocal;
-import ejb.deposit.session.TransactionSessionBeanLocal;
 import ejb.infrastructure.session.LoggingSessionBeanLocal;
 import java.io.IOException;
 import java.util.HashMap;
@@ -31,9 +30,6 @@ public class CloseAccountManagedBean {
     private LoggingSessionBeanLocal loggingSessionBeanLocal;
 
     @EJB
-    private TransactionSessionBeanLocal transactionSessionLocal;
-
-    @EJB
     private CRMCustomerSessionBeanLocal customerSessionBeanLocal;
 
     @EJB
@@ -44,14 +40,11 @@ public class CloseAccountManagedBean {
     private String bankAccountNumWithType;
     private String bankAccountNum;
     private String bankAccountType;
-    private String onlyOneAccount;
     private String statusMessage;
     private String customerIdentificationNum;
-    private String bankAccountPwd;
-    private String confirmBankAccountPwd;
-    private boolean checkOnlyOneAccount;
     private String customerName;
     private Long interestId;
+    private boolean checkOnlyOneAccount;
 
     private Map<String, String> myBankAccounts = new HashMap<String, String>();
 
@@ -97,14 +90,6 @@ public class CloseAccountManagedBean {
         this.bankAccountType = bankAccountType;
     }
 
-    public String getOnlyOneAccount() {
-        return onlyOneAccount;
-    }
-
-    public void setOnlyOneAccount(String onlyOneAccount) {
-        this.onlyOneAccount = onlyOneAccount;
-    }
-
     public String getStatusMessage() {
         return statusMessage;
     }
@@ -119,22 +104,6 @@ public class CloseAccountManagedBean {
 
     public void setCustomerIdentificationNum(String customerIdentificationNum) {
         this.customerIdentificationNum = customerIdentificationNum;
-    }
-
-    public String getBankAccountPwd() {
-        return bankAccountPwd;
-    }
-
-    public void setBankAccountPwd(String bankAccountPwd) {
-        this.bankAccountPwd = bankAccountPwd;
-    }
-
-    public String getConfirmBankAccountPwd() {
-        return confirmBankAccountPwd;
-    }
-
-    public void setConfirmBankAccountPwd(String confirmBankAccountPwd) {
-        this.confirmBankAccountPwd = confirmBankAccountPwd;
     }
 
     public Map<String, String> getMyBankAccounts() {
@@ -153,14 +122,6 @@ public class CloseAccountManagedBean {
         this.bankAccountNumWithType = bankAccountNumWithType;
     }
 
-    public boolean isCheckOnlyOneAccount() {
-        return checkOnlyOneAccount;
-    }
-
-    public void setCheckOnlyOneAccount(boolean checkOnlyOneAccount) {
-        this.checkOnlyOneAccount = checkOnlyOneAccount;
-    }
-
     public String getCustomerName() {
         return customerName;
     }
@@ -177,6 +138,14 @@ public class CloseAccountManagedBean {
         this.interestId = interestId;
     }
 
+    public boolean isCheckOnlyOneAccount() {
+        return checkOnlyOneAccount;
+    }
+
+    public void setCheckOnlyOneAccount(boolean checkOnlyOneAccount) {
+        this.checkOnlyOneAccount = checkOnlyOneAccount;
+    }
+
     public void deleteAccount() throws IOException {
 
         System.out.println("=");
@@ -190,8 +159,8 @@ public class CloseAccountManagedBean {
 
         checkOnlyOneAccount = bankAccountSessionLocal.checkOnlyOneAccount(customerBasic.getCustomerIdentificationNum());
 
-        if (onlyOneAccount.equals("Yes") && !checkOnlyOneAccount) {
-            if (!bankAccount.getBankAccountBalance().equals("0.0")) {
+        if (!checkOnlyOneAccount) {
+            if (!bankAccount.getAvailableBankAccountBalance().equals("0.0")) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Please withdraw all your money.", "Failed!"));
             } else {
 
@@ -208,11 +177,9 @@ public class CloseAccountManagedBean {
                 ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerDeleteAccount.xhtml?faces-redirect=true");
             }
 
-        } else if (onlyOneAccount.equals("Yes") && checkOnlyOneAccount) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! You only have one account.", "Failed!"));
-        } else if (onlyOneAccount.equals("No") && checkOnlyOneAccount) {
+        } else if (checkOnlyOneAccount) {
 
-            if (!bankAccount.getBankAccountBalance().equals("0.0")) {
+            if (!bankAccount.getAvailableBankAccountBalance().equals("0.0")) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Please withdraw all your money.", "Failed!"));
             } else {
 
@@ -229,8 +196,6 @@ public class CloseAccountManagedBean {
 
                 ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerDeleteAccount.xhtml?faces-redirect=true");
             }
-        } else if (onlyOneAccount.equals("No") && !checkOnlyOneAccount) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! You have more than one accounts.", "Failed!"));
         }
     }
 

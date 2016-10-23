@@ -30,7 +30,7 @@ public class DebitCard extends Card implements Serializable {
     
     private String debitCardPwd;
     private int transactionLimit;
-
+   
 
     public BankAccount getBankAccount() {
         return bankAccount;
@@ -63,7 +63,7 @@ public class DebitCard extends Card implements Serializable {
 
     public void setTransactionLimit(int transactionLimit) {
         this.transactionLimit = transactionLimit;
-    }     
+    }
 
 
 

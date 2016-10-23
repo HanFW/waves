@@ -41,7 +41,7 @@ public class RMUpdateCustomerAdvancedManagedBean implements Serializable {
 
     private String numOfDependent;
     private String education;
-    private String residencialStatus;
+    private String residentialStatus;
     private String yearInResidence;
     private String jobType;
     private String jobIndustry;
@@ -133,16 +133,16 @@ public class RMUpdateCustomerAdvancedManagedBean implements Serializable {
         this.education = education;
     }
 
-    public String getResidencialStatus() {
-        if (residencialStatus == null) {
+    public String getResidentialStatus() {
+        if (residentialStatus == null) {
             customerAdvanced = customerSessionBeanLocal.retrieveCustomerAdvancedByAdId(customerAdvancedId);
         }
-        residencialStatus = customerAdvanced.getResidencialStatus();
-        return residencialStatus;
+        residentialStatus = customerAdvanced.getResidentialStatus();
+        return residentialStatus;
     }
 
-    public void setResidencialStatus(String residencialStatus) {
-        this.residencialStatus = residencialStatus;
+    public void setResidentialStatus(String residentialStatus) {
+        this.residentialStatus = residentialStatus;
     }
 
     public String getYearInResidence() {
@@ -235,11 +235,11 @@ public class RMUpdateCustomerAdvancedManagedBean implements Serializable {
     public void updateCustomerAdvanced() {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(customerSessionBeanLocal.updateCustomerAdvancedProfile(customerAdvancedId,
                 education, incomeMonthly, jobDuration, jobStatus, jobIndustry, jobType,
-                numOfDependent, residencialStatus, yearInResidence), " "));
+                numOfDependent, residentialStatus, yearInResidence), " "));
 
         numOfDependent = null;
         education = null;
-        residencialStatus = null;
+        residentialStatus = null;
         yearInResidence = null;
         jobType = null;
         jobIndustry = null;

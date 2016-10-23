@@ -6,6 +6,7 @@
 package managedbean.card.customer;
 
 import ejb.card.entity.DebitCard;
+import ejb.card.session.DebitCardSessionBeanLocal;
 import ejb.card.session.DebitCardTransactionSessionBeanLocal;
 import ejb.customer.entity.CustomerBasic;
 import ejb.deposit.entity.BankAccount;
@@ -35,6 +36,9 @@ public class CustomerSetTransactionLimitForDebitCardManagedBean implements Seria
      */
     @EJB
     private DebitCardTransactionSessionBeanLocal debitCardTransactionSessionBeanLocal;
+    
+    @EJB
+    private DebitCardSessionBeanLocal debitCardSessionBeanLocal;
 
     private CustomerBasic customer;
 
@@ -76,21 +80,11 @@ public class CustomerSetTransactionLimitForDebitCardManagedBean implements Seria
     public List<String> getDebitCards() {
         System.out.println("test " + debitCards);
         if (debitCards.isEmpty()) {
-            int index = 0;
+            
             customer = getCustomerViaSessionMap();
-            System.out.println("check customer" + customer);
-            List<BankAccount> depositAccountsOfCustomer = customer.getBankAccount();
-            for (int i = 0; i < depositAccountsOfCustomer.size(); i++) {
-                List<DebitCard> debitCardsOfDepositAccount = depositAccountsOfCustomer.get(i).getDebitCards();
-                int size = debitCardsOfDepositAccount.size();
-
-                for (int j = 0; j < size; j++) {
-                    DebitCard debitCard = debitCardsOfDepositAccount.get(j);
-                    String info = debitCard.getDebitCardType().getDebitCardTypeName() + "-" + debitCard.getCardNum();
-                    debitCards.add(index, info);
-                    index++;
-                }//get a list of debit cards 
-            }// get a list of deposit accounts
+            Long id=customer.getCustomerBasicId();
+            debitCards=debitCardSessionBeanLocal.getAllActivatedDebitCards(id);
+               
         }
         return debitCards;
     }

@@ -5,7 +5,9 @@
  */
 package ejb.card.session;
 
+import ejb.customer.entity.CustomerBasic;
 import java.util.Date;
+import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -16,8 +18,16 @@ import javax.ejb.Local;
 public interface DebitCardSessionBeanLocal {
     public String createDebitCard(String bankAccountNum,String cardHolderName, String applicationDate,String cardTypeName);
     
+    public void issueDebitCardForCardReplacement(String bankAccountNum,String cardHolderName, String applicationDate,String cardTypeName, Long predecessorId);
+    
     public String checkDebitCardTypeForDepositAccount(String bankAccountNum, String cardTypeName);
     
     public String debitCardNumValiadation(String debitCardNum, String cardHolderName, String debitCardSecurityCode);
+    
+    public List<String> getAllActivatedDebitCards(Long customerId);
+    
+    public List<String> getAllNonActivatedDebitCards(Long customerId);
+    
+    public List<String> getAllDebitCards(Long customerId);
     
 }

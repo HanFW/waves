@@ -31,7 +31,7 @@ public class CustomerAdvanced implements Serializable {
     //credit card
     private String numOfDependent;
     private String education;
-    private String residencialStatus;
+    private String residentialStatus;
     private String yearInResidence;
     private String jobType;
     private String jobIndustry;
@@ -101,12 +101,12 @@ public class CustomerAdvanced implements Serializable {
         this.education = education;
     }
 
-    public String getResidencialStatus() {
-        return residencialStatus;
+    public String getResidentialStatus() {
+        return residentialStatus;
     }
 
-    public void setResidencialStatus(String residencialStatus) {
-        this.residencialStatus = residencialStatus;
+    public void setResidentialStatus(String residentialStatus) {
+        this.residentialStatus = residentialStatus;
     }
 
     public String getYearInResidence() {

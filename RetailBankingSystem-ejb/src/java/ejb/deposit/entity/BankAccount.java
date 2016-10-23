@@ -14,8 +14,13 @@ import javax.persistence.Column;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 @Entity
+@XmlRootElement(name = "bankAccount")
+@XmlAccessorType (XmlAccessType.FIELD)
 public class BankAccount implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -27,7 +32,8 @@ public class BankAccount implements Serializable {
     private String bankAccountNum;
 
     private String bankAccountType;
-    private String bankAccountBalance;
+    private String totalBankAccountBalance;
+    private String availableBankAccountBalance;
     private String transferDailyLimit;
     private String transferBalance;
     private String bankAccountStatus;
@@ -61,20 +67,20 @@ public class BankAccount implements Serializable {
         this.bankAccountId = bankAccountId;
     }
 
+    public String getBankAccountType() {
+        return bankAccountType;
+    }
+
+    public void setBankAccountType(String bankAccountType) {
+        this.bankAccountType = bankAccountType;
+    }
+
     public String getBankAccountNum() {
         return bankAccountNum;
     }
 
     public void setBankAccountNum(String bankAccountNum) {
         this.bankAccountNum = bankAccountNum;
-    }
-
-    public String getBankAccountType() {
-        return bankAccountType;
-    }
-
-    public void setBankAccountTyep(String bankAccountType) {
-        this.bankAccountType = bankAccountType;
     }
 
     public List<AccTransaction> getAccTransaction() {
@@ -93,12 +99,20 @@ public class BankAccount implements Serializable {
         this.customerBasic = customerBasic;
     }
 
-    public String getBankAccountBalance() {
-        return bankAccountBalance;
+    public String getTotalBankAccountBalance() {
+        return totalBankAccountBalance;
     }
 
-    public void setBankAccountBalance(String bankAccountBalance) {
-        this.bankAccountBalance = bankAccountBalance;
+    public void setTotalBankAccountBalance(String totalBankAccountBalance) {
+        this.totalBankAccountBalance = totalBankAccountBalance;
+    }
+
+    public String getAvailableBankAccountBalance() {
+        return availableBankAccountBalance;
+    }
+
+    public void setAvailableBankAccountBalance(String availableBankAccountBalance) {
+        this.availableBankAccountBalance = availableBankAccountBalance;
     }
 
     public Interest getInterest() {

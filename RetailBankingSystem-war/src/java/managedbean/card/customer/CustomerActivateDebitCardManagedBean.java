@@ -11,6 +11,8 @@ import ejb.customer.entity.CustomerBasic;
 import ejb.infrastructure.session.SMSSessionBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
@@ -40,16 +42,19 @@ public class CustomerActivateDebitCardManagedBean implements Serializable {
     private SMSSessionBeanLocal smsSessionBeanLocal;
 
     @EJB
-    DebitCardPasswordSessionBeanLocal debitCardPasswordSessionBeanLocal;
+    private DebitCardPasswordSessionBeanLocal debitCardPasswordSessionBeanLocal;
 
     private CustomerBasic customer;
-    private String debitCardNum;
     private String cardHolderName;
     private String debitCardSecurityCode;
 
+    private List<String> debitCards = new ArrayList<String>();
+    private String selectedDebitCard;
+
     private String customerOTP;
 
-    private String debitCardPwd;
+    private int debitCardPwd;
+    private int debitCardPwd1;
 
     public CustomerActivateDebitCardManagedBean() {
     }
@@ -86,23 +91,21 @@ public class CustomerActivateDebitCardManagedBean implements Serializable {
 
         String debitCardNumber = (String) ec.getSessionMap().get("debitCardNumber");
 
-        System.out.println("test " + debitCardPwd);
-        System.out.println("test 2 " + debitCardNumber);
+        System.out.println("pwd1 " + debitCardPwd);
+        System.out.println("pwd2 " + debitCardPwd1);
+        if (debitCardPwd != debitCardPwd1) {
+            message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Password does not match!", null);
+            context.addMessage(null, message);
+        } else {
 
-        debitCardPasswordSessionBeanLocal.setPassword(debitCardPwd, debitCardNumber);
+            String debitCardPwdToString = String.valueOf(debitCardPwd);
+            debitCardPasswordSessionBeanLocal.setPassword(debitCardPwdToString, debitCardNumber);
 
-        System.out.println("====== card/debitCard/CustomerActivateDebitCardManagedBean: set password for debit Card");
-        message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Password has been successfully set for your debit card!", null);
-        context.addMessage(null, message);
+            System.out.println("====== card/debitCard/CustomerActivateDebitCardManagedBean: set password for debit Card");
+            message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Password has been successfully set for your debit card!", null);
+            context.addMessage(null, message);
+        }
 
-    }
-
-    public String getDebitCardNum() {
-        return debitCardNum;
-    }
-
-    public void setDebitCardNum(String debitCardNum) {
-        this.debitCardNum = debitCardNum;
     }
 
     public CustomerBasic getCustomerViaSessionMap() {
@@ -141,6 +144,9 @@ public class CustomerActivateDebitCardManagedBean implements Serializable {
         FacesMessage message = null;
         FacesContext context = FacesContext.getCurrentInstance();
 
+        String[] debitCardInfo = selectedDebitCard.split("-");
+        String debitCardNum = debitCardInfo[1];
+
         System.out.println("check debit card num when activating debit card");
         String result = debitCardSessionBeanLocal.debitCardNumValiadation(debitCardNum, cardHolderName, debitCardSecurityCode);
 
@@ -161,9 +167,9 @@ public class CustomerActivateDebitCardManagedBean implements Serializable {
                 System.out.println("*** ActivateDebitCardManagedBean: card security code is wrong!");
                 break;
             case "valid":
-                System.out.println("put in map: "+debitCardNum);
+                System.out.println("put in map: " + debitCardNum);
                 context.getExternalContext().getSessionMap().put("debitCardNumber", debitCardNum);
-                context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() +"/web/onlineBanking/card/debitCard/customerActivateDebitCardDone.xhtml?faces-redirect=true");
+                context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/web/onlineBanking/card/debitCard/customerActivateDebitCardDone.xhtml?faces-redirect=true");
                 System.out.println("*** ActivateDebitCardManagedBean: correct!");
                 break;
         }
@@ -178,13 +184,44 @@ public class CustomerActivateDebitCardManagedBean implements Serializable {
         this.customerOTP = customerOTP;
     }
 
-    public String getDebitCardPwd() {
+    public int getDebitCardPwd() {
         return debitCardPwd;
     }
 
-    public void setDebitCardPwd(String debitCardPwd) {
+    public void setDebitCardPwd(int debitCardPwd) {
         this.debitCardPwd = debitCardPwd;
-        System.out.println("debug set debit card pwd: " + debitCardPwd);
+    }
+
+    public int getDebitCardPwd1() {
+        return debitCardPwd1;
+    }
+
+    public void setDebitCardPwd1(int debitCardPwd1) {
+        this.debitCardPwd1 = debitCardPwd1;
+    }
+
+    public List<String> getDebitCards() {
+        System.out.println("test " + debitCards);
+        if (debitCards.isEmpty()) {
+
+            customer = getCustomerViaSessionMap();
+            Long id=customer.getCustomerBasicId();
+            debitCards = debitCardSessionBeanLocal.getAllNonActivatedDebitCards(id);
+
+        }
+        return debitCards;
+    }
+
+    public void setDebitCards(List<String> debitCards) {
+        this.debitCards = debitCards;
+    }
+
+    public String getSelectedDebitCard() {
+        return selectedDebitCard;
+    }
+
+    public void setSelectedDebitCard(String selectedDebitCard) {
+        this.selectedDebitCard = selectedDebitCard;
     }
 
 }

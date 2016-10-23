@@ -242,12 +242,17 @@ public class EnquiryManagerManagedBean implements Serializable {
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext ec = context.getExternalContext();
         FacesMessage message = null;
-        
+
         if (msg.equals("Box unchecked")) {
             message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please select the follow-ups you wish to reply", "Empty followup");
             context.addMessage(null, message);
         }
-        
+
+        if (msg.equals("Empty reply")) {
+            message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please do not leave reply empty", "Empty reply");
+            context.addMessage(null, message);
+        }
+
         if (msg.equals("Successful")) {
             Calendar cal = Calendar.getInstance();
             receivedDate = cal.getTime();
@@ -272,7 +277,7 @@ public class EnquiryManagerManagedBean implements Serializable {
             caseReply = null;
             selectedFollowUp = null;
             followUps = null;
-            ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/enquirymanagerReplyCaseDone.xhtml?faces-redirect=true");
+            ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/enquiryProcessorReplyCaseDone.xhtml?faces-redirect=true");
         }
     }
 
@@ -321,27 +326,26 @@ public class EnquiryManagerManagedBean implements Serializable {
             caseId = null;
             departmentTo = null;
             issueProblem = null;
-            ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/enquirymanagerSubmitDone.xhtml?faces-redirect=true");
+            ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/enquiryProcessorSubmitDone.xhtml?faces-redirect=true");
         }
 
     }
 
-    public void redirectToViewEnquiryDone() throws IOException {
-        FacesContext context = FacesContext.getCurrentInstance();
-        ExternalContext ec = context.getExternalContext();
-        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/enquirymanagerViewEnquiryDone.xhtml?faces-redirect=true");
-    }
-
+//    public void redirectToViewEnquiryDone() throws IOException {
+//        FacesContext context = FacesContext.getCurrentInstance();
+//        ExternalContext ec = context.getExternalContext();
+//        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/enquiryProcessorViewEnquiryDone.xhtml?faces-redirect=true");
+//    }
     public void redirectToReplyCase() throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext ec = context.getExternalContext();
-        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/enquirymanagerReplyCase.xhtml?faces-redirect=true");
+        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/enquiryProcessorReplyCase.xhtml?faces-redirect=true");
     }
 
     public void redirectToReplyFollowUp() throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext ec = context.getExternalContext();
-        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/enquirymanagerReplyFollowUp.xhtml?faces-redirect=true");
+        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/enquiryProcessorReplyFollowUp.xhtml?faces-redirect=true");
     }
 
     public String caseIssueCreated(Long caseId) {

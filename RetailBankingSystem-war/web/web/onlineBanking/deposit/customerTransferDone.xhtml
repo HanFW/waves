@@ -38,17 +38,17 @@
                             <h:outputText style="font-weight: bold" value="Account Number: "/>
                             <h:outputText value="#{transferDoneManagedBean.fromBankAccountNumWithType}"/>
                             <br/>
-                            <h:outputText style="font-weight: bold" value="Lastest Account Balance: "/>
-                            <h:outputText value="#{transferDoneManagedBean.fromBankAccountBalance}"/>
+                            <h:outputText style="font-weight: bold" value="Lastest Available Balance: "/>
+                            <h:outputText value="#{transferDoneManagedBean.fromAccountAvailableBalance}"/>
+                            <br/>
+                            <h:outputText style="font-weight: bold" value="Lastest Total Balance: "/>
+                            <h:outputText value="#{transferDoneManagedBean.fromAccountTotalBalance}"/>
                             <br/>
                             <br/>
                             <h:outputText value="To" style="font-size: 24px" />
                             <p:separator />
                             <h:outputText style="font-weight: bold" value="Account Number: "/>
                             <h:outputText value="#{transferDoneManagedBean.toBankAccountNumWithType}"/>
-                            <br/>
-                            <h:outputText style="font-weight: bold" value="Lastest Account Balance: "/>
-                            <h:outputText value="#{transferDoneManagedBean.toBankAccountBalance}"/>
                             <br/>
                             <h:outputText style="font-weight: bold" value="Transfer Amount: "/>
                             <h:outputText value="#{transferDoneManagedBean.transferAmt}"/>

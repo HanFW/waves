@@ -4,6 +4,9 @@ import ejb.card.entity.CreditCard;
 import ejb.deposit.entity.BankAccount;
 import ejb.infrastructure.entity.MessageBox;
 import ejb.deposit.entity.Payee;
+import ejb.payment.entity.Cheque;
+import ejb.payment.entity.FastPayee;
+import ejb.payment.entity.GIRO;
 import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -57,15 +60,24 @@ public class CustomerBasic implements Serializable {
 
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
     private List<EnquiryCase> enquiryCase;
-    
-    @OneToOne(cascade={CascadeType.ALL},fetch=FetchType.EAGER,mappedBy="customerBasic")
+
+    @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
     private CustomerAdvanced customerAdvanced;
-    
+
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
     private List<MessageBox> messageBox;
     
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
     private List<CreditCard> creditCard;
+
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
+    private List<FastPayee> fastPayee;
+
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
+    private List<GIRO> giro;
+    
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
+    private List<Cheque> cheque;
 
     public Long getCustomerBasicId() {
         return customerBasicId;
@@ -266,8 +278,8 @@ public class CustomerBasic implements Serializable {
     public void setEnquiryCase(List<EnquiryCase> enquiryCase) {
         this.enquiryCase = enquiryCase;
     }
-    
-    public void addNewCase (EnquiryCase ec) {
+
+    public void addNewCase(EnquiryCase ec) {
         enquiryCase.add(ec);
     }
 
@@ -311,6 +323,22 @@ public class CustomerBasic implements Serializable {
         this.customerOnlineBankingAccountLocked = customerOnlineBankingAccountLocked;
     }
 
+    public List<FastPayee> getFastPayee() {
+        return fastPayee;
+    }
+
+    public void setFastPayee(List<FastPayee> fastPayee) {
+        this.fastPayee = fastPayee;
+    }
+
+    public List<GIRO> getGiro() {
+        return giro;
+    }
+
+    public void setGiro(List<GIRO> giro) {
+        this.giro = giro;
+    }
+    
     public String getNewCustomer() {
         return newCustomer;
     }
@@ -318,7 +346,15 @@ public class CustomerBasic implements Serializable {
     public void setNewCustomer(String newCustomer) {
         this.newCustomer = newCustomer;
     }
-   
+
+    public List<Cheque> getCheque() {
+        return cheque;
+    }
+
+    public void setCheque(List<Cheque> cheque) {
+        this.cheque = cheque;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;

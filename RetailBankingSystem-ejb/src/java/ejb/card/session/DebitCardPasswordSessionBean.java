@@ -32,6 +32,7 @@ public class DebitCardPasswordSessionBean implements DebitCardPasswordSessionBea
     @PersistenceContext
     private EntityManager em;
 
+    //customer forgets debit catf pwd
     @Override
     public void setPassword(String debitCardPwd, String debitCardNum) {
         DebitCard findDebitCard = getCardByCardNum(debitCardNum);
@@ -43,6 +44,27 @@ public class DebitCardPasswordSessionBean implements DebitCardPasswordSessionBea
             Logger.getLogger(DebitCardPasswordSessionBean.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+    }
+    
+    //customer changes debit card pwd
+    @Override
+    public String changePassword(String currentDebitCardPwd, String debitCardPwd, String debitCardNum){
+        DebitCard findDebitCard = getCardByCardNum(debitCardNum);
+        
+        try{
+        String hashedCurrentPwd =md5Hashing(currentDebitCardPwd + findDebitCard.getCardNum().substring(0, 3));
+        if(!hashedCurrentPwd.equals(findDebitCard.getDebitCardPwd()))
+            return "wrong current pwd";
+        else{
+            String hashedPwd = md5Hashing(debitCardPwd + findDebitCard.getCardNum().substring(0, 3));
+            findDebitCard.setDebitCardPwd(hashedPwd);
+            em.flush();
+            return "success";
+        }
+        }catch(NoSuchAlgorithmException ex) {
+            Logger.getLogger(DebitCardPasswordSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
     private DebitCard getCardByCardNum(String cardNum) {

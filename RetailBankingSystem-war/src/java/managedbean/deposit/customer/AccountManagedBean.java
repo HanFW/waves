@@ -52,7 +52,8 @@ public class AccountManagedBean implements Serializable {
     private String bankAccountNum;
     private String confirmBankAccountPwd;
     private String bankAccountType;
-    private String bankAccountBalance;
+    private String totalBankAccountBalance;
+    private String availableBankAccountBalance;
     private Long newAccountId;
     private String transferDailyLimit;
     private String bankAccountStatus;
@@ -513,12 +514,20 @@ public class AccountManagedBean implements Serializable {
         this.customerOnlineBankingPassword = customerOnlineBankingPassword;
     }
 
-    public String getBankAccountBalance() {
-        return bankAccountBalance;
+    public String getTotalBankAccountBalance() {
+        return totalBankAccountBalance;
     }
 
-    public void setBankAccountBalance(String bankAccountBalance) {
-        this.bankAccountBalance = bankAccountBalance;
+    public void setTotalBankAccountBalance(String totalBankAccountBalance) {
+        this.totalBankAccountBalance = totalBankAccountBalance;
+    }
+
+    public String getAvailableBankAccountBalance() {
+        return availableBankAccountBalance;
+    }
+
+    public void setAvailableBankAccountBalance(String availableBankAccountBalance) {
+        this.availableBankAccountBalance = availableBankAccountBalance;
     }
 
     public String getConfirmBankAccountPwd() {
@@ -865,7 +874,8 @@ public class AccountManagedBean implements Serializable {
                             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Eligibility of openning account is 16 years old and above.", "Failed!"));
                         } else {
 
-                            bankAccountBalance = "0";
+                            totalBankAccountBalance = "0.0";
+                            availableBankAccountBalance = "0.0";
                             transferDailyLimit = "3000.0";
                             transferBalance = "3000.0";
                             bankAccountMinSaving = "";
@@ -891,7 +901,8 @@ public class AccountManagedBean implements Serializable {
                             }
 
                             newAccountId = bankAccountSessionLocal.addNewAccount(bankAccountNum, bankAccountType,
-                                    bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
+                                    totalBankAccountBalance, availableBankAccountBalance, transferDailyLimit, 
+                                    transferBalance, bankAccountStatus, bankAccountMinSaving,
                                     bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
                                     statementDateDouble, customerBasicId, newInterestId);
 
@@ -949,7 +960,8 @@ public class AccountManagedBean implements Serializable {
                             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Eligibility of openning account is 16 years old and above.", "Failed!"));
                         } else {
 
-                            bankAccountBalance = "0";
+                            totalBankAccountBalance = "0.0";
+                            availableBankAccountBalance = "0.0";
                             transferDailyLimit = "3000.0";
                             transferBalance = "3000.0";
                             bankAccountMinSaving = "";
@@ -969,7 +981,7 @@ public class AccountManagedBean implements Serializable {
                             }
 
                             newAccountId = bankAccountSessionLocal.addNewAccount(bankAccountNum, bankAccountType,
-                                    bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
+                                    totalBankAccountBalance, availableBankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
                                     bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
                                     statementDateDouble, newCustomerBasicId, newInterestId);
 
@@ -1110,7 +1122,8 @@ public class AccountManagedBean implements Serializable {
         //Bank Account Details
         bankAccountNum = bankAccountSessionLocal.generateBankAccount();
         bankAccountType = "Bonus Savings Account";
-        bankAccountBalance = "10000";
+        totalBankAccountBalance = "10000";
+        availableBankAccountBalance = "10000";
         transferDailyLimit = "3000.0";
         transferBalance = "3000.0";
         bankAccountMinSaving = "";
@@ -1127,13 +1140,13 @@ public class AccountManagedBean implements Serializable {
 //        }
 
         newAccountId = bankAccountSessionLocal.addNewAccountOneTime(bankAccountNum, bankAccountType,
-                bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
+                totalBankAccountBalance, availableBankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
                 bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
                 statementDateDouble, newCustomerBasicId, newInterestId);
 
         accountId = bankAccountSessionLocal.addNewAccountOneTime(bankAccountSessionLocal.generateBankAccount(),
                 "Basic Savings Account",
-                bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
+                totalBankAccountBalance, availableBankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
                 bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
                 statementDateDouble, customerBasicId, interestId);
 

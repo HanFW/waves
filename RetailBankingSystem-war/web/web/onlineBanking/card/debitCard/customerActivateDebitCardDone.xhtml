@@ -18,7 +18,7 @@
                         <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
                     </p:panel>
 
-                    <p:messages autoUpdate="true"/>
+                    <p:messages autoUpdate="true" globalOnly="true"/>
 
                     <p:outputLabel value="Your Debit Card has been successfully activated!"/>
                     <br/>
@@ -30,21 +30,21 @@
 
                         <h:outputLabel for="pwd2" value="Password *" />
 
-                        <p:password validatorMessage="Please enter a 6-digit PIN" id="pwd2" value="#{customerActivateDebitCardManagedBean.debitCardPwd}" match="pwd3" label="Password 2" required="true" feedback="true">
+                        <p:password converterMessage="Please enter a 6-digit PIN which consists of digit only" validatorMessage="Please enter a 6-digit PIN which consists of digit only" id="pwd2" value="#{customerActivateDebitCardManagedBean.debitCardPwd}" label="Password 2" required="true">
                             <f:validateLength minimum="6" maximum="6" /> 
                         </p:password>
 
-                        <p:message for="pwd2" />
+                        <p:message for="pwd2"/>
 
                         <h:outputLabel for="pwd3" value="Confirm Password: *" />
 
-                        <p:password validatorMessage="Please enter a 6-digit PIN" id="pwd3" value="#{customerActivateDebitCardManagedBean.debitCardPwd}" label="Password 3" required="true" feedback="true">
+                        <p:password converterMessage="Please enter a 6-digit PIN which consists of digit only" validatorMessage="Please enter a 6-digit PIN which consists of digit only" id="pwd3" value="#{customerActivateDebitCardManagedBean.debitCardPwd1}" label="Password 3" required="true">
                             <f:validateLength minimum="6" maximum="6" /> 
                         </p:password>
 
-                        <p:message for="pwd3" />
+                        <p:message for="pwd3"/>
 
-                        <p:commandButton value="Set Password" type="submit" actionListener="#{customerActivateDebitCardManagedBean.setDebitCardPassword}"/>
+                        <p:commandButton value="Set Password" type="submit" actionListener="#{customerActivateDebitCardManagedBean.setDebitCardPassword}" update="@form"/>
 
                     </h:panelGrid>
                 </h:form>

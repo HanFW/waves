@@ -55,15 +55,12 @@
                                     <f:selectItems value="#{customerSetTransactionLimitForDebitCard.debitCards}"/> 
                                     <p:ajax listener="#{customerSetTransactionLimitForDebitCard.findExistingLimit}" update="existingTransactionLimit"/>
                                 </p:selectOneMenu>
-                                <!--<p:messages for="selectDebitCard"/>-->
-
-
+                       
                                 <p:outputLabel value="Existing Daily Card Limit: S$"/>
                                 <p:outputLabel id="existingTransactionLimit" value="#{customerSetTransactionLimitForDebitCard.existingTransactionLimit}"/>
 
 
                                 <p:outputLabel value="New Daily Card Limit: S$"/>
-                                <!--                                <p:outputLabel value="S$"/>-->
                                 <p:selectOneMenu id="selectNewTransactionLimit" value="#{customerSetTransactionLimitForDebitCard.newTransactionLimit}">
                                     <f:selectItem itemLabel="Please Select ..." itemValue=""/>
                                     <f:selectItem itemLabel="5000" itemValue="5000"/>
@@ -121,7 +118,7 @@
 
                             <h:panelGrid columns="2" class="ui-lg-6"> 
                                 <p:commandButton  value="Cancel" icon="ui-icon-arrow-1-w" iconPos="left" actionListener="#{customerSetTransactionLimitForDebitCard.cancelUpdateTransactionLimit}"/>
-                                <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" actionListener="#{customerSetTransactionLimitForDebitCard.updateTransactionLimit}"/>
+                                <p:commandButton  value="Confirm" icon="ui-icon-arrow-1-e" iconPos="right" actionListener="#{customerSetTransactionLimitForDebitCard.updateTransactionLimit}"/>
                             </h:panelGrid>
 
                         </p:tab>

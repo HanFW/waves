@@ -6,21 +6,22 @@ import ejb.deposit.session.BankAccountSessionBeanLocal;
 import ejb.deposit.session.InterestSessionBeanLocal;
 import ejb.infrastructure.session.MessageSessionBeanLocal;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
-import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import org.primefaces.event.FlowEvent;
 
 @Named(value = "internalOpenAccountManagedBean")
-@RequestScoped
+@ViewScoped
 
-public class InternalOpenAccountManagedBean {
+public class InternalOpenAccountManagedBean implements Serializable  {
 
     @EJB
     private MessageSessionBeanLocal messageSessionBeanLocal;
@@ -44,7 +45,8 @@ public class InternalOpenAccountManagedBean {
     private String isWithdraw;
     private Long newInterestId;
 
-    private String bankAccountBalance;
+    private String totalBankAccountBalance;
+    private String availableBankAccountBalance;
     private String transferDailyLimit;
     private String transferBalance;
     private String bankAccountMinSaving;
@@ -204,14 +206,6 @@ public class InternalOpenAccountManagedBean {
         this.newInterestId = newInterestId;
     }
 
-    public String getBankAccountBalance() {
-        return bankAccountBalance;
-    }
-
-    public void setBankAccountBalance(String bankAccountBalance) {
-        this.bankAccountBalance = bankAccountBalance;
-    }
-
     public String getTransferDailyLimit() {
         return transferDailyLimit;
     }
@@ -348,6 +342,30 @@ public class InternalOpenAccountManagedBean {
         this.accountApproval = accountApproval;
     }
 
+    public BankAccount getBankAccount() {
+        return bankAccount;
+    }
+
+    public void setBankAccount(BankAccount bankAccount) {
+        this.bankAccount = bankAccount;
+    }
+
+    public String getTotalBankAccountBalance() {
+        return totalBankAccountBalance;
+    }
+
+    public void setTotalBankAccountBalance(String totalBankAccountBalance) {
+        this.totalBankAccountBalance = totalBankAccountBalance;
+    }
+
+    public String getAvailableBankAccountBalance() {
+        return availableBankAccountBalance;
+    }
+
+    public void setAvailableBankAccountBalance(String availableBankAccountBalance) {
+        this.availableBankAccountBalance = availableBankAccountBalance;
+    }
+
     public void saveAccount() throws IOException {
 
         ec = FacesContext.getCurrentInstance().getExternalContext();
@@ -358,7 +376,8 @@ public class InternalOpenAccountManagedBean {
         System.out.println(agreement);
         if (agreement) {
 
-            bankAccountBalance = "0";
+            totalBankAccountBalance = "0.0";
+            availableBankAccountBalance = "0.0";
             transferDailyLimit = "3000.0";
             transferBalance = "3000.0";
             bankAccountMinSaving = "";
@@ -386,7 +405,7 @@ public class InternalOpenAccountManagedBean {
             }
 
             newAccountId = bankAccountSessionBeanLocal.addNewAccount(bankAccountNum, bankAccountType,
-                    bankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
+                    totalBankAccountBalance, availableBankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
                     bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
                     statementDateDouble, customerBasicId, newInterestId);
 

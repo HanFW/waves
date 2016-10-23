@@ -1,0 +1,85 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/onlineBankingTemplate.xhtml"
+                xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
+    <ui:define name="content">
+        <h:form>
+            <p:panel>
+                <p:outputLabel value="Welcome "/>
+                <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
+            </p:panel>
+
+            <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                <p:panel id="panel">
+                    <br/>
+                    <p:outputLabel value="Add Billing Organization" style="font-weight: bold;font-size: 26px"/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <p:outputLabel value="To" style="font-weight: bold;font-size: 26px"/>
+                    <br/>
+                    <br/>
+                    <p:outputLabel value="Billing Organization" style="font-weight: bold"/>
+                    <p:selectOneMenu id="billingOrganization" value="#{addNonStandingGIROManagedBean.billingOrganization}" 
+                                     effect="fold" editable="false" required="true" requiredMessage="Required Field">
+                        <f:selectItem itemLabel="Please Select One" itemValue="" />
+                        <f:selectItems value="#{addNonStandingGIROManagedBean.billingOrganizations}" />
+                    </p:selectOneMenu>
+                    <p:message for="billingOrganization" />
+
+                    <p:outputLabel value="Bill Reference" style="font-weight: bold"/>
+                    <p:inputText label="Bill Reference" id="billReference" 
+                                 value="#{addNonStandingGIROManagedBean.billReference}"
+                                 required="true" requiredMessage="Required Field">
+                    </p:inputText>
+                    <p:message for="billReference" />
+
+                    <br/>
+                    <p:outputLabel value="From" style="font-weight: bold;font-size: 26px"/>
+                    <br/>
+                    <br/>
+                    <p:outputLabel value="Transfer Method" style="font-weight: bold"/>
+                    <p:selectOneRadio id="transferMethod" value="#{addNonStandingGIROManagedBean.transferMethod}"
+                                      required="true" requiredMessage="Required Field">
+                        <f:selectItem itemLabel="One Time" itemValue="One Time"/>
+                        <f:selectItem itemLabel="Recurrent" itemValue="Recurrent" />
+                        <p:ajax event="change" update="transferFrequencyPanel" listener="#{addNonStandingGIROManagedBean.show()}"/>
+                    </p:selectOneRadio>
+                    <p:message for="transferMethod" />
+
+                    <p:panel id="transferFrequencyPanel" visible="#{addNonStandingGIROManagedBean.visible}">
+                        <p:outputLabel value="Frequency" style="font-weight: bold"/>
+                        <p:selectOneMenu id="transferFrequency" value="#{addNonStandingGIROManagedBean.transferFrequency}" 
+                                         effect="fold" editable="false" required="#{addNonStandingGIROManagedBean.transferMethodRender}"
+                                         requiredMessage="Required Field">
+                            <f:selectItem itemLabel="Please Select One" itemValue="" />
+                            <f:selectItem itemLabel="Monthly" itemValue="Monthly" />
+                            <f:selectItem itemLabel="Weekly" itemValue="Weekly" />
+                            <f:selectItem itemLabel="Daily" itemValue="Daily" />
+                        </p:selectOneMenu>
+                        <p:message for="transferFrequency" />
+                    </p:panel>
+
+                    <p:outputLabel value="My Account" style="font-weight: bold"/>
+                    <p:selectOneMenu id="bankAccountNum" value="#{addNonStandingGIROManagedBean.bankAccountNumWithType}" 
+                                     effect="fold" editable="false" required="true" requiredMessage="Required Field">
+                        <f:selectItem itemLabel="Please Select One" itemValue="" />
+                        <f:selectItems value="#{addNonStandingGIROManagedBean.myAccounts}" />
+                    </p:selectOneMenu>
+                    <p:message for="bankAccountNum" />
+
+                    <p:commandButton id="submitBtn" value="Submit" update="panel" 
+                                     actionListener="#{addNonStandingGIROManagedBean.addNewBillingOrganization()}" 
+                                     ajax="true"/>
+                </p:panel>
+            </p:panelGrid>
+
+        </h:form>
+        <ezcomp:CCTimeout/>
+    </ui:define>
+</ui:composition>

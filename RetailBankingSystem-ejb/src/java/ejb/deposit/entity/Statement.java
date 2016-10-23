@@ -1,6 +1,5 @@
 package ejb.deposit.entity;
 
-import ejb.customer.entity.CustomerBasic;
 import java.io.Serializable;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -15,7 +14,7 @@ public class Statement implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long statementId;
+    private Long statementId;
     private String statementDate;
     private String statementType;
     private String accountDetails;

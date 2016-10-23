@@ -14,5 +14,9 @@ import javax.ejb.Local;
 @Local
 public interface DebitCardPasswordSessionBeanLocal {
 
+    //for customer who forgets debit card pwd
     public void setPassword(String debitCardPwd, String debitCardNum);
+    
+    //for customer who wants to change debit card pwd
+    public String changePassword(String currentDebitCardPwd, String DebitCardPwd, String debitCardNum);
 }
