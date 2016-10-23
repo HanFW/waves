@@ -54,6 +54,7 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
             String customerMaritalStatus, String customerOccupation, String customerCompany,
             String customerAddress, String customerPostal, String customerOnlineBankingAccountNum,
             String customerOnlineBankingPassword, byte[] customerSignature, String newCustomer) {
+        System.out.println("****** customer/CRMCustomerSessionBean: addNewCustomerBasic() ******");
 
         CustomerBasic customerBasic = new CustomerBasic();
 
@@ -80,7 +81,7 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
 
         entityManager.persist(customerBasic);
         entityManager.flush();
-
+        
         return customerBasic.getCustomerBasicId();
 
     }
@@ -225,15 +226,15 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
             return "Cannot find customer profile, please contact with our IT staff";
         } else {
             CustomerAdvanced ca = (CustomerAdvanced) resultList.get(0);
-            ca.setEducation(education);
-            ca.setIncomeMonthly(incomeMonthly);
-            ca.setJobDuration(jobDuration);
-            ca.setJobStatus(jobStatus);
-            ca.setJobIndustry(jobIndustry);
-            ca.setJobType(jobType);
-            ca.setNumOfDependent(numOfDependent);
-            ca.setResidentialStatus(residentialStatus);
-            ca.setYearInResidence(yearInResidence);
+//            ca.setEducation(education);
+//            ca.setIncomeMonthly(incomeMonthly);
+//            ca.setJobDuration(jobDuration);
+//            ca.setJobStatus(jobStatus);
+//            ca.setJobIndustry(jobIndustry);
+//            ca.setJobType(jobType);
+//            ca.setNumOfDependent(numOfDependent);
+//            ca.setResidentialStatus(residentialStatus);
+//            ca.setYearInResidence(yearInResidence);
             
             entityManager.flush();
 
@@ -443,5 +444,45 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
         CustomerBasic customer = entityManager.find(CustomerBasic.class, customerId);
         customer.setCustomerMobile(customerMobile);
         entityManager.flush();
+    }
+    
+    @Override
+    public CustomerBasic getCustomerBasicById(Long customerId){
+        CustomerBasic customer = entityManager.find(CustomerBasic.class, customerId);
+        return customer;
+    }
+    
+    @Override
+    public Long addNewCustomerAdvanced(int customerNumOfDependents, String customerEducation, String customerResidentialStatus, 
+            int customerLengthOfResidence, String customerIndustryType, int customerLengthOfCurrentJob, String customerEmploymentStatus,
+            double customerMonthlyFixedIncome, String customerResidentialType, String customerCompanyAddress, 
+            String customerCompanyPostal, String customerCurrentPosition, String customerCurrentJobTitle, 
+            String customerPreviousCompany, int customerLengthOfPreviousJob, double customerOtherMonthlyIncome, 
+            String customerOtherMonthlyIncomeSource){
+        System.out.println("****** customer/CRMCustomerSessionBean: addNewCustomerAdvanced() ******");
+        
+        CustomerAdvanced ca = new CustomerAdvanced();
+        
+        ca.setNumOfDependent(customerNumOfDependents);
+        ca.setEducation(customerEducation);
+        ca.setResidentialStatus(customerResidentialStatus);
+        ca.setYearInResidence(customerLengthOfResidence);
+        ca.setIndustryType(customerIndustryType);
+        ca.setLengthOfCurrentJob(customerLengthOfCurrentJob);
+        ca.setEmploymentStatus(customerEmploymentStatus);
+        ca.setMonthlyFixedIncome(customerMonthlyFixedIncome);
+        ca.setResidentialType(customerResidentialType);
+        ca.setCompanyAddress(customerCompanyAddress);
+        ca.setCompanyPostal(customerCompanyPostal);
+        ca.setCurrentPosition(customerCurrentPosition);
+        ca.setCurrentJobTitle(customerCurrentJobTitle);
+        ca.setPreviousCompanyName(customerPreviousCompany);
+        ca.setLengthOfPreviousJob(customerLengthOfPreviousJob);
+        ca.setOtherMonthlyIncome(customerOtherMonthlyIncome);
+        ca.setOtherMonthlyIncomeSource(customerOtherMonthlyIncomeSource);
+                
+        entityManager.persist(ca);
+        entityManager.flush();
+        return ca.getCustomerAdvancedId();
     }
 }
