@@ -9,7 +9,7 @@
                 template="/WEB-INF/onlineBankingTemplate.xhtml"
                 xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
     <ui:define name="content">
-        <h:form>
+        <h:form id="oneTimeGIROForm"> 
 
             <p:panel>
                 <p:outputLabel value="Welcome "/>
@@ -17,11 +17,68 @@
             </p:panel>
             <p:messages globalOnly="true"/>
 
-            <p:dataTable var="fastPayee" value="#{nonStandingGIROManagedBean.fastPayees}" 
+            <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group" class="ui-lg-6">
+                <p:outputLabel value="Pay Bills" style="font-weight: bold;font-size: 26px"/>
+                <br/>
+            </p:panelGrid>
+
+            <p:outputLabel value="One Time Payment" style="font-weight: bold"/>
+            <br/>
+            <br/>
+            <p:dataTable var="oneTimeGiro" value="#{nonStandingGIROManagedBean.oneTimeGIROs}" 
                          reflow="true" paginator="true" rows="10" emptyMessage="No Recipient">
-                <p:column headerText="Recipient's Name" >
-                    <h:outputText value="#{fastPayee.fastPayeeName}" /> 
+                <p:column headerText="Billing Organization" >
+                    <h:outputText value="#{oneTimeGiro.billingOrganizationName}" /> 
                 </p:column>
+
+                <p:column headerText="Reference no." >
+                    <h:outputText value="#{oneTimeGiro.billReference}" /> 
+                </p:column>
+
+                <p:column headerText="Transfer Frequency" >
+                    <h:outputText value="#{oneTimeGiro.paymentFrequency}" /> 
+                </p:column>
+
+                <p:column headerText="Action" style="width: 10%">
+                    <center>
+                        <p:commandButton action="/web/onlineBanking/payment/customerNonStandingGIROTransferDone.xhtml?faces-redirect=true"
+                                         value="Transfer" update="oneTimeGIROForm">
+                            <f:setPropertyActionListener target="#{nonStandingGIROTransferDoneManagedBean.giroId}" value="#{oneTimeGiro.giroId}" />
+                        </p:commandButton>
+                    </center>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+
+        <h:form id="recurrentGIROForm">
+            <br/>
+            <br/>
+            <p:outputLabel value="Recurrent Payment" style="font-weight: bold"/>
+            <br/>
+            <br/>
+            <p:dataTable var="recurrentGIRO" value="#{nonStandingGIROManagedBean.recurrentGIROs}" 
+                         reflow="true" paginator="true" rows="10" emptyMessage="No Recipient">
+                <p:column headerText="Billing Organization" >
+                    <h:outputText value="#{recurrentGIRO.billingOrganizationName}" /> 
+                </p:column>
+
+                <p:column headerText="Reference no." >
+                    <h:outputText value="#{recurrentGIRO.billReference}" /> 
+                </p:column>
+
+                <p:column headerText="Transfer Frequency" >
+                    <h:outputText value="#{recurrentGIRO.paymentFrequency}" /> 
+                </p:column>
+
+                <p:column headerText="Action" style="width: 10%">
+                    <center>
+                        <p:commandButton action="/web/onlineBanking/payment/customerNonStandingGIROTransferDone.xhtml?faces-redirect=true"
+                                         value="Transfer" update="recurrentGIROForm">
+                            <f:setPropertyActionListener target="#{nonStandingGIROTransferDoneManagedBean.giroId}" value="#{recurrentGIRO.giroId}" />
+                        </p:commandButton>
+                    </center>
+                </p:column>
+
             </p:dataTable>
         </h:form>
         <ezcomp:CCTimeout/>

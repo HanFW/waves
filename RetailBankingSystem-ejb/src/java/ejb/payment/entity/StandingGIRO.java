@@ -1,11 +1,7 @@
 package ejb.payment.entity;
 
-import ejb.customer.entity.CustomerBasic;
 import java.io.Serializable;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
 
 @Entity
 public class StandingGIRO extends GIRO implements Serializable {

@@ -7,10 +7,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class BillingOrganization implements Serializable {
+public class RegisteredBillingOrganization implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long billingOrganizationId;
     private String billingOrganizationName;
     private String bankAccountNum;
@@ -67,10 +67,10 @@ public class BillingOrganization implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof BillingOrganization)) {
+        if (!(object instanceof RegisteredBillingOrganization)) {
             return false;
         }
-        BillingOrganization other = (BillingOrganization) object;
+        RegisteredBillingOrganization other = (RegisteredBillingOrganization) object;
         if ((this.billingOrganizationId == null && other.billingOrganizationId != null) || (this.billingOrganizationId != null && !this.billingOrganizationId.equals(other.billingOrganizationId))) {
             return false;
         }

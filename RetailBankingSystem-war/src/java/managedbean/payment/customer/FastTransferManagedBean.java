@@ -27,12 +27,13 @@ import ws.client.sach.SACHWebService_Service;
 @RequestScoped
 
 public class FastTransferManagedBean {
+
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_8080/OtherBanksWebService/OtherBanksWebService.wsdl")
-    private OtherBanksWebService_Service service_1;
-    
+    private OtherBanksWebService_Service service_otherBanks;
+
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_8080/SACHWebService/SACHWebService.wsdl")
-    private SACHWebService_Service service;
-    
+    private SACHWebService_Service service_sach;
+
     @EJB
     private TransactionSessionBeanLocal transactionSessionBeanLocal;
 
@@ -51,7 +52,8 @@ public class FastTransferManagedBean {
     private Double transferAmt;
     private String fromBankAccount;
     private String toBankAccount;
-    private String fromAccountBalance;
+    private String fromAccountAvailableBalance;
+    private String fromAccountTotalBalance;
 
     private String statusMessage;
 
@@ -155,20 +157,28 @@ public class FastTransferManagedBean {
         this.toBankAccount = toBankAccount;
     }
 
-    public String getFromAccountBalance() {
-        return fromAccountBalance;
-    }
-
-    public void setFromAccountBalance(String fromAccountBalance) {
-        this.fromAccountBalance = fromAccountBalance;
-    }
-
     public String getStatusMessage() {
         return statusMessage;
     }
 
     public void setStatusMessage(String statusMessage) {
         this.statusMessage = statusMessage;
+    }
+
+    public String getFromAccountAvailableBalance() {
+        return fromAccountAvailableBalance;
+    }
+
+    public void setFromAccountAvailableBalance(String fromAccountAvailableBalance) {
+        this.fromAccountAvailableBalance = fromAccountAvailableBalance;
+    }
+
+    public String getFromAccountTotalBalance() {
+        return fromAccountTotalBalance;
+    }
+
+    public void setFromAccountTotalBalance(String fromAccountTotalBalance) {
+        this.fromAccountTotalBalance = fromAccountTotalBalance;
     }
 
     public void fastTransfer() throws IOException {
@@ -183,11 +193,12 @@ public class FastTransferManagedBean {
         BankAccount merlionBankAccountFrom = bankAccountSessionBeanLocal.retrieveBankAccountByNum(fromBankAccount);
         OtherBankAccount otherBankAccountTo = retrieveBankAccountByNum(toBankAccount);
 
-        Double diffAmt = Double.valueOf(merlionBankAccountFrom.getBankAccountBalance()) - transferAmt;
+        Double diffAmt = Double.valueOf(merlionBankAccountFrom.getAvailableBankAccountBalance()) - transferAmt;
         if (diffAmt >= 0) {
 
-            Double currentBalance = Double.valueOf(merlionBankAccountFrom.getBankAccountBalance()) - transferAmt;
-            bankAccountSessionBeanLocal.updateBankAccountBalance(fromBankAccount, currentBalance.toString());
+            Double currentAvailableBalance = Double.valueOf(merlionBankAccountFrom.getAvailableBankAccountBalance()) - transferAmt;
+            Double currentTotalBalance = Double.valueOf(merlionBankAccountFrom.getTotalBankAccountBalance()) - transferAmt;
+            bankAccountSessionBeanLocal.updateBankAccountBalance(fromBankAccount, currentAvailableBalance.toString(), currentTotalBalance.toString());
 
             Calendar cal = Calendar.getInstance();
             String transactionCode = "ICT";
@@ -200,7 +211,8 @@ public class FastTransferManagedBean {
             sachTransferMTD(fromBankAccount, toBankAccount, transferAmt);
 
             statusMessage = "Your transaction has been completed.";
-            fromAccountBalance = currentBalance.toString();
+            fromAccountAvailableBalance = currentAvailableBalance.toString();
+            fromAccountTotalBalance = currentTotalBalance.toString();
 
             ec.getFlash().put("statusMessage", statusMessage);
             ec.getFlash().put("transactionId", transactionId);
@@ -209,7 +221,8 @@ public class FastTransferManagedBean {
             ec.getFlash().put("transferAmt", transferAmt);
             ec.getFlash().put("fromAccount", fromBankAccount);
             ec.getFlash().put("toAccount", toBankAccount);
-            ec.getFlash().put("fromAccountBalance", fromAccountBalance);
+            ec.getFlash().put("fromAccountAvailableBalance", fromAccountAvailableBalance);
+            ec.getFlash().put("fromAccountTotalBalance", fromAccountTotalBalance);
 
             ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/payment/customerTransferFastDone.xhtml?faces-redirect=true");
         } else {
@@ -228,14 +241,14 @@ public class FastTransferManagedBean {
     private void sachTransferMTD(java.lang.String fromBankAccountNum, java.lang.String toBankAccountNum, java.lang.Double transferAmt) {
         // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
         // If the calling of port operations may lead to race condition some synchronization is required.
-        ws.client.sach.SACHWebService port = service.getSACHWebServicePort();
+        ws.client.sach.SACHWebService port = service_sach.getSACHWebServicePort();
         port.sachTransferMTD(fromBankAccountNum, toBankAccountNum, transferAmt);
     }
 
     private OtherBankAccount retrieveBankAccountByNum(java.lang.String otherBankAccountNum) {
         // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
         // If the calling of port operations may lead to race condition some synchronization is required.
-        ws.client.otherbanks.OtherBanksWebService port = service_1.getOtherBanksWebServicePort();
+        ws.client.otherbanks.OtherBanksWebService port = service_otherBanks.getOtherBanksWebServicePort();
         return port.retrieveBankAccountByNum(otherBankAccountNum);
     }
 }

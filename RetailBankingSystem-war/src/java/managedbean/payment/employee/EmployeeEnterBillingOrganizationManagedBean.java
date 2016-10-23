@@ -1,6 +1,6 @@
 package managedbean.payment.employee;
 
-import ejb.payment.session.BillingOrganizationSessionBeanLocal;
+import ejb.payment.session.RegisteredBillingOrganizationSessionBeanLocal;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
@@ -13,7 +13,7 @@ import javax.faces.context.FacesContext;
 
 public class EmployeeEnterBillingOrganizationManagedBean {
     @EJB
-    private BillingOrganizationSessionBeanLocal billingOrganizationSessionBeanLocal;
+    private RegisteredBillingOrganizationSessionBeanLocal registeredBillingOrganizationSessionBeanLocal;
 
     private String billingOrganizationName;
     private String bankAccountNum;
@@ -60,7 +60,7 @@ public class EmployeeEnterBillingOrganizationManagedBean {
     public void submit() {
         ec = FacesContext.getCurrentInstance().getExternalContext();
         
-        billingOrganizationSessionBeanLocal.addNewBillingOrganization(billingOrganizationName, 
+        registeredBillingOrganizationSessionBeanLocal.addNewRegisteredBillingOrganization(billingOrganizationName, 
                 bankAccountNum, bankAccountType, bankName);
         
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Successfully Add New Billing Organization", ""));

@@ -22,8 +22,8 @@ public interface BankAccountSessionBeanLocal {
 
     public AccTransaction retrieveAccTransactionById(Long accTransactionId);
 
-    public Long addNewAccount(String bankAccountNum,
-            String bankAccountType, String bankAccountBalance, String transferDailyLimit,
+    public Long addNewAccount(String bankAccountNum, String bankAccountType, String totalBankAccountBalance,
+            String availableBankAccountBalance, String transferDailyLimit,
             String transferBalance, String bankAccountStatus, String bankAccountMinSaving,
             String bankAccountDepositPeriod, String currentFixedDepositPeriod,
             String fixedDepositStatus, Double statementDateDouble,
@@ -55,16 +55,17 @@ public interface BankAccountSessionBeanLocal {
 
     public void autoCloseAccount();
 
-    public Long addNewAccountOneTime(String bankAccountNum,
-            String bankAccountType, String bankAccountBalance, String transferDailyLimit,
+    public Long addNewAccountOneTime(String bankAccountNum, String bankAccountType,
+            String totalBankAccountBalance, String availableBankAccountBalance, String transferDailyLimit,
             String transferBalance, String bankAccountStatus, String bankAccountMinSaving,
             String bankAccountDepositPeriod, String currentFixedDepositPeriod,
             String fixedDepositStatus, Double statementDateDouble, Long customerBasicId,
             Long interestId);
-    
-    public void updateBankAccountBalance(String bankAccountNum,String bankAccountBalance);
-    
+
+    public void updateBankAccountBalance(String bankAccountNum, String availableBankAccountBalance,
+            String totalBankAccountBalance);
+
     public void approveAccount(String customerIdentificationNum);
-    
+
     public void sendEmailToRejectCustomer(String customerIdentificationNum);
 }

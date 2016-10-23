@@ -45,30 +45,6 @@ public class GIROSessionBean implements GIROSessionBeanLocal {
     }
     
     @Override
-    public List<GIRO> retrieveStandingGIROByCusId(Long customerBasicId) {
-
-        CustomerBasic customerBasic = bankAccountSessionBeanLocal.retrieveCustomerBasicById(customerBasicId);
-
-        if (customerBasic.getCustomerBasicId() == null) {
-            return new ArrayList<GIRO>();
-        }
-        try {
-            Query query = entityManager.createQuery("Select g From GIRO g Where g.customerBasic=:customerBasic And g.giroType=:giroType");
-            query.setParameter("customerBasic", customerBasic);
-            query.setParameter("giroType", "Standing");
-
-            if (query.getResultList().isEmpty()) {
-                return new ArrayList<GIRO>();
-            } else {
-                return query.getResultList();
-            }
-        } catch (EntityNotFoundException enfe) {
-            System.out.println("Entity not found error: " + enfe.getMessage());
-            return new ArrayList<GIRO>();
-        }
-    }
-    
-    @Override
     public String deleteGIRO(Long giroId) {
         GIRO giro = retrieveGIROById(giroId);
 
@@ -76,29 +52,5 @@ public class GIROSessionBean implements GIROSessionBeanLocal {
         entityManager.flush();
 
         return "Successfully deleted!";
-    }
-    
-    @Override
-    public List<GIRO> retrieveNonStandingGIROByCusId(Long customerBasicId) {
-
-        CustomerBasic customerBasic = bankAccountSessionBeanLocal.retrieveCustomerBasicById(customerBasicId);
-
-        if (customerBasic.getCustomerBasicId() == null) {
-            return new ArrayList<GIRO>();
-        }
-        try {
-            Query query = entityManager.createQuery("Select g From GIRO g Where g.customerBasic=:customerBasic And g.giroType=:giroType");
-            query.setParameter("customerBasic", customerBasic);
-            query.setParameter("giroType", "Non Standing");
-
-            if (query.getResultList().isEmpty()) {
-                return new ArrayList<GIRO>();
-            } else {
-                return query.getResultList();
-            }
-        } catch (EntityNotFoundException enfe) {
-            System.out.println("Entity not found error: " + enfe.getMessage());
-            return new ArrayList<GIRO>();
-        }
     }
 }

@@ -478,7 +478,6 @@ public class CustomerLoginManagedBean implements Serializable {
                 case "loggedIn":
                     customerAccount = null;
                     customerPassword = null;
-                    ec.setSessionMaxInactiveInterval(-1);
                     ec.getSessionMap().put("customer", getCustomer());
                     loggingSessionBeanLocal.createNewLogging("customer", customer.getCustomerBasicId(), "login to online banking", "successful", null);
                     
