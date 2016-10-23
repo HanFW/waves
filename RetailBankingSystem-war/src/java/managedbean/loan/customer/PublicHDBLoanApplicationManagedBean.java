@@ -7,6 +7,7 @@ package managedbean.loan.customer;
 
 import ejb.customer.entity.CustomerAdvanced;
 import ejb.customer.entity.CustomerBasic;
+import ejb.customer.session.CRMCustomerSessionBean;
 import ejb.loan.session.LoanApplicationSessionBeanLocal;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -39,6 +40,9 @@ import org.primefaces.model.UploadedFile;
 public class PublicHDBLoanApplicationManagedBean implements Serializable {
 
     @EJB
+    private CRMCustomerSessionBean cRMCustomerSessionBeanLocal;
+
+    @EJB
     private LoanApplicationSessionBeanLocal loanApplicationSessionBeanLocal;
 
     //basic information
@@ -50,6 +54,9 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
     private String customerNationality;
     private String customerIsPR;
     private String customerIdentificationNum;
+    private String customerSingaporeNRIC;
+    private String customerForeignNRIC;
+    private String customerForeignPassport;
     private String customerCountryOfResidence;
     private String customerRace;
     private String customerMobile;
@@ -151,7 +158,7 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
     //personal details
     private boolean industryTypePanelVisible;
     private boolean currentPositionPanelVisible;
-    
+
     //employement
     private boolean occupationPanelVisible;
     private boolean employmentPanelVisible;
@@ -184,6 +191,7 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
     }
 
     public void addLoanApplication() {
+        System.out.println("====== loan/PublicHDBLoanApplicationManagedBean: addLoanApplication() ======");
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         customerSignature = ec.getSessionMap().get("customerSignature").toString();
         if (customerSignature.equals("") || !agreement) {
@@ -194,35 +202,44 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
                 FacesContext.getCurrentInstance().addMessage("agreement", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Please agree to terms to proceed", "Failed!"));
             }
         } else {
-            CustomerBasic customer = createCustomer();
-            CustomerAdvanced ca = createCustomerAdvanced(customer);
-            loanApplicationSessionBeanLocal.submitLoanApplication(customer);
+            //create CustomerBasic
+            String newCustomer = "Yes";
+            if (customerSalutation.equals("Others")) {
+                customerSalutation = customerSalutationOthers;
+            }
+            
+            String dateOfBirth = changeDateFormat(customerDateOfBirth);
+            String customerAddress = customerStreetName + ", " + customerBlockNum + ", " + customerUnitNum + ", " + customerPostal;
+            Long newCustomerBasicId = cRMCustomerSessionBeanLocal.addNewCustomerBasic(customerName,
+                    customerSalutation, customerIdentificationNum.toUpperCase(),
+                    customerGender, customerEmail, customerMobile, dateOfBirth,
+                    customerNationality, customerCountryOfResidence, customerRace,
+                    customerMaritalStatus, customerOccupation, customerCompanyName,
+                    customerAddress, customerPostal, null, null, customerSignature.getBytes(), newCustomer);
+            
+            //create CustomerAdvanced
+            if (customerIndustryType.equals("Others")) {
+                customerIndustryType = customerIndustryTypeOthers;
+            }
+            if (customerCurrentPosition.equals("Others")) {
+                customerCurrentPosition = customerCurrentPositionOthers;
+            }
+           
+            Long newCustomerAdvancedId = cRMCustomerSessionBeanLocal.addNewCustomerAdvanced(customerNumOfDependents, customerEducation, customerResidentialStatus,
+                    customerLengthOfResidence, customerIndustryType, customerLengthOfCurrentJob, customerEmploymentStatus,
+                    customerMonthlyFixedIncome.doubleValue(), customerResidentialType, customerCompanyAddress,
+                    customerCompanyPostal, customerCurrentPosition, customerCurrentJobTitle,
+                    customerPreviousCompany, customerLengthOfPreviousJob, customerOtherMonthlyIncome.doubleValue(),
+                    customerOtherMonthlyIncomeSource);
+            
+            //create customerDebt
+            for(HashMap debt: customerFinancialCommitments){
+//                loanApplicationSessionBeanLocal.addNewCustomerDebt
+            }
+            
+            //link customerBasic with CustomerAdvanced
+            loanApplicationSessionBeanLocal.submitLoanApplication(newCustomerBasicId, newCustomerAdvancedId);
         }
-    }
-
-    private CustomerBasic createCustomer() {
-        CustomerBasic customer = new CustomerBasic();
-        customer.setCustomerSalutation(customerSalutation);
-        customer.setCustomerName(customerName);
-        customer.setCustomerGender(customerGender);
-        customer.setCustomerEmail(customerEmail);
-        customer.setCustomerMobile(customerMobile);
-        String dateOfBirth = changeDateFormat(customerDateOfBirth);
-        customer.setCustomerDateOfBirth(dateOfBirth);
-        customer.setCustomerNationality(customerNationality);
-        customer.setCustomerCountryOfResidence(customerCountryOfResidence);
-        customer.setCustomerRace(customerRace);
-        customer.setCustomerMaritalStatus(customerMaritalStatus);
-        customer.setCustomerOccupation(customerSalutation);
-        return customer;
-    }
-
-    private CustomerAdvanced createCustomerAdvanced(CustomerBasic customer) {
-        CustomerAdvanced ca = new CustomerAdvanced();
-        ca.setCustomerBasic(customer);
-        ca.setEducation("primary");
-        customer.setCustomerAdvanced(ca);
-        return ca;
     }
 
     public String onFlowProcess(FlowEvent event) {
@@ -238,12 +255,20 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
                     age--;
                 }
             }
+            
+            if(customerNationality.equals("Singapore")){
+                customerIdentificationNum = customerSingaporeNRIC;
+            }else if(customerIsPR.equals("Yes")){
+                customerIdentificationNum = customerForeignNRIC;
+            }else{
+                customerIdentificationNum = customerForeignPassport;
+            }
 
             if (age < 16 || age > 65) {
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Your age is not qualified to apply for this type of loan", "");
                 FacesContext.getCurrentInstance().addMessage(null, message);
                 nextStep = event.getOldStep();
-            } else if (customerIdentificationNum.length() != 9) {
+            }else if (customerIdentificationNum.length() != 9) {
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please enter a valid indentification number", "");
                 FacesContext.getCurrentInstance().addMessage(null, message);
                 nextStep = event.getOldStep();
@@ -297,7 +322,7 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
 
     public void addCustomerFinancialCommitment() {
         System.out.println("====== loan/PublicHDBLoanApplicationManagedBean: addCustomerFinancialCommitment() ======");
-        if (customerFinancialInstitution==null || customerFacilityType==null || customerLoanAmount == null || customerMonthlyInstalment == null) {
+        if (customerFinancialInstitution == null || customerFacilityType == null || customerLoanAmount == null || customerMonthlyInstalment == null) {
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please fill in all the fields", "");
             FacesContext.getCurrentInstance().addMessage(null, message);
         } else {
@@ -329,8 +354,9 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
     }
 
     public void showNationalityPanel() {
-        customerIdentificationNum = null;
+        System.out.println("====== loan/PublicHDBLoanApplicationManagedBean: showNationalityPanel() ======");
         customerIsPR = null;
+        customerSingaporeNRIC = null;
         if (customerNationality.equals("Singapore")) {
             nationalitySGPanelVisible = true;
             nationalityOthersPanelVisible = false;
@@ -345,12 +371,17 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
     }
 
     public void showIdentificationPanel() {
-        customerIdentificationNum = null;
+        System.out.println("====== loan/PublicHDBLoanApplicationManagedBean: showIdentificationPanel() ======");
+        customerForeignNRIC = null;
+        customerForeignPassport = null;
         if (customerIsPR.equals("Yes")) {
             nricPanelVisible = true;
             passportPanelVisible = false;
-        } else {
+        } else if(customerIsPR.equals("No")){
             passportPanelVisible = true;
+            nricPanelVisible = false;
+        } else{
+            passportPanelVisible = false;
             nricPanelVisible = false;
         }
     }
@@ -607,19 +638,19 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
             uploads.replace("cpfWithdrawal", true);
             uploads.replace("otp", false);
             uploads.replace("purchaseAgreement", false);
-        } else if(customerFinancialRequest.equals("refinancing")){
+        } else if (customerFinancialRequest.equals("refinancing")) {
             propertyNewPurchasePanelVisible = false;
             propertyRefinancingPanelVisible = true;
             uploads.replace("otp", true);
             uploads.replace("purchaseAgreement", true);
             uploads.replace("existingLoan", false);
             uploads.replace("cpfWithdrawal", false);
-        } else{
+        } else {
             propertyNewPurchasePanelVisible = false;
             propertyRefinancingPanelVisible = false;
         }
     }
-    
+
     public void changeEmployeeStatus() {
         if (customerEmploymentStatus.equals("Employee")) {
             employmentPanelVisible = true;
@@ -633,7 +664,7 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
             uploads.replace("selfEmployedTax", false);
             uploads.replace("employeeTax", true);
             uploads.replace("employeeCPF", true);
-        } else{
+        } else {
             occupationPanelVisible = false;
             employmentPanelVisible = false;
         }
@@ -724,14 +755,6 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
 
     public void setCustomerMaritalStatus(String customerMaritalStatus) {
         this.customerMaritalStatus = customerMaritalStatus;
-    }
-
-    public String getCustomerIdentificationNum() {
-        return customerIdentificationNum;
-    }
-
-    public void setCustomerIdentificationNum(String customerIdentificationNum) {
-        this.customerIdentificationNum = customerIdentificationNum;
     }
 
     public boolean isSalutationPanelVisible() {
@@ -1436,5 +1459,45 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
 
     public void setEmploymentPanelVisible(boolean employmentPanelVisible) {
         this.employmentPanelVisible = employmentPanelVisible;
+    }
+
+    public CRMCustomerSessionBean getcRMCustomerSessionBeanLocal() {
+        return cRMCustomerSessionBeanLocal;
+    }
+
+    public void setcRMCustomerSessionBeanLocal(CRMCustomerSessionBean cRMCustomerSessionBeanLocal) {
+        this.cRMCustomerSessionBeanLocal = cRMCustomerSessionBeanLocal;
+    }
+
+    public LoanApplicationSessionBeanLocal getLoanApplicationSessionBeanLocal() {
+        return loanApplicationSessionBeanLocal;
+    }
+
+    public void setLoanApplicationSessionBeanLocal(LoanApplicationSessionBeanLocal loanApplicationSessionBeanLocal) {
+        this.loanApplicationSessionBeanLocal = loanApplicationSessionBeanLocal;
+    }
+
+    public String getCustomerSingaporeNRIC() {
+        return customerSingaporeNRIC;
+    }
+
+    public void setCustomerSingaporeNRIC(String customerSingaporeNRIC) {
+        this.customerSingaporeNRIC = customerSingaporeNRIC;
+    }
+
+    public String getCustomerForeignNRIC() {
+        return customerForeignNRIC;
+    }
+
+    public void setCustomerForeignNRIC(String customerForeignNRIC) {
+        this.customerForeignNRIC = customerForeignNRIC;
+    }
+
+    public String getCustomerForeignPassport() {
+        return customerForeignPassport;
+    }
+
+    public void setCustomerForeignPassport(String customerForeignPassport) {
+        this.customerForeignPassport = customerForeignPassport;
     }
 }
