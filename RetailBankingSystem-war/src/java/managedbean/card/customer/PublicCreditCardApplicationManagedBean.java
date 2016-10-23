@@ -5,15 +5,24 @@
  */
 package managedbean.card.customer;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.Date;
+import java.util.HashMap;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
+import org.apache.commons.io.IOUtils;
+import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.FlowEvent;
+import org.primefaces.model.UploadedFile;
 
 /**
  *
@@ -80,7 +89,18 @@ public class PublicCreditCardApplicationManagedBean implements Serializable {
     private boolean currentPositionPanelVisible;
     private boolean creditLimitPanelVisible;
 
+//confirmation
+    private boolean agreement;
+    private String customerSignature;
+
+    //documents
+    private UploadedFile file;
+    private HashMap uploads = new HashMap();
+
     public PublicCreditCardApplicationManagedBean() {
+        uploads.put("identification", false);
+        uploads.put("income", false);
+        uploads.put("workpass", false);
     }
 
     public String onFlowProcess(FlowEvent event) {
@@ -89,7 +109,7 @@ public class PublicCreditCardApplicationManagedBean implements Serializable {
         if (event.getOldStep().equals("basic")) {
             if (getAge(customerDateOfBirth) < 21) {
                 message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Credit card applicant must be at least 21 years old", null);
-                context.addMessage(null, message);
+                context.addMessage("customerDateOfBirth", message);
                 return event.getOldStep();
             }
         }
@@ -98,19 +118,19 @@ public class PublicCreditCardApplicationManagedBean implements Serializable {
             if (customerNationality.equals("Singapore")) {
                 if (customerMonthlyFixedIncome.doubleValue() * 12 < 30000) {
                     message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Singaporean must earn at least $30,000 annually to apply credit card", null);
-                    context.addMessage(null, message);
+                    context.addMessage("customerMonthlyFixedIncome", message);
                     return event.getOldStep();
                 }
             } else if (customerIsPR.equals("Yes")) {
                 if (customerMonthlyFixedIncome.doubleValue() * 12 < 30000) {
                     message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Singapore PR must earn at least $30,000 annually to apply credit card", null);
-                    context.addMessage(null, message);
+                    context.addMessage("customerMonthlyFixedIncome", message);
                     return event.getOldStep();
                 }
             } else {
                 if (customerMonthlyFixedIncome.doubleValue() * 12 < 45000) {
                     message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Foreigner must earn at least $45,000 annually to apply credit card", null);
-                    context.addMessage(null, message);
+                    context.addMessage("customerMonthlyFixedIncome", message);
                     return event.getOldStep();
                 }
             }
@@ -118,6 +138,69 @@ public class PublicCreditCardApplicationManagedBean implements Serializable {
 
         return event.getNewStep();
 
+    }
+
+    public void identificationUpload(FileUploadEvent event) throws FileNotFoundException, IOException {
+        this.file = event.getFile();
+        if (file != null) {
+            String filename = customerIdentificationNum + ".pdf";
+            InputStream input = file.getInputstream();
+            OutputStream output = new FileOutputStream(new File("/Users/aaa/Desktop/waves/RetailBankingSystem-war/web/resources/customerIdentification", filename));
+            try {
+                IOUtils.copy(input, output);
+            } finally {
+                IOUtils.closeQuietly(input);
+                IOUtils.closeQuietly(output);
+            }
+            uploads.replace("identification", true);
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, file.getFileName() + " uploaded successfully.", "");
+            FacesContext.getCurrentInstance().addMessage("identificationUpload", message);
+        } else {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cannot find the file, please upload again.", "");
+            FacesContext.getCurrentInstance().addMessage("identificationUpload", message);
+        }
+    }
+
+    public void incomeUpload(FileUploadEvent event) throws FileNotFoundException, IOException {
+        this.file = event.getFile();
+        if (file != null) {
+            String filename = customerIdentificationNum + "-income.pdf";
+            InputStream input = file.getInputstream();
+            OutputStream output = new FileOutputStream(new File("/Users/aaa/Desktop/waves/RetailBankingSystem-war/web/resources/customerDocuments", filename));
+            try {
+                IOUtils.copy(input, output);
+            } finally {
+                IOUtils.closeQuietly(input);
+                IOUtils.closeQuietly(output);
+            }
+            uploads.replace("income", true);
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, file.getFileName() + " uploaded successfully.", "");
+            FacesContext.getCurrentInstance().addMessage("incomeUpload", message);
+        } else {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cannot find the file, please upload again.", "");
+            FacesContext.getCurrentInstance().addMessage("incomeUpload", message);
+        }
+    }
+
+    public void workPassUpload(FileUploadEvent event) throws FileNotFoundException, IOException {
+        this.file = event.getFile();
+        if (file != null) {
+            String filename = customerIdentificationNum + "-work_pass.pdf";
+            InputStream input = file.getInputstream();
+            OutputStream output = new FileOutputStream(new File("/Users/aaa/Desktop/waves/RetailBankingSystem-war/web/resources/customerDocuments", filename));
+            try {
+                IOUtils.copy(input, output);
+            } finally {
+                IOUtils.closeQuietly(input);
+                IOUtils.closeQuietly(output);
+            }
+            uploads.replace("workpass", true);
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, file.getFileName() + " uploaded successfully.", "");
+            FacesContext.getCurrentInstance().addMessage("workPassUpload", message);
+        } else {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cannot find the file, please upload again.", "");
+            FacesContext.getCurrentInstance().addMessage("workPassUpload", message);
+        }
     }
 
     private int getAge(Date customerDateOfBirth) {

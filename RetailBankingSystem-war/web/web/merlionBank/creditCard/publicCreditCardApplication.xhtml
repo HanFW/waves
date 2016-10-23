@@ -799,7 +799,8 @@
                         </p:selectOneRadio>
                         <p:message for="hasCreditLimit"/>
                         <p:panel style="border: none;" id="panelCreditLimit" visible="#{publicCreditCardApplicationManagedBean.creditLimitPanelVisible}">
-                            <p:inputText id="customerPreferredLimit" placeholder="Tell us your preffered credit limit" value="#{publicCreditCardApplicationManagedBean.creditLimit}"
+                            <p:outputLabel value="Tell us your preffered credit limit" style="font-weight: bold"/>
+                            <p:inputText id="customerPreferredLimit" placeholder="Enter your preffered credit limit here" value="#{publicCreditCardApplicationManagedBean.creditLimit}"
                                          required="#{publicCreditCardApplicationManagedBean.creditLimitPanelVisible}" requiredMessage="Required Field" converterMessage="Please enter a valid number" />
 
                             <p:message for="customerPreferredLimit"/>
@@ -822,6 +823,31 @@
                         </p:steps>
                     </h:panelGrid>
                     <h:panelGrid columns="2" class="ui-lg-6"> 
+                        
+                        <p:outputLabel value="Please upload all the files in PDF format"/>
+                        <p:panel>
+                            <p:outputLabel value="Please upload photocopy of your NRIC/Passport:"/>
+                            <p:outputLabel value="(Please upload all photocopies in one single PDF file)"/>
+                            <p:messages id="identificationUploadMessage" for="identificationUpload"/>
+                            <p:fileUpload id="identificationUpload" update="identificationUploadMessage" fileUploadListener="#{publicCreditCardApplicationManagedBean.identificationUpload}"
+                                          mode="advanced" skinSimple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(pdf)$/" multiple="false"/>
+                        </p:panel>
+                        <p:panel>
+                            <p:outputLabel value="Please upload proof of income:"/>
+                            <p:outputLabel value="(Please upload all photocopies in one single PDF file)"/>
+                            <p:messages id="incomeUploadMessage" for="incomeUpload"/>
+                            <p:fileUpload id="incomeUpload" update="incomeUploadMessage" fileUploadListener="#{publicCreditCardApplicationManagedBean.incomeUpload}"
+                                          mode="advanced" skinSimple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(pdf)$/" multiple="false"/>
+                        </p:panel>
+                        <p:panel visible="#{publicCreditCardApplicationManagedBean.passportPanelVisible}">
+                            <p:outputLabel value="Please upload photocopy of your employment pass:"/>
+                            <p:outputLabel value="(Please upload all photocopies in one single PDF file)"/>
+                            <p:messages id="workPassUploadMessage" for="workPassUpload"/>
+                            <p:fileUpload id="workPassUpload" update="workPassUploadMessage" fileUploadListener="#{publicCreditCardApplicationManagedBean.workPassUpload}"
+                                          mode="advanced" skinSimple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(pdf)$/" multiple="false"/>
+                        </p:panel>
+                        
+                        
                         <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('hdbLoanWizard').back()"/>
                         <p:commandButton id="saveBtn" value="Submit Request" actionListener="#{accountManagedBean.saveAccount}" ajax="true"/>                        
                     </h:panelGrid>

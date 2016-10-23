@@ -430,15 +430,7 @@ public class CRMCustomerManagedBean implements Serializable{
 
     }
 
-    //    public String customerAccountNumReplaceWithStar(String inputCustomerAccountNumber) {
-    //
-    //        String customerAccountNumAfterReplaced = "";
-    //
-    //        if (inputCustomerAccountNumber != null) {
-    //            customerAccountNumAfterReplaced = inputCustomerAccountNumber.substring(0, 2) + "****" + inputCustomerAccountNumber.substring(6);
-    //        }
-    //        return customerAccountNumAfterReplaced;
-    //    }
+
     public String customerMobileNumReplaceWithStar(String inputCustomerMobileNum) {
         String customerMobileNumAfterReplaced = "";
         customerMobileNumAfterReplaced = "****" + inputCustomerMobileNum.substring(4);
