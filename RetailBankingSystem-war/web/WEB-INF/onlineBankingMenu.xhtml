@@ -31,8 +31,6 @@
                     <p:menuitem value="Add Recipient(FAST)" url="/web/onlineBanking/payment/customerAddFastPayee.xhtml" />
                     <p:menuitem value="Delete Recipient(FAST)" url="/web/onlineBanking/payment/customerDeleteFastPayee.xhtml" />
                     <p:menuitem value="Change Daily Transfer Limit" url="/web/onlineBanking/deposit/customerDailyTransferLimit.xhtml" />
-                    <p:menuitem value="Add GIRO Arrangement" url="/web/onlineBanking/payment/customerAddStandingGIRO.xhtml" />
-                    <p:menuitem value="View GIRO Arrangement" url="/web/onlineBanking/payment/customerDeleteStandingGIRO.xhtml" />
                 </p:submenu>
 
                 <p:submenu label="Enquiry">
@@ -41,6 +39,8 @@
                 </p:submenu>
 
                 <p:submenu label="Pay">
+                    <p:menuitem value="Add GIRO Arrangement" url="/web/onlineBanking/payment/customerAddStandingGIRO.xhtml" />
+                    <p:menuitem value="View GIRO Arrangement" url="/web/onlineBanking/payment/customerDeleteStandingGIRO.xhtml" />
                     <p:menuitem value="Add Billing Organization" url="/web/onlineBanking/payment/customerAddBillingOrganization.xhtml" />
                     <p:menuitem value="Pay Bills" url="/web/onlineBanking/payment/customerNonStandingGIROTransfer.xhtml" />
                 </p:submenu>
@@ -59,7 +59,7 @@
                 <p:submenu label="Wealth">
                     <p:menuitem value="XXX" url="" />
                 </p:submenu>
-                
+
             </pu:menu>
         </div>
     </h:form>

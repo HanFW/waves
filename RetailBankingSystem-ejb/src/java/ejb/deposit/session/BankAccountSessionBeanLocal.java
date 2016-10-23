@@ -68,4 +68,6 @@ public interface BankAccountSessionBeanLocal {
     public void approveAccount(String customerIdentificationNum);
 
     public void sendEmailToRejectCustomer(String customerIdentificationNum);
+
+    public void debitBankAccount(String debitBankAccountNum, Double debitAmt);
 }

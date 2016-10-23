@@ -756,7 +756,14 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
         CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum);
 
         Map emailActions = new HashMap();
-//        emailActions.put("customerName", customerBasic.getCustomerName());
         customerEmailSessionBeanLocal.sendEmail(customerBasic, "rejectOpenAccount", emailActions);
+    }
+    
+    @Override
+    public void debitBankAccount(String debitBankAccountNum, Double debitAmt) {
+        
+        BankAccount bankAccount = retrieveBankAccountByNum(debitBankAccountNum);
+        Double currentAvailableBalance = Double.valueOf(bankAccount.getAvailableBankAccountBalance());
+        Double currentTotalBalance = Double.valueOf(bankAccount.getAvailableBankAccountBalance());
     }
 }
