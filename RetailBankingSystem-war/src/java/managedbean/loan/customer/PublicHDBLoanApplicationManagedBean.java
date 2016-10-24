@@ -5,9 +5,12 @@
  */
 package managedbean.loan.customer;
 
-import ejb.customer.entity.CustomerAdvanced;
-import ejb.customer.entity.CustomerBasic;
 import ejb.customer.session.CRMCustomerSessionBean;
+import ejb.infrastructure.session.CustomerEmailSessionBeanLocal;
+import ejb.loan.entity.CustomerDebt;
+import ejb.loan.entity.CustomerProperty;
+import ejb.loan.entity.MortgageLoanApplication;
+import ejb.loan.entity.RefinancingApplication;
 import ejb.loan.session.LoanApplicationSessionBeanLocal;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -38,6 +41,8 @@ import org.primefaces.model.UploadedFile;
 @Named(value = "publicHDBLoanApplication")
 @ViewScoped
 public class PublicHDBLoanApplicationManagedBean implements Serializable {
+    @EJB
+    private CustomerEmailSessionBeanLocal customerEmailSessionBeanLocal;
 
     @EJB
     private CRMCustomerSessionBean cRMCustomerSessionBeanLocal;
@@ -110,7 +115,7 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
     private String customerPropertyType;
     private BigDecimal customerPropertyBuiltUpArea;
     private BigDecimal customerPropertyLandArea;
-    private String customrePropertyStatus;
+    private String customerPropertyStatus;
     private Date customerPropertyTOPDate;
     private String customerPropertyUsage;
     private String customerPropertyTenureType;
@@ -190,7 +195,7 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
         uploads.put("selfEmployedTax", false);
     }
 
-    public void addLoanApplication() {
+    public void addLoanApplication() throws IOException {
         System.out.println("====== loan/PublicHDBLoanApplicationManagedBean: addLoanApplication() ======");
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         customerSignature = ec.getSessionMap().get("customerSignature").toString();
@@ -207,7 +212,7 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
             if (customerSalutation.equals("Others")) {
                 customerSalutation = customerSalutationOthers;
             }
-            
+
             String dateOfBirth = changeDateFormat(customerDateOfBirth);
             String customerAddress = customerStreetName + ", " + customerBlockNum + ", " + customerUnitNum + ", " + customerPostal;
             Long newCustomerBasicId = cRMCustomerSessionBeanLocal.addNewCustomerBasic(customerName,
@@ -216,29 +221,99 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
                     customerNationality, customerCountryOfResidence, customerRace,
                     customerMaritalStatus, customerOccupation, customerCompanyName,
                     customerAddress, customerPostal, null, null, customerSignature.getBytes(), newCustomer);
-            
+
             //create CustomerAdvanced
-            if (customerIndustryType.equals("Others")) {
-                customerIndustryType = customerIndustryTypeOthers;
+            if (customerEmploymentStatus.equals("Employee") || customerEmploymentStatus.equals("Self-Employed")) {
+                if (customerIndustryType.equals("Others")) {
+                    customerIndustryType = customerIndustryTypeOthers;
+                }
+                if (customerCurrentPosition.equals("Others")) {
+                    customerCurrentPosition = customerCurrentPositionOthers;
+                }
             }
-            if (customerCurrentPosition.equals("Others")) {
-                customerCurrentPosition = customerCurrentPositionOthers;
-            }
-           
-            Long newCustomerAdvancedId = cRMCustomerSessionBeanLocal.addNewCustomerAdvanced(customerNumOfDependents, customerEducation, customerResidentialStatus,
+            
+            Long newCustomerAdvancedId;
+            if(customerEmploymentStatus.equals("Unemployed")){
+                newCustomerAdvancedId = cRMCustomerSessionBeanLocal.addNewCustomerAdvanced(customerNumOfDependents, customerEducation, customerResidentialStatus,
+                    customerLengthOfResidence, null, 0, customerEmploymentStatus,
+                    customerMonthlyFixedIncome.doubleValue(), customerResidentialType, null,
+                    null, null, null,
+                    null, 0, customerOtherMonthlyIncome.doubleValue(),
+                    customerOtherMonthlyIncomeSource);
+            }else{
+                newCustomerAdvancedId = cRMCustomerSessionBeanLocal.addNewCustomerAdvanced(customerNumOfDependents, customerEducation, customerResidentialStatus,
                     customerLengthOfResidence, customerIndustryType, customerLengthOfCurrentJob, customerEmploymentStatus,
                     customerMonthlyFixedIncome.doubleValue(), customerResidentialType, customerCompanyAddress,
                     customerCompanyPostal, customerCurrentPosition, customerCurrentJobTitle,
                     customerPreviousCompany, customerLengthOfPreviousJob, customerOtherMonthlyIncome.doubleValue(),
                     customerOtherMonthlyIncomeSource);
-            
+            }
+
             //create customerDebt
-            for(HashMap debt: customerFinancialCommitments){
-//                loanApplicationSessionBeanLocal.addNewCustomerDebt
+            ArrayList<CustomerDebt> debts = new ArrayList<CustomerDebt>();
+            for (HashMap debt : customerFinancialCommitments) {
+                String facilityType = (String) debt.get("type");
+                String fanancialInstitution = (String) debt.get("institution");
+                BigDecimal total = (BigDecimal) debt.get("amount");
+                double totalAmount = total.doubleValue();
+                BigDecimal monthlyInstalment = (BigDecimal) debt.get("instalment");
+                double instalment = monthlyInstalment.doubleValue();
+                debts.add(loanApplicationSessionBeanLocal.addNewCustomerDebt(facilityType, fanancialInstitution,
+                        totalAmount, instalment));
             }
             
-            //link customerBasic with CustomerAdvanced
-            loanApplicationSessionBeanLocal.submitLoanApplication(newCustomerBasicId, newCustomerAdvancedId);
+            //create customerProperty
+            if(customerPropertyStatus.equals("Completed")){
+                customerPropertyTOPDate = null;
+            }
+            if(customerPropertyTenureType.equals("Freehold")){
+                customerPropertyTenureDuration = 0;
+                customerPropertyTunureFromYear = 0;
+            }
+            String customerPropertyAddress = customerPropertyStreetName + ", " + customerPropertyBlockNum + ", " + customerPropertyUnitNum + ", " + customerPropertyPostal;
+            CustomerProperty cp = new CustomerProperty();
+            cp.create(customerPropertyAddress, customerPropertyPostal, customerPropertyOwners, customerPropertyType, 
+                    customerPropertyBuiltUpArea.doubleValue(), customerPropertyLandArea.doubleValue(), customerPropertyStatus, 
+                    customerPropertyTOPDate, customerPropertyUsage, customerPropertyTenureType, 
+                    customerPropertyTenureDuration, customerPropertyTunureFromYear, null);
+            
+            //create loan application
+            if(customerFinancialRequest.equals("purchase")){
+                if(customerPropertyWithOTP.equals("no")){
+                    customerPropertyOTPDate = null;
+                }
+                if(customerPropertyWithTenancy.equals("no")){
+                    customerPropertyTenancyIncome = BigDecimal.valueOf(0);
+                    customerPropertyTenancyExpiryYear = 0;
+                }
+                if(customerWithBenefitsFromVendor.equals("no")){
+                    customerBenefitsFromVendor = BigDecimal.valueOf(0);
+                }
+                MortgageLoanApplication mortgage = new MortgageLoanApplication();
+                mortgage.create(customerLoanAmountRequired.doubleValue(), customerLoanTenure, customerPropertyPurchasePrice.doubleValue(), 
+                        customerPropertyDateOfPurchase,customerPropertySource, customerPropertyWithOTP, customerPropertyOTPDate, customerPropertyWithTenancy, 
+                        customerPropertyTenancyIncome.doubleValue(), customerPropertyTenancyExpiryYear, customerWithBenefitsFromVendor, customerBenefitsFromVendor.doubleValue(),
+                        customerCashDownpayment.doubleValue(), customerCPFDownpayment.doubleValue());
+                
+                loanApplicationSessionBeanLocal.submitLoanApplication(newCustomerBasicId, newCustomerAdvancedId, debts, cp, mortgage, null, customerFinancialRequest);
+                ec.getFlash().put("loanType", "HDB - New Purchase");
+
+            }else{
+                RefinancingApplication refinancing = new RefinancingApplication();
+                refinancing.create(customerLoanAmountRequired.doubleValue(), customerLoanTenure, customerExistingFinancer, 
+                        customerOutstandingLoan.doubleValue(), customerOutstandingYear, customerOutstandingMonth, customerTotalCPFWithdrawal.doubleValue());
+                
+                loanApplicationSessionBeanLocal.submitLoanApplication(newCustomerBasicId, newCustomerAdvancedId, debts, cp, null, refinancing, customerFinancialRequest);
+                ec.getFlash().put("loanType", "HDB - Refinancing");
+            }
+            
+            HashMap emailActions = new HashMap();
+            emailActions.put("loanType", "HDB");
+            emailActions.put("request", customerFinancialRequest);
+            customerEmailSessionBeanLocal.sendEmail(cRMCustomerSessionBeanLocal.getCustomerBasicById(newCustomerBasicId), "mortgageLoanApplication", emailActions);
+            ec.getFlash().put("amountRequired", customerLoanAmountRequired);
+            ec.getFlash().put("tenure", customerLoanTenure);
+            ec.redirect(ec.getRequestContextPath() + "/web/merlionBank/loan/publicMortgageLoanApplicationDone.xhtml?faces-redirect=true");
         }
     }
 
@@ -255,12 +330,12 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
                     age--;
                 }
             }
-            
-            if(customerNationality.equals("Singapore")){
+
+            if (customerNationality.equals("Singapore")) {
                 customerIdentificationNum = customerSingaporeNRIC;
-            }else if(customerIsPR.equals("Yes")){
+            } else if (customerIsPR.equals("Yes")) {
                 customerIdentificationNum = customerForeignNRIC;
-            }else{
+            } else {
                 customerIdentificationNum = customerForeignPassport;
             }
 
@@ -268,7 +343,7 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Your age is not qualified to apply for this type of loan", "");
                 FacesContext.getCurrentInstance().addMessage(null, message);
                 nextStep = event.getOldStep();
-            }else if (customerIdentificationNum.length() != 9) {
+            } else if (customerIdentificationNum.length() != 9) {
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please enter a valid indentification number", "");
                 FacesContext.getCurrentInstance().addMessage(null, message);
                 nextStep = event.getOldStep();
@@ -377,10 +452,10 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
         if (customerIsPR.equals("Yes")) {
             nricPanelVisible = true;
             passportPanelVisible = false;
-        } else if(customerIsPR.equals("No")){
+        } else if (customerIsPR.equals("No")) {
             passportPanelVisible = true;
             nricPanelVisible = false;
-        } else{
+        } else {
             passportPanelVisible = false;
             nricPanelVisible = false;
         }
@@ -605,7 +680,7 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
     }
 
     public void showPropertyTOPDatePanel() {
-        propertyTOPPanelVisible = customrePropertyStatus.equals("Under construction");
+        propertyTOPPanelVisible = customerPropertyStatus.equals("Under construction");
     }
 
     public void showPropertyTenurePanel() {
@@ -638,6 +713,7 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
             uploads.replace("cpfWithdrawal", true);
             uploads.replace("otp", false);
             uploads.replace("purchaseAgreement", false);
+            uploads.replace("tenancy", false);
         } else if (customerFinancialRequest.equals("refinancing")) {
             propertyNewPurchasePanelVisible = false;
             propertyRefinancingPanelVisible = true;
@@ -645,6 +721,7 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
             uploads.replace("purchaseAgreement", true);
             uploads.replace("existingLoan", false);
             uploads.replace("cpfWithdrawal", false);
+            uploads.replace("tenancy", true);
         } else {
             propertyNewPurchasePanelVisible = false;
             propertyRefinancingPanelVisible = false;
@@ -667,6 +744,9 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
         } else {
             occupationPanelVisible = false;
             employmentPanelVisible = false;
+            uploads.replace("selfEmployedTax", true);
+            uploads.replace("employeeTax", true);
+            uploads.replace("employeeCPF", true);
         }
     }
 
@@ -1029,12 +1109,20 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
         this.customerPropertyType = customerPropertyType;
     }
 
-    public String getCustomrePropertyStatus() {
-        return customrePropertyStatus;
+    public String getCustomerIdentificationNum() {
+        return customerIdentificationNum;
     }
 
-    public void setCustomrePropertyStatus(String customrePropertyStatus) {
-        this.customrePropertyStatus = customrePropertyStatus;
+    public void setCustomerIdentificationNum(String customerIdentificationNum) {
+        this.customerIdentificationNum = customerIdentificationNum;
+    }
+
+    public String getCustomerPropertyStatus() {
+        return customerPropertyStatus;
+    }
+
+    public void setCustomerPropertyStatus(String customerPropertyStatus) {
+        this.customerPropertyStatus = customerPropertyStatus;
     }
 
     public Date getCustomerPropertyTOPDate() {
