@@ -7,11 +7,14 @@ package managedbean.loan.employee;
 
 import ejb.loan.entity.LoanApplication;
 import ejb.loan.session.LoanApplicationSessionBeanLocal;
+import java.io.IOException;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 
 /**
  *
@@ -19,26 +22,33 @@ import javax.enterprise.context.RequestScoped;
  */
 @Named(value = "loanOfficerViewLoanApplicationsManagedBean")
 @RequestScoped
-public class LoanOfficerViewLoanApplicationsManagedBean {
+public class LoanOfficerViewApplicationsManagedBean {
+
     @EJB
     private LoanApplicationSessionBeanLocal loanApplicationSessionBeanLocal;
-    
+
     private List<LoanApplication> loanApplications;
 
     /**
      * Creates a new instance of LoanOfficerViewLoanApplicationsManagedBean
      */
-    public LoanOfficerViewLoanApplicationsManagedBean() {
+    public LoanOfficerViewApplicationsManagedBean() {
     }
-    
+
     @PostConstruct
-    public void init(){
+    public void init() {
         loanApplications = loanApplicationSessionBeanLocal.getAllLoanApplications();
     }
-    
-    public void viewApplication(Long customerId){
+
+    public void viewApplication(Long loanApplicationId, String loanType) throws IOException {
         System.out.println("====== loan/LoanOfficerViewLoanApplicationsManagedBean: viewApplication() ======");
-        System.out.println(customerId);
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        ec.getFlash().put("applicationId", loanApplicationId);
+        if (loanType.equals("HDB - New Purchase")) {
+            ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/loan/loanOfficerProcessMortgagePurchaseApplicaion.xhtml?faces-redirect=true");
+        }else if(loanType.equals("HDB - Refinancing")){
+            ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/loan/loanOfficerProcessMortgageRefinancingApplicaion.xhtml?faces-redirect=true");
+        }
     }
 
     public LoanApplicationSessionBeanLocal getLoanApplicationSessionBeanLocal() {
@@ -56,5 +66,5 @@ public class LoanOfficerViewLoanApplicationsManagedBean {
     public void setLoanApplications(List<LoanApplication> loanApplications) {
         this.loanApplications = loanApplications;
     }
-    
+
 }

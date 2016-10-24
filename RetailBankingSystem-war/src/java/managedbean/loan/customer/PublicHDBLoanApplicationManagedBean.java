@@ -121,7 +121,7 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
     private String customerPropertyUsage;
     private String customerPropertyTenureType;
     private Integer customerPropertyTenureDuration;
-    private Integer customerPropertyTunureFromYear;
+    private Integer customerPropertyTenureFromYear;
 
     //loan - new purchase
     private BigDecimal customerPropertyPurchasePrice;
@@ -289,12 +289,12 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
             ArrayList<CustomerDebt> debts = new ArrayList<CustomerDebt>();
             for (HashMap debt : customerFinancialCommitments) {
                 String facilityType = (String) debt.get("type");
-                String fanancialInstitution = (String) debt.get("institution");
+                String financialInstitution = (String) debt.get("institution");
                 BigDecimal total = (BigDecimal) debt.get("amount");
                 double totalAmount = total.doubleValue();
                 BigDecimal monthlyInstalment = (BigDecimal) debt.get("instalment");
                 double instalment = monthlyInstalment.doubleValue();
-                debts.add(loanApplicationSessionBeanLocal.addNewCustomerDebt(facilityType, fanancialInstitution,
+                debts.add(loanApplicationSessionBeanLocal.addNewCustomerDebt(facilityType, financialInstitution,
                         totalAmount, instalment));
             }
 
@@ -304,14 +304,14 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
             }
             if (customerPropertyTenureType.equals("Freehold")) {
                 customerPropertyTenureDuration = 0;
-                customerPropertyTunureFromYear = 0;
+                customerPropertyTenureFromYear = 0;
             }
             String customerPropertyAddress = customerPropertyStreetName + ", " + customerPropertyBlockNum + ", " + customerPropertyUnitNum + ", " + customerPropertyPostal;
             CustomerProperty cp = new CustomerProperty();
             cp.create(customerPropertyAddress, customerPropertyPostal, customerPropertyOwners, customerPropertyType,
                     customerPropertyBuiltUpArea.doubleValue(), customerPropertyLandArea.doubleValue(), customerPropertyStatus,
                     customerPropertyTOPDate, customerPropertyUsage, customerPropertyTenureType,
-                    customerPropertyTenureDuration, customerPropertyTunureFromYear, null);
+                    customerPropertyTenureDuration, customerPropertyTenureFromYear, null);
 
             //create loan application
             if (customerFinancialRequest.equals("purchase")) {
@@ -1289,12 +1289,12 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
         this.customerPropertyTenureDuration = customerPropertyTenureDuration;
     }
 
-    public Integer getCustomerPropertyTunureFromYear() {
-        return customerPropertyTunureFromYear;
+    public Integer getCustomerPropertyTenureFromYear() {
+        return customerPropertyTenureFromYear;
     }
 
-    public void setCustomerPropertyTunureFromYear(Integer customerPropertyTunureFromYear) {
-        this.customerPropertyTunureFromYear = customerPropertyTunureFromYear;
+    public void setCustomerPropertyTenureFromYear(Integer customerPropertyTenureFromYear) {
+        this.customerPropertyTenureFromYear = customerPropertyTenureFromYear;
     }
 
     public Integer getCustomerPropertyTenancyExpiryYear() {

@@ -24,8 +24,11 @@
             <p:column headerText="Period">
                 <h:outputText value="#{loanApplication.periodRequired}" />
             </p:column>
+            <p:column headerText="Status">
+                <h:outputText value="#{loanApplication.applicationStatus}" />
+            </p:column>
             <p:column headerText="Period">
-                <p:commandButton value="View" action="#{loanOfficerViewLoanApplicationsManagedBean.viewApplication(loanApplication.customerBasic.customerBasicId)}"/>
+                <p:commandButton value="View" action="#{loanOfficerViewLoanApplicationsManagedBean.viewApplication(loanApplication.loanApplicationId, loanApplication.loanType)}"/>
             </p:column>
         </p:dataTable>
     </ui:define>

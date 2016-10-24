@@ -24,4 +24,7 @@ public interface LoanApplicationSessionBeanLocal {
             CustomerProperty cp, MortgageLoanApplication mortgage, RefinancingApplication refinancing, String loanType);
     public CustomerDebt addNewCustomerDebt(String facilityType, String financialInstitution, double totalAmount, double monthlyInstalment);
     public List<LoanApplication> getAllLoanApplications();
+    public MortgageLoanApplication getMortgageLoanApplicationById(Long applicationId);
+    public RefinancingApplication getRefinancingApplicationById(Long applicationId);
+    public LoanApplication getLoanApplicationById(Long applicationId);
 }

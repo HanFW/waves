@@ -996,12 +996,12 @@
                                 <f:selectItem itemLabel="999 years" itemValue="999" />
                             </p:selectOneMenu>
                             <p:message for="customerPropertyTenureDuration"/>
-                            <p:outputLabel for="customerPropertyTunureFromYear" style="font-weight: bold" value="With Effect From: "/>
-                            <p:inputText id="customerPropertyTunureFromYear" value="#{publicHDBLoanApplication.customerPropertyTunureFromYear}"
+                            <p:outputLabel for="customerPropertyTenureFromYear" style="font-weight: bold" value="With Effect From: "/>
+                            <p:inputText id="customerPropertyTenureFromYear" value="#{publicHDBLoanApplication.customerPropertyTenureFromYear}"
                                          required="#{publicHDBLoanApplication.propertyTenurePanelVisible}" requiredMessage="Required Field" validatorMessage="Please enter a valid year (yyyy)">
                                 <f:validateDoubleRange minimum="1900" maximum="2020" />
                             </p:inputText>
-                            <p:message for="customerPropertyTunureFromYear"/>
+                            <p:message for="customerPropertyTenureFromYear"/>
                         </p:panel>
 
                         <p:outputLabel for="customerPropertyUsage" style="font-weight: bold" value="Usage of Property: "/>

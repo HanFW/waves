@@ -63,7 +63,7 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
         CustomerDebt cb = new CustomerDebt();
         
         cb.setFacilityType(facilityType);
-        cb.setFanancialInstitution(financialInstitution);
+        cb.setFinancialInstitution(financialInstitution);
         cb.setTotalAmount(totalAmount);
         cb.setMonthlyInstalment(monthlyInstalment);
         
@@ -76,5 +76,23 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
         query.setParameter("applicationStatus1", "pending");
         query.setParameter("applicationStatus2", "in progress");
         return query.getResultList();
+    }
+    
+    @Override
+    public MortgageLoanApplication getMortgageLoanApplicationById(Long applicationId){
+        MortgageLoanApplication application = em.find(MortgageLoanApplication.class, applicationId);
+        return application;
+    }
+    
+    @Override
+    public RefinancingApplication getRefinancingApplicationById(Long applicationId){
+        RefinancingApplication application = em.find(RefinancingApplication.class, applicationId);
+        return application;
+    }
+    
+    @Override
+    public LoanApplication getLoanApplicationById(Long applicationId){
+        LoanApplication application = em.find(LoanApplication.class, applicationId);
+        return application;
     }
 }

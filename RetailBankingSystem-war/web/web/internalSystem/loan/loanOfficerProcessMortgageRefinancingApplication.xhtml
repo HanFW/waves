@@ -8,16 +8,24 @@
                 template="/WEB-INF/internalSystemTemplate.xhtml">
 
     <ui:define name="content">
-        <p:panel header="Basic Information">
-            
-        </p:panel>
-        
-        <p:panel header="Personal Details">
-            
-        </p:panel>
-        
-        <p:panel header="Employment Details">
-            
-        </p:panel>
+        <h:form>
+            <p:tabView>
+                <p:tab title="Application Information">
+                    
+                </p:tab>
+
+                <p:tab title="Documents">
+
+                </p:tab>
+
+                <p:tab title="Credit Report">
+
+                </p:tab>
+
+                <p:tab title="Processing">
+
+                </p:tab>
+            </p:tabView>
+        </h:form>
     </ui:define>
 </ui:composition>
