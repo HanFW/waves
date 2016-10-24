@@ -6,6 +6,7 @@
 package ejb.loan.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -14,6 +15,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+
 
 /**
  *
@@ -25,9 +28,18 @@ public class LoanInterestPackage implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long packageId;
+    
+    private String packageName;
+    private double interestRate;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date updatedDate; 
 
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "loanInterestPackage")
     private List<LoanApplication> loanApplication;
+    
+    public void addLoanApplication(LoanApplication application){
+        loanApplication.add(application);
+    }
 
     public Long getPackageId() {
         return packageId;
@@ -43,6 +55,30 @@ public class LoanInterestPackage implements Serializable {
 
     public void setLoanApplication(List<LoanApplication> loanApplication) {
         this.loanApplication = loanApplication;
+    }
+
+    public String getPackageName() {
+        return packageName;
+    }
+
+    public void setPackageName(String packageName) {
+        this.packageName = packageName;
+    }
+
+    public double getInterestRate() {
+        return interestRate;
+    }
+
+    public void setInterestRate(double interestRate) {
+        this.interestRate = interestRate;
+    }
+
+    public Date getUpdatedDate() {
+        return updatedDate;
+    }
+
+    public void setUpdatedDate(Date updatedDate) {
+        this.updatedDate = updatedDate;
     }
     
 }

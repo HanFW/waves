@@ -14,6 +14,7 @@ import ejb.loan.session.LoanApplicationSessionBeanLocal;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -110,6 +111,9 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     private String customerFinancialRequest;
     private Double customerLoanAmountRequired;
     private Integer customerLoanTenure;
+    private String customerInterestPackage;
+    
+    private HashMap docs;
     
     /**
      * Creates a new instance of LoanOfficerProcessApplicationManagedBean
@@ -186,6 +190,8 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
         customerCPFDownpayment = ma.getCpfDownPayment();
         customerLoanAmountRequired = ma.getAmountRequired();
         customerLoanTenure = ma.getPeriodRequired();
+        customerInterestPackage = ma.getLoanInterestPackage().getPackageName();
+        docs = ma.getUploads();
         
         applicationDate = ma.getApplicationDate();
     }
@@ -196,6 +202,14 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
 
     public void setLoanApplicationSessionBeanLocal(LoanApplicationSessionBeanLocal loanApplicationSessionBeanLocal) {
         this.loanApplicationSessionBeanLocal = loanApplicationSessionBeanLocal;
+    }
+
+    public HashMap getDocs() {
+        return docs;
+    }
+
+    public void setDocs(HashMap docs) {
+        this.docs = docs;
     }
 
     public MortgageLoanApplication getApplication() {
@@ -756,6 +770,14 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
 
     public void setCustomerLoanTenure(Integer customerLoanTenure) {
         this.customerLoanTenure = customerLoanTenure;
+    }
+
+    public String getCustomerInterestPackage() {
+        return customerInterestPackage;
+    }
+
+    public void setCustomerInterestPackage(String customerInterestPackage) {
+        this.customerInterestPackage = customerInterestPackage;
     }
 
 }

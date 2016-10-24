@@ -17,8 +17,9 @@ import javax.persistence.Temporal;
  */
 @Entity
 public class MortgageLoanApplication extends LoanApplication implements Serializable {
+
     private static final long serialVersionUID = 1L;
-    
+
     private double propertyPurchasePrice;
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date propertyDateOfPurchase;
@@ -33,11 +34,11 @@ public class MortgageLoanApplication extends LoanApplication implements Serializ
     private double benefitsFromVendor;
     private double cashDownPayment;
     private double cpfDownPayment;
-    
+
     public void create(String loanType, double amountRequired, int periodRequired, double propertyPurchasePrice, Date propertyDateOfPurchase,
-            String propertySource, String propertyWithOTP, Date propertyOTPDate, String propertyWithTenancy, 
+            String propertySource, String propertyWithOTP, Date propertyOTPDate, String propertyWithTenancy,
             double propertyTenancyIncome, int propertyTenancyExpiryYear, String withBenifits, double benefitsFromVendor,
-            double cashDownPayment, double cpfDownPayment){
+            double cashDownPayment, double cpfDownPayment, String employmentStatus) {
         this.setApplicationDate(new Date());
         this.setApplicationStatus("pending");
         this.setLoanType(loanType);
@@ -55,14 +56,36 @@ public class MortgageLoanApplication extends LoanApplication implements Serializ
         this.setBenefitsFromVendor(benefitsFromVendor);
         this.setCashDownPayment(cashDownPayment);
         this.setCpfDownPayment(cpfDownPayment);
-//        HashMap verified = new HashMap();
-//        verified.put("basic", false);
-//        verified.put("personal", false);
-//        verified.put("employment", false);
-//        verified.put("commitments", false);
-//        verified.put("properties", false);
-//        verified.put("loan", false);
-        
+        HashMap docs = new HashMap();
+        docs.put("identification", true);
+        docs.put("otp", true);
+        docs.put("purchaseAgreement", true);
+        docs.put("existingLoan", false);
+        docs.put("cpfWithdrawal", false);
+
+        if (propertyWithTenancy.equals("yes")) {
+            docs.put("tenancy", true);
+        } else {
+            docs.put("tenancy", false);
+        }
+
+        docs.put("evidenceOfSale", true);
+
+        if (employmentStatus.equals("Self-Employed")) {
+            docs.put("selfEmployedTax", true);
+            docs.put("employeeTax", false);
+            docs.put("employeeCPF", false);
+        } else if (employmentStatus.equals("Employee")) {
+            docs.put("selfEmployedTax", false);
+            docs.put("employeeTax", true);
+            docs.put("employeeCPF", true);
+        } else {
+            docs.put("selfEmployedTax", false);
+            docs.put("employeeTax", false);
+            docs.put("employeeCPF", false);
+        }
+
+        this.setUploads(docs);
     }
 
     public double getPropertyPurchasePrice() {
@@ -160,7 +183,5 @@ public class MortgageLoanApplication extends LoanApplication implements Serializ
     public void setCpfDownPayment(double cpfDownPayment) {
         this.cpfDownPayment = cpfDownPayment;
     }
-    
-    
-    
+
 }

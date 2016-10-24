@@ -136,15 +136,17 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
     private BigDecimal customerBenefitsFromVendor;
     private BigDecimal customerCashDownpayment;
     private BigDecimal customerCPFDownpayment;
-    private String customerFinancialRequest;
-    private BigDecimal customerLoanAmountRequired;
-    private Integer customerLoanTenure;
     //loan - refinancing
     private String customerExistingFinancer;
     private BigDecimal customerOutstandingLoan;
     private Integer customerOutstandingYear;
     private Integer customerOutstandingMonth;
     private BigDecimal customerTotalCPFWithdrawal;
+    //both
+    private String customerFinancialRequest;
+    private BigDecimal customerLoanAmountRequired;
+    private Integer customerLoanTenure;
+    private String interestPackage;
 
     //confirmation
     private boolean agreement;
@@ -225,8 +227,8 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
         mortgage.create("HDB - New Purchase", 500000, 20, 550000,
                 new Date(), "Developer/HDB", "no", null, "yes",
                 5000, 2012, "yes", 30000,
-                20000, 30000);
-        loanApplicationSessionBeanLocal.submitLoanApplication(newCustomerBasicId, newCustomerAdvancedId, debts, cp, mortgage, null, "purchase");
+                20000, 30000, "Employee");
+        loanApplicationSessionBeanLocal.submitLoanApplication(newCustomerBasicId, newCustomerAdvancedId, debts, cp, mortgage, null, "purchase", "HDB-Fixed");
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         ec.redirect(ec.getRequestContextPath() + "/web/merlionBank/loan/publicMortgageLoanApplicationDone.xhtml?faces-redirect=true");
     }
@@ -329,17 +331,17 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
                 mortgage.create("HDB - New Purchase", customerLoanAmountRequired.doubleValue(), customerLoanTenure, customerPropertyPurchasePrice.doubleValue(),
                         customerPropertyDateOfPurchase, customerPropertySource, customerPropertyWithOTP, customerPropertyOTPDate, customerPropertyWithTenancy,
                         customerPropertyTenancyIncome.doubleValue(), customerPropertyTenancyExpiryYear, customerWithBenefitsFromVendor, customerBenefitsFromVendor.doubleValue(),
-                        customerCashDownpayment.doubleValue(), customerCPFDownpayment.doubleValue());
+                        customerCashDownpayment.doubleValue(), customerCPFDownpayment.doubleValue(), customerEmploymentStatus);
 
-                loanApplicationSessionBeanLocal.submitLoanApplication(newCustomerBasicId, newCustomerAdvancedId, debts, cp, mortgage, null, customerFinancialRequest);
+                loanApplicationSessionBeanLocal.submitLoanApplication(newCustomerBasicId, newCustomerAdvancedId, debts, cp, mortgage, null, customerFinancialRequest, interestPackage);
                 ec.getFlash().put("loanType", "HDB - New Purchase");
 
             } else {
                 RefinancingApplication refinancing = new RefinancingApplication();
                 refinancing.create("HDB - Refinancing", customerLoanAmountRequired.doubleValue(), customerLoanTenure, customerExistingFinancer,
-                        customerOutstandingLoan.doubleValue(), customerOutstandingYear, customerOutstandingMonth, customerTotalCPFWithdrawal.doubleValue());
+                        customerOutstandingLoan.doubleValue(), customerOutstandingYear, customerOutstandingMonth, customerTotalCPFWithdrawal.doubleValue(), customerEmploymentStatus);
 
-                loanApplicationSessionBeanLocal.submitLoanApplication(newCustomerBasicId, newCustomerAdvancedId, debts, cp, null, refinancing, customerFinancialRequest);
+                loanApplicationSessionBeanLocal.submitLoanApplication(newCustomerBasicId, newCustomerAdvancedId, debts, cp, null, refinancing, customerFinancialRequest, interestPackage);
                 ec.getFlash().put("loanType", "HDB - Refinancing");
             }
 
@@ -1623,5 +1625,13 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
 
     public void setCustomerForeignPassport(String customerForeignPassport) {
         this.customerForeignPassport = customerForeignPassport;
+    }
+
+    public String getInterestPackage() {
+        return interestPackage;
+    }
+
+    public void setInterestPackage(String interestPackage) {
+        this.interestPackage = interestPackage;
     }
 }

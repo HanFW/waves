@@ -4,6 +4,7 @@ import ejb.card.entity.CreditCard;
 import ejb.deposit.entity.BankAccount;
 import ejb.infrastructure.entity.MessageBox;
 import ejb.deposit.entity.Payee;
+import ejb.loan.entity.CreditReportBureauScore;
 import ejb.loan.entity.CustomerDebt;
 import ejb.loan.entity.CustomerProperty;
 import ejb.loan.entity.LoanApplication;
@@ -90,6 +91,9 @@ public class CustomerBasic implements Serializable {
     
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
     private List<LoanApplication> loanApplication;
+    
+    @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    private CreditReportBureauScore bureauScore;
     
     public void addLoanApplication(LoanApplication newApplication){
         loanApplication.add(newApplication);
@@ -393,6 +397,14 @@ public class CustomerBasic implements Serializable {
 
     public void setLoanApplication(List<LoanApplication> loanApplication) {
         this.loanApplication = loanApplication;
+    }
+
+    public CreditReportBureauScore getBureauScore() {
+        return bureauScore;
+    }
+
+    public void setBureauScore(CreditReportBureauScore bureauScore) {
+        this.bureauScore = bureauScore;
     }
     
     @Override

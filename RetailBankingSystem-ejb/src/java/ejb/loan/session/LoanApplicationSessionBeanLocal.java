@@ -21,7 +21,7 @@ import javax.ejb.Local;
 @Local
 public interface LoanApplicationSessionBeanLocal {
     public void submitLoanApplication(Long customerBasicId, Long customerAdvancedId, ArrayList<CustomerDebt> debts, 
-            CustomerProperty cp, MortgageLoanApplication mortgage, RefinancingApplication refinancing, String loanType);
+            CustomerProperty cp, MortgageLoanApplication mortgage, RefinancingApplication refinancing, String loanType, String interestPackage);
     public CustomerDebt addNewCustomerDebt(String facilityType, String financialInstitution, double totalAmount, double monthlyInstalment);
     public List<LoanApplication> getAllLoanApplications();
     public MortgageLoanApplication getMortgageLoanApplicationById(Long applicationId);

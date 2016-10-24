@@ -10,6 +10,7 @@ import ejb.customer.entity.CustomerBasic;
 import ejb.loan.entity.CustomerDebt;
 import ejb.loan.entity.CustomerProperty;
 import ejb.loan.entity.LoanApplication;
+import ejb.loan.entity.LoanInterestPackage;
 import ejb.loan.entity.MortgageLoanApplication;
 import ejb.loan.entity.RefinancingApplication;
 import java.util.ArrayList;
@@ -25,73 +26,96 @@ import javax.persistence.Query;
  */
 @Stateless
 public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLocal {
+
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager em;
-    
+
     @Override
-    public void submitLoanApplication(Long customerBasicId, Long customerAdvancedId, ArrayList<CustomerDebt> debts, 
-            CustomerProperty cp, MortgageLoanApplication mortgage, RefinancingApplication refinancing, String loanType){
+    public void submitLoanApplication(Long customerBasicId, Long customerAdvancedId, ArrayList<CustomerDebt> debts,
+            CustomerProperty cp, MortgageLoanApplication mortgage, RefinancingApplication refinancing, String loanType, String interestPackage) {
         System.out.println("****** loan/LoanApplicationSessionBean: submitLoanApplication() ******");
         CustomerBasic cb = em.find(CustomerBasic.class, customerBasicId);
-        
+
         //set debts to customerBasic (1-M uni)
         cb.setCustomerDebt(debts);
-        
+
         //set on both side (1-1 bi)
         cp.setCustomerBasic(cb);
         cb.setCustomerProperty(cp);
-        
+
         //set on both side (1-1 bi)
         CustomerAdvanced ca = em.find(CustomerAdvanced.class, customerAdvancedId);
         cb.setCustomerAdvanced(ca);
         ca.setCustomerBasic(cb);
+
+        Query query = em.createQuery("SELECT p FROM LoanInterestPackage p WHERE p.packageName = :packageName");
+        query.setParameter("packageName", interestPackage);
+        List resultList = query.getResultList();
         
-        //set on both side
-        if(loanType.equals("purchase")){
-            mortgage.setCustomerBasic(cb);
-            cb.addLoanApplication(mortgage);
+        if (!resultList.isEmpty()) {
+            LoanInterestPackage pkg = (LoanInterestPackage) resultList.get(0);
+            System.out.println("****** loan/LoanApplicationSessionBean: submitLoanApplication(): interest package: " + pkg.getPackageName());
+            //set on both side
+            if (loanType.equals("purchase")) {
+                mortgage.setCustomerBasic(cb);
+                cb.addLoanApplication(mortgage);
+                mortgage.setLoanInterestPackage(pkg);
+                pkg.addLoanApplication(mortgage);
+            } else {
+                refinancing.setCustomerBasic(cb);
+                cb.addLoanApplication(refinancing);
+                refinancing.setLoanInterestPackage(pkg);
+                pkg.addLoanApplication(refinancing);
+            }
         }else{
-            refinancing.setCustomerBasic(cb);
-            cb.addLoanApplication(refinancing);
+            System.out.println("****** loan/LoanApplicationSessionBean: submitLoanApplication(): no interest package found");
+            if (loanType.equals("purchase")) {
+                mortgage.setCustomerBasic(cb);
+                cb.addLoanApplication(mortgage);
+            } else {
+                refinancing.setCustomerBasic(cb);
+                cb.addLoanApplication(refinancing);
+            }
         }
+
         em.flush();
     }
-    
+
     @Override
-    public CustomerDebt addNewCustomerDebt(String facilityType, String financialInstitution, double totalAmount, double monthlyInstalment){
+    public CustomerDebt addNewCustomerDebt(String facilityType, String financialInstitution, double totalAmount, double monthlyInstalment) {
         System.out.println("****** loan/LoanApplicationSessionBean: addNewCustomerDebt() ******");
         CustomerDebt cb = new CustomerDebt();
-        
+
         cb.setFacilityType(facilityType);
         cb.setFinancialInstitution(financialInstitution);
         cb.setTotalAmount(totalAmount);
         cb.setMonthlyInstalment(monthlyInstalment);
-        
+
         return cb;
     }
-    
+
     @Override
-    public List<LoanApplication> getAllLoanApplications(){
+    public List<LoanApplication> getAllLoanApplications() {
         Query query = em.createQuery("SELECT la FROM LoanApplication la WHERE la.applicationStatus = :applicationStatus1 OR la.applicationStatus = :applicationStatus2");
         query.setParameter("applicationStatus1", "pending");
         query.setParameter("applicationStatus2", "in progress");
         return query.getResultList();
     }
-    
+
     @Override
-    public MortgageLoanApplication getMortgageLoanApplicationById(Long applicationId){
+    public MortgageLoanApplication getMortgageLoanApplicationById(Long applicationId) {
         MortgageLoanApplication application = em.find(MortgageLoanApplication.class, applicationId);
         return application;
     }
-    
+
     @Override
-    public RefinancingApplication getRefinancingApplicationById(Long applicationId){
+    public RefinancingApplication getRefinancingApplicationById(Long applicationId) {
         RefinancingApplication application = em.find(RefinancingApplication.class, applicationId);
         return application;
     }
-    
+
     @Override
-    public LoanApplication getLoanApplicationById(Long applicationId){
+    public LoanApplication getLoanApplicationById(Long applicationId) {
         LoanApplication application = em.find(LoanApplication.class, applicationId);
         return application;
     }

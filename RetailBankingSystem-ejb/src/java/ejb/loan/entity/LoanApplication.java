@@ -39,17 +39,13 @@ public class LoanApplication implements Serializable {
     private int periodSuggested;
     private double instalment;
     private String loanType;
-    private HashMap verified;
+    private HashMap uploads;
     
     @ManyToOne(fetch = FetchType.EAGER)
     private LoanInterestPackage loanInterestPackage;
     
     @ManyToOne(fetch = FetchType.EAGER)
     private CustomerBasic customerBasic;
-    
-    public void updateVerifiedStatus(String key, boolean isVerified){
-        verified.replace(key, isVerified);
-    }
 
     public Long getLoanApplicationId() {
         return loanApplicationId;
@@ -147,12 +143,12 @@ public class LoanApplication implements Serializable {
         this.loanType = loanType;
     }
 
-    public HashMap getVerified() {
-        return verified;
+    public HashMap getUploads() {
+        return uploads;
     }
 
-    public void setVerified(HashMap verified) {
-        this.verified = verified;
+    public void setUploads(HashMap uploads) {
+        this.uploads = uploads;
     }
     
 }

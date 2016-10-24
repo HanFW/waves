@@ -7,6 +7,7 @@ package ejb.loan.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
 import javax.persistence.Entity;
 
 /**
@@ -15,8 +16,9 @@ import javax.persistence.Entity;
  */
 @Entity
 public class RefinancingApplication extends LoanApplication implements Serializable {
+
     private static final long serialVersionUID = 1L;
-    
+
     private String existingFinancer;
     private double outstandingBalance;
     private int outstandingYear;
@@ -24,7 +26,7 @@ public class RefinancingApplication extends LoanApplication implements Serializa
     private double totalCPFWithdrawal;
 
     public void create(String loanType, double amountRequired, int periodRequired, String existingFinancer, double outstandingBalance,
-            int outstandingYear, int outstandingMonth, double totalCPFWithdrawal){
+            int outstandingYear, int outstandingMonth, double totalCPFWithdrawal, String employmentStatus) {
         this.setApplicationDate(new Date());
         this.setApplicationStatus("pending");
         this.setLoanType(loanType);
@@ -35,8 +37,33 @@ public class RefinancingApplication extends LoanApplication implements Serializa
         this.setOutstandingYear(outstandingYear);
         this.setOutstandingMonth(outstandingMonth);
         this.setTotalCPFWithdrawal(totalCPFWithdrawal);
+
+        HashMap docs = new HashMap();
+        docs.put("identification", true);
+        docs.put("otp", false);
+        docs.put("purchaseAgreement", false);
+        docs.put("existingLoan", true);
+        docs.put("cpfWithdrawal", true);
+        docs.put("tenancy", false);
+        docs.put("evidenceOfSale", true);
+
+        if (employmentStatus.equals("Self-Employed")) {
+            docs.put("selfEmployedTax", true);
+            docs.put("employeeTax", false);
+            docs.put("employeeCPF", false);
+        } else if (employmentStatus.equals("Employee")) {
+            docs.put("selfEmployedTax", false);
+            docs.put("employeeTax", true);
+            docs.put("employeeCPF", true);
+        } else {
+            docs.put("selfEmployedTax", false);
+            docs.put("employeeTax", false);
+            docs.put("employeeCPF", false);
+        }
+
+        this.setUploads(docs);
     }
-    
+
     public String getExistingFinancer() {
         return existingFinancer;
     }
@@ -76,6 +103,5 @@ public class RefinancingApplication extends LoanApplication implements Serializa
     public void setTotalCPFWithdrawal(double totalCPFWithdrawal) {
         this.totalCPFWithdrawal = totalCPFWithdrawal;
     }
-    
-    
+
 }
