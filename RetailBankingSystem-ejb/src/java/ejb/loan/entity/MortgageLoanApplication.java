@@ -7,6 +7,7 @@ package ejb.loan.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
 import javax.persistence.Entity;
 import javax.persistence.Temporal;
 
@@ -33,12 +34,13 @@ public class MortgageLoanApplication extends LoanApplication implements Serializ
     private double cashDownPayment;
     private double cpfDownPayment;
     
-    public void create(double amountRequired, int periodRequired, double propertyPurchasePrice, Date propertyDateOfPurchase,
+    public void create(String loanType, double amountRequired, int periodRequired, double propertyPurchasePrice, Date propertyDateOfPurchase,
             String propertySource, String propertyWithOTP, Date propertyOTPDate, String propertyWithTenancy, 
             double propertyTenancyIncome, int propertyTenancyExpiryYear, String withBenifits, double benefitsFromVendor,
             double cashDownPayment, double cpfDownPayment){
         this.setApplicationDate(new Date());
         this.setApplicationStatus("pending");
+        this.setLoanType(loanType);
         this.setAmountRequired(amountRequired);
         this.setPeriodRequired(periodRequired);
         this.setPropertyPurchasePrice(propertyPurchasePrice);
@@ -53,6 +55,14 @@ public class MortgageLoanApplication extends LoanApplication implements Serializ
         this.setBenefitsFromVendor(benefitsFromVendor);
         this.setCashDownPayment(cashDownPayment);
         this.setCpfDownPayment(cpfDownPayment);
+//        HashMap verified = new HashMap();
+//        verified.put("basic", false);
+//        verified.put("personal", false);
+//        verified.put("employment", false);
+//        verified.put("commitments", false);
+//        verified.put("properties", false);
+//        verified.put("loan", false);
+        
     }
 
     public double getPropertyPurchasePrice() {

@@ -8,6 +8,7 @@ package ejb.loan.entity;
 import ejb.customer.entity.CustomerBasic;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -37,12 +38,18 @@ public class LoanApplication implements Serializable {
     private double amountGranted;
     private int periodSuggested;
     private double instalment;
+    private String loanType;
+    private HashMap verified;
     
     @ManyToOne(fetch = FetchType.EAGER)
     private LoanInterestPackage loanInterestPackage;
     
     @ManyToOne(fetch = FetchType.EAGER)
     private CustomerBasic customerBasic;
+    
+    public void updateVerifiedStatus(String key, boolean isVerified){
+        verified.replace(key, isVerified);
+    }
 
     public Long getLoanApplicationId() {
         return loanApplicationId;
@@ -130,6 +137,22 @@ public class LoanApplication implements Serializable {
 
     public void setCustomerBasic(CustomerBasic customerBasic) {
         this.customerBasic = customerBasic;
+    }
+
+    public String getLoanType() {
+        return loanType;
+    }
+
+    public void setLoanType(String loanType) {
+        this.loanType = loanType;
+    }
+
+    public HashMap getVerified() {
+        return verified;
+    }
+
+    public void setVerified(HashMap verified) {
+        this.verified = verified;
     }
     
 }

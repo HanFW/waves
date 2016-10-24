@@ -23,10 +23,11 @@ public class RefinancingApplication extends LoanApplication implements Serializa
     private int outstandingMonth;
     private double totalCPFWithdrawal;
 
-    public void create(double amountRequired, int periodRequired, String existingFinancer, double outstandingBalance,
+    public void create(String loanType, double amountRequired, int periodRequired, String existingFinancer, double outstandingBalance,
             int outstandingYear, int outstandingMonth, double totalCPFWithdrawal){
         this.setApplicationDate(new Date());
         this.setApplicationStatus("pending");
+        this.setLoanType(loanType);
         this.setAmountRequired(amountRequired);
         this.setPeriodRequired(periodRequired);
         this.setExistingFinancer(existingFinancer);

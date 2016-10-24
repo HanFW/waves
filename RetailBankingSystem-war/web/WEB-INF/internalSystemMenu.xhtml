@@ -106,11 +106,7 @@
                         </p:submenu>
 
                         <p:submenu label="Loan Officer" rendered="#{employeeAccountManagedBean.hasRoleLoanOfficer()}">
-                            <p:menuitem value="XXXXXX" url="" />
-                        </p:submenu>
-
-                        <p:submenu label="Underwriter" rendered="#{employeeAccountManagedBean.hasRoleUnderwriter()}">
-                            <p:menuitem value="XXXXXX" url="" />
+                            <p:menuitem value="View Applications" url="/web/internalSystem/loan/loanOfficerViewApplications.xhtml" />
                         </p:submenu>
 
                         <p:submenu label="Mortgage Appraiser" rendered="#{employeeAccountManagedBean.hasRoleMortgageAppraiser()}">

@@ -7,9 +7,11 @@ package ejb.loan.session;
 
 import ejb.loan.entity.CustomerDebt;
 import ejb.loan.entity.CustomerProperty;
+import ejb.loan.entity.LoanApplication;
 import ejb.loan.entity.MortgageLoanApplication;
 import ejb.loan.entity.RefinancingApplication;
 import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -21,4 +23,5 @@ public interface LoanApplicationSessionBeanLocal {
     public void submitLoanApplication(Long customerBasicId, Long customerAdvancedId, ArrayList<CustomerDebt> debts, 
             CustomerProperty cp, MortgageLoanApplication mortgage, RefinancingApplication refinancing, String loanType);
     public CustomerDebt addNewCustomerDebt(String facilityType, String financialInstitution, double totalAmount, double monthlyInstalment);
+    public List<LoanApplication> getAllLoanApplications();
 }

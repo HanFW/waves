@@ -9,12 +9,15 @@ import ejb.customer.entity.CustomerAdvanced;
 import ejb.customer.entity.CustomerBasic;
 import ejb.loan.entity.CustomerDebt;
 import ejb.loan.entity.CustomerProperty;
+import ejb.loan.entity.LoanApplication;
 import ejb.loan.entity.MortgageLoanApplication;
 import ejb.loan.entity.RefinancingApplication;
 import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -65,5 +68,13 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
         cb.setMonthlyInstalment(monthlyInstalment);
         
         return cb;
+    }
+    
+    @Override
+    public List<LoanApplication> getAllLoanApplications(){
+        Query query = em.createQuery("SELECT la FROM LoanApplication la WHERE la.applicationStatus = :applicationStatus1 OR la.applicationStatus = :applicationStatus2");
+        query.setParameter("applicationStatus1", "pending");
+        query.setParameter("applicationStatus2", "in progress");
+        return query.getResultList();
     }
 }

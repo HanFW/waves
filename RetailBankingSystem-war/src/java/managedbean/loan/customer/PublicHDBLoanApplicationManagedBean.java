@@ -41,6 +41,7 @@ import org.primefaces.model.UploadedFile;
 @Named(value = "publicHDBLoanApplication")
 @ViewScoped
 public class PublicHDBLoanApplicationManagedBean implements Serializable {
+
     @EJB
     private CustomerEmailSessionBeanLocal customerEmailSessionBeanLocal;
 
@@ -195,6 +196,41 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
         uploads.put("selfEmployedTax", false);
     }
 
+    public void addLoanApplicationFast() throws IOException {
+        Long newCustomerBasicId = cRMCustomerSessionBeanLocal.addNewCustomerBasic("Han Fengwei",
+                "Ms", "G1320505T",
+                "Female", "hanfengwei96@gmail.com", "83114121", "07/Mar/1996",
+                "China", "China", "Chinese",
+                "Single", "Student", "NUS",
+                "customer address", "118425", null, null, null, "Yes");
+        Long newCustomerAdvancedId = cRMCustomerSessionBeanLocal.addNewCustomerAdvanced(3, "Degree", "Rented",
+                3, "Government", 5, "Employee",
+                10000, "HDB", "company address",
+                "118426", "Senior Management", "CEO",
+                "NTU", 3, 2000,
+                "other income source");
+
+        ArrayList<CustomerDebt> debts = new ArrayList<CustomerDebt>();
+        debts.add(loanApplicationSessionBeanLocal.addNewCustomerDebt("car loan", "DBS", 500000, 1000));
+        debts.add(loanApplicationSessionBeanLocal.addNewCustomerDebt("HDB loan", "UOB", 800000, 2000));
+
+        customerPropertyOwners.add("Han Fengwei");
+        customerPropertyOwners.add("Dai Hailang");
+        CustomerProperty cp = new CustomerProperty();
+        cp.create("property address", "118427", customerPropertyOwners, "3-Room",
+                170.8, 200, "Completed",
+                null, "Owner Occupation", "Leasehold",
+                99, 2012, null);
+        MortgageLoanApplication mortgage = new MortgageLoanApplication();
+        mortgage.create("HDB - New Purchase", 500000, 20, 550000,
+                new Date(), "Developer/HDB", "no", null, "yes",
+                5000, 2012, "yes", 30000,
+                20000, 30000);
+        loanApplicationSessionBeanLocal.submitLoanApplication(newCustomerBasicId, newCustomerAdvancedId, debts, cp, mortgage, null, "purchase");
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        ec.redirect(ec.getRequestContextPath() + "/web/merlionBank/loan/publicMortgageLoanApplicationDone.xhtml?faces-redirect=true");
+    }
+
     public void addLoanApplication() throws IOException {
         System.out.println("====== loan/PublicHDBLoanApplicationManagedBean: addLoanApplication() ======");
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
@@ -231,22 +267,22 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
                     customerCurrentPosition = customerCurrentPositionOthers;
                 }
             }
-            
+
             Long newCustomerAdvancedId;
-            if(customerEmploymentStatus.equals("Unemployed")){
+            if (customerEmploymentStatus.equals("Unemployed")) {
                 newCustomerAdvancedId = cRMCustomerSessionBeanLocal.addNewCustomerAdvanced(customerNumOfDependents, customerEducation, customerResidentialStatus,
-                    customerLengthOfResidence, null, 0, customerEmploymentStatus,
-                    customerMonthlyFixedIncome.doubleValue(), customerResidentialType, null,
-                    null, null, null,
-                    null, 0, customerOtherMonthlyIncome.doubleValue(),
-                    customerOtherMonthlyIncomeSource);
-            }else{
+                        customerLengthOfResidence, null, 0, customerEmploymentStatus,
+                        customerMonthlyFixedIncome.doubleValue(), customerResidentialType, null,
+                        null, null, null,
+                        null, 0, customerOtherMonthlyIncome.doubleValue(),
+                        customerOtherMonthlyIncomeSource);
+            } else {
                 newCustomerAdvancedId = cRMCustomerSessionBeanLocal.addNewCustomerAdvanced(customerNumOfDependents, customerEducation, customerResidentialStatus,
-                    customerLengthOfResidence, customerIndustryType, customerLengthOfCurrentJob, customerEmploymentStatus,
-                    customerMonthlyFixedIncome.doubleValue(), customerResidentialType, customerCompanyAddress,
-                    customerCompanyPostal, customerCurrentPosition, customerCurrentJobTitle,
-                    customerPreviousCompany, customerLengthOfPreviousJob, customerOtherMonthlyIncome.doubleValue(),
-                    customerOtherMonthlyIncomeSource);
+                        customerLengthOfResidence, customerIndustryType, customerLengthOfCurrentJob, customerEmploymentStatus,
+                        customerMonthlyFixedIncome.doubleValue(), customerResidentialType, customerCompanyAddress,
+                        customerCompanyPostal, customerCurrentPosition, customerCurrentJobTitle,
+                        customerPreviousCompany, customerLengthOfPreviousJob, customerOtherMonthlyIncome.doubleValue(),
+                        customerOtherMonthlyIncomeSource);
             }
 
             //create customerDebt
@@ -261,52 +297,52 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
                 debts.add(loanApplicationSessionBeanLocal.addNewCustomerDebt(facilityType, fanancialInstitution,
                         totalAmount, instalment));
             }
-            
+
             //create customerProperty
-            if(customerPropertyStatus.equals("Completed")){
+            if (customerPropertyStatus.equals("Completed")) {
                 customerPropertyTOPDate = null;
             }
-            if(customerPropertyTenureType.equals("Freehold")){
+            if (customerPropertyTenureType.equals("Freehold")) {
                 customerPropertyTenureDuration = 0;
                 customerPropertyTunureFromYear = 0;
             }
             String customerPropertyAddress = customerPropertyStreetName + ", " + customerPropertyBlockNum + ", " + customerPropertyUnitNum + ", " + customerPropertyPostal;
             CustomerProperty cp = new CustomerProperty();
-            cp.create(customerPropertyAddress, customerPropertyPostal, customerPropertyOwners, customerPropertyType, 
-                    customerPropertyBuiltUpArea.doubleValue(), customerPropertyLandArea.doubleValue(), customerPropertyStatus, 
-                    customerPropertyTOPDate, customerPropertyUsage, customerPropertyTenureType, 
+            cp.create(customerPropertyAddress, customerPropertyPostal, customerPropertyOwners, customerPropertyType,
+                    customerPropertyBuiltUpArea.doubleValue(), customerPropertyLandArea.doubleValue(), customerPropertyStatus,
+                    customerPropertyTOPDate, customerPropertyUsage, customerPropertyTenureType,
                     customerPropertyTenureDuration, customerPropertyTunureFromYear, null);
-            
+
             //create loan application
-            if(customerFinancialRequest.equals("purchase")){
-                if(customerPropertyWithOTP.equals("no")){
+            if (customerFinancialRequest.equals("purchase")) {
+                if (customerPropertyWithOTP.equals("no")) {
                     customerPropertyOTPDate = null;
                 }
-                if(customerPropertyWithTenancy.equals("no")){
+                if (customerPropertyWithTenancy.equals("no")) {
                     customerPropertyTenancyIncome = BigDecimal.valueOf(0);
                     customerPropertyTenancyExpiryYear = 0;
                 }
-                if(customerWithBenefitsFromVendor.equals("no")){
+                if (customerWithBenefitsFromVendor.equals("no")) {
                     customerBenefitsFromVendor = BigDecimal.valueOf(0);
                 }
                 MortgageLoanApplication mortgage = new MortgageLoanApplication();
-                mortgage.create(customerLoanAmountRequired.doubleValue(), customerLoanTenure, customerPropertyPurchasePrice.doubleValue(), 
-                        customerPropertyDateOfPurchase,customerPropertySource, customerPropertyWithOTP, customerPropertyOTPDate, customerPropertyWithTenancy, 
+                mortgage.create("HDB - New Purchase", customerLoanAmountRequired.doubleValue(), customerLoanTenure, customerPropertyPurchasePrice.doubleValue(),
+                        customerPropertyDateOfPurchase, customerPropertySource, customerPropertyWithOTP, customerPropertyOTPDate, customerPropertyWithTenancy,
                         customerPropertyTenancyIncome.doubleValue(), customerPropertyTenancyExpiryYear, customerWithBenefitsFromVendor, customerBenefitsFromVendor.doubleValue(),
                         customerCashDownpayment.doubleValue(), customerCPFDownpayment.doubleValue());
-                
+
                 loanApplicationSessionBeanLocal.submitLoanApplication(newCustomerBasicId, newCustomerAdvancedId, debts, cp, mortgage, null, customerFinancialRequest);
                 ec.getFlash().put("loanType", "HDB - New Purchase");
 
-            }else{
+            } else {
                 RefinancingApplication refinancing = new RefinancingApplication();
-                refinancing.create(customerLoanAmountRequired.doubleValue(), customerLoanTenure, customerExistingFinancer, 
+                refinancing.create("HDB - Refinancing", customerLoanAmountRequired.doubleValue(), customerLoanTenure, customerExistingFinancer,
                         customerOutstandingLoan.doubleValue(), customerOutstandingYear, customerOutstandingMonth, customerTotalCPFWithdrawal.doubleValue());
-                
+
                 loanApplicationSessionBeanLocal.submitLoanApplication(newCustomerBasicId, newCustomerAdvancedId, debts, cp, null, refinancing, customerFinancialRequest);
                 ec.getFlash().put("loanType", "HDB - Refinancing");
             }
-            
+
             HashMap emailActions = new HashMap();
             emailActions.put("loanType", "HDB");
             emailActions.put("request", customerFinancialRequest);

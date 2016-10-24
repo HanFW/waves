@@ -13,6 +13,9 @@
 
     <ui:define name="content">  
         <h:form>
+            <p:commandButton value="Apply for HDB Loan - fast" action="#{publicHDBLoanApplication.addLoanApplicationFast()}"/>
+        </h:form>
+        <h:form>
             <p:wizard widgetVar ="hdbLoanWizard" flowListener="#{publicHDBLoanApplication.onFlowProcess}" showNavBar="false">
                 <p:tab id="basic">
                     <h:panelGrid columns="1">
