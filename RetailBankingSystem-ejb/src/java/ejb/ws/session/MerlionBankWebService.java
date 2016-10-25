@@ -91,7 +91,6 @@ public class MerlionBankWebService {
 //    @Oneway
     public void settleEachBankAccount() {
 
-        System.out.println("settleEachBankAccount");
         Query query = entityManager.createQuery("SELECT o FROM OnHoldRecord o WHERE o.onHoldStatus = :onHoldStatus");
         query.setParameter("onHoldStatus", "New");
         List<OnHoldRecord> onHoldRecords = query.getResultList();
