@@ -56,4 +56,13 @@ public interface CRMCustomerSessionBeanLocal {
     public List<CustomerBasic> getAllNewCustomer();
 
     public void updateCustomerMobile(Long customerId, String customerMobile);
+    
+    public CustomerBasic getCustomerBasicById(Long customerId);
+    
+    public Long addNewCustomerAdvanced(int customerNumOfDependents, String customerEducation, String customerResidentialStatus, 
+            int customerLengthOfResidence, String customerIndustryType, int customerLengthOfCurrentJob, String customerEmploymentStatus,
+            double customerMonthlyFixedIncome, String customerResidentialType, String customerCompanyAddress, 
+            String customerCompanyPostal, String customerCurrentPosition, String customerCurrentJobTitle, 
+            String customerPreviousCompany, int customerLengthOfPreviousJob, double customerOtherMonthlyIncome, 
+            String customerOtherMonthlyIncomeSource);
 }
