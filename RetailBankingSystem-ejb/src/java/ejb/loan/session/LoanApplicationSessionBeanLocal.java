@@ -5,6 +5,7 @@
  */
 package ejb.loan.session;
 
+import ejb.customer.entity.CustomerAdvanced;
 import ejb.customer.entity.CustomerBasic;
 import javax.ejb.Local;
 
@@ -14,5 +15,6 @@ import javax.ejb.Local;
  */
 @Local
 public interface LoanApplicationSessionBeanLocal {
-    public void submitLoanApplication(CustomerBasic customer);
+    public void submitLoanApplication(Long customerBasicId, Long customerAdvancedId);
+    public void addNewCustomerDebt(String facilityType, String financialInstitution, double totalAmount, double monthlyInstalment);
 }

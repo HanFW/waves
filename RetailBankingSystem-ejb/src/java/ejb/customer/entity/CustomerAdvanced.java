@@ -22,25 +22,32 @@ import javax.persistence.OneToOne;
  */
 @Entity
 public class CustomerAdvanced implements Serializable {
-    //private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long customerAdvancedId;
     private String customerOnlineBankingAccountNum;
     
     //credit card
-    private String numOfDependent;
+    private int numOfDependent;
     private String education;
     private String residentialStatus;
-    private String yearInResidence;
-    private String jobType;
-    private String jobIndustry;
-    private String jobDuration;
-    private String jobStatus;
-    private String incomeMonthly;
+    private int yearInResidence;
+    private String industryType;
+    private int lengthOfCurrentJob;
+    private String employmentStatus;
+    private double monthlyFixedIncome;
     
     //loan 
-    
+    private String residentialType;
+    private String companyAddress;
+    private String companyPostal;
+    private String currentPosition;
+    private String currentJobTitle;
+    private String previousCompanyName;
+    private int lengthOfPreviousJob;
+    private double otherMonthlyIncome;
+    private String otherMonthlyIncomeSource;
     
     //wealthManagement
     
@@ -85,11 +92,11 @@ public class CustomerAdvanced implements Serializable {
         this.employee = employee;
     }
 
-    public String getNumOfDependent() {
+    public int getNumOfDependent() {
         return numOfDependent;
     }
 
-    public void setNumOfDependent(String numOfDependent) {
+    public void setNumOfDependent(int numOfDependent) {
         this.numOfDependent = numOfDependent;
     }
 
@@ -109,54 +116,117 @@ public class CustomerAdvanced implements Serializable {
         this.residentialStatus = residentialStatus;
     }
 
-    public String getYearInResidence() {
+    public int getYearInResidence() {
         return yearInResidence;
     }
 
-    public void setYearInResidence(String yearInResidence) {
+    public void setYearInResidence(int yearInResidence) {
         this.yearInResidence = yearInResidence;
     }
 
-    public String getJobType() {
-        return jobType;
+    public String getIndustryType() {
+        return industryType;
     }
 
-    public void setJobType(String jobType) {
-        this.jobType = jobType;
+    public void setIndustryType(String industryType) {
+        this.industryType = industryType;
     }
 
-    public String getJobIndustry() {
-        return jobIndustry;
+    public int getLengthOfCurrentJob() {
+        return lengthOfCurrentJob;
     }
 
-    public void setJobIndustry(String jobIndustry) {
-        this.jobIndustry = jobIndustry;
+    public void setLengthOfCurrentJob(int lengthOfCurrentJob) {
+        this.lengthOfCurrentJob = lengthOfCurrentJob;
     }
 
-    public String getJobDuration() {
-        return jobDuration;
+    public String getEmploymentStatus() {
+        return employmentStatus;
     }
 
-    public void setJobDuration(String jobDuration) {
-        this.jobDuration = jobDuration;
+    public void setEmploymentStatus(String employmentStatus) {
+        this.employmentStatus = employmentStatus;
     }
 
-    public String getJobStatus() {
-        return jobStatus;
+    public double getMonthlyFixedIncome() {
+        return monthlyFixedIncome;
     }
 
-    public void setJobStatus(String jobStatus) {
-        this.jobStatus = jobStatus;
+    public void setMonthlyFixedIncome(double monthlyFixedIncome) {
+        this.monthlyFixedIncome = monthlyFixedIncome;
     }
 
-    public String getIncomeMonthly() {
-        return incomeMonthly;
+    public String getResidentialType() {
+        return residentialType;
     }
 
-    public void setIncomeMonthly(String incomeMonthly) {
-        this.incomeMonthly = incomeMonthly;
+    public void setResidentialType(String residentialType) {
+        this.residentialType = residentialType;
     }
-    
+
+    public String getCompanyAddress() {
+        return companyAddress;
+    }
+
+    public void setCompanyAddress(String companyAddress) {
+        this.companyAddress = companyAddress;
+    }
+
+    public String getCompanyPostal() {
+        return companyPostal;
+    }
+
+    public void setCompanyPostal(String companyPostal) {
+        this.companyPostal = companyPostal;
+    }
+
+    public String getCurrentPosition() {
+        return currentPosition;
+    }
+
+    public void setCurrentPosition(String currentPosition) {
+        this.currentPosition = currentPosition;
+    }
+
+    public String getCurrentJobTitle() {
+        return currentJobTitle;
+    }
+
+    public void setCurrentJobTitle(String currentJobTitle) {
+        this.currentJobTitle = currentJobTitle;
+    }
+
+    public String getPreviousCompanyName() {
+        return previousCompanyName;
+    }
+
+    public void setPreviousCompanyName(String previousCompanyName) {
+        this.previousCompanyName = previousCompanyName;
+    }
+
+    public int getLengthOfPreviousJob() {
+        return lengthOfPreviousJob;
+    }
+
+    public void setLengthOfPreviousJob(int lengthOfPreviousJob) {
+        this.lengthOfPreviousJob = lengthOfPreviousJob;
+    }
+
+    public double getOtherMonthlyIncome() {
+        return otherMonthlyIncome;
+    }
+
+    public void setOtherMonthlyIncome(double otherMonthlyIncome) {
+        this.otherMonthlyIncome = otherMonthlyIncome;
+    }
+
+    public String getOtherMonthlyIncomeSource() {
+        return otherMonthlyIncomeSource;
+    }
+
+    public void setOtherMonthlyIncomeSource(String otherMonthlyIncomeSource) {
+        this.otherMonthlyIncomeSource = otherMonthlyIncomeSource;
+    }
     
 
     @Override
