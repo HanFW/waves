@@ -123,7 +123,7 @@ public class NonStandingGIROSessionBean implements NonStandingGIROSessionBeanLoc
         if (nonStandingGiros.isEmpty()) {
             System.out.println("No weekly recurrent giro");
         } else {
-            
+
             for (NonStandingGIRO nonStandingGiro : nonStandingGiros) {
                 String billingOrganizationName = nonStandingGiro.getBillingOrganizationName();
                 String bankAccountNum = nonStandingGiro.getBankAccountNum();
@@ -136,10 +136,7 @@ public class NonStandingGIROSessionBean implements NonStandingGIROSessionBeanLoc
                 String paymentAmt = nonStandingGiro.getPaymentAmt();
 
                 Double currentAvailableBalance = Double.valueOf(bankAccount.getAvailableBankAccountBalance()) - Double.valueOf(paymentAmt);
-                Double currentTotalBalance = Double.valueOf(bankAccount.getTotalBankAccountBalance()) - Double.valueOf(paymentAmt);
-
                 bankAccount.setAvailableBankAccountBalance(currentAvailableBalance.toString());
-                bankAccount.setTotalBankAccountBalance(currentTotalBalance.toString());
 
                 Calendar cal = Calendar.getInstance();
                 String currentTime = cal.getTime().toString();
@@ -167,7 +164,7 @@ public class NonStandingGIROSessionBean implements NonStandingGIROSessionBeanLoc
         if (nonStandingGiros.isEmpty()) {
             System.out.println("No daily recurrent giro");
         } else {
-            
+
             for (NonStandingGIRO nonStandingGiro : nonStandingGiros) {
 
                 String billingOrganizationName = nonStandingGiro.getBillingOrganizationName();
@@ -181,10 +178,7 @@ public class NonStandingGIROSessionBean implements NonStandingGIROSessionBeanLoc
                 String paymentAmt = nonStandingGiro.getPaymentAmt();
 
                 Double currentAvailableBalance = Double.valueOf(bankAccount.getAvailableBankAccountBalance()) - Double.valueOf(paymentAmt);
-                Double currentTotalBalance = Double.valueOf(bankAccount.getTotalBankAccountBalance()) - Double.valueOf(paymentAmt);
-
                 bankAccount.setAvailableBankAccountBalance(currentAvailableBalance.toString());
-                bankAccount.setTotalBankAccountBalance(currentTotalBalance.toString());
 
                 Calendar cal = Calendar.getInstance();
                 String currentTime = cal.getTime().toString();
@@ -212,7 +206,7 @@ public class NonStandingGIROSessionBean implements NonStandingGIROSessionBeanLoc
         if (nonStandingGiros.isEmpty()) {
             System.out.println("No monthly recurrent giro");
         } else {
-            
+
             for (NonStandingGIRO nonStandingGiro : nonStandingGiros) {
 
                 String billingOrganizationName = nonStandingGiro.getBillingOrganizationName();
@@ -226,10 +220,7 @@ public class NonStandingGIROSessionBean implements NonStandingGIROSessionBeanLoc
                 String paymentAmt = nonStandingGiro.getPaymentAmt();
 
                 Double currentAvailableBalance = Double.valueOf(bankAccount.getAvailableBankAccountBalance()) - Double.valueOf(paymentAmt);
-                Double currentTotalBalance = Double.valueOf(bankAccount.getTotalBankAccountBalance()) - Double.valueOf(paymentAmt);
-
                 bankAccount.setAvailableBankAccountBalance(currentAvailableBalance.toString());
-                bankAccount.setTotalBankAccountBalance(currentTotalBalance.toString());
 
                 Calendar cal = Calendar.getInstance();
                 String currentTime = cal.getTime().toString();

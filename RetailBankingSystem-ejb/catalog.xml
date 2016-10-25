@@ -8,4 +8,6 @@
     <system systemId="http://localhost:8080/SACHWebService/SACHWebService?xsd=1" uri="src/conf/xml-resources/web-service-references/SACHWebService/wsdl/localhost_8080/SACHWebService/SACHWebService.xsd_1.xsd"/>
     <system systemId="http://localhost:8080/BillWebService/BillWebService?wsdl" uri="src/conf/xml-resources/web-service-references/BillWebService/wsdl/localhost_8080/BillWebService/BillWebService.wsdl"/>
     <system systemId="http://localhost:8080/BillWebService/BillWebService?xsd=1" uri="src/conf/xml-resources/web-service-references/BillWebService/wsdl/localhost_8080/BillWebService/BillWebService.xsd_1.xsd"/>
+    <system systemId="http://localhost:8080/OnHoldWebService/OnHoldWebService?wsdl" uri="src/conf/xml-resources/web-service-references/OnHoldWebService/wsdl/localhost_8080/OnHoldWebService/OnHoldWebService.wsdl"/>
+    <system systemId="http://localhost:8080/OnHoldWebService/OnHoldWebService?xsd=1" uri="src/conf/xml-resources/web-service-references/OnHoldWebService/wsdl/localhost_8080/OnHoldWebService/OnHoldWebService.xsd_1.xsd"/>
 </catalog>

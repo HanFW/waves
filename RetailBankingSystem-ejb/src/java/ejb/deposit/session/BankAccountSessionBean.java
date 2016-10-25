@@ -1,12 +1,10 @@
 package ejb.deposit.session;
 
-import ejb.infrastructure.session.CustomerAdminSessionBeanLocal;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.entity.AccTransaction;
 import ejb.customer.entity.CustomerBasic;
 import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import ejb.deposit.entity.Interest;
-import ejb.infrastructure.session.CustomerEmailSessionBeanLocal;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -16,13 +14,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.PersistenceContext;
 import java.util.List;
-import java.util.Map;
 import javax.ejb.EJB;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.NonUniqueResultException;
@@ -35,16 +31,10 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
     private TransactionSessionBeanLocal transactionSessionBeanLocal;
 
     @EJB
-    private CustomerEmailSessionBeanLocal customerEmailSessionBeanLocal;
-
-    @EJB
     private StatementSessionBeanLocal statementSessionBeanLocal;
 
     @EJB
     private CRMCustomerSessionBeanLocal customerSessionBeanLocal;
-
-    @EJB
-    private CustomerAdminSessionBeanLocal adminSessionBeanLocal;
 
     @EJB
     private InterestSessionBeanLocal interestSessionLocal;
@@ -728,54 +718,6 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
         BankAccount bankAccount = retrieveBankAccountByNum(bankAccountNum);
 
         bankAccount.setAvailableBankAccountBalance(availableBankAccountBalance);
-    }
-
-    @Override
-    public void approveAccount(String customerIdentificationNum) {
-
-        CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum);
-        BankAccount bankAccount = retrieveBankAccountByCusIC(customerIdentificationNum).get(0);
-
-        customerBasic.setNewCustomer("No");
-
-        if (bankAccount.getBankAccountType().equals("Monthly Savings Account")) {
-            bankAccount.setBankAccountStatus("Active");
-            bankAccount.setBankAccountMinSaving("Insufficient");
-        } else {
-            bankAccount.setBankAccountStatus("Inactive");
-        }
-
-        String onlineBankingAccount = adminSessionBeanLocal.createOnlineBankingAccount(customerBasic.getCustomerBasicId());
-    }
-
-    @Override
-    public void sendEmailToRejectCustomer(String customerIdentificationNum) {
-
-        CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum);
-
-        Map emailActions = new HashMap();
-        customerEmailSessionBeanLocal.sendEmail(customerBasic, "rejectOpenAccount", emailActions);
-    }
-
-    @Override
-    public void debitBankAccount(String debitBankAccountNum, Double debitAmt) {
-
-        BankAccount bankAccount = retrieveBankAccountByNum(debitBankAccountNum);
-
-        Double currentAvailableBalance = Double.valueOf(bankAccount.getAvailableBankAccountBalance());
-        Double currentTotalBalance = Double.valueOf(bankAccount.getAvailableBankAccountBalance());
-        Double totalAvailableBalance = currentAvailableBalance - debitAmt;
-
-        bankAccount.setAvailableBankAccountBalance(totalAvailableBalance.toString());
-        bankAccount.setTotalBankAccountBalance(currentTotalBalance.toString());
-
-//        Calendar cal = Calendar.getInstance();
-//        String currentTime = cal.getTime().toString();
-//        String transactionCode = "IBG";
-//        String transactionRef = "Deduct from " + billingOrganizationName;
-//
-//        Long transactionId = transactionSessionBeanLocal.addNewTransaction(currentTime, transactionCode,
-//                transactionRef, debitAmt.toString(), " ", cal.getTimeInMillis(), bankAccount.getBankAccountId());
     }
 
     @Override

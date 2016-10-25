@@ -33,9 +33,6 @@ public class NonStandingGIROTransferDoneManagedBean implements Serializable {
     private SACHWebService_Service service_sach;
 
     @EJB
-    private TransactionSessionBeanLocal transactionSessionBeanLocal;
-
-    @EJB
     private BankAccountSessionBeanLocal bankAccountSessionBeanLocal;
 
     @EJB
@@ -173,15 +170,8 @@ public class NonStandingGIROTransferDoneManagedBean implements Serializable {
         String bankAccountNum = giro.getBankAccountNum();
 
         BankAccount bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountByNum(bankAccountNum);
-
-//        Calendar cal = Calendar.getInstance();
-//        String transactionDate = cal.getTime().toString();
-//        String transactionCode = "BILL";
-//        String transactionRef = "Pay bills to " + billingOrganizationName;
-//        Long transactionId = transactionSessionBeanLocal.addNewTransaction(transactionDate,
-//                transactionCode, transactionRef, paymentAmt.toString(), " ", cal.getTimeInMillis(), bankAccount.getBankAccountId());
+        
         Double currentAvailableBankAccountBalance = Double.valueOf(bankAccount.getAvailableBankAccountBalance()) - paymentAmt;
-//        Double currentTotalBankAccountBalance = Double.valueOf(bankAccount.getTotalBankAccountBalance()) - paymentAmt;
         bankAccountSessionBeanLocal.updateBankAccountAvailableBalance(bankAccountNum, currentAvailableBankAccountBalance.toString());
 
         RegisteredBillingOrganization billOrg = registeredBillingOrganizationSessionBeanLocal.retrieveRegisteredBillingOrganizationByName(billingOrganizationName);
@@ -220,7 +210,7 @@ public class NonStandingGIROTransferDoneManagedBean implements Serializable {
             fromBankAccountNumWithType = bankAccount.getBankAccountType() + "-" + bankAccount.getBankAccountNum();
             statusMessage = "Successfully Pay Bills";
 
-            fromBankAccountAvailableBalance = currentAvailableBankAccountBalance - paymentAmt;
+            fromBankAccountAvailableBalance = currentAvailableBankAccountBalance;
             fromBankAccountTotalBalance = Double.valueOf(bankAccount.getTotalBankAccountBalance());
 
             ec.getFlash().put("statusMessage", statusMessage);
