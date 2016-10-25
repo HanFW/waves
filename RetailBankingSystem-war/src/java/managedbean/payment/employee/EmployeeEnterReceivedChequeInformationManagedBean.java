@@ -77,6 +77,7 @@ public class EmployeeEnterReceivedChequeInformationManagedBean {
         Calendar cal = Calendar.getInstance();
         String transactionDate = cal.getTime().toString();
         String receivedChequeStatus = "Pending";
+        
         CustomerBasic customerBasic = bankAccountSessionBeanLocal.retrieveCustomerBasicByAccNum(receivedBankAccountNum);
         BankAccount bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountByNum(receivedBankAccountNum);
         String currentAvailableBalance = bankAccount.getAvailableBankAccountBalance();
@@ -88,15 +89,15 @@ public class EmployeeEnterReceivedChequeInformationManagedBean {
                 transactionDate, transactionAmt, receivedBankAccountNum, customerName,
                 customerMobile, receivedChequeStatus, customerBasic.getCustomerBasicId());
 
-        clearReceivedCheque(receivedChequeId);
+        clearMerlionReceivedCheque(receivedChequeId);
 
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Successfully Input Received Cheque Information", ""));
     }
 
-    private void clearReceivedCheque(java.lang.Long chequeId) {
+    private void clearMerlionReceivedCheque(java.lang.Long chequeId) {
         // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
         // If the calling of port operations may lead to race condition some synchronization is required.
         ws.client.sach.SACHWebService port = service_sach.getSACHWebServicePort();
-        port.clearReceivedCheque(chequeId);
+        port.clearMerlionReceivedCheque(chequeId);
     }
 }

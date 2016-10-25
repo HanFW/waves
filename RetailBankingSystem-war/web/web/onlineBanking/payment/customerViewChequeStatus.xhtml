@@ -18,23 +18,23 @@
 
             <p:messages globalOnly="true"/>
 
+            <p:outputLabel value="View Received Cheque Status"/>
+            <br/>
+            <br/>
             <p:dataTable var="receivedCheque" value="#{viewChequeStatusManagedBean.receivedCheque}" 
                          reflow="true" paginator="true" rows="10" emptyMessage="No Recipient">
-                <f:facet name="header">
-                    View Cheque Status
-                </f:facet>
                 <p:column headerText="Transaction Date" >
                     <h:outputText value="#{receivedCheque.transactionDate}" /> 
                 </p:column>
-                
+
                 <p:column headerText="Transaction Amount(S$)" >
                     <h:outputText value="#{receivedCheque.transactionAmt}" /> 
                 </p:column>
-                
+
                 <p:column headerText="Cheque Status" >
                     <h:outputText value="#{receivedCheque.receivedChequeStatus}" /> 
                 </p:column>
-                
+
             </p:dataTable>
         </h:form>
         <ezcomp:CCTimeout/>

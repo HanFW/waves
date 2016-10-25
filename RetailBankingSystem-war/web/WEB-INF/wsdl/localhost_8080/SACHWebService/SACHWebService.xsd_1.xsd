@@ -8,9 +8,9 @@
 
 <xs:element name="SACHTransferMTDResponse" type="tns:SACHTransferMTDResponse"/>
 
-<xs:element name="clearReceivedCheque" type="tns:clearReceivedCheque"/>
+<xs:element name="clearMerlionReceivedCheque" type="tns:clearMerlionReceivedCheque"/>
 
-<xs:element name="clearReceivedChequeResponse" type="tns:clearReceivedChequeResponse"/>
+<xs:element name="clearMerlionReceivedChequeResponse" type="tns:clearMerlionReceivedChequeResponse"/>
 
 <xs:complexType name="SACHNonStandingGIROTransferMTD">
 <xs:sequence>
@@ -36,13 +36,13 @@
 <xs:sequence/>
 </xs:complexType>
 
-<xs:complexType name="clearReceivedCheque">
+<xs:complexType name="clearMerlionReceivedCheque">
 <xs:sequence>
 <xs:element name="chequeId" type="xs:long" minOccurs="0"/>
 </xs:sequence>
 </xs:complexType>
 
-<xs:complexType name="clearReceivedChequeResponse">
+<xs:complexType name="clearMerlionReceivedChequeResponse">
 <xs:sequence/>
 </xs:complexType>
 </xs:schema>

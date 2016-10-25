@@ -10,6 +10,4 @@ public interface MerlionBankSessionBeanLocal {
     public void debitBankAccount(String debitBankAccountNum, Double debitAmt);
 
     public void sendEmailToRejectCustomer(String customerIdentificationNum);
-
-    public void settleEachBankAccount();
 }
