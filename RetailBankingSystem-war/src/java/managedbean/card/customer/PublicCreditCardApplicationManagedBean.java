@@ -5,7 +5,6 @@
  */
 package managedbean.card.customer;
 
-import ejb.card.entity.CreditCard;
 import ejb.card.session.CreditCardSessionBeanLocal;
 import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import java.io.File;
@@ -20,6 +19,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
@@ -832,12 +832,22 @@ public class PublicCreditCardApplicationManagedBean implements Serializable {
                         null);
             }
 
+            creditCardTypeId = (Long) ec.getSessionMap().get("cardTypeId");
+            System.out.println("##########################customer application type id = " + creditCardTypeId);
+            
             DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
             Date applicationDate1 = new Date();
             String applicationDate = df.format(applicationDate1);
             //create credit card application
+            System.out.println("@@@@@@@@@@@@@@@@@@@@basicId = " + newCustomerBasicId);
+            System.out.println("@@@@@@@@@@@@@@@@@@@@adavnceId = " + newCustomerAdvancedId);
+            System.out.println("@@@@@@@@@@@@@@@@@@@@cardtypeId = " + creditCardTypeId);
+            System.out.println("@@@@@@@@@@@@@@@@@@@@holder name = " + cardHolderName);
+            System.out.println("@@@@@@@@@@@@@@@@@@@@has limit = " + hasCreditLimit);
+            System.out.println("@@@@@@@@@@@@@@@@@@@@limit double = " + creditLimit.doubleValue());
+            System.out.println("@@@@@@@@@@@@@@@@@@@@date = " + applicationDate);
             creditCardSessionLocal.createCreditCard(newCustomerBasicId, newCustomerAdvancedId, creditCardTypeId, cardHolderName, hasCreditLimit, creditLimit.doubleValue(), applicationDate);
-            
+            creditCardTypeName = creditCardSessionLocal.findTypeNameById(creditCardTypeId);
             ec.getFlash().put("cardTypeName", creditCardTypeName);
             ec.getFlash().put("customerName", customerName);
             ec.redirect(ec.getRequestContextPath() + "/web/merlionBank/creditCard/publicCreditCardApplicationDone.xhtml?faces-redirect=true");

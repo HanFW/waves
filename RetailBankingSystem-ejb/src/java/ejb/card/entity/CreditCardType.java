@@ -21,14 +21,15 @@ import javax.persistence.OneToMany;
  */
 @Entity
 public class CreditCardType implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long creditCardTypeId;
-    
+
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "creditCardType")
     private List<CreditCard> creditCard;
-    
+
     private String creditCardTypeName;
     private String cardNetwork;
     private String rebateType;
@@ -118,6 +119,9 @@ public class CreditCardType implements Serializable {
         this.minSum = minSum;
     }
 
+    public void removeCreditCard(CreditCard creditCard) {
+        this.creditCard.remove(creditCard);
+    }
 
     @Override
     public int hashCode() {
@@ -143,5 +147,5 @@ public class CreditCardType implements Serializable {
     public String toString() {
         return "ejb.card.entity.CreditCardType[ id=" + creditCardTypeId + " ]";
     }
-    
+
 }

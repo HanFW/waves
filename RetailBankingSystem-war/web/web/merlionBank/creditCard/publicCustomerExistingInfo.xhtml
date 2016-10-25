@@ -13,17 +13,13 @@
 
             <div align="center">
                 <h:form>
-<!--                    <p:panel>
-                        <p:outputLabel value="Welcome "/>
-                        <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
-                    </p:panel>-->
 
                     <h:panelGrid columns="1" class="ui-lg-6">                          
 
                         <p:outputLabel style="font-size: 40px;font-weight: bold" value="Apply Credit Card"/>
                         <br/>
                         <br/>
-
+                        <p:outputLabel value="#{publicCreditCardCustomerIdentityManagedBean.creditCardTypeName}"/>
                         <p:outputLabel style="font-weight: bold" value="Are you an existing Merlion Bank customer?"/>
                         <p:selectOneRadio id="hasMerlionAcc" value="#{publicCreditCardCustomerIdentityManagedBean.hasMerlionAcc}"
                                           required="true" requiredMessage="Please select">

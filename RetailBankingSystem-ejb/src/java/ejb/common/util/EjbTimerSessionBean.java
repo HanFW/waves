@@ -1,5 +1,6 @@
 package ejb.common.util;
 
+import ejb.card.session.CreditCardExpirationManagementSessionBeanLocal;
 import ejb.card.session.DebitCardExpirationManagementSessionBeanLocal;
 import java.util.Collection;
 import javax.annotation.Resource;
@@ -20,7 +21,6 @@ import ws.client.meps.MEPSWebService_Service;
 
 @Stateless
 @LocalBean
-
 public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
     @WebServiceRef(wsdlLocation = "META-INF/wsdl/localhost_8080/MEPSWebService/MEPSWebService.wsdl")
     private MEPSWebService_Service service;
@@ -36,6 +36,9 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
 
     @EJB
     private DebitCardExpirationManagementSessionBeanLocal debitCardExpirationManagementSessionBeanLocal;
+    
+    @EJB
+    private CreditCardExpirationManagementSessionBeanLocal creditCardExpirationManagementSessionBeanLocal;
 
     @Resource
     private SessionContext ctx;
@@ -52,7 +55,7 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
     private final String TIMER_NAME_70000MS = "EJB-TIMER-70000MS";
     private final int TIMER_DURATION_70000MS = 70000;
     private final String TIMER_NAME_5000MS = "EJB-TIMER-5000MS";
-    private final int TIMER_DURATION_5000MS = 50000;
+    private final int TIMER_DURATION_5000MS = 5000;
 
     public EjbTimerSessionBean() {
 
@@ -239,7 +242,7 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
 
     private void handleTimeout_5000ms() {
         System.out.println("*** 5000MS Timer timeout");
-
+        creditCardExpirationManagementSessionBeanLocal.handleCreditCardExpiration();
         debitCardExpirationManagementSessionBeanLocal.handleDebitCardExpiration();
     }
 
@@ -249,4 +252,6 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
         ws.client.meps.MEPSWebService port = service.getMEPSWebServicePort();
         port.maintainDailyBalance();
     }
+
+  
 }

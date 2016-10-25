@@ -5,6 +5,7 @@
  */
 package managedbean.card.customer;
 
+import java.io.Serializable;
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
@@ -17,7 +18,7 @@ import javax.faces.context.FacesContext;
  */
 @Named(value = "publicCreditCardApplicationDoneManagedBean")
 @RequestScoped
-public class PublicCreditCardApplicationDoneManagedBean {
+public class PublicCreditCardApplicationDoneManagedBean implements Serializable{
 
     private String creditCardTypeName;
     private String customerName;

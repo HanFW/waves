@@ -550,279 +550,279 @@
                     </h:panelGrid>
                 </p:tab>
 
-                <!--                <p:tab id="personal">
-                                    <h:panelGrid columns="1">
-                                        <p:steps activeIndex="1">
-                                            <p:menuitem value="Basic Information" />
-                                            <p:menuitem value="Personal Details" />
-                                            <p:menuitem value="Employment Details" />
-                                            <p:menuitem value="Credit Card Request" />
-                                            <p:menuitem value="Supporting Documents"/>
-                                            <p:menuitem value="Confirmation"/>
-                                        </p:steps>
-                                    </h:panelGrid>
-                
-                                    <p:panelGrid>
-                                        <p:outputLabel for="customerEducation" style="font-weight: bold" value="Highest Education: "/>
-                                        <p:selectOneMenu id="customerEducation" value="#{publicCreditCardApplicationManagedBean.customerEducation}"
-                                                         required="true" requiredMessage="Required Field">
-                                            <f:selectItem itemLabel="Please Select" itemValue="" />
-                                            <f:selectItem itemLabel="Primary" itemValue="Primary" />
-                                            <f:selectItem itemLabel="Secondary" itemValue="Secondary" />
-                                            <f:selectItem itemLabel="Diploma/Pre-University" itemValue="Diploma" />
-                                            <f:selectItem itemLabel="Degree" itemValue="Degree" />
-                                            <f:selectItem itemLabel="Post-Graduate" itemValue="Post-Graduate"/>
-                                        </p:selectOneMenu>
-                                        <p:message for="customerEducation"/>
-                
-                                        <p:outputLabel for="customerMaritalStatus" style="font-weight: bold" value="Marital Status: " />
-                                        <p:selectOneMenu id="customerMaritalStatus" value="#{publicCreditCardApplicationManagedBean.customerMaritalStatus}" 
-                                                         required="true" requiredMessage="Required Field">
-                                            <f:selectItem itemLabel="Please Select" itemValue="" />
-                                            <f:selectItem itemLabel="Single" itemValue="Single" />
-                                            <f:selectItem itemLabel="Married" itemValue="Married" />
-                                            <f:selectItem itemLabel="Divorced" itemValue="Divorced" />
-                                            <f:selectItem itemLabel="Widowed" itemValue="Widowed" />
-                                        </p:selectOneMenu>
-                                        <p:message for="customerMaritalStatus" />
-                
-                                        <p:outputLabel for="customerNumOfDepedents" style="font-weight: bold" value="Number of Dependents: "/>
-                                        <p:selectOneMenu id="customerNumOfDepedents" value="#{publicCreditCardApplicationManagedBean.customerNumOfDependents}"
-                                                         required="true" requiredMessage="Required Field" >
-                                            <f:selectItem itemLabel="Please Select" itemValue="" />
-                                            <f:selectItem itemLabel="0" itemValue="0" />
-                                            <f:selectItem itemLabel="1" itemValue="1" />
-                                            <f:selectItem itemLabel="2" itemValue="2" />
-                                            <f:selectItem itemLabel="3" itemValue="3" />
-                                            <f:selectItem itemLabel="4" itemValue="4" />
-                                            <f:selectItem itemLabel="5" itemValue="5" />
-                                            <f:selectItem itemLabel="6" itemValue="6" />
-                                            <f:selectItem itemLabel="7" itemValue="7" />
-                                            <f:selectItem itemLabel="8" itemValue="8" />
-                                            <f:selectItem itemLabel="9" itemValue="9" />
-                                            <f:selectItem itemLabel="10" itemValue="10" />
-                                        </p:selectOneMenu>
-                                        <p:message for="customerNumOfDepedents"/>
-                
-                                        <p:outputLabel for="customerStreetName" style="font-weight: bold" value="Residential Street Name: " />
-                                        <p:inputText label="Residential Address" id="customerStreetName" value="#{publicCreditCardApplicationManagedBean.customerStreetName}"
-                                                     required="true" requiredMessage="Required Field">
-                                        </p:inputText>
-                                        <p:message for="customerStreetName" />
-                
-                                        <p:outputLabel for="customerBlockNum" style="font-weight: bold" value="Residential Block/House No.: " />
-                                        <p:inputText label="Residential Address" id="customerBlockNum" value="#{publicCreditCardApplicationManagedBean.customerBlockNum}" 
-                                                     required="true" requiredMessage="Required Field">
-                                        </p:inputText>
-                                        <p:message for="customerBlockNum" />
-                
-                                        <p:outputLabel for="customerUnitNum" style="font-weight: bold" value="Residential Unit No.: " />
-                                        <p:inputText id="customerUnitNum" value="#{publicCreditCardApplicationManagedBean.customerUnitNum}"
-                                                     required="true" requiredMessage="Required Field">
-                                        </p:inputText>
-                                        <p:message for="customerUnitNum" />
-                
-                                        <p:outputLabel for="customerPostal" style="font-weight: bold" value="Postal Code" />
-                                        <p:inputText label="Postal Code" id="customerPostal" value="#{publicCreditCardApplicationManagedBean.customerPostal}" validatorMessage="Invalid Postal Code"
-                                                     required="true" requiredMessage="Required Field" converterMessage="Invalid Input">
-                                            <f:validateDoubleRange minimum="100000" maximum="999999" />
-                                        </p:inputText>
-                                        <p:message for="customerPostal" />
-                
-                                        <p:outputLabel for="customerResidentialStatus" style="font-weight: bold" value="Residential Ownership: "/>
-                                        <p:selectOneMenu id="customerResidentialStatus" value="#{publicCreditCardApplicationManagedBean.customerResidentialStatus}"
-                                                         required="true" requiredMessage="Required Field">
-                                            <f:selectItem itemLabel="Please Select" itemValue="" />
-                                            <f:selectItem itemLabel="Fully owned" itemValue="Owned" />
-                                            <f:selectItem itemLabel="Mortgaged" itemValue="Mortgaged" />
-                                            <f:selectItem itemLabel="Rented" itemValue="Rented" />
-                                            <f:selectItem itemLabel="Parents'" itemValue="Parents'" />
-                                            <f:selectItem itemLabel="Employer's" itemValue="Employer's" />
-                                        </p:selectOneMenu>
-                                        <p:message for="customerResidentialStatus"/>
-                
-                                        <p:outputLabel for="customerResidentialType" style="font-weight: bold" value="Residential Type: "/>
-                                        <p:selectOneMenu id="customerResidentialType" value="#{publicCreditCardApplicationManagedBean.customerResidentialType}"
-                                                         required="true" requiredMessage="Required Field">
-                                            <f:selectItem itemLabel="Please Select" itemValue="" />
-                                            <f:selectItem itemLabel="HDB" itemValue="HDB" />
-                                            <f:selectItem itemLabel="Condominium/Apartment" itemValue="Condominium/Apartment" />
-                                            <f:selectItem itemLabel="Landed Properties" itemValue="Landed Properties" />
-                                        </p:selectOneMenu>
-                                        <p:message for="customerResidentialType"/>
-                
-                                        <p:outputLabel for="customerLengthOfResidence" style="font-weight: bold" value="Years of Stay in Residence: "/>
-                                        <p:inputText id="customerLengthOfResidence" value="#{publicCreditCardApplicationManagedBean.customerLengthOfResidence}"
-                                                     required="true" requiredMessage="Required Field" validatorMessage="Please enter a valid number between 0-100" converterMessage="Please enter a valid number">
-                                            <f:validateLongRange minimum="0" maximum="100"/>
-                                            <f:convertNumber integerOnly="true"/>
-                                        </p:inputText>
-                                        <p:message for="customerLengthOfResidence"/>
-                                    </p:panelGrid>
-                
-                                    <h:panelGrid columns="2" class="ui-lg-6"> 
-                                        <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('creditcardWizard').back();"/>
-                                        <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('creditcardWizard').next();"/>
-                                    </h:panelGrid>
-                                </p:tab>
-                
-                                <p:tab id="employment">
-                                    <h:panelGrid columns="1">
-                                        <p:steps activeIndex="2">
-                                            <p:menuitem value="Basic Information" />
-                                            <p:menuitem value="Personal Details" />
-                                            <p:menuitem value="Employment Details" />
-                                            <p:menuitem value="Credit Card Request" />
-                                            <p:menuitem value="Supporting Documents"/>
-                                            <p:menuitem value="Confirmation"/>
-                                        </p:steps>
-                                    </h:panelGrid>
-                
-                                    <p:panelGrid>
-                
-                                        <p:outputLabel for="customerEmploymentStatus" style="font-weight: bold" value="Employment Status: "/>
-                                        <p:selectOneMenu id="customerEmploymentStatus" value="#{publicCreditCardApplicationManagedBean.customerEmploymentStatus}"
-                                                         required="true" requiredMessage="Required Field">
-                                            <f:selectItem itemLabel="Please Select" itemValue="" />
-                                            <f:selectItem itemLabel="Employee" itemValue="Employee" />
-                                            <f:selectItem itemLabel="Self-Employed" itemValue="Self-Employed" />
-                                            <f:selectItem itemLabel="Unemployed" itemValue="Unemployed" />
-                                            <p:ajax event="change" update="panelCustomerEmployment" listener="#{publicCreditCardApplicationManagedBean.changeEmployeeStatus}"/>
-                                        </p:selectOneMenu>
-                
-                                        <p:message for="customerEmploymentStatus"/>
-                
-                                        <p:panel style="border: none;" id="panelCustomerEmployment" visible="#{publicCreditCardApplicationManagedBean.employmentPanelVisible}">
-                                            <p:outputLabel for="customerCompanyName" style="font-weight: bold" value="Company Name: "/>
-                                            <p:inputText id="customerCompanyName" value="#{publicCreditCardApplicationManagedBean.customerCompanyName}"
-                                                         required="#{publicCreditCardApplicationManagedBean.employmentPanelVisible}" requiredMessage="Required Field"/>
-                                            <p:message for="customerCompanyName"/>
-                
-                                            <p:outputLabel for="customerCompanyAddress" style="font-weight: bold" value="Company Address: "/>
-                                            <p:inputText id="customerCompanyAddress" value="#{publicCreditCardApplicationManagedBean.customerCompanyAddress}"
-                                                         required="#{publicCreditCardApplicationManagedBean.employmentPanelVisible}" requiredMessage="Required Field"/>
-                                            <p:message for="customerCompanyAddress"/>
-                
-                                            <p:outputLabel for="customerCompanyPostal" style="font-weight: bold" value="Company Postal Code: "/>
-                                            <p:inputText id="customerCompanyPostal" value="#{publicCreditCardApplicationManagedBean.customerCompanyPostal}"
-                                                         required="#{publicCreditCardApplicationManagedBean.employmentPanelVisible}" requiredMessage="Required Field" validatorMessage="Invalid postal code">
-                                                <f:validateDoubleRange minimum="100000" maximum="999999" />
-                                            </p:inputText>
-                                            <p:message for="customerCompanyPostal"/>
-                
-                                            <p:outputLabel for="customerIndustryType" style="font-weight: bold" value="Company Industry Type: "/>
-                                            <p:selectOneMenu id="customerIndustryType" value="#{publicCreditCardApplicationManagedBean.customerIndustryType}"
-                                                             required="#{publicCreditCardApplicationManagedBean.employmentPanelVisible}" requiredMessage="Required Field">
-                                                <f:selectItem itemLabel="Please Select" itemValue="" />
-                                                <f:selectItem itemLabel="Banking/Finance" itemValue="Banking/Finance" />
-                                                <f:selectItem itemLabel="Building/Construction" itemValue="Building/Construction" />
-                                                <f:selectItem itemLabel="Government" itemValue="Government" />
-                                                <f:selectItem itemLabel="IT/Communications" itemValue="IT/Communications" />
-                                                <f:selectItem itemLabel="Manufacturing" itemValue="Manufacturing" />
-                                                <f:selectItem itemLabel="Retail/F&amp;B" itemValue="Retail/F&amp;B" />
-                                                <f:selectItem itemLabel="Travel/Hospitality" itemValue="Travel/Hospitality" />
-                                                <f:selectItem itemLabel="Shipping/Transport" itemValue="Shipping/Transport" />
-                                                <f:selectItem itemLabel="Entertainment" itemValue="Entertainment" />
-                                                <f:selectItem itemLabel="Others" itemValue="Others" />
-                                                <p:ajax partialSubmit="true" event="change" update="panelCustomerIndustryType" listener="#{publicCreditCardApplicationManagedBean.showIndustryTypePanel}"/>
-                                            </p:selectOneMenu>
-                                            <p:message for="customerIndustryType"/>
-                                            <p:panel style="border: none;" id="panelCustomerIndustryType" visible="#{publicCreditCardApplicationManagedBean.industryTypePanelVisible}">
-                                                <p:inputText id="customerIndustryTypeOthers" requiredMessage="Required Field" 
-                                                             value="#{publicCreditCardApplicationManagedBean.customerIndustryTypeOthers}" required="#{publicCreditCardApplicationManagedBean.industryTypePanelVisible}"/>
-                                                <p:message for="customerIndustryTypeOthers"/>
-                                            </p:panel>
-                
-                                            <p:outputLabel for="customerCurrentPosition" style="font-weight: bold" value="Current Position: "/>
-                                            <p:selectOneMenu id="customerCurrentPosition" value="#{publicCreditCardApplicationManagedBean.customerCurrentPosition}"
-                                                             required="#{publicCreditCardApplicationManagedBean.employmentPanelVisible}" requiredMessage="Required Field">
-                                                <f:selectItem itemLabel="Please Select" itemValue="" />
-                                                <f:selectItem itemLabel="Senior Management" itemValue="Senior Management" />
-                                                <f:selectItem itemLabel="Professional" itemValue="Professional" />
-                                                <f:selectItem itemLabel="Middle Management" itemValue="Middle Management" />
-                                                <f:selectItem itemLabel="Executive" itemValue="Executive" />
-                                                <f:selectItem itemLabel="Skilled Trades/Clerica" itemValue="Skilled Trades/Clerica" />
-                                                <f:selectItem itemLabel="Others" itemValue="Others" />
-                                                <p:ajax event="change" update="panelCustomerCurrentPosition" listener="#{publicCreditCardApplicationManagedBean.showCurrentPositionPanel}"/>
-                                            </p:selectOneMenu>
-                                            <p:message for="customerCurrentPosition"/>
-                                            <p:panel style="border: none;" id="panelCustomerCurrentPosition" visible="#{publicCreditCardApplicationManagedBean.currentPositionPanelVisible}">
-                                                <p:inputText id="customerCurrentPositionOthers" requiredMessage="Required Field" 
-                                                             value="#{publicCreditCardApplicationManagedBean.customerCurrentPositionOthers}" required="#{publicCreditCardApplicationManagedBean.currentPositionPanelVisible}"/>  
-                                                <p:message for="customerCurrentPositionOthers"/>
-                                            </p:panel>
-                
-                                            <p:outputLabel for="customerCurrentJobTitle" style="font-weight: bold" value="Current Job Title: "/>
-                                            <p:inputText id="customerCurrentJobTitle" value="#{publicCreditCardApplicationManagedBean.customerCurrentJobTitle}"
-                                                         required="#{publicCreditCardApplicationManagedBean.employmentPanelVisible}" requiredMessage="Required Field"/>
-                                            <p:message for="customerCurrentJobTitle"/>
-                
-                                            <p:outputLabel for="customerLengthOfCurrentJob" style="font-weight: bold" value="Years of Current Employment/Business: "/>
-                                            <p:inputText id="customerLengthOfCurrentJob" value="#{publicCreditCardApplicationManagedBean.customerLengthOfCurrentJob}"
-                                                         required="#{publicCreditCardApplicationManagedBean.employmentPanelVisible}" requiredMessage="Required Field" validatorMessage="Please enter a valid number between 0-100" converterMessage="Please enter a valid number">
-                                                <f:validateLongRange minimum="0" maximum="100"/>
-                                                <f:convertNumber integerOnly="true"/>
-                                            </p:inputText>
-                                            <p:message for="customerLengthOfCurrentJob"/>
-                                        </p:panel>
-                
-                                        <p:messages globalOnly="true"/>
-                                        <p:outputLabel for="customerMonthlyFixedIncome" style="font-weight: bold" value="Monthly Fixed Income(SGD): "/>
-                                        <p:inputText id="customerMonthlyFixedIncome" value="#{publicCreditCardApplicationManagedBean.customerMonthlyFixedIncome}"
-                                                     required="true" requiredMessage="Required Field" converterMessage="Please enter a valid number">
-                                        </p:inputText>
-                                        <p:message for="customerMonthlyFixedIncome"/>
-                
-                
-                                    </p:panelGrid>
-                
-                                    <h:panelGrid columns="2" class="ui-lg-6"> 
-                                        <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('creditcardWizard').back()"/>
-                                        <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('creditcardWizard').next();"/>
-                                    </h:panelGrid>
-                                </p:tab>
-                
-                                <p:tab id="requests">
-                                    <h:panelGrid columns="1">
-                                        <p:steps activeIndex="3">
-                                            <p:menuitem value="Basic Information" />
-                                            <p:menuitem value="Personal Details" />
-                                            <p:menuitem value="Employment Details" />
-                                            <p:menuitem value="Credit Card Request" />
-                                            <p:menuitem value="Supporting Documents"/>
-                                            <p:menuitem value="Confirmation"/>
-                                        </p:steps>
-                                    </h:panelGrid>
-                
-                                    <p:panelGrid>
-                                        <p:outputLabel for="customerPreferredName" style="font-weight: bold" value="Your preferred name on your card: "/>
-                                        <p:inputText id="customerPreferredName" value="#{publicCreditCardApplicationManagedBean.cardHolderName}"
-                                                     required="true" requiredMessage="Required Field" validatorMessage="Sorry, the name on your card is limited to 20 characters">
-                                            <f:validateLength maximum="20"/>
-                                        </p:inputText>
-                                        <p:message for="customerPreferredName"/>
-                
-                                        <p:outputLabel for="customerPreferredLimit" style="font-weight: bold" value="Do you have a preffered credit limit? "/>
-                                        <p:selectOneRadio id="hasCreditLimit" value="#{publicCreditCardApplicationManagedBean.hasCreditLimit}"
-                                                          required="true" requiredMessage="Please indicate your choice">
-                                            <f:selectItem itemLabel="Yes" itemValue="Yes" />
-                                            <f:selectItem itemLabel="No" itemValue="No" />
-                                            <p:ajax event="change" update="panelCreditLimit" listener="#{publicCreditCardApplicationManagedBean.showCreditLimitPanel}"/>
-                                        </p:selectOneRadio>
-                                        <p:message for="hasCreditLimit"/>
-                                        <p:panel style="border: none;" id="panelCreditLimit" visible="#{publicCreditCardApplicationManagedBean.creditLimitPanelVisible}">
-                                            <p:outputLabel value="Tell us your preferred credit limit" style="font-weight: bold"/>
-                                            <p:inputText id="customerPreferredLimit" placeholder="Enter your prefered credit limit here" value="#{publicCreditCardApplicationManagedBean.creditLimit}"
-                                                         required="#{publicCreditCardApplicationManagedBean.creditLimitPanelVisible}" requiredMessage="Required Field" converterMessage="Please enter a valid number" />
-                
-                                            <p:message for="customerPreferredLimit"/>
-                                        </p:panel>
-                                    </p:panelGrid>
-                                    <h:panelGrid columns="2" class="ui-lg-6"> 
-                                        <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('creditcardWizard').back()" />
-                                        <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('creditcardWizard').next();" />
-                                    </h:panelGrid>
-                                </p:tab>-->
+                <p:tab id="personal">
+                    <h:panelGrid columns="1">
+                        <p:steps activeIndex="1">
+                            <p:menuitem value="Basic Information" />
+                            <p:menuitem value="Personal Details" />
+                            <p:menuitem value="Employment Details" />
+                            <p:menuitem value="Credit Card Request" />
+                            <p:menuitem value="Supporting Documents"/>
+                            <p:menuitem value="Confirmation"/>
+                        </p:steps>
+                    </h:panelGrid>
+
+                    <p:panelGrid>
+                        <p:outputLabel for="customerEducation" style="font-weight: bold" value="Highest Education: "/>
+                        <p:selectOneMenu id="customerEducation" value="#{publicCreditCardApplicationManagedBean.customerEducation}"
+                                         required="true" requiredMessage="Required Field">
+                            <f:selectItem itemLabel="Please Select" itemValue="" />
+                            <f:selectItem itemLabel="Primary" itemValue="Primary" />
+                            <f:selectItem itemLabel="Secondary" itemValue="Secondary" />
+                            <f:selectItem itemLabel="Diploma/Pre-University" itemValue="Diploma" />
+                            <f:selectItem itemLabel="Degree" itemValue="Degree" />
+                            <f:selectItem itemLabel="Post-Graduate" itemValue="Post-Graduate"/>
+                        </p:selectOneMenu>
+                        <p:message for="customerEducation"/>
+
+                        <p:outputLabel for="customerMaritalStatus" style="font-weight: bold" value="Marital Status: " />
+                        <p:selectOneMenu id="customerMaritalStatus" value="#{publicCreditCardApplicationManagedBean.customerMaritalStatus}" 
+                                         required="true" requiredMessage="Required Field">
+                            <f:selectItem itemLabel="Please Select" itemValue="" />
+                            <f:selectItem itemLabel="Single" itemValue="Single" />
+                            <f:selectItem itemLabel="Married" itemValue="Married" />
+                            <f:selectItem itemLabel="Divorced" itemValue="Divorced" />
+                            <f:selectItem itemLabel="Widowed" itemValue="Widowed" />
+                        </p:selectOneMenu>
+                        <p:message for="customerMaritalStatus" />
+
+                        <p:outputLabel for="customerNumOfDepedents" style="font-weight: bold" value="Number of Dependents: "/>
+                        <p:selectOneMenu id="customerNumOfDepedents" value="#{publicCreditCardApplicationManagedBean.customerNumOfDependents}"
+                                         required="true" requiredMessage="Required Field" >
+                            <f:selectItem itemLabel="Please Select" itemValue="" />
+                            <f:selectItem itemLabel="0" itemValue="0" />
+                            <f:selectItem itemLabel="1" itemValue="1" />
+                            <f:selectItem itemLabel="2" itemValue="2" />
+                            <f:selectItem itemLabel="3" itemValue="3" />
+                            <f:selectItem itemLabel="4" itemValue="4" />
+                            <f:selectItem itemLabel="5" itemValue="5" />
+                            <f:selectItem itemLabel="6" itemValue="6" />
+                            <f:selectItem itemLabel="7" itemValue="7" />
+                            <f:selectItem itemLabel="8" itemValue="8" />
+                            <f:selectItem itemLabel="9" itemValue="9" />
+                            <f:selectItem itemLabel="10" itemValue="10" />
+                        </p:selectOneMenu>
+                        <p:message for="customerNumOfDepedents"/>
+
+                        <p:outputLabel for="customerStreetName" style="font-weight: bold" value="Residential Street Name: " />
+                        <p:inputText label="Residential Address" id="customerStreetName" value="#{publicCreditCardApplicationManagedBean.customerStreetName}"
+                                     required="true" requiredMessage="Required Field">
+                        </p:inputText>
+                        <p:message for="customerStreetName" />
+
+                        <p:outputLabel for="customerBlockNum" style="font-weight: bold" value="Residential Block/House No.: " />
+                        <p:inputText label="Residential Address" id="customerBlockNum" value="#{publicCreditCardApplicationManagedBean.customerBlockNum}" 
+                                     required="true" requiredMessage="Required Field">
+                        </p:inputText>
+                        <p:message for="customerBlockNum" />
+
+                        <p:outputLabel for="customerUnitNum" style="font-weight: bold" value="Residential Unit No.: " />
+                        <p:inputText id="customerUnitNum" value="#{publicCreditCardApplicationManagedBean.customerUnitNum}"
+                                     required="true" requiredMessage="Required Field">
+                        </p:inputText>
+                        <p:message for="customerUnitNum" />
+
+                        <p:outputLabel for="customerPostal" style="font-weight: bold" value="Postal Code" />
+                        <p:inputText label="Postal Code" id="customerPostal" value="#{publicCreditCardApplicationManagedBean.customerPostal}" validatorMessage="Invalid Postal Code"
+                                     required="true" requiredMessage="Required Field" converterMessage="Invalid Input">
+                            <f:validateDoubleRange minimum="100000" maximum="999999" />
+                        </p:inputText>
+                        <p:message for="customerPostal" />
+
+                        <p:outputLabel for="customerResidentialStatus" style="font-weight: bold" value="Residential Ownership: "/>
+                        <p:selectOneMenu id="customerResidentialStatus" value="#{publicCreditCardApplicationManagedBean.customerResidentialStatus}"
+                                         required="true" requiredMessage="Required Field">
+                            <f:selectItem itemLabel="Please Select" itemValue="" />
+                            <f:selectItem itemLabel="Fully owned" itemValue="Owned" />
+                            <f:selectItem itemLabel="Mortgaged" itemValue="Mortgaged" />
+                            <f:selectItem itemLabel="Rented" itemValue="Rented" />
+                            <f:selectItem itemLabel="Parents'" itemValue="Parents'" />
+                            <f:selectItem itemLabel="Employer's" itemValue="Employer's" />
+                        </p:selectOneMenu>
+                        <p:message for="customerResidentialStatus"/>
+
+                        <p:outputLabel for="customerResidentialType" style="font-weight: bold" value="Residential Type: "/>
+                        <p:selectOneMenu id="customerResidentialType" value="#{publicCreditCardApplicationManagedBean.customerResidentialType}"
+                                         required="true" requiredMessage="Required Field">
+                            <f:selectItem itemLabel="Please Select" itemValue="" />
+                            <f:selectItem itemLabel="HDB" itemValue="HDB" />
+                            <f:selectItem itemLabel="Condominium/Apartment" itemValue="Condominium/Apartment" />
+                            <f:selectItem itemLabel="Landed Properties" itemValue="Landed Properties" />
+                        </p:selectOneMenu>
+                        <p:message for="customerResidentialType"/>
+
+                        <p:outputLabel for="customerLengthOfResidence" style="font-weight: bold" value="Years of Stay in Residence: "/>
+                        <p:inputText id="customerLengthOfResidence" value="#{publicCreditCardApplicationManagedBean.customerLengthOfResidence}"
+                                     required="true" requiredMessage="Required Field" validatorMessage="Please enter a valid number between 0-100" converterMessage="Please enter a valid number">
+                            <f:validateLongRange minimum="0" maximum="100"/>
+                            <f:convertNumber integerOnly="true"/>
+                        </p:inputText>
+                        <p:message for="customerLengthOfResidence"/>
+                    </p:panelGrid>
+
+                    <h:panelGrid columns="2" class="ui-lg-6"> 
+                        <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('creditcardWizard').back();"/>
+                        <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('creditcardWizard').next();"/>
+                    </h:panelGrid>
+                </p:tab>
+
+                <p:tab id="employment">
+                    <h:panelGrid columns="1">
+                        <p:steps activeIndex="2">
+                            <p:menuitem value="Basic Information" />
+                            <p:menuitem value="Personal Details" />
+                            <p:menuitem value="Employment Details" />
+                            <p:menuitem value="Credit Card Request" />
+                            <p:menuitem value="Supporting Documents"/>
+                            <p:menuitem value="Confirmation"/>
+                        </p:steps>
+                    </h:panelGrid>
+
+                    <p:panelGrid>
+
+                        <p:outputLabel for="customerEmploymentStatus" style="font-weight: bold" value="Employment Status: "/>
+                        <p:selectOneMenu id="customerEmploymentStatus" value="#{publicCreditCardApplicationManagedBean.customerEmploymentStatus}"
+                                         required="true" requiredMessage="Required Field">
+                            <f:selectItem itemLabel="Please Select" itemValue="" />
+                            <f:selectItem itemLabel="Employee" itemValue="Employee" />
+                            <f:selectItem itemLabel="Self-Employed" itemValue="Self-Employed" />
+                            <f:selectItem itemLabel="Unemployed" itemValue="Unemployed" />
+                            <p:ajax event="change" update="panelCustomerEmployment" listener="#{publicCreditCardApplicationManagedBean.changeEmployeeStatus}"/>
+                        </p:selectOneMenu>
+
+                        <p:message for="customerEmploymentStatus"/>
+
+                        <p:panel style="border: none;" id="panelCustomerEmployment" visible="#{publicCreditCardApplicationManagedBean.employmentPanelVisible}">
+                            <p:outputLabel for="customerCompanyName" style="font-weight: bold" value="Company Name: "/>
+                            <p:inputText id="customerCompanyName" value="#{publicCreditCardApplicationManagedBean.customerCompanyName}"
+                                         required="#{publicCreditCardApplicationManagedBean.employmentPanelVisible}" requiredMessage="Required Field"/>
+                            <p:message for="customerCompanyName"/>
+
+                            <p:outputLabel for="customerCompanyAddress" style="font-weight: bold" value="Company Address: "/>
+                            <p:inputText id="customerCompanyAddress" value="#{publicCreditCardApplicationManagedBean.customerCompanyAddress}"
+                                         required="#{publicCreditCardApplicationManagedBean.employmentPanelVisible}" requiredMessage="Required Field"/>
+                            <p:message for="customerCompanyAddress"/>
+
+                            <p:outputLabel for="customerCompanyPostal" style="font-weight: bold" value="Company Postal Code: "/>
+                            <p:inputText id="customerCompanyPostal" value="#{publicCreditCardApplicationManagedBean.customerCompanyPostal}"
+                                         required="#{publicCreditCardApplicationManagedBean.employmentPanelVisible}" requiredMessage="Required Field" validatorMessage="Invalid postal code">
+                                <!--<f:validateDoubleRange minimum="100000" maximum="999999" />-->
+                            </p:inputText>
+                            <p:message for="customerCompanyPostal"/>
+
+                            <p:outputLabel for="customerIndustryType" style="font-weight: bold" value="Company Industry Type: "/>
+                            <p:selectOneMenu id="customerIndustryType" value="#{publicCreditCardApplicationManagedBean.customerIndustryType}"
+                                             required="#{publicCreditCardApplicationManagedBean.employmentPanelVisible}" requiredMessage="Required Field">
+                                <f:selectItem itemLabel="Please Select" itemValue="" />
+                                <f:selectItem itemLabel="Banking/Finance" itemValue="Banking/Finance" />
+                                <f:selectItem itemLabel="Building/Construction" itemValue="Building/Construction" />
+                                <f:selectItem itemLabel="Government" itemValue="Government" />
+                                <f:selectItem itemLabel="IT/Communications" itemValue="IT/Communications" />
+                                <f:selectItem itemLabel="Manufacturing" itemValue="Manufacturing" />
+                                <f:selectItem itemLabel="Retail/F&amp;B" itemValue="Retail/F&amp;B" />
+                                <f:selectItem itemLabel="Travel/Hospitality" itemValue="Travel/Hospitality" />
+                                <f:selectItem itemLabel="Shipping/Transport" itemValue="Shipping/Transport" />
+                                <f:selectItem itemLabel="Entertainment" itemValue="Entertainment" />
+                                <f:selectItem itemLabel="Others" itemValue="Others" />
+                                <p:ajax partialSubmit="true" event="change" update="panelCustomerIndustryType" listener="#{publicCreditCardApplicationManagedBean.showIndustryTypePanel}"/>
+                            </p:selectOneMenu>
+                            <p:message for="customerIndustryType"/>
+                            <p:panel style="border: none;" id="panelCustomerIndustryType" visible="#{publicCreditCardApplicationManagedBean.industryTypePanelVisible}">
+                                <p:inputText id="customerIndustryTypeOthers" requiredMessage="Required Field" 
+                                             value="#{publicCreditCardApplicationManagedBean.customerIndustryTypeOthers}" required="#{publicCreditCardApplicationManagedBean.industryTypePanelVisible}"/>
+                                <p:message for="customerIndustryTypeOthers"/>
+                            </p:panel>
+
+                            <p:outputLabel for="customerCurrentPosition" style="font-weight: bold" value="Current Position: "/>
+                            <p:selectOneMenu id="customerCurrentPosition" value="#{publicCreditCardApplicationManagedBean.customerCurrentPosition}"
+                                             required="#{publicCreditCardApplicationManagedBean.employmentPanelVisible}" requiredMessage="Required Field">
+                                <f:selectItem itemLabel="Please Select" itemValue="" />
+                                <f:selectItem itemLabel="Senior Management" itemValue="Senior Management" />
+                                <f:selectItem itemLabel="Professional" itemValue="Professional" />
+                                <f:selectItem itemLabel="Middle Management" itemValue="Middle Management" />
+                                <f:selectItem itemLabel="Executive" itemValue="Executive" />
+                                <f:selectItem itemLabel="Skilled Trades/Clerica" itemValue="Skilled Trades/Clerica" />
+                                <f:selectItem itemLabel="Others" itemValue="Others" />
+                                <p:ajax event="change" update="panelCustomerCurrentPosition" listener="#{publicCreditCardApplicationManagedBean.showCurrentPositionPanel}"/>
+                            </p:selectOneMenu>
+                            <p:message for="customerCurrentPosition"/>
+                            <p:panel style="border: none;" id="panelCustomerCurrentPosition" visible="#{publicCreditCardApplicationManagedBean.currentPositionPanelVisible}">
+                                <p:inputText id="customerCurrentPositionOthers" requiredMessage="Required Field" 
+                                             value="#{publicCreditCardApplicationManagedBean.customerCurrentPositionOthers}" required="#{publicCreditCardApplicationManagedBean.currentPositionPanelVisible}"/>  
+                                <p:message for="customerCurrentPositionOthers"/>
+                            </p:panel>
+
+                            <p:outputLabel for="customerCurrentJobTitle" style="font-weight: bold" value="Current Job Title: "/>
+                            <p:inputText id="customerCurrentJobTitle" value="#{publicCreditCardApplicationManagedBean.customerCurrentJobTitle}"
+                                         required="#{publicCreditCardApplicationManagedBean.employmentPanelVisible}" requiredMessage="Required Field"/>
+                            <p:message for="customerCurrentJobTitle"/>
+
+                            <p:outputLabel for="customerLengthOfCurrentJob" style="font-weight: bold" value="Years of Current Employment/Business: "/>
+                            <p:inputText id="customerLengthOfCurrentJob" value="#{publicCreditCardApplicationManagedBean.customerLengthOfCurrentJob}"
+                                         required="#{publicCreditCardApplicationManagedBean.employmentPanelVisible}" requiredMessage="Required Field" validatorMessage="Please enter a valid number between 0-100" converterMessage="Please enter a valid number">
+                                <f:validateLongRange minimum="0" maximum="100"/>
+                                <f:convertNumber integerOnly="true"/>
+                            </p:inputText>
+                            <p:message for="customerLengthOfCurrentJob"/>
+                        </p:panel>
+
+                        <p:messages globalOnly="true"/>
+                        <p:outputLabel for="customerMonthlyFixedIncome" style="font-weight: bold" value="Monthly Fixed Income(SGD): "/>
+                        <p:inputText id="customerMonthlyFixedIncome" value="#{publicCreditCardApplicationManagedBean.customerMonthlyFixedIncome}"
+                                     required="true" requiredMessage="Required Field" converterMessage="Please enter a valid number">
+                        </p:inputText>
+                        <p:message for="customerMonthlyFixedIncome"/>
+
+
+                    </p:panelGrid>
+
+                    <h:panelGrid columns="2" class="ui-lg-6"> 
+                        <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('creditcardWizard').back()"/>
+                        <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('creditcardWizard').next();"/>
+                    </h:panelGrid>
+                </p:tab>
+
+                <p:tab id="requests">
+                    <h:panelGrid columns="1">
+                        <p:steps activeIndex="3">
+                            <p:menuitem value="Basic Information" />
+                            <p:menuitem value="Personal Details" />
+                            <p:menuitem value="Employment Details" />
+                            <p:menuitem value="Credit Card Request" />
+                            <p:menuitem value="Supporting Documents"/>
+                            <p:menuitem value="Confirmation"/>
+                        </p:steps>
+                    </h:panelGrid>
+
+                    <p:panelGrid>
+                        <p:outputLabel for="customerPreferredName" style="font-weight: bold" value="Your preferred name on your card: "/>
+                        <p:inputText id="customerPreferredName" value="#{publicCreditCardApplicationManagedBean.cardHolderName}"
+                                     required="true" requiredMessage="Required Field" validatorMessage="Sorry, the name on your card is limited to 20 characters">
+                            <f:validateLength maximum="20"/>
+                        </p:inputText>
+                        <p:message for="customerPreferredName"/>
+
+                        <p:outputLabel for="customerPreferredLimit" style="font-weight: bold" value="Do you have a preffered credit limit? "/>
+                        <p:selectOneRadio id="hasCreditLimit" value="#{publicCreditCardApplicationManagedBean.hasCreditLimit}"
+                                          required="true" requiredMessage="Please indicate your choice">
+                            <f:selectItem itemLabel="Yes" itemValue="Yes" />
+                            <f:selectItem itemLabel="No" itemValue="No" />
+                            <p:ajax event="change" update="panelCreditLimit" listener="#{publicCreditCardApplicationManagedBean.showCreditLimitPanel}"/>
+                        </p:selectOneRadio>
+                        <p:message for="hasCreditLimit"/>
+                        <p:panel style="border: none;" id="panelCreditLimit" visible="#{publicCreditCardApplicationManagedBean.creditLimitPanelVisible}">
+                            <p:outputLabel value="Tell us your preferred credit limit" style="font-weight: bold"/>
+                            <p:inputText id="customerPreferredLimit" placeholder="Enter your prefered credit limit here" value="#{publicCreditCardApplicationManagedBean.creditLimit}"
+                                         required="#{publicCreditCardApplicationManagedBean.creditLimitPanelVisible}" requiredMessage="Required Field" converterMessage="Please enter a valid number" />
+
+                            <p:message for="customerPreferredLimit"/>
+                        </p:panel>
+                    </p:panelGrid>
+                    <h:panelGrid columns="2" class="ui-lg-6"> 
+                        <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('creditcardWizard').back()" />
+                        <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('creditcardWizard').next();" />
+                    </h:panelGrid>
+                </p:tab>
 
                 <p:tab id="documents">
                     <h:panelGrid columns="1">
