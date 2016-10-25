@@ -7,6 +7,7 @@ import ejb.deposit.entity.Payee;
 import ejb.payment.entity.Cheque;
 import ejb.payment.entity.FastPayee;
 import ejb.payment.entity.GIRO;
+import ejb.wealth.entity.RiskProfile;
 import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -78,6 +79,9 @@ public class CustomerBasic implements Serializable {
 
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
     private List<Cheque> cheque;
+
+    @OneToOne(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
+    private RiskProfile riskProfile;
 
     public Long getCustomerBasicId() {
         return customerBasicId;
@@ -358,6 +362,15 @@ public class CustomerBasic implements Serializable {
     public void setCheque(List<Cheque> cheque) {
         this.cheque = cheque;
     }
+
+    public RiskProfile getRiskProfile() {
+        return riskProfile;
+    }
+
+    public void setRiskProfile(RiskProfile riskProfile) {
+        this.riskProfile = riskProfile;
+    }
+      
 
     @Override
     public int hashCode() {
