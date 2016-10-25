@@ -16,7 +16,6 @@ public class Cheque implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long chequeId;
-    private String chequeMICRData;
     private String transactionDate;
     private String transactionAmt;
 
@@ -29,14 +28,6 @@ public class Cheque implements Serializable {
 
     public void setChequeId(Long chequeId) {
         this.chequeId = chequeId;
-    }
-
-    public String getChequeMICRData() {
-        return chequeMICRData;
-    }
-
-    public void setChequeMICRData(String chequeMICRData) {
-        this.chequeMICRData = chequeMICRData;
     }
 
     public String getTransactionDate() {

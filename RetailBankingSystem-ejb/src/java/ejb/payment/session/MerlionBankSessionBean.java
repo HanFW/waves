@@ -25,6 +25,9 @@ import ws.client.otherbanks.OtherBanksWebService_Service;
 public class MerlionBankSessionBean implements MerlionBankSessionBeanLocal {
 
     @EJB
+    private ReceivedChequeSessionBeanLocal receivedChequeSessionBeanLocal;
+
+    @EJB
     private TransactionSessionBeanLocal transactionSessionBeanLocal;
 
     @WebServiceRef(wsdlLocation = "META-INF/wsdl/localhost_8080/OtherBanksWebService/OtherBanksWebService.wsdl")
@@ -74,14 +77,6 @@ public class MerlionBankSessionBean implements MerlionBankSessionBeanLocal {
 
         bankAccount.setAvailableBankAccountBalance(totalAvailableBalance.toString());
         bankAccount.setTotalBankAccountBalance(currentTotalBalance.toString());
-
-//        Calendar cal = Calendar.getInstance();
-//        String currentTime = cal.getTime().toString();
-//        String transactionCode = "IBG";
-//        String transactionRef = "Deduct from " + billingOrganizationName;
-//
-//        Long transactionId = transactionSessionBeanLocal.addNewTransaction(currentTime, transactionCode,
-//                transactionRef, debitAmt.toString(), " ", cal.getTimeInMillis(), bankAccount.getBankAccountId());
     }
 
     @Override
@@ -129,6 +124,29 @@ public class MerlionBankSessionBean implements MerlionBankSessionBeanLocal {
 
                 Long transactionId = transactionSessionBeanLocal.addNewTransaction(transactionDate,
                         transactionCode, transactionRef, " ", paymentAmt,
+                        cal.getTimeInMillis(), bankAccount.getBankAccountId());
+
+            } else if (debitOrCredit.equals("Credit") && debitOrCreditBankName.equals("DBS")) {
+
+                if (onHoldRecord.getPaymentMethod().equals("Cheque")) {
+                    Long chequeId = onHoldRecord.getChequeId();
+                    receivedChequeSessionBeanLocal.updateReceivedChequeStatus(chequeId);
+                }
+                
+                Double totalBalance = Double.valueOf(currenttTotalBalance) + Double.valueOf(paymentAmt);
+
+                bankAccount.setTotalBankAccountBalance(totalBalance.toString());
+
+                onHoldRecord.setOnHoldStatus("Done");
+
+                OtherBankAccount dbsBankAccount = retrieveBankAccountByNum(debitOrCreditBankAccountNum);
+                Calendar cal = Calendar.getInstance();
+                String transactionDate = cal.getTime().toString();
+                String transactionCode = "BILL";
+                String transactionRef = dbsBankAccount.getOtherBankAccountType() + dbsBankAccount.getOtherBankAccountNum();
+
+                Long transactionId = transactionSessionBeanLocal.addNewTransaction(transactionDate,
+                        transactionCode, transactionRef, paymentAmt, " ",
                         cal.getTimeInMillis(), bankAccount.getBankAccountId());
             }
         }

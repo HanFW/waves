@@ -20,6 +20,8 @@ public class OnHoldRecord implements Serializable {
     private String onHoldStatus;
     private String debitOrCreditBankName;
     private String debitOrCreditBankAccountNum;
+    private String paymentMethod;
+    private Long chequeId;
 
     public Long getOnHoldRecordId() {
         return onHoldRecordId;
@@ -83,6 +85,22 @@ public class OnHoldRecord implements Serializable {
 
     public void setDebitOrCreditBankAccountNum(String debitOrCreditBankAccountNum) {
         this.debitOrCreditBankAccountNum = debitOrCreditBankAccountNum;
+    }
+
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
+    public Long getChequeId() {
+        return chequeId;
+    }
+
+    public void setChequeId(Long chequeId) {
+        this.chequeId = chequeId;
     }
 
     @Override

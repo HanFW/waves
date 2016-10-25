@@ -8,6 +8,10 @@
 
 <xs:element name="SACHTransferMTDResponse" type="tns:SACHTransferMTDResponse"/>
 
+<xs:element name="clearReceivedCheque" type="tns:clearReceivedCheque"/>
+
+<xs:element name="clearReceivedChequeResponse" type="tns:clearReceivedChequeResponse"/>
+
 <xs:complexType name="SACHNonStandingGIROTransferMTD">
 <xs:sequence>
 <xs:element name="fromBankAccountNum" type="xs:string" minOccurs="0"/>
@@ -29,6 +33,16 @@
 </xs:complexType>
 
 <xs:complexType name="SACHTransferMTDResponse">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="clearReceivedCheque">
+<xs:sequence>
+<xs:element name="chequeId" type="xs:long" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="clearReceivedChequeResponse">
 <xs:sequence/>
 </xs:complexType>
 </xs:schema>

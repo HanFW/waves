@@ -4,30 +4,49 @@
 <xsd:import namespace="http://session.ws.ejb/" schemaLocation="http://localhost:8080/SACHWebService/SACHWebService?xsd=1"/>
 </xsd:schema>
 </types>
-<message name="SACHTransferMTD">
-<part name="parameters" element="tns:SACHTransferMTD"/>
-</message>
-<message name="SACHTransferMTDResponse">
-<part name="parameters" element="tns:SACHTransferMTDResponse"/>
-</message>
 <message name="SACHNonStandingGIROTransferMTD">
 <part name="parameters" element="tns:SACHNonStandingGIROTransferMTD"/>
 </message>
 <message name="SACHNonStandingGIROTransferMTDResponse">
 <part name="parameters" element="tns:SACHNonStandingGIROTransferMTDResponse"/>
 </message>
+<message name="SACHTransferMTD">
+<part name="parameters" element="tns:SACHTransferMTD"/>
+</message>
+<message name="SACHTransferMTDResponse">
+<part name="parameters" element="tns:SACHTransferMTDResponse"/>
+</message>
+<message name="clearReceivedCheque">
+<part name="parameters" element="tns:clearReceivedCheque"/>
+</message>
+<message name="clearReceivedChequeResponse">
+<part name="parameters" element="tns:clearReceivedChequeResponse"/>
+</message>
 <portType name="SACHWebService">
-<operation name="SACHTransferMTD">
-<input wsam:Action="http://session.ws.ejb/SACHWebService/SACHTransferMTDRequest" message="tns:SACHTransferMTD"/>
-<output wsam:Action="http://session.ws.ejb/SACHWebService/SACHTransferMTDResponse" message="tns:SACHTransferMTDResponse"/>
-</operation>
 <operation name="SACHNonStandingGIROTransferMTD">
 <input wsam:Action="http://session.ws.ejb/SACHWebService/SACHNonStandingGIROTransferMTDRequest" message="tns:SACHNonStandingGIROTransferMTD"/>
 <output wsam:Action="http://session.ws.ejb/SACHWebService/SACHNonStandingGIROTransferMTDResponse" message="tns:SACHNonStandingGIROTransferMTDResponse"/>
 </operation>
+<operation name="SACHTransferMTD">
+<input wsam:Action="http://session.ws.ejb/SACHWebService/SACHTransferMTDRequest" message="tns:SACHTransferMTD"/>
+<output wsam:Action="http://session.ws.ejb/SACHWebService/SACHTransferMTDResponse" message="tns:SACHTransferMTDResponse"/>
+</operation>
+<operation name="clearReceivedCheque">
+<input wsam:Action="http://session.ws.ejb/SACHWebService/clearReceivedChequeRequest" message="tns:clearReceivedCheque"/>
+<output wsam:Action="http://session.ws.ejb/SACHWebService/clearReceivedChequeResponse" message="tns:clearReceivedChequeResponse"/>
+</operation>
 </portType>
 <binding name="SACHWebServicePortBinding" type="tns:SACHWebService">
 <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+<operation name="SACHNonStandingGIROTransferMTD">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
 <operation name="SACHTransferMTD">
 <soap:operation soapAction=""/>
 <input>
@@ -37,7 +56,7 @@
 <soap:body use="literal"/>
 </output>
 </operation>
-<operation name="SACHNonStandingGIROTransferMTD">
+<operation name="clearReceivedCheque">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
