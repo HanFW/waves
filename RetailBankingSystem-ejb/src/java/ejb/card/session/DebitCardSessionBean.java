@@ -44,7 +44,7 @@ public class DebitCardSessionBean implements DebitCardSessionBeanLocal {
     private EntityManager em;
 
     @Override
-    public String createDebitCard(String bankAccountNum, String cardHolderName, String applicationDate, String cardTypeName) {
+    public void createDebitCard(String bankAccountNum, String cardHolderName, String applicationDate, String cardTypeName) {
         DebitCard debitCard = new DebitCard();
         debitCard.setCardHolderName(cardHolderName);
 
@@ -87,7 +87,6 @@ public class DebitCardSessionBean implements DebitCardSessionBeanLocal {
 
         em.persist(debitCard);
         depositAccount.addDebitCard(debitCard);
-        return "success";
 
     }
 

@@ -31,8 +31,8 @@ public class CreditCard extends Card implements Serializable {
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "creditCard")
     private List<SupplementaryCard> supplementaryCard;
     
-    private Double creditLimit;
-    private Double outstandingBalance; 
+    private double creditLimit;
+    private double outstandingBalance; 
 
 
     public CreditCardType getCreditCardType() {
@@ -59,21 +59,23 @@ public class CreditCard extends Card implements Serializable {
         this.supplementaryCard = supplementaryCard;
     }
 
-    public Double getCreditLimit() {
+    public double getCreditLimit() {
         return creditLimit;
     }
 
-    public void setCreditLimit(Double creditLimit) {
+    public void setCreditLimit(double creditLimit) {
         this.creditLimit = creditLimit;
     }
 
-    public Double getOutstandingBalance() {
+    public double getOutstandingBalance() {
         return outstandingBalance;
     }
 
-    public void setOutstandingBalance(Double outstandingBalance) {
+    public void setOutstandingBalance(double outstandingBalance) {
         this.outstandingBalance = outstandingBalance;
     }
+
+
 
     
    

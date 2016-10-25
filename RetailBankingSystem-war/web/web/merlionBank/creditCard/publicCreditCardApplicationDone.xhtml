@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/onlineBankingTemplate.xhtml"
+                xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
+    <ui:define name="content">
+
+        <h:body>
+
+            <div align="center">
+                <h:form>
+
+                    <h:panelGrid columns="1" class="ui-lg-6">                          
+
+                        <p:outputLabel style="font-size: 40px;font-weight: bold" value="Dear #{publicCreditCardApplicationDoneManagedBean.customerName}:"/>
+
+
+                        <p:outputLabel style="font-weight: bold" value="Your #{publicCreditCardApplicationDoneManagedBean.creditCardTypeName} has been applied successfully!"/>
+                        <p:outputLabel style="font-weight: bold" value="Please wait patienly while your request is been processed by our staffs. We will inform you via email once the result comes out."/>
+
+                        <p:outputLabel style="font-weight: bold" value="Thank you for your support!"
+                </h:panelGrid>
+
+            </h:form>
+        </div>
+    </h:body>
+
+</ui:define>
+</ui:composition>
+
+

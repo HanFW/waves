@@ -66,7 +66,7 @@ public class CustomerBasic implements Serializable {
 
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
     private List<MessageBox> messageBox;
-    
+
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
     private List<CreditCard> creditCard;
 
@@ -75,7 +75,7 @@ public class CustomerBasic implements Serializable {
 
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
     private List<GIRO> giro;
-    
+
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
     private List<Cheque> cheque;
 
@@ -315,6 +315,10 @@ public class CustomerBasic implements Serializable {
         this.creditCard = creditCard;
     }
 
+    public void addNewCreditCard(CreditCard cc) {
+        creditCard.add(cc);
+    }
+
     public String getCustomerOnlineBankingAccountLocked() {
         return customerOnlineBankingAccountLocked;
     }
@@ -338,7 +342,7 @@ public class CustomerBasic implements Serializable {
     public void setGiro(List<GIRO> giro) {
         this.giro = giro;
     }
-    
+
     public String getNewCustomer() {
         return newCustomer;
     }
@@ -354,7 +358,7 @@ public class CustomerBasic implements Serializable {
     public void setCheque(List<Cheque> cheque) {
         this.cheque = cheque;
     }
-    
+
     @Override
     public int hashCode() {
         int hash = 0;

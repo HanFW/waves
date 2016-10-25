@@ -45,12 +45,13 @@
                         </p:panel>
                         <p:message for="customerSalutation"/>
                         <p:message for="customerSalutationOthers" />
-
+                        
+                        <p:messages id="existingcustomer" for="customerName" globalOnly="true"/>
                         <p:outputLabel for="customerName" style="font-weight: bold" value="Name(As per NRIC/Passport): "/>
                         <p:inputText id="customerName" value="#{publicCreditCardApplicationManagedBean.customerName}" required="true" requiredMessage="Required Field"/>
                         <p:message for="customerName"/>
 
-                        <p:messages globalOnly="true"/>
+                        <p:messages id="age" for="customerDateOfBirth" globalOnly="true"/>
                         <p:outputLabel for="customerDateOfBirth" style="font-weight: bold" value="Date of Birth: "/>
                         <p:calendar id="customerDateOfBirth" value="#{publicCreditCardApplicationManagedBean.customerDateOfBirth}" 
                                     showOn="button" locale="de" navigator="true" pattern="dd/MM/yyyy" 
@@ -901,7 +902,7 @@
 
                     <h:panelGrid columns="2" class="ui-lg-6"> 
                         <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('creditcardWizard').back()"/>
-                        <p:commandButton id="saveBtn" value="Submit Application" actionListener="#{accountManagedBean.saveAccount}" ajax="true"/>                 
+                        <p:commandButton id="saveBtn" value="Submit Application" ajax="false" update="@form" actionListener="#{publicCreditCardApplicationManagedBean.addCreditCardApplication}"/>                 
                     </h:panelGrid>
                 </p:tab>
             </p:wizard>

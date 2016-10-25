@@ -23,7 +23,7 @@ import javax.persistence.OneToMany;
 public class CreditCardType implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long creditCardTypeId;
     
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "creditCardType")
@@ -32,12 +32,11 @@ public class CreditCardType implements Serializable {
     private String creditCardTypeName;
     private String cardNetwork;
     private String rebateType;
-    private Double rebate;
-    private Double annualFee;
-    private Double latePaymentCharge;
-    private Double interestCharge;
-    private Double minSum;
-    private Double maxLiability;
+    private double rebate;
+    private double annualFee;
+    private double latePaymentCharge;
+    private double interestCharge;
+    private double minSum;
 
     public Long getCreditCardTypeId() {
         return creditCardTypeId;
@@ -79,59 +78,46 @@ public class CreditCardType implements Serializable {
         this.rebateType = rebateType;
     }
 
-    public Double getRebate() {
+    public double getRebate() {
         return rebate;
     }
 
-    public void setRebate(Double rebate) {
+    public void setRebate(double rebate) {
         this.rebate = rebate;
     }
 
-    public Double getAnnualFee() {
+    public double getAnnualFee() {
         return annualFee;
     }
 
-    public void setAnnualFee(Double annualFee) {
+    public void setAnnualFee(double annualFee) {
         this.annualFee = annualFee;
     }
 
-    public Double getLatePaymentCharge() {
+    public double getLatePaymentCharge() {
         return latePaymentCharge;
     }
 
-    public void setLatePaymentCharge(Double latePaymentCharge) {
+    public void setLatePaymentCharge(double latePaymentCharge) {
         this.latePaymentCharge = latePaymentCharge;
     }
 
-    public Double getInterestCharge() {
+    public double getInterestCharge() {
         return interestCharge;
     }
 
-    public void setInterestCharge(Double interestCharge) {
+    public void setInterestCharge(double interestCharge) {
         this.interestCharge = interestCharge;
     }
 
-    public Double getMinSum() {
+    public double getMinSum() {
         return minSum;
     }
 
-    public void setMinSum(Double minSum) {
+    public void setMinSum(double minSum) {
         this.minSum = minSum;
     }
 
-    public Double getMaxLiability() {
-        return maxLiability;
-    }
-
-    public void setMaxLiability(Double maxLiability) {
-        this.maxLiability = maxLiability;
-    }
-
-    
-    
-    
-
-    
 
     @Override
     public int hashCode() {
