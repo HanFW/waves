@@ -7,6 +7,7 @@ import ejb.deposit.entity.Payee;
 import ejb.payment.entity.Cheque;
 import ejb.payment.entity.FastPayee;
 import ejb.payment.entity.GIRO;
+import ejb.payment.entity.SWIFTPayee;
 import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -66,7 +67,7 @@ public class CustomerBasic implements Serializable {
 
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
     private List<MessageBox> messageBox;
-    
+
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
     private List<CreditCard> creditCard;
 
@@ -75,9 +76,12 @@ public class CustomerBasic implements Serializable {
 
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
     private List<GIRO> giro;
-    
+
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
     private List<Cheque> cheque;
+
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
+    private List<SWIFTPayee> swiftPayee;
 
     public Long getCustomerBasicId() {
         return customerBasicId;
@@ -338,7 +342,7 @@ public class CustomerBasic implements Serializable {
     public void setGiro(List<GIRO> giro) {
         this.giro = giro;
     }
-    
+
     public String getNewCustomer() {
         return newCustomer;
     }
@@ -354,7 +358,15 @@ public class CustomerBasic implements Serializable {
     public void setCheque(List<Cheque> cheque) {
         this.cheque = cheque;
     }
-    
+
+    public List<SWIFTPayee> getSwiftPayee() {
+        return swiftPayee;
+    }
+
+    public void setSwiftPayee(List<SWIFTPayee> swiftPayee) {
+        this.swiftPayee = swiftPayee;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
