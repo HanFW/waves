@@ -10,14 +10,8 @@
     <ui:define name="content">
         <h:form>
             <div align="center">
-                <h:outputText value="Welcome " />
-                <h:outputText value="#{employeeAccountManagedBean.userName}!"/>
-                <br/>
-                <h:outputText value="Your Department: #{employeeAccountManagedBean.userDepartment}"/>
-                <br/>
-                <h:outputText value="Your Position: #{employeeAccountManagedBean.userPosition}"/>
-                <br/>
-                <h:outputText value="You have logged in as: Relationship Manager"/>
+               
+<!--                <h:outputText value="You have logged in as: Relationship Manager"/>-->
                 <br/>
                 <p:panel header="My Current Customers">
                     <p:dataTable var="customerAdvanced" value="#{rMUpdateCustomerAdvancedManagedBean.customerListFromEmployeeId}" 

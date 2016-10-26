@@ -10,14 +10,13 @@
     <ui:define name="content">
 
         <h:body>
-
-            <div align="center">
-                <h:form>
-                    <p:panel>
+          <p:panel>
                         <p:outputLabel value="Welcome "/>
                         <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
                     </p:panel>
-                    
+            
+            <div align="center">
+                <h:form>
                     <p:messages autoUpdate="true" globalOnly="true"/>
 
                     <h:panelGrid columns="3" class="ui-lg-6"> 
@@ -46,9 +45,9 @@
 
                         <p:message for="pwd3"/>
 
-                        <p:commandButton value="Set Password" type="submit" actionListener="#{customerForgetDebitCardPwdManagedBean.setDebitCardPassword}" update="@form"/>
-
                     </h:panelGrid>
+                    
+                    <p:commandButton value="Reset Password" type="submit" actionListener="#{customerForgetDebitCardPwdManagedBean.setDebitCardPassword}" update="@form" style="width:150px"/>
 
                 </h:form>
             </div>

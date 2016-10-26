@@ -11,13 +11,13 @@
 
         <h:body>
 
-            <div align="center">
-                <h:form>
-                    <p:panel>
-                        <p:outputLabel value="Welcome "/>
-                        <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
-                    </p:panel>
 
+            <h:form>
+                <p:panel>
+                    <p:outputLabel value="Welcome "/>
+                    <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
+                </p:panel>
+                <div align="center">
                     <p:growl id="growl" showDetail="true" globalOnly="true"/>
                     <p:wizard widgetVar ="applyDebitCardWizard" flowListener="#{customerApplyDebitCardManagedBean.onFlowProcess}" class="ui-lg-12" showNavBar="false">
 
@@ -33,14 +33,10 @@
                                 </p:steps>
                             </h:panelGrid>
 
-                            <p:messages autoUpdate="true"/>   
-
                             <h:panelGrid columns="1" class="ui-lg-6">                          
 
-                                <p:outputLabel style="font-size: 20px;font-weight: bold" value="Important"/>
+                                <p:outputLabel style="font-size: 20px;font-weight: bold" value="Important:"/>
                                 <br/>
-                                <br/>
-
                                 <p:outputLabel style="font-size: 20px" value="Applicants must be 16 years of age 16 and above."/>
                                 <br/>
 
@@ -56,45 +52,50 @@
                             </h:panelGrid>
 
 
-                            <p:outputLabel style="font-size: 40px" value="I would to apply for"/>
-
-                            <h:panelGrid>
-                                <p:row>
-                                    <p:column>
-                                        <h:outputText style="font-size: 30px" value="Most Popular Cards"/>
-                                    </p:column>
-                                </p:row>
+                            <p:outputLabel style="font-size: 32px" value="I would to apply for:"/>
+                            <br/>
+                            <br/>
+                            <p:messages autoUpdate="true"/>   
 
 
-                                <p:selectOneRadio id="selectDebitCard" required="true" requiredMessage="Please select a debit card type" style="text-align:left" value="#{customerApplyDebitCardManagedBean.cardType}">
-                                    <f:selectItem itemLabel="Merlion Bank Visa PayWave Debit Card" itemValue="Visa PayWave" /> 
-                                    <f:selectItem itemLabel="Watsons Merlion Bank Mastercard Debit Card" itemValue="Watsons Mastercard" />                                   
-                                    <f:selectItem itemLabel="Merlion Bank NUS Visa Debit Card" itemValue="NUS Visa" />  
-                                </p:selectOneRadio>
-                                <p:messages for="selectDebitCard"/>
+                            <!--                                <p:row>
+                                                                <p:column>
+                                                                    <h:outputText style="font-size: 30px" value="Most Popular Cards"/>
+                                                                </p:column>
+                                                            </p:row>
+                            -->
+                            <h:panelGrid columns="2" class="ui-lg-6" style="border: none">
 
-                                <p:panelGrid columns="3" class="ui-lg-12" style="border: none">
 
+                                <h:panelGrid columns="1" style="border: none">
+                                    <p:selectOneRadio id="selectDebitCard" layout="pageDirection" required="true" requiredMessage="Please select a debit card type" style="text-align:left" value="#{customerApplyDebitCardManagedBean.cardType}">
+                                        <f:selectItem itemLabel="Merlion Bank Visa PayWave Debit Card" itemValue="Visa PayWave" />
+                                        <f:selectItem itemLabel="Watsons Merlion Bank Mastercard Debit Card" itemValue="Watsons Mastercard" />
+                                        <f:selectItem itemLabel="Merlion Bank NUS Visa Debit Card" itemValue="NUS Visa" />  
+                                    </p:selectOneRadio>
+                                    <p:messages for="selectDebitCard"/>
+                                </h:panelGrid>
+
+
+                                <h:panelGrid columns="1" style="border: none">
                                     <p:commandLink value="View Details" oncomplete="PF('debitCard1').show()"/>
                                     <p:commandLink value="View Details" oncomplete="PF('debitCard2').show();"/>
                                     <p:commandLink value="View Details" oncomplete="PF('debitCard3').show();"/>  
 
-                                </p:panelGrid>
-                                <br/>
-                                <br/>
-
-                                <p:panelGrid>
-                                    <p:selectOneMenu required="true" requiredMessage="Please select a deposit account" id="depositAccount" value="#{customerApplyDebitCardManagedBean.selectedDepositAccount}">
-                                        <f:selectItem itemLabel="Please Select Depoit Account"/>
-                                        <f:selectItems value="#{customerApplyDebitCardManagedBean.depositAccounts}"/>
-                                    </p:selectOneMenu>
-                                </p:panelGrid>
-                                <p:messages for="depositAccount"/>
+                                </h:panelGrid>
 
                             </h:panelGrid>
 
+                            <h:panelGrid class="ui-lg-4">
+                                <p:selectOneMenu required="true" requiredMessage="Please select a deposit account" id="depositAccount" value="#{customerApplyDebitCardManagedBean.selectedDepositAccount}">
+                                    <f:selectItem itemLabel="Please Select Depoit Account"/>
+                                    <f:selectItems value="#{customerApplyDebitCardManagedBean.depositAccounts}"/>
+                                </p:selectOneMenu>
+                            </h:panelGrid>
+                            <p:messages for="depositAccount"/>
+
                             <!--<h:form>-->
-                            <p:dialog  header="Merlion Bank Visa PayWave Debit Card" widgetVar="debitCard1" minHeight="400">
+                            <p:dialog  header="Merlion Bank Visa PayWave Debit Card" widgetVar="debitCard1" width="80%" height="400" responsive="true">
                                 <h:outputText value="Annual Fee(Inclusive of GST)"/>
                                 <br/>
                                 <h:outputText value="Principal: S$5.00"/>
@@ -108,7 +109,7 @@
                             <!--</h:form>-->
 
                             <!--<h:form>-->
-                            <p:dialog header="Watsons Merlion Bank Mastercard Debit Card" widgetVar="debitCard2" minHeight="400">
+                            <p:dialog header="Watsons Merlion Bank Mastercard Debit Card" widgetVar="debitCard2" width="80%" height="400" responsive="true">
                                 <h:outputText value="Annual Fee(Inclusive of GST)"/>
                                 <br/>
                                 <h:outputText value="Principal: S$5.00"/>
@@ -120,7 +121,7 @@
                             <!--</h:form>-->
 
                             <!--<h:form>-->
-                            <p:dialog header="Watsons Merlion Bank Mastercard Debit Card" widgetVar="debitCard3" minHeight="400">
+                            <p:dialog header="Watsons Merlion Bank Mastercard Debit Card" widgetVar="debitCard3" width="80%" height="400" responsive="true">
                                 <h:outputText value="Annual Fee(Inclusive of GST)"/>
                                 <br/>
                                 <h:outputText value="Principal: S$0.00"/>
@@ -131,9 +132,9 @@
                             </p:dialog>
                             <!--</h:form>-->
 
-                            <h:panelGrid columns="2" class="ui-lg-6"> 
-                                <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" actionListener="#{customerApplyDebitCardManagedBean.checkExistingDebitCard}" />
-                            </h:panelGrid>
+
+                            <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" actionListener="#{customerApplyDebitCardManagedBean.checkExistingDebitCard}" style="width:200px" />
+
 
                         </p:tab>
 
@@ -200,9 +201,9 @@
 
                             </h:panelGrid>
 
-                            <h:panelGrid columns="2" class="ui-lg-6"> 
-                                <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('applyDebitCardWizard').back();" />
-                                <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('applyDebitCardWizard').next();" />
+                            <h:panelGrid columns="2"> 
+                                <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('applyDebitCardWizard').back();" style="width:100px"/>
+                                <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('applyDebitCardWizard').next();" style="width:100px"/>
                             </h:panelGrid>
 
                         </p:tab>
@@ -225,9 +226,9 @@
                             <p:outputLabel value="I have read and agree to be bound by the terms of this application,
                                            the Merlion Bank Debit Card Agreement and the above Declaration"/>
 
-                            <h:panelGrid columns="2" class="ui-lg-6"> 
-                                <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('applyDebitCardWizard').back();" />
-                                <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" actionListener="#{customerApplyDebitCardManagedBean.checkReadAgreement}"/>
+                            <h:panelGrid columns="2" > 
+                                <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('applyDebitCardWizard').back();" style="width:100px"/>
+                                <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" actionListener="#{customerApplyDebitCardManagedBean.checkReadAgreement}" style="width:100px"/>
                             </h:panelGrid>
 
                         </p:tab>
@@ -319,16 +320,16 @@
                                 </p:steps>
                             </h:panelGrid>
 
-                            <h:outputText style="font-size: 40px" value="Application Successful!"/>
                             <br/>
+                            <h:outputText style="font-size: 32px" value="Application Successful!"/>
                             <br/>
                             <br/>
                             <h:outputText value="Your application has been succesfuly submitted."/>
                             <br/>
                             <h:outputText value="It will take 2-3 working days for processing your application."/>
                             <br/>
-                            <h:outputText value="Once your application is successful, we will inform you via email and your
-                                          debit card will be mailed to your address immediately."/>
+                            <h:outputText value="Once processed, we will inform you via email and your
+                                          debit card will be mailed to you immediately."/>
                             <br/>
                             <br/>
                             <br/>
@@ -336,10 +337,11 @@
 
                         </p:tab>
                     </p:wizard>
-                </h:form>
+                </div>
+            </h:form>
 
 
-            </div>
+
 
 
         </h:body>
