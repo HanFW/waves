@@ -10,19 +10,18 @@
     <ui:define name="content">
 
         <h:body>
+            <p:panel>
+                <p:outputLabel value="Welcome "/>
+                <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
+            </p:panel>
 
             <div align="center">
                 <h:form>
-                    <p:panel>
-                        <p:outputLabel value="Welcome "/>
-                        <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
-                    </p:panel>
-
-                    <p:messages autoUpdate="true"/>
 
                     <h1>Activate Credit Card</h1>
+                    <p:messages autoUpdate="true"/>
 
-                    <p:panelGrid columns="2" class="ui-lg-12" style="border: none">
+                    <h:panelGrid columns="2" class="ui-lg-6">
 
                         <p:outputLabel value="Credit Card"/>
                         <p:selectOneMenu id="selectCreditCard" required="true" requiredMessage="Please select a credit card" style="text-align:left" value="#{customerActivateCreditCardManagedBean.selectedCreditCard}">
@@ -32,17 +31,16 @@
 
                         <p:outputLabel id="cardHolderName" value="Card Holder Name: "/>
                         <p:inputText required="true" requiredMessage="Please enter card holder name" value="#{customerActivateCreditCardManagedBean.cardHolderName}"/>
-                       
+
                         <p:outputLabel  id="csc" value="3-digit Card Security Code: "/>
                         <p:inputText validatorMessage="Card Security Code is 3-digit" required="true" requiredMessage="Please enter the card security code" value="#{customerActivateCreditCardManagedBean.creditCardSecurityCode}">
                             <f:validateLength minimum="3" maximum="3" /> 
                         </p:inputText> 
 
-                    </p:panelGrid> 
+                    </h:panelGrid> 
+                    <br/>
+                    <p:commandButton value="Activate My Credit Card" type="submit" actionListener="#{customerActivateCreditCardManagedBean.checkCreditCardNum}" style="width:auto"/>  
 
-                    <div class="ui-g-12">                         
-                        <p:commandButton value="Activate My Credit Card" type="submit" actionListener="#{customerActivateCreditCardManagedBean.checkCreditCardNum}"/>  
-                    </div>
                 </h:form>
             </div>
         </h:body>

@@ -10,31 +10,31 @@
     <ui:define name="content">
 
         <h:body>
+            <p:panel>
+                <p:outputLabel value="Welcome "/>
+                <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
+            </p:panel>
 
-            <div align="center">
-                <h:form>
-                    <p:panel>
-                        <p:outputLabel value="Welcome "/>
-                        <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
-                    </p:panel>
-                  
+            <h:form>
+                <div align="center">
+
                     <p:wizard widgetVar ="riskToleranceTestWizard" flowListener="#{customerOnlineRiskToleranceTestManagedBean.onFlowProcess}" class="ui-lg-12" showNavBar="false">
 
                         <p:tab id="q1">
                             <h:panelGrid columns="1">
                                 <p:steps activeIndex="0">
-                                    <p:menuitem value="Question 1 of 6" />
-                                    <p:menuitem value="Question 2 of 6" />
-                                    <p:menuitem value="Question 3 of 6" />
-                                    <p:menuitem value="Question 4 of 6" />
-                                    <p:menuitem value="Question 5 of 6" />
-                                    <p:menuitem value="Question 6 of 6" />
+                                    <p:menuitem value="Q1" />
+                                    <p:menuitem value="Q2" />
+                                    <p:menuitem value="Q3" />
+                                    <p:menuitem value="Q4" />
+                                    <p:menuitem value="Q5" />
+                                    <p:menuitem value="Q6" />
                                     <p:menuitem value="View Result" />
                                 </p:steps>
                             </h:panelGrid>
 
                             <p:outputLabel value="1. My age is"/>
-                            <p:selectOneRadio value="#{customerOnlineRiskToleranceTestManagedBean.answer1}">
+                            <p:selectOneRadio value="#{customerOnlineRiskToleranceTestManagedBean.answer1}" layout="pageDirection">
                                 <f:selectItem itemLabel="0-44" itemValue="1" />
                                 <br/>
                                 <f:selectItem itemLabel="45-64" itemValue="2" />
@@ -44,7 +44,7 @@
                             </p:selectOneRadio>
 
                             <h:panelGrid columns="2" class="ui-lg-6"> 
-                                <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('riskToleranceTestWizard').back();" />
+                                <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('riskToleranceTestWizard').back();" disabled="true" />
                                 <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('riskToleranceTestWizard').next()"/>
                             </h:panelGrid>
 
@@ -53,18 +53,18 @@
                         <p:tab id="q2">
                             <h:panelGrid columns="1">
                                 <p:steps activeIndex="1">
-                                    <p:menuitem value="Question 1 of 6" />
-                                    <p:menuitem value="Question 2 of 6" />
-                                    <p:menuitem value="Question 3 of 6" />
-                                    <p:menuitem value="Question 4 of 6" />
-                                    <p:menuitem value="Question 5 of 6" />
-                                    <p:menuitem value="Question 6 of 6" />
+                                    <p:menuitem value="Q1" />
+                                    <p:menuitem value="Q2" />
+                                    <p:menuitem value="Q3" />
+                                    <p:menuitem value="Q4" />
+                                    <p:menuitem value="Q5" />
+                                    <p:menuitem value="Q6" />
                                     <p:menuitem value="View Result" />
                                 </p:steps>
                             </h:panelGrid>
 
                             <p:outputLabel value="2. What portion of your monthly income would your like to set aside for investments? Please note that there is a potential for loss of your capital when investing in investment products*."/>
-                            <p:selectOneRadio value="#{customerOnlineRiskToleranceTestManagedBean.answer2}">
+                            <p:selectOneRadio value="#{customerOnlineRiskToleranceTestManagedBean.answer2}" layout="pageDirection">
                                 <f:selectItem itemLabel="0%" itemValue="1" />
                                 <f:selectItem itemLabel="Between >0% and 50%" itemValue="2" />
                                 <f:selectItem itemLabel="Over 50%" itemValue="3" />
@@ -80,18 +80,18 @@
                         <p:tab id="q3">
                             <h:panelGrid columns="1">
                                 <p:steps activeIndex="2">
-                                    <p:menuitem value="Question 1 of 6" />
-                                    <p:menuitem value="Question 2 of 6" />
-                                    <p:menuitem value="Question 3 of 6" />
-                                    <p:menuitem value="Question 4 of 6" />
-                                    <p:menuitem value="Question 5 of 6" />
-                                    <p:menuitem value="Question 6 of 6" />
+                                    <p:menuitem value="Q1" />
+                                    <p:menuitem value="Q2" />
+                                    <p:menuitem value="Q3" />
+                                    <p:menuitem value="Q4" />
+                                    <p:menuitem value="Q5" />
+                                    <p:menuitem value="Q6" />
                                     <p:menuitem value="View Result" />
                                 </p:steps> of 6
                             </h:panelGrid>
 
                             <p:outputLabel value="3.Which of the following sample portfolio would be most attractive to you? Note: Investments carrying a higher risk come with the potential of achieving more gains, but also a higher possibility of incurring considerable losses. "/>
-                            <p:selectOneRadio value="#{customerOnlineRiskToleranceTestManagedBean.answer3}">
+                            <p:selectOneRadio value="#{customerOnlineRiskToleranceTestManagedBean.answer3}" layout="pageDirection">
                                 <f:selectItem itemLabel="Portfolio (a) - I am willing to accept a potential loss of up to 3% for up to 9% upside." itemValue="1" />
                                 <f:selectItem itemLabel="Portfolio (b) - I am willing to accept a potential loss of 10% for up to 18% upside." itemValue="2" />
                                 <f:selectItem itemLabel="Portfolio (c) - I am willing to accept a potential loss of 15% for up to 25% upside." itemValue="3" />
@@ -109,18 +109,18 @@
                         <p:tab id="q4">
                             <h:panelGrid columns="1">
                                 <p:steps activeIndex="3">
-                                    <p:menuitem value="Question 1 of 6" />
-                                    <p:menuitem value="Question 2 of 6" />
-                                    <p:menuitem value="Question 3 of 6" />
-                                    <p:menuitem value="Question 4 of 6" />
-                                    <p:menuitem value="Question 5 of 6" />
-                                    <p:menuitem value="Question 6 of 6" />
+                                    <p:menuitem value="Q1" />
+                                    <p:menuitem value="Q2" />
+                                    <p:menuitem value="Q3" />
+                                    <p:menuitem value="Q4" />
+                                    <p:menuitem value="Q5" />
+                                    <p:menuitem value="Q6" />
                                     <p:menuitem value="View Result" />
                                 </p:steps>
                             </h:panelGrid>
 
                             <p:outputLabel value="4.What will you do with your investments if the value drops over a period of time due to market fluctuations?"/>
-                            <p:selectOneRadio value="#{customerOnlineRiskToleranceTestManagedBean.answer4}">
+                            <p:selectOneRadio value="#{customerOnlineRiskToleranceTestManagedBean.answer4}" layout="pageDirection">
                                 <f:selectItem itemLabel="I do not wish to hold on to any investments at a loss and will sell the investments immediately even if the drop in value is small." itemValue="1" />
                                 <f:selectItem itemLabel="I will sell the investments if the drop in value is large." itemValue="2" />
                                 <f:selectItem itemLabel="I will sell some of the investments if the drop in value is large, and wait for the remaining investments to recover in value." itemValue="3" />
@@ -138,18 +138,18 @@
                         <p:tab id="q5">
                             <h:panelGrid columns="1">
                                 <p:steps activeIndex="4">
-                                    <p:menuitem value="Question 1 of 6" />
-                                    <p:menuitem value="Question 2 of 6" />
-                                    <p:menuitem value="Question 3 of 6" />
-                                    <p:menuitem value="Question 4 of 6" />
-                                    <p:menuitem value="Question 5 of 6" />
-                                    <p:menuitem value="Question 6 of 6" />
+                                    <p:menuitem value="Q1" />
+                                    <p:menuitem value="Q2" />
+                                    <p:menuitem value="Q3" />
+                                    <p:menuitem value="Q4" />
+                                    <p:menuitem value="Q5" />
+                                    <p:menuitem value="Q6" />
                                     <p:menuitem value="View Result" />
                                 </p:steps>
                             </h:panelGrid>
 
                             <p:outputLabel value="5.Choose the statement that best describes your current investment strategy or experience."/>
-                            <p:selectOneRadio value="#{customerOnlineRiskToleranceTestManagedBean.answer5}">
+                            <p:selectOneRadio value="#{customerOnlineRiskToleranceTestManagedBean.answer5}" layout="pageDirection">
                                 <f:selectItem itemLabel="Other than savings accounts or fixed deposits, I have very little investment experience." itemValue="1" />
                                 <f:selectItem itemLabel="I have invested some money into stocks, bonds or mutual funds with the balance of my investments in savings accounts or fixed deposits." itemValue="2" />
                                 <f:selectItem itemLabel="The majority of my investment holdings are in a variety of stocks, bonds or mutual funds with a small portion held in a savings account for liquidity purposes." itemValue="3" />
@@ -165,18 +165,18 @@
                         <p:tab id="q6">
                             <h:panelGrid columns="1">
                                 <p:steps activeIndex="5">
-                                    <p:menuitem value="Question 1 of 6" />
-                                    <p:menuitem value="Question 2 of 6" />
-                                    <p:menuitem value="Question 3 of 6" />
-                                    <p:menuitem value="Question 4 of 6" />
-                                    <p:menuitem value="Question 5 of 6" />
-                                    <p:menuitem value="Question 6 of 6" />
+                                    <p:menuitem value="Q1" />
+                                    <p:menuitem value="Q2" />
+                                    <p:menuitem value="Q3" />
+                                    <p:menuitem value="Q4" />
+                                    <p:menuitem value="Q5" />
+                                    <p:menuitem value="Q6" />
                                     <p:menuitem value="View Result" />
                                 </p:steps>
                             </h:panelGrid>
 
                             <p:outputLabel value="6. How interested are you in trying to catch short-term trends versus adopting a long term buy and hold strategy?"/>
-                            <p:selectOneRadio value="#{customerOnlineRiskToleranceTestManagedBean.answer6}">
+                            <p:selectOneRadio value="#{customerOnlineRiskToleranceTestManagedBean.answer6}" layout="pageDirection">
                                 <f:selectItem itemLabel="I am a long term buy and hold investor and am not overly concerned about short term market trends." itemValue="1" />
                                 <f:selectItem itemLabel="I would consider purchasing a popular stock but it's not critical." itemValue="2" />
                                 <f:selectItem itemLabel="I believe in trying to catch market trends as doing so may considerably enhance my returns." itemValue="3" />
@@ -191,20 +191,19 @@
 
                         <p:tab id="completion">
                             <h:panelGrid columns="1">
-                                <p:steps activeIndex="5">
-                                    <p:menuitem value="Question 1 of 6" />
-                                    <p:menuitem value="Question 2 of 6" />
-                                    <p:menuitem value="Question 3 of 6" />
-                                    <p:menuitem value="Question 4 of 6" />
-                                    <p:menuitem value="Question 5 of 6" />
-                                    <p:menuitem value="Question 6 of 6" />
+                                <p:steps activeIndex="6">
+                                    <p:menuitem value="Q1" />
+                                    <p:menuitem value="Q2" />
+                                    <p:menuitem value="Q3" />
+                                    <p:menuitem value="Q4" />
+                                    <p:menuitem value="Q5" />
+                                    <p:menuitem value="Q6" />
                                     <p:menuitem value="View Result" />
                                 </p:steps>
                             </h:panelGrid>
 
                             <p:panel>
-                                <h:outputText value="Your tolerance to investment risk has been assessed as"/>
-                                <br/>
+                                <h:outputText value="Your tolerance to investment risk has been assessed as:"/>
                                 <br/>
                                 <br/>
                                 <h:outputText style="font-weight: bold; font-size: 30px" value="Aggressive" rendered="#{customerOnlineRiskToleranceTestManagedBean.risk1}"/>
@@ -216,16 +215,17 @@
                                 <h:outputText value="Note:You may want to consider Moderate Portfolio solution below, which are designed to best suit your needs based on your risk profile."/>
                                 <br/>
                             </p:panel>
-                            
+                            <br/>
+                            <br/>
                             <p:chart type="pie" model="#{customerOnlineRiskToleranceTestManagedBean.pieModel1}" style="width:400px;height:300px" rendered="#{customerOnlineRiskToleranceTestManagedBean.risk1}"/>
                             <p:chart type="pie" model="#{customerOnlineRiskToleranceTestManagedBean.pieModel2}" style="width:400px;height:300px" rendered="#{customerOnlineRiskToleranceTestManagedBean.risk2}"/>
                             <p:chart type="pie" model="#{customerOnlineRiskToleranceTestManagedBean.pieModel3}" style="width:400px;height:300px" rendered="#{customerOnlineRiskToleranceTestManagedBean.risk3}"/>
 
                         </p:tab>
                     </p:wizard>
+                </div>
+            </h:form>
 
-                </h:form>
-            </div>
         </h:body>
 
     </ui:define>
