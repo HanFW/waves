@@ -63,7 +63,7 @@ public class CustomerEmailSessionBean implements CustomerEmailSessionBeanLocal {
                 emailText += "Initial User ID: " + actions.get("userId") + "\n";
                 emailText += "Initial PIN: " + actions.get("pin") + "\n";
                 emailText += "Please login with your initial User ID and PIN to activate your online banking account.";
-                break;   
+                break;
             case "rejectOpenAccount":
                 emailText += "I regret to inform that your open account application have not been approved. \n";
                 emailText += "Please verify your identification number with your IC/Passport. \n";
@@ -76,8 +76,14 @@ public class CustomerEmailSessionBean implements CustomerEmailSessionBeanLocal {
                 emailText += "We look forward to serving you again. \n";
                 break;
             case "cardToBeExpired":
-                emailText +="Your "+actions.get("cardTypeName")+ " "+actions.get("cardNumber")+" is going to be expired in "+actions.get("remainingMonths")+" months. \n";
-                emailText +="Please log in to your online banking account to replace your current card. \n";
+                emailText += "Your " + actions.get("cardTypeName") + " " + actions.get("cardNumber") + " is going to be expired in " + actions.get("remainingMonths") + " months. \n";
+                emailText += "Please log in to your online banking account to replace your current card. \n";
+                emailText += "If you have any enquiry, please contact us at 800 820 8820. \n";
+                emailText += "We look forward to serving you again. \n";
+                break;
+            case "cardToBeActivated":
+                emailText += "Your " + actions.get("cardTypeName") + " " + actions.get("cardNumber") + " is going to be no longer activated in " + actions.get("remainingDays") + " days. \n";
+                emailText += "Please log in to your online banking account to activate your card. \n";
                 emailText += "If you have any enquiry, please contact us at 800 820 8820. \n";
                 emailText += "We look forward to serving you again. \n";
                 break;

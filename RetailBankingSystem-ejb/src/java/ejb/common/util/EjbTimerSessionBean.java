@@ -1,5 +1,6 @@
 package ejb.common.util;
 
+import ejb.card.session.CardActivationManagementSessionBeanLocal;
 import ejb.card.session.DebitCardExpirationManagementSessionBeanLocal;
 import java.util.Collection;
 import javax.annotation.Resource;
@@ -35,12 +36,15 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
 
     @EJB
     private BankAccountSessionBeanLocal bankAccountSessionLocal;
-    
+
     @EJB
     private NonStandingGIROSessionBeanLocal nonStandingGIROSessionBeanLocal;
 
     @EJB
     private DebitCardExpirationManagementSessionBeanLocal debitCardExpirationManagementSessionBeanLocal;
+
+    @EJB
+    CardActivationManagementSessionBeanLocal cardActivationManagementSessionBeanLocal;
 
     @Resource
     private SessionContext ctx;
@@ -57,10 +61,9 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
     private final String TIMER_NAME_70000MS = "EJB-TIMER-70000MS";
     private final int TIMER_DURATION_70000MS = 70000;
     private final String TIMER_NAME_5000MS = "EJB-TIMER-5000MS";
-    private final int TIMER_DURATION_5000MS = 5000;
-    //loan - 30secs as one month
-    private final String TIMER_NAME_30000MS = "EJB-TIMER-30000MS";
-    private final int TIMER_DURATION_30000MS = 30000;
+    private final int TIMER_DURATION_5000MS = 50000;
+       private final String TIMER_NAME_2000MS = "EJB-TIMER-2000MS";
+    private final int TIMER_DURATION_2000MS = 20000;
 
     public EjbTimerSessionBean() {
 
@@ -108,6 +111,16 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
                 TIMER_DURATION_5000MS, new String(TIMER_NAME_5000MS));
         System.out.println("{***5000MS Timer created" + String.valueOf(timer5000ms.getTimeRemaining()) + ","
                 + timer5000ms.getInfo().toString());
+    }
+
+    @Override
+    public void createTimer2000MS() {
+        TimerService timerService = ctx.getTimerService();
+
+        Timer timer2000ms = timerService.createTimer(TIMER_DURATION_2000MS,
+                TIMER_DURATION_2000MS, new String(TIMER_NAME_2000MS));
+        System.out.println("{***2000MS Timer created" + String.valueOf(timer2000ms.getTimeRemaining()) + ","
+                + timer2000ms.getInfo().toString());
     }
 
     @Override
@@ -200,6 +213,21 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
         }
     }
 
+    @Override
+    public void cancelTimer2000MS() {
+        TimerService timerService = ctx.getTimerService();
+        Collection timers = timerService.getTimers();
+
+        for (Object obj : timers) {
+            Timer timer = (Timer) obj;
+            if (timer.getInfo().toString().equals(TIMER_NAME_5000MS));
+            {
+                timer.cancel();
+                System.out.println("*** 5000MS Timer cancelled");
+            }
+        }
+    }
+
     @Timeout
     public void handleTimeout(Timer timer) {
         if (timer.getInfo().toString().equals(TIMER_NAME_10000MS)) {
@@ -212,6 +240,8 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
             handleTimeout_70000ms();
         } else if (timer.getInfo().toString().equals(TIMER_NAME_5000MS)) {
             handleTimeout_5000ms();
+        } else if (timer.getInfo().toString().equals(TIMER_NAME_2000MS)) {
+            handleTimeout_2000ms();
         } else {
             System.out.println("*** Unknown timer timeout: " + timer.getInfo().toString());
         }
@@ -249,6 +279,14 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
         System.out.println("*** 5000MS Timer timeout");
 
         debitCardExpirationManagementSessionBeanLocal.handleDebitCardExpiration();
+
+    }
+
+    private void handleTimeout_2000ms() {
+        System.out.println("*** 2000MS Timer timeout");
+
+        cardActivationManagementSessionBeanLocal.handleCardActivation();
+
     }
 
     private void maintainDailyBalance() {
