@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/internalSystemTemplate.xhtml">
+
+    <ui:define name="content">
+
+        <h:body>
+            <div align="center">
+                <h:form>
+                    <p:messages autoUpdate="true"/>
+
+                    <h1>Cancel My Card</h1>
+
+                    <h:panelGrid columns="3" class="ui-lg-6"> 
+
+                        <p:outputLabel value="Card Type:"/>
+                        <p:selectOneRadio required="true" requiredMessage="Please select card type" id="cardType" value="#{customerCancelCardManagedBean.cardType}">
+                            <f:selectItem itemLabel="Credit Card" itemValue="credit" />
+                            <f:selectItem itemLabel="Debit Card" itemValue="debit" />
+                        </p:selectOneRadio>
+                        <p:messages for="cardType"/>
+
+                        <p:outputLabel value="Debit Card"/>
+                        <p:selectOneMenu id="selectCard" required="true" requiredMessage="Please select a debit card" style="text-align:left" value="#{customerCancelCardManagedBean.selectedDebitCard}">
+                            <f:selectItem itemLabel="Please select..." itemValue=""/>
+                            <f:selectItems value="#{customerCancelCardManagedBean.debitCards}"/> 
+                        </p:selectOneMenu>
+                        <p:message for="selectCard"/>
+
+                        <p:outputLabel value="Card Password:" />
+                        <p:inputText type="password" validatorMessage="Card password is 6-digit" required="true" requiredMessage="Please input your card password" id="cardPwd" value="#{customerCancelCardManagedBean.debitCardPwd}">
+                            <f:validateLength minimum="6" maximum="6" /> 
+                        </p:inputText>
+                        <p:messages for="cardPwd"/>
+
+                    </h:panelGrid>
+
+                    <p:commandButton value="Cancel My Card" actionListener="#{customerCancelCardManagedBean.cancelCard}" style="width:auto">
+                        <p:confirm header="Confirmation" message="Are you sure to cancel the card? This action is not reversible" icon="ui-icon-alert" />
+                    </p:commandButton>
+
+                    <p:confirmDialog id="dialog" global="true" showEffect="fade" hideEffect="fade">
+                        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" style="width:auto"/>
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" style="width:auto"/>
+                    </p:confirmDialog>
+                </h:form>
+
+
+
+            </div>
+        </h:body>
+
+    </ui:define>
+</ui:composition>
+
