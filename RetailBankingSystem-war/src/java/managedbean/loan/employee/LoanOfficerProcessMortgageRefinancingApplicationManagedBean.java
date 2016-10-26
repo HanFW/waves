@@ -12,11 +12,10 @@ import ejb.loan.entity.CreditReportBureauScore;
 import ejb.loan.entity.CreditReportDefaultRecords;
 import ejb.loan.entity.CustomerDebt;
 import ejb.loan.entity.CustomerProperty;
-import ejb.loan.entity.MortgageLoanApplication;
+import ejb.loan.entity.RefinancingApplication;
 import ejb.loan.session.LoanApplicationSessionBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -32,12 +31,12 @@ import javax.faces.view.ViewScoped;
  *
  * @author hanfengwei
  */
-@Named(value = "loanOfficerProcessApplicationManagedBean")
+@Named(value = "loanOfficerProcessMortgageRefinancingApplicationManagedBean")
 @ViewScoped
-public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements Serializable{
+public class LoanOfficerProcessMortgageRefinancingApplicationManagedBean implements Serializable{
     @EJB
     private LoanApplicationSessionBeanLocal loanApplicationSessionBeanLocal;
-    private MortgageLoanApplication ma;
+    private RefinancingApplication ra;
     private CustomerBasic customer;
     private CustomerAdvanced ca;
     private List<CustomerDebt> debts;
@@ -100,19 +99,12 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     private Integer customerPropertyTenureDuration;
     private Integer customerPropertyTenureFromYear;
 
-    //loan - new purchase
-    private Double customerPropertyPurchasePrice;
-    private Date customerPropertyDateOfPurchase;
-    private String customerPropertySource;
-    private String customerPropertyWithOTP;
-    private Date customerPropertyOTPDate;
-    private String customerPropertyWithTenancy;
-    private Double customerPropertyTenancyIncome;
-    private Integer customerPropertyTenancyExpiryYear;
-    private String customerWithBenefitsFromVendor;
-    private Double customerBenefitsFromVendor;
-    private Double customerCashDownpayment;
-    private Double customerCPFDownpayment;
+    //loan - refinancing
+    private String customerExistingFinancer;
+    private Double customerOutstandingLoan;
+    private Integer customerOutstandingYear;
+    private Integer customerOutstandingMonth;
+    private Double customerTotalCPFWithdrawal;
     private String customerFinancialRequest;
     private Double customerLoanAmountRequired;
     private Integer customerLoanTenure;
@@ -128,27 +120,26 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     private String riskGrade;
     private Double probabilityOfDefault;
     
-    private Double appraisedValue;
     private double[] maxInterval;
     private double maxMin;
     private double maxMax;
     private double[] suggestedInterval;
     private double suggestedMin;
     private double suggestedMax;
-    private double riskRatio;    
-    
+    private double riskRatio;  
     /**
-     * Creates a new instance of LoanOfficerProcessApplicationManagedBean
+     * Creates a new instance of
+     * LoanOfficerProcessMortgageRefinancingApplicationManagedBean
      */
-    public LoanOfficerProcessMortgagePurchaseApplicationManagedBean() {
+    public LoanOfficerProcessMortgageRefinancingApplicationManagedBean() {
     }
     
     @PostConstruct
     public void init(){
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         Long applicationId = (Long) ec.getFlash().get("applicationId"); 
-        ma = loanApplicationSessionBeanLocal.getMortgageLoanApplicationById(applicationId);
-        customer = ma.getCustomerBasic();
+        ra = loanApplicationSessionBeanLocal.getRefinancingApplicationById(applicationId);
+        customer = ra.getCustomerBasic();
         ca = customer.getCustomerAdvanced();
         debts = customer.getCustomerDebt();
         property = customer.getCustomerProperty();
@@ -199,24 +190,18 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
         customerPropertyTenureDuration = property.getPropertyTenureDuration();
         customerPropertyTenureFromYear = property.getPropertyTenureStartYear();
         
-        customerPropertyPurchasePrice = ma.getPropertyPurchasePrice();
-        customerPropertyDateOfPurchase = ma.getPropertyDateOfPurchase();
-        customerPropertySource = ma.getPropertySource();
-        customerPropertyWithOTP = ma.getPropertyWithOTP();
-        customerPropertyOTPDate = ma.getPropertyOTPDate();
-        customerPropertyWithTenancy = ma.getPropertyWithTenancy();
-        customerPropertyTenancyIncome = ma.getPropertyTenancyIncome();
-        customerPropertyTenancyExpiryYear = ma.getPropertyTenancyExpiryYear();
-        customerWithBenefitsFromVendor = ma.getWithBenifits();
-        customerBenefitsFromVendor = ma.getBenefitsFromVendor();
-        customerCashDownpayment = ma.getCashDownPayment();
-        customerCPFDownpayment = ma.getCpfDownPayment();
-        customerLoanAmountRequired = ma.getAmountRequired();
-        customerLoanTenure = ma.getPeriodRequired();
-        customerInterestPackage = ma.getLoanInterestPackage().getPackageName();
-        docs = ma.getUploads();
+        customerExistingFinancer = ra.getExistingFinancer();
+        customerOutstandingLoan = ra.getOutstandingBalance();
+        customerOutstandingYear = ra.getOutstandingYear();
+        customerOutstandingMonth = ra.getOutstandingMonth();
+        customerTotalCPFWithdrawal = ra.getTotalCPFWithdrawal();
+
+        customerLoanAmountRequired = ra.getAmountRequired();
+        customerLoanTenure = ra.getPeriodRequired();
+        customerInterestPackage = ra.getLoanInterestPackage().getPackageName();
+        docs = ra.getUploads();
         
-        applicationDate = ma.getApplicationDate();
+        applicationDate = ra.getApplicationDate();
         
         cr = customer.getBureauScore();
         accountStatus = cr.getAccountStatus();
@@ -225,7 +210,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
         riskGrade = cr.getRiskGrade();
         probabilityOfDefault = cr.getProbabilityOfDefault();
         
-        appraisedValue = ma.getPropertyAppraisedValue();
         maxInterval = loanApplicationSessionBeanLocal.getMortgagePurchaseLoanMaxInterval();
         maxMin = maxInterval[0];
         maxMax = maxInterval[1];
@@ -236,15 +220,15 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
     
     public void approveLoanRequest() throws IOException{
-        loanApplicationSessionBeanLocal.approveMortgageLoanRequest(ma.getLoanApplicationId(), amountGranted, periodSuggested, instalmentSuggested);
+        loanApplicationSessionBeanLocal.approveRefinancingLoanRequest(ra.getLoanApplicationId(), periodSuggested, instalmentSuggested);
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/loan/loanOfficerViewApplications.xhtml?faces-redirect=true");
     }
     
     public void rejectLoanRequest() throws IOException{
-        loanApplicationSessionBeanLocal.rejectMortgageLoanRequest(ma.getLoanApplicationId());
+        loanApplicationSessionBeanLocal.rejectRefinancingLoanRequest(ra.getLoanApplicationId());
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/loan/loanOfficerViewApplications.xhtml?faces-redirect=true");    
+        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/loan/loanOfficerViewApplications.xhtml?faces-redirect=true");  
     }
     
     private void calculateInstalment(){
@@ -259,20 +243,12 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
         this.loanApplicationSessionBeanLocal = loanApplicationSessionBeanLocal;
     }
 
-    public HashMap getDocs() {
-        return docs;
+    public RefinancingApplication getRa() {
+        return ra;
     }
 
-    public void setDocs(HashMap docs) {
-        this.docs = docs;
-    }
-
-    public MortgageLoanApplication getApplication() {
-        return ma;
-    }
-
-    public void setApplication(MortgageLoanApplication application) {
-        this.ma = application;
+    public void setRa(RefinancingApplication ra) {
+        this.ra = ra;
     }
 
     public CustomerBasic getCustomer() {
@@ -283,12 +259,12 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
         this.customer = customer;
     }
 
-    public CustomerAdvanced getCustomerAdvanced() {
+    public CustomerAdvanced getCa() {
         return ca;
     }
 
-    public void setCustomerAdvanced(CustomerAdvanced customerAdvanced) {
-        this.ca = customerAdvanced;
+    public void setCa(CustomerAdvanced ca) {
+        this.ca = ca;
     }
 
     public List<CustomerDebt> getDebts() {
@@ -307,22 +283,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
         this.property = property;
     }
 
-    public MortgageLoanApplication getMa() {
-        return ma;
-    }
-
-    public void setMa(MortgageLoanApplication ma) {
-        this.ma = ma;
-    }
-
-    public CustomerAdvanced getCa() {
-        return ca;
-    }
-
-    public void setCa(CustomerAdvanced ca) {
-        this.ca = ca;
-    }
-
     public Date getApplicationDate() {
         return applicationDate;
     }
@@ -337,7 +297,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
 
     public void setAmountGranted(double amountGranted) {
         this.amountGranted = amountGranted;
-        this.calculateInstalment();
     }
 
     public int getPeriodSuggested() {
@@ -346,12 +305,10 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
 
     public void setPeriodSuggested(int periodSuggested) {
         this.periodSuggested = periodSuggested;
-        this.calculateInstalment();
     }
 
-    public String getInstalmentSuggested() {
-        DecimalFormat df = new DecimalFormat("0");
-        return df.format(instalmentSuggested);
+    public double getInstalmentSuggested() {
+        return instalmentSuggested;
     }
 
     public void setInstalmentSuggested(double instalmentSuggested) {
@@ -710,100 +667,44 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
         this.customerPropertyTenureFromYear = customerPropertyTenureFromYear;
     }
 
-    public Double getCustomerPropertyPurchasePrice() {
-        return customerPropertyPurchasePrice;
+    public String getCustomerExistingFinancer() {
+        return customerExistingFinancer;
     }
 
-    public void setCustomerPropertyPurchasePrice(Double customerPropertyPurchasePrice) {
-        this.customerPropertyPurchasePrice = customerPropertyPurchasePrice;
+    public void setCustomerExistingFinancer(String customerExistingFinancer) {
+        this.customerExistingFinancer = customerExistingFinancer;
     }
 
-    public Date getCustomerPropertyDateOfPurchase() {
-        return customerPropertyDateOfPurchase;
+    public Double getCustomerOutstandingLoan() {
+        return customerOutstandingLoan;
     }
 
-    public void setCustomerPropertyDateOfPurchase(Date customerPropertyDateOfPurchase) {
-        this.customerPropertyDateOfPurchase = customerPropertyDateOfPurchase;
+    public void setCustomerOutstandingLoan(Double customerOutstandingLoan) {
+        this.customerOutstandingLoan = customerOutstandingLoan;
     }
 
-    public String getCustomerPropertySource() {
-        return customerPropertySource;
+    public Integer getCustomerOutstandingYear() {
+        return customerOutstandingYear;
     }
 
-    public void setCustomerPropertySource(String customerPropertySource) {
-        this.customerPropertySource = customerPropertySource;
+    public void setCustomerOutstandingYear(Integer customerOutstandingYear) {
+        this.customerOutstandingYear = customerOutstandingYear;
     }
 
-    public String getCustomerPropertyWithOTP() {
-        return customerPropertyWithOTP;
+    public Integer getCustomerOutstandingMonth() {
+        return customerOutstandingMonth;
     }
 
-    public void setCustomerPropertyWithOTP(String customerPropertyWithOTP) {
-        this.customerPropertyWithOTP = customerPropertyWithOTP;
+    public void setCustomerOutstandingMonth(Integer customerOutstandingMonth) {
+        this.customerOutstandingMonth = customerOutstandingMonth;
     }
 
-    public Date getCustomerPropertyOTPDate() {
-        return customerPropertyOTPDate;
+    public Double getCustomerTotalCPFWithdrawal() {
+        return customerTotalCPFWithdrawal;
     }
 
-    public void setCustomerPropertyOTPDate(Date customerPropertyOTPDate) {
-        this.customerPropertyOTPDate = customerPropertyOTPDate;
-    }
-
-    public String getCustomerPropertyWithTenancy() {
-        return customerPropertyWithTenancy;
-    }
-
-    public void setCustomerPropertyWithTenancy(String customerPropertyWithTenancy) {
-        this.customerPropertyWithTenancy = customerPropertyWithTenancy;
-    }
-
-    public Double getCustomerPropertyTenancyIncome() {
-        return customerPropertyTenancyIncome;
-    }
-
-    public void setCustomerPropertyTenancyIncome(Double customerPropertyTenancyIncome) {
-        this.customerPropertyTenancyIncome = customerPropertyTenancyIncome;
-    }
-
-    public Integer getCustomerPropertyTenancyExpiryYear() {
-        return customerPropertyTenancyExpiryYear;
-    }
-
-    public void setCustomerPropertyTenancyExpiryYear(Integer customerPropertyTenancyExpiryYear) {
-        this.customerPropertyTenancyExpiryYear = customerPropertyTenancyExpiryYear;
-    }
-
-    public String getCustomerWithBenefitsFromVendor() {
-        return customerWithBenefitsFromVendor;
-    }
-
-    public void setCustomerWithBenefitsFromVendor(String customerWithBenefitsFromVendor) {
-        this.customerWithBenefitsFromVendor = customerWithBenefitsFromVendor;
-    }
-
-    public Double getCustomerBenefitsFromVendor() {
-        return customerBenefitsFromVendor;
-    }
-
-    public void setCustomerBenefitsFromVendor(Double customerBenefitsFromVendor) {
-        this.customerBenefitsFromVendor = customerBenefitsFromVendor;
-    }
-
-    public Double getCustomerCashDownpayment() {
-        return customerCashDownpayment;
-    }
-
-    public void setCustomerCashDownpayment(Double customerCashDownpayment) {
-        this.customerCashDownpayment = customerCashDownpayment;
-    }
-
-    public Double getCustomerCPFDownpayment() {
-        return customerCPFDownpayment;
-    }
-
-    public void setCustomerCPFDownpayment(Double customerCPFDownpayment) {
-        this.customerCPFDownpayment = customerCPFDownpayment;
+    public void setCustomerTotalCPFWithdrawal(Double customerTotalCPFWithdrawal) {
+        this.customerTotalCPFWithdrawal = customerTotalCPFWithdrawal;
     }
 
     public String getCustomerFinancialRequest() {
@@ -836,6 +737,14 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
 
     public void setCustomerInterestPackage(String customerInterestPackage) {
         this.customerInterestPackage = customerInterestPackage;
+    }
+
+    public HashMap getDocs() {
+        return docs;
+    }
+
+    public void setDocs(HashMap docs) {
+        this.docs = docs;
     }
 
     public CreditReportBureauScore getCr() {
@@ -886,36 +795,12 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
         this.probabilityOfDefault = probabilityOfDefault;
     }
 
-    public Double getAppraisedValue() {
-        return appraisedValue;
-    }
-
-    public void setAppraisedValue(Double appraisedValue) {
-        this.appraisedValue = appraisedValue;
-    }
-
     public double[] getMaxInterval() {
         return maxInterval;
     }
 
     public void setMaxInterval(double[] maxInterval) {
         this.maxInterval = maxInterval;
-    }
-
-    public double[] getSuggestedInterval() {
-        return suggestedInterval;
-    }
-
-    public void setSuggestedInterval(double[] suggestedInterval) {
-        this.suggestedInterval = suggestedInterval;
-    }
-
-    public double getRiskRatio() {
-        return riskRatio;
-    }
-
-    public void setRiskRatio(double riskRatio) {
-        this.riskRatio = riskRatio;
     }
 
     public double getMaxMin() {
@@ -934,6 +819,14 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
         this.maxMax = maxMax;
     }
 
+    public double[] getSuggestedInterval() {
+        return suggestedInterval;
+    }
+
+    public void setSuggestedInterval(double[] suggestedInterval) {
+        this.suggestedInterval = suggestedInterval;
+    }
+
     public double getSuggestedMin() {
         return suggestedMin;
     }
@@ -949,4 +842,13 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     public void setSuggestedMax(double suggestedMax) {
         this.suggestedMax = suggestedMax;
     }
+
+    public double getRiskRatio() {
+        return riskRatio;
+    }
+
+    public void setRiskRatio(double riskRatio) {
+        this.riskRatio = riskRatio;
+    }
+    
 }

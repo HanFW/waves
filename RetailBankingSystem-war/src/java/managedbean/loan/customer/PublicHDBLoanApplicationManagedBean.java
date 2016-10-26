@@ -504,7 +504,7 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
         if (file != null) {
             String filename = customerIdentificationNum + ".pdf";
             InputStream input = file.getInputstream();
-            OutputStream output = new FileOutputStream(new File("/Users/hanfengwei/NetBeansProjects/waves/RetailBankingSystem-war/web/resources/customerIdentification", filename));
+            OutputStream output = new FileOutputStream(new File("/Users/hanfengwei/Desktop/customerDocuments", filename));
             try {
                 IOUtils.copy(input, output);
             } finally {
@@ -525,7 +525,7 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
         if (file != null) {
             String filename = customerIdentificationNum + "-otp.pdf";
             InputStream input = file.getInputstream();
-            OutputStream output = new FileOutputStream(new File("/Users/hanfengwei/NetBeansProjects/waves/RetailBankingSystem-war/web/resources/customerDocuments", filename));
+            OutputStream output = new FileOutputStream(new File("/Users/hanfengwei/Desktop/customerDocuments", filename));
             try {
                 IOUtils.copy(input, output);
             } finally {
@@ -546,7 +546,7 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
         if (file != null) {
             String filename = customerIdentificationNum + "-purchase_agreement.pdf";
             InputStream input = file.getInputstream();
-            OutputStream output = new FileOutputStream(new File("/Users/hanfengwei/NetBeansProjects/waves/RetailBankingSystem-war/web/resources/customerDocuments", filename));
+            OutputStream output = new FileOutputStream(new File("/Users/hanfengwei/Desktop/customerDocuments", filename));
             try {
                 IOUtils.copy(input, output);
             } finally {
@@ -567,7 +567,7 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
         if (file != null) {
             String filename = customerIdentificationNum + "-existing_loan.pdf";
             InputStream input = file.getInputstream();
-            OutputStream output = new FileOutputStream(new File("/Users/hanfengwei/NetBeansProjects/waves/RetailBankingSystem-war/web/resources/customerDocuments", filename));
+            OutputStream output = new FileOutputStream(new File("/Users/hanfengwei/Desktop/customerDocuments", filename));
             try {
                 IOUtils.copy(input, output);
             } finally {
@@ -588,7 +588,7 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
         if (file != null) {
             String filename = customerIdentificationNum + "-cpf_withdrawal.pdf";
             InputStream input = file.getInputstream();
-            OutputStream output = new FileOutputStream(new File("/Users/hanfengwei/NetBeansProjects/waves/RetailBankingSystem-war/web/resources/customerDocuments", filename));
+            OutputStream output = new FileOutputStream(new File("/Users/hanfengwei/Desktop/customerDocuments", filename));
             try {
                 IOUtils.copy(input, output);
             } finally {
@@ -609,7 +609,7 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
         if (file != null) {
             String filename = customerIdentificationNum + "-evidence_of_sale.pdf";
             InputStream input = file.getInputstream();
-            OutputStream output = new FileOutputStream(new File("/Users/hanfengwei/NetBeansProjects/waves/RetailBankingSystem-war/web/resources/customerDocuments", filename));
+            OutputStream output = new FileOutputStream(new File("/Users/hanfengwei/Desktop/customerDocuments", filename));
             try {
                 IOUtils.copy(input, output);
             } finally {
@@ -630,7 +630,7 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
         if (file != null) {
             String filename = customerIdentificationNum + "-tenancy.pdf";
             InputStream input = file.getInputstream();
-            OutputStream output = new FileOutputStream(new File("/Users/hanfengwei/NetBeansProjects/waves/RetailBankingSystem-war/web/resources/customerDocuments", filename));
+            OutputStream output = new FileOutputStream(new File("/Users/hanfengwei/Desktop/customerDocuments", filename));
             try {
                 IOUtils.copy(input, output);
             } finally {
@@ -651,7 +651,7 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
         if (file != null) {
             String filename = customerIdentificationNum + "-employee_tax.pdf";
             InputStream input = file.getInputstream();
-            OutputStream output = new FileOutputStream(new File("/Users/hanfengwei/NetBeansProjects/waves/RetailBankingSystem-war/web/resources/customerDocuments", filename));
+            OutputStream output = new FileOutputStream(new File("/Users/hanfengwei/Desktop/customerDocuments", filename));
             try {
                 IOUtils.copy(input, output);
             } finally {
@@ -672,7 +672,7 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
         if (file != null) {
             String filename = customerIdentificationNum + "-employee_cpf.pdf";
             InputStream input = file.getInputstream();
-            OutputStream output = new FileOutputStream(new File("/Users/hanfengwei/NetBeansProjects/waves/RetailBankingSystem-war/web/resources/customerDocuments", filename));
+            OutputStream output = new FileOutputStream(new File("/Users/hanfengwei/Desktop/customerDocuments", filename));
             try {
                 IOUtils.copy(input, output);
             } finally {
@@ -693,7 +693,7 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
         if (file != null) {
             String filename = customerIdentificationNum + "-self-employed_tax.pdf";
             InputStream input = file.getInputstream();
-            OutputStream output = new FileOutputStream(new File("/Users/hanfengwei/NetBeansProjects/waves/RetailBankingSystem-war/web/resources/customerDocuments", filename));
+            OutputStream output = new FileOutputStream(new File("/Users/hanfengwei/Desktop/customerDocuments", filename));
             try {
                 IOUtils.copy(input, output);
             } finally {

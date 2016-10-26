@@ -27,7 +27,7 @@
             <p:column headerText="Status">
                 <h:outputText value="#{loanApplication.applicationStatus}" />
             </p:column>
-            <p:column headerText="Period">
+            <p:column>
                 <p:commandButton value="View" action="#{loanOfficerViewLoanApplicationsManagedBean.viewApplication(loanApplication.loanApplicationId, loanApplication.loanType)}"/>
             </p:column>
         </p:dataTable>

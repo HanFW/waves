@@ -7,6 +7,7 @@ package ejb.loan.entity;
 
 import ejb.customer.entity.CustomerBasic;
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -35,10 +36,10 @@ public class CreditReportBureauScore implements Serializable {
     CustomerBasic customer;
     
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
-    CreditReportAccountStatus accountStatus;
+    List<CreditReportAccountStatus> accountStatus;
     
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
-    CreditReportDefaultRecords defaultRecords;
+    List<CreditReportDefaultRecords> defaultRecords;
 
     public Long getId() {
         return id;
@@ -80,19 +81,19 @@ public class CreditReportBureauScore implements Serializable {
         this.customer = customer;
     }
 
-    public CreditReportAccountStatus getAccountStatus() {
+    public List<CreditReportAccountStatus> getAccountStatus() {
         return accountStatus;
     }
 
-    public void setAccountStatus(CreditReportAccountStatus accountStatus) {
+    public void setAccountStatus(List<CreditReportAccountStatus> accountStatus) {
         this.accountStatus = accountStatus;
     }
 
-    public CreditReportDefaultRecords getDefaultRecords() {
+    public List<CreditReportDefaultRecords> getDefaultRecords() {
         return defaultRecords;
     }
 
-    public void setDefaultRecords(CreditReportDefaultRecords defaultRecords) {
+    public void setDefaultRecords(List<CreditReportDefaultRecords> defaultRecords) {
         this.defaultRecords = defaultRecords;
     }
 

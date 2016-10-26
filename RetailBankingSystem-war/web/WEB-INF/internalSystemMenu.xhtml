@@ -105,20 +105,20 @@
                             <p:menuitem value="XXXXXX" url="" />
                         </p:submenu>
 
+                        <p:submenu label="Loan Department Manager" rendered="#{employeeAccountManagedBean.hasRoleLoanDepartmentManager()}">
+                            <p:menuitem value="View All Loans" url="/web/internalSystem/loan/loanManagerViewAllLoans.xhtml" />
+                        </p:submenu>
+                        
                         <p:submenu label="Loan Officer" rendered="#{employeeAccountManagedBean.hasRoleLoanOfficer()}">
                             <p:menuitem value="View Applications" url="/web/internalSystem/loan/loanOfficerViewApplications.xhtml" />
                         </p:submenu>
 
                         <p:submenu label="Mortgage Appraiser" rendered="#{employeeAccountManagedBean.hasRoleMortgageAppraiser()}">
-                            <p:menuitem value="XXXXXX" url="" />
+                            <p:menuitem value="View Property List" url="" />
                         </p:submenu>
 
                         <p:submenu label="Loan Specialist" rendered="#{employeeAccountManagedBean.hasRoleLoanSpecialist()}">
                             <p:menuitem value="View Pending Issue" url="/web/internalSystem/enquiry/loanSpecialistViewPendingIssue.xhtml" />
-                        </p:submenu>
-
-                        <p:submenu label="Loan Department Manager" rendered="#{employeeAccountManagedBean.hasRoleLoanDepartmentManager()}">
-                            <p:menuitem value="XXXXXX" url="" />
                         </p:submenu>
 
                         <p:submenu label="Director" rendered="#{employeeAccountManagedBean.hasRoleDirector()}">

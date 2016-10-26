@@ -7,13 +7,20 @@ package ejb.loan.session;
 
 import ejb.customer.entity.CustomerAdvanced;
 import ejb.customer.entity.CustomerBasic;
+import ejb.loan.entity.CreditReportAccountStatus;
+import ejb.loan.entity.CreditReportBureauScore;
+import ejb.loan.entity.CreditReportDefaultRecords;
 import ejb.loan.entity.CustomerDebt;
 import ejb.loan.entity.CustomerProperty;
 import ejb.loan.entity.LoanApplication;
 import ejb.loan.entity.LoanInterestPackage;
+import ejb.loan.entity.LoanPayableAccount;
+import ejb.loan.entity.LoanRepaymentAccount;
 import ejb.loan.entity.MortgageLoanApplication;
 import ejb.loan.entity.RefinancingApplication;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -104,19 +111,154 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
 
     @Override
     public MortgageLoanApplication getMortgageLoanApplicationById(Long applicationId) {
+        System.out.println("****** loan/LoanApplicationSessionBean: getMortgageLoanApplicationById() ******");
         MortgageLoanApplication application = em.find(MortgageLoanApplication.class, applicationId);
         return application;
     }
 
     @Override
     public RefinancingApplication getRefinancingApplicationById(Long applicationId) {
+        System.out.println("****** loan/LoanApplicationSessionBean: getRefinancingApplicationById() ******");
         RefinancingApplication application = em.find(RefinancingApplication.class, applicationId);
         return application;
     }
 
     @Override
     public LoanApplication getLoanApplicationById(Long applicationId) {
+        System.out.println("****** loan/LoanApplicationSessionBean: getLoanApplicationById() ******");
         LoanApplication application = em.find(LoanApplication.class, applicationId);
         return application;
+    }
+    
+    @Override
+    public double[] getMortgagePurchaseLoanMaxInterval(){
+        System.out.println("****** loan/LoanApplicationSessionBean: getMortgagePurchaseLoanMaxInterval() ******");
+        double[] maxInterval = new double[2];
+        maxInterval[0] = 460000;
+        maxInterval[1] = 510000;
+        return maxInterval;
+    }
+    
+    @Override
+    public double getMortgagePurchaseLoanRiskRatio(){
+        System.out.println("****** loan/LoanApplicationSessionBean: getMortgagePurchaseLoanRiskRatio() ******");
+        double ratio = 0;
+        return ratio;
+    }
+    
+    @Override
+    public double[] getMortgagePurchaseLoanSuggestedInterval(){
+        System.out.println("****** loan/LoanApplicationSessionBean: getMortgagePurchaseLoanSuggestedInterval() ******");
+        double[] interval = new double[2];
+        interval[0] = 460000;
+        interval[1] = 510000;
+        return interval;
+    }
+    
+    @Override
+    public void approveMortgageLoanRequest(Long applicationId, double amount, int period, double instalment){
+        System.out.println("****** loan/LoanApplicationSessionBean: approveMortgageLoanRequest() ******");
+        LoanApplication application = em.find(LoanApplication.class, applicationId);
+        application.setAmountGranted(amount);
+        application.setPeriodSuggested(period);
+        application.setInstalment(instalment);
+        application.setApplicationStatus("approved");
+        application.setFinalActionDate(new Date());
+        
+        LoanPayableAccount loanPayableAccount = new LoanPayableAccount();
+        LoanRepaymentAccount loanRepaymentAccount = new LoanRepaymentAccount();
+        
+        application.setLoanPayableAccount(loanPayableAccount);
+        loanPayableAccount.setLoanApplication(application);
+        
+        loanPayableAccount.setLoanRepaymentAccount(loanRepaymentAccount);
+        loanRepaymentAccount.setLoanPayableAccount(loanPayableAccount);
+        
+        em.flush();
+        
+        DecimalFormat df = new DecimalFormat("000000");
+        
+        loanPayableAccount.setAccountNumber("6000" + df.format(loanPayableAccount.getId()));
+        loanPayableAccount.setInitialAmount(amount);
+        loanPayableAccount.setAccountBalance(amount);
+        loanPayableAccount.setStartDate(new Date());
+        loanPayableAccount.setAccountStatus("start");
+        loanPayableAccount.setOverdueBalance(0);
+        
+        loanRepaymentAccount.setAccountNumber("7000" + df.format(loanRepaymentAccount.getId()));
+        
+        em.flush();
+    }
+    
+    @Override
+    public void rejectMortgageLoanRequest(Long applicationId){
+        System.out.println("****** loan/LoanApplicationSessionBean: rejectMortgageLoanRequest() ******");
+        LoanApplication application = em.find(LoanApplication.class, applicationId);
+        CustomerBasic customer = application.getCustomerBasic();
+        CustomerAdvanced ca = customer.getCustomerAdvanced();
+        CustomerProperty property = customer.getCustomerProperty();
+        
+        CreditReportBureauScore report = customer.getBureauScore();
+        for(CustomerDebt debt: customer.getCustomerDebt()){
+            em.remove(debt);
+        }
+        for(CreditReportAccountStatus as: report.getAccountStatus()){
+            em.remove(as);
+        }
+        for(CreditReportDefaultRecords dr: report.getDefaultRecords()){
+            em.remove(dr);
+        }
+        em.remove(report);
+        
+        em.remove(application);
+        em.remove(property);
+        em.remove(ca);
+        em.remove(customer);
+        em.flush();
+    }
+    
+    @Override
+    public void approveRefinancingLoanRequest(Long applicationId, int period, double instalment){
+        
+    }
+    
+    @Override
+    public void rejectRefinancingLoanRequest(Long applicationId){
+        
+    }
+    
+    @Override
+    public List<LoanApplication> getAllApprovedLoans(){
+        Query query = em.createQuery("SELECT la FROM LoanApplication la WHERE la.applicationStatus = :applicationStatus");
+        query.setParameter("applicationStatus", "approved");
+        return query.getResultList();
+    }
+    
+    @Override
+    public List<LoanApplication> getAllStartedLoans(){
+        Query query = em.createQuery("SELECT la FROM LoanApplication la WHERE la.applicationStatus = :applicationStatus");
+        query.setParameter("applicationStatus", "started");
+        return query.getResultList();
+    }
+    
+    @Override
+    public List<LoanApplication> getAllInProgressLoans(){
+        Query query = em.createQuery("SELECT la FROM LoanApplication la WHERE la.applicationStatus = :applicationStatus");
+        query.setParameter("applicationStatus", "in progress");
+        return query.getResultList();
+    }
+    
+    @Override
+    public void startNewLoan(Long applicationId){
+        LoanApplication application = em.find(LoanApplication.class, applicationId);
+        application.setApplicationStatus("started");
+        em.flush();
+    }
+    
+    @Override
+    public void updateLoanStatus(String status, Long applicationId){
+        LoanApplication application = em.find(LoanApplication.class, applicationId);
+        application.setApplicationStatus(status);
+        em.flush();
     }
 }

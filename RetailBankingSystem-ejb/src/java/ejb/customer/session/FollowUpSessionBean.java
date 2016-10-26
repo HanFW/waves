@@ -1,8 +1,6 @@
 package ejb.customer.session;
 
-import ejb.customer.entity.EnquiryCase;
 import ejb.customer.entity.FollowUp;
-import static ejb.customer.entity.Issue_.enquiryCase;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;

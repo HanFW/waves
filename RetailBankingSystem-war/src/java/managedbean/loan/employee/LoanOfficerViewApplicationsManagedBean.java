@@ -42,6 +42,7 @@ public class LoanOfficerViewApplicationsManagedBean {
 
     public void viewApplication(Long loanApplicationId, String loanType) throws IOException {
         System.out.println("====== loan/LoanOfficerViewLoanApplicationsManagedBean: viewApplication() ======");
+        loanApplicationSessionBeanLocal.updateLoanStatus("in progress", loanApplicationId);
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         ec.getFlash().put("applicationId", loanApplicationId);
         if (loanType.equals("HDB - New Purchase")) {

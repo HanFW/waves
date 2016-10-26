@@ -34,6 +34,7 @@ public class MortgageLoanApplication extends LoanApplication implements Serializ
     private double benefitsFromVendor;
     private double cashDownPayment;
     private double cpfDownPayment;
+    private double propertyAppraisedValue;
 
     public void create(String loanType, double amountRequired, int periodRequired, double propertyPurchasePrice, Date propertyDateOfPurchase,
             String propertySource, String propertyWithOTP, Date propertyOTPDate, String propertyWithTenancy,
@@ -56,6 +57,7 @@ public class MortgageLoanApplication extends LoanApplication implements Serializ
         this.setBenefitsFromVendor(benefitsFromVendor);
         this.setCashDownPayment(cashDownPayment);
         this.setCpfDownPayment(cpfDownPayment);
+        this.setPropertyAppraisedValue(0.0);
         HashMap docs = new HashMap();
         docs.put("identification", true);
         docs.put("otp", true);
@@ -184,4 +186,13 @@ public class MortgageLoanApplication extends LoanApplication implements Serializ
         this.cpfDownPayment = cpfDownPayment;
     }
 
+    public double getPropertyAppraisedValue() {
+        return propertyAppraisedValue;
+    }
+
+    public void setPropertyAppraisedValue(double propertyAppraisedValue) {
+        this.propertyAppraisedValue = propertyAppraisedValue;
+    }
+    
+    
 }

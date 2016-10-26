@@ -9,12 +9,14 @@ import ejb.customer.entity.CustomerBasic;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 
 /**
@@ -46,6 +48,9 @@ public class LoanApplication implements Serializable {
     
     @ManyToOne(fetch = FetchType.EAGER)
     private CustomerBasic customerBasic;
+    
+    @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    private LoanPayableAccount loanPayableAccount;
 
     public Long getLoanApplicationId() {
         return loanApplicationId;
@@ -149,6 +154,14 @@ public class LoanApplication implements Serializable {
 
     public void setUploads(HashMap uploads) {
         this.uploads = uploads;
+    }
+
+    public LoanPayableAccount getLoanPayableAccount() {
+        return loanPayableAccount;
+    }
+
+    public void setLoanPayableAccount(LoanPayableAccount loanPayableAccount) {
+        this.loanPayableAccount = loanPayableAccount;
     }
     
 }
