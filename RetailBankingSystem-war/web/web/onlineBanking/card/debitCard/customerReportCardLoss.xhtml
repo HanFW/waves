@@ -52,7 +52,7 @@
                         <p:message for="selectCard"/>
 
                         <p:outputLabel value="Card Password:" />
-                        <p:inputText validatorMessage="Card password is 6-digit" required="true" requiredMessage="Please input your card password" id="cardPwd" value="#{customerReportLossManagedBean.debitCardPwd}">
+                        <p:inputText type="password" validatorMessage="Card password is 6-digit" required="true" requiredMessage="Please input your card password" id="cardPwd" value="#{customerReportLossManagedBean.debitCardPwd}">
                             <f:validateLength minimum="6" maximum="6" /> 
                         </p:inputText>
                         <p:message for="cardPwd"/>

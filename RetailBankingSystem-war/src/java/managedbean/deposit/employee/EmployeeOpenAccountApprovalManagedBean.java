@@ -6,6 +6,7 @@ import ejb.deposit.entity.BankAccount;
 import ejb.deposit.entity.Interest;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import ejb.deposit.session.InterestSessionBeanLocal;
+import ejb.payment.session.MerlionBankSessionBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
@@ -20,6 +21,8 @@ import javax.faces.context.FacesContext;
 @RequestScoped
 
 public class EmployeeOpenAccountApprovalManagedBean implements Serializable {
+    @EJB
+    private MerlionBankSessionBeanLocal merlionBankSessionBeanLocal;
 
     @EJB
     private InterestSessionBeanLocal interestSessionBeanLocal;
@@ -57,7 +60,7 @@ public class EmployeeOpenAccountApprovalManagedBean implements Serializable {
 
         ec = FacesContext.getCurrentInstance().getExternalContext();
         
-        bankAccountSessionBeanLocal.approveAccount(customerIdentificationNum);
+        merlionBankSessionBeanLocal.approveAccount(customerIdentificationNum);
         CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum);
 
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Successfully Approve Customer " + customerBasic.getCustomerName(), "Successfully!"));
@@ -71,7 +74,7 @@ public class EmployeeOpenAccountApprovalManagedBean implements Serializable {
         Interest interest = bankAccount.getInterest();
         Long interestId = interest.getInterestId();
         
-        bankAccountSessionBeanLocal.sendEmailToRejectCustomer(customerIdentificationNum);
+        merlionBankSessionBeanLocal.sendEmailToRejectCustomer(customerIdentificationNum);
         
         customerSessionBeanLocal.deleteCustomerBasic(customerIdentificationNum);
         interestSessionBeanLocal.deleteInterest(interestId);

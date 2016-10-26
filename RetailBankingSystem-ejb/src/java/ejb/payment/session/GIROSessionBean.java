@@ -1,10 +1,7 @@
 package ejb.payment.session;
 
-import ejb.customer.entity.CustomerBasic;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import ejb.payment.entity.GIRO;
-import java.util.ArrayList;
-import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;

@@ -1,12 +1,10 @@
 package ejb.deposit.session;
 
-import ejb.infrastructure.session.CustomerAdminSessionBeanLocal;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.entity.AccTransaction;
 import ejb.customer.entity.CustomerBasic;
 import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import ejb.deposit.entity.Interest;
-import ejb.infrastructure.session.CustomerEmailSessionBeanLocal;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -16,13 +14,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.PersistenceContext;
 import java.util.List;
-import java.util.Map;
 import javax.ejb.EJB;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.NonUniqueResultException;
@@ -30,21 +26,15 @@ import javax.persistence.NonUniqueResultException;
 @Stateless
 
 public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
-    
-    @EJB
-    private TransactionSessionBeanLocal transactionSessionBeanLocal;
 
     @EJB
-    private CustomerEmailSessionBeanLocal customerEmailSessionBeanLocal;
+    private TransactionSessionBeanLocal transactionSessionBeanLocal;
 
     @EJB
     private StatementSessionBeanLocal statementSessionBeanLocal;
 
     @EJB
     private CRMCustomerSessionBeanLocal customerSessionBeanLocal;
-
-    @EJB
-    private CustomerAdminSessionBeanLocal adminSessionBeanLocal;
 
     @EJB
     private InterestSessionBeanLocal interestSessionLocal;
@@ -309,7 +299,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
 
                     finalAvailableBalance = currentAvailableBalance + finalInterest;
                     finalTotalBalance = currentTotalBalance + finalInterest;
-                    
+
                     activatedBankAccount.setAvailableBankAccountBalance(df.format(finalAvailableBalance));
                     activatedBankAccount.setTotalBankAccountBalance(df.format(finalTotalBalance));
 
@@ -318,7 +308,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
                     String transactionRef = "Interest Crediting";
 
                     Calendar cal = Calendar.getInstance();
-                    
+
                     Long transactionDateMilis = cal.getTimeInMillis();
 
                     Long newAccTransactionId = transactionSessionBeanLocal.addNewTransaction(cal.getTime().toString(), transactionCode, transactionRef,
@@ -333,7 +323,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
                     currentInterest = Double.valueOf(activatedBankAccount.getInterest().getDailyInterest());
                     currentAvailableBalance = Double.valueOf(activatedBankAccount.getAvailableBankAccountBalance());
                     currentTotalBalance = Double.valueOf(activatedBankAccount.getTotalBankAccountBalance());
-                            
+
                     String interestRate = checkInterestRate(activatedBankAccount.getBankAccountDepositPeriod());
 
                     totalInterest = currentInterest + currentAvailableBalance * Double.valueOf(interestRate) / 360;
@@ -346,10 +336,10 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
                         finalTotalBalance = currentTotalBalance + totalInterest;
 
                         interest.setDailyInterest("0");
-                        
+
                         activatedBankAccount.setAvailableBankAccountBalance(df.format(finalAvailableBalance));
                         activatedBankAccount.setTotalBankAccountBalance(df.format(finalTotalBalance));
-                        
+
                         activatedBankAccount.setFixedDepositStatus("Withdrawn");
                         activatedBankAccount.setBankAccountDepositPeriod("None");
                         activatedBankAccount.setBankAccountStatus("Inactive");
@@ -359,7 +349,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
                         String transactionRef = "Interest Crediting";
 
                         Calendar cal = Calendar.getInstance();
-                        
+
                         Long transactionDateMilis = cal.getTimeInMillis();
 
                         Long newAccTransactionId = transactionSessionBeanLocal.addNewTransaction(cal.getTime().toString(), transactionCode, transactionRef,
@@ -427,7 +417,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
                 finalTotalBalance = Double.valueOf(activatedBankAccount.getTotalBankAccountBalance()) + totalInterest;
 
                 interest.setMonthlyInterest(totalInterest.toString());
-                
+
                 activatedBankAccount.setAvailableBankAccountBalance(df.format(finalAvailableBalance));
                 activatedBankAccount.setTotalBankAccountBalance(df.format(finalTotalBalance));
 
@@ -436,7 +426,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
                 String transactionRef = "Interest Crediting";
 
                 Calendar cal = Calendar.getInstance();
-                
+
                 Long transactionDateMilis = cal.getTimeInMillis();
 
                 Long newAccTransactionId = transactionSessionBeanLocal.addNewTransaction(cal.getTime().toString(), transactionCode, transactionRef,
@@ -463,7 +453,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
 
                     totalInterest = dailyInterest + bonusInterest;
                     creditedInterest = Double.valueOf(df.format(totalInterest));
-                    
+
                     finalAvailableBalance = Double.valueOf(activatedBankAccount.getAvailableBankAccountBalance()) + totalInterest;
                     finalTotalBalance = Double.valueOf(activatedBankAccount.getTotalBankAccountBalance()) + totalInterest;
 
@@ -472,7 +462,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
                     String transactionRef = "Interest Crediting";
 
                     Calendar cal = Calendar.getInstance();
-                    
+
                     Long transactionDateMilis = cal.getTimeInMillis();
 
                     interest.setMonthlyInterest(totalInterest.toString());
@@ -689,7 +679,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
     }
 
     @Override
-    public Long addNewAccountOneTime(String bankAccountNum, String bankAccountType, 
+    public Long addNewAccountOneTime(String bankAccountNum, String bankAccountType,
             String totalBankAccountBalance, String availableBankAccountBalance, String transferDailyLimit,
             String transferBalance, String bankAccountStatus, String bankAccountMinSaving,
             String bankAccountDepositPeriod, String currentFixedDepositPeriod,
@@ -724,39 +714,18 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
     }
 
     @Override
-    public void updateBankAccountBalance(String bankAccountNum, String availableBankAccountBalance, 
+    public void updateBankAccountAvailableBalance(String bankAccountNum, String availableBankAccountBalance) {
+        BankAccount bankAccount = retrieveBankAccountByNum(bankAccountNum);
+
+        bankAccount.setAvailableBankAccountBalance(availableBankAccountBalance);
+    }
+
+    @Override
+    public void updateBankAccountBalance(String bankAccountNum, String availableBankAccountBalance,
             String totalBankAccountBalance) {
         BankAccount bankAccount = retrieveBankAccountByNum(bankAccountNum);
 
         bankAccount.setAvailableBankAccountBalance(availableBankAccountBalance);
         bankAccount.setTotalBankAccountBalance(totalBankAccountBalance);
-    }
-
-    @Override
-    public void approveAccount(String customerIdentificationNum) {
-
-        CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum);
-        BankAccount bankAccount = retrieveBankAccountByCusIC(customerIdentificationNum).get(0);
-
-        customerBasic.setNewCustomer("No");
-
-        if (bankAccount.getBankAccountType().equals("Monthly Savings Account")) {
-            bankAccount.setBankAccountStatus("Active");
-            bankAccount.setBankAccountMinSaving("Insufficient");
-        } else {
-            bankAccount.setBankAccountStatus("Inactive");
-        }
-
-        String onlineBankingAccount = adminSessionBeanLocal.createOnlineBankingAccount(customerBasic.getCustomerBasicId());
-    }
-
-    @Override
-    public void sendEmailToRejectCustomer(String customerIdentificationNum) {
-
-        CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum);
-
-        Map emailActions = new HashMap();
-//        emailActions.put("customerName", customerBasic.getCustomerName());
-        customerEmailSessionBeanLocal.sendEmail(customerBasic, "rejectOpenAccount", emailActions);
     }
 }

@@ -4,9 +4,14 @@ import ejb.card.entity.CreditCard;
 import ejb.deposit.entity.BankAccount;
 import ejb.infrastructure.entity.MessageBox;
 import ejb.deposit.entity.Payee;
+import ejb.loan.entity.CreditReportBureauScore;
+import ejb.loan.entity.CustomerDebt;
+import ejb.loan.entity.CustomerProperty;
+import ejb.loan.entity.LoanApplication;
 import ejb.payment.entity.Cheque;
 import ejb.payment.entity.FastPayee;
 import ejb.payment.entity.GIRO;
+import ejb.payment.entity.SWIFTPayee;
 import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -66,7 +71,7 @@ public class CustomerBasic implements Serializable {
 
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
     private List<MessageBox> messageBox;
-    
+
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
     private List<CreditCard> creditCard;
 
@@ -75,9 +80,28 @@ public class CustomerBasic implements Serializable {
 
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
     private List<GIRO> giro;
-    
+
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
     private List<Cheque> cheque;
+    
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    private List<CustomerDebt> customerDebt;
+    
+    @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    private CustomerProperty customerProperty;
+    
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
+    private List<LoanApplication> loanApplication;
+    
+    @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    private CreditReportBureauScore bureauScore;
+    
+    public void addLoanApplication(LoanApplication newApplication){
+        loanApplication.add(newApplication);
+    }
+
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
+    private List<SWIFTPayee> swiftPayee;
 
     public Long getCustomerBasicId() {
         return customerBasicId;
@@ -338,7 +362,7 @@ public class CustomerBasic implements Serializable {
     public void setGiro(List<GIRO> giro) {
         this.giro = giro;
     }
-    
+
     public String getNewCustomer() {
         return newCustomer;
     }
@@ -353,6 +377,46 @@ public class CustomerBasic implements Serializable {
 
     public void setCheque(List<Cheque> cheque) {
         this.cheque = cheque;
+    }
+
+    public List<SWIFTPayee> getSwiftPayee() {
+        return swiftPayee;
+    }
+
+    public void setSwiftPayee(List<SWIFTPayee> swiftPayee) {
+        this.swiftPayee = swiftPayee;
+    }
+
+    public List<CustomerDebt> getCustomerDebt() {
+        return customerDebt;
+    }
+
+    public void setCustomerDebt(List<CustomerDebt> customerDebt) {
+        this.customerDebt = customerDebt;
+    }
+
+    public CustomerProperty getCustomerProperty() {
+        return customerProperty;
+    }
+
+    public void setCustomerProperty(CustomerProperty customerProperty) {
+        this.customerProperty = customerProperty;
+    }
+
+    public List<LoanApplication> getLoanApplication() {
+        return loanApplication;
+    }
+
+    public void setLoanApplication(List<LoanApplication> loanApplication) {
+        this.loanApplication = loanApplication;
+    }
+
+    public CreditReportBureauScore getBureauScore() {
+        return bureauScore;
+    }
+
+    public void setBureauScore(CreditReportBureauScore bureauScore) {
+        this.bureauScore = bureauScore;
     }
     
     @Override
