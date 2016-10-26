@@ -50,13 +50,14 @@ public class DebitCardManagementSessionBean implements DebitCardManagementSessio
                 if (!findDebitCard.getDebitCardPwd().equals(hashedInputPwd)) {
                     return "wrong pwd";
                 } else {
-                    BankAccount depositAccount = findDebitCard.getBankAccount();
-                    DebitCardType debitCardType = findDebitCard.getDebitCardType();
-
-                    depositAccount.removeDebitCard(findDebitCard);
-                    debitCardType.removeDebitCard(findDebitCard);
-
-                    em.remove(findDebitCard);
+//                    BankAccount depositAccount = findDebitCard.getBankAccount();
+//                    DebitCardType debitCardType = findDebitCard.getDebitCardType();
+//
+//                    depositAccount.removeDebitCard(findDebitCard);
+//                    debitCardType.removeDebitCard(findDebitCard);
+//
+//                    em.remove(findDebitCard);
+                     findDebitCard.setStatus("cancel");
                     return "success";
 
                 }

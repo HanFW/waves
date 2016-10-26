@@ -17,7 +17,7 @@
                         <p:outputLabel value="Welcome "/>
                         <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
                     </p:panel>
-                    
+
                     <p:messages autoUpdate="true"/>
 
                     <p:outputLabel style="font-size: 40px;font-weight: bold" value="Request for Card Replacement"/>
@@ -43,30 +43,46 @@
                         <p:selectOneRadio required="true" requiredMessage="Please select card type" id="cardType" value="#{customerRequestForCardReplacementManagedBean.cardType}">
                             <f:selectItem itemLabel="Credit Card" itemValue="credit" />
                             <f:selectItem itemLabel="Debit Card" itemValue="debit" />
+                            <p:ajax event="change" update="creditPanel debitPanel" listener="#{customerRequestForCardReplacementManagedBean.showCards}"/>
                         </p:selectOneRadio>
                         <p:messages for="cardType"/>
+                        <p:panel id="debitPanel" visible="#{customerRequestForCardReplacementManagedBean.debitPanelVisible}">
+                            <p:outputLabel value="Debit Card"/>
+                            <p:selectOneMenu id="selectDebitCard" required="true" requiredMessage="Please select a debit card" style="text-align:left" value="#{customerRequestForCardReplacementManagedBean.selectedDebitCard}">
+                                <f:selectItem itemLabel="Please select..." itemValue=""/>
+                                <f:selectItems value="#{customerRequestForCardReplacementManagedBean.debitCards}"/> 
+                            </p:selectOneMenu>
+                            <p:message for="selectDebitCard"/>   
 
-                        <p:outputLabel value="Debit Card"/>
-                        <p:selectOneMenu id="selectCard" required="true" requiredMessage="Please select a debit card" style="text-align:left" value="#{customerRequestForCardReplacementManagedBean.selectedDebitCard}">
-                            <f:selectItem itemLabel="Please select..." itemValue=""/>
-                            <f:selectItems value="#{customerRequestForCardReplacementManagedBean.debitCards}"/> 
-                        </p:selectOneMenu>
-                        <p:message for="selectCard"/>   
+                            <p:outputLabel value="Card Password:" />
+                            <p:inputText validatorMessage="Card password is 6-digit" required="true" requiredMessage="Please input your card password" id="cardPwd" value="#{customerRequestForCardReplacementManagedBean.debitCardPwd}">
+                                <f:validateLength minimum="6" maximum="6" /> 
+                            </p:inputText>
+                            <p:messages for="cardPwd"/>
 
-                        <p:outputLabel value="Card Password:" />
-                        <p:inputText type="password" validatorMessage="Card password is 6-digit" required="true" requiredMessage="Please input your card password" id="cardPwd" value="#{customerRequestForCardReplacementManagedBean.debitCardPwd}">
-                            <f:validateLength minimum="6" maximum="6" /> 
-                        </p:inputText>
-                        <p:messages for="cardPwd"/>
+                            <p:commandButton value="Confirm" actionListener="#{customerRequestForCardReplacementManagedBean.requestForCardReplacement}"/>        
+                        </p:panel>
+                        <p:panel id="creditPanel" visible="#{customerRequestForCardReplacementManagedBean.creditPanelVisible}">
+                            <p:outputLabel value="Credit Card"/>
+                            <p:selectOneMenu id="selectCreditCard" required="true" requiredMessage="Please select a credit card" style="text-align:left" value="#{customerRequestForCardReplacementManagedBean.selectedCreditCard}">
+                                <f:selectItem itemLabel="Please select..." itemValue=""/>
+                                <f:selectItems value="#{customerRequestForCardReplacementManagedBean.creditCards}"/> 
+                            </p:selectOneMenu>
+                            <p:message for="selectCreditCard"/>   
 
+                            <p:outputLabel value="Card Security Code:" />
+                            <p:inputText validatorMessage="Card Security Code is the 3-digit number printed a the back of your card" required="true" requiredMessage="Please input your card security code" id="cardccs" value="#{customerRequestForCardReplacementManagedBean.securityCode}">
+                                <f:validateLength minimum="3" maximum="3" /> 
+                            </p:inputText>
+                            <p:messages for="cardccs"/>
+
+                            <p:commandButton value="Confirm" actionListener="#{customerRequestForCardReplacementManagedBean.requestForCardReplacement}"/>        
+                        </p:panel>
                     </h:panelGrid>
-
-                    <p:commandButton value="Confirm" actionListener="#{customerRequestForCardReplacementManagedBean.requestForCardReplacement}"/>        
-                    
                 </h:form>
-                </div>
+            </div>
         </h:body>
-        
+
     </ui:define>
 </ui:composition>
 

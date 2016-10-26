@@ -5,6 +5,8 @@
  */
 package managedbean.card.customer;
 
+import ejb.card.session.CreditCardManagementSessionBeanLocal;
+import ejb.card.session.CreditCardSessionBeanLocal;
 import ejb.card.session.DebitCardManagementSessionBeanLocal;
 import ejb.card.session.DebitCardSessionBeanLocal;
 import ejb.customer.entity.CustomerBasic;
@@ -39,12 +41,25 @@ public class CustomerRequestForCardReplacementManagedBean implements Serializabl
     @EJB
     private DebitCardSessionBeanLocal debitCardSessionBeanLocal;
 
+    @EJB
+    private CreditCardManagementSessionBeanLocal creditCardManagementSessionBeanLocal;
+
+    @EJB
+    private CreditCardSessionBeanLocal creditCardSessionBeanLocal;
+
     private String cardType;
     private String debitCardPwd;
 
     private List<String> debitCards = new ArrayList<String>();
     private String selectedDebitCard;
     private CustomerBasic customer;
+
+    private List<String> creditCards = new ArrayList<String>();
+    private String selectedCreditCard;
+    private String securityCode;
+
+    private boolean creditPanelVisible;
+    private boolean debitPanelVisible;
 
     public CustomerRequestForCardReplacementManagedBean() {
     }
@@ -55,8 +70,21 @@ public class CustomerRequestForCardReplacementManagedBean implements Serializabl
         if (cardType.equals("debit")) {
             requestForDebitCardReplacement();
         }
+        if(cardType.equals("credit")){
+            
+        }
     }
-
+    
+    public void showCards() {
+        if(cardType.equals("credit")){
+            creditPanelVisible = true;
+            debitPanelVisible = false;
+        }
+        if(cardType.equals("debit")) {
+            creditPanelVisible = false;
+            debitPanelVisible = true;
+        }
+    }
     public void requestForDebitCardReplacement() {
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext ec = context.getExternalContext();
@@ -90,6 +118,39 @@ public class CustomerRequestForCardReplacementManagedBean implements Serializabl
                 break;
         }
     }
+    
+//    public void requestForCreditCardReplacement() {
+//        FacesContext context = FacesContext.getCurrentInstance();
+//        ExternalContext ec = context.getExternalContext();
+//        FacesMessage message = null;
+//
+//        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+//        Date requestCardReplacementDate1 = new Date();
+//        String requestCardReplacementDate = df.format(requestCardReplacementDate1);
+//
+//        String[] creditCardInfo = selectedCreditCard.split("-");
+//        String creditCardNum = creditCardInfo[2];
+//
+//        System.out.println("debug: ReportcreditCardLoss- credit card num " + creditCardNum);
+//        System.out.println("debug: ReportcreditCardLoss- request card replacement date " + requestCardReplacementDate);
+//        String result = creditCardManagementSessionBeanLocal.requestForCreditCardReplacement(creditCardNum, securityCode, requestCardReplacementDate);
+//
+//        switch (result) {
+//            case "success":
+//                message = new FacesMessage(FacesMessage.SEVERITY_INFO, "We will send a new card to your mailing address in 2-3 working days", null);
+//                context.addMessage(null, message);
+//                System.out.println("debit card request card replacement");
+//                break;
+//            case "debit card not exist":
+//                message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Card not exist! Please check the card number input", null);
+//                context.addMessage(null, message);
+//                break;
+//            case "wrong pwd":
+//                message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Password is wrong! Please check the card password input", null);
+//                context.addMessage(null, message);
+//                break;
+//        }
+//    }
 
     public String getCardType() {
         return cardType;
@@ -129,12 +190,62 @@ public class CustomerRequestForCardReplacementManagedBean implements Serializabl
         System.out.println("debug: set selectedDebitCard " + selectedDebitCard);
     }
 
+    public CustomerBasic getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(CustomerBasic customer) {
+        this.customer = customer;
+    }
+
+    public List<String> getCreditCards() {
+        customer = getCustomerViaSessionMap();
+        Long id = customer.getCustomerBasicId();
+        creditCards = creditCardSessionBeanLocal.getAllActivatedCreditCards(id);
+        return creditCards;
+    }
+
+    public void setCreditCards(List<String> creditCards) {
+        this.creditCards = creditCards;
+    }
+
+    public String getSelectedCreditCard() {
+        return selectedCreditCard;
+    }
+
+    public void setSelectedCreditCard(String selectedCreditCard) {
+        this.selectedCreditCard = selectedCreditCard;
+    }
+
+    public String getSecurityCode() {
+        return securityCode;
+    }
+
+    public void setSecurityCode(String securityCode) {
+        this.securityCode = securityCode;
+    }
+
+    public boolean isCreditPanelVisible() {
+        return creditPanelVisible;
+    }
+
+    public void setCreditPanelVisible(boolean creditPanelVisible) {
+        this.creditPanelVisible = creditPanelVisible;
+    }
+
+    public boolean isDebitPanelVisible() {
+        return debitPanelVisible;
+    }
+
+    public void setDebitPanelVisible(boolean debitPanelVisible) {
+        this.debitPanelVisible = debitPanelVisible;
+    }
+
     public CustomerBasic getCustomerViaSessionMap() {
         FacesContext context = FacesContext.getCurrentInstance();
         customer = (CustomerBasic) context.getExternalContext().getSessionMap().get("customer");
 
         return customer;
-
     }
 
 }

@@ -12,6 +12,7 @@ import ejb.payment.entity.Cheque;
 import ejb.payment.entity.FastPayee;
 import ejb.payment.entity.GIRO;
 import ejb.payment.entity.SWIFTPayee;
+import ejb.wealth.entity.RiskProfile;
 import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -95,6 +96,9 @@ public class CustomerBasic implements Serializable {
     
     @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     private CreditReportBureauScore bureauScore;
+    
+    @OneToOne(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
+    private RiskProfile riskProfile;
     
     public void addLoanApplication(LoanApplication newApplication){
         loanApplication.add(newApplication);
@@ -339,6 +343,14 @@ public class CustomerBasic implements Serializable {
         this.creditCard = creditCard;
     }
 
+    public void addNewCreditCard(CreditCard cc) {
+        creditCard.add(cc);
+    }
+    
+    public void removeCreditCard(CreditCard cc) {
+        creditCard.remove(cc);
+    }
+
     public String getCustomerOnlineBankingAccountLocked() {
         return customerOnlineBankingAccountLocked;
     }
@@ -418,6 +430,15 @@ public class CustomerBasic implements Serializable {
     public void setBureauScore(CreditReportBureauScore bureauScore) {
         this.bureauScore = bureauScore;
     }
+
+    public RiskProfile getRiskProfile() {
+        return riskProfile;
+    }
+
+    public void setRiskProfile(RiskProfile riskProfile) {
+        this.riskProfile = riskProfile;
+    }
+    
     
     @Override
     public int hashCode() {
