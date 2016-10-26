@@ -65,4 +65,17 @@ public interface CRMCustomerSessionBeanLocal {
             String customerCompanyPostal, String customerCurrentPosition, String customerCurrentJobTitle, 
             String customerPreviousCompany, int customerLengthOfPreviousJob, double customerOtherMonthlyIncome, 
             String customerOtherMonthlyIncomeSource);
+    
+    public boolean checkExistingCustomerByIdentification(String identificationNum);
+    public Long updateCustomerBasic(String customerIdentificationNum, String customerEmail, String customerMobile, 
+            String customerNationality, String customerCountryOfResidence, 
+            String customerMaritalStatus, String customerOccupation, String customerCompany,
+            String customerAddress, String customerPostal);
+    public boolean checkExistingCustomerAdvanced(String customerIdentification);
+    public Long updateCustomerAdvanced(String identification, int customerNumOfDependents, String customerEducation, String customerResidentialStatus,
+            int customerLengthOfResidence, String customerIndustryType, int customerLengthOfCurrentJob, String customerEmploymentStatus,
+            double customerMonthlyFixedIncome, String customerResidentialType, String customerCompanyAddress,
+            String customerCompanyPostal, String customerCurrentPosition, String customerCurrentJobTitle,
+            String customerPreviousCompany, int customerLengthOfPreviousJob, double customerOtherMonthlyIncome,
+            String customerOtherMonthlyIncomeSource);
 }

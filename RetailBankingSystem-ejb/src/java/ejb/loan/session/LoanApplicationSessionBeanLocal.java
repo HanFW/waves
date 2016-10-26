@@ -20,7 +20,7 @@ import javax.ejb.Local;
  */
 @Local
 public interface LoanApplicationSessionBeanLocal {
-    public void submitLoanApplication(Long customerBasicId, Long customerAdvancedId, ArrayList<CustomerDebt> debts, 
+    public void submitLoanApplication(boolean isExistingCustomer, boolean hasCustomerAdvanced, Long customerBasicId, Long customerAdvancedId, ArrayList<CustomerDebt> debts, 
             CustomerProperty cp, MortgageLoanApplication mortgage, RefinancingApplication refinancing, String loanType, String interestPackage);
     public CustomerDebt addNewCustomerDebt(String facilityType, String financialInstitution, double totalAmount, double monthlyInstalment);
     public List<LoanApplication> getAllLoanApplications();
@@ -39,4 +39,6 @@ public interface LoanApplicationSessionBeanLocal {
     public List<LoanApplication> getAllStartedLoans();
     public List<LoanApplication> getAllInProgressLoans();
     public void updateLoanStatus(String status, Long applicationId);
+    public List<MortgageLoanApplication> getAllMortgageApplicationsPendingAppraisal();
+    public void submitAppraisal(double appraisedValue, Long applicationId);
 }

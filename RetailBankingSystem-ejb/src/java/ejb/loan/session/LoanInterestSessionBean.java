@@ -65,7 +65,9 @@ public class LoanInterestSessionBean implements LoanInterestSessionBeanLocal {
                 instalment = (rate / 12 * principle) / (1 - Math.pow((1 + rate / 12), -period));
                 account.setInstalment(instalment);
             }
+            account.setRepaymentMonths(account.getRepaymentMonths()+1);
         }
+        
         
         em.flush();
     }
