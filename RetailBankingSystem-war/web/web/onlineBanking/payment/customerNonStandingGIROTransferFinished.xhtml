@@ -24,9 +24,8 @@
                     <br/>
                     <br/>
                     <br/>
-                    <h:outputText style="font-weight: bold" value="Please note this transaction reference number
-                                  for your records: " />
-                    <h:outputText value="#{nonStandingGIROTransferFinishedManagedBean.transactionId}" />
+                    <h:outputText style="font-weight: bold" value="Please take note the following transaction information: "/>
+                    <br/>
                     <br/>
                     <h:outputText style="font-weight: bold" value="To Account Number: "/>
                     <h:outputText value="#{nonStandingGIROTransferFinishedManagedBean.toBankAccountNumWithType}"/>
@@ -60,9 +59,6 @@
                             <br/>
                             <h:outputText style="font-weight: bold" value="Transfer Amount: "/>
                             <h:outputText value="#{nonStandingGIROTransferFinishedManagedBean.transferAmt}"/>
-                            <br/>
-                            <h:outputText style="font-weight: bold" value="Transaction Reference Number: "/>
-                            <h:outputText value="#{nonStandingGIROTransferFinishedManagedBean.transactionId}" />
                         </p:tab>
                     </p:accordionPanel>
                 </p:panel>

@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 
 @Entity
 public class FastPayee implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,8 +21,8 @@ public class FastPayee implements Serializable {
     private String fastPayeeAccountNum;
     private String fastPayeeAccountType;
     private String lastTransactionDate;
-    
-    @ManyToOne(cascade={CascadeType.PERSIST},fetch=FetchType.EAGER)
+
+    @ManyToOne(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER)
     private CustomerBasic customerBasic;
 
     public Long getFastPayeeId() {
@@ -96,5 +97,5 @@ public class FastPayee implements Serializable {
     public String toString() {
         return "ejb.payment.entity.FastPayee[ id=" + fastPayeeId + " ]";
     }
-    
+
 }

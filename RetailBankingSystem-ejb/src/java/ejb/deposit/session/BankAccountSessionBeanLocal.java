@@ -62,10 +62,8 @@ public interface BankAccountSessionBeanLocal {
             String fixedDepositStatus, Double statementDateDouble, Long customerBasicId,
             Long interestId);
 
+    public void updateBankAccountAvailableBalance(String bankAccountNum, String availableBankAccountBalance);
+
     public void updateBankAccountBalance(String bankAccountNum, String availableBankAccountBalance,
             String totalBankAccountBalance);
-
-    public void approveAccount(String customerIdentificationNum);
-
-    public void sendEmailToRejectCustomer(String customerIdentificationNum);
 }
