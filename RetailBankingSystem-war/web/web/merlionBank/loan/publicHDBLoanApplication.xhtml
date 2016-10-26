@@ -13,8 +13,11 @@
 
     <ui:define name="content">  
         <h:form>
+            <p:commandButton value="Apply for HDB Loan - fast" action="#{publicHDBLoanApplication.addLoanApplicationFast()}"/>
+        </h:form>
+        <h:form>
             <p:wizard widgetVar ="hdbLoanWizard" flowListener="#{publicHDBLoanApplication.onFlowProcess}" showNavBar="false">
-<!--                <p:tab id="basic">
+                <p:tab id="basic">
                     <h:panelGrid columns="1">
                         <p:steps activeIndex="0">
                             <p:menuitem value="Basic Information" />
@@ -668,9 +671,9 @@
                         <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('hdbLoanWizard').back();"/>
                         <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('hdbLoanWizard').next();"/>
                     </h:panelGrid>
-                </p:tab>-->
- 
-<!--               <p:tab id="employment">
+                </p:tab>
+
+                <p:tab id="employment">
                     <h:panelGrid columns="1">
                         <p:steps activeIndex="2">
                             <p:menuitem value="Basic Information" />
@@ -749,7 +752,7 @@
                             <p:outputLabel for="customerCompanyPostal" style="font-weight: bold" value="Company Postal Code: "/>
                             <p:inputText id="customerCompanyPostal" value="#{publicHDBLoanApplication.customerCompanyPostal}"
                                          required="#{publicHDBLoanApplication.employmentPanelVisible}" requiredMessage="Required Field" validatorMessage="Invalid postal code">
-                                <f:validateDoubleRange minimum="100000" maximum="999999" />
+                                <!--<f:validateDoubleRange minimum="100000" maximum="999999" />-->
                             </p:inputText>
                             <p:message for="customerCompanyPostal"/>
 
@@ -846,9 +849,9 @@
                         <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('hdbLoanWizard').back()"/>
                         <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('hdbLoanWizard').next();"/>
                     </h:panelGrid>
-                </p:tab>-->
+                </p:tab>
 
-<!--                <p:tab id="commitments">
+                <p:tab id="commitments">
                     <h:panelGrid columns="1">
                         <p:steps activeIndex="3">
                             <p:menuitem value="Basic Information" />
@@ -993,12 +996,12 @@
                                 <f:selectItem itemLabel="999 years" itemValue="999" />
                             </p:selectOneMenu>
                             <p:message for="customerPropertyTenureDuration"/>
-                            <p:outputLabel for="customerPropertyTunureFromYear" style="font-weight: bold" value="With Effect From: "/>
-                            <p:inputText id="customerPropertyTunureFromYear" value="#{publicHDBLoanApplication.customerPropertyTunureFromYear}"
+                            <p:outputLabel for="customerPropertyTenureFromYear" style="font-weight: bold" value="With Effect From: "/>
+                            <p:inputText id="customerPropertyTenureFromYear" value="#{publicHDBLoanApplication.customerPropertyTenureFromYear}"
                                          required="#{publicHDBLoanApplication.propertyTenurePanelVisible}" requiredMessage="Required Field" validatorMessage="Please enter a valid year (yyyy)">
                                 <f:validateDoubleRange minimum="1900" maximum="2020" />
                             </p:inputText>
-                            <p:message for="customerPropertyTunureFromYear"/>
+                            <p:message for="customerPropertyTenureFromYear"/>
                         </p:panel>
 
                         <p:outputLabel for="customerPropertyUsage" style="font-weight: bold" value="Usage of Property: "/>
@@ -1011,7 +1014,7 @@
                         <p:message for="customerPropertyUsage"/>
 
                         <p:outputLabel for="customrePropertyStatus" style="font-weight: bold" value="Property Status:  "/>
-                        <p:selectOneMenu id="customrePropertyStatus" value="#{publicHDBLoanApplication.customrePropertyStatus}"
+                        <p:selectOneMenu id="customrePropertyStatus" value="#{publicHDBLoanApplication.customerPropertyStatus}"
                                          required="true" requiredMessage="Required Field">
                             <f:selectItem itemLabel="Please Select" itemValue="" />
                             <f:selectItem itemLabel="Completed" itemValue="Completed" />
@@ -1148,20 +1151,6 @@
                                          required="#{publicHDBLoanApplication.propertyNewPurchasePanelVisible}" requiredMessage="Required Field" converterMessage="Please enter a valid number">
                             </p:inputText>
                             <p:message for="customerCPFDownpayment"/>
-
-                            <p:outputLabel for="customerLoanAmountRequired" style="font-weight: bold" value="Loan Amount Required (SGD): "/>
-                            <p:inputText id="customerLoanAmountRequired" value="#{publicHDBLoanApplication.customerLoanAmountRequired}"
-                                         required="#{publicHDBLoanApplication.propertyNewPurchasePanelVisible}" requiredMessage="Required Field" converterMessage="Please enter a valid number">
-                            </p:inputText>
-                            <p:message for="customerLoanAmountRequired"/>
-
-                            <p:outputLabel for="customerLoanTenure" style="font-weight: bold" value="Loan Tenure: "/>
-                            <p:inputText id="customerLoanTenure" value="#{publicHDBLoanApplication.customerLoanTenure}"
-                                         required="#{publicHDBLoanApplication.propertyNewPurchasePanelVisible}" requiredMessage="Required Field" validatorMessage="Please enter a valid number between 0-30" converterMessage="Please enter a valid number">
-                                <f:validateLongRange minimum="0" maximum="30"/>
-                                <f:convertNumber integerOnly="true"/>
-                            </p:inputText>
-                            <p:message for="customerLoanTenure"/>
                         </p:panel>
 
                         <p:panel style="border:none" id="refinancingPanel" visible="#{publicHDBLoanApplication.propertyRefinancingPanelVisible}">
@@ -1199,13 +1188,36 @@
                             </p:inputText>
                             <p:message for="customerTotalCPFWithdrawal"/>
                         </p:panel>
+
+
+                        <p:outputLabel for="customerLoanAmountRequired" style="font-weight: bold" value="Loan Amount Required (SGD): "/>
+                        <p:inputText id="customerLoanAmountRequired" value="#{publicHDBLoanApplication.customerLoanAmountRequired}"
+                                     required="#{publicHDBLoanApplication.propertyNewPurchasePanelVisible}" requiredMessage="Required Field" converterMessage="Please enter a valid number">
+                        </p:inputText>
+                        <p:message for="customerLoanAmountRequired"/>
+
+                        <p:outputLabel for="customerLoanTenure" style="font-weight: bold" value="Loan Tenure: "/>
+                        <p:inputText id="customerLoanTenure" value="#{publicHDBLoanApplication.customerLoanTenure}"
+                                     required="#{publicHDBLoanApplication.propertyNewPurchasePanelVisible}" requiredMessage="Required Field" validatorMessage="Please enter a valid number between 0-30" converterMessage="Please enter a valid number">
+                            <f:validateLongRange minimum="0" maximum="30"/>
+                            <f:convertNumber integerOnly="true"/>
+                        </p:inputText>
+                        <p:message for="customerLoanTenure"/>
+
+                        <p:outputLabel for="customerInterestPackage" style="font-weight: bold" value="Interest Package: "/>
+                        <p:selectOneMenu id="customerInterestPackage" value="#{publicHDBLoanApplication.interestPackage}" requiredMessage="Required Field">
+                            <f:selectItem itemLabel="Please Select" itemValue="" />
+                            <f:selectItem itemLabel="Fixed Rate Package" itemValue="HDB-Fixed" />
+                            <f:selectItem itemLabel="Floating Rate Package" itemValue="HDB-Floating" />
+                        </p:selectOneMenu>
+                        <p:message for="customerInterestPackage"/>
                     </p:panelGrid>
 
                     <h:panelGrid columns="2" class="ui-lg-6"> 
                         <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('hdbLoanWizard').back()"/>
                         <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('hdbLoanWizard').next();" />
                     </h:panelGrid>
-                </p:tab>-->
+                </p:tab>
 
                 <p:tab id="documents">
                     <h:panelGrid columns="1">

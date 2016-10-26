@@ -4,6 +4,10 @@ import ejb.card.entity.CreditCard;
 import ejb.deposit.entity.BankAccount;
 import ejb.infrastructure.entity.MessageBox;
 import ejb.deposit.entity.Payee;
+import ejb.loan.entity.CreditReportBureauScore;
+import ejb.loan.entity.CustomerDebt;
+import ejb.loan.entity.CustomerProperty;
+import ejb.loan.entity.LoanApplication;
 import ejb.payment.entity.Cheque;
 import ejb.payment.entity.FastPayee;
 import ejb.payment.entity.GIRO;
@@ -79,6 +83,22 @@ public class CustomerBasic implements Serializable {
 
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
     private List<Cheque> cheque;
+    
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    private List<CustomerDebt> customerDebt;
+    
+    @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    private CustomerProperty customerProperty;
+    
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
+    private List<LoanApplication> loanApplication;
+    
+    @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    private CreditReportBureauScore bureauScore;
+    
+    public void addLoanApplication(LoanApplication newApplication){
+        loanApplication.add(newApplication);
+    }
 
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
     private List<SWIFTPayee> swiftPayee;
@@ -367,6 +387,38 @@ public class CustomerBasic implements Serializable {
         this.swiftPayee = swiftPayee;
     }
 
+    public List<CustomerDebt> getCustomerDebt() {
+        return customerDebt;
+    }
+
+    public void setCustomerDebt(List<CustomerDebt> customerDebt) {
+        this.customerDebt = customerDebt;
+    }
+
+    public CustomerProperty getCustomerProperty() {
+        return customerProperty;
+    }
+
+    public void setCustomerProperty(CustomerProperty customerProperty) {
+        this.customerProperty = customerProperty;
+    }
+
+    public List<LoanApplication> getLoanApplication() {
+        return loanApplication;
+    }
+
+    public void setLoanApplication(List<LoanApplication> loanApplication) {
+        this.loanApplication = loanApplication;
+    }
+
+    public CreditReportBureauScore getBureauScore() {
+        return bureauScore;
+    }
+
+    public void setBureauScore(CreditReportBureauScore bureauScore) {
+        this.bureauScore = bureauScore;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;
