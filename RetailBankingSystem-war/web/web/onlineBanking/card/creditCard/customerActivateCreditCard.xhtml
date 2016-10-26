@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/onlineBankingTemplate.xhtml"
+                xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
+    <ui:define name="content">
+
+        <h:body>
+            <p:panel>
+                <p:outputLabel value="Welcome "/>
+                <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
+            </p:panel>
+
+            <div align="center">
+                <h:form>
+
+                    <h1>Activate Credit Card</h1>
+                    <p:messages autoUpdate="true"/>
+
+                    <h:panelGrid columns="2" class="ui-lg-6">
+
+                        <p:outputLabel value="Credit Card"/>
+                        <p:selectOneMenu id="selectCreditCard" required="true" requiredMessage="Please select a credit card" style="text-align:left" value="#{customerActivateCreditCardManagedBean.selectedCreditCard}">
+                            <f:selectItem itemLabel="Please select..." itemValue=""/>
+                            <f:selectItems value="#{customerActivateCreditCardManagedBean.creditCards}"/> 
+                        </p:selectOneMenu>
+
+                        <p:outputLabel id="cardHolderName" value="Card Holder Name: "/>
+                        <p:inputText required="true" requiredMessage="Please enter card holder name" value="#{customerActivateCreditCardManagedBean.cardHolderName}"/>
+
+                        <p:outputLabel  id="csc" value="3-digit Card Security Code: "/>
+                        <p:inputText validatorMessage="Card Security Code is 3-digit" required="true" requiredMessage="Please enter the card security code" value="#{customerActivateCreditCardManagedBean.creditCardSecurityCode}">
+                            <f:validateLength minimum="3" maximum="3" /> 
+                        </p:inputText> 
+
+                    </h:panelGrid> 
+                    <br/>
+                    <p:commandButton value="Activate My Credit Card" type="submit" actionListener="#{customerActivateCreditCardManagedBean.checkCreditCardNum}" style="width:auto"/>  
+
+                </h:form>
+            </div>
+        </h:body>
+    </ui:define>
+</ui:composition>
+

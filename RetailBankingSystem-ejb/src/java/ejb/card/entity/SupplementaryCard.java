@@ -22,7 +22,7 @@ import javax.persistence.ManyToOne;
 public class SupplementaryCard extends Card implements Serializable {
     private static final long serialVersionUID = 1L;
     
-    @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER)
     private CreditCard creditCard;
     
 

@@ -10,17 +10,15 @@
     <ui:define name="content">
 
         <h:body>
-
+            <p:panel>
+                <p:outputLabel value="Welcome "/>
+                <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
+            </p:panel>
             <div align="center">
                 <h:form>
-                    <p:panel>
-                        <p:outputLabel value="Welcome "/>
-                        <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
-                    </p:panel>
-
                     <p:messages autoUpdate="true"/>
 
-                    <p:outputLabel style="font-size: 40px;font-weight: bold" value="Cancel My Card"/>
+                    <h1>Cancel My Card</h1>
 
                     <h:panelGrid columns="3" class="ui-lg-6"> 
 
@@ -39,20 +37,20 @@
                         <p:message for="selectCard"/>
 
                         <p:outputLabel value="Card Password:" />
-                        <p:inputText validatorMessage="Card password is 6-digit" required="true" requiredMessage="Please input your card password" id="cardPwd" value="#{customerCancelCardManagedBean.debitCardPwd}">
+                        <p:inputText type="password" validatorMessage="Card password is 6-digit" required="true" requiredMessage="Please input your card password" id="cardPwd" value="#{customerCancelCardManagedBean.debitCardPwd}">
                             <f:validateLength minimum="6" maximum="6" /> 
                         </p:inputText>
                         <p:messages for="cardPwd"/>
 
                     </h:panelGrid>
 
-                    <p:commandButton value="Cancel My Card" actionListener="#{customerCancelCardManagedBean.cancelCard}">
+                    <p:commandButton value="Cancel My Card" actionListener="#{customerCancelCardManagedBean.cancelCard}" style="width:auto">
                         <p:confirm header="Confirmation" message="Are you sure to cancel the card? This action is not reversible" icon="ui-icon-alert" />
                     </p:commandButton>
 
                     <p:confirmDialog id="dialog" global="true" showEffect="fade" hideEffect="fade">
-                        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
-                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+                        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" style="width:auto"/>
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" style="width:auto"/>
                     </p:confirmDialog>
                 </h:form>
 

@@ -11,18 +11,18 @@
 
         <h:body>
 
+            <p:panel>
+                <p:outputLabel value="Welcome "/>
+                <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
+            </p:panel>
             <div align="center">
                 <h:form>
-                    <p:panel>
-                        <p:outputLabel value="Welcome "/>
-                        <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
-                    </p:panel>
 
                     <p:growl id="growl" showDetail="true" globalOnly="true"/>
                     <p:wizard widgetVar ="changeTransactionLimitWizard" flowListener="#{customerApplyDebitCardManagedBean.onFlowProcess}" class="ui-lg-12" showNavBar="false">
 
                         <p:tab id="inputDetails">
-
+                            <h1>Manage your daily transaction limit for your Visa and Mastercard Debit Card:</h1>
                             <h:panelGrid columns="1">
                                 <p:steps activeIndex="0">
                                     <p:menuitem value="1. Input Details" />
@@ -33,21 +33,7 @@
 
                             <p:messages autoUpdate="true"/>   
 
-                            <h:panelGrid columns="1" class="ui-lg-6">                          
-
-                                <p:outputLabel style="font-size: 50px;font-weight: bold" value="Change Debit Card Limit"/>
-                                <br/>
-                                <br/>
-
-                                <p:outputLabel style="font-size: 20px" value="Manage your daily transaction limit for your Visa and Mastercard Debit Card."/>
-                                <br/>
-
-                                <p:outputLabel style="font-size: 40px" value="I would like to set a limit for"/>
-                                <br/>
-
-                            </h:panelGrid>
-
-                            <p:panelGrid columns="2" class="ui-lg-12" style="border: none">
+                            <h:panelGrid columns="2" class="ui-lg-6">
 
                                 <p:outputLabel value="Debit Card"/>
                                 <p:selectOneMenu id="selectDebitCard" required="true" requiredMessage="Please select a debit card" style="text-align:left" value="#{customerSetTransactionLimitForDebitCard.selectedDebitCard}">
@@ -55,26 +41,26 @@
                                     <f:selectItems value="#{customerSetTransactionLimitForDebitCard.debitCards}"/> 
                                     <p:ajax listener="#{customerSetTransactionLimitForDebitCard.findExistingLimit}" update="existingTransactionLimit"/>
                                 </p:selectOneMenu>
-                       
-                                <p:outputLabel value="Existing Daily Card Limit: S$"/>
-                                <p:outputLabel id="existingTransactionLimit" value="#{customerSetTransactionLimitForDebitCard.existingTransactionLimit}"/>
+
+                                <p:outputLabel value="Existing Daily Card Limit:"/>
+                                <p:outputLabel id="existingTransactionLimit" value="S$#{customerSetTransactionLimitForDebitCard.existingTransactionLimit}"/>
 
 
-                                <p:outputLabel value="New Daily Card Limit: S$"/>
+                                <p:outputLabel value="New Daily Card Limit:"/>
                                 <p:selectOneMenu id="selectNewTransactionLimit" value="#{customerSetTransactionLimitForDebitCard.newTransactionLimit}">
                                     <f:selectItem itemLabel="Please Select ..." itemValue=""/>
-                                    <f:selectItem itemLabel="5000" itemValue="5000"/>
-                                    <f:selectItem itemLabel="2000" itemValue="2000"/>
-                                    <f:selectItem itemLabel="1000" itemValue="1000"/>
-                                    <f:selectItem itemLabel="500" itemValue="500"/>
+                                    <f:selectItem itemLabel="S$5000" itemValue="5000"/>
+                                    <f:selectItem itemLabel="S$2000" itemValue="2000"/>
+                                    <f:selectItem itemLabel="S$1000" itemValue="1000"/>
+                                    <f:selectItem itemLabel="S$500" itemValue="500"/>
                                     <f:selectItem itemLabel="0" itemValue="0"/>
                                 </p:selectOneMenu>
 
 
-                            </p:panelGrid>
+                            </h:panelGrid>
 
                             <h:panelGrid columns="2" class="ui-lg-6"> 
-                                <p:commandButton  value="Cancel" icon="ui-icon-arrow-1-e" iconPos="right" actionListener="#{customerSetTransactionLimitForDebitCard.cancelUpdateTransactionLimit}"/>
+                                <p:commandButton  value="Cancel" icon="ui-icon-arrow-1-w" iconPos="left" actionListener="#{customerSetTransactionLimitForDebitCard.cancelUpdateTransactionLimit}"/>
                                 <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('changeTransactionLimitWizard').next();" />
                             </h:panelGrid>
 

@@ -16,12 +16,9 @@
                 <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
             </p:panel>
             <p:messages globalOnly="true"/>
-
-            <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group" class="ui-lg-6">
-                <p:outputLabel value="Pay Bills" style="font-weight: bold;font-size: 26px"/>
-                <br/>
-            </p:panelGrid>
-
+            <div align="center">
+            <h1>Pay Bills</h1>
+            </div>
             <p:outputLabel value="One Time Payment" style="font-weight: bold"/>
             <br/>
             <br/>
@@ -39,10 +36,10 @@
                     <h:outputText value="#{oneTimeGiro.paymentFrequency}" /> 
                 </p:column>
 
-                <p:column headerText="Action" style="width: 10%">
+                <p:column headerText="Action">
                     <center>
                         <p:commandButton action="/web/onlineBanking/payment/customerNonStandingGIROTransferDone.xhtml?faces-redirect=true"
-                                         value="Transfer" update="oneTimeGIROForm">
+                                         value="Transfer" update="oneTimeGIROForm" style="width: 50%">
                             <f:setPropertyActionListener target="#{nonStandingGIROTransferDoneManagedBean.giroId}" value="#{oneTimeGiro.giroId}" />
                         </p:commandButton>
                     </center>
@@ -70,10 +67,10 @@
                     <h:outputText value="#{recurrentGIRO.paymentFrequency}" /> 
                 </p:column>
 
-                <p:column headerText="Action" style="width: 10%">
+                <p:column headerText="Action">
                     <center>
                         <p:commandButton action="/web/onlineBanking/payment/customerNonStandingGIROTransferDone.xhtml?faces-redirect=true"
-                                         value="Transfer" update="recurrentGIROForm">
+                                         value="Transfer" update="recurrentGIROForm" style="width: 50%">
                             <f:setPropertyActionListener target="#{nonStandingGIROTransferDoneManagedBean.giroId}" value="#{recurrentGIRO.giroId}" />
                         </p:commandButton>
                     </center>

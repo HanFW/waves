@@ -15,138 +15,139 @@
                 <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
             </p:panel>
 
-            <p:growl id="growl" sticky="true" showDetail="true"/>
+            <div align="center">
+                <p:growl id="growl" sticky="true" showDetail="true"/>
 
-            <p:wizard widgetVar ="addNewGIROWizard" flowListener="#{addNewStandingGIROManagedBean.onFlowProcess}" class="ui-lg-12" showNavBar="false">
-                <p:tab id="inputDetails" >
-                    <p:messages globalOnly="true"/>
-
-                    <h:panelGrid columns="1">  
-                        <p:steps activeIndex="0" >
-                            <p:menuitem value="Input Details" />
-                            <p:menuitem value="Verify Detials" />
-                        </p:steps>
-                    </h:panelGrid>
-
-                    <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group" class="ui-lg-6">
-                        <br/>
-                        <p:outputLabel value="Add GIRO Arrangement" style="font-weight: bold;font-size: 26px"/>
-                        <br/>
+                <p:wizard widgetVar ="addNewGIROWizard" flowListener="#{addNewStandingGIROManagedBean.onFlowProcess}" class="ui-lg-12" showNavBar="false">
+                    <p:tab id="inputDetails" >
+                        <p:messages globalOnly="true"/>
+                        <h1>Add GIRO Arrangement</h1>
                         <p:outputLabel value="Set up a GIRO arrangement for direct payment to billing organisations on regular basis."/>
                         <br/>
-                        <p:outputLabel value="To" style="font-weight: bold;font-size: 26px"/>
                         <br/>
-                        <br/>
-                        <p:outputLabel value="Billing Organization" style="font-weight: bold"/>
-                        <p:selectOneMenu id="billingOrganization" value="#{addNewStandingGIROManagedBean.billingOrganization}" 
-                                         effect="fold" editable="false">
-                            <f:selectItem itemLabel="Please Select One" itemValue="" />
-                            <f:selectItems value="#{addNewStandingGIROManagedBean.billingOrganizations}" />
-                        </p:selectOneMenu>
-                        <p:message for="billingOrganization" />
 
-                        <p:outputLabel value="Bill Reference" style="font-weight: bold"/>
-                        <p:inputText label="Bill Reference" id="billReference" 
-                                     value="#{addNewStandingGIROManagedBean.billReference}"
-                                     required="true" requiredMessage="Required Field">
-                        </p:inputText>
-                        <p:message for="billReference" />
+                        <h:panelGrid columns="1">  
+                            <p:steps activeIndex="0" >
+                                <p:menuitem value="Input Details" />
+                                <p:menuitem value="Verify Detials" />
+                            </p:steps>
+                        </h:panelGrid>
 
-                        <p:outputLabel value="Payement Limit(S$) (Please enter '0' for no payment limit)" style="font-weight: bold"/>
-                        <p:inputText label="Payement Limit" id="paymentLimit" 
-                                     value="#{addNewStandingGIROManagedBean.paymentLimit}"
-                                     required="true" requiredMessage="Required Field"
-                                     converterMessage="Invalid input"
-                                     validatorMessage="Invalid input">
-                            <f:validateDoubleRange minimum="0.0" maximum="99999999.0" />
-                        </p:inputText>
-                        <p:message for="paymentLimit" />
-                        <br/>
-                        <p:outputLabel value="From" style="font-weight: bold;font-size: 26px"/>
-                        <br/>
-                        <br/>
-                        <p:outputLabel value="Name" style="font-weight: bold"/>
-                        <p:inputText label="Customer Name" id="customerName" 
-                                     value="#{addNewStandingGIROManagedBean.customerName}"
-                                     required="true" requiredMessage="Required Field">
-                        </p:inputText>
-                        <p:message for="customerName" />
+                        <h:panelGrid columns="1" styleClass="ui-panelgrid-blank form-group" class="ui-lg-4">
 
-                        <p:outputLabel value="Mobile Number" style="font-weight: bold"/>
-                        <p:inputText label="Mobile Number" id="customerMobile" 
-                                     value="#{addNewStandingGIROManagedBean.customerMobile}"
-                                     required="true" requiredMessage="Required Field">
-                        </p:inputText>
-                        <p:message for="customerMobile" />
+                            <p:outputLabel value="To" style="font-weight: bold;font-size: 26px"/>
+                            <br/>
+                            <br/>
+                            <p:outputLabel value="Billing Organization" style="font-weight: bold"/>
+                            <p:selectOneMenu id="billingOrganization" value="#{addNewStandingGIROManagedBean.billingOrganization}" 
+                                             effect="fold" editable="false">
+                                <f:selectItem itemLabel="Please Select One" itemValue="" />
+                                <f:selectItems value="#{addNewStandingGIROManagedBean.billingOrganizations}" />
+                            </p:selectOneMenu>
+                            <p:message for="billingOrganization" />
 
-                        <p:outputLabel value="My Account" style="font-weight: bold"/>
-                        <p:selectOneMenu id="bankAccountNum" value="#{addNewStandingGIROManagedBean.bankAccountNumWithType}" 
-                                         effect="fold" editable="false">
-                            <f:selectItem itemLabel="Please Select One" itemValue="" />
-                            <f:selectItems value="#{addNewStandingGIROManagedBean.myAccounts}" />
-                        </p:selectOneMenu>
-                        <p:message for="bankAccountNum" />
-                    </p:panelGrid>
+                            <p:outputLabel value="Bill Reference" style="font-weight: bold"/>
+                            <p:inputText label="Bill Reference" id="billReference" 
+                                         value="#{addNewStandingGIROManagedBean.billReference}"
+                                         required="true" requiredMessage="Required Field">
+                            </p:inputText>
+                            <p:message for="billReference" />
 
-                    <h:panelGrid columns="2" class="ui-lg-6">     
-                        <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('addNewGIROWizard').back()" disabled="true"/>
-                        <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('addNewGIROWizard').next();" />
-                    </h:panelGrid>
-                </p:tab>
+                            <p:outputLabel value="Payement Limit(S$) (Please enter '0' for no payment limit)" style="font-weight: bold"/>
+                            <p:inputText label="Payement Limit" id="paymentLimit" 
+                                         value="#{addNewStandingGIROManagedBean.paymentLimit}"
+                                         required="true" requiredMessage="Required Field"
+                                         converterMessage="Invalid input"
+                                         validatorMessage="Invalid input">
+                                <f:validateDoubleRange minimum="0.0" maximum="99999999.0" />
+                            </p:inputText>
+                            <p:message for="paymentLimit" />
+                            <br/>
+                            <p:outputLabel value="From" style="font-weight: bold;font-size: 26px"/>
+                            <br/>
+                            <br/>
+                            <p:outputLabel value="Name" style="font-weight: bold"/>
+                            <p:inputText label="Customer Name" id="customerName" 
+                                         value="#{addNewStandingGIROManagedBean.customerName}"
+                                         required="true" requiredMessage="Required Field">
+                            </p:inputText>
+                            <p:message for="customerName" />
 
-                <p:tab id="verifyDetails">
-                    <p:messages globalOnly="true"/>
+                            <p:outputLabel value="Mobile Number" style="font-weight: bold"/>
+                            <p:inputText label="Mobile Number" id="customerMobile" 
+                                         value="#{addNewStandingGIROManagedBean.customerMobile}"
+                                         required="true" requiredMessage="Required Field">
+                            </p:inputText>
+                            <p:message for="customerMobile" />
 
-                    <h:panelGrid columns="1">  
-                        <p:steps activeIndex="1" >
-                            <p:menuitem value="Input Details" />
-                            <p:menuitem value="Verify Detials" />
-                        </p:steps>
-                    </h:panelGrid>
+                            <p:outputLabel value="My Account" style="font-weight: bold"/>
+                            <p:selectOneMenu id="bankAccountNum" value="#{addNewStandingGIROManagedBean.bankAccountNumWithType}" 
+                                             effect="fold" editable="false">
+                                <f:selectItem itemLabel="Please Select One" itemValue="" />
+                                <f:selectItems value="#{addNewStandingGIROManagedBean.myAccounts}" />
+                            </p:selectOneMenu>
+                            <p:message for="bankAccountNum" />
+                        </h:panelGrid>
 
-                    <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
-                        <br/>
-                        <p:outputLabel value="Add GIRO Arrangement" style="font-weight: bold;font-size: 26px"/>
-                        <br/>
-                        <p:outputLabel value="Please ensure that the details below are correct and click 'Submit' to complete this transaction." />
-                        <br/>
-                        <p:outputLabel value="To" style="font-weight: bold;font-size: 26px"/>
-                        <br/>
-                    </p:panelGrid>
-                    <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
-                        <p:outputLabel value="Billing Organization" style="font-weight: bold"/>
-                        <p:outputLabel value="#{addNewStandingGIROManagedBean.billingOrganization}"/>
+                        <h:panelGrid columns="2" class="ui-lg-4">     
+                            <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('addNewGIROWizard').back()" disabled="true"/>
+                            <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('addNewGIROWizard').next();" />
+                        </h:panelGrid>
+                    </p:tab>
 
-                        <p:outputLabel value="Bill Reference" style="font-weight: bold"/>
-                        <p:outputLabel value="#{addNewStandingGIROManagedBean.billReference}"/>
+                    <p:tab id="verifyDetails">
+                        <p:messages globalOnly="true"/>
 
-                        <p:outputLabel value="Payment Limit" style="font-weight: bold"/>
-                        <p:outputLabel value="#{addNewStandingGIROManagedBean.paymentLimit}"/>
-                        <br/>
-                    </p:panelGrid>
-                    <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
-                        <p:outputLabel value="From" style="font-weight: bold;font-size: 26px"/>
-                        <br/>
-                    </p:panelGrid>
-                    <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank form-group">
-                        <p:outputLabel value="Name" style="font-weight: bold"/>
-                        <p:outputLabel value="#{addNewStandingGIROManagedBean.customerName}"/>
+                        <h:panelGrid columns="1">  
+                            <p:steps activeIndex="1" >
+                                <p:menuitem value="Input Details" />
+                                <p:menuitem value="Verify Detials" />
+                            </p:steps>
+                        </h:panelGrid>
 
-                        <p:outputLabel value="Mobile" style="font-weight: bold"/>
-                        <p:outputLabel value="#{addNewStandingGIROManagedBean.customerMobile}"/>
+                        <h:panelGrid columns="1" styleClass="ui-panelgrid-blank form-group" class="ui-lg-4">
+                            <br/>
+                            <p:outputLabel value="Add GIRO Arrangement" style="font-weight: bold;font-size: 26px"/>
+                            <br/>
+                            <p:outputLabel value="Please ensure that the details below are correct and click 'Submit' to complete this transaction." />
+                            <br/>
+                            <p:outputLabel value="To" style="font-weight: bold;font-size: 26px"/>
+                            <br/>
+                        </h:panelGrid>
+                        <h:panelGrid columns="2" styleClass="ui-panelgrid-blank form-group" class="ui-lg-4">
+                            <p:outputLabel value="Billing Organization" style="font-weight: bold"/>
+                            <p:outputLabel value="#{addNewStandingGIROManagedBean.billingOrganization}"/>
 
-                        <p:outputLabel value="My Account" style="font-weight: bold"/>
-                        <p:outputLabel value="#{addNewStandingGIROManagedBean.bankAccountNumWithType}"/>
-                    </p:panelGrid>
+                            <p:outputLabel value="Bill Reference" style="font-weight: bold"/>
+                            <p:outputLabel value="#{addNewStandingGIROManagedBean.billReference}"/>
 
-                    <h:panelGrid columns="2" class="ui-lg-6">     
-                        <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('addNewGIROWizard').back()" />
-                        <p:commandButton id="submitBtn" value="Submit" update="growl" iconPos="right" icon="ui-icon-arrow-1-e"
-                                         actionListener="#{addNewStandingGIROManagedBean.addNewStandingGiro()}" ajax="true"/>
-                    </h:panelGrid>
-                </p:tab>
-            </p:wizard>
+                            <p:outputLabel value="Payment Limit" style="font-weight: bold"/>
+                            <p:outputLabel value="#{addNewStandingGIROManagedBean.paymentLimit}"/>
+                            <br/>
+                        </h:panelGrid>
+                        <h:panelGrid columns="1" styleClass="ui-panelgrid-blank form-group" class="ui-lg-4">
+                            <p:outputLabel value="From" style="font-weight: bold;font-size: 26px"/>
+                            <br/>
+                        </h:panelGrid>
+                        <h:panelGrid columns="2" styleClass="ui-panelgrid-blank form-group" class="ui-lg-4">
+                            <p:outputLabel value="Name" style="font-weight: bold"/>
+                            <p:outputLabel value="#{addNewStandingGIROManagedBean.customerName}"/>
 
+                            <p:outputLabel value="Mobile" style="font-weight: bold"/>
+                            <p:outputLabel value="#{addNewStandingGIROManagedBean.customerMobile}"/>
+
+                            <p:outputLabel value="My Account" style="font-weight: bold"/>
+                            <p:outputLabel value="#{addNewStandingGIROManagedBean.bankAccountNumWithType}"/>
+                        </h:panelGrid>
+
+                        <h:panelGrid columns="2" class="ui-lg-4">     
+                            <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('addNewGIROWizard').back()" />
+                            <p:commandButton id="submitBtn" value="Submit" update="growl" iconPos="right" icon="ui-icon-arrow-1-e"
+                                             actionListener="#{addNewStandingGIROManagedBean.addNewStandingGiro()}" ajax="true"/>
+                        </h:panelGrid>
+                    </p:tab>
+                </p:wizard>
+            </div>
         </h:form>
         <ezcomp:CCTimeout/>
     </ui:define>

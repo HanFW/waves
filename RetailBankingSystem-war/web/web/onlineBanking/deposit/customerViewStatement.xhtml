@@ -14,11 +14,13 @@
                 <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
             </p:panel>
 
+            <div align="center">
+                <h1>Choose Account to View Statement</h1>
+            </div>
+
             <p:dataTable var="bankAccount" value="#{accountDataTableBean.bankAccount}" 
                          reflow="true" paginator="true" rows="10" emptyMessage="No Account" >
-                <f:facet name="header">
-                    Choose Account to View Statement
-                </f:facet>
+
                 <p:column headerText="Bank Account Type"> 
                     <p:commandLink process="@this" action="/web/onlineBanking/deposit/customerViewStatementDone.xhtml">
                         <h:outputText value="#{bankAccount.bankAccountType}" />
@@ -39,7 +41,7 @@
                         <f:setPropertyActionListener value="#{bankAccount.bankAccountNum}" target="#{viewStatementManagedBean.bankAccountNum}" />
                     </p:commandLink>
                 </p:column>
-                
+
                 <p:column headerText="Total Balance"> 
                     <p:commandLink process="@this" action="/web/onlineBanking/deposit/customerViewStatementDone.xhtml?faces-redirect=true" >
                         <h:outputText value="S$#{bankAccount.totalBankAccountBalance}" />

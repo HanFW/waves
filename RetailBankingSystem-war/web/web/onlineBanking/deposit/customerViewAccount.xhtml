@@ -18,12 +18,12 @@
                 <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
             </p:panel>
 
-            <p:messages globalOnly="true"/>
+            <div align="center">
+                <h1>View My Accounts</h1>
+            </div>
 
             <p:dataTable var="bankAccount" value="#{accountDataTableBean.bankAccount}" reflow="true" paginator="true" rows="10" emptyMessage="No Account">
-                <f:facet name="header">
-                    View My Account
-                </f:facet>
+
                 <p:column headerText="Bank Account Type"> 
                     <h:outputText value="#{bankAccount.bankAccountType}" />
                 </p:column>
@@ -35,7 +35,7 @@
                 <p:column headerText="Available Balance"> 
                     <h:outputText value="S$#{bankAccount.availableBankAccountBalance}" />
                 </p:column>
-                
+
                 <p:column headerText="Total Balance"> 
                     <h:outputText value="S$#{bankAccount.totalBankAccountBalance}" />
                 </p:column>

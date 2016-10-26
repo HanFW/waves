@@ -130,6 +130,7 @@
 
 .ui-panelgrid.form-group.ui-panelgrid-cell{
     padding: 12px 16px;
+  
     /*    margin:0 auto;
         border:none; */
 }
@@ -538,16 +539,34 @@
     margin: 0 auto;
     padding: 30px 0px;
     text-align: center; }
+.landing-wrapper #MBloan {
+    width: 90%;
+    margin: 0 auto;
+    padding: 30px 0px;
+    text-align: center; }
 .landing-wrapper #MBcards h2 {
+    font-weight: 400; }
+.landing-wrapper #MBloan h2 {
     font-weight: 400; }
 .landing-wrapper #MBcards p {
     color: #757575; }
+.landing-wrapper #MBloan p {
+    color: #757575; }
 .landing-wrapper #MBcards .pricing-box .card {
+    padding: 0; }
+.landing-wrapper #MBloan .pricing-box .card {
     padding: 0; }
 .landing-wrapper #MBcards .pricing-box .pricing-header{
     padding: 0;
     /*    background-size: 200px 30px; }*/}
+.landing-wrapper #MBloan .pricing-box .pricing-header{
+    padding: 0;
+    /*    background-size: 200px 30px; }*/}
 .landing-wrapper #MBcards .pricing-box .MBcards1{
+    padding: 88px 0;
+    background: url("#{resource['ultima-layout:images/onlineBanking/card1.jpg']}")center;
+}
+.landing-wrapper #MBloan .pricing-box .MBcards1{
     padding: 88px 0;
     background: url("#{resource['ultima-layout:images/onlineBanking/card1.jpg']}")center;
 }
@@ -555,7 +574,15 @@
     padding: 88px 0;
     background: url("#{resource['ultima-layout:images/onlineBanking/card2.jpg']}")center;
     /*    background-size: 200px 30px; }*/}
+.landing-wrapper #MBloan .pricing-box .MBcards2{ 
+    padding: 88px 0;
+    background: url("#{resource['ultima-layout:images/onlineBanking/card2.jpg']}")center;
+    /*    background-size: 200px 30px; }*/}
 .landing-wrapper #MBcards .pricing-box .MBcards3{
+    padding: 88px 0;
+    background: url("#{resource['ultima-layout:images/onlineBanking/card1.jpg']}")center;
+    /*    background-size: 200px 30px; }*/}
+.landing-wrapper #MBloan .pricing-box .MBcards3{
     padding: 88px 0;
     background: url("#{resource['ultima-layout:images/onlineBanking/card1.jpg']}")center;
     /*    background-size: 200px 30px; }*/}
@@ -563,24 +590,47 @@
     padding: 88px 0;
     background: url("#{resource['ultima-layout:images/onlineBanking/card4.jpg']}")center;
     /*    background-size: 200px 30px; }*/}
+.landing-wrapper #MBloan .pricing-box .MBcards4{
+    padding: 88px 0;
+    background: url("#{resource['ultima-layout:images/onlineBanking/card4.jpg']}")center;
+    /*    background-size: 200px 30px; }*/}
 .landing-wrapper #MBcards .pricing-box .pricing-header span {
+    display: block;
+    line-height: 48px; }
+.landing-wrapper #MBloan .pricing-box .pricing-header span {
     display: block;
     line-height: 48px; }
 .landing-wrapper #MBcards .pricing-box .pricing-header span.name {
     font-weight: 300;
     font-size: 24px; }
+.landing-wrapper #MBloan .pricing-box .pricing-header span.name {
+    font-weight: 300;
+    font-size: 24px; }
 .landing-wrapper #MBcards .pricing-box .pricing-header span.fee {
     font-size: 48px;
     font-weight: 700; }
+.landing-wrapper #MBloan .pricing-box .pricing-header span.fee {
+    font-size: 48px;
+    font-weight: 700; }
 .landing-wrapper #MBcards .pricing-box .pricing-header span.type {
+    font-weight: 300;
+    font-size: 16px; }
+.landing-wrapper #MBloan .pricing-box .pricing-header span.type {
     font-weight: 300;
     font-size: 16px; }
 .landing-wrapper #MBcards .pricing-box .pricing-content h3 {
     margin: 0;
     padding-top: 8px;
     list-style-type: none; }
-
+.landing-wrapper #MBloan .pricing-box .pricing-content h3 {
+    margin: 0;
+    padding-top: 8px;
+    list-style-type: none; }
 .landing-wrapper #MBcards .pricing-box .pricing-content ul {
+    margin: 0;
+    padding: 30px 20px;
+    list-style-type: none; }
+.landing-wrapper #MBloan .pricing-box .pricing-content ul {
     margin: 0;
     padding: 30px 20px;
     list-style-type: none; }
@@ -588,22 +638,43 @@
     font-size: 18px;
     text-align: left;
     padding: 10px 14px; }
+.landing-wrapper #MBloan .pricing-box .pricing-content ul li {
+    font-size: 18px;
+    text-align: left;
+    padding: 10px 14px; }
 .landing-wrapper #MBcards .pricing-box .pricing-content ul li i {
+    margin-right: 20px;
+    vertical-align: middle; }
+.landing-wrapper #MBloan .pricing-box .pricing-content ul li i {
     margin-right: 20px;
     vertical-align: middle; }
 .landing-wrapper #MBcards .pricing-box .pricing-content ul li span {
     vertical-align: middle; }
+.landing-wrapper #MBloan .pricing-box .pricing-content ul li span {
+    vertical-align: middle; }
 .landing-wrapper #MBcards .pricing-box.pricing-basic .pricing-header {
+    background-color: #3f51b5; }
+.landing-wrapper #MBloan .pricing-box.pricing-basic .pricing-header {
     background-color: #3f51b5; }
 .landing-wrapper #MBcards .pricing-box.pricing-basic i {
     color: #3f51b5; }
+.landing-wrapper #MBloan .pricing-box.pricing-basic i {
+    color: #3f51b5; }
 .landing-wrapper #MBcards .pricing-box.pricing-standard .pricing-header {
+    background-color: #E6A82E; }
+.landing-wrapper #MBloan .pricing-box.pricing-standard .pricing-header {
     background-color: #E6A82E; }
 .landing-wrapper #MBcards .pricing-box.pricing-standard i {
     color: #E6A82E; }
+.landing-wrapper #MBloan .pricing-box.pricing-standard i {
+    color: #E6A82E; }
 .landing-wrapper #MBcards .pricing-box.pricing-professional .pricing-header {
     background-color: #607d8b; }
+.landing-wrapper #MBloan .pricing-box.pricing-professional .pricing-header {
+    background-color: #607d8b; }
 .landing-wrapper #MBcards .pricing-box.pricing-professional i {
+    color: #607d8b; }
+.landing-wrapper #MBloan .pricing-box.pricing-professional i {
     color: #607d8b; }
 .landing-wrapper #video {
     background-color: #f7f7f7;
@@ -764,7 +835,7 @@ body a {
     z-index: 100;
     width: 100%;
     height: 90px;
-    background-color: #5D6D7E }
+    background-color: #EEECE5 }
 .layout-wrapper .topbar .logo {
     display: inline-block;
     vertical-align: middle;
@@ -868,7 +939,7 @@ body a {
     top: -10px;
     font-size: 16px;
     background-color: transparent;
-    border-width: 0 0 1px 0;
+    border-width: 0 0 2px 0;
     padding: 2px 2px 1px 2px;
     border-color: #E6A82E;
     color: #E6A82E; }

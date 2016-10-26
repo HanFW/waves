@@ -45,8 +45,8 @@ public class DebitCardExpirationManagementSessionBean implements DebitCardExpira
          }
      }
      
-     System.out.println("find all cards whose remaining expiration months is less than 3 months");
-     Query query=em.createQuery("SELECT d FROM DebitCard d WHERE d.remainingExpirationMonths <=3 AND d.status=:status");
+     System.out.println("find all cards whose remaining expiration months is less than 6 months");
+     Query query=em.createQuery("SELECT d FROM DebitCard d WHERE d.remainingExpirationMonths <=6 AND d.status=:status");
      String requiredStatus = "activated";
      query.setParameter("status",requiredStatus);
      

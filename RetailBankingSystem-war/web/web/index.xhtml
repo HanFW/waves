@@ -40,22 +40,22 @@
         <div class="landing-wrapper">
             <div id="header">
                 <p:panel id="menubar" class="stickybar">
-                <div class="header-top clearfix">
-                    <span class="logo"></span>
+                    <div class="header-top clearfix">
+                        <span class="logo"></span>
 
-                    <a id="menu-button" href="#">
-                        <span class="fa fa-bars"></span>
-                    </a>
-                    <ul id="menu" class="animated">
-                        <li><a href="#"><i class="ui-icon ui-icon-home"></i><span>Home</span></a></li>
-                        <li><a href="#promotion"><i class="ui-icon ui-icon-account-balance"></i><span>Bank</span></a></li>
-                        <li><a href="#MBcards"><i class="ui-icon ui-icon-payment"></i><span>Cards</span></a></li>
-                        <li><a href="#features"><i class="ui-icon ui-icon-trending-up"></i><span>Wealth</span></a></li>
-                        <li><a href="#features"><i class="ui-icon ui-icon-attach-money"></i><span>Loan</span></a></li>
-                        <li><h:link outcome="/web/onlineBanking/infrastructure/customerLogin"><i class="ui-icon ui-icon-account-box"></i><span>Login</span></h:link></li>
-                    </ul>
-                </div>
-                    </p:panel>
+                        <a id="menu-button" href="#">
+                            <span class="fa fa-bars"></span>
+                        </a>
+                        <ul id="menu" class="animated">
+                            <li><a href="#"><i class="ui-icon ui-icon-home"></i><span>Home</span></a></li>
+                            <li><a href="#promotion"><i class="ui-icon ui-icon-account-balance"></i><span>Bank</span></a></li>
+                            <li><a href="#MBcards"><i class="ui-icon ui-icon-payment"></i><span>Cards</span></a></li>
+                            <li><a href="#features"><i class="ui-icon ui-icon-trending-up"></i><span>Wealth</span></a></li>
+                            <li><a href="#MBloan"><i class="ui-icon ui-icon-attach-money"></i><span>Loan</span></a></li>
+                            <li><h:link outcome="/web/onlineBanking/infrastructure/customerLogin"><i class="ui-icon ui-icon-account-box"></i><span>Login</span></h:link></li>
+                        </ul>
+                    </div>
+                </p:panel>
                 <p:sticky target="menubar"/>
 
                 <div class="header-content clearfix">
@@ -65,49 +65,25 @@
 
                 </div>
             </div>
-            
-            
 
             <div id="MBcards">
                 <h2>Cards</h2>
-                <!--                <p>Enjoy your bank at home!</p>-->
-
                 <div class="ui-g">
-                    <!--                    <div class="ui-g-12 ui-md-4 pricing-box pricing-basic">
-                                            <div class="card">
                     
-                                                <div class="pricing-header">
-                                                    <div class="MBcards1">
-                                                    </div>
-                                                </div>
-                                                <div class="pricing-content">
-                                                    <p:commandButton onclick="PF('CardsIntro1').show();" value="Featured Cards" styleClass="theme-btn"/>
-                                                    <p:commandButton value="Monthly Savings Account" type="button" onclick="PF('dlg1').show();" styleClass="NavyButton" style="width:100%"/>
-                                                                                    <h3>Monthly Savings Account</h3>
-                                                </div>
-                    
-                                            </div>
-                                        </div>-->
                     <div class="ui-g-12 ui-md-4 pricing-box pricing-standard">
                         <div class="card">
-                            <div class="pricing-header">
-                                <div class="MBcards2">
-
-                                </div>
+                            <div class="pricing-header MBcards2">
                             </div>
                             <div class="pricing-content">
                                 <p:commandButton onclick="PF('CardsIntro2').show();" value="Debit Cards" styleClass="theme-btn"/>
 
                             </div>
-
                         </div>
                     </div>
+                    
                     <div class="ui-g-12 ui-md-4 pricing-box pricing-professional">
                         <div class="card">
                             <div class="pricing-header MBcards3">
-
-
-
                             </div>
                             <div class="pricing-content">
                                 <p:commandButton onclick="PF('CardsIntro3').show();" value="Credit Cards" styleClass="theme-btn"/>
@@ -115,11 +91,10 @@
 
                         </div>
                     </div>
+                    
                     <div class="ui-g-12 ui-md-4 pricing-box pricing-professional">
                         <div class="card">
                             <div class="pricing-header MBcards4">
-
-
                             </div>
                             <div class="pricing-content">
                                 <p:commandButton onclick="PF('CardsIntro4').show();" value="Card Rewards" styleClass="theme-btn"/>
@@ -167,7 +142,59 @@
                 </div>
             </div>
 
+            <div id="MBloan">
+                <br/>
+                <br/>
+                <h2>Loan</h2>
+                <div class="ui-g">
+                    
+                    <div class="ui-g-12 ui-md-3 pricing-box pricing-standard">
+                        <div class="card">
+                            <div class="pricing-header MBcards2">
+                            </div>
+                            <div class="pricing-content">
+                                <p:commandButton onclick="PF('CardsIntro2').show();" value="Debit Cards" styleClass="theme-btn"/>
+                            </div>
+                        </div>
+                    </div>
 
+                    <div class="ui-g-12 ui-md-3 pricing-box pricing-standard">
+                        <div class="card">
+                            <div class="pricing-header MBcards2">
+                            </div>
+                            <div class="pricing-content">
+                                <p:commandButton onclick="PF('CardsIntro2').show();" value="Debit Cards" styleClass="theme-btn"/>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="ui-g-12 ui-md-3 pricing-box pricing-professional">
+                        <div class="card">
+                            <div class="pricing-header MBcards3">
+                            </div>
+                            <div class="pricing-content">
+                                <p:commandButton onclick="PF('CardsIntro3').show();" value="Credit Cards" styleClass="theme-btn"/>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="ui-g-12 ui-md-3 pricing-box pricing-professional">
+                        <div class="card">
+                            <div class="pricing-header MBcards4">
+                            </div>
+                            <div class="pricing-content">
+                                <p:commandButton onclick="PF('CardsIntro4').show();" value="Card Rewards" styleClass="theme-btn"/>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div class="ui-g">
+
+                </div>   
+            </div>
 
             <div id="features">
                 <h2>Invest Your Wealth</h2>
@@ -228,20 +255,202 @@
 
 
 
-                        <p:dialog header="Featured Cards" widgetVar="CardsIntro1" modal="true" height="450" width="80%" responsive="true">
+                        <p:dialog header="Featured Cards" widgetVar="CardsIntro1" modal="true" height="450" width="90%" responsive="true">
                             <h:outputText value="Featured Cards Info" />
                         </p:dialog>   
 
-                        <p:dialog header="Debit Cards" widgetVar="CardsIntro2" modal="true" height="450" width="80%" responsive="true">
-                            <h:outputText value="Debit Cards Info" />
-                            <p:button value="Apply New Debit Card" outcome="/web/merlionBank/debitCard/publicApplyDebitCardInfo"/>
+                        <p:dialog widgetVar="CardsIntro2" modal="true" height="450" width="90%" responsive="true">
+                            <div align="center">
+                                <p:outputLabel style="font-size: 32px;font-weight: bold" value="Merlion Debit Cards"/>
+                                <br/>
+                                <br/>
+
+                                <p:panelGrid>                            
+                                    <p:row>
+                                        <p:column colspan="2"> </p:column>
+                                        <p:column colspan="2">Merlion NUS Card - Visa</p:column>
+                                        <p:column colspan="2">Merlion payWave Card - Visa</p:column>
+                                        <p:column colspan="2">Merlion Watsons Card - MasterCard</p:column>          
+                                    </p:row>
+                                    <p:row>
+                                        <p:column colspan="2" style="font-weight: bold">Card Cover </p:column>
+                                        <p:column colspan="2">
+                                            <p:graphicImage name="nus.png" library="cardCover" style="width:200px;height:110px"/>
+                                        </p:column>
+                                        <p:column colspan="2">
+                                            <p:graphicImage name="payWave.png" library="cardCover" style="width:200px;height:110px"/>
+                                        </p:column>
+                                        <p:column colspan="2">
+                                            <p:graphicImage name="watsons.png" library="cardCover" style="width:200px;height:110px"/>
+                                        </p:column>         
+                                    </p:row>
+                                    <p:row>
+                                        <p:column colspan="2" style="font-weight: bold">Rebate </p:column>
+                                        <p:column colspan="2">-</p:column>
+                                        <p:column colspan="2">-</p:column>
+                                        <p:column colspan="2">10% off at any Watsons branch</p:column>          
+                                    </p:row>
+                                    <p:row>
+                                        <p:column colspan="2" style="font-weight: bold">Supplementary Card </p:column>
+                                        <p:column colspan="2">N.A.</p:column>
+                                        <p:column colspan="2">N.A.</p:column>
+                                        <p:column colspan="2">Max. 2 supplementary cards</p:column>          
+                                    </p:row>
+                                    <p:row>
+                                        <p:column colspan="2" style="font-weight: bold">Annual Fee </p:column>
+                                        <p:column colspan="2">$50</p:column>
+                                        <p:column colspan="2">$50</p:column>
+                                        <p:column colspan="2">Free for principle card. $80 for each supplementary card p.a. (1st year annual fee waived)</p:column>          
+                                    </p:row>
+                                    <p:row>
+                                        <p:column colspan="2" style="font-weight: bold">Late Payment Charge^ </p:column>
+                                        <p:column colspan="2">$80</p:column>
+                                        <p:column colspan="2">$80</p:column>
+                                        <p:column colspan="2">$80</p:column>          
+                                    </p:row>
+                                    <p:row>
+                                        <p:column colspan="2" style="font-weight: bold">Interest Charge </p:column>
+                                        <p:column colspan="2">25.5% p.a.</p:column>
+                                        <p:column colspan="2">25.5% p.a.</p:column>
+                                        <p:column colspan="2">25.5% p.a.</p:column>          
+                                    </p:row>
+                                    <p:row>
+                                        <p:column colspan="2" style="font-weight: bold">Minimum Sum </p:column>
+                                        <p:column colspan="2">3% of outstanding balance or $50, whichever is higher</p:column>
+                                        <p:column colspan="2">3% of outstanding balance or $50, whichever is higher</p:column>
+                                        <p:column colspan="2">5% of outstanding balance or $50, whichever is higher</p:column>          
+                                    </p:row>
+                                    <p:row>
+                                        <p:column colspan="2" style="font-weight: bold">Replacement Charge </p:column>
+                                        <p:column colspan="2">$20 per card</p:column>
+                                        <p:column colspan="2">$20 per card</p:column>
+                                        <p:column colspan="2">$20 per card</p:column>          
+                                    </p:row>
+                                    <p:row>
+                                        <p:column colspan="2" style="font-weight: bold"> </p:column>
+                                        <p:column colspan="2"> 
+                                            <p:button value="Apply for this card" outcome="/web/merlionBank/debitCard/publicApplyDebitCardInfo">
+
+                                            </p:button>
+                                        </p:column>
+                                        <p:column colspan="2"> 
+                                            <p:button value="Apply for this card" outcome="/web/merlionBank/debitCard/publicApplyDebitCardInfo">
+
+                                            </p:button>
+                                        </p:column>
+                                        <p:column colspan="2"> 
+                                            <p:button value="Apply for this card" outcome="/web/merlionBank/debitCard/publicApplyDebitCardInfo">
+
+                                            </p:button>
+                                        </p:column>          
+                                    </p:row>
+                                    <p:row>
+                                        <p:column colspan="8">^Late Payment Charge is levied if (i) full payment of the outstanding balance 
+                                            (where the outstanding balance is S$50 or less) is not received by the payment due date; 
+                                            or (ii) if the minimum payment (where the outstanding balance exceeds S$50) specified in the statement 
+                                            is not received by the payment due date.</p:column>
+                                    </p:row>
+                                </p:panelGrid>
+                            </div>
+
                         </p:dialog>   
 
-                        <p:dialog header="Credit Cards" widgetVar="CardsIntro3" modal="true" height="450" width="80%" responsive="true">
-                            <h:outputText value="Credit Cards Info" />
+                        <p:dialog widgetVar="CardsIntro3" modal="true" height="450" width="90%" responsive="true">
+                            <div align="center">
+                                <p:outputLabel style="font-size: 32px;font-weight: bold" value="Merlion Credit Cards"/>
+                                <br/>
+                                <br/>
+
+                                <p:panelGrid>                            
+                                    <p:row>
+                                        <p:column colspan="2"> </p:column>
+                                        <p:column colspan="2">Merlion Fairprice Card - Visa</p:column>
+                                        <p:column colspan="2">Merlion Tangs Card - MasterCard</p:column>
+                                        <p:column colspan="2">Merlion Platinum Card -Visa</p:column>          
+                                    </p:row>
+                                    <p:row>
+                                        <p:column colspan="2" style="font-weight: bold">Card Cover </p:column>
+                                        <p:column colspan="2">
+                                            <p:graphicImage name="fairprice.png" library="cardCover" style="width:200px;height:110px"/>
+                                        </p:column>
+                                        <p:column colspan="2">
+                                            <p:graphicImage name="tangs.png" library="cardCover" style="width:200px;height:110px"/>
+                                        </p:column>
+                                        <p:column colspan="2">
+                                            <p:graphicImage name="platinum.png" library="cardCover" style="width:200px;height:110px"/>
+                                        </p:column>         
+                                    </p:row>
+                                    <p:row>
+                                        <p:column colspan="2" style="font-weight: bold">Rebate </p:column>
+                                        <p:column colspan="2">10% off at any Fairprice supermarket</p:column>
+                                        <p:column colspan="2">10% off at any Tangs department store</p:column>
+                                        <p:column colspan="2">10% off at any Golden Village theatre</p:column>          
+                                    </p:row>
+                                    <p:row>
+                                        <p:column colspan="2" style="font-weight: bold">Supplementary Card </p:column>
+                                        <p:column colspan="2">N.A.</p:column>
+                                        <p:column colspan="2">N.A.</p:column>
+                                        <p:column colspan="2">Max. 2 supplementary cards</p:column>          
+                                    </p:row>
+                                    <p:row>
+                                        <p:column colspan="2" style="font-weight: bold">Annual Fee </p:column>
+                                        <p:column colspan="2">$50</p:column>
+                                        <p:column colspan="2">$50</p:column>
+                                        <p:column colspan="2">Free for principle card. $80 for each supplementary card p.a. (1st year annual fee waived)</p:column>          
+                                    </p:row>
+                                    <p:row>
+                                        <p:column colspan="2" style="font-weight: bold">Late Payment Charge^ </p:column>
+                                        <p:column colspan="2">$80</p:column>
+                                        <p:column colspan="2">$80</p:column>
+                                        <p:column colspan="2">$80</p:column>          
+                                    </p:row>
+                                    <p:row>
+                                        <p:column colspan="2" style="font-weight: bold">Interest Charge </p:column>
+                                        <p:column colspan="2">25.5% p.a.</p:column>
+                                        <p:column colspan="2">25.5% p.a.</p:column>
+                                        <p:column colspan="2">25.5% p.a.</p:column>          
+                                    </p:row>
+                                    <p:row>
+                                        <p:column colspan="2" style="font-weight: bold">Minimum Sum </p:column>
+                                        <p:column colspan="2">3% of outstanding balance or $50, whichever is higher</p:column>
+                                        <p:column colspan="2">3% of outstanding balance or $50, whichever is higher</p:column>
+                                        <p:column colspan="2">5% of outstanding balance or $50, whichever is higher</p:column>          
+                                    </p:row>
+                                    <p:row>
+                                        <p:column colspan="2" style="font-weight: bold">Replacement Charge </p:column>
+                                        <p:column colspan="2">$20 per card</p:column>
+                                        <p:column colspan="2">$20 per card</p:column>
+                                        <p:column colspan="2">$20 per card</p:column>          
+                                    </p:row>
+                                    <p:row>
+                                        <p:column colspan="2" style="font-weight: bold"> </p:column>
+                                        <p:column colspan="2"> 
+                                            <p:commandButton value="Apply for this card" actionListener="#{publicCreditCardsInfoManagedBean.redirectToCustomerIdentity(1)}" ajax="false" >
+
+                                            </p:commandButton>
+                                        </p:column>
+                                        <p:column colspan="2"> 
+                                            <p:commandButton value="Apply for this card" actionListener="#{publicCreditCardsInfoManagedBean.redirectToCustomerIdentity(2)}" ajax="false" update="@form">
+
+                                            </p:commandButton>
+                                        </p:column>
+                                        <p:column colspan="2"> 
+                                            <p:commandButton value="Apply for this card" actionListener="#{publicCreditCardsInfoManagedBean.redirectToCustomerIdentity(3)}" ajax="false" update="@form">
+
+                                            </p:commandButton>
+                                        </p:column>          
+                                    </p:row>
+                                    <p:row>
+                                        <p:column colspan="8">^Late Payment Charge is levied if (i) full payment of the outstanding balance 
+                                            (where the outstanding balance is S$50 or less) is not received by the payment due date; 
+                                            or (ii) if the minimum payment (where the outstanding balance exceeds S$50) specified in the statement 
+                                            is not received by the payment due date.</p:column>
+                                    </p:row>
+                                </p:panelGrid>
+                            </div>
                         </p:dialog>   
 
-                        <p:dialog header="Card Rewards" widgetVar="CardsIntro4" modal="true" height="450" width="80%" responsive="true">
+                        <p:dialog header="Card Rewards" widgetVar="CardsIntro4" modal="true" height="450" width="90%" responsive="true">
                             <h:outputText value="Card Rewards and Services Info" />
                         </p:dialog>   
 
@@ -268,7 +477,6 @@
                                 <li><a href="#">Home</a></li>
                                 <li><a href="#promotion">Bank</a></li>
                                 <li><a href="#MBcards">Cards</a></li>
-                                <li><h:link outcome="/web/onlineBanking/infrastructure/customerReopenIBAccount.xhtml">Reopen iBanking Account</h:link></li>
                             </ul>
                         </div>
                     </div>
