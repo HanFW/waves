@@ -10,31 +10,26 @@
     <ui:define name="content">
 
         <h:body>
+            <p:panel>
+                <p:outputLabel value="Welcome "/>
+                <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
+            </p:panel>
 
             <div align="center">
                 <h:form>
-                    <p:panel>
-                        <p:outputLabel value="Welcome "/>
-                        <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
-                    </p:panel>
 
                     <p:messages autoUpdate="true"/>
-
-                    <p:outputLabel style="font-size: 40px;font-weight: bold" value="Request for Card Replacement"/>
-                    <br/>
-                    <br/>
-
+                    <h1>Renew Expiring Card</h1>
+                    <h:panelGrid columns="1" class="ui-lg-6">
                     <p:outputLabel style="font-size: 20px;font-weight: bold" value="Important"/>
-                    <br/>
-                    <br/>
-
-                    <p:outputLabel style="font-size: 20px" value="If you request for card replacement,"/>
+                    <p:outputLabel style="font-size: 20px" value="If you request to renew an expiring card,"/>
                     <br/>
 
                     <p:outputLabel style="font-size: 20px" value="We will arrange a new card and send the card to you in 2 - 3 working days."/>
                     <br/>
 
                     <p:outputLabel style="font-size: 20px" value="You may proceed to activate the new card, and the old card will no longer be activated."/>
+                    </h:panelGrid>
                     <br/>
 
                     <h:panelGrid columns="3" class="ui-lg-6"> 
@@ -76,9 +71,12 @@
                             </p:inputText>
                             <p:messages for="cardccs"/>
 
-                            <p:commandButton value="Confirm" actionListener="#{customerRequestForCardReplacementManagedBean.requestForCardReplacement}"/>        
+    
                         </p:panel>
                     </h:panelGrid>
+
+                    <p:commandButton value="Confirm" actionListener="#{customerRequestForCardReplacementManagedBean.requestForCardReplacement}" style="width:150px"/>        
+
                 </h:form>
             </div>
         </h:body>
