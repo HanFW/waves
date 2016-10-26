@@ -69,7 +69,7 @@
             <div id="MBcards">
                 <h2>Cards</h2>
                 <div class="ui-g">
-                    
+
                     <div class="ui-g-12 ui-md-4 pricing-box pricing-standard">
                         <div class="card">
                             <div class="pricing-header MBcards2">
@@ -80,7 +80,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="ui-g-12 ui-md-4 pricing-box pricing-professional">
                         <div class="card">
                             <div class="pricing-header MBcards3">
@@ -91,7 +91,7 @@
 
                         </div>
                     </div>
-                    
+
                     <div class="ui-g-12 ui-md-4 pricing-box pricing-professional">
                         <div class="card">
                             <div class="pricing-header MBcards4">
@@ -147,43 +147,43 @@
                 <br/>
                 <h2>Loan</h2>
                 <div class="ui-g">
-                    
+
                     <div class="ui-g-12 ui-md-3 pricing-box pricing-standard">
                         <div class="card">
-                            <div class="pricing-header MBcards2">
+                            <div class="pricing-header MBloan1">
                             </div>
                             <div class="pricing-content">
-                                <p:commandButton onclick="PF('CardsIntro2').show();" value="Debit Cards" styleClass="theme-btn"/>
+                                <p:commandButton onclick="PF('LoanIntro1').show();" value="Home loan" styleClass="theme-btn"/>
                             </div>
                         </div>
                     </div>
 
                     <div class="ui-g-12 ui-md-3 pricing-box pricing-standard">
                         <div class="card">
-                            <div class="pricing-header MBcards2">
+                            <div class="pricing-header MBloan2">
                             </div>
                             <div class="pricing-content">
-                                <p:commandButton onclick="PF('CardsIntro2').show();" value="Debit Cards" styleClass="theme-btn"/>
+                                <p:commandButton onclick="PF('LoanIntro2').show();" value="Personal loan" styleClass="theme-btn"/>
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="ui-g-12 ui-md-3 pricing-box pricing-professional">
                         <div class="card">
-                            <div class="pricing-header MBcards3">
+                            <div class="pricing-header MBloan3">
                             </div>
                             <div class="pricing-content">
-                                <p:commandButton onclick="PF('CardsIntro3').show();" value="Credit Cards" styleClass="theme-btn"/>
+                                <p:commandButton onclick="PF('LoanIntro3').show();" value="Education loan" styleClass="theme-btn"/>
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="ui-g-12 ui-md-3 pricing-box pricing-professional">
                         <div class="card">
-                            <div class="pricing-header MBcards4">
+                            <div class="pricing-header MBloan4">
                             </div>
                             <div class="pricing-content">
-                                <p:commandButton onclick="PF('CardsIntro4').show();" value="Card Rewards" styleClass="theme-btn"/>
+                                <p:commandButton onclick="PF('LoanIntro4').show();" value="Car loan" styleClass="theme-btn"/>
                             </div>
                         </div>
                     </div>
@@ -252,8 +252,6 @@
 
 
                     <h:form>
-
-
 
                         <p:dialog header="Featured Cards" widgetVar="CardsIntro1" modal="true" height="450" width="90%" responsive="true">
                             <h:outputText value="Featured Cards Info" />
@@ -454,6 +452,133 @@
                             <h:outputText value="Card Rewards and Services Info" />
                         </p:dialog>   
 
+
+                    </h:form>
+
+                    <h:form>
+
+                        <p:dialog header="Home Loan" widgetVar="LoanIntro1" modal="true" height="450" width="90%" responsive="true">
+                            <div align="center"> 
+                                <p:tabView>
+                                    <p:tab title="HDB Loan">
+                                        <p:panelGrid columns="2">
+                                            <p:outputLabel value="High Margin Of Financing"/>
+                                            <h:outputText value="With up to 80% Quantum of Financing (QOF) on HDB Home Loans, you get to keep your initial outlays at a minimum."/>
+
+                                            <p:outputLabel value="Downpayment"/>
+                                            <h:outputText value="20% of purchase price or market value, whichever is lower"/>
+                                        </p:panelGrid>
+                                        <p:separator/>
+                                        <p:outputLabel value="Interest Rates"/>
+                                        <p:panelGrid columns="2">
+                                            <p:outputLabel value="Fixed Rate Package" styleClass="ui-widget-header"/>
+                                            <p:outputLabel value="Floating Rate Package" styleClass="ui-widget-header"/>
+                                            <p:column>
+                                                <h:outputText value="Year1:"/>
+                                                <br/>
+                                                <h:outputText value="1.80% p.a."/>
+                                                <br/>
+                                                <br/>
+                                                <h:outputText value="Year2:"/>
+                                                <br/>
+                                                <h:outputText value="1.80% p.a."/>
+                                                <br/>
+                                                <br/>
+                                                <h:outputText value="Year3:"/>
+                                                <br/>
+                                                <h:outputText value="1.80% p.a."/>
+                                                <br/>
+                                                <br/>
+                                                <h:outputText value="Thereafter:"/>
+                                                <br/>
+                                                <h:outputText value="SIBOR + 0.70% p.a."/>
+                                            </p:column>
+                                            <p:column>
+                                                <h:outputText value="Year1:"/>
+                                                <br/>
+                                                <h:outputText value="SIBOR + 0.80% p.a."/>
+                                                <br/>
+                                                <br/>
+                                                <h:outputText value="Year2:"/>
+                                                <br/>
+                                                <h:outputText value="SIBOR + 0.80% p.a."/>
+                                                <br/>
+                                                <br/>
+                                                <h:outputText value="Year3:"/>
+                                                <br/>
+                                                <h:outputText value="SIBOR + 0.80% p.a."/>
+                                                <br/>
+                                                <br/>
+                                                <h:outputText value="Thereafter:"/>
+                                                <br/>
+                                                <h:outputText value="SIBOR + 0.80% p.a."/>
+                                            </p:column>
+                                        </p:panelGrid>
+                                        <p:separator/>
+                                        <p:panelGrid columns="2">
+                                            <p:outputLabel value="Eligibility"/>
+                                            <p:column>
+                                                <p:outputLabel value="Age Requirement: "/>
+                                                <br/>
+                                                <h:outputText value="21 years old and above"/>
+                                                <br/>
+                                                <br/>
+                                                <p:outputLabel value="Income Requirement: "/>
+                                                <br/>
+                                                <h:outputText value="S$18,000 per annum"/>
+                                                <br/>
+                                                <br/>
+                                                <p:outputLabel value="Minimum Loan Amount: "/>
+                                                <br/>
+                                                <h:outputText value="S$100,000"/>
+                                            </p:column>
+                                            <p:outputLabel value="Documents Required"/>
+                                            <p:column>
+                                                <h:outputText value="• Photocopy of NRIC/Passport for all Applicants and Owners"/>
+                                                <br/>
+                                                <h:outputText value="• Option to Purchase or Sale &amp; Purchase Agreement (for new purchase)"/>
+                                                <br/>
+                                                <h:outputText value="• Loan Statement from Existing Bank/Financial Institution – Latest 12 months (for refinancing)"/>
+                                                <br/>
+                                                <h:outputText value="• Latest CPF Withdrawal Statement for Existing Property to be Refinanced/Sold"/>
+                                                <br/>
+                                                <h:outputText value="• Evidence of Sale of Existing Property (if applicable)"/>
+                                                <br/>
+                                                <h:outputText value="• Tenancy Agreement (if applicable)"/>
+                                                <br/>
+                                                <h:outputText value="• Latest Tax Assessment &amp; CPF Statement (for salaried employees)"/>
+                                                <br/>
+                                                <h:outputText value="• 2 Years Income Tax Assessment (for self-employed applicants)"/>
+                                                <br/>
+                                            </p:column>
+                                        </p:panelGrid>
+                                        <p:separator/>
+                                        <p:commandButton type="submit" value="Apply for HDB Loan" action="/web/merlionBank/loan/publicHDBLoanApplication.xhtml?faces-redirect=true"/>
+                                    </p:tab>
+
+                                    <p:tab title="Private Property Loan">
+
+                                    </p:tab>
+
+                                    <p:tab title="Renovation Loan">
+
+                                    </p:tab>
+                                </p:tabView>
+                            </div>
+                            
+                        </p:dialog>  
+
+                        <p:dialog header="Personal Loan" widgetVar="LoanIntro2" modal="true" height="450" width="90%" responsive="true">
+                            <h:outputText value="Personal Loan Info" />
+                        </p:dialog>  
+
+                        <p:dialog header="Education Loan" widgetVar="LoanIntro3" modal="true" height="450" width="90%" responsive="true">
+                            <h:outputText value="Education Loan Info" />
+                        </p:dialog>  
+
+                        <p:dialog header="Car Loan" widgetVar="LoanIntro4" modal="true" height="450" width="90%" responsive="true">
+                            <h:outputText value="Car Loan Info" />
+                        </p:dialog>  
 
                     </h:form>
 
