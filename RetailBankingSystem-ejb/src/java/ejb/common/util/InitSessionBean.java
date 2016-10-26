@@ -22,5 +22,6 @@ public class InitSessionBean {
 //        ejbTimerSessionLocal.createTimer70000MS();
 //        ejbTimerSessionLocal.createTimer2000MS();
 //        ejbTimerSessionLocal.createTimer5000MS();
+        ejbTimerSessionLocal.createTimer30000MS();
     }
 }

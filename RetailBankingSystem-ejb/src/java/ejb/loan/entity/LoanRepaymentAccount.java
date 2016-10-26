@@ -31,6 +31,7 @@ public class LoanRepaymentAccount implements Serializable {
     private String accountNumber;
     private double principal;
     private double interest;
+    private double instalment;
     private double overdueBalance;
     private double fees;
     private String paymentStatus;
@@ -129,6 +130,14 @@ public class LoanRepaymentAccount implements Serializable {
 
     public void setDepositAccountNumber(String depositAccountNumber) {
         this.depositAccountNumber = depositAccountNumber;
+    }
+
+    public double getInstalment() {
+        return instalment;
+    }
+
+    public void setInstalment(double instalment) {
+        this.instalment = instalment;
     }
 
     @Override
