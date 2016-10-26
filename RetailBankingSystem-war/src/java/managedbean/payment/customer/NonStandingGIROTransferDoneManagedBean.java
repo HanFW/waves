@@ -2,7 +2,6 @@ package managedbean.payment.customer;
 
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
-import ejb.deposit.session.TransactionSessionBeanLocal;
 import ejb.payment.entity.GIRO;
 import ejb.payment.entity.NonStandingGIRO;
 import ejb.payment.entity.RegisteredBillingOrganization;
@@ -17,6 +16,8 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.xml.ws.WebServiceRef;
+import ws.client.otherbanks.OtherBanksWebService_Service;
+import ws.client.sach.SACHWebService_Service;
 //import ws.client.otherbanks.OtherBankAccount;
 //import ws.client.otherbanks.OtherBanksWebService_Service;
 //import ws.client.sach.SACHWebService_Service;
