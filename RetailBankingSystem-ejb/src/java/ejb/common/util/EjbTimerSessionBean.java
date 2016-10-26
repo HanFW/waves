@@ -1,6 +1,7 @@
 package ejb.common.util;
 
 import ejb.card.session.CardActivationManagementSessionBeanLocal;
+import ejb.card.session.CreditCardExpirationManagementSessionBeanLocal;
 import ejb.card.session.DebitCardExpirationManagementSessionBeanLocal;
 import java.util.Collection;
 import javax.annotation.Resource;
@@ -41,6 +42,9 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
 
     @EJB
     private DebitCardExpirationManagementSessionBeanLocal debitCardExpirationManagementSessionBeanLocal;
+    
+    @EJB
+    private CreditCardExpirationManagementSessionBeanLocal creditCardExpirationManagementSessionBeanLocal;
 
     @EJB
     CardActivationManagementSessionBeanLocal cardActivationManagementSessionBeanLocal;
