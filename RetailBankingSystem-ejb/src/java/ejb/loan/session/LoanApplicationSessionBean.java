@@ -160,33 +160,10 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
         System.out.println("****** loan/LoanApplicationSessionBean: approveMortgageLoanRequest() ******");
         LoanApplication application = em.find(LoanApplication.class, applicationId);
         application.setAmountGranted(amount);
-        application.setPeriodSuggested(period);
+        application.setPeriodSuggested(period*12);
         application.setInstalment(instalment);
         application.setApplicationStatus("approved");
         application.setFinalActionDate(new Date());
-        
-        LoanPayableAccount loanPayableAccount = new LoanPayableAccount();
-        LoanRepaymentAccount loanRepaymentAccount = new LoanRepaymentAccount();
-        
-        application.setLoanPayableAccount(loanPayableAccount);
-        loanPayableAccount.setLoanApplication(application);
-        
-        loanPayableAccount.setLoanRepaymentAccount(loanRepaymentAccount);
-        loanRepaymentAccount.setLoanPayableAccount(loanPayableAccount);
-        
-        em.flush();
-        
-        DecimalFormat df = new DecimalFormat("000000");
-        
-        loanPayableAccount.setAccountNumber("6000" + df.format(loanPayableAccount.getId()));
-        loanPayableAccount.setInitialAmount(amount);
-        loanPayableAccount.setAccountBalance(amount);
-        loanPayableAccount.setStartDate(new Date());
-        loanPayableAccount.setAccountStatus("start");
-        loanPayableAccount.setOverdueBalance(0);
-        
-        loanRepaymentAccount.setAccountNumber("7000" + df.format(loanRepaymentAccount.getId()));
-        
         em.flush();
     }
     
@@ -252,6 +229,29 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
     public void startNewLoan(Long applicationId){
         LoanApplication application = em.find(LoanApplication.class, applicationId);
         application.setApplicationStatus("started");
+        
+        LoanPayableAccount loanPayableAccount = new LoanPayableAccount();
+        LoanRepaymentAccount loanRepaymentAccount = new LoanRepaymentAccount();
+        
+        application.setLoanPayableAccount(loanPayableAccount);
+        loanPayableAccount.setLoanApplication(application);
+        
+        loanPayableAccount.setLoanRepaymentAccount(loanRepaymentAccount);
+        loanRepaymentAccount.setLoanPayableAccount(loanPayableAccount);
+        
+        em.flush();
+        
+        DecimalFormat df = new DecimalFormat("000000");
+        
+        loanPayableAccount.setAccountNumber("6000" + df.format(loanPayableAccount.getId()));
+        loanPayableAccount.setInitialAmount(application.getAmountGranted());
+        loanPayableAccount.setAccountBalance(application.getAmountGranted());
+        loanPayableAccount.setStartDate(new Date());
+        loanPayableAccount.setAccountStatus("started");
+        loanPayableAccount.setOverdueBalance(0);
+        
+        loanRepaymentAccount.setAccountNumber("7000" + df.format(loanRepaymentAccount.getId()));
+        
         em.flush();
     }
     
