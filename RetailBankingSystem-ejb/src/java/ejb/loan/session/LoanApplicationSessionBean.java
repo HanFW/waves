@@ -160,7 +160,7 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
         System.out.println("****** loan/LoanApplicationSessionBean: approveMortgageLoanRequest() ******");
         LoanApplication application = em.find(LoanApplication.class, applicationId);
         application.setAmountGranted(amount);
-        application.setPeriodSuggested(period);
+        application.setPeriodSuggested(period*12);
         application.setInstalment(instalment);
         application.setApplicationStatus("approved");
         application.setFinalActionDate(new Date());
@@ -247,7 +247,7 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
         loanPayableAccount.setInitialAmount(application.getAmountGranted());
         loanPayableAccount.setAccountBalance(application.getAmountGranted());
         loanPayableAccount.setStartDate(new Date());
-        loanPayableAccount.setAccountStatus("start");
+        loanPayableAccount.setAccountStatus("started");
         loanPayableAccount.setOverdueBalance(0);
         
         loanRepaymentAccount.setAccountNumber("7000" + df.format(loanRepaymentAccount.getId()));

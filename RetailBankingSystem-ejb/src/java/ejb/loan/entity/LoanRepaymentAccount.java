@@ -29,8 +29,8 @@ public class LoanRepaymentAccount implements Serializable {
     private Long id;
     
     private String accountNumber;
-    private double principal;
-    private double interest;
+//    private double principal;
+//    private double interest;
     private double instalment;
     private double overdueBalance;
     private double fees;
@@ -66,22 +66,6 @@ public class LoanRepaymentAccount implements Serializable {
 
     public void setAccountNumber(String accountNumber) {
         this.accountNumber = accountNumber;
-    }
-
-    public double getPrincipal() {
-        return principal;
-    }
-
-    public void setPrincipal(double principal) {
-        this.principal = principal;
-    }
-
-    public double getInterest() {
-        return interest;
-    }
-
-    public void setInterest(double interest) {
-        this.interest = interest;
     }
 
     public double getOverdueBalance() {
