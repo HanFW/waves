@@ -7,13 +7,14 @@ package ejb.card.session;
 
 import ejb.card.entity.CreditCard;
 import ejb.card.entity.CreditCardType;
-import static ejb.card.entity.DebitCard_.transactionLimit;
 import ejb.card.entity.SupplementaryCard;
 import ejb.customer.entity.CustomerBasic;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -35,40 +36,36 @@ public class CreditCardManagementSessionBean implements CreditCardManagementSess
     @EJB
     private CreditCardSessionBeanLocal creditCardSessionBeanLocal;
 
-//    @Override
-//    public String CancelCreditCard(String creditCardNum) {
-//        if (getCardByCardNum(debitCardNum) == null) {
-//            return "debit card not exist";
-//        } else {
-//            CreditCard findCreditCard = getCardByCardNum(debitCardNum);
-//            String debitCardPwd = debitCardPassword;
-//
-//            //check if pwd matches
-//            String hashedInputPwd;
-//            try {
-//                hashedInputPwd = md5Hashing(debitCardPwd + findDebitCard.getCardNum().substring(0, 3));
-//
-//                if (!findCreditCard.getDebitCardPwd().equals(hashedInputPwd)) {
-//                    return "wrong pwd";
-//                } else {
-//                    BankAccount depositAccount = findDebitCard.getBankAccount();
-//                    DebitCardType debitCardType = findDebitCard.getDebitCardType();
-//
-//                    depositAccount.removeDebitCard(findDebitCard);
-//                    debitCardType.removeDebitCard(findDebitCard);
-//
-//                    em.remove(findDebitCard);
-//                    return "success";
-//
-//                }
-//            } catch (NoSuchAlgorithmException ex) {
-//                Logger.getLogger(DebitCardManagementSessionBean.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//
-//        }
-//        return null;
-//
-//    }
+    @Override
+    public String cancelCreditCard(String creditCardNum, String securityCode) {
+        if (getCardByCardNum(creditCardNum) == null) {
+            return "credit card not exist";
+        } else {
+            CreditCard findCreditCard = getCardByCardNum(creditCardNum);
+
+            //check if pwd matches
+            String hashedInputPwd;
+            try {
+                hashedInputPwd = md5Hashing(securityCode + findCreditCard.getCardNum().substring(0, 3));
+
+                if (!findCreditCard.getCardSecurityCode().equals(hashedInputPwd)) {
+                    return "wrong pwd";
+                } else if (findCreditCard.getCreditLimit() != 0){
+                    return "credit limit unpaid";
+                } else {
+                    findCreditCard.setStatus("cancel");
+                    
+                    return "success";
+                }
+            } catch (NoSuchAlgorithmException ex) {
+                Logger.getLogger(DebitCardManagementSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+        return null;
+
+    }
+    
     @Override
     public void cancelCreditCardAfterReplacement(Long creditCardId) {
         CreditCard findCreditCard = em.find(CreditCard.class, creditCardId);
