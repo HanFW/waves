@@ -1,0 +1,25 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:pu="http://primefaces.org/ultima">
+
+    <h:form id="menuform">
+        
+        <div class="layout-menu #{guestPreferences.menuClass}">
+           
+            <p:breadCrumb>
+                <p:menuitem value="Home" url="/web/index.xhtml" />
+                <p:menuitem value="Debit Card Application" url="/web/merlionBank/debitCard/publicApplyDebitCardInfo.xhtml" />
+
+            </p:breadCrumb>
+            
+            <pu:menu widgetVar="me"/>
+         
+        </div>
+        
+       
+    </h:form>
+</ui:composition>

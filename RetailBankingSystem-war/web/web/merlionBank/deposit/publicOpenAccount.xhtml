@@ -14,11 +14,12 @@
     <ui:define name="content">
 
         <p:messages id="message" globalOnly="true"/>
-
-        <h:form>
-            <p:commandButton id="oneTimeBtn" value="Open Account" update="message"
-                             actionListener="#{accountManagedBean.openAccountOneClick()}" ajax="true"/>
-        </h:form>
+        
+        <div align="center">
+            <br/>
+            <p:commandButton id="oneTimeBtn" value="One Click Open Account - For Testing" update="message"
+                             actionListener="#{accountManagedBean.openAccountOneClick()}" ajax="true" style="width:auto"/>
+        </div>
 
         <h:form>
             <p:growl id="growl" sticky="true" showDetail="true"/>
@@ -37,7 +38,7 @@
                         </h:panelGrid>
 
                         <div align="center">
-                            <h:panelGrid columns="1" class="ui-lg-6">  
+                            <h:panelGrid columns="1" class="ui-lg-4">  
 
                                 <p:messages globalOnly="true"/>
 
@@ -135,7 +136,7 @@
                                 <br/>
                             </h:panelGrid>
 
-                            <h:panelGrid columns="2" class="ui-lg-6"> 
+                            <h:panelGrid columns="2" class="ui-lg-4"> 
 
                                 <p:outputLabel style="font-weight: bold" value="Deposit Period(Month):" />
 
@@ -171,7 +172,7 @@
                                 <p:outputLabel value="0.65%" />
                             </h:panelGrid> 
 
-                            <h:panelGrid columns="2" class="ui-lg-6"> 
+                            <h:panelGrid columns="2" class="ui-lg-4"> 
                                 <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('openAccountWizard').back()" disabled="true"/>
                                 <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('openAccountWizard').next();" />
                             </h:panelGrid> 
@@ -192,7 +193,7 @@
                         </h:panelGrid>
 
                         <div align="center">
-                            <h:panelGrid columns="1" class="ui-lg-6">  
+                            <h:panelGrid columns="1" class="ui-lg-4">  
 
                                 <p:outputLabel style="font-weight: bold" value="Existing Customer of Merlion Bank: " />
 
@@ -278,7 +279,7 @@
 
                             </h:panelGrid>
 
-                            <h:panelGrid columns="2" class="ui-lg-6">     
+                            <h:panelGrid columns="2" class="ui-lg-4">     
                                 <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('openAccountWizard').back()"/>
                                 <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('openAccountWizard').next();" />
                             </h:panelGrid> 
@@ -298,7 +299,7 @@
                         </h:panelGrid>
 
                         <div align="center">
-                            <h:panelGrid columns="1" class="ui-lg-6">  
+                            <h:panelGrid columns="1" class="ui-lg-4">  
                                 <p:messages globalOnly="true"/>
 
                                 <p:outputLabel for="customerNationality" style="font-weight: bold" value="Nationality: " />
@@ -889,7 +890,7 @@
 
                             </h:panelGrid>
 
-                            <h:panelGrid columns="2" class="ui-lg-6">     
+                            <h:panelGrid columns="2" class="ui-lg-4">     
                                 <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('openAccountWizard').back()" />
                                 <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('openAccountWizard').next();" />
                             </h:panelGrid> 
@@ -938,7 +939,7 @@
 
                             </h:panelGrid>
 
-                            <h:panelGrid columns="2" class="ui-lg-6">     
+                            <h:panelGrid columns="2" class="4">     
                                 <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('openAccountWizard').back()"/>
                                 <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('openAccountWizard').next();" />
                             </h:panelGrid> 
@@ -961,7 +962,7 @@
                         <br/>
                         <h:outputLabel value="About Myself" style="font-weight: bold; font-size: 24px" />
 
-                        <h:panelGrid columns="2" class="ui-lg-6">     
+                        <h:panelGrid columns="2" class="ui-lg-4">     
                             <h:outputText value="Existing Customer of Merlion Bank: "/>
                             <h:outputText value="#{accountManagedBean.existingCustomer}"/>
 
@@ -1024,7 +1025,7 @@
                         <br/>
                         <h:outputLabel value="My Deposit" style="font-weight: bold; font-size: 24px" />
 
-                        <h:panelGrid columns="2" class="ui-lg-6">     
+                        <h:panelGrid columns="2" class="ui-lg-4">     
                             <h:outputText value="Bank Account Type: "/>
                             <h:outputText value="#{accountManagedBean.bankAccountType}"/>
                         </h:panelGrid>
@@ -1041,7 +1042,7 @@
                         <p:messages showDetail="true"/>
                         <p:captcha label="Captcha"/>
 
-                        <h:panelGrid columns="2" class="ui-lg-6">     
+                        <h:panelGrid columns="2" class="ui-lg-4">     
                             <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('openAccountWizard').back()"/>
 
                             <p:commandButton id="saveBtn" value="Open Account" update="growl"
