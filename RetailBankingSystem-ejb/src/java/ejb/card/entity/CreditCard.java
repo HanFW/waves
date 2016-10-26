@@ -22,10 +22,10 @@ import javax.persistence.OneToMany;
 public class CreditCard extends Card implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER)
     private CreditCardType creditCardType;
     
-    @ManyToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER)
     private CustomerBasic customerBasic;
     
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "creditCard")
@@ -74,6 +74,10 @@ public class CreditCard extends Card implements Serializable {
     public void setOutstandingBalance(double outstandingBalance) {
         this.outstandingBalance = outstandingBalance;
     }
+
+
+
+    
    
 
 }

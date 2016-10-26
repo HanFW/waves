@@ -16,7 +16,7 @@ import javax.ejb.Local;
  */
 @Local
 public interface DebitCardSessionBeanLocal {
-    public String createDebitCard(String bankAccountNum,String cardHolderName, String applicationDate,String cardTypeName);
+    public void createDebitCard(String bankAccountNum,String cardHolderName, String applicationDate,String cardTypeName);
     
     public void issueDebitCardForCardReplacement(String bankAccountNum,String cardHolderName, String applicationDate,String cardTypeName, Long predecessorId);
     

@@ -243,7 +243,7 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
         }
         Double totalBalanceAccountFrom = Double.valueOf(bankAccountFrom.getTotalBankAccountBalance()) - Double.valueOf(transferAmt);
         Double availableBalanceAccountFrom = Double.valueOf(bankAccountFrom.getAvailableBankAccountBalance()) - Double.valueOf(transferAmt);
-        
+
         Double totalBalanceAccountTo = Double.valueOf(bankAccountTo.getTotalBankAccountBalance()) + Double.valueOf(transferAmt);
         Double availableBalanceAccountTo = Double.valueOf(bankAccountTo.getAvailableBankAccountBalance()) + Double.valueOf(transferAmt);
 
