@@ -5,19 +5,11 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
-                template="/WEB-INF/onlineBankingTemplate.xhtml"
-                xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
+                template="/WEB-INF/internalSystemTemplate.xhtml">
+
     <ui:define name="content">
-
         <h:body>
-            <p:panel>
-                <p:outputLabel value="Welcome "/>
-                <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
-            </p:panel>
-
-
             <h:form>
-
                 <div align="center">
                     <h1>Renew Expiring Card</h1>
                     <h:panelGrid columns="1" class="ui-lg-5">
@@ -35,30 +27,30 @@
                         <h:panelGrid columns="2" class="ui-lg-4"> 
 
                             <p:outputLabel value="Card Type:"/>
-                            <p:selectOneRadio required="true" requiredMessage="Please select card type" id="cardType" value="#{customerRequestForCardReplacementManagedBean.cardType}">
+                            <p:selectOneRadio required="true" requiredMessage="Please select card type" id="cardType" value="#{employeeRenewCardDoneManagedBean.cardType}">
                                 <f:selectItem itemLabel="Credit Card" itemValue="credit" />
                                 <f:selectItem itemLabel="Debit Card" itemValue="debit" />
-                                <p:ajax event="change" update="creditPanel debitPanel" listener="#{customerRequestForCardReplacementManagedBean.showCards}"/>
+                                <p:ajax event="change" update="creditPanel debitPanel" listener="#{employeeRenewCardDoneManagedBean.showCards}"/>
                             </p:selectOneRadio>
                         </h:panelGrid>
 
-                        <p:panel id="debitPanel" visible="#{customerRequestForCardReplacementManagedBean.debitPanelVisible}">
+                        <p:panel id="debitPanel" visible="#{employeeRenewCardDoneManagedBean.debitPanelVisible}">
                             <h:panelGrid columns="2" class="ui-lg-4">
                                 <p:outputLabel value="Debit Card:"/>
-                                <p:selectOneMenu id="selectDebitCard" required="true" requiredMessage="Please select a debit card" style="text-align:left" value="#{customerRequestForCardReplacementManagedBean.selectedDebitCard}">
+                                <p:selectOneMenu id="selectDebitCard" required="true" requiredMessage="Please select a debit card" style="text-align:left" value="#{employeeRenewCardDoneManagedBean.selectedDebitCard}">
                                     <f:selectItem itemLabel="Please select..." itemValue=""/>
-                                    <f:selectItems value="#{customerRequestForCardReplacementManagedBean.debitCards}"/> 
+                                    <f:selectItems value="#{employeeRenewCardDoneManagedBean.debitCards}"/> 
                                 </p:selectOneMenu>
 
                                 <p:outputLabel value="Card Password:" />
-                                <p:inputText validatorMessage="Card password is 6-digit" required="true" requiredMessage="Please input your card password" id="cardPwd" value="#{customerRequestForCardReplacementManagedBean.debitCardPwd}">
+                                <p:inputText validatorMessage="Card password is 6-digit" required="true" requiredMessage="Please input your card password" id="cardPwd" value="#{employeeRenewCardDoneManagedBean.debitCardPwd}">
                                     <f:validateLength minimum="6" maximum="6" /> 
                                 </p:inputText>                      
                             </h:panelGrid>
-                            <p:commandButton value="Confirm" actionListener="#{customerRequestForCardReplacementManagedBean.requestForCardReplacement}" style="width:150px"/>
+                            <p:commandButton value="Confirm" actionListener="#{employeeRenewCardDoneManagedBean.requestForCardReplacement}" style="width:150px"/>
                         </p:panel>
 
-                        <p:panel id="creditPanel" visible="#{customerRequestForCardReplacementManagedBean.creditPanelVisible}">
+                        <p:panel id="creditPanel" visible="#{employeeRenewCardDoneManagedBean.creditPanelVisible}">
                             <p:outputLabel value="Credit cards need to go through official verification once it reaches its expiry date."/>
                             <br/>
                             <p:outputLabel value="Please click on the button below to apply for a new credit card."/>
@@ -69,9 +61,7 @@
                     </div>
                 </div>
             </h:form>
-
         </h:body>
-
     </ui:define>
 </ui:composition>
 

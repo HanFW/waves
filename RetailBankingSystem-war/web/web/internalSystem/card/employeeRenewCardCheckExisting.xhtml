@@ -7,14 +7,26 @@
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/internalSystemTemplate.xhtml">
 
+    <ui:define name="merlionBankMenu">
+
+        <ui:include src="/WEB-INF/merlionBankMenuApplyDebitCard.xhtml" />
+
+    </ui:define>
+
     <ui:define name="content">
-        <h:form id="formMain"> 
+        <h:form>
             <div align="center">
-                <!--                <h:outputText value="You have logged in as: Counter Teller"/>-->
-                <br/>
-                <p:panel id="panel">
-                    <h1>Fund Transfer</h1>
-                    <p:messages globalOnly="true"/>
+                <h:panelGrid columns="2" class="ui-lg-6">                          
+                    <p:outputLabel style="font-weight: bold" value="Are you an existing Merlion Bank customer?"/>
+                    <p:selectOneRadio id="hasMerlionAcc" value="#{publicDebitCardCustomerIdentityManagedBean.hasMerlionAcc}"
+                                      required="true" requiredMessage="Please select">
+                        <f:selectItem itemLabel="Yes" itemValue="Yes" />
+                        <f:selectItem itemLabel="No" itemValue="No" />
+                        <p:ajax event="change" update="panelExistingCustomer panelNewCustomer" listener="#{publicDebitCardCustomerIdentityManagedBean.showPanel}"/>
+                    </p:selectOneRadio>
+                </h:panelGrid>
+
+                <p:panel style="border: none;" id="panelExistingCustomer" visible="#{publicDebitCardCustomerIdentityManagedBean.existingCustomerVisible}">
 
                     <h:panelGrid columns="1" cellpadding="5" styleClass="ui-panelgrid-blank form-group">  
                         <p:row>
@@ -22,7 +34,7 @@
                                 <p:outputLabel for="customerName" style="font-weight: bold" value="Name(As per NRIC/Passport): " />
                             </p:column>
                             <p:column>
-                                <p:inputText label="Customer Name" id="customerName" value="#{employeeTransferManagedBean.customerName}"
+                                <p:inputText label="Customer Name" id="customerName" value="#{employeeRenewCardManagedBean.customerName}"
                                              required="true" requiredMessage="Required Field">
                                 </p:inputText>
                             </p:column>
@@ -36,7 +48,7 @@
                                 <p:outputLabel for="customerIdentificationNum" style="font-weight: bold" value="Identification Number: " />
                             </p:column>
                             <p:column>
-                                <p:inputText label="Customer Identification Number" id="customerIdentificationNum" value="#{employeeTransferManagedBean.customerIdentificationNum}"
+                                <p:inputText label="Customer Identification Number" id="customerIdentificationNum" value="#{employeeRenewCardManagedBean.customerIdentificationNum}"
                                              required="true" requiredMessage="Required Field">
                                 </p:inputText>
                             </p:column>
@@ -50,7 +62,7 @@
                                 <p:outputLabel for="customerDateOfBirth" style="font-weight: bold" value="Date Of Birth: " />
                             </p:column>
                             <p:column>
-                                <p:calendar id="customerDateOfBirth" value="#{employeeTransferManagedBean.customerDateOfBirth}" 
+                                <p:calendar id="customerDateOfBirth" value="#{employeeRenewCardManagedBean.customerDateOfBirth}" 
                                             showOn="button" locale="de" navigator="true" pattern="dd/MM/yyyy" 
                                             yearRange="c-200:c+200" required="true" requiredMessage="Required Field"/>
                             </p:column>
@@ -63,21 +75,26 @@
 
                     <h:panelGrid columns="2" cellpadding="5" styleClass="ui-panelgrid-blank form-group">  
 
-                        <p:commandButton id="cancelBtn" action="/web/index.xhtml" value="Cancel" update="panel" immediate = "true">
+                        <p:commandButton id="cancelBtn" action="/web/index.xhtml" value="Cancel" immediate = "true">
                             <p:confirm header="Cancel" message="Are you sure?" />
                         </p:commandButton>
-                        <p:commandButton id="submitBtn" value="Submit" update="panel"
-                                         action="#{employeeTransferManagedBean.submit}" ajax="true"/>
+
+                        <p:commandButton id="submitBtn" value="Submit"
+                                         action="#{employeeRenewCardManagedBean.submit}" ajax="true"/>
 
                     </h:panelGrid>
                     <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
                         <p:commandButton value="Yes" styleClass="ui-confirmdialog-yes" action="/web/index.xhtml"/>
                         <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" />
                     </p:confirmDialog>
+                </p:panel>
 
+                <p:panel style="border: none;" id="panelNewCustomer" visible="#{publicDebitCardCustomerIdentityManagedBean.newCustomerVisible}">
+                    <p:button value="Start Application" href="/web/internalSystem/deposit/employeeOpenAccount.xhtml?faces-redirect=true" style="width:auto"/>
                 </p:panel>
             </div>
         </h:form>
     </ui:define>
 </ui:composition>
+
 

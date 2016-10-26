@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/internalSystemTemplate.xhtml">
+
+    <ui:define name="content">
+        <h:body>
+            <h:form>
+                <div align="center">
+                    <h1>Report Loss</h1>
+                    <h:panelGrid columns="1" class="ui-lg-5">
+
+                        <p:outputLabel style="font-size: 20px;font-weight: bold" value="Important"/>
+
+                        <p:outputLabel style="font-size: 20px" value="Please note that once the card is resported as loss, it will be cancelled immediately. "/>
+                        <br/>
+
+                        <p:outputLabel style="font-size: 20px" value="We will arrange a new card and send the card to you in 2 - 3 working days."/>
+                        <br/>
+
+                        <p:outputLabel style="font-size: 20px" value="Once you report that your card is lost or stolen, you will not be liable for any fradulent
+                                       transactions on your lost or stolen card from the time you notify us."/>
+                    </h:panelGrid>
+                    <p:messages autoUpdate="true"/>
+                    <br/>
+
+                    <h:panelGrid columns="2" class="ui-lg-4"> 
+
+                        <p:outputLabel value="Card Type:"/>
+                        <p:selectOneRadio required="true" requiredMessage="Please select card type" id="cardType" value="#{employeeReportCardLossDoneManagedBean.cardType}">
+                            <f:selectItem itemLabel="Credit Card" itemValue="credit" />
+                            <f:selectItem itemLabel="Debit Card" itemValue="debit" />
+                            <p:ajax event="change" update="creditPanel debitPanel" listener="#{employeeReportCardLossDoneManagedBean.showCards}"/>
+                        </p:selectOneRadio>
+                    </h:panelGrid>
+                    <p:panel id="debitPanel" visible="#{employeeReportCardLossDoneManagedBean.debitPanelVisible}">
+                        <h:panelGrid columns="2" class="ui-lg-4">
+                            <p:outputLabel value="Debit Card:"/>
+                            <p:selectOneMenu id="selectCard" required="#{employeeReportCardLossDoneManagedBean.debitPanelVisible}" requiredMessage="Please select a debit card" style="text-align:left" value="#{employeeReportCardLossDoneManagedBean.selectedDebitCard}">
+                                <f:selectItem itemLabel="Please select..." itemValue=""/>
+                                <f:selectItems value="#{employeeReportCardLossDoneManagedBean.debitCards}"/> 
+                            </p:selectOneMenu>
+                            <p:outputLabel value="Card Password:" />
+                            <p:inputText  required="#{employeeReportCardLossDoneManagedBean.debitPanelVisible}" requiredMessage="Please input your card password" id="cardPwd" value="#{employeeReportCardLossDoneManagedBean.debitCardPwd}">
+                            </p:inputText>
+                        </h:panelGrid>
+                        <p:commandButton value="Confirm" actionListener="#{employeeReportCardLossDoneManagedBean.reportCardLoss}" style="width:150px"/>             
+                    </p:panel>
+
+                    <p:panel id="creditPanel" visible="#{employeeReportCardLossDoneManagedBean.creditPanelVisible}">
+                        <h:panelGrid columns="2" class="ui-lg-4">
+                            <p:outputLabel value="Credit Card:"/>
+                            <p:selectOneMenu id="selectCreditCard" required="#{employeeReportCardLossDoneManagedBean.creditPanelVisible}" requiredMessage="Please select a credit card" style="text-align:left" value="#{employeeReportCardLossDoneManagedBean.selectedCreditCard}">
+                                <f:selectItem itemLabel="Please select..." itemValue=""/>
+                                <f:selectItems value="#{employeeReportCardLossDoneManagedBean.creditCards}"/> 
+                            </p:selectOneMenu>
+
+                            <p:outputLabel value="NRIC/Passport number:" />
+                            <p:inputText  required="#{employeeReportCardLossDoneManagedBean.creditPanelVisible}" requiredMessage="Please input your NRIC/passport number" id="cardccs" value="#{employeeReportCardLossDoneManagedBean.identificationNum}">
+
+                            </p:inputText>
+                        </h:panelGrid>
+                        <p:commandButton value="Confirm" actionListener="#{employeeReportCardLossDoneManagedBean.reportCardLoss}" style="width:150px"/>
+                    </p:panel>
+
+                    <br/>
+                </div>
+            </h:form>
+        </h:body>
+    </ui:define>
+</ui:composition>
