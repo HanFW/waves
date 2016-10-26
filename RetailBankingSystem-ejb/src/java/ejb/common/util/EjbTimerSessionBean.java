@@ -14,6 +14,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import ejb.deposit.session.StatementSessionBeanLocal;
+import ejb.loan.session.LoanInterestSessionBeanLocal;
 import ejb.payment.session.NonStandingGIROSessionBeanLocal;
 import javax.xml.ws.WebServiceRef;
 import ws.client.meps.MEPSWebService_Service;
@@ -22,9 +23,13 @@ import ws.client.meps.MEPSWebService_Service;
 @LocalBean
 
 public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
+    
     @WebServiceRef(wsdlLocation = "META-INF/wsdl/localhost_8080/MEPSWebService/MEPSWebService.wsdl")
     private MEPSWebService_Service service;
-
+    
+    @EJB
+    private LoanInterestSessionBeanLocal loanInterestSessionBeanLocal;
+    
     @EJB
     private StatementSessionBeanLocal statementSessionBeanLocal;
 
@@ -52,7 +57,10 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
     private final String TIMER_NAME_70000MS = "EJB-TIMER-70000MS";
     private final int TIMER_DURATION_70000MS = 70000;
     private final String TIMER_NAME_5000MS = "EJB-TIMER-5000MS";
-    private final int TIMER_DURATION_5000MS = 50000;
+    private final int TIMER_DURATION_5000MS = 5000;
+    //loan - 30secs as one month
+    private final String TIMER_NAME_30000MS = "EJB-TIMER-30000MS";
+    private final int TIMER_DURATION_30000MS = 30000;
 
     public EjbTimerSessionBean() {
 
