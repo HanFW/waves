@@ -322,6 +322,10 @@ public class CustomerBasic implements Serializable {
     public void addNewCreditCard(CreditCard cc) {
         creditCard.add(cc);
     }
+    
+    public void removeCreditCard(CreditCard cc) {
+        creditCard.remove(cc);
+    }
 
     public String getCustomerOnlineBankingAccountLocked() {
         return customerOnlineBankingAccountLocked;

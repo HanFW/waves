@@ -44,27 +44,45 @@
                         <p:selectOneRadio required="true" requiredMessage="Please select card type" id="cardType" value="#{customerReportLossManagedBean.cardType}">
                             <f:selectItem itemLabel="Credit Card" itemValue="credit" />
                             <f:selectItem itemLabel="Debit Card" itemValue="debit" />
+                            <p:ajax event="change" update="creditPanel debitPanel" listener="#{customerReportLossManagedBean.showCards}"/>
                         </p:selectOneRadio>
                         <p:messages for="cardType"/>
 
-                        <p:outputLabel value="Debit Card"/>
-                        <p:selectOneMenu id="selectCard" required="true" requiredMessage="Please select a debit card" style="text-align:left" value="#{customerReportLossManagedBean.selectedDebitCard}">
-                            <f:selectItem itemLabel="Please select..." itemValue=""/>
-                            <f:selectItems value="#{customerReportLossManagedBean.debitCards}"/> 
-                        </p:selectOneMenu>
-                        <p:message for="selectCard"/>
+                        <p:panel id="debitPanel" visible="#{customerReportLossManagedBean.debitPanelVisible}">
+                            <p:outputLabel value="Debit Card"/>
+                            <p:selectOneMenu id="selectCard" required="#{customerReportLossManagedBean.debitPanelVisible}" requiredMessage="Please select a debit card" style="text-align:left" value="#{customerReportLossManagedBean.selectedDebitCard}">
+                                <f:selectItem itemLabel="Please select..." itemValue=""/>
+                                <f:selectItems value="#{customerReportLossManagedBean.debitCards}"/> 
+                            </p:selectOneMenu>
+                            <p:message for="selectCard"/>
 
-                        <p:outputLabel value="Card Password:" />
-                        <p:inputText validatorMessage="Card password is 6-digit" required="true" requiredMessage="Please input your card password" id="cardPwd" value="#{customerReportLossManagedBean.debitCardPwd}">
-                            <f:validateLength minimum="6" maximum="6" /> 
-                        </p:inputText>
-                        <p:message for="cardPwd"/>
+                            <p:outputLabel value="Card Password:" />
+                            <p:inputText  required="#{customerReportLossManagedBean.debitPanelVisible}" requiredMessage="Please input your card password" id="cardPwd" value="#{customerReportLossManagedBean.debitCardPwd}">
+                               
+                            </p:inputText>
+                            <p:message for="cardPwd"/>
+                            <p:commandButton value="Confirm" actionListener="#{customerReportLossManagedBean.reportCardLoss}"/>             
+                        </p:panel>
+                        
+                        <p:panel id="creditPanel" visible="#{customerReportLossManagedBean.creditPanelVisible}">
+                            <p:outputLabel value="Credit Card"/>
+                            <p:selectOneMenu id="selectCreditCard" required="#{customerReportLossManagedBean.creditPanelVisible}" requiredMessage="Please select a credit card" style="text-align:left" value="#{customerReportLossManagedBean.selectedCreditCard}">
+                                <f:selectItem itemLabel="Please select..." itemValue=""/>
+                                <f:selectItems value="#{customerReportLossManagedBean.creditCards}"/> 
+                            </p:selectOneMenu>
+                            <p:message for="selectCreditCard"/>   
 
+                            <p:outputLabel value="Your NRIC/Passport number:" />
+                            <p:inputText  required="#{customerReportLossManagedBean.creditPanelVisible}" requiredMessage="Please input your NRIC/passport number" id="cardccs" value="#{customerReportLossManagedBean.identificationNum}">
+                               
+                            </p:inputText>
+                            <p:messages for="cardccs"/>
+
+                            <p:commandButton value="Confirm" actionListener="#{customerReportLossManagedBean.reportCardLoss}"/>        
+                        </p:panel>
                     </h:panelGrid>
-
-                    <p:commandButton value="Confirm" actionListener="#{customerReportLossManagedBean.reportCardLoss}"/>             
-
                 </h:form>
+
             </div>
         </h:body>
 

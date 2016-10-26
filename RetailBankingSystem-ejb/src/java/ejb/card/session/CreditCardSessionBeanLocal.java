@@ -17,6 +17,7 @@ public interface CreditCardSessionBeanLocal {
 
     public void createCreditCard(Long newCustomerBasicId, Long newCustomerAdvancedId, Long creditCardTypeId,
             String cardHolderName, String hasCreditLimit, double creditLimit, String applicationDate);
+    public void createNewCardAfterLost(Long cbId, Long caId, Long creditCardTypeId, String cardHolderName, double creditLimit, String expDate, int remainingMonths);
     public String findTypeNameById(Long cardTypeId);
     public List<String> getAllDebitCards(Long customerId);
     public List<String> getAllNonActivatedCreditCards(Long customerId);
