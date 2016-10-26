@@ -19,4 +19,5 @@ public interface LoanManagementSessionBeanLocal {
 
     List<LoanPayableAccount> getLoanPayableAccountByIdentification(String identification);
     public List<LoanApplication> getLoanApplicationsByIdentification(String identification);
+    public LoanPayableAccount getLoanPayableAccountById(Long loanId);
 }

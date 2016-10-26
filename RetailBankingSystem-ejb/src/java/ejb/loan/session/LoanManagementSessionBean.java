@@ -36,12 +36,19 @@ public class LoanManagementSessionBean implements LoanManagementSessionBeanLocal
     
     @Override
     public List<LoanApplication> getLoanApplicationsByIdentification(String identification){
+        System.out.println("get identification: " + identification);
         Query query = em.createQuery("SELECT a FROM LoanApplication a WHERE a.customerBasic.customerIdentificationNum = :identification");
         query.setParameter("identification", identification);
         
         List<LoanApplication> applications = query.getResultList();
         
         return applications;
+    }
+    
+    @Override
+    public LoanPayableAccount getLoanPayableAccountById(Long loanId) {
+        LoanPayableAccount account = em.find(LoanPayableAccount.class, loanId);
+        return account;
     }
 
 }

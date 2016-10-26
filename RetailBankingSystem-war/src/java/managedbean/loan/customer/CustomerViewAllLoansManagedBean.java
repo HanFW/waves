@@ -9,6 +9,7 @@ import ejb.customer.entity.CustomerBasic;
 import ejb.loan.entity.LoanApplication;
 import ejb.loan.entity.LoanPayableAccount;
 import ejb.loan.session.LoanManagementSessionBeanLocal;
+import java.io.IOException;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.inject.Named;
@@ -35,10 +36,10 @@ public class CustomerViewAllLoansManagedBean {
     public CustomerViewAllLoansManagedBean() {
     }
     
-    public void viewLoan(Long loanId){
+    public void viewLoan(Long loanId) throws IOException{
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         ec.getFlash().put("loanId", loanId);
-        ec.redirect(ec.getRequestContextPath() + "/we");
+        ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/loan/customerViewLoan.xhtml?faces-redirect=true");
     }
 
     public List<LoanPayableAccount> getAccounts() {
