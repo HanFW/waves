@@ -15,12 +15,13 @@
                 <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
             </p:panel>
             
-            <p:panel id="panel" header="Choose the Account You Want to Delete" style="text-align:center" > 
+            <p:panel id="panel"> 
                 <div align="center">
+                    
                     <h:panelGrid columns="1" styleClass="ui-panelgrid-blank form-group ui-lg-4" >
                         <p:messages globalOnly="true"/>
 
-                        <p:outputLabel for="bankAccountNum" value="Account Number: " style="font-weight: bold"/>
+                        <p:outputLabel for="bankAccountNum" value="Choose the Account You Want to Delete:" style="font-weight: bold"/>
                         <p:selectOneMenu id="bankAccountNum" value="#{closeAccountManagedBean.bankAccountNumWithType}" effect="fold" editable="true"
                                          required="true" requiredMessage="Required Field">
                             <f:selectItems value="#{closeAccountManagedBean.myBankAccounts}" />

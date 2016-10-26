@@ -10,32 +10,29 @@
     <ui:define name="content">
 
         <h:body>
+            <p:panel>
+                <p:outputLabel value="Welcome "/>
+                <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
+            </p:panel>
 
             <div align="center">
                 <h:form>
-                    <p:panel>
-                        <p:outputLabel value="Welcome "/>
-                        <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
-                    </p:panel>
-
                     <p:messages autoUpdate="true"/>
 
-                    <p:outputLabel style="font-size: 40px;font-weight: bold" value="Report loss"/>
-                    <br/>
-                    <br/>
+                    <h1>Report Loss</h1>
+                    <h:panelGrid columns="1" class="ui-lg-6">
 
-                    <p:outputLabel style="font-size: 20px;font-weight: bold" value="Important"/>
-                    <br/>
-                    <br/>
+                        <p:outputLabel style="font-size: 20px;font-weight: bold" value="Important"/>
 
-                    <p:outputLabel style="font-size: 20px" value="Please note that once the card is resported as loss, it will be cancelled immediately. "/>
-                    <br/>
+                        <p:outputLabel style="font-size: 20px" value="Please note that once the card is resported as loss, it will be cancelled immediately. "/>
+                        <br/>
 
-                    <p:outputLabel style="font-size: 20px" value="We will arrange a new card and send the card to you in 2 - 3 working days."/>
-                    <br/>
+                        <p:outputLabel style="font-size: 20px" value="We will arrange a new card and send the card to you in 2 - 3 working days."/>
+                        <br/>
 
-                    <p:outputLabel style="font-size: 20px" value="Once you report that your card is lost or stolen, you will not be liable for any fradulent
-                                   transactions on your lost or stolen card from the time you notify us."/>
+                        <p:outputLabel style="font-size: 20px" value="Once you report that your card is lost or stolen, you will not be liable for any fradulent
+                                       transactions on your lost or stolen card from the time you notify us."/>
+                    </h:panelGrid>
                     <br/>
 
                     <h:panelGrid columns="3" class="ui-lg-6"> 
@@ -78,13 +75,16 @@
                             </p:inputText>
                             <p:messages for="cardccs"/>
 
-                            <p:commandButton value="Confirm" actionListener="#{customerReportLossManagedBean.reportCardLoss}"/>        
+
                         </p:panel>
                     </h:panelGrid>
-                </h:form>
 
+                    <br/>
+                    <p:commandButton value="Confirm" actionListener="#{customerReportLossManagedBean.reportCardLoss}" style="width:200px"/>             
+                    <br/>
+                    <br/>
+                </h:form>
             </div>
         </h:body>
-
     </ui:define>
 </ui:composition>

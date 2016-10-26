@@ -16,13 +16,14 @@
                 <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
             </p:panel>
 
+            <div align="center">
+                <h1>Delete FAST Recipient</h1>
+            </div>
             <p:messages globalOnly="true"/>
 
             <p:dataTable var="fastPayee" value="#{deleteFastPayeeManagedBean.fastPayees}" 
                          reflow="true" paginator="true" rows="10" emptyMessage="No Recipient">
-                <f:facet name="header">
-                    View FAST Recipient
-                </f:facet>
+
                 <p:column headerText="Recipient's Name" >
                     <h:outputText value="#{fastPayee.fastPayeeName}" /> 
                 </p:column>
