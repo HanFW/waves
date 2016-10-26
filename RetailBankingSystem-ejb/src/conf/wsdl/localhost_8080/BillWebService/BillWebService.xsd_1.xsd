@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI (http://jax-ws.java.net). RI's version is Metro/2.3.1-b419 (branches/2.3.1.x-7937; 2014-08-04T08:11:03+0000) JAXWS-RI/2.2.10-b140803.1500 JAXWS-API/2.2.11 JAXB-RI/2.2.10-b140802.1033 JAXB-API/2.2.12-b140109.1041 svn-revision#unknown. --><xs:schema xmlns:tns="http://session.ws.ejb/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://session.ws.ejb/">
+
+<xs:element name="addNewBill" type="tns:addNewBill"/>
+
+<xs:element name="addNewBillResponse" type="tns:addNewBillResponse"/>
+
+<xs:complexType name="addNewBill">
+<xs:sequence>
+<xs:element name="customerName" type="xs:string" minOccurs="0"/>
+<xs:element name="customerMobile" type="xs:string" minOccurs="0"/>
+<xs:element name="billReference" type="xs:string" minOccurs="0"/>
+<xs:element name="billingOrganizationName" type="xs:string" minOccurs="0"/>
+<xs:element name="debitBank" type="xs:string" minOccurs="0"/>
+<xs:element name="debitBankAccountNum" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="addNewBillResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:long" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>

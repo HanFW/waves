@@ -15,13 +15,13 @@ import javax.faces.context.FacesContext;
 @Named(value = "nonStandingGIROManagedBean")
 @RequestScoped
 
-public class NonStandingGIROManagedBean implements Serializable{
+public class NonStandingGIROManagedBean implements Serializable {
 
     @EJB
     private NonStandingGIROSessionBeanLocal nonStandingGIROSessionBeanLocal;
 
     private ExternalContext ec;
-    
+
     private String paymentAmt;
 
     private String statusMessage;
@@ -99,8 +99,8 @@ public class NonStandingGIROManagedBean implements Serializable{
 
         return oneTimeGiros;
     }
-    
-        public List<NonStandingGIRO> getRecurrentGIROs() throws IOException {
+
+    public List<NonStandingGIRO> getRecurrentGIROs() throws IOException {
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
         CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");

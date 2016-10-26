@@ -1122,8 +1122,8 @@ public class AccountManagedBean implements Serializable {
         //Bank Account Details
         bankAccountNum = bankAccountSessionLocal.generateBankAccount();
         bankAccountType = "Bonus Savings Account";
-        totalBankAccountBalance = "10000";
-        availableBankAccountBalance = "10000";
+        totalBankAccountBalance = "10000.0";
+        availableBankAccountBalance = "10000.0";
         transferDailyLimit = "3000.0";
         transferBalance = "3000.0";
         bankAccountMinSaving = "";

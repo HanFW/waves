@@ -95,5 +95,22 @@
         <delete dir="${build.generated.dir}/jax-wsCache/MEPSWebService"/>
         <delete dir="${build.generated.sources.dir}/jax-ws/ws/client/meps"/>
     </target>
-    <target name="wsimport-client-generate" depends="wsimport-client-OtherBanksWebService, wsimport-client-SACHWebService, wsimport-client-MEPSWebService"/>
+    <target name="wsimport-client-BillWebService" depends="wsimport-init">
+        <mkdir dir="${build.generated.dir}/jax-wsCache/BillWebService"/>
+        <property name="wsdl-BillWebService" location="${meta.inf}/xml-resources/web-service-references/BillWebService/wsdl/localhost_8080/BillWebService/BillWebService.wsdl"/>
+        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/BillWebService" destdir="${build.generated.dir}/jax-wsCache/BillWebService" wsdl="${wsdl-BillWebService}" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" fork="false" wsdlLocation="http://localhost:8080/BillWebService/BillWebService?wsdl" xnocompile="true" xendorsed="true" package="ws.client.bill">
+            <depends file="${wsdl-BillWebService}"/>
+            <produces dir="${build.generated.dir}/jax-wsCache/BillWebService"/>
+        </wsimport>
+        <copy todir="${build.generated.sources.dir}/jax-ws">
+            <fileset dir="${build.generated.dir}/jax-wsCache/BillWebService">
+                <include name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="wsimport-client-clean-BillWebService" depends="-init-project">
+        <delete dir="${build.generated.dir}/jax-wsCache/BillWebService"/>
+        <delete dir="${build.generated.sources.dir}/jax-ws/ws/client/bill"/>
+    </target>
+    <target name="wsimport-client-generate" depends="wsimport-client-OtherBanksWebService, wsimport-client-SACHWebService, wsimport-client-MEPSWebService, wsimport-client-BillWebService"/>
 </project>

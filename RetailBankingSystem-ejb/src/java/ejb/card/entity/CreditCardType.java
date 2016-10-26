@@ -38,6 +38,8 @@ public class CreditCardType implements Serializable {
     private double latePaymentCharge;
     private double interestCharge;
     private double minSum;
+    private double maxLiability;
+   
 
     public Long getCreditCardTypeId() {
         return creditCardTypeId;

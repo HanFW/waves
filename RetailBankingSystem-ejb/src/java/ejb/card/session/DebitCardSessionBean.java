@@ -80,6 +80,8 @@ public class DebitCardSessionBean implements DebitCardSessionBeanLocal {
         debitCard.setCardExpiryDate(debitCardExpiryDate);
 
         debitCard.setRemainingExpirationMonths(60);
+        
+        debitCard.setRemainingActivationDays(15);
 
         debitCard.setStatus("not activated");
 
@@ -127,6 +129,8 @@ public class DebitCardSessionBean implements DebitCardSessionBeanLocal {
         debitCard.setCardExpiryDate(debitCardExpiryDate);
 
         debitCard.setRemainingExpirationMonths(60);
+        
+        debitCard.setRemainingActivationDays(15);
 
         debitCard.setStatus("not activated");
 

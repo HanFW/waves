@@ -12,9 +12,14 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.xml.ws.WebServiceRef;
+import ws.client.bill.BillWebService_Service;
 
 @Stateless
 public class StandingGIROSessionBean implements StandingGIROSessionBeanLocal {
+
+    @WebServiceRef(wsdlLocation = "META-INF/wsdl/localhost_8080/BillWebService/BillWebService.wsdl")
+    private BillWebService_Service service_bill;
 
     @EJB
     private GIROSessionBeanLocal gIROSessionBeanLocal;
@@ -42,6 +47,9 @@ public class StandingGIROSessionBean implements StandingGIROSessionBeanLocal {
         standingGiro.setBankAccountNumWithType(bankAccountNumWithType);
         standingGiro.setGiroType(giroType);
         standingGiro.setCustomerBasic(bankAccountSessionBeanLocal.retrieveCustomerBasicById(customerBasicId));
+
+        System.out.println("*******session bean" + billingOrganizationName);
+        addNewBill(customerName, customerMobile, billReference, billingOrganizationName, "Merlion", bankAccountNum);
 
         entityManager.persist(standingGiro);
         entityManager.flush();
@@ -81,5 +89,13 @@ public class StandingGIROSessionBean implements StandingGIROSessionBeanLocal {
             System.out.println("Entity not found error: " + enfe.getMessage());
             return new ArrayList<StandingGIRO>();
         }
+    }
+
+    private Long addNewBill(java.lang.String customerName, java.lang.String customerMobile, java.lang.String billReference, java.lang.String billingOrganizationName, java.lang.String debitBank, java.lang.String debitBankAccountNum) {
+        // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
+        // If the calling of port operations may lead to race condition some synchronization is required.
+        ws.client.bill.BillWebService port = service_bill.getBillWebServicePort();
+        return port.addNewBill(customerName, customerMobile, billReference,
+                billingOrganizationName, debitBank, debitBankAccountNum);
     }
 }

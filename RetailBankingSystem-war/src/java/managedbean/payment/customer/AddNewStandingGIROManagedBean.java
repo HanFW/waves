@@ -23,6 +23,7 @@ import org.primefaces.event.FlowEvent;
 @ViewScoped
 
 public class AddNewStandingGIROManagedBean implements Serializable {
+
     @EJB
     private StandingGIROSessionBeanLocal standingGIROSessionBeanLocal;
 
@@ -176,10 +177,11 @@ public class AddNewStandingGIROManagedBean implements Serializable {
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
         CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
-        standingGiroStatus = "Inactive";
+        standingGiroStatus = "Active";
         giroType = "Standing";
 
         bankAccountNum = handleAccountString(bankAccountNumWithType);
+        
         standingGIROSessionBeanLocal.addNewStandingGIRO(billingOrganization, billReference, paymentLimit.toString(),
                 customerName, customerMobile, bankAccountNum, standingGiroStatus,
                 bankAccountNumWithType, giroType, customerBasic.getCustomerBasicId());
