@@ -1,9 +1,21 @@
 package managedbean.payment.customer;
 
 import ejb.customer.entity.CustomerBasic;
+import ejb.deposit.entity.BankAccount;
+import ejb.deposit.session.BankAccountSessionBeanLocal;
+import ejb.payment.entity.Currency;
+import ejb.payment.entity.SWIFTPayee;
+import ejb.payment.session.CurrencySessionBeanLocal;
+import ejb.payment.session.MerlionBankSessionBeanLocal;
+import ejb.payment.session.SWIFTPayeeSessionBeanLocal;
+import java.io.IOException;
+import java.text.DecimalFormat;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.ExternalContext;
@@ -14,25 +26,40 @@ import javax.faces.context.FacesContext;
 
 public class SWIFTTransferManagedBean {
 
+    @EJB
+    private MerlionBankSessionBeanLocal merlionBankSessionBeanLocal;
+
+    @EJB
+    private CurrencySessionBeanLocal currencySessionBeanLocal;
+
+    @EJB
+    private SWIFTPayeeSessionBeanLocal sWIFTPayeeSessionBeanLocal;
+
+    @EJB
+    private BankAccountSessionBeanLocal bankAccountSessionBeanLocal;
+
     private String toBankAccountNumWithType;
+    private String toCurrencyWithDollar;
     private String toCurrency;
-    private Map<String, String> customerFastPayee = new HashMap<String, String>();
+    private Map<String, String> customerSWIFTPayee = new HashMap<String, String>();
     private Map<String, String> fromAccounts = new HashMap<String, String>();
     private String fromBankAccountNumWithType;
     private String fromCurrency;
     private Double transferAmt;
+    private Double receivedCountryTransferAmt;
     private String fromBankAccount;
     private String toBankAccount;
     private String fromAccountAvailableBalance;
     private String fromAccountTotalBalance;
-    
+    private String recipientSWIFTCode;
+
     private String statusMessage;
 
     private ExternalContext ec;
-    
+
     public SWIFTTransferManagedBean() {
     }
-    
+
     @PostConstruct
     public void init() {
 
@@ -41,18 +68,23 @@ public class SWIFTTransferManagedBean {
         if (ec.getSessionMap().get("customer") != null) {
             CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
 
-//            List<BankAccount> bankAccounts = bankAccountSessionBeanLocal.retrieveBankAccountByCusIC(customerBasic.getCustomerIdentificationNum());
-//            fromAccounts = new HashMap<String, String>();
-//            customerFastPayee = new HashMap<String, String>();
-//            List<FastPayee> fastPayees = fastPayeeSessionBeanLocal.retrieveFastPayeeByCusId(customerBasic.getCustomerBasicId());
+            System.out.println("************customer" + customerBasic);
+            List<BankAccount> bankAccounts = bankAccountSessionBeanLocal.retrieveBankAccountByCusIC(customerBasic.getCustomerIdentificationNum());
+            fromAccounts = new HashMap<String, String>();
+            customerSWIFTPayee = new HashMap<String, String>();
+            List<SWIFTPayee> swiftPayees = sWIFTPayeeSessionBeanLocal.retrieveSWIFTPayeeByCusId(customerBasic.getCustomerIdentificationNum());
 
-//            for (int i = 0; i < bankAccounts.size(); i++) {
-//                fromAccounts.put(bankAccounts.get(i).getBankAccountType() + "-" + bankAccounts.get(i).getBankAccountNum(), bankAccounts.get(i).getBankAccountType() + "-" + bankAccounts.get(i).getBankAccountNum());
-//            }
-//
-//            for (int j = 0; j < fastPayees.size(); j++) {
-//                customerFastPayee.put(fastPayees.get(j).getFastPayeeAccountType() + "-" + fastPayees.get(j).getFastPayeeAccountNum() + "-" + fastPayees.get(j).getFastPayeeName(), fastPayees.get(j).getFastPayeeAccountType() + "-" + fastPayees.get(j).getFastPayeeAccountNum() + "-" + fastPayees.get(j).getFastPayeeName());
-//            }
+            System.out.println("hello");
+            System.out.println("****************" + swiftPayees);
+            for (int i = 0; i < bankAccounts.size(); i++) {
+                fromAccounts.put(bankAccounts.get(i).getBankAccountType() + "-" + bankAccounts.get(i).getBankAccountNum(), bankAccounts.get(i).getBankAccountType() + "-" + bankAccounts.get(i).getBankAccountNum());
+            }
+
+            for (int j = 0; j < swiftPayees.size(); j++) {
+                customerSWIFTPayee.put(swiftPayees.get(j).getSwiftPayeeAccountType() + "-" + swiftPayees.get(j).getSwiftPayeeAccountNum() + "-"
+                        + swiftPayees.get(j).getSwiftInstitution(), swiftPayees.get(j).getSwiftPayeeAccountType() + "-"
+                        + swiftPayees.get(j).getSwiftPayeeAccountNum() + "-" + swiftPayees.get(j).getSwiftInstitution());
+            }
         }
     }
 
@@ -70,14 +102,6 @@ public class SWIFTTransferManagedBean {
 
     public void setToCurrency(String toCurrency) {
         this.toCurrency = toCurrency;
-    }
-
-    public Map<String, String> getCustomerFastPayee() {
-        return customerFastPayee;
-    }
-
-    public void setCustomerFastPayee(Map<String, String> customerFastPayee) {
-        this.customerFastPayee = customerFastPayee;
     }
 
     public Map<String, String> getFromAccounts() {
@@ -143,5 +167,124 @@ public class SWIFTTransferManagedBean {
     public void setFromAccountTotalBalance(String fromAccountTotalBalance) {
         this.fromAccountTotalBalance = fromAccountTotalBalance;
     }
-    
+
+    public String getStatusMessage() {
+        return statusMessage;
+    }
+
+    public void setStatusMessage(String statusMessage) {
+        this.statusMessage = statusMessage;
+    }
+
+    public Map<String, String> getCustomerSWIFTPayee() {
+        return customerSWIFTPayee;
+    }
+
+    public void setCustomerSWIFTPayee(Map<String, String> customerSWIFTPayee) {
+        this.customerSWIFTPayee = customerSWIFTPayee;
+    }
+
+    public String getToCurrencyWithDollar() {
+        return toCurrencyWithDollar;
+    }
+
+    public void setToCurrencyWithDollar(String toCurrencyWithDollar) {
+        this.toCurrencyWithDollar = toCurrencyWithDollar;
+    }
+
+    public Double getReceivedCountryTransferAmt() {
+        return receivedCountryTransferAmt;
+    }
+
+    public void setReceivedCountryTransferAmt(Double receivedCountryTransferAmt) {
+        this.receivedCountryTransferAmt = receivedCountryTransferAmt;
+    }
+
+    public String getRecipientSWIFTCode() {
+        return recipientSWIFTCode;
+    }
+
+    public void setRecipientSWIFTCode(String recipientSWIFTCode) {
+        this.recipientSWIFTCode = recipientSWIFTCode;
+    }
+
+    public void swiftTransfer() throws IOException {
+
+        ec = FacesContext.getCurrentInstance().getExternalContext();
+
+        DecimalFormat df = new DecimalFormat("#.00");
+
+        toCurrency = handleCurrencyString(toCurrencyWithDollar);
+        Currency foreignCurrency = currencySessionBeanLocal.retrieveCurrencyByType(toCurrency);
+
+        Double buyingCurrencyRate = Double.valueOf(foreignCurrency.getBuyingRate());
+        Double unit = Double.valueOf(foreignCurrency.getUnit());
+        transferAmt = receivedCountryTransferAmt / (buyingCurrencyRate * unit);
+
+        SWIFTPayee swiftPayee = handleStringReturnSWIFTPayee(toBankAccountNumWithType);
+
+        Calendar cal = Calendar.getInstance();
+        String myAccountNum = handleAccountString(fromBankAccountNumWithType);
+        String transactionDate = cal.getTime().toString();
+        String swiftCodeA = "LIONSGSGMER";
+        String swiftCodeB = swiftPayee.getSwiftPayeeCode();
+        String organizationA = "Merlion Bank";
+        String organizationB = swiftPayee.getSwiftInstitution();
+        String countryA = "Singapore";
+        String countryB = swiftPayee.getSwiftPayeeCountry();
+        String swiftMessage = myAccountNum + " from Merlion Bank transfer S$" + transferAmt + " to " + organizationB;
+
+        BankAccount bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountByNum(myAccountNum);
+        String currentAvailableBalance = bankAccount.getAvailableBankAccountBalance();
+        Double totalBalance = Double.valueOf(currentAvailableBalance) - transferAmt;
+
+        bankAccountSessionBeanLocal.updateBankAccountAvailableBalance(myAccountNum, totalBalance.toString());
+
+        merlionBankSessionBeanLocal.sendSWIFTMessage(swiftMessage, transactionDate,
+                swiftCodeA, swiftCodeB, organizationA, organizationB, countryA, countryB,
+                transferAmt.toString(), myAccountNum);
+
+        statusMessage = "We have received your application. We will process your application within 3 working days.";
+
+        ec.getFlash().put("statusMessage", statusMessage);
+        ec.getFlash().put("toBankAccountNumWithType", toBankAccountNumWithType);
+        ec.getFlash().put("fromBankAccountNumWithType", fromBankAccountNumWithType);
+        ec.getFlash().put("transferAmt", transferAmt);
+
+        ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/payment/customerSWIFTTransferDone.xhtml?faces-redirect=true");
+    }
+
+    private String handleCurrencyString(String toCurrencyWithDollar) {
+
+        String[] toCurrencyWithDollars = toCurrencyWithDollar.split(" ");
+        String toCurrencyWithoutDollar = "";
+
+        if (toCurrencyWithDollars.length == 1) {
+            toCurrencyWithoutDollar = toCurrencyWithDollars[0];
+        } else if (toCurrencyWithDollars.length == 2) {
+            toCurrencyWithoutDollar = toCurrencyWithDollars[0];
+        } else if (toCurrencyWithDollars.length == 3) {
+            toCurrencyWithoutDollar = toCurrencyWithDollars[0] + " " + toCurrencyWithDollars[1];
+        }
+
+        return toCurrencyWithoutDollar;
+    }
+
+    private SWIFTPayee handleStringReturnSWIFTPayee(String bankAccountNumWithType) {
+
+        String[] bankAccountNums = bankAccountNumWithType.split("-");
+        String payeeInstitution = bankAccountNums[2];
+
+        SWIFTPayee swiftPayee = sWIFTPayeeSessionBeanLocal.retrieveSWIFTPayeeByInstitution(payeeInstitution);
+
+        return swiftPayee;
+    }
+
+    private String handleAccountString(String bankAccountNumWithType) {
+
+        String[] bankAccountNums = bankAccountNumWithType.split("-");
+        String bankAccountNum = bankAccountNums[1];
+
+        return bankAccountNum;
+    }
 }

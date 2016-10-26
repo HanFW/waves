@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI (http://jax-ws.java.net). RI's version is Metro/2.3.1-b419 (branches/2.3.1.x-7937; 2014-08-04T08:11:03+0000) JAXWS-RI/2.2.10-b140803.1500 JAXWS-API/2.2.11 JAXB-RI/2.2.10-b140802.1033 JAXB-API/2.2.12-b140109.1041 svn-revision#unknown. --><xs:schema xmlns:tns="http://session.ws.ejb/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://session.ws.ejb/">
+
+<xs:element name="addNewSWIFT" type="tns:addNewSWIFT"/>
+
+<xs:element name="addNewSWIFTResponse" type="tns:addNewSWIFTResponse"/>
+
+<xs:complexType name="addNewSWIFT">
+<xs:sequence>
+<xs:element name="swiftMessage" type="xs:string" minOccurs="0"/>
+<xs:element name="transactionDate" type="xs:string" minOccurs="0"/>
+<xs:element name="swiftCodeA" type="xs:string" minOccurs="0"/>
+<xs:element name="swiftCodeB" type="xs:string" minOccurs="0"/>
+<xs:element name="organizationA" type="xs:string" minOccurs="0"/>
+<xs:element name="organizationB" type="xs:string" minOccurs="0"/>
+<xs:element name="countryA" type="xs:string" minOccurs="0"/>
+<xs:element name="countryB" type="xs:string" minOccurs="0"/>
+<xs:element name="paymentAmt" type="xs:string" minOccurs="0"/>
+<xs:element name="transferedBankAccountNum" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="addNewSWIFTResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:long" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>

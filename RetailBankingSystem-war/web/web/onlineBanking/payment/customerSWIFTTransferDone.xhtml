@@ -20,19 +20,18 @@
 
                 <p:panel header="Transfer to My Account">
 
-                    <h:outputText value="#{fastTransferDoneManagedBean.statusMessage}" style="font-size: 24px"/>
+                    <h:outputText value="#{sWIFTTransferDoneManagedBean.statusMessage}" style="font-size: 24px"/>
                     <br/>
                     <br/>
                     <br/>
-                    <h:outputText style="font-weight: bold" value="Please note this transaction reference number
-                                  for your records: " />
-                    <h:outputText value="#{fastTransferDoneManagedBean.transactionId}" />
+                    <h:outputText style="font-weight: bold" value="Please review your transaction details" />
+                    <br/>
                     <br/>
                     <h:outputText style="font-weight: bold" value="To Account Number: "/>
-                    <h:outputText value="#{fastTransferDoneManagedBean.toBankAccountNumWithType}"/>
+                    <h:outputText value="#{sWIFTTransferDoneManagedBean.toBankAccountNumWithType}"/>
                     <br/>
                     <h:outputText style="font-weight: bold" value="Transfer Amount: "/>
-                    <h:outputText value="#{fastTransferDoneManagedBean.transferAmt}"/>
+                    <h:outputText value="#{sWIFTTransferDoneManagedBean.transferAmt}"/>
                     <br/>
                     <br/>
                     <p:accordionPanel activeIndex="-1" style="">
@@ -42,13 +41,7 @@
                             <br/>
                             <br/>
                             <h:outputText style="font-weight: bold" value="Account Number: "/>
-                            <h:outputText value="#{fastTransferDoneManagedBean.fromBankAccountNumWithType}"/>
-                            <br/>
-                            <h:outputText style="font-weight: bold" value="Lastest Available Balance: "/>
-                            <h:outputText value="#{fastTransferDoneManagedBean.fromAccountAvailableBalance}"/>
-                            <br/>
-                            <h:outputText style="font-weight: bold" value="Lastest Total Balance: "/>
-                            <h:outputText value="#{fastTransferDoneManagedBean.fromAccountTotalBalance}"/>
+                            <h:outputText value="#{sWIFTTransferDoneManagedBean.fromBankAccountNumWithType}"/>
                             <br/>
                             <br/>
                             <h:outputText value="To" style="font-size: 24px" />
@@ -56,13 +49,10 @@
                             <br/>
                             <br/>
                             <h:outputText style="font-weight: bold" value="Account Number: "/>
-                            <h:outputText value="#{fastTransferDoneManagedBean.toBankAccountNumWithType}"/>
+                            <h:outputText value="#{sWIFTTransferDoneManagedBean.toBankAccountNumWithType}"/>
                             <br/>
                             <h:outputText style="font-weight: bold" value="Transfer Amount: "/>
-                            <h:outputText value="#{fastTransferDoneManagedBean.transferAmt}"/>
-                            <br/>
-                            <h:outputText style="font-weight: bold" value="Transaction Reference Number: "/>
-                            <h:outputText value="#{fastTransferDoneManagedBean.transactionId}" />
+                            <h:outputText value="#{sWIFTTransferDoneManagedBean.transferAmt}"/>
                         </p:tab>
                     </p:accordionPanel>
                 </p:panel>
