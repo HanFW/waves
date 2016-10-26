@@ -7,10 +7,13 @@ package ejb.card.session;
 
 import ejb.card.entity.CreditCard;
 import ejb.card.entity.CreditCardType;
+import static ejb.card.entity.DebitCard_.transactionLimit;
+import ejb.card.entity.SupplementaryCard;
 import ejb.customer.entity.CustomerBasic;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -100,25 +103,47 @@ public class CreditCardManagementSessionBean implements CreditCardManagementSess
                 double limit = findCreditCard.getCreditLimit();
                 String expDate = findCreditCard.getCardExpiryDate();
                 int remainingMonths = findCreditCard.getRemainingExpirationMonths();
-                
+                List<SupplementaryCard> supplCards = findCreditCard.getSupplementaryCard();
+
 //                CustomerBasic cb = findCreditCard.getCustomerBasic();
 //                CreditCardType cct = findCreditCard.getCreditCardType();
 //
 //                cb.removeCreditCard(findCreditCard);
 //                cct.removeCreditCard(findCreditCard);
-                
                 System.out.println(findCreditCard);
                 em.remove(findCreditCard);
                 System.out.println("!!!!!!!after delete card" + findCreditCard);
-                //issue a new debit card
-                System.out.println("!!!!!!!!!!!!!!!!!!management session bean ccct ID"+creditCardTypeId);
-                creditCardSessionBeanLocal.createNewCardAfterLost(cbId, caId, creditCardTypeId, cardHolderName, limit, expDate, remainingMonths);
+
+                System.out.println("!!!!!!!!!!!!!!!!!!management session bean ccct ID" + creditCardTypeId);
+                creditCardSessionBeanLocal.createNewCardAfterLost(cbId, caId, creditCardTypeId, cardHolderName, limit, expDate, remainingMonths, supplCards);
                 System.out.println("Credit Card management session bean: issue a new card after reporting credit card loss");
 
                 return "success";
             }
         }
     }
+
+    @Override
+    public void replaceDamagedCreditCard(String creditCardNum) {
+
+        CreditCard findCreditCard = getCardByCardNum(creditCardNum);
+
+        Long cbId = findCreditCard.getCustomerBasic().getCustomerBasicId();
+        Long caId = findCreditCard.getCustomerBasic().getCustomerAdvanced().getCustomerAdvancedId();
+        Long creditCardTypeId = findCreditCard.getCreditCardType().getCreditCardTypeId();
+        String cardHolderName = findCreditCard.getCardHolderName();
+        String expDate = findCreditCard.getCardExpiryDate();
+        CreditCardType cardTypeName = findCreditCard.getCreditCardType();
+        double limit = findCreditCard.getCreditLimit();
+        int remainingMonths = findCreditCard.getRemainingExpirationMonths();
+        List<SupplementaryCard> supplCards = findCreditCard.getSupplementaryCard();
+
+        creditCardSessionBeanLocal.createNewCardAfterLost(cbId, caId, creditCardTypeId, cardHolderName, limit, expDate, remainingMonths, supplCards);
+
+        System.out.println("Credit Card management session bean: issue new card to replace damaged card");
+
+    }
+
     //    @Override
     //    public String requestForCreditCardReplacement(String creditCardNum, String securityCode, String requestForReplacementTime) {
     //        if (getCardByCardNum(creditCardNum) == null) {
@@ -161,7 +186,6 @@ public class CreditCardManagementSessionBean implements CreditCardManagementSess
     //        }
     //        return null;
     //    }
-
     private CreditCard getCardByCardNum(String cardNum) {
         Query query = em.createQuery("SELECT c FROM CreditCard c WHERE c.cardNum = :cardNum");
         query.setParameter("cardNum", cardNum);

@@ -7,6 +7,9 @@ package ejb.card.session;
 
 import ejb.card.entity.CreditCard;
 import ejb.card.entity.CreditCardType;
+import ejb.card.entity.DebitCard;
+import ejb.card.entity.DebitCardType;
+import ejb.card.entity.SupplementaryCard;
 import ejb.customer.entity.CustomerAdvanced;
 import ejb.customer.entity.CustomerBasic;
 import ejb.infrastructure.session.CustomerAdminSessionBeanLocal;
@@ -95,21 +98,22 @@ public class CreditCardSessionBean implements CreditCardSessionBeanLocal {
     }
 
     @Override
-    public void createNewCardAfterLost(Long cbId, Long caId, Long creditCardTypeId, String cardHolderName, double creditLimit, String expDate, int remainingMonths) {
+    public void createNewCardAfterLost(Long cbId, Long caId, Long creditCardTypeId, String cardHolderName, double creditLimit, String expDate, int remainingMonths, List<SupplementaryCard> supplCards) {
         CreditCard creditCard = new CreditCard();
 
         String cardNum = generateCardNum();
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!before!!!!debug cct ID "+ creditCardTypeId);
+        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!before!!!!debug cct ID " + creditCardTypeId);
 //        CreditCardType cct = em.find(CreditCardType.class, creditCardTypeId);
         Query query = em.createQuery("SELECT c FROM CreditCardType c WHERE c.creditCardTypeId = :cardTypeNameId");
         query.setParameter("cardTypeNameId", creditCardTypeId);
         CreditCardType cct = (CreditCardType) query.getResultList().get(0);
-        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!debug cct"+ cct);
+        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!debug cct" + cct);
 
         creditCard.setCreditLimit(creditLimit);
         creditCard.setCreditCardType(cct);
         creditCard.setCardNum(cardNum);
         creditCard.setCardHolderName(cardHolderName);
+        creditCard.setSupplementaryCard(supplCards);
 
         String creditCardSecurityCode = generateCardSecurityCode();
         try {
@@ -141,60 +145,11 @@ public class CreditCardSessionBean implements CreditCardSessionBeanLocal {
         ca.setCustomerBasic(cb);
         System.out.println("!!!!!!!!!!!!CAdvanced!!!!!!!!!!!!!");
 
-        em.persist(creditCard);
         em.flush();
         System.out.println("****** card/CreditCardSessionBean: createCreditCardAfterLoss()" + cardNum + " ******");
     }
 
-//    @Override
-//    public void issueCreditCardForCardReplacement(String bankAccountNum, String cardHolderName, String applicationDate, String cardTypeName, Long predecessorId) {
-//        DebitCard debitCard = new DebitCard();
-//        debitCard.setCardHolderName(cardHolderName);
-//
-//        BankAccount depositAccount = findDepositAccountByAccountNum(bankAccountNum);
-//        debitCard.setBankAccount(depositAccount);
-//
-//        DebitCardType debitCardType = findCardTypeByTypeName(cardTypeName);
-//        debitCard.setDebitCardType(debitCardType);
-//
-//        String cardNum = generateCardNum();
-//        debitCard.setCardNum(cardNum);
-//
-//        String debitCardSecurityCode = generateCardSecurityCode();
-//        try {
-//            System.out.println("debug cardNum:" + cardNum);
-//            System.out.println("debug csc initial:" + debitCardSecurityCode);
-//            String hashedDebitCardSecurityCode = md5Hashing(debitCardSecurityCode + cardNum.substring(0, 3));
-//            System.out.println("debug:" + hashedDebitCardSecurityCode);
-//            debitCard.setCardSecurityCode(hashedDebitCardSecurityCode);
-//        } catch (NoSuchAlgorithmException ex) {
-//            Logger.getLogger(DebitCardSessionBean.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//
-////        String[] applicationDateToString = changeDateFormat(applicationDate);
-//        String[] applicationDateToString = applicationDate.split("/");
-//        String applicationYear = applicationDateToString[2];
-//        String applicationMonth = applicationDateToString[1];
-//
-//        int expiryYearToInt = Integer.valueOf(applicationYear) + 5;
-//        String expiryYear = String.valueOf(expiryYearToInt);
-//        String debitCardExpiryDate = applicationMonth + "/" + expiryYear;
-//
-//        debitCard.setCardExpiryDate(debitCardExpiryDate);
-//
-//        debitCard.setRemainingExpirationMonths(60);
-//
-//        debitCard.setStatus("not activated");
-//
-//        debitCard.setTransactionLimit(500);
-//
-//        debitCard.setPredecessor(predecessorId);
-//
-//        em.persist(debitCard);
-//        depositAccount.addDebitCard(debitCard);
-//        debitCardType.addDebitCard(debitCard);
-//      
-//    }
+
     @Override
     public String findTypeNameById(Long cardTypeId) {
         CreditCardType cct = em.find(CreditCardType.class, cardTypeId);
@@ -339,8 +294,8 @@ public class CreditCardSessionBean implements CreditCardSessionBeanLocal {
             return findCreditCardType;
         }
     }
-
-    private CreditCard getCardByCardNum(String cardNum) {
+    @Override
+    public CreditCard getCardByCardNum(String cardNum) {
         Query query = em.createQuery("SELECT c FROM CreditCard c WHERE c.cardNum = :cardNum");
         query.setParameter("cardNum", cardNum);
 
