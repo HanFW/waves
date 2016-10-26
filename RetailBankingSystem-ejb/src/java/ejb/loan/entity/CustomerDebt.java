@@ -23,7 +23,7 @@ public class CustomerDebt implements Serializable {
     private Long customerDebtId;
     
     private String facilityType;
-    private String fanancialInstitution;
+    private String financialInstitution;
     private double totalAmount;
     private double monthlyInstalment;
 
@@ -43,12 +43,12 @@ public class CustomerDebt implements Serializable {
         this.facilityType = facilityType;
     }
 
-    public String getFanancialInstitution() {
-        return fanancialInstitution;
+    public String getFinancialInstitution() {
+        return financialInstitution;
     }
 
-    public void setFanancialInstitution(String fanancialInstitution) {
-        this.fanancialInstitution = fanancialInstitution;
+    public void setFinancialInstitution(String financialInstitution) {
+        this.financialInstitution = financialInstitution;
     }
 
     public double getTotalAmount() {

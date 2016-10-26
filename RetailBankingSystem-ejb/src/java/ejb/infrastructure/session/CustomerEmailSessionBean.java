@@ -86,6 +86,11 @@ public class CustomerEmailSessionBean implements CustomerEmailSessionBeanLocal {
                 emailText += "Please log in to your online banking account to activate your card. \n";
                 emailText += "If you have any enquiry, please contact us at 800 820 8820. \n";
                 emailText += "We look forward to serving you again. \n";
+                break;
+            case "mortgageLoanApplication":
+                emailText += "Your " + actions.get("loanType") + " loan request has been submitted successfully. \n";
+                emailText += "Mortgage loan request usually takes a few weeks to process. We will contact you via email once we have finished processing your request.\n";
+                emailText += "Thank you for your cooperation. \n";
         }
 
         try {
