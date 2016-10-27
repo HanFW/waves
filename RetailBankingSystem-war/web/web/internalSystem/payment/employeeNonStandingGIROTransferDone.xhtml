@@ -6,8 +6,7 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
-                template="/WEB-INF/onlineBankingTemplate.xhtml"
-                xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
+                template="/WEB-INF/internalSystemTemplate.xhtml">
     <ui:define name="content">
         <h:form id="oneTimeGIROForm"> 
 
@@ -22,7 +21,7 @@
             <p:outputLabel value="One Time Payment" style="font-weight: bold"/>
             <br/>
             <br/>
-            <p:dataTable var="oneTimeGiro" value="#{nonStandingGIROManagedBean.oneTimeGIROs}" 
+            <p:dataTable var="oneTimeGiro" value="#{employeeNonStandingGIROTransferDoneManagedBean.oneTimeGIROs}" 
                          reflow="true" paginator="true" rows="10" emptyMessage="No Recipient">
                 <p:column headerText="Billing Organization" >
                     <h:outputText value="#{oneTimeGiro.billingOrganizationName}" /> 
@@ -38,18 +37,9 @@
 
                 <p:column headerText="Action">
                     <center>
-                        <p:commandButton action="/web/onlineBanking/payment/customerNonStandingGIROTransferDone.xhtml?faces-redirect=true"
+                        <p:commandButton action="/web/internalSystem/payment/employeeNonStandingGIROTransferFinished.xhtml?faces-redirect=true"
                                          value="Transfer" update="oneTimeGIROForm" style="width: 50%">
-                            <f:setPropertyActionListener target="#{nonStandingGIROTransferDoneManagedBean.giroId}" value="#{oneTimeGiro.giroId}" />
-                        </p:commandButton>
-                    </center>
-                </p:column>
-                
-                <p:column headerText="Action" style="width: 10%"> 
-                    <center>
-                        <p:commandButton process="@this" action="#{nonStandingGIROTransferDoneManagedBean.delete()}"
-                                         icon="ui-icon-trash" ajax="false">
-                            <f:setPropertyActionListener target="#{nonStandingGIROTransferDoneManagedBean.giroId}" value="#{oneTimeGiro.giroId}" />
+                            <f:setPropertyActionListener target="#{employeeNonStandingGIROTransferFinishedManagedBean.giroId}" value="#{oneTimeGiro.giroId}" />
                         </p:commandButton>
                     </center>
                 </p:column>
@@ -62,7 +52,7 @@
             <p:outputLabel value="Recurrent Payment" style="font-weight: bold"/>
             <br/>
             <br/>
-            <p:dataTable var="recurrentGIRO" value="#{nonStandingGIROManagedBean.recurrentGIROs}" 
+            <p:dataTable var="recurrentGIRO" value="#{employeeNonStandingGIROTransferDoneManagedBean.recurrentGIROs}" 
                          reflow="true" paginator="true" rows="10" emptyMessage="No Recipient">
                 <p:column headerText="Billing Organization" >
                     <h:outputText value="#{recurrentGIRO.billingOrganizationName}" /> 
@@ -78,24 +68,14 @@
 
                 <p:column headerText="Action">
                     <center>
-                        <p:commandButton action="/web/onlineBanking/payment/customerNonStandingGIROTransferDone.xhtml?faces-redirect=true"
+                        <p:commandButton action="/web/internalSystem/payment/employeeNonStandingGIROTransferFinished.xhtml?faces-redirect=true"
                                          value="Transfer" update="recurrentGIROForm" style="width: 50%">
-                            <f:setPropertyActionListener target="#{nonStandingGIROTransferDoneManagedBean.giroId}" value="#{recurrentGIRO.giroId}" />
-                        </p:commandButton>
-                    </center>
-                </p:column>
-                
-                <p:column headerText="Action" style="width: 10%"> 
-                    <center>
-                        <p:commandButton process="@this" action="#{nonStandingGIROTransferDoneManagedBean.delete()}"
-                                         icon="ui-icon-trash" ajax="false">
-                            <f:setPropertyActionListener target="#{nonStandingGIROTransferDoneManagedBean.giroId}" value="#{recurrentGIRO.giroId}" />
+                            <f:setPropertyActionListener target="#{employeeNonStandingGIROTransferFinishedManagedBean.giroId}" value="#{recurrentGIRO.giroId}" />
                         </p:commandButton>
                     </center>
                 </p:column>
 
             </p:dataTable>
         </h:form>
-        <ezcomp:CCTimeout/>
     </ui:define>
 </ui:composition>

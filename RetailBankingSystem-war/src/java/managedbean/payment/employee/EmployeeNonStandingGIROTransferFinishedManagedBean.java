@@ -1,5 +1,6 @@
-package managedbean.payment.customer;
+package managedbean.payment.employee;
 
+import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import ejb.payment.entity.GIRO;
@@ -13,7 +14,6 @@ import java.io.Serializable;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.xml.ws.WebServiceRef;
@@ -21,10 +21,10 @@ import ws.client.otherbanks.OtherBankAccount;
 import ws.client.otherbanks.OtherBanksWebService_Service;
 import ws.client.sach.SACHWebService_Service;
 
-@Named(value = "nonStandingGIROTransferDoneManagedBean")
+@Named(value = "employeeNonStandingGIROTransferFinishedManagedBean")
 @SessionScoped
 
-public class NonStandingGIROTransferDoneManagedBean implements Serializable {
+public class EmployeeNonStandingGIROTransferFinishedManagedBean implements Serializable{
 
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_8080/OtherBanksWebService/OtherBanksWebService.wsdl")
     private OtherBanksWebService_Service service_otherBanks;
@@ -44,6 +44,9 @@ public class NonStandingGIROTransferDoneManagedBean implements Serializable {
     @EJB
     private NonStandingGIROSessionBeanLocal nonStandingGIROSessionBeanLocal;
 
+    @EJB
+    private CRMCustomerSessionBeanLocal customerSessionBeanLocal;
+    
     private String billingOrganizationName;
     private String billReference;
     private String transferFrequency;
@@ -56,9 +59,13 @@ public class NonStandingGIROTransferDoneManagedBean implements Serializable {
     private Double fromBankAccountAvailableBalance;
     private Double fromBankAccountTotalBalance;
     private Long giroId;
+    private String customerIdentificationNum;
 
     private ExternalContext ec;
-
+    
+    public EmployeeNonStandingGIROTransferFinishedManagedBean() {
+    }
+    
     public String getBillingOrganizationName() {
         NonStandingGIRO nonStandingGiro = nonStandingGIROSessionBeanLocal.retrieveNonStandingGIROById(giroId);
         billingOrganizationName = nonStandingGiro.getBillingOrganizationName();
@@ -159,6 +166,14 @@ public class NonStandingGIROTransferDoneManagedBean implements Serializable {
         this.giroId = giroId;
     }
 
+    public String getCustomerIdentificationNum() {
+        return customerIdentificationNum;
+    }
+
+    public void setCustomerIdentificationNum(String customerIdentificationNum) {
+        this.customerIdentificationNum = customerIdentificationNum;
+    }
+
     public void nonStandingGIROTransfer() throws IOException {
 
         ec = FacesContext.getCurrentInstance().getExternalContext();
@@ -198,7 +213,7 @@ public class NonStandingGIROTransferDoneManagedBean implements Serializable {
 
             paymentAmt = null;
 
-            ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/payment/customerNonStandingGIROTransferFinished.xhtml?faces-redirect=true");
+            ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/payment/employeeNonStandingGIROTransferFinal.xhtml?faces-redirect=true");
 
         } else if (bankName.equals("DBS") && !nonStandingGiro.getPaymentFrequency().equals("One Time")) {
             sachNonStandingGIROTransferMTD(bankAccount.getBankAccountNum(), billOrgBankAccountNum, paymentAmt);
@@ -222,24 +237,9 @@ public class NonStandingGIROTransferDoneManagedBean implements Serializable {
 
             paymentAmt = null;
 
-            ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/payment/customerNonStandingGIROTransferFinished.xhtml?faces-redirect=true");
+            ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/payment/employeeNonStandingGIROTransferFinal.xhtml?faces-redirect=true");
         } else if (bankName.equals("OCBC")) {
 
-        }
-    }
-    
-    public void delete() {
-        
-        ec = FacesContext.getCurrentInstance().getExternalContext();
-        
-        GIRO giro = gIROSessionBeanLocal.retrieveGIROById(giroId);
-        
-        if (giro.getGiroId() == null) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! GIRO does not exist.", "Failed!"));
-        } else {
-            gIROSessionBeanLocal.deleteGIRO(giroId);
-            
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Successfully! GIRO deleted Successfully.", "Successfuly!"));
         }
     }
 
@@ -256,4 +256,5 @@ public class NonStandingGIROTransferDoneManagedBean implements Serializable {
         ws.client.otherbanks.OtherBanksWebService port = service_otherBanks.getOtherBanksWebServicePort();
         return port.retrieveBankAccountByNum(otherBankAccountNum);
     }
+    
 }
