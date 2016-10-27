@@ -5,8 +5,14 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
-                template="/WEB-INF/onlineBankingTemplate.xhtml"
-                xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
+                template="/WEB-INF/merlionBankTemplate.xhtml">
+
+    <ui:define name="merlionBankMenu">
+
+         <ui:include src="/WEB-INF/merlionBankMenuApplyCreditCard.xhtml" />
+
+    </ui:define>
+
     <ui:define name="content">
 
         <h:body>
@@ -23,13 +29,13 @@
                         <p:outputLabel style="font-weight: bold" value="Please wait patienly while your request is been processed by our staffs. We will inform you via email once the result comes out."/>
 
                         <p:outputLabel style="font-weight: bold" value="Thank you for your support!"/>
-                </h:panelGrid>
+                    </h:panelGrid>
 
-            </h:form>
-        </div>
-    </h:body>
+                </h:form>
+            </div>
+        </h:body>
 
-</ui:define>
+    </ui:define>
 </ui:composition>
 
 

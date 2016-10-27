@@ -1,4 +1,9 @@
-package managedbean.deposit.employee;
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package managedbean.card.employee;
 
 import ejb.customer.entity.CustomerBasic;
 import ejb.customer.session.CRMCustomerSessionBeanLocal;
@@ -13,10 +18,13 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
-@Named(value = "employeeChangeDailyTransferLimit")
+/**
+ *
+ * @author Nicole
+ */
+@Named(value = "employeeRenewCardManagedBean")
 @RequestScoped
-
-public class EmployeeChangeDailyTransferLimit {
+public class EmployeeRenewCardManagedBean {
 
     @EJB
     private CRMCustomerSessionBeanLocal customerSessionBeanLocal;
@@ -30,7 +38,7 @@ public class EmployeeChangeDailyTransferLimit {
 
     private ExternalContext ec;
 
-    public EmployeeChangeDailyTransferLimit() {
+    public EmployeeRenewCardManagedBean() {
     }
 
     public String getCustomerName() {
@@ -59,7 +67,7 @@ public class EmployeeChangeDailyTransferLimit {
 
     public void submit() throws IOException {
         System.out.println("=");
-        System.out.println("====== deposit/EmployeeChangeDailyTransferLimit: submit() ======");
+        System.out.println("====== card/EmployeeRenewCardManagedBean: submit() ======");
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
         CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum.toUpperCase());
@@ -76,11 +84,11 @@ public class EmployeeChangeDailyTransferLimit {
             } else if (!dateOfBirth.equals(customerDateOfBirthString)) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Customer Date of Birth is Wrong.", "Failed!"));
             } else {
-                ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-                Map<String, Object> sessionMap = externalContext.getSessionMap();
+                Map<String, Object> sessionMap = ec.getSessionMap();
                 sessionMap.put("customerIdentificationNum", customerIdentificationNum);
-                ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/deposit/employeeChangeDailyTransferLimitDone.xhtml?faces-redirect=true");
+                ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/card/employeeRenewCard.xhtml?faces-redirect=true");
             }
         }
     }
+
 }

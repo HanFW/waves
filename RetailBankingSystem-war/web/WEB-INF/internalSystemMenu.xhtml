@@ -83,7 +83,11 @@
                         <p:submenu label="Customer Service Agent" rendered="#{employeeAccountManagedBean.hasRoleCustomerServiceAgent()}">
                             <p:menuitem value="Create Enquiry Case" url="/web/internalSystem/enquiry/counterTellerSearchCustomer.xhtml" />
                             <p:menuitem value="Search Enquiry Case" url="/web/internalSystem/enquiry/counterTellerSearchCaseByID.xhtml" />
-                            <p:menuitem value="Unlock iBanking Account" url="/web/internalSystem/infrastructure/employeeUnlockIBAccount.xhtml" />                           
+                            <p:menuitem value="Unlock iBanking Account" url="/web/internalSystem/infrastructure/employeeUnlockIBAccount.xhtml" />
+                            <p:menuitem value="Cancel Card" url="/web/internalSystem/card/employeeCancelCardCheckExisting.xhtml" />            
+                            <p:menuitem value="Renew Card" url="/web/internalSystem/card/employeeRenewCardCheckExisting.xhtml" />            
+                            <p:menuitem value="Report Card Loss" url="/web/internalSystem/card/employeeReportCardLossCheckExisting.xhtml" />            
+<!--                            <p:menuitem value="Replace Card" url="" /> -->
                         </p:submenu>
 
                         <p:submenu label="Enquiry Processor" rendered="#{employeeAccountManagedBean.hasRoleEnquiryProcessor()}">
@@ -114,7 +118,7 @@
                         <p:submenu label="Loan Department Manager" rendered="#{employeeAccountManagedBean.hasRoleLoanDepartmentManager()}">
                             <p:menuitem value="View All Loans" url="/web/internalSystem/loan/loanManagerViewAllLoans.xhtml" />
                         </p:submenu>
-                        
+
                         <p:submenu label="Loan Officer" rendered="#{employeeAccountManagedBean.hasRoleLoanOfficer()}">
                             <p:menuitem value="View Applications" url="/web/internalSystem/loan/loanOfficerViewApplications.xhtml" />
                         </p:submenu>
