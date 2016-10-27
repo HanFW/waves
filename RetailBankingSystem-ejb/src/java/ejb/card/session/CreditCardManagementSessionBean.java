@@ -134,8 +134,9 @@ public class CreditCardManagementSessionBean implements CreditCardManagementSess
         double limit = findCreditCard.getCreditLimit();
         int remainingMonths = findCreditCard.getRemainingExpirationMonths();
         List<SupplementaryCard> supplCards = findCreditCard.getSupplementaryCard();
+        Long predecessorId = findCreditCard.getCardId();
 
-        creditCardSessionBeanLocal.createNewCardAfterLost(cbId, caId, creditCardTypeId, cardHolderName, limit, expDate, remainingMonths, supplCards);
+        creditCardSessionBeanLocal.createNewCardAfterDamage(cbId, caId, creditCardTypeId, cardHolderName, limit, expDate, remainingMonths, supplCards, predecessorId);
 
         System.out.println("Credit Card management session bean: issue new card to replace damaged card");
 

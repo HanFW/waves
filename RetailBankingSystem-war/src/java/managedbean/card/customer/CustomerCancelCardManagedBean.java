@@ -136,7 +136,7 @@ public class CustomerCancelCardManagedBean implements Serializable {
                 context.addMessage(null, message);
                 break;
             case "wrong pwd":
-                message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Password is wrong! Please check the card security code", null);
+                message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Security code is wrong! Please check security code at the back of your credit card", null);
                 context.addMessage(null, message);
                 break;
             case "credit limit unpaid":

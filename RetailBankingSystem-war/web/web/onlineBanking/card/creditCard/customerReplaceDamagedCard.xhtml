@@ -10,34 +10,28 @@
     <ui:define name="content">
 
         <h:body>
+            <p:panel>
+                <p:outputLabel value="Welcome "/>
+                <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
+            </p:panel>
 
-            <div align="center">
-                <h:form>
-                    <p:panel>
-                        <p:outputLabel value="Welcome "/>
-                        <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
-                    </p:panel>
 
+            <h:form>
+
+                <div align="center">
+
+                    <h1>Request for Card Replacement</h1>
+                    <h:panelGrid columns="1" class="ui-lg-5">
+                        <p:outputLabel style="font-size: 20px;font-weight: bold" value="Important"/>
+                        <p:outputLabel style="font-size: 20px" value="If you request for card replacement,"/>
+                        <br/>
+                        <p:outputLabel style="font-size: 20px" value="We will arrange a new card and send the card to you in 2 - 3 working days."/>
+                        <br/>
+                        <p:outputLabel style="font-size: 20px" value="You may proceed to activate the new card, and the old card will be disabled."/>
+                        <br/>
+                    </h:panelGrid>
                     <p:messages autoUpdate="true"/>
-
-                    <p:outputLabel style="font-size: 40px;font-weight: bold" value="Request for Card Replacement"/>
-                    <br/>
-                    <br/>
-
-                    <p:outputLabel style="font-size: 20px;font-weight: bold" value="Important"/>
-                    <br/>
-                    <br/>
-
-                    <p:outputLabel style="font-size: 20px" value="If you request for card replacement,"/>
-                    <br/>
-
-                    <p:outputLabel style="font-size: 20px" value="We will arrange a new card and send the card to you in 2 - 3 working days."/>
-                    <br/>
-
-                    <p:outputLabel style="font-size: 20px" value="You may proceed to activate the new card, and the old card will be disabled."/>
-                    <br/>
-
-                    <h:panelGrid columns="3" class="ui-lg-6"> 
+                    <h:panelGrid columns="2" class="ui-lg-4"> 
 
                         <p:outputLabel value="Card Type:"/>
                         <p:selectOneRadio required="true" requiredMessage="Please select card type" id="cardType" value="#{customerReplaceDamagedCardManagedBean.cardType}">
@@ -45,28 +39,33 @@
                             <f:selectItem itemLabel="Debit Card" itemValue="debit" />
                             <p:ajax event="change" update="creditPanel debitPanel" listener="#{customerReplaceDamagedCardManagedBean.showCards}"/>
                         </p:selectOneRadio>
-                        <p:messages for="cardType"/>
-                        <p:panel id="debitPanel" visible="#{customerReplaceDamagedCardManagedBean.debitPanelVisible}">
-                            <p:outputLabel value="Debit Card"/>
-                            <p:selectOneMenu id="selectDebitCard" required="true" requiredMessage="Please select a debit card" style="text-align:left" value="#{customerReplaceDamagedCardManagedBean.selectedDebitCard}">
+                    </h:panelGrid>
+
+                    <p:panel id="debitPanel" visible="#{customerReplaceDamagedCardManagedBean.debitPanelVisible}">
+                        <h:panelGrid columns="2" class="ui-lg-4">
+                            <p:outputLabel value="Debit Card:"/>
+                            <p:selectOneMenu id="selectDebitCard" required="#{customerReplaceDamagedCardManagedBean.debitPanelVisible}" requiredMessage="Please select a debit card" style="text-align:left" value="#{customerReplaceDamagedCardManagedBean.selectedDebitCard}">
                                 <f:selectItem itemLabel="Please select..." itemValue=""/>
                                 <f:selectItems value="#{customerReplaceDamagedCardManagedBean.debitCards}"/> 
                             </p:selectOneMenu>
+                        </h:panelGrid>
 
-                            <p:commandButton value="Confirm" actionListener="#{customerReplaceDamagedCardManagedBean.requestForCardReplacement}"/>        
-                        </p:panel>
-                        <p:panel id="creditPanel" visible="#{customerReplaceDamagedCardManagedBean.creditPanelVisible}">
-                            <p:outputLabel value="Credit Card"/>
-                            <p:selectOneMenu id="selectCreditCard" required="true" requiredMessage="Please select a credit card" style="text-align:left" value="#{customerReplaceDamagedCardManagedBean.selectedCreditCard}">
+                        <p:commandButton value="Confirm" actionListener="#{customerReplaceDamagedCardManagedBean.requestForCardReplacement}" style="width:150px"/>        
+                    </p:panel>
+                    <p:panel id="creditPanel" visible="#{customerReplaceDamagedCardManagedBean.creditPanelVisible}">
+                        <h:panelGrid columns="2" class="ui-lg-4">
+                            <p:outputLabel value="Credit Card:"/>
+                            <p:selectOneMenu id="selectCreditCard" required="#{customerReplaceDamagedCardManagedBean.creditPanelVisible}" requiredMessage="Please select a credit card" style="text-align:left" value="#{customerReplaceDamagedCardManagedBean.selectedCreditCard}">
                                 <f:selectItem itemLabel="Please select..." itemValue=""/>
                                 <f:selectItems value="#{customerReplaceDamagedCardManagedBean.creditCards}"/> 
                             </p:selectOneMenu>
-                            
-                            <p:commandButton value="Confirm" actionListener="#{customerReplaceDamagedCardManagedBean.requestForCardReplacement}"/>        
-                        </p:panel>
-                    </h:panelGrid>
-                </h:form>
-            </div>
+                        </h:panelGrid>
+                        <p:commandButton value="Confirm" actionListener="#{customerReplaceDamagedCardManagedBean.requestForCardReplacement}" style="width:150px"/>        
+                    </p:panel>
+                    <br/>
+                </div>
+            </h:form>
+
         </h:body>
 
     </ui:define>

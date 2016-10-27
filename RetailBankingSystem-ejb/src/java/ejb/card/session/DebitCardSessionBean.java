@@ -93,7 +93,50 @@ public class DebitCardSessionBean implements DebitCardSessionBeanLocal {
     }
 
     @Override
-    public void replaceDebitCard(String bankAccountNum, String cardHolderName, String expDate, int remainingMonths, int transactionLimit, String cardTypeName) {
+    public void replaceDebitCard(String bankAccountNum, String cardHolderName, String expDate, int remainingMonths, int transactionLimit, String cardTypeName, Long predecessorId) {
+        DebitCard debitCard = new DebitCard();
+        debitCard.setCardHolderName(cardHolderName);
+
+        BankAccount depositAccount = findDepositAccountByAccountNum(bankAccountNum);
+        debitCard.setBankAccount(depositAccount);
+
+        DebitCardType debitCardType = findCardTypeByTypeName(cardTypeName);
+        debitCard.setDebitCardType(debitCardType);
+
+        String cardNum = generateCardNum();
+        debitCard.setCardNum(cardNum);
+
+        String debitCardSecurityCode = generateCardSecurityCode();
+        try {
+            System.out.println("debug cardNum:" + cardNum);
+            System.out.println("debug csc initial:" + debitCardSecurityCode);
+            String hashedDebitCardSecurityCode = md5Hashing(debitCardSecurityCode + cardNum.substring(0, 3));
+            System.out.println("debug:" + hashedDebitCardSecurityCode);
+            debitCard.setCardSecurityCode(hashedDebitCardSecurityCode);
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(DebitCardSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+//        String[] applicationDateToString = changeDateFormat(applicationDate);
+        debitCard.setCardExpiryDate(expDate);
+
+        debitCard.setRemainingExpirationMonths(remainingMonths);
+
+        debitCard.setRemainingActivationDays(15);
+
+        debitCard.setStatus("not activated");
+
+        debitCard.setTransactionLimit(transactionLimit);
+
+        debitCard.setPredecessor(predecessorId);
+
+        em.persist(debitCard);
+        depositAccount.addDebitCard(debitCard);
+
+    }
+
+    @Override
+    public void lostDebitCardRecreate(String bankAccountNum, String cardHolderName, String expDate, int remainingMonths, int transactionLimit, String cardTypeName) {
         DebitCard debitCard = new DebitCard();
         debitCard.setCardHolderName(cardHolderName);
 

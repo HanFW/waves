@@ -7,12 +7,16 @@ package ejb.card.session;
 
 import ejb.card.entity.CreditCard;
 import ejb.card.entity.CreditCardType;
-import ejb.card.entity.DebitCard;
-import ejb.card.entity.DebitCardType;
 import ejb.card.entity.SupplementaryCard;
 import ejb.customer.entity.CustomerAdvanced;
 import ejb.customer.entity.CustomerBasic;
 import ejb.infrastructure.session.CustomerAdminSessionBeanLocal;
+import ejb.loan.entity.CreditReportAccountStatus;
+import ejb.loan.entity.CreditReportBureauScore;
+import ejb.loan.entity.CreditReportDefaultRecords;
+import ejb.loan.entity.CustomerDebt;
+import ejb.loan.entity.CustomerProperty;
+import ejb.loan.entity.LoanApplication;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -35,8 +39,6 @@ import javax.persistence.Query;
 public class CreditCardSessionBean implements CreditCardSessionBeanLocal {
 
     @EJB
-    private CreditCardSessionBeanLocal creditCardSessionLocal;
-    @EJB
     private CustomerAdminSessionBeanLocal customerAdminSessionBeanLocal;
     @EJB
     private CreditCardManagementSessionBeanLocal creditCardManagementSessionBeanLocal;
@@ -51,7 +53,7 @@ public class CreditCardSessionBean implements CreditCardSessionBeanLocal {
         String cardNum = generateCardNum();
 
         CreditCardType cct = em.find(CreditCardType.class, creditCardTypeId);
-        if (hasCreditLimit == "Yes") {
+        if (hasCreditLimit.equals("Yes")) {
             creditCard.setCreditLimit(creditLimit);
         } else {
             creditCard.setCreditLimit(0.0);
@@ -81,7 +83,7 @@ public class CreditCardSessionBean implements CreditCardSessionBeanLocal {
 
         creditCard.setCardExpiryDate(creditCardExpiryDate);
         creditCard.setRemainingExpirationMonths(60);
-        creditCard.setStatus("Approved");
+        creditCard.setStatus("Pending");
 
         CustomerBasic cb = em.find(CustomerBasic.class, newCustomerBasicId);
         creditCard.setCustomerBasic(cb);
@@ -149,6 +151,58 @@ public class CreditCardSessionBean implements CreditCardSessionBeanLocal {
         System.out.println("****** card/CreditCardSessionBean: createCreditCardAfterLoss()" + cardNum + " ******");
     }
 
+    @Override
+    public void createNewCardAfterDamage(Long cbId, Long caId, Long creditCardTypeId, String cardHolderName, double creditLimit, String expDate, int remainingMonths, List<SupplementaryCard> supplCards, Long predecessorId) {
+        CreditCard creditCard = new CreditCard();
+
+        String cardNum = generateCardNum();
+        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!before!!!!debug cct ID " + creditCardTypeId);
+//        CreditCardType cct = em.find(CreditCardType.class, creditCardTypeId);
+        Query query = em.createQuery("SELECT c FROM CreditCardType c WHERE c.creditCardTypeId = :cardTypeNameId");
+        query.setParameter("cardTypeNameId", creditCardTypeId);
+        CreditCardType cct = (CreditCardType) query.getResultList().get(0);
+        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!debug cct" + cct);
+
+        creditCard.setPredecessor(predecessorId);
+        creditCard.setCreditLimit(creditLimit);
+        creditCard.setCreditCardType(cct);
+        creditCard.setCardNum(cardNum);
+        creditCard.setCardHolderName(cardHolderName);
+        creditCard.setSupplementaryCard(supplCards);
+
+        String creditCardSecurityCode = generateCardSecurityCode();
+        try {
+            System.out.println("!!!!!!!!!!!report loss!!!!!!!!!!!!!new creditcardNum:" + cardNum);
+            System.out.println("!!!!!!!!!!!report loss!!!!!!!!!!!!!new credit card security code: " + creditCardSecurityCode);
+            String hashedDebitCardSecurityCode = md5Hashing(creditCardSecurityCode + cardNum.substring(0, 3));
+            creditCard.setCardSecurityCode(hashedDebitCardSecurityCode);
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(DebitCardSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        creditCard.setCardExpiryDate(expDate);
+        System.out.println("!!!!!!!!!!!!expdate " + expDate);
+        creditCard.setRemainingExpirationMonths(remainingMonths);
+
+        System.out.println("!!!!!!!!!!!!rem months " + remainingMonths);
+        creditCard.setStatus("Approved");
+        System.out.println("!!!!!!!!!!!!Aproved ");
+
+        System.out.println("!!!!!!!!!!!!!!!!cbID" + cbId);
+        CustomerBasic cb = em.find(CustomerBasic.class, cbId);
+        creditCard.setCustomerBasic(cb);
+        cb.addNewCreditCard(creditCard);
+        System.out.println("!!!!!!!!!!!!cb!!!!!!!!");
+
+        System.out.println("!!!!!!!!!!!!!!!!caID" + caId);
+        CustomerAdvanced ca = em.find(CustomerAdvanced.class, caId);
+        cb.setCustomerAdvanced(ca);
+        ca.setCustomerBasic(cb);
+        System.out.println("!!!!!!!!!!!!CAdvanced!!!!!!!!!!!!!");
+
+        em.flush();
+        System.out.println("****** card/CreditCardSessionBean: createCreditCardAfterLoss()" + cardNum + " ******");
+    }
 
     @Override
     public String findTypeNameById(Long cardTypeId) {
@@ -209,6 +263,14 @@ public class CreditCardSessionBean implements CreditCardSessionBeanLocal {
         }
 
         return creditCardNames;
+    }
+
+    @Override
+    public List<CreditCard> getAllPendingCreditCards() {
+        Query query = em.createQuery("SELECT c FROM CreditCard c WHERE c.status = :status");
+        query.setParameter("status", "Pending");
+
+        return query.getResultList();
     }
 
     @Override
@@ -294,6 +356,7 @@ public class CreditCardSessionBean implements CreditCardSessionBeanLocal {
             return findCreditCardType;
         }
     }
+
     @Override
     public CreditCard getCardByCardNum(String cardNum) {
         Query query = em.createQuery("SELECT c FROM CreditCard c WHERE c.cardNum = :cardNum");
@@ -307,17 +370,68 @@ public class CreditCardSessionBean implements CreditCardSessionBeanLocal {
         }
     }
 
-//    private CreditCard getCardByCardName (String cardName) {
-//        Query query = em.createQuery("SELECT c FROM CreditCard c WHERE c. = :cardNum");
-//        query.setParameter("cardNum", cardName);
-//
-//        if (query.getResultList().isEmpty()) {
-//            return null;
-//        } else {
-//            CreditCard findCreditCard = (CreditCard) query.getResultList().get(0);
-//            return findCreditCard;
-//        }
-//    }
+    @Override
+    public CreditCard getCardByCardId(Long cardId) {
+        Query query = em.createQuery("SELECT c FROM CreditCard c WHERE c.cardId = :cardId");
+        query.setParameter("cardId", cardId);
+
+        if (query.getResultList().isEmpty()) {
+            return null;
+        } else {
+            CreditCard findCreditCard = (CreditCard) query.getResultList().get(0);
+            return findCreditCard;
+        }
+    }
+
+    @Override
+    public double[] getCreditLimitMaxInterval() {
+        System.out.println("****** loan/LoanApplicationSessionBean: getCreditLimitMaxInterval() ******");
+        double[] maxInterval = new double[2];
+        maxInterval[0] = 1000;
+        maxInterval[1] = 20000;
+        return maxInterval;
+    }
+
+    @Override
+    public double getCreditLimitRiskRatio() {
+        System.out.println("****** loan/LoanApplicationSessionBean: getCreditLimitiskRatio() ******");
+        double ratio = 0;
+        return ratio;
+    }
+
+    @Override
+    public double[] getCreditLimitSuggestedInterval() {
+        System.out.println("****** loan/LoanApplicationSessionBean: getCreditLimitSuggestedInterval() ******");
+        double[] interval = new double[2];
+        interval[0] = 1000;
+        interval[1] = 20000;
+        return interval;
+    }
+    
+    @Override
+    public void approveRequest(Long creditCardId, double creditLimit){
+        System.out.println("****** loan/LoanApplicationSessionBean: approveMortgageLoanRequest() ******");
+        CreditCard cc = em.find(CreditCard.class, creditCardId);
+        cc.setCreditLimit(creditLimit);
+        cc.setStatus("Approved");
+        em.flush();
+    }
+    
+    @Override
+    public void rejectRequest(Long creditCardId){
+        System.out.println("****** loan/LoanApplicationSessionBean: rejectMortgageLoanRequest() ******");
+        CreditCard cc = em.find(CreditCard.class, creditCardId);
+        CustomerBasic customer = cc.getCustomerBasic();
+        CustomerAdvanced ca = customer.getCustomerAdvanced();
+        
+//        CreditReportBureauScore report = customer.getBureauScore();
+//        
+//        em.remove(report);
+        em.remove(ca);
+        em.remove(customer);
+        em.flush();
+    }
+
     private String md5Hashing(String stringToHash) throws NoSuchAlgorithmException {
         System.out.println("md5 hashing- string to hash " + stringToHash);
         MessageDigest md = MessageDigest.getInstance("MD5");

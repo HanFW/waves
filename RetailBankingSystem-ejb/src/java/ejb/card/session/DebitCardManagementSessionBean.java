@@ -119,7 +119,7 @@ public class DebitCardManagementSessionBean implements DebitCardManagementSessio
                     em.remove(findDebitCard);
 
                     //issue a new debit card
-                    debitCardSessionBeanLocal.replaceDebitCard(bankAccountNum, cardHolderName, expDate, remainingMonths, transactionLimit, cardTypeName);
+                    debitCardSessionBeanLocal.lostDebitCardRecreate(bankAccountNum, cardHolderName, expDate, remainingMonths, transactionLimit, cardTypeName);
                     System.out.println("Debit Card management session bean: issue a new card after reporting debit card loss");
 
                     return "success";
@@ -149,8 +149,9 @@ public class DebitCardManagementSessionBean implements DebitCardManagementSessio
         String cardTypeName = debitCardType.getDebitCardTypeName();
         int remainingMonths = findDebitCard.getRemainingExpirationMonths();
         int transactionLimit = findDebitCard.getTransactionLimit();
+        Long predecessorId = findDebitCard.getCardId();
 
-        debitCardSessionBeanLocal.replaceDebitCard(bankAccountNum, cardHolderName, expDate, remainingMonths, transactionLimit, cardTypeName);
+        debitCardSessionBeanLocal.replaceDebitCard(bankAccountNum, cardHolderName, expDate, remainingMonths, transactionLimit, cardTypeName, predecessorId);
 
         System.out.println("Debit Card management session bean: issue new card to replace damaged card");
 
