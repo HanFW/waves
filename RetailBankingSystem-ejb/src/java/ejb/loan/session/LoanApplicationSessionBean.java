@@ -105,9 +105,8 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
 
     @Override
     public List<LoanApplication> getAllLoanApplications() {
-        Query query = em.createQuery("SELECT la FROM LoanApplication la WHERE la.applicationStatus = :applicationStatus1 OR la.applicationStatus = :applicationStatus2");
+        Query query = em.createQuery("SELECT la FROM LoanApplication la WHERE la.applicationStatus = :applicationStatus1");
         query.setParameter("applicationStatus1", "pending");
-        query.setParameter("applicationStatus2", "in progress");
         return query.getResultList();
     }
 

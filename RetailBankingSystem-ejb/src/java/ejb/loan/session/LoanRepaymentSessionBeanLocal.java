@@ -13,5 +13,5 @@ import javax.ejb.Local;
  */
 @Local
 public interface LoanRepaymentSessionBeanLocal {
-    
+    public void makeMonthlyRepayment(String depositAccount, String repaymentAccount, double amount);
 }

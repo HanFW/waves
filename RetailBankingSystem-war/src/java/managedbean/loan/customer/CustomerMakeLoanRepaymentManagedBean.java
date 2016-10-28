@@ -7,8 +7,8 @@ package managedbean.loan.customer;
 
 import ejb.customer.entity.CustomerBasic;
 import ejb.deposit.entity.BankAccount;
-import ejb.deposit.entity.Payee;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
+import ejb.loan.session.LoanRepaymentSessionBeanLocal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +16,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
@@ -27,17 +28,20 @@ import javax.faces.context.FacesContext;
 @RequestScoped
 public class CustomerMakeLoanRepaymentManagedBean {
     @EJB
+    private LoanRepaymentSessionBeanLocal loanRepaymentSessionBeanLocal;
+    @EJB
     private BankAccountSessionBeanLocal bankAccountSessionBeanLocal;
     
     String loanAccountNumber;
     
     private Map<String, String> fromAccounts = new HashMap<String, String>();
     private String fromCurrency;
-    private String toAccount;
+    private Map<String, String> toAccounts = new HashMap<String, String>();
     private String toCurrency;
     private Double transferAmt;
     private String fromBankAccountNumWithType;
-    private String toBankAccountNumWithType;
+    private String fromAccount;
+    private String toAccount;
     
 
     /**
@@ -60,10 +64,31 @@ public class CustomerMakeLoanRepaymentManagedBean {
             for (int i = 0; i < bankAccounts.size(); i++) {
                 fromAccounts.put(bankAccounts.get(i).getBankAccountType() + "-" + bankAccounts.get(i).getBankAccountNum(), bankAccounts.get(i).getBankAccountType() + "-" + bankAccounts.get(i).getBankAccountNum());
             }
+            
+            toAccounts.put(loanAccountNumber, loanAccountNumber);
     }
     
     public void makePayment(){
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         
+        fromAccount = handleAccountString(fromBankAccountNumWithType);
+        toAccount = loanAccountNumber;
+        
+        CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
+        
+        loanRepaymentSessionBeanLocal.makeMonthlyRepayment(fromAccount, toAccount, transferAmt);
+        
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Transaction successful", null);
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage(null, message);
+    }
+    
+    private String handleAccountString(String bankAccountNumWithType) {
+
+        String[] bankAccountNums = bankAccountNumWithType.split("-");
+        String bankAccountNum = bankAccountNums[1];
+
+        return bankAccountNum;
     }
 
     public String getLoanAccountNumber() {
@@ -90,12 +115,20 @@ public class CustomerMakeLoanRepaymentManagedBean {
         this.fromCurrency = fromCurrency;
     }
 
-    public String getToAccount() {
-        return toAccount;
+    public Map<String, String> getToAccounts() {
+        return toAccounts;
     }
 
-    public void setToAccount(String toAccount) {
-        this.toAccount = toAccount;
+    public void setToAccounts(Map<String, String> toAccounts) {
+        this.toAccounts = toAccounts;
+    }
+
+    public String getFromAccount() {
+        return fromAccount;
+    }
+
+    public void setFromAccount(String fromAccount) {
+        this.fromAccount = fromAccount;
     }
 
     public String getToCurrency() {
@@ -122,13 +155,14 @@ public class CustomerMakeLoanRepaymentManagedBean {
         this.fromBankAccountNumWithType = fromBankAccountNumWithType;
     }
 
-    public String getToBankAccountNumWithType() {
-        return toBankAccountNumWithType;
+    public String getToAccount() {
+        return toAccount;
     }
 
-    public void setToBankAccountNumWithType(String toBankAccountNumWithType) {
-        this.toBankAccountNumWithType = toBankAccountNumWithType;
+    public void setToAccount(String toAccount) {
+        this.toAccount = toAccount;
     }
+
     
     
 }
