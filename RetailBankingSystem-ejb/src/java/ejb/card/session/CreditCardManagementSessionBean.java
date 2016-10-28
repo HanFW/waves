@@ -42,6 +42,7 @@ public class CreditCardManagementSessionBean implements CreditCardManagementSess
             return "credit card not exist";
         } else {
             CreditCard findCreditCard = getCardByCardNum(creditCardNum);
+            System.out.println("##############outstanding limit" + findCreditCard.getOutstandingBalance());
 
             //check if pwd matches
             String hashedInputPwd;
@@ -50,7 +51,7 @@ public class CreditCardManagementSessionBean implements CreditCardManagementSess
 
                 if (!findCreditCard.getCardSecurityCode().equals(hashedInputPwd)) {
                     return "wrong pwd";
-                } else if (findCreditCard.getCreditLimit() != 0){
+                } else if (findCreditCard.getOutstandingBalance() != 0.0){
                     return "credit limit unpaid";
                 } else {
                     findCreditCard.setStatus("cancel");

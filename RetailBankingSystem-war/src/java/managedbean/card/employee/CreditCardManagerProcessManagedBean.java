@@ -106,10 +106,10 @@ public class CreditCardManagerProcessManagedBean implements Serializable{
     public void init(){
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         Long creditCardId = (Long) ec.getFlash().get("creditCardId"); 
-        System.out.println("@@@@@@@@@@@@@@@@@@@caredit card id" + creditCardId);
         cc = creditCardSessionLocal.getCardByCardId(creditCardId);
         customer = cc.getCustomerBasic();
         ca = customer.getCustomerAdvanced();
+        System.out.println("@@@@@@@@@@@@IC num "+ customer.getCustomerIdentificationNum());
         
 //        docs = cc.getUploads();
         
