@@ -10,6 +10,6 @@ public interface SWIFTPayeeSessionBeanLocal {
             String swiftPayeeCode, String lastTransactionDate, String swiftPayeeCountry, 
             String payeeBank, Long customerBasicId);
     public SWIFTPayee retrieveSWIFTPayeeById(Long swiftPayeeId);
-    public List<SWIFTPayee> retrieveSWIFTPayeeByCusId(String customerIdentificationNum);
+    public List<SWIFTPayee> retrieveSWIFTPayeeByCusIC(String customerIdentificationNum);
     public SWIFTPayee retrieveSWIFTPayeeByInstitution(String swiftInstitution);
 }

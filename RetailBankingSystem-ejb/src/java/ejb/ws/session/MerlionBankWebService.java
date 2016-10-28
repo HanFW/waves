@@ -7,6 +7,7 @@ import ejb.payment.entity.Cheque;
 import ejb.payment.entity.OnHoldRecord;
 import ejb.payment.entity.ReceivedCheque;
 import ejb.payment.session.ReceivedChequeSessionBeanLocal;
+import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.List;
 import javax.ejb.EJB;
@@ -91,6 +92,8 @@ public class MerlionBankWebService {
 //    @Oneway
     public void settleEachBankAccount() {
 
+        DecimalFormat df = new DecimalFormat("#.00");
+
         Query query = entityManager.createQuery("SELECT o FROM OnHoldRecord o WHERE o.onHoldStatus = :onHoldStatus");
         query.setParameter("onHoldStatus", "New");
         List<OnHoldRecord> onHoldRecords = query.getResultList();
@@ -109,7 +112,7 @@ public class MerlionBankWebService {
             if (debitOrCredit.equals("Debit") && debitOrCreditBankName.equals("DBS")) {
 
                 Double totalBalance = Double.valueOf(currenttTotalBalance) - Double.valueOf(paymentAmt);
-                bankAccount.setTotalBankAccountBalance(totalBalance.toString());
+                bankAccount.setTotalBankAccountBalance(df.format(totalBalance));
 
                 if (onHoldRecord.getPaymentMethod().equals("Cheque")) {
                     String currentAvailableBalance = bankAccount.getAvailableBankAccountBalance();
@@ -136,7 +139,7 @@ public class MerlionBankWebService {
                 }
 
                 Double totalBalance = Double.valueOf(currenttTotalBalance) + Double.valueOf(paymentAmt);
-                bankAccount.setTotalBankAccountBalance(totalBalance.toString());
+                bankAccount.setTotalBankAccountBalance(df.format(totalBalance));
 
                 onHoldRecord.setOnHoldStatus("Done");
 
@@ -144,7 +147,7 @@ public class MerlionBankWebService {
                 Calendar cal = Calendar.getInstance();
                 String transactionDate = cal.getTime().toString();
                 String transactionCode = "BILL";
-                String transactionRef = dbsBankAccount.getOtherBankAccountType() + dbsBankAccount.getOtherBankAccountNum();
+                String transactionRef = dbsBankAccount.getOtherBankAccountType() + "-" + dbsBankAccount.getOtherBankAccountNum();
 
                 Long transactionId = transactionSessionBeanLocal.addNewTransaction(transactionDate,
                         transactionCode, transactionRef, paymentAmt, " ",
@@ -153,7 +156,7 @@ public class MerlionBankWebService {
             } else if (debitOrCredit.equals("Debit") && debitOrCreditBankName.equals("Bank of Korea")) {
 
                 Double totalBalance = Double.valueOf(currenttTotalBalance) - Double.valueOf(paymentAmt);
-                bankAccount.setTotalBankAccountBalance(totalBalance.toString());
+                bankAccount.setTotalBankAccountBalance(df.format(totalBalance));
 
                 onHoldRecord.setOnHoldStatus("Done");
 
@@ -161,7 +164,7 @@ public class MerlionBankWebService {
                 Calendar cal = Calendar.getInstance();
                 String transactionDate = cal.getTime().toString();
                 String transactionCode = "SWIFT";
-                String transactionRef = koreaBankAccount.getOtherBankAccountType() + koreaBankAccount.getOtherBankAccountNum();
+                String transactionRef = koreaBankAccount.getOtherBankAccountType() + "-" + koreaBankAccount.getOtherBankAccountNum();
 
                 Long transactionId = transactionSessionBeanLocal.addNewTransaction(transactionDate,
                         transactionCode, transactionRef, paymentAmt, " ",

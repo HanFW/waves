@@ -68,14 +68,11 @@ public class SWIFTTransferManagedBean {
         if (ec.getSessionMap().get("customer") != null) {
             CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
 
-            System.out.println("************customer" + customerBasic);
             List<BankAccount> bankAccounts = bankAccountSessionBeanLocal.retrieveBankAccountByCusIC(customerBasic.getCustomerIdentificationNum());
             fromAccounts = new HashMap<String, String>();
             customerSWIFTPayee = new HashMap<String, String>();
-            List<SWIFTPayee> swiftPayees = sWIFTPayeeSessionBeanLocal.retrieveSWIFTPayeeByCusId(customerBasic.getCustomerIdentificationNum());
+            List<SWIFTPayee> swiftPayees = sWIFTPayeeSessionBeanLocal.retrieveSWIFTPayeeByCusIC(customerBasic.getCustomerIdentificationNum());
 
-            System.out.println("hello");
-            System.out.println("****************" + swiftPayees);
             for (int i = 0; i < bankAccounts.size(); i++) {
                 fromAccounts.put(bankAccounts.get(i).getBankAccountType() + "-" + bankAccounts.get(i).getBankAccountNum(), bankAccounts.get(i).getBankAccountType() + "-" + bankAccounts.get(i).getBankAccountNum());
             }
@@ -232,24 +229,24 @@ public class SWIFTTransferManagedBean {
         String organizationB = swiftPayee.getSwiftInstitution();
         String countryA = "Singapore";
         String countryB = swiftPayee.getSwiftPayeeCountry();
-        String swiftMessage = myAccountNum + " from Merlion Bank transfer S$" + transferAmt + " to " + organizationB;
+        String swiftMessage = myAccountNum + " from Merlion Bank transfer S$" + df.format(transferAmt) + " to " + organizationB;
 
         BankAccount bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountByNum(myAccountNum);
         String currentAvailableBalance = bankAccount.getAvailableBankAccountBalance();
         Double totalBalance = Double.valueOf(currentAvailableBalance) - transferAmt;
 
-        bankAccountSessionBeanLocal.updateBankAccountAvailableBalance(myAccountNum, totalBalance.toString());
+        bankAccountSessionBeanLocal.updateBankAccountAvailableBalance(myAccountNum, df.format(totalBalance));
 
         merlionBankSessionBeanLocal.sendSWIFTMessage(swiftMessage, transactionDate,
                 swiftCodeA, swiftCodeB, organizationA, organizationB, countryA, countryB,
-                transferAmt.toString(), myAccountNum);
+                df.format(transferAmt), myAccountNum);
 
         statusMessage = "We have received your application. We will process your application within 3 working days.";
 
         ec.getFlash().put("statusMessage", statusMessage);
         ec.getFlash().put("toBankAccountNumWithType", toBankAccountNumWithType);
         ec.getFlash().put("fromBankAccountNumWithType", fromBankAccountNumWithType);
-        ec.getFlash().put("transferAmt", transferAmt);
+        ec.getFlash().put("transferAmt", df.format(transferAmt));
 
         ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/payment/customerSWIFTTransferDone.xhtml?faces-redirect=true");
     }

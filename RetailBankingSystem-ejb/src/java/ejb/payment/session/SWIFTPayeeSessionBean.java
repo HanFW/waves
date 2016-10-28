@@ -69,7 +69,7 @@ public class SWIFTPayeeSessionBean implements SWIFTPayeeSessionBeanLocal {
     }
 
     @Override
-    public List<SWIFTPayee> retrieveSWIFTPayeeByCusId(String customerIdentificationNum) {
+    public List<SWIFTPayee> retrieveSWIFTPayeeByCusIC(String customerIdentificationNum) {
 
         CustomerBasic customerBasic = bankAccountSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum);
 
