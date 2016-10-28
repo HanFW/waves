@@ -90,7 +90,7 @@ public class AddSWIFTPayeeManagedBean {
         Long swiftPayeeId = sWIFTPayeeSessionBeanLocal.addNewSWIFTPayee(payeeInstitution,
                 payeeAccountNum, payeeAccountType, payeeSWIFTCode, lastTransactionDate,
                 payeeCountry, payeeBank, customerBasic.getCustomerBasicId());
-        SWIFTPayee swiftPayee = sWIFTPayeeSessionBeanLocal.retrieveFastPayeeById(swiftPayeeId);
+        SWIFTPayee swiftPayee = sWIFTPayeeSessionBeanLocal.retrieveSWIFTPayeeById(swiftPayeeId);
         
         customerBasic.getSwiftPayee().add(swiftPayee);
         

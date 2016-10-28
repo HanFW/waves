@@ -44,6 +44,15 @@
                         </p:commandButton>
                     </center>
                 </p:column>
+                
+                <p:column headerText="Action" style="width: 10%"> 
+                    <center>
+                        <p:commandButton process="@this" action="#{nonStandingGIROTransferDoneManagedBean.delete()}"
+                                         icon="ui-icon-trash" ajax="false">
+                            <f:setPropertyActionListener target="#{nonStandingGIROTransferDoneManagedBean.giroId}" value="#{oneTimeGiro.giroId}" />
+                        </p:commandButton>
+                    </center>
+                </p:column>
             </p:dataTable>
         </h:form>
 
@@ -71,6 +80,15 @@
                     <center>
                         <p:commandButton action="/web/onlineBanking/payment/customerNonStandingGIROTransferDone.xhtml?faces-redirect=true"
                                          value="Transfer" update="recurrentGIROForm" style="width: 50%">
+                            <f:setPropertyActionListener target="#{nonStandingGIROTransferDoneManagedBean.giroId}" value="#{recurrentGIRO.giroId}" />
+                        </p:commandButton>
+                    </center>
+                </p:column>
+                
+                <p:column headerText="Action" style="width: 10%"> 
+                    <center>
+                        <p:commandButton process="@this" action="#{nonStandingGIROTransferDoneManagedBean.delete()}"
+                                         icon="ui-icon-trash" ajax="false">
                             <f:setPropertyActionListener target="#{nonStandingGIROTransferDoneManagedBean.giroId}" value="#{recurrentGIRO.giroId}" />
                         </p:commandButton>
                     </center>

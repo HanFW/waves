@@ -10,4 +10,8 @@
     <system systemId="http://localhost:8080/BillWebService/BillWebService?xsd=1" uri="wsdl/localhost_8080/BillWebService/BillWebService.xsd_1.xsd"/>
     <system systemId="http://localhost:8080/OnHoldWebService/OnHoldWebService?wsdl" uri="wsdl/localhost_8080/OnHoldWebService/OnHoldWebService.wsdl"/>
     <system systemId="http://localhost:8080/OnHoldWebService/OnHoldWebService?xsd=1" uri="wsdl/localhost_8080/OnHoldWebService/OnHoldWebService.xsd_1.xsd"/>
+    <system systemId="http://localhost:8080/SWIFTWebService/SWIFTWebService?wsdl" uri="wsdl/localhost_8080/SWIFTWebService/SWIFTWebService.wsdl"/>
+    <system systemId="http://localhost:8080/SWIFTWebService/SWIFTWebService?xsd=1" uri="wsdl/localhost_8080/SWIFTWebService/SWIFTWebService.xsd_1.xsd"/>
+    <system systemId="http://localhost:8080/CHIPSWebService/CHIPSWebService?wsdl" uri="wsdl/localhost_8080/CHIPSWebService/CHIPSWebService.wsdl"/>
+    <system systemId="http://localhost:8080/CHIPSWebService/CHIPSWebService?xsd=1" uri="wsdl/localhost_8080/CHIPSWebService/CHIPSWebService.xsd_1.xsd"/>
 </catalog>

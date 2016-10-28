@@ -18,7 +18,11 @@
                 </p:panel>
                 <p:messages globalOnly="true"/>
 
-                <p:panel header="SWIFT Transfer">
+                <p:panel header = "SWIFT Transfer" id="panel">
+                    <br/>
+                    <p:outputLabel style="font-weight: bold;font-size: 24px" value="To" />
+                    <h:outputText value="&lt;br /&gt;" escape="false" />
+                    <h:outputText value="&lt;br /&gt;" escape="false" />
                     <p:row>
                         <p:column>
                             <p:outputLabel for="transferToAccount" style="font-weight: bold" value="Account: " />
@@ -27,7 +31,7 @@
                             <p:selectOneMenu id="transferToAccount" value="#{sWIFTTransferManagedBean.toBankAccountNumWithType}" 
                                              effect="fold" editable="false">
                                 <f:selectItem itemLabel="Please Select One" itemValue="" />
-                                <f:selectItems value="#{sWIFTTransferManagedBean.customerFastPayee}" />
+                                <f:selectItems value="#{sWIFTTransferManagedBean.customerSWIFTPayee}" />
                             </p:selectOneMenu>
                         </p:column>
                         <p:column>
@@ -40,9 +44,14 @@
                             <p:outputLabel for="transferToCurrency" style="font-weight: bold" value="Currency: " />
                         </p:column>
                         <p:column>
-                            <p:selectOneMenu id="transferToCurrency" value="#{sWIFTTransferManagedBean.toCurrency}" 
+                            <p:selectOneMenu id="transferToCurrency" value="#{sWIFTTransferManagedBean.toCurrencyWithDollar}" 
                                              required="true">
-                                <f:selectItem itemLabel="Singapore Dollar" itemValue="SGD - Singapore Dollar" />
+                                <f:selectItem itemLabel="United States Dollar" itemValue="United States Dollar" />
+                                <f:selectItem itemLabel="Australian Dollar" itemValue="Australian Dollar" />
+                                <f:selectItem itemLabel="Japanese Yen" itemValue="Japanese Yen" />
+                                <f:selectItem itemLabel="South Korean Won" itemValue="South Korean Won" />
+                                <f:selectItem itemLabel="Euro" itemValue="Euro" />
+                                <f:selectItem itemLabel="Chinese Yuan" itemValue="Chinese Yuan" />
                             </p:selectOneMenu>
                         </p:column>
                         <p:column>
@@ -50,6 +59,20 @@
                         </p:column>
                     </p:row>
 
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="transferAmt" style="font-weight: bold" value="Amount (Receiving Country): " />
+                        </p:column>
+                        <p:column>
+                            <p:inputText required="true" label="Amount" requiredMessage="Amount is required." id="transferAmt"
+                                         value="#{sWIFTTransferManagedBean.receivedCountryTransferAmt}" converterMessage="Invalid input">
+                                <f:validateDoubleRange minimum="0.0" maximum="99999999.0" />
+                            </p:inputText>
+                        </p:column>
+                        <p:column>
+                            <p:message for="transferAmt" />
+                        </p:column>
+                    </p:row>
 
                     <br/>
                     <h:outputText value="&lt;br /&gt;" escape="false" />
@@ -91,21 +114,6 @@
                         </p:column>
                     </p:row>
 
-                    <p:row>
-                        <p:column>
-                            <p:outputLabel for="transferAmt" style="font-weight: bold" value="Amount: " />
-                        </p:column>
-                        <p:column>
-                            <p:inputText required="true" label="Amount" requiredMessage="Amount is required." id="transferAmt"
-                                         value="#{sWIFTTransferManagedBean.transferAmt}" converterMessage="Invalid input">
-                                <f:validateDoubleRange minimum="0.0" maximum="99999999.0" />
-                            </p:inputText>
-                        </p:column>
-                        <p:column>
-                            <p:message for="transferAmt" />
-                        </p:column>
-                    </p:row>
-
                     <p:commandButton id="cancelBtn" action="/web/onlineBanking/deposit/customerDepositIndex.xhtml?faces-redirect=true" value="Cancel" update="panel" immediate = "true">
                         <p:confirm header="Cancel" message="Are you sure?" />
                     </p:commandButton>
@@ -116,7 +124,7 @@
                     </p:confirmDialog>
 
                     <p:commandButton id="nextBtn" value="Next" update="panel" 
-                                     actionListener="#{sWIFTTransferManagedBean.fastTransfer}" ajax="true"/>
+                                     actionListener="#{sWIFTTransferManagedBean.swiftTransfer}" ajax="true"/>
 
                 </p:panel>
             </p:panelGrid>
