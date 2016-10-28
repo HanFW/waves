@@ -1,0 +1,107 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/internalSystemTemplate.xhtml">
+
+    <ui:define name="content">
+        <h:form>
+            <div class="ui-g-10">
+                <p:panelGrid columns="2">
+                    <p:outputLabel style="font-weight: bold;" value="Property Address: "/>
+                    <p:outputLabel value="#{appraiserSubmitValuationManagedBean.customerPropertyAddress}"/>
+
+                    <p:outputLabel style="font-weight: bold;" value="Property Postal: "/>
+                    <p:outputLabel value="#{appraiserSubmitValuationManagedBean.customerPropertyPostal}"/>
+
+                    <p:outputLabel style="font-weight: bold;" value="Property Owners"/>
+                    <p:column>
+                        <p:dataList value="#{appraiserSubmitValuationManagedBean.customerPropertyOwners}" var="owner">
+                            #{owner}  
+                        </p:dataList>
+                    </p:column>
+
+                    <p:outputLabel style="font-weight: bold;" value="Property Type: "/>
+                    <p:outputLabel value="#{appraiserSubmitValuationManagedBean.customerPropertyType}"/>
+
+                    <p:outputLabel style="font-weight: bold;" value="Built-up Area: "/>
+                    <p:outputLabel value="#{appraiserSubmitValuationManagedBean.customerPropertyBuiltUpArea}"/>
+
+                    <p:outputLabel style="font-weight: bold;" value="Land Area: "/>
+                    <p:outputLabel value="#{appraiserSubmitValuationManagedBean.customerPropertyLandArea}"/>
+
+                    <p:outputLabel style="font-weight: bold;" value="Property Status: "/>
+                    <p:outputLabel value="#{appraiserSubmitValuationManagedBean.customerPropertyStatus}"/>
+
+                    <p:outputLabel style="font-weight: bold;" value="TOP Date: "/>
+                    <p:outputLabel value="#{appraiserSubmitValuationManagedBean.customerPropertyTOPDate}"/>
+
+                    <p:outputLabel style="font-weight: bold;" value="Property Usage: "/>
+                    <p:outputLabel value="#{appraiserSubmitValuationManagedBean.customerPropertyUsage}"/>
+
+                    <p:outputLabel style="font-weight: bold;" value="Tenure Type: "/>
+                    <p:outputLabel value="#{appraiserSubmitValuationManagedBean.customerPropertyTenureType}"/>
+
+                    <p:outputLabel style="font-weight: bold;" value="Tenure Duration: "/>
+                    <p:outputLabel value="#{appraiserSubmitValuationManagedBean.customerPropertyTenureDuration}"/>
+
+                    <p:outputLabel style="font-weight: bold;" value="Tenure Start From: "/>
+                    <p:outputLabel value="#{appraiserSubmitValuationManagedBean.customerPropertyTenureFromYear}"/>
+
+                    <p:outputLabel style="font-weight: bold;" value="Property Purchase Price: "/>
+                    <p:outputLabel value="#{appraiserSubmitValuationManagedBean.customerPropertyPurchasePrice}"/>
+
+                    <p:outputLabel style="font-weight: bold;" value="Date of Purchase: "/>
+                    <p:outputLabel value="#{appraiserSubmitValuationManagedBean.customerPropertyDateOfPurchase}"/>
+
+                    <p:outputLabel style="font-weight: bold;" value="Property Purchased From: "/>
+                    <p:outputLabel value="#{appraiserSubmitValuationManagedBean.customerPropertySource}"/>
+
+                    <p:outputLabel style="font-weight: bold;" value="OTP Granted: "/>
+                    <p:outputLabel value="#{appraiserSubmitValuationManagedBean.customerPropertyWithOTP}"/>
+
+                    <p:outputLabel style="font-weight: bold;" value="OTP Date: "/>
+                    <p:outputLabel value="#{appraiserSubmitValuationManagedBean.customerPropertyOTPDate}"/>
+
+                    <p:outputLabel style="font-weight: bold;" value="Purchase with Tenancy: "/>
+                    <p:outputLabel value="#{appraiserSubmitValuationManagedBean.customerPropertyWithTenancy}"/>
+
+                    <p:outputLabel style="font-weight: bold;" value="Tenancy Income: "/>
+                    <p:outputLabel value="#{appraiserSubmitValuationManagedBean.customerPropertyTenancyIncome}"/>
+
+                    <p:outputLabel style="font-weight: bold;" value="Tenancy Expiry: "/>
+                    <p:outputLabel value="#{appraiserSubmitValuationManagedBean.customerPropertyTenancyExpiryYear}"/>
+                </p:panelGrid>
+
+            </div>
+            <div class="ui-g-2">
+                <p:panelGrid columns="1">
+                    <p:outputLabel style="font-weight: bold;" value="Purchase Price"/>
+                    <p:outputLabel value="#{appraiserSubmitValuationManagedBean.customerPropertyPurchasePrice}"/>
+                    
+                    <p:outputLabel style="font-weight: bold;" value="Appraisal"/>
+                    <p:inputText value="#{appraiserSubmitValuationManagedBean.valuation}"/>
+                </p:panelGrid>
+                <p:panelGrid>
+                    <p:commandButton value="Approve" actionListener="#{appraiserSubmitValuationManagedBean.submitValuation}" />
+                </p:panelGrid>
+            </div>
+        </h:form>
+
+        <!--        <h:form>
+                    <p:confirmDialog widgetVar="approveLoanDialog" header="Loan Approval" message="Are you sure to approve the loan? ">
+                        <p:commandButton value="Approve" actionListener="#{loanOfficerProcessApplicationManagedBean.approveLoanRequest}"/>
+                        <p:commandButton value="Cancel" onclick="PF('approveLoanDialog').hide();" />
+                    </p:confirmDialog>
+                </h:form>
+                
+                <h:form>
+                    <p:confirmDialog widgetVar="approveLoanDialog">
+        
+                    </p:confirmDialog>
+                </h:form>-->
+    </ui:define>
+</ui:composition>

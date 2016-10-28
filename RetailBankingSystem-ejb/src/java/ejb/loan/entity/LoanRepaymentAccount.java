@@ -6,7 +6,6 @@
 package ejb.loan.entity;
 
 import java.io.Serializable;
-import java.text.DecimalFormat;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -37,6 +36,7 @@ public class LoanRepaymentAccount implements Serializable {
     private String paymentStatus;
     private int repaymentMonths;
     private String depositAccountNumber;
+    private double accountBalance;
     
     @OneToOne(mappedBy = "loanRepaymentAccount")
     private LoanPayableAccount loanPayableAccount;
@@ -122,6 +122,14 @@ public class LoanRepaymentAccount implements Serializable {
 
     public void setInstalment(double instalment) {
         this.instalment = instalment;
+    }
+
+    public double getAccountBalance() {
+        return accountBalance;
+    }
+
+    public void setAccountBalance(double accountBalance) {
+        this.accountBalance = accountBalance;
     }
 
     @Override

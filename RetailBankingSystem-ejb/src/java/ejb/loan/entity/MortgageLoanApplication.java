@@ -41,7 +41,7 @@ public class MortgageLoanApplication extends LoanApplication implements Serializ
             double propertyTenancyIncome, int propertyTenancyExpiryYear, String withBenifits, double benefitsFromVendor,
             double cashDownPayment, double cpfDownPayment, String employmentStatus) {
         this.setApplicationDate(new Date());
-        this.setApplicationStatus("pending");
+        this.setApplicationStatus("waiting for valuation");
         this.setLoanType(loanType);
         this.setAmountRequired(amountRequired);
         this.setPeriodRequired(periodRequired);
