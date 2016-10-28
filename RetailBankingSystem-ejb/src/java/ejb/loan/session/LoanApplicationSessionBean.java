@@ -38,7 +38,7 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
     private EntityManager em;
 
     @Override
-    public void submitLoanApplication(Long customerBasicId, Long customerAdvancedId, ArrayList<CustomerDebt> debts,
+    public void submitLoanApplication(boolean isExistingCustomer, boolean hasCustomerAdvanced, Long customerBasicId, Long customerAdvancedId, ArrayList<CustomerDebt> debts,
             CustomerProperty cp, MortgageLoanApplication mortgage, RefinancingApplication refinancing, String loanType, String interestPackage) {
         System.out.println("****** loan/LoanApplicationSessionBean: submitLoanApplication() ******");
         CustomerBasic cb = em.find(CustomerBasic.class, customerBasicId);
@@ -51,14 +51,16 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
         cb.setCustomerProperty(cp);
 
         //set on both side (1-1 bi)
-        CustomerAdvanced ca = em.find(CustomerAdvanced.class, customerAdvancedId);
-        cb.setCustomerAdvanced(ca);
-        ca.setCustomerBasic(cb);
+        if (!hasCustomerAdvanced) {
+            CustomerAdvanced ca = em.find(CustomerAdvanced.class, customerAdvancedId);
+            cb.setCustomerAdvanced(ca);
+            ca.setCustomerBasic(cb);
+        }
 
         Query query = em.createQuery("SELECT p FROM LoanInterestPackage p WHERE p.packageName = :packageName");
         query.setParameter("packageName", interestPackage);
         List resultList = query.getResultList();
-        
+
         if (!resultList.isEmpty()) {
             LoanInterestPackage pkg = (LoanInterestPackage) resultList.get(0);
             System.out.println("****** loan/LoanApplicationSessionBean: submitLoanApplication(): interest package: " + pkg.getPackageName());
@@ -74,7 +76,7 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
                 refinancing.setLoanInterestPackage(pkg);
                 pkg.addLoanApplication(refinancing);
             }
-        }else{
+        } else {
             System.out.println("****** loan/LoanApplicationSessionBean: submitLoanApplication(): no interest package found");
             if (loanType.equals("purchase")) {
                 mortgage.setCustomerBasic(cb);
@@ -103,9 +105,8 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
 
     @Override
     public List<LoanApplication> getAllLoanApplications() {
-        Query query = em.createQuery("SELECT la FROM LoanApplication la WHERE la.applicationStatus = :applicationStatus1 OR la.applicationStatus = :applicationStatus2");
+        Query query = em.createQuery("SELECT la FROM LoanApplication la WHERE la.applicationStatus = :applicationStatus1");
         query.setParameter("applicationStatus1", "pending");
-        query.setParameter("applicationStatus2", "in progress");
         return query.getResultList();
     }
 
@@ -129,136 +130,150 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
         LoanApplication application = em.find(LoanApplication.class, applicationId);
         return application;
     }
-    
+
     @Override
-    public double[] getMortgagePurchaseLoanMaxInterval(){
+    public double[] getMortgagePurchaseLoanMaxInterval() {
         System.out.println("****** loan/LoanApplicationSessionBean: getMortgagePurchaseLoanMaxInterval() ******");
         double[] maxInterval = new double[2];
         maxInterval[0] = 460000;
         maxInterval[1] = 510000;
         return maxInterval;
     }
-    
+
     @Override
-    public double getMortgagePurchaseLoanRiskRatio(){
+    public double getMortgagePurchaseLoanRiskRatio() {
         System.out.println("****** loan/LoanApplicationSessionBean: getMortgagePurchaseLoanRiskRatio() ******");
         double ratio = 0;
         return ratio;
     }
-    
+
     @Override
-    public double[] getMortgagePurchaseLoanSuggestedInterval(){
+    public double[] getMortgagePurchaseLoanSuggestedInterval() {
         System.out.println("****** loan/LoanApplicationSessionBean: getMortgagePurchaseLoanSuggestedInterval() ******");
         double[] interval = new double[2];
         interval[0] = 460000;
         interval[1] = 510000;
         return interval;
     }
-    
+
     @Override
-    public void approveMortgageLoanRequest(Long applicationId, double amount, int period, double instalment){
+    public void approveMortgageLoanRequest(Long applicationId, double amount, int period, double instalment) {
         System.out.println("****** loan/LoanApplicationSessionBean: approveMortgageLoanRequest() ******");
         LoanApplication application = em.find(LoanApplication.class, applicationId);
         application.setAmountGranted(amount);
-        application.setPeriodSuggested(period*12);
+        application.setPeriodSuggested(period * 12);
         application.setInstalment(instalment);
         application.setApplicationStatus("approved");
         application.setFinalActionDate(new Date());
         em.flush();
     }
-    
+
     @Override
-    public void rejectMortgageLoanRequest(Long applicationId){
+    public void rejectMortgageLoanRequest(Long applicationId) {
         System.out.println("****** loan/LoanApplicationSessionBean: rejectMortgageLoanRequest() ******");
         LoanApplication application = em.find(LoanApplication.class, applicationId);
         CustomerBasic customer = application.getCustomerBasic();
         CustomerAdvanced ca = customer.getCustomerAdvanced();
         CustomerProperty property = customer.getCustomerProperty();
-        
+
         CreditReportBureauScore report = customer.getBureauScore();
-        for(CustomerDebt debt: customer.getCustomerDebt()){
+        for (CustomerDebt debt : customer.getCustomerDebt()) {
             em.remove(debt);
         }
-        for(CreditReportAccountStatus as: report.getAccountStatus()){
+        for (CreditReportAccountStatus as : report.getAccountStatus()) {
             em.remove(as);
         }
-        for(CreditReportDefaultRecords dr: report.getDefaultRecords()){
+        for (CreditReportDefaultRecords dr : report.getDefaultRecords()) {
             em.remove(dr);
         }
         em.remove(report);
-        
+
         em.remove(application);
         em.remove(property);
         em.remove(ca);
         em.remove(customer);
         em.flush();
     }
-    
+
     @Override
-    public void approveRefinancingLoanRequest(Long applicationId, int period, double instalment){
-        
+    public void approveRefinancingLoanRequest(Long applicationId, int period, double instalment) {
+
     }
-    
+
     @Override
-    public void rejectRefinancingLoanRequest(Long applicationId){
-        
+    public void rejectRefinancingLoanRequest(Long applicationId) {
+
     }
-    
+
     @Override
-    public List<LoanApplication> getAllApprovedLoans(){
+    public List<LoanApplication> getAllApprovedLoans() {
         Query query = em.createQuery("SELECT la FROM LoanApplication la WHERE la.applicationStatus = :applicationStatus");
         query.setParameter("applicationStatus", "approved");
         return query.getResultList();
     }
-    
+
     @Override
-    public List<LoanApplication> getAllStartedLoans(){
+    public List<LoanApplication> getAllStartedLoans() {
         Query query = em.createQuery("SELECT la FROM LoanApplication la WHERE la.applicationStatus = :applicationStatus");
         query.setParameter("applicationStatus", "started");
         return query.getResultList();
     }
-    
+
     @Override
-    public List<LoanApplication> getAllInProgressLoans(){
+    public List<LoanApplication> getAllInProgressLoans() {
         Query query = em.createQuery("SELECT la FROM LoanApplication la WHERE la.applicationStatus = :applicationStatus");
         query.setParameter("applicationStatus", "in progress");
         return query.getResultList();
     }
-    
+
     @Override
-    public void startNewLoan(Long applicationId){
+    public void startNewLoan(Long applicationId) {
         LoanApplication application = em.find(LoanApplication.class, applicationId);
         application.setApplicationStatus("started");
-        
+
         LoanPayableAccount loanPayableAccount = new LoanPayableAccount();
         LoanRepaymentAccount loanRepaymentAccount = new LoanRepaymentAccount();
-        
+
         application.setLoanPayableAccount(loanPayableAccount);
         loanPayableAccount.setLoanApplication(application);
-        
+
         loanPayableAccount.setLoanRepaymentAccount(loanRepaymentAccount);
         loanRepaymentAccount.setLoanPayableAccount(loanPayableAccount);
-        
+
         em.flush();
-        
+
         DecimalFormat df = new DecimalFormat("000000");
-        
+
         loanPayableAccount.setAccountNumber("6000" + df.format(loanPayableAccount.getId()));
         loanPayableAccount.setInitialAmount(application.getAmountGranted());
         loanPayableAccount.setAccountBalance(application.getAmountGranted());
         loanPayableAccount.setStartDate(new Date());
         loanPayableAccount.setAccountStatus("started");
         loanPayableAccount.setOverdueBalance(0);
-        
+
         loanRepaymentAccount.setAccountNumber("7000" + df.format(loanRepaymentAccount.getId()));
-        
+
+        em.flush();
+    }
+
+    @Override
+    public void updateLoanStatus(String status, Long applicationId) {
+        LoanApplication application = em.find(LoanApplication.class, applicationId);
+        application.setApplicationStatus(status);
         em.flush();
     }
     
     @Override
-    public void updateLoanStatus(String status, Long applicationId){
-        LoanApplication application = em.find(LoanApplication.class, applicationId);
-        application.setApplicationStatus(status);
-        em.flush();
+    public List<MortgageLoanApplication> getAllMortgageApplicationsPendingAppraisal(){
+        Query query = em.createQuery("SELECT ma FROM MortgageLoanApplication ma WHERE ma.applicationStatus = :applicationStatus");
+        query.setParameter("applicationStatus", "waiting for valuation");
+        return query.getResultList();
+    }
+    
+    @Override
+    public void submitAppraisal(double appraisedValue, Long applicationId){
+        System.out.println("****** loan/LoanApplicationSessionBean: submitAppraisal() ******");
+        MortgageLoanApplication application = em.find(MortgageLoanApplication.class, applicationId);
+        application.setApplicationStatus("pending");
     }
 }
