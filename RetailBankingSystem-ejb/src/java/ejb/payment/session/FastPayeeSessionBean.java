@@ -23,12 +23,13 @@ public class FastPayeeSessionBean implements FastPayeeSessionBeanLocal {
     private EntityManager entityManager;
 
     @Override
-    public FastPayee retrieveFastPayeeById(Long fastPayeeId) {
+    public FastPayee retrieveFastPayeeById(Long payeeId) {
+        
         FastPayee fastPayee = new FastPayee();
 
         try {
-            Query query = entityManager.createQuery("Select f From FastPayee f Where f.fastPayeeId=:fastPayeeId");
-            query.setParameter("fastPayeeId", fastPayeeId);
+            Query query = entityManager.createQuery("Select f From FastPayee f Where f.payeeId=:payeeId");
+            query.setParameter("payeeId", payeeId);
 
             if (query.getResultList().isEmpty()) {
                 return new FastPayee();
@@ -54,8 +55,9 @@ public class FastPayeeSessionBean implements FastPayeeSessionBeanLocal {
             return new ArrayList<FastPayee>();
         }
         try {
-            Query query = entityManager.createQuery("Select f From FastPayee f Where f.customerBasic=:customerBasic");
+            Query query = entityManager.createQuery("Select f From FastPayee f Where f.customerBasic=:customerBasic And f.payeeType=:payeeType");
             query.setParameter("customerBasic", customerBasic);
+            query.setParameter("payeeType", "FAST");
 
             if (query.getResultList().isEmpty()) {
                 return new ArrayList<FastPayee>();
@@ -70,38 +72,30 @@ public class FastPayeeSessionBean implements FastPayeeSessionBeanLocal {
 
     @Override
     public Long addNewFastPayee(String fastPayeeName, String fastPayeeAccountNum, String fasrPayeeAccountType,
-            String lastTransactionDate, Long customerBasicId) {
+            String lastTransactionDate, String payeeType, Long customerBasicId) {
         FastPayee fastPayee = new FastPayee();
 
         fastPayee.setFastPayeeName(fastPayeeName);
-        fastPayee.setFastPayeeAccountNum(fastPayeeAccountNum);
-        fastPayee.setFastPayeeAccountType(fasrPayeeAccountType);
         fastPayee.setLastTransactionDate(lastTransactionDate);
+        fastPayee.setPayeeAccountNum(fastPayeeAccountNum);
+        fastPayee.setPayeeAccountType(fasrPayeeAccountType);
+        fastPayee.setPayeeType(payeeType);
         fastPayee.setCustomerBasic(bankAccountSessionBeanLocal.retrieveCustomerBasicById(customerBasicId));
 
         entityManager.persist(fastPayee);
         entityManager.flush();
 
-        return fastPayee.getFastPayeeId();
+        return fastPayee.getPayeeId();
     }
 
     @Override
-    public String deleteFastPayee(String fastPayeeAccountNum) {
-        FastPayee fastPayee = retrieveFastPayeeByNum(fastPayeeAccountNum);
-
-        entityManager.remove(fastPayee);
-        entityManager.flush();
-
-        return "Successfully deleted!";
-    }
-
-    @Override
-    public FastPayee retrieveFastPayeeByNum(String fastPayeeAccountNum) {
+    public FastPayee retrieveFastPayeeByNum(String payeeAccountNum) {
+        
         FastPayee fastPayee = new FastPayee();
 
         try {
-            Query query = entityManager.createQuery("Select f From FastPayee f Where f.fastPayeeAccountNum=:fastPayeeAccountNum");
-            query.setParameter("fastPayeeAccountNum", fastPayeeAccountNum);
+            Query query = entityManager.createQuery("Select f From FastPayee f Where f.payeeAccountNum=:payeeAccountNum");
+            query.setParameter("payeeAccountNum", payeeAccountNum);
 
             if (query.getResultList().isEmpty()) {
                 return new FastPayee();

@@ -80,7 +80,7 @@ public class FastTransferManagedBean {
             }
 
             for (int j = 0; j < fastPayees.size(); j++) {
-                customerFastPayee.put(fastPayees.get(j).getFastPayeeAccountType() + "-" + fastPayees.get(j).getFastPayeeAccountNum() + "-" + fastPayees.get(j).getFastPayeeName(), fastPayees.get(j).getFastPayeeAccountType() + "-" + fastPayees.get(j).getFastPayeeAccountNum() + "-" + fastPayees.get(j).getFastPayeeName());
+                customerFastPayee.put(fastPayees.get(j).getPayeeAccountType() + "-" + fastPayees.get(j).getPayeeAccountNum() + "-" + fastPayees.get(j).getFastPayeeName(), fastPayees.get(j).getPayeeAccountType() + "-" + fastPayees.get(j).getPayeeAccountNum() + "-" + fastPayees.get(j).getFastPayeeName());
             }
         }
     }

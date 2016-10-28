@@ -13,7 +13,7 @@ import javax.faces.context.FacesContext;
 @Named(value = "addFastPayeeManagedBean")
 @RequestScoped
 public class AddFastPayeeManagedBean {
-    
+
     @EJB
     private FastPayeeSessionBeanLocal fastPayeeSessionBeanLocal;
 
@@ -93,11 +93,11 @@ public class AddFastPayeeManagedBean {
 
         lastTransactionDate = "";
         customerBasicId = customerBasic.getCustomerBasicId();
-        fastPayeeId = fastPayeeSessionBeanLocal.addNewFastPayee(payeeName, payeeAccountNum, payeeAccountType, lastTransactionDate, customerBasicId);
+        fastPayeeId = fastPayeeSessionBeanLocal.addNewFastPayee(payeeName, payeeAccountNum, payeeAccountType, lastTransactionDate, "FAST", customerBasicId);
         FastPayee fastPayee = fastPayeeSessionBeanLocal.retrieveFastPayeeById(fastPayeeId);
 
         customerBasic.getFastPayee().add(fastPayee);
-        
+
         statusMessage = "New Recipient Added Successfully.";
 
         ec.getFlash().put("statusMessage", statusMessage);
