@@ -199,18 +199,29 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
     }
 
     public void addLoanApplicationFast() throws IOException {
-        Long newCustomerBasicId = cRMCustomerSessionBeanLocal.addNewCustomerBasic("Han Fengwei",
-                "Ms", "G1320505T",
-                "Female", "hanfengwei96@gmail.com", "83114121", "07/Mar/1996",
-                "China", "China", "Chinese",
-                "Single", "Student", "NUS",
-                "customer address", "118425", null, null, null, "Yes");
+
+        Long newCustomerBasicId = cRMCustomerSessionBeanLocal.updateCustomerBasic("G11223344", 
+                "hanfengwei96@gmail.com", "83114121", "China", "China", "Single", 
+                "Student", "AfterYou", "customer address", "118425");
+        
+//        Long newCustomerBasicId = cRMCustomerSessionBeanLocal.addNewCustomerBasic("Han Fengwei",
+//                "Ms", "G1320505T",
+//                "Female", "hanfengwei96@gmail.com", "83114121", "07/Mar/1996",
+//                "China", "China", "Chinese",
+//                "Single", "Student", "NUS",
+//                "customer address", "118425", null, null, null, "Yes");
+        
         Long newCustomerAdvancedId = cRMCustomerSessionBeanLocal.addNewCustomerAdvanced(3, "Degree", "Rented",
                 3, "Government", 5, "Employee",
                 10000, "HDB", "company address",
                 "118426", "Senior Management", "CEO",
                 "NTU", 3, 2000,
                 "other income source");
+//        Long newCustomerAdvancedId = cRMCustomerSessionBeanLocal.updateCustomerAdvanced("G1320505T", 
+//                3, "Degree", "Rented", 3, "Government", 
+//                5, "Employee", 10000, "HDB", "company address", 
+//                "118426", "Senior Management", "CEO", "Monsta BBQ", 3,
+//                2000, "other income source");
 
         ArrayList<CustomerDebt> debts = new ArrayList<CustomerDebt>();
         debts.add(loanApplicationSessionBeanLocal.addNewCustomerDebt("car loan", "DBS", 500000, 1000));
@@ -228,7 +239,7 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
                 new Date(), "Developer/HDB", "no", null, "yes",
                 5000, 2012, "yes", 30000,
                 20000, 30000, "Employee");
-        loanApplicationSessionBeanLocal.submitLoanApplication(newCustomerBasicId, newCustomerAdvancedId, debts, cp, mortgage, null, "purchase", "HDB-Fixed");
+        loanApplicationSessionBeanLocal.submitLoanApplication(true, false, newCustomerBasicId, newCustomerAdvancedId, debts, cp, mortgage, null, "purchase", "HDB-Fixed");
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         ec.redirect(ec.getRequestContextPath() + "/web/merlionBank/loan/publicMortgageLoanApplicationDone.xhtml?faces-redirect=true");
     }
@@ -245,7 +256,7 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
                 FacesContext.getCurrentInstance().addMessage("agreement", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Please agree to terms to proceed", "Failed!"));
             }
         } else {
-            //create CustomerBasic
+            //create or update CustomerBasic
             String newCustomer = "Yes";
             if (customerSalutation.equals("Others")) {
                 customerSalutation = customerSalutationOthers;
@@ -253,13 +264,23 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
 
             String dateOfBirth = changeDateFormat(customerDateOfBirth);
             String customerAddress = customerStreetName + ", " + customerBlockNum + ", " + customerUnitNum + ", " + customerPostal;
-            Long newCustomerBasicId = cRMCustomerSessionBeanLocal.addNewCustomerBasic(customerName,
+            
+            Long newCustomerBasicId;
+            
+            boolean isExistingCustomer = cRMCustomerSessionBeanLocal.checkExistingCustomerByIdentification(customerIdentificationNum);
+            if (isExistingCustomer) {
+                newCustomerBasicId = cRMCustomerSessionBeanLocal.updateCustomerBasic(customerIdentificationNum, customerEmail, customerMobile,
+                        customerNationality, customerCountryOfResidence, customerMaritalStatus, customerOccupation, customerCompanyName,
+                        customerName, customerPostal);
+            }else{
+                newCustomerBasicId = cRMCustomerSessionBeanLocal.addNewCustomerBasic(customerName,
                     customerSalutation, customerIdentificationNum.toUpperCase(),
                     customerGender, customerEmail, customerMobile, dateOfBirth,
                     customerNationality, customerCountryOfResidence, customerRace,
                     customerMaritalStatus, customerOccupation, customerCompanyName,
                     customerAddress, customerPostal, null, null, customerSignature.getBytes(), newCustomer);
-
+            }
+            
             //create CustomerAdvanced
             if (customerEmploymentStatus.equals("Employee") || customerEmploymentStatus.equals("Self-Employed")) {
                 if (customerIndustryType.equals("Others")) {
@@ -271,20 +292,36 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
             }
 
             Long newCustomerAdvancedId;
+            boolean hasCustomerAdvanced = cRMCustomerSessionBeanLocal.checkExistingCustomerAdvanced(customerIdentificationNum);
             if (customerEmploymentStatus.equals("Unemployed")) {
-                newCustomerAdvancedId = cRMCustomerSessionBeanLocal.addNewCustomerAdvanced(customerNumOfDependents, customerEducation, customerResidentialStatus,
+                if(hasCustomerAdvanced){
+                    newCustomerAdvancedId = cRMCustomerSessionBeanLocal.updateCustomerAdvanced(customerIdentificationNum, customerNumOfDependents, 
+                            customerEducation, customerResidentialStatus, customerLengthOfResidence,  null, 0, 
+                            customerEmploymentStatus, customerMonthlyFixedIncome.doubleValue(), customerResidentialType, null, 
+                            null, null, null, null, 0, customerOtherMonthlyIncome.doubleValue(), customerOtherMonthlyIncomeSource);
+                }else{
+                    newCustomerAdvancedId = cRMCustomerSessionBeanLocal.addNewCustomerAdvanced(customerNumOfDependents, customerEducation, customerResidentialStatus,
                         customerLengthOfResidence, null, 0, customerEmploymentStatus,
                         customerMonthlyFixedIncome.doubleValue(), customerResidentialType, null,
                         null, null, null,
                         null, 0, customerOtherMonthlyIncome.doubleValue(),
                         customerOtherMonthlyIncomeSource);
+                }
             } else {
-                newCustomerAdvancedId = cRMCustomerSessionBeanLocal.addNewCustomerAdvanced(customerNumOfDependents, customerEducation, customerResidentialStatus,
+                if(hasCustomerAdvanced){
+                    newCustomerAdvancedId = cRMCustomerSessionBeanLocal.updateCustomerAdvanced(customerIdentificationNum, customerNumOfDependents, 
+                            customerEducation, customerResidentialStatus, customerLengthOfResidence, customerIndustryType, customerLengthOfCurrentJob, 
+                            customerEmploymentStatus, customerMonthlyFixedIncome.doubleValue(), customerResidentialType, customerCompanyAddress, 
+                            customerCompanyPostal, customerCurrentPosition, customerCurrentJobTitle, customerPreviousCompany, 
+                            customerLengthOfPreviousJob, customerOtherMonthlyIncome.doubleValue(), customerOtherMonthlyIncomeSource);
+                }else{
+                    newCustomerAdvancedId = cRMCustomerSessionBeanLocal.addNewCustomerAdvanced(customerNumOfDependents, customerEducation, customerResidentialStatus,
                         customerLengthOfResidence, customerIndustryType, customerLengthOfCurrentJob, customerEmploymentStatus,
                         customerMonthlyFixedIncome.doubleValue(), customerResidentialType, customerCompanyAddress,
                         customerCompanyPostal, customerCurrentPosition, customerCurrentJobTitle,
                         customerPreviousCompany, customerLengthOfPreviousJob, customerOtherMonthlyIncome.doubleValue(),
                         customerOtherMonthlyIncomeSource);
+                }
             }
 
             //create customerDebt
@@ -333,7 +370,7 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
                         customerPropertyTenancyIncome.doubleValue(), customerPropertyTenancyExpiryYear, customerWithBenefitsFromVendor, customerBenefitsFromVendor.doubleValue(),
                         customerCashDownpayment.doubleValue(), customerCPFDownpayment.doubleValue(), customerEmploymentStatus);
 
-                loanApplicationSessionBeanLocal.submitLoanApplication(newCustomerBasicId, newCustomerAdvancedId, debts, cp, mortgage, null, customerFinancialRequest, interestPackage);
+                loanApplicationSessionBeanLocal.submitLoanApplication(isExistingCustomer, hasCustomerAdvanced, newCustomerBasicId, newCustomerAdvancedId, debts, cp, mortgage, null, customerFinancialRequest, interestPackage);
                 ec.getFlash().put("loanType", "HDB - New Purchase");
 
             } else {
@@ -341,7 +378,7 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
                 refinancing.create("HDB - Refinancing", customerLoanAmountRequired.doubleValue(), customerLoanTenure, customerExistingFinancer,
                         customerOutstandingLoan.doubleValue(), customerOutstandingYear, customerOutstandingMonth, customerTotalCPFWithdrawal.doubleValue(), customerEmploymentStatus);
 
-                loanApplicationSessionBeanLocal.submitLoanApplication(newCustomerBasicId, newCustomerAdvancedId, debts, cp, null, refinancing, customerFinancialRequest, interestPackage);
+                loanApplicationSessionBeanLocal.submitLoanApplication(isExistingCustomer, hasCustomerAdvanced, newCustomerBasicId, newCustomerAdvancedId, debts, cp, null, refinancing, customerFinancialRequest, interestPackage);
                 ec.getFlash().put("loanType", "HDB - Refinancing");
             }
 
