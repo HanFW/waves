@@ -150,87 +150,87 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     public void init(){
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         applicationId = (Long) ec.getFlash().get("applicationId"); 
-        System.out.println(applicationId);
         ma = loanApplicationSessionBeanLocal.getMortgageLoanApplicationById(applicationId);
+        
         customer = ma.getCustomerBasic();
         ca = customer.getCustomerAdvanced();
         debts = customer.getCustomerDebt();
         property = customer.getCustomerProperty();
         cr = customer.getBureauScore();
+        accountStatus = cr.getAccountStatus();
+        defaultRecords = cr.getDefaultRecords();
         
-//        customerSalutation = customer.getCustomerSalutation();
-//        customerName = customer.getCustomerName();
-//        customerDateOfBirth = customer.getCustomerDateOfBirth();
-//        customerGender = customer.getCustomerGender();
-//        customerNationality = customer.getCustomerNationality();
-//        customerIdentificationNum = customer.getCustomerIdentificationNum();
-//        customerCountryOfResidence = customer.getCustomerCountryOfResidence();
-//        customerRace = customer.getCustomerRace();
-//        customerMobile = customer.getCustomerMobile();
-//        customerEmail = customer.getCustomerEmail();
-//        customerEducation = ca.getEducation();
-//        customerMaritalStatus = customer.getCustomerMaritalStatus();
-//        customerNumOfDependents = ca.getNumOfDependent();
-//        customerAddress = customer.getCustomerAddress();
-//        customerPostal = customer.getCustomerPostal();
-//        customerResidentialStatus = ca.getResidentialStatus();
-//        customerResidentialType = ca.getResidentialType();
-//        customerLengthOfResidence = ca.getYearInResidence();
-//        customerEmploymentStatus = ca.getEmploymentStatus();
-//        customerOccupation = customer.getCustomerOccupation();
-//        customerCompanyName = customer.getCustomerCompany();
-//        customerCompanyAddress = ca.getCompanyAddress();
-//        customerCompanyPostal = ca.getCompanyPostal();
-//        customerIndustryType = ca.getIndustryType();
-//        customerCurrentPosition = ca.getCurrentPosition();
-//        customerCurrentJobTitle = ca.getCurrentJobTitle();
-//        customerLengthOfCurrentJob = ca.getLengthOfCurrentJob();
-//        customerPreviousCompany = ca.getPreviousCompanyName();
-//        customerLengthOfPreviousJob = ca.getLengthOfPreviousJob();
-//        customerMonthlyFixedIncome = ca.getMonthlyFixedIncome();
-//        customerOtherMonthlyIncome = ca.getOtherMonthlyIncome();
-//        customerOtherMonthlyIncomeSource = ca.getOtherMonthlyIncomeSource();
-//        
-//        customerPropertyAddress = property.getPropertyAddress();
-//        customerPropertyPostal = property.getPropertyPostal();
-//        customerPropertyOwners = property.getPropertyOwners();
-//        customerPropertyType = property.getPropertyType();
-//        customerPropertyBuiltUpArea = property.getPropertyBuiltUpArea();
-//        customerPropertyLandArea = property.getPropertyLandArea();
-//        customerPropertyStatus = property.getPropertyStatus();
-//        customerPropertyTOPDate = property.getPropertyTOPDate();
-//        customerPropertyUsage = property.getPropertyUsage();
-//        customerPropertyTenureType = property.getPropertyTenureType();
-//        customerPropertyTenureDuration = property.getPropertyTenureDuration();
-//        customerPropertyTenureFromYear = property.getPropertyTenureStartYear();
-//        
-//        customerPropertyPurchasePrice = ma.getPropertyPurchasePrice();
-//        customerPropertyDateOfPurchase = ma.getPropertyDateOfPurchase();
-//        customerPropertySource = ma.getPropertySource();
-//        customerPropertyWithOTP = ma.getPropertyWithOTP();
-//        customerPropertyOTPDate = ma.getPropertyOTPDate();
-//        customerPropertyWithTenancy = ma.getPropertyWithTenancy();
-//        customerPropertyTenancyIncome = ma.getPropertyTenancyIncome();
-//        customerPropertyTenancyExpiryYear = ma.getPropertyTenancyExpiryYear();
-//        customerWithBenefitsFromVendor = ma.getWithBenifits();
-//        customerBenefitsFromVendor = ma.getBenefitsFromVendor();
-//        customerCashDownpayment = ma.getCashDownPayment();
-//        customerCPFDownpayment = ma.getCpfDownPayment();
-//        customerLoanAmountRequired = ma.getAmountRequired();
-//        customerLoanTenure = ma.getPeriodRequired();
-//        customerInterestPackage = ma.getLoanInterestPackage().getPackageName();
-//        docs = ma.getUploads();
-//        
-//        applicationDate = ma.getApplicationDate();
-//        
-//        
-//        accountStatus = cr.getAccountStatus();
-//        defaultRecords = cr.getDefaultRecords();
-//        bureauScore = cr.getBureauScore();
-//        riskGrade = cr.getRiskGrade();
-//        probabilityOfDefault = cr.getProbabilityOfDefault();
-//        
-//        appraisedValue = ma.getPropertyAppraisedValue();
+        customerSalutation = customer.getCustomerSalutation();
+        customerName = customer.getCustomerName();
+        customerDateOfBirth = customer.getCustomerDateOfBirth();
+        customerGender = customer.getCustomerGender();
+        customerNationality = customer.getCustomerNationality();
+        customerIdentificationNum = customer.getCustomerIdentificationNum();
+        customerCountryOfResidence = customer.getCustomerCountryOfResidence();
+        customerRace = customer.getCustomerRace();
+        customerMobile = customer.getCustomerMobile();
+        customerEmail = customer.getCustomerEmail();
+        customerEducation = ca.getEducation();
+        customerMaritalStatus = customer.getCustomerMaritalStatus();
+        customerNumOfDependents = ca.getNumOfDependent();
+        customerAddress = customer.getCustomerAddress();
+        customerPostal = customer.getCustomerPostal();
+        customerResidentialStatus = ca.getResidentialStatus();
+        customerResidentialType = ca.getResidentialType();
+        customerLengthOfResidence = ca.getYearInResidence();
+        customerEmploymentStatus = ca.getEmploymentStatus();
+        customerOccupation = customer.getCustomerOccupation();
+        customerCompanyName = customer.getCustomerCompany();
+        customerCompanyAddress = ca.getCompanyAddress();
+        customerCompanyPostal = ca.getCompanyPostal();
+        customerIndustryType = ca.getIndustryType();
+        customerCurrentPosition = ca.getCurrentPosition();
+        customerCurrentJobTitle = ca.getCurrentJobTitle();
+        customerLengthOfCurrentJob = ca.getLengthOfCurrentJob();
+        customerPreviousCompany = ca.getPreviousCompanyName();
+        customerLengthOfPreviousJob = ca.getLengthOfPreviousJob();
+        customerMonthlyFixedIncome = ca.getMonthlyFixedIncome();
+        customerOtherMonthlyIncome = ca.getOtherMonthlyIncome();
+        customerOtherMonthlyIncomeSource = ca.getOtherMonthlyIncomeSource();
+        
+        customerPropertyAddress = property.getPropertyAddress();
+        customerPropertyPostal = property.getPropertyPostal();
+        customerPropertyOwners = property.getPropertyOwners();
+        customerPropertyType = property.getPropertyType();
+        customerPropertyBuiltUpArea = property.getPropertyBuiltUpArea();
+        customerPropertyLandArea = property.getPropertyLandArea();
+        customerPropertyStatus = property.getPropertyStatus();
+        customerPropertyTOPDate = property.getPropertyTOPDate();
+        customerPropertyUsage = property.getPropertyUsage();
+        customerPropertyTenureType = property.getPropertyTenureType();
+        customerPropertyTenureDuration = property.getPropertyTenureDuration();
+        customerPropertyTenureFromYear = property.getPropertyTenureStartYear();
+        
+        customerPropertyPurchasePrice = ma.getPropertyPurchasePrice();
+        customerPropertyDateOfPurchase = ma.getPropertyDateOfPurchase();
+        customerPropertySource = ma.getPropertySource();
+        customerPropertyWithOTP = ma.getPropertyWithOTP();
+        customerPropertyOTPDate = ma.getPropertyOTPDate();
+        customerPropertyWithTenancy = ma.getPropertyWithTenancy();
+        customerPropertyTenancyIncome = ma.getPropertyTenancyIncome();
+        customerPropertyTenancyExpiryYear = ma.getPropertyTenancyExpiryYear();
+        customerWithBenefitsFromVendor = ma.getWithBenifits();
+        customerBenefitsFromVendor = ma.getBenefitsFromVendor();
+        customerCashDownpayment = ma.getCashDownPayment();
+        customerCPFDownpayment = ma.getCpfDownPayment();
+        customerLoanAmountRequired = ma.getAmountRequired();
+        customerLoanTenure = ma.getPeriodRequired();
+        customerInterestPackage = ma.getLoanInterestPackage().getPackageName();
+        docs = ma.getUploads();
+        
+        applicationDate = ma.getApplicationDate();
+        
+        
+        bureauScore = cr.getBureauScore();
+        riskGrade = cr.getRiskGrade();
+        probabilityOfDefault = cr.getProbabilityOfDefault();
+        
+        appraisedValue = ma.getPropertyAppraisedValue();
         maxInterval = loanApplicationSessionBeanLocal.getMortgagePurchaseLoanMaxInterval();
         maxMin = maxInterval[0];
         maxMax = maxInterval[1];
@@ -252,7 +252,7 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
         ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/loan/loanOfficerViewApplications.xhtml?faces-redirect=true");    
     }
     
-    private void calculateInstalment(){
+    public void calculateInstalment(){
         instalmentSuggested = (0.035/12*amountGranted) / (1 - Math.pow((1+0.035/12),-periodSuggested*12));
     }
 
@@ -264,21 +264,20 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
         this.loanApplicationSessionBeanLocal = loanApplicationSessionBeanLocal;
     }
 
-    public HashMap getDocs() {
-        docs = ma.getUploads();
-        return docs;
+    public Long getApplicationId() {
+        return applicationId;
     }
 
-    public void setDocs(HashMap docs) {
-        this.docs = docs;
+    public void setApplicationId(Long applicationId) {
+        this.applicationId = applicationId;
     }
 
-    public MortgageLoanApplication getApplication() {
+    public MortgageLoanApplication getMa() {
         return ma;
     }
 
-    public void setApplication(MortgageLoanApplication application) {
-        this.ma = application;
+    public void setMa(MortgageLoanApplication ma) {
+        this.ma = ma;
     }
 
     public CustomerBasic getCustomer() {
@@ -289,12 +288,12 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
         this.customer = customer;
     }
 
-    public CustomerAdvanced getCustomerAdvanced() {
+    public CustomerAdvanced getCa() {
         return ca;
     }
 
-    public void setCustomerAdvanced(CustomerAdvanced customerAdvanced) {
-        this.ca = customerAdvanced;
+    public void setCa(CustomerAdvanced ca) {
+        this.ca = ca;
     }
 
     public List<CustomerDebt> getDebts() {
@@ -313,24 +312,7 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
         this.property = property;
     }
 
-    public MortgageLoanApplication getMa() {
-        return ma;
-    }
-
-    public void setMa(MortgageLoanApplication ma) {
-        this.ma = ma;
-    }
-
-    public CustomerAdvanced getCa() {
-        return ca;
-    }
-
-    public void setCa(CustomerAdvanced ca) {
-        this.ca = ca;
-    }
-
     public Date getApplicationDate() {
-        applicationDate = ma.getApplicationDate();
         return applicationDate;
     }
 
@@ -344,7 +326,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
 
     public void setAmountGranted(double amountGranted) {
         this.amountGranted = amountGranted;
-        this.calculateInstalment();
     }
 
     public int getPeriodSuggested() {
@@ -353,12 +334,10 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
 
     public void setPeriodSuggested(int periodSuggested) {
         this.periodSuggested = periodSuggested;
-        this.calculateInstalment();
     }
 
-    public String getInstalmentSuggested() {
-        DecimalFormat df = new DecimalFormat("0");
-        return df.format(instalmentSuggested);
+    public double getInstalmentSuggested() {
+        return instalmentSuggested;
     }
 
     public void setInstalmentSuggested(double instalmentSuggested) {
@@ -366,7 +345,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public String getCustomerSalutation() {
-        customerSalutation = customer.getCustomerSalutation();
         return customerSalutation;
     }
 
@@ -375,7 +353,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public String getCustomerName() {
-        customerName = customer.getCustomerName();
         return customerName;
     }
 
@@ -384,7 +361,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public String getCustomerDateOfBirth() {
-        customerDateOfBirth = customer.getCustomerDateOfBirth();
         return customerDateOfBirth;
     }
 
@@ -393,7 +369,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public String getCustomerGender() {
-        customerGender = customer.getCustomerGender();
         return customerGender;
     }
 
@@ -402,7 +377,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public String getCustomerNationality() {
-        customerNationality = customer.getCustomerNationality();
         return customerNationality;
     }
 
@@ -411,7 +385,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public String getCustomerIdentificationNum() {
-        customerIdentificationNum = customer.getCustomerIdentificationNum();
         return customerIdentificationNum;
     }
 
@@ -420,7 +393,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public String getCustomerCountryOfResidence() {
-        customerCountryOfResidence = customer.getCustomerCountryOfResidence();
         return customerCountryOfResidence;
     }
 
@@ -429,7 +401,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public String getCustomerRace() {
-        customerRace = customer.getCustomerRace();
         return customerRace;
     }
 
@@ -438,7 +409,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public String getCustomerMobile() {
-        customerMobile = customer.getCustomerMobile();
         return customerMobile;
     }
 
@@ -447,7 +417,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public String getCustomerEmail() {
-        customerEmail = customer.getCustomerEmail();
         return customerEmail;
     }
 
@@ -456,7 +425,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public String getCustomerEducation() {
-        customerEducation = ca.getEducation();
         return customerEducation;
     }
 
@@ -465,7 +433,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public String getCustomerMaritalStatus() {
-        customerMaritalStatus = customer.getCustomerMaritalStatus();
         return customerMaritalStatus;
     }
 
@@ -474,7 +441,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public Integer getCustomerNumOfDependents() {
-        customerNumOfDependents = ca.getNumOfDependent();
         return customerNumOfDependents;
     }
 
@@ -483,7 +449,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public String getCustomerAddress() {
-        customerAddress = customer.getCustomerAddress();
         return customerAddress;
     }
 
@@ -492,7 +457,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public String getCustomerPostal() {
-        customerPostal = customer.getCustomerPostal();
         return customerPostal;
     }
 
@@ -501,7 +465,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public String getCustomerResidentialStatus() {
-        customerResidentialStatus = ca.getResidentialStatus();
         return customerResidentialStatus;
     }
 
@@ -510,7 +473,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public String getCustomerResidentialType() {
-        customerResidentialType = ca.getResidentialType();
         return customerResidentialType;
     }
 
@@ -519,7 +481,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public Integer getCustomerLengthOfResidence() {
-        customerLengthOfResidence = ca.getYearInResidence();
         return customerLengthOfResidence;
     }
 
@@ -528,7 +489,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public String getCustomerEmploymentStatus() {
-        customerEmploymentStatus = ca.getEmploymentStatus();
         return customerEmploymentStatus;
     }
 
@@ -537,7 +497,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public String getCustomerOccupation() {
-        customerOccupation = customer.getCustomerOccupation();
         return customerOccupation;
     }
 
@@ -546,7 +505,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public String getCustomerCompanyName() {
-        customerCompanyName = customer.getCustomerCompany();
         return customerCompanyName;
     }
 
@@ -555,7 +513,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public String getCustomerCompanyAddress() {
-        customerCompanyAddress = ca.getCompanyAddress();
         return customerCompanyAddress;
     }
 
@@ -564,7 +521,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public String getCustomerCompanyPostal() {
-        customerCompanyPostal = ca.getCompanyPostal();
         return customerCompanyPostal;
     }
 
@@ -573,7 +529,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public String getCustomerIndustryType() {
-        customerIndustryType = ca.getIndustryType();
         return customerIndustryType;
     }
 
@@ -582,7 +537,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public String getCustomerCurrentPosition() {
-        customerCurrentPosition = ca.getCurrentPosition();
         return customerCurrentPosition;
     }
 
@@ -591,7 +545,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public String getCustomerCurrentJobTitle() {
-        customerCurrentJobTitle = ca.getCurrentJobTitle();
         return customerCurrentJobTitle;
     }
 
@@ -600,7 +553,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public Integer getCustomerLengthOfCurrentJob() {
-        customerLengthOfCurrentJob = ca.getLengthOfCurrentJob();
         return customerLengthOfCurrentJob;
     }
 
@@ -609,7 +561,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public String getCustomerPreviousCompany() {
-        customerPreviousCompany = ca.getPreviousCompanyName();
         return customerPreviousCompany;
     }
 
@@ -618,7 +569,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public Integer getCustomerLengthOfPreviousJob() {
-        customerLengthOfPreviousJob = ca.getLengthOfPreviousJob();
         return customerLengthOfPreviousJob;
     }
 
@@ -627,7 +577,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public Double getCustomerMonthlyFixedIncome() {
-        customerMonthlyFixedIncome = ca.getMonthlyFixedIncome();
         return customerMonthlyFixedIncome;
     }
 
@@ -636,7 +585,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public Double getCustomerOtherMonthlyIncome() {
-        customerOtherMonthlyIncome = ca.getOtherMonthlyIncome();
         return customerOtherMonthlyIncome;
     }
 
@@ -645,7 +593,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public String getCustomerOtherMonthlyIncomeSource() {
-        customerOtherMonthlyIncomeSource = ca.getOtherMonthlyIncomeSource();
         return customerOtherMonthlyIncomeSource;
     }
 
@@ -654,7 +601,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public String getCustomerPropertyAddress() {
-        customerPropertyAddress = property.getPropertyAddress();
         return customerPropertyAddress;
     }
 
@@ -663,7 +609,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public String getCustomerPropertyPostal() {
-        customerPropertyPostal = property.getPropertyPostal();
         return customerPropertyPostal;
     }
 
@@ -672,7 +617,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public ArrayList<String> getCustomerPropertyOwners() {
-        customerPropertyOwners = property.getPropertyOwners();
         return customerPropertyOwners;
     }
 
@@ -681,7 +625,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public String getCustomerPropertyType() {
-        customerPropertyType = property.getPropertyType();
         return customerPropertyType;
     }
 
@@ -690,7 +633,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public Double getCustomerPropertyBuiltUpArea() {
-        customerPropertyBuiltUpArea = property.getPropertyBuiltUpArea();
         return customerPropertyBuiltUpArea;
     }
 
@@ -699,7 +641,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public Double getCustomerPropertyLandArea() {
-        customerPropertyLandArea = property.getPropertyLandArea();
         return customerPropertyLandArea;
     }
 
@@ -708,7 +649,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public String getCustomerPropertyStatus() {
-        customerPropertyStatus = property.getPropertyStatus();
         return customerPropertyStatus;
     }
 
@@ -717,7 +657,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public Date getCustomerPropertyTOPDate() {
-        customerPropertyTOPDate = property.getPropertyTOPDate();
         return customerPropertyTOPDate;
     }
 
@@ -726,7 +665,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public String getCustomerPropertyUsage() {
-        customerPropertyUsage = property.getPropertyUsage();
         return customerPropertyUsage;
     }
 
@@ -735,7 +673,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public String getCustomerPropertyTenureType() {
-        customerPropertyTenureType = property.getPropertyTenureType();
         return customerPropertyTenureType;
     }
 
@@ -744,7 +681,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public Integer getCustomerPropertyTenureDuration() {
-        customerPropertyTenureDuration = property.getPropertyTenureDuration();
         return customerPropertyTenureDuration;
     }
 
@@ -753,7 +689,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public Integer getCustomerPropertyTenureFromYear() {
-        customerPropertyTenureFromYear = property.getPropertyTenureStartYear();
         return customerPropertyTenureFromYear;
     }
 
@@ -762,7 +697,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public Double getCustomerPropertyPurchasePrice() {
-        customerPropertyPurchasePrice = ma.getPropertyPurchasePrice();
         return customerPropertyPurchasePrice;
     }
 
@@ -771,7 +705,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public Date getCustomerPropertyDateOfPurchase() {
-        customerPropertyDateOfPurchase = ma.getPropertyDateOfPurchase();
         return customerPropertyDateOfPurchase;
     }
 
@@ -780,7 +713,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public String getCustomerPropertySource() {
-        customerPropertySource = ma.getPropertySource();
         return customerPropertySource;
     }
 
@@ -789,7 +721,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public String getCustomerPropertyWithOTP() {
-        customerPropertyWithOTP = ma.getPropertyWithOTP();
         return customerPropertyWithOTP;
     }
 
@@ -798,7 +729,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public Date getCustomerPropertyOTPDate() {
-        customerPropertyOTPDate = ma.getPropertyOTPDate();
         return customerPropertyOTPDate;
     }
 
@@ -807,7 +737,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public String getCustomerPropertyWithTenancy() {
-        customerPropertyWithTenancy = ma.getPropertyWithTenancy();
         return customerPropertyWithTenancy;
     }
 
@@ -816,7 +745,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public Double getCustomerPropertyTenancyIncome() {
-        customerPropertyTenancyIncome = ma.getPropertyTenancyIncome();
         return customerPropertyTenancyIncome;
     }
 
@@ -825,7 +753,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public Integer getCustomerPropertyTenancyExpiryYear() {
-        customerPropertyTenancyExpiryYear = ma.getPropertyTenancyExpiryYear();
         return customerPropertyTenancyExpiryYear;
     }
 
@@ -834,7 +761,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public String getCustomerWithBenefitsFromVendor() {
-        customerWithBenefitsFromVendor = ma.getWithBenifits();
         return customerWithBenefitsFromVendor;
     }
 
@@ -843,7 +769,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public Double getCustomerBenefitsFromVendor() {
-        customerBenefitsFromVendor = ma.getBenefitsFromVendor();
         return customerBenefitsFromVendor;
     }
 
@@ -852,7 +777,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public Double getCustomerCashDownpayment() {
-        customerCashDownpayment = ma.getCashDownPayment();
         return customerCashDownpayment;
     }
 
@@ -861,7 +785,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public Double getCustomerCPFDownpayment() {
-        customerCPFDownpayment = ma.getCpfDownPayment();
         return customerCPFDownpayment;
     }
 
@@ -878,7 +801,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public Double getCustomerLoanAmountRequired() {
-        customerLoanAmountRequired = ma.getAmountRequired();
         return customerLoanAmountRequired;
     }
 
@@ -887,7 +809,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public Integer getCustomerLoanTenure() {
-        customerLoanTenure = ma.getPeriodRequired();
         return customerLoanTenure;
     }
 
@@ -896,12 +817,19 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public String getCustomerInterestPackage() {
-        customerInterestPackage = ma.getLoanInterestPackage().getPackageName();
         return customerInterestPackage;
     }
 
     public void setCustomerInterestPackage(String customerInterestPackage) {
         this.customerInterestPackage = customerInterestPackage;
+    }
+
+    public HashMap getDocs() {
+        return docs;
+    }
+
+    public void setDocs(HashMap docs) {
+        this.docs = docs;
     }
 
     public CreditReportBureauScore getCr() {
@@ -913,7 +841,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public List<CreditReportAccountStatus> getAccountStatus() {
-        accountStatus = cr.getAccountStatus();
         return accountStatus;
     }
 
@@ -922,7 +849,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public List<CreditReportDefaultRecords> getDefaultRecords() {
-        defaultRecords = cr.getDefaultRecords();
         return defaultRecords;
     }
 
@@ -931,7 +857,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public Double getBureauScore() {
-        bureauScore = cr.getBureauScore();
         return bureauScore;
     }
 
@@ -940,7 +865,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public String getRiskGrade() {
-        riskGrade = cr.getRiskGrade();
         return riskGrade;
     }
 
@@ -949,7 +873,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public Double getProbabilityOfDefault() {
-        probabilityOfDefault = cr.getProbabilityOfDefault();
         return probabilityOfDefault;
     }
 
@@ -958,7 +881,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public Double getAppraisedValue() {
-        appraisedValue = ma.getPropertyAppraisedValue();
         return appraisedValue;
     }
 
@@ -972,22 +894,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
 
     public void setMaxInterval(double[] maxInterval) {
         this.maxInterval = maxInterval;
-    }
-
-    public double[] getSuggestedInterval() {
-        return suggestedInterval;
-    }
-
-    public void setSuggestedInterval(double[] suggestedInterval) {
-        this.suggestedInterval = suggestedInterval;
-    }
-
-    public double getRiskRatio() {
-        return riskRatio;
-    }
-
-    public void setRiskRatio(double riskRatio) {
-        this.riskRatio = riskRatio;
     }
 
     public double getMaxMin() {
@@ -1006,6 +912,14 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
         this.maxMax = maxMax;
     }
 
+    public double[] getSuggestedInterval() {
+        return suggestedInterval;
+    }
+
+    public void setSuggestedInterval(double[] suggestedInterval) {
+        this.suggestedInterval = suggestedInterval;
+    }
+
     public double getSuggestedMin() {
         return suggestedMin;
     }
@@ -1021,4 +935,13 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     public void setSuggestedMax(double suggestedMax) {
         this.suggestedMax = suggestedMax;
     }
+
+    public double getRiskRatio() {
+        return riskRatio;
+    }
+
+    public void setRiskRatio(double riskRatio) {
+        this.riskRatio = riskRatio;
+    }
+
 }

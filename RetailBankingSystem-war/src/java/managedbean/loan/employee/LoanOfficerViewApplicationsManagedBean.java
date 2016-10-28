@@ -37,7 +37,8 @@ public class LoanOfficerViewApplicationsManagedBean {
 
     @PostConstruct
     public void init() {
-        loanApplications = loanApplicationSessionBeanLocal.getAllLoanApplications();
+        loanApplications = loanApplicationSessionBeanLocal.getAllInProgressLoans();
+        loanApplications.addAll(loanApplicationSessionBeanLocal.getAllLoanApplications());
     }
 
     public void viewApplication(Long loanApplicationId, String loanType) throws IOException {
