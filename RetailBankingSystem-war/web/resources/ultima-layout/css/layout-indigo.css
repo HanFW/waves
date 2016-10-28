@@ -566,33 +566,33 @@
     padding: 88px 0;
     background: url("#{resource['ultima-layout:images/onlineBanking/card1.jpg']}")center;
 }
-.landing-wrapper #MBloan .pricing-box .MBcards1{
+.landing-wrapper #MBloan .pricing-box .MBloan1{
     padding: 88px 0;
-    background: url("#{resource['ultima-layout:images/onlineBanking/card1.jpg']}")center;
+    background: url("#{resource['ultima-layout:images/onlineBanking/loan_home.jpg']}")center;
 }
 .landing-wrapper #MBcards .pricing-box .MBcards2{ 
     padding: 88px 0;
     background: url("#{resource['ultima-layout:images/onlineBanking/card2.jpg']}")center;
     /*    background-size: 200px 30px; }*/}
-.landing-wrapper #MBloan .pricing-box .MBcards2{ 
+.landing-wrapper #MBloan .pricing-box .MBloan2{ 
     padding: 88px 0;
-    background: url("#{resource['ultima-layout:images/onlineBanking/card2.jpg']}")center;
+    background: url("#{resource['ultima-layout:images/onlineBanking/loan_personal.jpg']}")top center;
     /*    background-size: 200px 30px; }*/}
 .landing-wrapper #MBcards .pricing-box .MBcards3{
     padding: 88px 0;
     background: url("#{resource['ultima-layout:images/onlineBanking/card1.jpg']}")center;
     /*    background-size: 200px 30px; }*/}
-.landing-wrapper #MBloan .pricing-box .MBcards3{
+.landing-wrapper #MBloan .pricing-box .MBloan3{
     padding: 88px 0;
-    background: url("#{resource['ultima-layout:images/onlineBanking/card1.jpg']}")center;
+    background: url("#{resource['ultima-layout:images/onlineBanking/loan_education.jpg']}")center;
     /*    background-size: 200px 30px; }*/}
 .landing-wrapper #MBcards .pricing-box .MBcards4{
     padding: 88px 0;
     background: url("#{resource['ultima-layout:images/onlineBanking/card4.jpg']}")center;
     /*    background-size: 200px 30px; }*/}
-.landing-wrapper #MBloan .pricing-box .MBcards4{
+.landing-wrapper #MBloan .pricing-box .MBloan4{
     padding: 88px 0;
-    background: url("#{resource['ultima-layout:images/onlineBanking/card4.jpg']}")center;
+    background: url("#{resource['ultima-layout:images/onlineBanking/loan_car.jpg']}")center;
     /*    background-size: 200px 30px; }*/}
 .landing-wrapper #MBcards .pricing-box .pricing-header span {
     display: block;
