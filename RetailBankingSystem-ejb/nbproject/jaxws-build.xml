@@ -112,5 +112,39 @@
         <delete dir="${build.generated.dir}/jax-wsCache/BillWebService"/>
         <delete dir="${build.generated.sources.dir}/jax-ws/ws/client/bill"/>
     </target>
-    <target name="wsimport-client-generate" depends="wsimport-client-OtherBanksWebService, wsimport-client-SACHWebService, wsimport-client-MEPSWebService, wsimport-client-BillWebService"/>
+    <target name="wsimport-client-SWIFTWebService" depends="wsimport-init">
+        <mkdir dir="${build.generated.dir}/jax-wsCache/SWIFTWebService"/>
+        <property name="wsdl-SWIFTWebService" location="${meta.inf}/xml-resources/web-service-references/SWIFTWebService/wsdl/localhost_8080/SWIFTWebService/SWIFTWebService.wsdl"/>
+        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/SWIFTWebService" destdir="${build.generated.dir}/jax-wsCache/SWIFTWebService" wsdl="${wsdl-SWIFTWebService}" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" fork="false" wsdlLocation="http://localhost:8080/SWIFTWebService/SWIFTWebService?wsdl" xnocompile="true" xendorsed="true" package="ws.client.swift">
+            <depends file="${wsdl-SWIFTWebService}"/>
+            <produces dir="${build.generated.dir}/jax-wsCache/SWIFTWebService"/>
+        </wsimport>
+        <copy todir="${build.generated.sources.dir}/jax-ws">
+            <fileset dir="${build.generated.dir}/jax-wsCache/SWIFTWebService">
+                <include name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="wsimport-client-clean-SWIFTWebService" depends="-init-project">
+        <delete dir="${build.generated.dir}/jax-wsCache/SWIFTWebService"/>
+        <delete dir="${build.generated.sources.dir}/jax-ws/ws/client/swift"/>
+    </target>
+    <target name="wsimport-client-CHIPSWebService" depends="wsimport-init">
+        <mkdir dir="${build.generated.dir}/jax-wsCache/CHIPSWebService"/>
+        <property name="wsdl-CHIPSWebService" location="${meta.inf}/xml-resources/web-service-references/CHIPSWebService/wsdl/localhost_8080/CHIPSWebService/CHIPSWebService.wsdl"/>
+        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/CHIPSWebService" destdir="${build.generated.dir}/jax-wsCache/CHIPSWebService" wsdl="${wsdl-CHIPSWebService}" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" fork="false" wsdlLocation="http://localhost:8080/CHIPSWebService/CHIPSWebService?wsdl" xnocompile="true" xendorsed="true" package="ws.client.chips">
+            <depends file="${wsdl-CHIPSWebService}"/>
+            <produces dir="${build.generated.dir}/jax-wsCache/CHIPSWebService"/>
+        </wsimport>
+        <copy todir="${build.generated.sources.dir}/jax-ws">
+            <fileset dir="${build.generated.dir}/jax-wsCache/CHIPSWebService">
+                <include name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="wsimport-client-clean-CHIPSWebService" depends="-init-project">
+        <delete dir="${build.generated.dir}/jax-wsCache/CHIPSWebService"/>
+        <delete dir="${build.generated.sources.dir}/jax-ws/ws/client/chips"/>
+    </target>
+    <target name="wsimport-client-generate" depends="wsimport-client-OtherBanksWebService, wsimport-client-SACHWebService, wsimport-client-MEPSWebService, wsimport-client-BillWebService, wsimport-client-SWIFTWebService, wsimport-client-CHIPSWebService"/>
 </project>

@@ -26,7 +26,6 @@ public class FastTransferDoneManagedBean {
     @PostConstruct
     public void init() {
         statusMessage = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("statusMessage").toString();
-        transactionId = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("transactionId").toString();
         toBankAccountNumWithType = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("toBankAccountNumWithType").toString();
         fromBankAccountNumWithType = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("fromBankAccountNumWithType").toString();
         transferAmt = "S$" + FacesContext.getCurrentInstance().getExternalContext().getFlash().get("transferAmt").toString();
