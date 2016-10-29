@@ -16,7 +16,6 @@ import ejb.loan.entity.RefinancingApplication;
 import ejb.loan.session.LoanApplicationSessionBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -210,11 +209,13 @@ public class LoanOfficerProcessMortgageRefinancingApplicationManagedBean impleme
     }
     
     public void approveLoanRequest() throws IOException{
+        loanApplicationSessionBeanLocal.approveRefinancingLoanRequest(ra.getLoanApplicationId(), periodSuggested, instalmentSuggested);
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/loan/loanOfficerViewApplications.xhtml?faces-redirect=true");
     }
     
     public void rejectLoanRequest() throws IOException{
+        loanApplicationSessionBeanLocal.rejectMortgageLoanRequest(ra.getLoanApplicationId());
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/loan/loanOfficerViewApplications.xhtml?faces-redirect=true");    
     }

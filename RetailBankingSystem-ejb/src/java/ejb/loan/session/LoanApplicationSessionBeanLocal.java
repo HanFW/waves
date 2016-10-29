@@ -33,7 +33,6 @@ public interface LoanApplicationSessionBeanLocal {
     public void approveMortgageLoanRequest(Long applicationId, double amount, int period, double instalment);
     public void rejectMortgageLoanRequest(Long applicationId);
     public void approveRefinancingLoanRequest(Long applicationId, int period, double instalment);
-    public void rejectRefinancingLoanRequest(Long applicationId);
     public void startNewLoan(Long applicationId);
     public void updateLoanStatus(String status, Long applicationId);
     public List<MortgageLoanApplication> getAllMortgageApplicationsPendingAppraisal();

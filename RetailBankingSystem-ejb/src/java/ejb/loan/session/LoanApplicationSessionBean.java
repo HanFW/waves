@@ -257,12 +257,13 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
 
     @Override
     public void approveRefinancingLoanRequest(Long applicationId, int period, double instalment) {
-
-    }
-
-    @Override
-    public void rejectRefinancingLoanRequest(Long applicationId) {
-
+        System.out.println("****** loan/LoanApplicationSessionBean: approveRefinancingLoanRequest() ******");
+        LoanApplication application = em.find(LoanApplication.class, applicationId);
+        application.setPeriodSuggested(period * 12);
+        application.setInstalment(instalment);
+        application.setApplicationStatus("approved");
+        application.setFinalActionDate(new Date());
+        em.flush();
     }
 
     @Override
