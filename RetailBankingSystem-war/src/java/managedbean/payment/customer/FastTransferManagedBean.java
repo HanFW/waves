@@ -4,8 +4,8 @@ import ejb.customer.entity.CustomerBasic;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import ejb.deposit.session.TransactionSessionBeanLocal;
-import ejb.payment.session.FastPayeeSessionBeanLocal;
-import ejb.payment.entity.FastPayee;
+import ejb.payment.session.OtherBankPayeeSessionBeanLocal;
+import ejb.payment.entity.OtherBankPayee;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -38,14 +38,14 @@ public class FastTransferManagedBean {
     private TransactionSessionBeanLocal transactionSessionBeanLocal;
 
     @EJB
-    private FastPayeeSessionBeanLocal fastPayeeSessionBeanLocal;
+    private OtherBankPayeeSessionBeanLocal otherBankPayeeSessionBeanLocal;
 
     @EJB
     private BankAccountSessionBeanLocal bankAccountSessionBeanLocal;
 
     private String toBankAccountNumWithType;
     private String toCurrency;
-    private Map<String, String> customerFastPayee = new HashMap<String, String>();
+    private Map<String, String> customerOtherBankPayee = new HashMap<String, String>();
     private Map<String, String> fromAccounts = new HashMap<String, String>();
     private String fromBankAccountNumWithType;
     private String fromCurrency;
@@ -72,15 +72,15 @@ public class FastTransferManagedBean {
 
             List<BankAccount> bankAccounts = bankAccountSessionBeanLocal.retrieveBankAccountByCusIC(customerBasic.getCustomerIdentificationNum());
             fromAccounts = new HashMap<String, String>();
-            customerFastPayee = new HashMap<String, String>();
-            List<FastPayee> fastPayees = fastPayeeSessionBeanLocal.retrieveFastPayeeByCusId(customerBasic.getCustomerBasicId());
+            customerOtherBankPayee = new HashMap<String, String>();
+            List<OtherBankPayee> otherBankPayees = otherBankPayeeSessionBeanLocal.retrieveOtherBankPayeeByCusId(customerBasic.getCustomerBasicId());
 
             for (int i = 0; i < bankAccounts.size(); i++) {
                 fromAccounts.put(bankAccounts.get(i).getBankAccountType() + "-" + bankAccounts.get(i).getBankAccountNum(), bankAccounts.get(i).getBankAccountType() + "-" + bankAccounts.get(i).getBankAccountNum());
             }
 
-            for (int j = 0; j < fastPayees.size(); j++) {
-                customerFastPayee.put(fastPayees.get(j).getPayeeAccountType() + "-" + fastPayees.get(j).getPayeeAccountNum() + "-" + fastPayees.get(j).getFastPayeeName(), fastPayees.get(j).getPayeeAccountType() + "-" + fastPayees.get(j).getPayeeAccountNum() + "-" + fastPayees.get(j).getFastPayeeName());
+            for (int j = 0; j < otherBankPayees.size(); j++) {
+                customerOtherBankPayee.put(otherBankPayees.get(j).getPayeeAccountType() + "-" + otherBankPayees.get(j).getPayeeAccountNum() + "-" + otherBankPayees.get(j).getOtherBankPayeeName(), otherBankPayees.get(j).getPayeeAccountType() + "-" + otherBankPayees.get(j).getPayeeAccountNum() + "-" + otherBankPayees.get(j).getOtherBankPayeeName());
             }
         }
     }
@@ -99,14 +99,6 @@ public class FastTransferManagedBean {
 
     public void setToCurrency(String toCurrency) {
         this.toCurrency = toCurrency;
-    }
-
-    public Map<String, String> getCustomerFastPayee() {
-        return customerFastPayee;
-    }
-
-    public void setCustomerFastPayee(Map<String, String> customerFastPayee) {
-        this.customerFastPayee = customerFastPayee;
     }
 
     public Map<String, String> getFromAccounts() {
@@ -179,6 +171,14 @@ public class FastTransferManagedBean {
 
     public void setFromAccountTotalBalance(String fromAccountTotalBalance) {
         this.fromAccountTotalBalance = fromAccountTotalBalance;
+    }
+
+    public Map<String, String> getCustomerOtherBankPayee() {
+        return customerOtherBankPayee;
+    }
+
+    public void setCustomerOtherBankPayee(Map<String, String> customerOtherBankPayee) {
+        this.customerOtherBankPayee = customerOtherBankPayee;
     }
 
     public void fastTransfer() throws IOException {
