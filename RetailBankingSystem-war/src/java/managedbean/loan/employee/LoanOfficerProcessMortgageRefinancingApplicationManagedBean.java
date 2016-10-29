@@ -16,6 +16,8 @@ import ejb.loan.entity.RefinancingApplication;
 import ejb.loan.session.LoanApplicationSessionBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -36,6 +38,9 @@ import javax.faces.view.ViewScoped;
 public class LoanOfficerProcessMortgageRefinancingApplicationManagedBean implements Serializable{
     @EJB
     private LoanApplicationSessionBeanLocal loanApplicationSessionBeanLocal;
+    
+    private Long applicationId;
+    
     private RefinancingApplication ra;
     private CustomerBasic customer;
     private CustomerAdvanced ca;
@@ -99,14 +104,12 @@ public class LoanOfficerProcessMortgageRefinancingApplicationManagedBean impleme
     private Integer customerPropertyTenureDuration;
     private Integer customerPropertyTenureFromYear;
 
-    //loan - refinancing
+    //loan - new purchase
     private String customerExistingFinancer;
     private Double customerOutstandingLoan;
     private Integer customerOutstandingYear;
     private Integer customerOutstandingMonth;
     private Double customerTotalCPFWithdrawal;
-    private String customerFinancialRequest;
-    private Double customerLoanAmountRequired;
     private Integer customerLoanTenure;
     private String customerInterestPackage;
     
@@ -120,13 +123,6 @@ public class LoanOfficerProcessMortgageRefinancingApplicationManagedBean impleme
     private String riskGrade;
     private Double probabilityOfDefault;
     
-    private double[] maxInterval;
-    private double maxMin;
-    private double maxMax;
-    private double[] suggestedInterval;
-    private double suggestedMin;
-    private double suggestedMax;
-    private double riskRatio;  
     /**
      * Creates a new instance of
      * LoanOfficerProcessMortgageRefinancingApplicationManagedBean
@@ -137,12 +133,17 @@ public class LoanOfficerProcessMortgageRefinancingApplicationManagedBean impleme
     @PostConstruct
     public void init(){
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-        Long applicationId = (Long) ec.getFlash().get("applicationId"); 
+        applicationId = (Long) ec.getFlash().get("applicationId"); 
+        
         ra = loanApplicationSessionBeanLocal.getRefinancingApplicationById(applicationId);
+        
         customer = ra.getCustomerBasic();
         ca = customer.getCustomerAdvanced();
         debts = customer.getCustomerDebt();
         property = customer.getCustomerProperty();
+        cr = customer.getBureauScore();
+        accountStatus = cr.getAccountStatus();
+        defaultRecords = cr.getDefaultRecords();
         
         customerSalutation = customer.getCustomerSalutation();
         customerName = customer.getCustomerName();
@@ -195,44 +196,32 @@ public class LoanOfficerProcessMortgageRefinancingApplicationManagedBean impleme
         customerOutstandingYear = ra.getOutstandingYear();
         customerOutstandingMonth = ra.getOutstandingMonth();
         customerTotalCPFWithdrawal = ra.getTotalCPFWithdrawal();
-
-        customerLoanAmountRequired = ra.getAmountRequired();
         customerLoanTenure = ra.getPeriodRequired();
         customerInterestPackage = ra.getLoanInterestPackage().getPackageName();
         docs = ra.getUploads();
         
         applicationDate = ra.getApplicationDate();
         
-        cr = customer.getBureauScore();
-        accountStatus = cr.getAccountStatus();
-        defaultRecords = cr.getDefaultRecords();
+        
         bureauScore = cr.getBureauScore();
         riskGrade = cr.getRiskGrade();
         probabilityOfDefault = cr.getProbabilityOfDefault();
-        
-        maxInterval = loanApplicationSessionBeanLocal.getMortgagePurchaseLoanMaxInterval();
-        maxMin = maxInterval[0];
-        maxMax = maxInterval[1];
-        riskRatio = loanApplicationSessionBeanLocal.getMortgagePurchaseLoanRiskRatio();
-        suggestedInterval = loanApplicationSessionBeanLocal.getMortgagePurchaseLoanSuggestedInterval();
-        suggestedMin = suggestedInterval[0];
-        suggestedMax = suggestedInterval[1];
     }
     
     public void approveLoanRequest() throws IOException{
-        loanApplicationSessionBeanLocal.approveRefinancingLoanRequest(ra.getLoanApplicationId(), periodSuggested, instalmentSuggested);
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/loan/loanOfficerViewApplications.xhtml?faces-redirect=true");
     }
     
     public void rejectLoanRequest() throws IOException{
-        loanApplicationSessionBeanLocal.rejectRefinancingLoanRequest(ra.getLoanApplicationId());
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/loan/loanOfficerViewApplications.xhtml?faces-redirect=true");  
+        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/loan/loanOfficerViewApplications.xhtml?faces-redirect=true");    
     }
     
-    private void calculateInstalment(){
+    public void calculateInstalment(){
         instalmentSuggested = (0.035/12*amountGranted) / (1 - Math.pow((1+0.035/12),-periodSuggested*12));
+        DecimalFormat df = new DecimalFormat("0.00");
+        instalmentSuggested = Double.valueOf(df.format(instalmentSuggested));
     }
 
     public LoanApplicationSessionBeanLocal getLoanApplicationSessionBeanLocal() {
@@ -241,6 +230,14 @@ public class LoanOfficerProcessMortgageRefinancingApplicationManagedBean impleme
 
     public void setLoanApplicationSessionBeanLocal(LoanApplicationSessionBeanLocal loanApplicationSessionBeanLocal) {
         this.loanApplicationSessionBeanLocal = loanApplicationSessionBeanLocal;
+    }
+
+    public Long getApplicationId() {
+        return applicationId;
+    }
+
+    public void setApplicationId(Long applicationId) {
+        this.applicationId = applicationId;
     }
 
     public RefinancingApplication getRa() {
@@ -707,22 +704,6 @@ public class LoanOfficerProcessMortgageRefinancingApplicationManagedBean impleme
         this.customerTotalCPFWithdrawal = customerTotalCPFWithdrawal;
     }
 
-    public String getCustomerFinancialRequest() {
-        return customerFinancialRequest;
-    }
-
-    public void setCustomerFinancialRequest(String customerFinancialRequest) {
-        this.customerFinancialRequest = customerFinancialRequest;
-    }
-
-    public Double getCustomerLoanAmountRequired() {
-        return customerLoanAmountRequired;
-    }
-
-    public void setCustomerLoanAmountRequired(Double customerLoanAmountRequired) {
-        this.customerLoanAmountRequired = customerLoanAmountRequired;
-    }
-
     public Integer getCustomerLoanTenure() {
         return customerLoanTenure;
     }
@@ -794,61 +775,6 @@ public class LoanOfficerProcessMortgageRefinancingApplicationManagedBean impleme
     public void setProbabilityOfDefault(Double probabilityOfDefault) {
         this.probabilityOfDefault = probabilityOfDefault;
     }
-
-    public double[] getMaxInterval() {
-        return maxInterval;
-    }
-
-    public void setMaxInterval(double[] maxInterval) {
-        this.maxInterval = maxInterval;
-    }
-
-    public double getMaxMin() {
-        return maxMin;
-    }
-
-    public void setMaxMin(double maxMin) {
-        this.maxMin = maxMin;
-    }
-
-    public double getMaxMax() {
-        return maxMax;
-    }
-
-    public void setMaxMax(double maxMax) {
-        this.maxMax = maxMax;
-    }
-
-    public double[] getSuggestedInterval() {
-        return suggestedInterval;
-    }
-
-    public void setSuggestedInterval(double[] suggestedInterval) {
-        this.suggestedInterval = suggestedInterval;
-    }
-
-    public double getSuggestedMin() {
-        return suggestedMin;
-    }
-
-    public void setSuggestedMin(double suggestedMin) {
-        this.suggestedMin = suggestedMin;
-    }
-
-    public double getSuggestedMax() {
-        return suggestedMax;
-    }
-
-    public void setSuggestedMax(double suggestedMax) {
-        this.suggestedMax = suggestedMax;
-    }
-
-    public double getRiskRatio() {
-        return riskRatio;
-    }
-
-    public void setRiskRatio(double riskRatio) {
-        this.riskRatio = riskRatio;
-    }
+    
     
 }

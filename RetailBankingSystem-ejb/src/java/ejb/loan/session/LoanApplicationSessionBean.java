@@ -104,10 +104,77 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
     }
 
     @Override
-    public List<LoanApplication> getAllLoanApplications() {
-        Query query = em.createQuery("SELECT la FROM LoanApplication la WHERE la.applicationStatus = :applicationStatus1");
-        query.setParameter("applicationStatus1", "pending");
-        return query.getResultList();
+    public List<LoanApplication> getLoanApplications(ArrayList<String> loans, String loanType) {
+        List<LoanApplication> applications = new ArrayList<LoanApplication>();
+
+        if (loanType.equals("all")) {
+            for (String loan : loans) {
+                switch (loan) {
+                    case "waiting for valuation":
+                        Query query1 = em.createQuery("SELECT ma FROM LoanApplication ma WHERE ma.applicationStatus = :applicationStatus");
+                        query1.setParameter("applicationStatus", "waiting for valuation");
+                        applications.addAll(query1.getResultList());
+                        break;
+                    case "pending":
+                        Query query2 = em.createQuery("SELECT ma FROM LoanApplication ma WHERE ma.applicationStatus = :applicationStatus");
+                        query2.setParameter("applicationStatus", "pending");
+                        applications.addAll(query2.getResultList());
+                        break;
+                    case "in progress":
+                        Query query3 = em.createQuery("SELECT ma FROM LoanApplication ma WHERE ma.applicationStatus = :applicationStatus");
+                        query3.setParameter("applicationStatus", "in progress");
+                        applications.addAll(query3.getResultList());
+                        break;
+                    case "approved":
+                        Query query4 = em.createQuery("SELECT ma FROM LoanApplication ma WHERE ma.applicationStatus = :applicationStatus");
+                        query4.setParameter("applicationStatus", "approved");
+                        applications.addAll(query4.getResultList());
+                        break;
+                    case "started":
+                        Query query5 = em.createQuery("SELECT ma FROM LoanApplication ma WHERE ma.applicationStatus = :applicationStatus");
+                        query5.setParameter("applicationStatus", "started");
+                        applications.addAll(query5.getResultList());
+                        break;
+                }
+            }
+        }else{
+            for (String loan : loans) {
+                switch (loan) {
+                    case "waiting for valuation":
+                        Query query1 = em.createQuery("SELECT ma FROM LoanApplication ma WHERE ma.applicationStatus = :applicationStatus AND ma.loanType =:loanType");
+                        query1.setParameter("applicationStatus", "waiting for valuation");
+                        query1.setParameter("loanType", loanType);
+                        applications.addAll(query1.getResultList());
+                        break;
+                    case "pending":
+                        Query query2 = em.createQuery("SELECT ma FROM LoanApplication ma WHERE ma.applicationStatus = :applicationStatus AND ma.loanType =:loanType");
+                        query2.setParameter("applicationStatus", "pending");
+                        query2.setParameter("loanType", loanType);
+                        applications.addAll(query2.getResultList());
+                        break;
+                    case "in progress":
+                        Query query3 = em.createQuery("SELECT ma FROM LoanApplication ma WHERE ma.applicationStatus = :applicationStatus AND ma.loanType =:loanType");
+                        query3.setParameter("applicationStatus", "in progress");
+                        query3.setParameter("loanType", loanType);
+                        applications.addAll(query3.getResultList());
+                        break;
+                    case "approved":
+                        Query query4 = em.createQuery("SELECT ma FROM LoanApplication ma WHERE ma.applicationStatus = :applicationStatus AND ma.loanType =:loanType");
+                        query4.setParameter("applicationStatus", "approved");
+                        query4.setParameter("loanType", loanType);
+                        applications.addAll(query4.getResultList());
+                        break;
+                    case "started":
+                        Query query5 = em.createQuery("SELECT ma FROM LoanApplication ma WHERE ma.applicationStatus = :applicationStatus AND ma.loanType =:loanType");
+                        query5.setParameter("applicationStatus", "started");
+                        query5.setParameter("loanType", loanType);
+                        applications.addAll(query5.getResultList());
+                        break;
+                }
+            }
+        }
+
+        return applications;
     }
 
     @Override
@@ -121,13 +188,6 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
     public RefinancingApplication getRefinancingApplicationById(Long applicationId) {
         System.out.println("****** loan/LoanApplicationSessionBean: getRefinancingApplicationById() ******");
         RefinancingApplication application = em.find(RefinancingApplication.class, applicationId);
-        return application;
-    }
-
-    @Override
-    public LoanApplication getLoanApplicationById(Long applicationId) {
-        System.out.println("****** loan/LoanApplicationSessionBean: getLoanApplicationById() ******");
-        LoanApplication application = em.find(LoanApplication.class, applicationId);
         return application;
     }
 
@@ -206,27 +266,6 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
     }
 
     @Override
-    public List<LoanApplication> getAllApprovedLoans() {
-        Query query = em.createQuery("SELECT la FROM LoanApplication la WHERE la.applicationStatus = :applicationStatus");
-        query.setParameter("applicationStatus", "approved");
-        return query.getResultList();
-    }
-
-    @Override
-    public List<LoanApplication> getAllStartedLoans() {
-        Query query = em.createQuery("SELECT la FROM LoanApplication la WHERE la.applicationStatus = :applicationStatus");
-        query.setParameter("applicationStatus", "started");
-        return query.getResultList();
-    }
-
-    @Override
-    public List<LoanApplication> getAllInProgressLoans() {
-        Query query = em.createQuery("SELECT la FROM LoanApplication la WHERE la.applicationStatus = :applicationStatus");
-        query.setParameter("applicationStatus", "in progress");
-        return query.getResultList();
-    }
-
-    @Override
     public void startNewLoan(Long applicationId) {
         LoanApplication application = em.find(LoanApplication.class, applicationId);
         application.setApplicationStatus("started");
@@ -262,16 +301,16 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
         application.setApplicationStatus(status);
         em.flush();
     }
-    
+
     @Override
-    public List<MortgageLoanApplication> getAllMortgageApplicationsPendingAppraisal(){
+    public List<MortgageLoanApplication> getAllMortgageApplicationsPendingAppraisal() {
         Query query = em.createQuery("SELECT ma FROM MortgageLoanApplication ma WHERE ma.applicationStatus = :applicationStatus");
         query.setParameter("applicationStatus", "waiting for valuation");
         return query.getResultList();
     }
-    
+
     @Override
-    public void submitAppraisal(double appraisedValue, Long applicationId){
+    public void submitAppraisal(double appraisedValue, Long applicationId) {
         System.out.println("****** loan/LoanApplicationSessionBean: submitAppraisal() ******");
         MortgageLoanApplication application = em.find(MortgageLoanApplication.class, applicationId);
         application.setApplicationStatus("pending");

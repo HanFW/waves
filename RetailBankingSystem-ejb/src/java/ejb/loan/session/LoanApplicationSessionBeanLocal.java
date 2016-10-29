@@ -23,10 +23,9 @@ public interface LoanApplicationSessionBeanLocal {
     public void submitLoanApplication(boolean isExistingCustomer, boolean hasCustomerAdvanced, Long customerBasicId, Long customerAdvancedId, ArrayList<CustomerDebt> debts, 
             CustomerProperty cp, MortgageLoanApplication mortgage, RefinancingApplication refinancing, String loanType, String interestPackage);
     public CustomerDebt addNewCustomerDebt(String facilityType, String financialInstitution, double totalAmount, double monthlyInstalment);
-    public List<LoanApplication> getAllLoanApplications();
+    public List<LoanApplication> getLoanApplications(ArrayList<String> loans, String loanType);
     public MortgageLoanApplication getMortgageLoanApplicationById(Long applicationId);
     public RefinancingApplication getRefinancingApplicationById(Long applicationId);
-    public LoanApplication getLoanApplicationById(Long applicationId);
     public double[] getMortgagePurchaseLoanMaxInterval();
     public double getMortgagePurchaseLoanRiskRatio();
     public double[] getMortgagePurchaseLoanSuggestedInterval();
@@ -34,10 +33,7 @@ public interface LoanApplicationSessionBeanLocal {
     public void rejectMortgageLoanRequest(Long applicationId);
     public void approveRefinancingLoanRequest(Long applicationId, int period, double instalment);
     public void rejectRefinancingLoanRequest(Long applicationId);
-    public List<LoanApplication> getAllApprovedLoans();
     public void startNewLoan(Long applicationId);
-    public List<LoanApplication> getAllStartedLoans();
-    public List<LoanApplication> getAllInProgressLoans();
     public void updateLoanStatus(String status, Long applicationId);
     public List<MortgageLoanApplication> getAllMortgageApplicationsPendingAppraisal();
     public void submitAppraisal(double appraisedValue, Long applicationId);
