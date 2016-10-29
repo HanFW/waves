@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/internalSystemTemplate.xhtml">
+
+    <ui:define name="content">
+        <p:dataTable var="creditCard" value="#{creditCardManagerViewManagedBean.creditCards}">
+            <p:column headerText="Applicant">
+                <h:outputText value="#{creditCard.cardHolderName}" />
+            </p:column>
+            <p:column headerText="Card Type">
+                <h:outputText value="#{creditCard.creditCardType.creditCardTypeName}" />
+            </p:column>
+            <p:column headerText="Credit Limit">
+                <h:outputText value="#{creditCard.creditLimit}" />
+            </p:column>
+            <p:column headerText="Status">
+                <h:outputText value="#{creditCard.status}" />
+            </p:column>
+            <p:column>
+                <p:commandButton value="View" action="#{creditCardManagerViewManagedBean.viewApplication(creditCard.cardId)}"/>
+            </p:column>
+        </p:dataTable>
+    </ui:define>
+</ui:composition>

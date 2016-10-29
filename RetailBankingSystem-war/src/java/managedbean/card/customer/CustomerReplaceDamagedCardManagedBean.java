@@ -10,12 +10,7 @@ import ejb.card.session.CreditCardSessionBeanLocal;
 import ejb.card.session.DebitCardManagementSessionBeanLocal;
 import ejb.card.session.DebitCardSessionBeanLocal;
 import ejb.customer.entity.CustomerBasic;
-import ejb.customer.session.CRMCustomerSessionBeanLocal;
-import java.io.Serializable;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.inject.Named;
@@ -27,14 +22,14 @@ import javax.faces.event.ActionEvent;
 
 /**
  *
- * @author Jingyuan
+ * @author aaa
  */
-@Named(value = "customerReportLossManagedBean")
+@Named(value = "customerReplaceDamagedCardManagedBean")
 @RequestScoped
-public class CustomerReportLossManagedBean implements Serializable {
+public class CustomerReplaceDamagedCardManagedBean {
 
     /**
-     * Creates a new instance of CustomerReportLossManagedBean
+     * Creates a new instance of CustomerReplaceDamagedCardManagedBean
      */
     @EJB
     private DebitCardManagementSessionBeanLocal debitCardManagementSessionBeanLocal;
@@ -47,9 +42,6 @@ public class CustomerReportLossManagedBean implements Serializable {
 
     @EJB
     private CreditCardSessionBeanLocal creditCardSessionBeanLocal;
-    
-    @EJB
-    private CRMCustomerSessionBeanLocal cRMCustomerSession;
 
     private String cardType;
     private String debitCardPwd;
@@ -60,22 +52,22 @@ public class CustomerReportLossManagedBean implements Serializable {
 
     private List<String> creditCards = new ArrayList<String>();
     private String selectedCreditCard;
-    private String identificationNum;
+    private String securityCode;
 
     private boolean creditPanelVisible;
     private boolean debitPanelVisible;
 
-    public CustomerReportLossManagedBean() {
+    public CustomerReplaceDamagedCardManagedBean() {
     }
 
-    public void reportCardLoss(ActionEvent event) {
+    public void requestForCardReplacement(ActionEvent event) {
 
-        System.out.println("debug: cancel card");
+        System.out.println("debug: replace card");
         if (cardType.equals("debit")) {
-            reportDebitCardLoss();
+            replaceDebitCard();
         }
-        if (cardType.equals("credit")){
-            reportCreditCardLoss();
+        if (cardType.equals("credit")) {
+            replaceCreditCard();
         }
     }
 
@@ -90,73 +82,32 @@ public class CustomerReportLossManagedBean implements Serializable {
         }
     }
 
-    public void reportDebitCardLoss() {
+    public void replaceDebitCard() {
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext ec = context.getExternalContext();
         FacesMessage message = null;
 
-        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-        Date reportLossDate1 = new Date();
-        String reportLossDate = df.format(reportLossDate1);
-
         String[] debitCardInfo = selectedDebitCard.split("-");
         String debitCardNum = debitCardInfo[1];
 
-        System.out.println("debug: ReportDebitCardLoss- debit card num " + debitCardNum);
-        System.out.println("debug: ReportDebitCardLoss- debit card Pwd " + debitCardPwd);
-        System.out.println("debug: ReportDebitCardLoss- report loss date " + reportLossDate);
-        String result = debitCardManagementSessionBeanLocal.reportDebitCardLoss(debitCardNum, debitCardPwd, reportLossDate);
-
-        switch (result) {
-            case "success":
-                message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Your card has been suceesfully reported as loss, we will send a new card to your mailing address in 2-3 working days", null);
-                context.addMessage(null, message);
-                System.out.println("debit card report loss");
-                break;
-            case "debit card not exist":
-                message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Card not exist! Please check the card number input", null);
-                context.addMessage(null, message);
-                break;
-            case "wrong pwd":
-                message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Password is wrong! Please check the card password input", null);
-                context.addMessage(null, message);
-                break;
-        }
+        debitCardManagementSessionBeanLocal.replaceDamagedDebitCard(debitCardNum);
+        message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Replacement successful! Please wait for 2-3 days and your new card will be mailed to your preferred address.", null);
+        context.addMessage(null, message);
     }
 
-        public void reportCreditCardLoss() {
+    public void replaceCreditCard() {
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext ec = context.getExternalContext();
         FacesMessage message = null;
 
         String[] creditCardInfo = selectedCreditCard.split("-");
         String creditCardNum = creditCardInfo[2];
-//        Long newCustomerId = creditCardSessionBeanLocal.getCardByCardNum(creditCardNum).getCustomerBasic().getCustomerBasicId();
-//        System.out.println("!!!!!!!!!!!!!!!!!customer id "+ newCustomerId);
-        System.out.println("debug: ReportCreditCardLoss- credit card num " + creditCardNum);
-        System.out.println("debug: ReportCreditCardLoss- ID Num " + identificationNum);
-        String result = creditCardManagementSessionBeanLocal.reportCreditCardLoss(creditCardNum, identificationNum);
-
-        switch (result) {
-            case "success":
-                message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Your card has been suceesfully reported as loss, we will send a new card to your mailing address in 2-3 working days", null);
-                context.addMessage(null, message);
-//                CustomerBasic newCustomer = cRMCustomerSession.getCustomerBasicById(newCustomerId);
-//                System.out.println("!!!!!!!!!!!!!!!!!customer  "+ newCustomer);
-//                ec.getSessionMap().replace("customer", newCustomer);
-                System.out.println("credit card report loss");
-                break;
-            case "credit card not exist":
-                message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Card not exist! Please check the card number input", null);
-                context.addMessage(null, message);
-                break;
-            case "wrong id":
-                message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "The identification number provided does not match with our records. Please check the ID input", null);
-                context.addMessage(null, message);
-                break;
-        }
+        
+        creditCardManagementSessionBeanLocal.replaceDamagedCreditCard(creditCardNum);
+        message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Replacement successful! Please wait for 2-3 days and your new card will be mailed to your preferred address.", null);
+        context.addMessage(null, message);
     }
-    
+
     public String getCardType() {
         return cardType;
     }
@@ -174,7 +125,6 @@ public class CustomerReportLossManagedBean implements Serializable {
     }
 
     public List<String> getDebitCards() {
-        System.out.println("test " + debitCards);
         if (debitCards.isEmpty()) {
 
             customer = getCustomerViaSessionMap();
@@ -224,12 +174,12 @@ public class CustomerReportLossManagedBean implements Serializable {
         this.selectedCreditCard = selectedCreditCard;
     }
 
-    public String getIdentificationNum() {
-        return identificationNum;
+    public String getSecurityCode() {
+        return securityCode;
     }
 
-    public void setIdentificationNum(String identificationNum) {
-        this.identificationNum = identificationNum;
+    public void setSecurityCode(String securityCode) {
+        this.securityCode = securityCode;
     }
 
     public boolean isCreditPanelVisible() {
@@ -247,7 +197,6 @@ public class CustomerReportLossManagedBean implements Serializable {
     public void setDebitPanelVisible(boolean debitPanelVisible) {
         this.debitPanelVisible = debitPanelVisible;
     }
-
     public CustomerBasic getCustomerViaSessionMap() {
         FacesContext context = FacesContext.getCurrentInstance();
         customer = (CustomerBasic) context.getExternalContext().getSessionMap().get("customer");
@@ -255,5 +204,5 @@ public class CustomerReportLossManagedBean implements Serializable {
         return customer;
 
     }
-
+    
 }

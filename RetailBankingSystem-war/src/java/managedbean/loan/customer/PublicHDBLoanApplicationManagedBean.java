@@ -538,16 +538,36 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
 
     public void identificationUpload(FileUploadEvent event) throws FileNotFoundException, IOException {
         this.file = event.getFile();
+        
         if (file != null) {
+            String newFilePath = System.getProperty("user.dir").replace("config", "docroot") + System.getProperty("file.separator");
+            
             String filename = customerIdentificationNum + ".pdf";
-            InputStream input = file.getInputstream();
-            OutputStream output = new FileOutputStream(new File("/Users/hanfengwei/Desktop/customerDocuments", filename));
-            try {
-                IOUtils.copy(input, output);
-            } finally {
-                IOUtils.closeQuietly(input);
-                IOUtils.closeQuietly(output);
+            File newFile = new File(newFilePath, filename);
+            FileOutputStream fileOutputStream = new FileOutputStream(newFile);
+
+            int a;
+            int BUFFER_SIZE = 8192;
+            byte[] buffer = new byte[BUFFER_SIZE];
+
+            InputStream inputStream = file.getInputstream();
+
+            while (true)
+            {
+                a = inputStream.read(buffer);
+
+                if (a < 0)
+                {
+                    break;
+                }
+
+                fileOutputStream.write(buffer, 0, a);
+                fileOutputStream.flush();
             }
+
+            fileOutputStream.close();
+            inputStream.close();
+
             uploads.replace("identification", true);
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, file.getFileName() + " uploaded successfully.", "");
             FacesContext.getCurrentInstance().addMessage("identificationUpload", message);
@@ -560,15 +580,34 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
     public void otpUpload(FileUploadEvent event) throws FileNotFoundException, IOException {
         this.file = event.getFile();
         if (file != null) {
+            String newFilePath = System.getProperty("user.dir").replace("config", "docroot") + System.getProperty("file.separator");
+            
             String filename = customerIdentificationNum + "-otp.pdf";
-            InputStream input = file.getInputstream();
-            OutputStream output = new FileOutputStream(new File("/Users/hanfengwei/Desktop/customerDocuments", filename));
-            try {
-                IOUtils.copy(input, output);
-            } finally {
-                IOUtils.closeQuietly(input);
-                IOUtils.closeQuietly(output);
+            File newFile = new File(newFilePath, filename);
+            FileOutputStream fileOutputStream = new FileOutputStream(newFile);
+
+            int a;
+            int BUFFER_SIZE = 8192;
+            byte[] buffer = new byte[BUFFER_SIZE];
+
+            InputStream inputStream = file.getInputstream();
+
+            while (true)
+            {
+                a = inputStream.read(buffer);
+
+                if (a < 0)
+                {
+                    break;
+                }
+
+                fileOutputStream.write(buffer, 0, a);
+                fileOutputStream.flush();
             }
+
+            fileOutputStream.close();
+            inputStream.close();
+
             uploads.replace("otp", true);
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, file.getFileName() + " uploaded successfully.", "");
             FacesContext.getCurrentInstance().addMessage("otpUpload", message);
@@ -581,15 +620,34 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
     public void purchaseAgreementUpload(FileUploadEvent event) throws FileNotFoundException, IOException {
         this.file = event.getFile();
         if (file != null) {
+            String newFilePath = System.getProperty("user.dir").replace("config", "docroot") + System.getProperty("file.separator");
+            
             String filename = customerIdentificationNum + "-purchase_agreement.pdf";
-            InputStream input = file.getInputstream();
-            OutputStream output = new FileOutputStream(new File("/Users/hanfengwei/Desktop/customerDocuments", filename));
-            try {
-                IOUtils.copy(input, output);
-            } finally {
-                IOUtils.closeQuietly(input);
-                IOUtils.closeQuietly(output);
+            File newFile = new File(newFilePath, filename);
+            FileOutputStream fileOutputStream = new FileOutputStream(newFile);
+
+            int a;
+            int BUFFER_SIZE = 8192;
+            byte[] buffer = new byte[BUFFER_SIZE];
+
+            InputStream inputStream = file.getInputstream();
+
+            while (true)
+            {
+                a = inputStream.read(buffer);
+
+                if (a < 0)
+                {
+                    break;
+                }
+
+                fileOutputStream.write(buffer, 0, a);
+                fileOutputStream.flush();
             }
+
+            fileOutputStream.close();
+            inputStream.close();
+
             uploads.replace("purchaseAgreement", true);
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, file.getFileName() + " uploaded successfully.", "");
             FacesContext.getCurrentInstance().addMessage("purchaseAgreementUpload", message);
@@ -602,15 +660,34 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
     public void existingLoanUpload(FileUploadEvent event) throws FileNotFoundException, IOException {
         this.file = event.getFile();
         if (file != null) {
+            String newFilePath = System.getProperty("user.dir").replace("config", "docroot") + System.getProperty("file.separator");
+            
             String filename = customerIdentificationNum + "-existing_loan.pdf";
-            InputStream input = file.getInputstream();
-            OutputStream output = new FileOutputStream(new File("/Users/hanfengwei/Desktop/customerDocuments", filename));
-            try {
-                IOUtils.copy(input, output);
-            } finally {
-                IOUtils.closeQuietly(input);
-                IOUtils.closeQuietly(output);
+            File newFile = new File(newFilePath, filename);
+            FileOutputStream fileOutputStream = new FileOutputStream(newFile);
+
+            int a;
+            int BUFFER_SIZE = 8192;
+            byte[] buffer = new byte[BUFFER_SIZE];
+
+            InputStream inputStream = file.getInputstream();
+
+            while (true)
+            {
+                a = inputStream.read(buffer);
+
+                if (a < 0)
+                {
+                    break;
+                }
+
+                fileOutputStream.write(buffer, 0, a);
+                fileOutputStream.flush();
             }
+
+            fileOutputStream.close();
+            inputStream.close();
+
             uploads.replace("existingLoan", true);
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, file.getFileName() + " uploaded successfully.", "");
             FacesContext.getCurrentInstance().addMessage("existingLoanUpload", message);
@@ -623,15 +700,34 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
     public void cpfWithdrawalUpload(FileUploadEvent event) throws FileNotFoundException, IOException {
         this.file = event.getFile();
         if (file != null) {
+            String newFilePath = System.getProperty("user.dir").replace("config", "docroot") + System.getProperty("file.separator");
+            
             String filename = customerIdentificationNum + "-cpf_withdrawal.pdf";
-            InputStream input = file.getInputstream();
-            OutputStream output = new FileOutputStream(new File("/Users/hanfengwei/Desktop/customerDocuments", filename));
-            try {
-                IOUtils.copy(input, output);
-            } finally {
-                IOUtils.closeQuietly(input);
-                IOUtils.closeQuietly(output);
+            File newFile = new File(newFilePath, filename);
+            FileOutputStream fileOutputStream = new FileOutputStream(newFile);
+
+            int a;
+            int BUFFER_SIZE = 8192;
+            byte[] buffer = new byte[BUFFER_SIZE];
+
+            InputStream inputStream = file.getInputstream();
+
+            while (true)
+            {
+                a = inputStream.read(buffer);
+
+                if (a < 0)
+                {
+                    break;
+                }
+
+                fileOutputStream.write(buffer, 0, a);
+                fileOutputStream.flush();
             }
+
+            fileOutputStream.close();
+            inputStream.close();
+
             uploads.replace("cpfWithdrawal", true);
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, file.getFileName() + " uploaded successfully.", "");
             FacesContext.getCurrentInstance().addMessage("cpfWithdrawalUpload", message);
@@ -644,15 +740,34 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
     public void evidenceOfSaleUpload(FileUploadEvent event) throws FileNotFoundException, IOException {
         this.file = event.getFile();
         if (file != null) {
+            String newFilePath = System.getProperty("user.dir").replace("config", "docroot") + System.getProperty("file.separator");
+            
             String filename = customerIdentificationNum + "-evidence_of_sale.pdf";
-            InputStream input = file.getInputstream();
-            OutputStream output = new FileOutputStream(new File("/Users/hanfengwei/Desktop/customerDocuments", filename));
-            try {
-                IOUtils.copy(input, output);
-            } finally {
-                IOUtils.closeQuietly(input);
-                IOUtils.closeQuietly(output);
+            File newFile = new File(newFilePath, filename);
+            FileOutputStream fileOutputStream = new FileOutputStream(newFile);
+
+            int a;
+            int BUFFER_SIZE = 8192;
+            byte[] buffer = new byte[BUFFER_SIZE];
+
+            InputStream inputStream = file.getInputstream();
+
+            while (true)
+            {
+                a = inputStream.read(buffer);
+
+                if (a < 0)
+                {
+                    break;
+                }
+
+                fileOutputStream.write(buffer, 0, a);
+                fileOutputStream.flush();
             }
+
+            fileOutputStream.close();
+            inputStream.close();
+
             uploads.replace("evidenceOfSale", true);
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, file.getFileName() + " uploaded successfully.", "");
             FacesContext.getCurrentInstance().addMessage("evidenceOfSaleUpload", message);
@@ -665,15 +780,34 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
     public void tenancyUpload(FileUploadEvent event) throws FileNotFoundException, IOException {
         this.file = event.getFile();
         if (file != null) {
+            String newFilePath = System.getProperty("user.dir").replace("config", "docroot") + System.getProperty("file.separator");
+            
             String filename = customerIdentificationNum + "-tenancy.pdf";
-            InputStream input = file.getInputstream();
-            OutputStream output = new FileOutputStream(new File("/Users/hanfengwei/Desktop/customerDocuments", filename));
-            try {
-                IOUtils.copy(input, output);
-            } finally {
-                IOUtils.closeQuietly(input);
-                IOUtils.closeQuietly(output);
+            File newFile = new File(newFilePath, filename);
+            FileOutputStream fileOutputStream = new FileOutputStream(newFile);
+
+            int a;
+            int BUFFER_SIZE = 8192;
+            byte[] buffer = new byte[BUFFER_SIZE];
+
+            InputStream inputStream = file.getInputstream();
+
+            while (true)
+            {
+                a = inputStream.read(buffer);
+
+                if (a < 0)
+                {
+                    break;
+                }
+
+                fileOutputStream.write(buffer, 0, a);
+                fileOutputStream.flush();
             }
+
+            fileOutputStream.close();
+            inputStream.close();
+
             uploads.replace("tenancy", true);
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, file.getFileName() + " uploaded successfully.", "");
             FacesContext.getCurrentInstance().addMessage("tenancyUpload", message);
@@ -686,15 +820,34 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
     public void employeeTaxUpload(FileUploadEvent event) throws FileNotFoundException, IOException {
         this.file = event.getFile();
         if (file != null) {
+            String newFilePath = System.getProperty("user.dir").replace("config", "docroot") + System.getProperty("file.separator");
+            
             String filename = customerIdentificationNum + "-employee_tax.pdf";
-            InputStream input = file.getInputstream();
-            OutputStream output = new FileOutputStream(new File("/Users/hanfengwei/Desktop/customerDocuments", filename));
-            try {
-                IOUtils.copy(input, output);
-            } finally {
-                IOUtils.closeQuietly(input);
-                IOUtils.closeQuietly(output);
+            File newFile = new File(newFilePath, filename);
+            FileOutputStream fileOutputStream = new FileOutputStream(newFile);
+
+            int a;
+            int BUFFER_SIZE = 8192;
+            byte[] buffer = new byte[BUFFER_SIZE];
+
+            InputStream inputStream = file.getInputstream();
+
+            while (true)
+            {
+                a = inputStream.read(buffer);
+
+                if (a < 0)
+                {
+                    break;
+                }
+
+                fileOutputStream.write(buffer, 0, a);
+                fileOutputStream.flush();
             }
+
+            fileOutputStream.close();
+            inputStream.close();
+
             uploads.replace("employeeTax", true);
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, file.getFileName() + " uploaded successfully.", "");
             FacesContext.getCurrentInstance().addMessage("employeeTaxUpload", message);
@@ -707,15 +860,34 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
     public void employeeCPFUpload(FileUploadEvent event) throws FileNotFoundException, IOException {
         this.file = event.getFile();
         if (file != null) {
+            String newFilePath = System.getProperty("user.dir").replace("config", "docroot") + System.getProperty("file.separator");
+            
             String filename = customerIdentificationNum + "-employee_cpf.pdf";
-            InputStream input = file.getInputstream();
-            OutputStream output = new FileOutputStream(new File("/Users/hanfengwei/Desktop/customerDocuments", filename));
-            try {
-                IOUtils.copy(input, output);
-            } finally {
-                IOUtils.closeQuietly(input);
-                IOUtils.closeQuietly(output);
+            File newFile = new File(newFilePath, filename);
+            FileOutputStream fileOutputStream = new FileOutputStream(newFile);
+
+            int a;
+            int BUFFER_SIZE = 8192;
+            byte[] buffer = new byte[BUFFER_SIZE];
+
+            InputStream inputStream = file.getInputstream();
+
+            while (true)
+            {
+                a = inputStream.read(buffer);
+
+                if (a < 0)
+                {
+                    break;
+                }
+
+                fileOutputStream.write(buffer, 0, a);
+                fileOutputStream.flush();
             }
+
+            fileOutputStream.close();
+            inputStream.close();
+
             uploads.replace("employeeCPF", true);
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, file.getFileName() + " uploaded successfully.", "");
             FacesContext.getCurrentInstance().addMessage("employeeCPFUpload", message);
@@ -728,15 +900,34 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
     public void selfEmployedTaxUpload(FileUploadEvent event) throws FileNotFoundException, IOException {
         this.file = event.getFile();
         if (file != null) {
+            String newFilePath = System.getProperty("user.dir").replace("config", "docroot") + System.getProperty("file.separator");
+            
             String filename = customerIdentificationNum + "-self-employed_tax.pdf";
-            InputStream input = file.getInputstream();
-            OutputStream output = new FileOutputStream(new File("/Users/hanfengwei/Desktop/customerDocuments", filename));
-            try {
-                IOUtils.copy(input, output);
-            } finally {
-                IOUtils.closeQuietly(input);
-                IOUtils.closeQuietly(output);
+            File newFile = new File(newFilePath, filename);
+            FileOutputStream fileOutputStream = new FileOutputStream(newFile);
+
+            int a;
+            int BUFFER_SIZE = 8192;
+            byte[] buffer = new byte[BUFFER_SIZE];
+
+            InputStream inputStream = file.getInputstream();
+
+            while (true)
+            {
+                a = inputStream.read(buffer);
+
+                if (a < 0)
+                {
+                    break;
+                }
+
+                fileOutputStream.write(buffer, 0, a);
+                fileOutputStream.flush();
             }
+
+            fileOutputStream.close();
+            inputStream.close();
+            
             uploads.replace("selfEmployedTax", true);
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, file.getFileName() + " uploaded successfully.", "");
             FacesContext.getCurrentInstance().addMessage("selfEmployedTaxUpload", message);

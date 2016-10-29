@@ -7,6 +7,7 @@ package ejb.card.entity;
 
 import ejb.customer.entity.CustomerBasic;
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -33,6 +34,7 @@ public class CreditCard extends Card implements Serializable {
     
     private double creditLimit;
     private double outstandingBalance; 
+//    private HashMap uploads;
 
 
     public CreditCardType getCreditCardType() {
@@ -74,10 +76,13 @@ public class CreditCard extends Card implements Serializable {
     public void setOutstandingBalance(double outstandingBalance) {
         this.outstandingBalance = outstandingBalance;
     }
-
-
-
-    
-   
+//
+//    public HashMap getUploads() {
+//        return uploads;
+//    }
+//
+//    public void setUploads(HashMap uploads) {
+//        this.uploads = uploads;
+//    }
 
 }

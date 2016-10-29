@@ -276,4 +276,5 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
         MortgageLoanApplication application = em.find(MortgageLoanApplication.class, applicationId);
         application.setApplicationStatus("pending");
     }
+
 }
