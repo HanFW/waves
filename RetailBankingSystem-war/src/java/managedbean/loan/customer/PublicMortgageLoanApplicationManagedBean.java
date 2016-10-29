@@ -536,7 +536,7 @@ public class PublicMortgageLoanApplicationManagedBean implements Serializable {
                 customerIdentificationNum = customerForeignPassport;
             }
 
-            if (age < 16 || age > 65) {
+            if (age < 21 || age > 65) {
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Your age is not qualified to apply for this type of loan", "");
                 FacesContext.getCurrentInstance().addMessage(null, message);
                 nextStep = event.getOldStep();

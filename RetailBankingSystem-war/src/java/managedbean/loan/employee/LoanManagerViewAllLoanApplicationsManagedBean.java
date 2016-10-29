@@ -22,7 +22,7 @@ import javax.faces.view.ViewScoped;
  */
 @Named(value = "loanManagerStartNewLoanManagedBean")
 @ViewScoped
-public class LoanManagerStartNewLoanManagedBean implements Serializable{
+public class LoanManagerViewAllLoanApplicationsManagedBean implements Serializable{
     @EJB
     private LoanApplicationSessionBeanLocal loanApplicationSessionBeanLocal;
     private List<LoanApplication> approvedLoanApplications;
@@ -33,7 +33,7 @@ public class LoanManagerStartNewLoanManagedBean implements Serializable{
     /**
      * Creates a new instance of LoanManagerStartNewLoanManagedBean
      */
-    public LoanManagerStartNewLoanManagedBean() {
+    public LoanManagerViewAllLoanApplicationsManagedBean() {
     }
     
     @PostConstruct
