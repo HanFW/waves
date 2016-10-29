@@ -9,7 +9,7 @@ public interface NonStandingGIROSessionBeanLocal {
 
     public Long addNewNonStandingGIRO(String billingOrganizationName, String billReference, String bankAccountNum,
             String bankAccountNumWithType, String paymentFrequency, String paymentAmt,
-            String giroType, String nonStandingStatus, Long customerBasicId);
+            String giroType, String nonStandingStatus, boolean buttonRender, Long customerBasicId);
 
     public List<NonStandingGIRO> retrieveNonStandingGIROByCusId(Long customerBasicId);
 
@@ -28,4 +28,6 @@ public interface NonStandingGIROSessionBeanLocal {
     public void monthlyRecurrentPayment();
 
     public void updateNonStandingStatus(Long giroId, String paymentFrequency);
+
+    public void updateButtonRender(Long giroId);
 }

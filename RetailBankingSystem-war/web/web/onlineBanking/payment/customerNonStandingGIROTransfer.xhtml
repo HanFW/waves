@@ -92,7 +92,7 @@
                 <p:column headerText="Action" style="width: 10%">
                     <center>
                         <p:commandButton action="/web/onlineBanking/payment/customerNonStandingGIROTransferDone.xhtml?faces-redirect=true"
-                                         value="Pay" update="recurrentGIROForm" style="width: 50%">
+                                         value="Pay" update="recurrentGIROForm" style="width: 50%" disabled="#{recurrentGIRO.buttonRender}">
                             <f:setPropertyActionListener target="#{nonStandingGIROTransferDoneManagedBean.giroId}" value="#{recurrentGIRO.giroId}" />
                         </p:commandButton>
                     </center>
@@ -130,7 +130,7 @@
                 </p:dialog>
             </p:panel>
         </h:form>
-        
+
         <ezcomp:CCTimeout/>
     </ui:define>
 </ui:composition>

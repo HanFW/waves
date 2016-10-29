@@ -230,7 +230,7 @@ public class AddNonStandingGIROManagedBean implements Serializable {
 
             giroId = nonStandingGIROSessionBeanLocal.addNewNonStandingGIRO(billingOrganization,
                     billReference, bankAccountNum, bankAccountNumWithType,
-                    paymentFrequency, paymentAmt, giroType, "Incompleted", customerBasic.getCustomerBasicId());
+                    paymentFrequency, paymentAmt, giroType, "Incompleted", false, customerBasic.getCustomerBasicId());
 
             statusMessage = "Your new billing organization has been added!";
             Calendar cal = Calendar.getInstance();
@@ -249,7 +249,7 @@ public class AddNonStandingGIROManagedBean implements Serializable {
 
             giroId = nonStandingGIROSessionBeanLocal.addNewNonStandingGIRO(billingOrganization, billReference,
                     bankAccountNum, bankAccountNumWithType, transferFrequency,
-                    paymentAmt, giroType, "Incompleted", customerBasic.getCustomerBasicId());
+                    paymentAmt, giroType, "Incompleted", false, customerBasic.getCustomerBasicId());
 
             statusMessage = "Your new billing organization has been added!";
             Calendar cal = Calendar.getInstance();
