@@ -5,6 +5,7 @@
  */
 package ejb.loan.session;
 
+import ejb.loan.entity.CreditReportAccountStatus;
 import ejb.loan.entity.CustomerDebt;
 import ejb.loan.entity.CustomerProperty;
 import ejb.loan.entity.LoanApplication;
@@ -37,4 +38,5 @@ public interface LoanApplicationSessionBeanLocal {
     public void updateLoanStatus(String status, Long applicationId);
     public List<MortgageLoanApplication> getAllMortgageApplicationsPendingAppraisal();
     public void submitAppraisal(double appraisedValue, Long applicationId);
+    public List<CreditReportAccountStatus> getAccountStatusByBureauScoreId(Long id);
 }

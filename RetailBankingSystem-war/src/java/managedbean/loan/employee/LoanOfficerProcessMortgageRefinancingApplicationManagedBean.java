@@ -104,7 +104,7 @@ public class LoanOfficerProcessMortgageRefinancingApplicationManagedBean impleme
     private Integer customerPropertyTenureDuration;
     private Integer customerPropertyTenureFromYear;
 
-    //loan - new purchase
+    //loan - refinancing
     private String customerExistingFinancer;
     private Double customerOutstandingLoan;
     private Integer customerOutstandingYear;
@@ -134,6 +134,7 @@ public class LoanOfficerProcessMortgageRefinancingApplicationManagedBean impleme
     public void init(){
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         applicationId = (Long) ec.getFlash().get("applicationId"); 
+        System.out.println(applicationId);
         
         ra = loanApplicationSessionBeanLocal.getRefinancingApplicationById(applicationId);
         
@@ -219,7 +220,7 @@ public class LoanOfficerProcessMortgageRefinancingApplicationManagedBean impleme
     }
     
     public void calculateInstalment(){
-        instalmentSuggested = (0.035/12*amountGranted) / (1 - Math.pow((1+0.035/12),-periodSuggested*12));
+        instalmentSuggested = (0.035/12*customerOutstandingLoan) / (1 - Math.pow((1+0.035/12),-periodSuggested*12));
         DecimalFormat df = new DecimalFormat("0.00");
         instalmentSuggested = Double.valueOf(df.format(instalmentSuggested));
     }

@@ -364,23 +364,24 @@
                 </p:panelGrid>
                 <p:panelGrid>
                     <p:commandButton value="Calculate" actionListener="#{loanOfficerProcessMortgagePurchaseApplicationManagedBean.calculateInstalment}" update="instalment"/>
-                    <p:commandButton value="Approve" actionListener="#{loanOfficerProcessMortgagePurchaseApplicationManagedBean.approveLoanRequest}" />
-                    <p:commandButton value="Reject" actionListener="#{loanOfficerProcessMortgagePurchaseApplicationManagedBean.rejectLoanRequest}"/>
+                    <p:commandButton value="Approve" onclick="PF('approveDialog').show();" />
+                    <p:commandButton value="Reject" onclick="PF('rejectDialog').show();"/>
                 </p:panelGrid>
             </div>
         </h:form>
         
-<!--        <h:form>
-            <p:confirmDialog widgetVar="approveLoanDialog" header="Loan Approval" message="Are you sure to approve the loan? ">
+        <h:form>
+            <p:confirmDialog widgetVar="approveDialog" header="Loan Approval" message="Are you sure to approve this application?">
                 <p:commandButton value="Approve" actionListener="#{loanOfficerProcessMortgagePurchaseApplicationManagedBean.approveLoanRequest}"/>
-                <p:commandButton value="Cancel" onclick="PF('approveLoanDialog').hide();" />
+                <p:commandButton value="Cancel" onclick="PF('approveDialog').hide();" />
             </p:confirmDialog>
         </h:form>
         
         <h:form>
-            <p:confirmDialog widgetVar="approveLoanDialog">
-
+            <p:confirmDialog widgetVar="rejectDialog" header="Loan Rejection" message="Are you sure to reject this application?">
+                <p:commandButton value="Reject" actionListener="#{loanOfficerProcessMortgagePurchaseApplicationManagedBean.rejectLoanRequest}"/>
+                <p:commandButton value="Cancel" onclick="PF('rejectDialog').hide();" />
             </p:confirmDialog>
-        </h:form>-->
+        </h:form>
     </ui:define>
 </ui:composition>

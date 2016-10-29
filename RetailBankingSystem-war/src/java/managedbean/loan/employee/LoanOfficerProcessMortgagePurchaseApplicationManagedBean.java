@@ -158,7 +158,7 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
         debts = customer.getCustomerDebt();
         property = customer.getCustomerProperty();
         cr = customer.getBureauScore();
-        accountStatus = cr.getAccountStatus();
+        accountStatus = loanApplicationSessionBeanLocal.getAccountStatusByBureauScoreId(cr.getId());
         defaultRecords = cr.getDefaultRecords();
         
         customerSalutation = customer.getCustomerSalutation();

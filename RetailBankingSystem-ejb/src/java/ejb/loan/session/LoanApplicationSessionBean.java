@@ -315,5 +315,11 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
         MortgageLoanApplication application = em.find(MortgageLoanApplication.class, applicationId);
         application.setApplicationStatus("pending");
     }
+    
+    @Override
+    public List<CreditReportAccountStatus> getAccountStatusByBureauScoreId(Long id){
+        CreditReportBureauScore report = em.find(CreditReportBureauScore.class, id);
+        return report.getAccountStatus();
+    }
 
 }

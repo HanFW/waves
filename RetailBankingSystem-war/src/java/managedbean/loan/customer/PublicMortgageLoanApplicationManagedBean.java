@@ -224,17 +224,14 @@ public class PublicMortgageLoanApplicationManagedBean implements Serializable {
     public void addLoanApplicationFast() throws IOException {
 
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        customerPropertyOwners.add("Han Fengwei");
+        customerPropertyOwners.add("Dai Hailang");
 
+        //add HDB - New Purchase
         Long newCustomerBasicId = cRMCustomerSessionBeanLocal.updateCustomerBasic("G11223344",
                 "hanfengwei96@gmail.com", "83114121", "China", "China", "Single",
                 "Student", "AfterYou", "customer address", "118425");
 
-//        Long newCustomerBasicId = cRMCustomerSessionBeanLocal.addNewCustomerBasic("Han Fengwei",
-//                "Ms", "G1320505T",
-//                "Female", "hanfengwei96@gmail.com", "83114121", "07/Mar/1996",
-//                "China", "China", "Chinese",
-//                "Single", "Student", "NUS",
-//                "customer address", "118425", null, null, null, "Yes");
         Long newCustomerAdvancedId = cRMCustomerSessionBeanLocal.addNewCustomerAdvanced(3, "Degree", "Rented",
                 3, "Government", 5, "Employee",
                 10000, "HDB", "company address",
@@ -246,17 +243,10 @@ public class PublicMortgageLoanApplicationManagedBean implements Serializable {
         ec.getFlash().put("amountRequired", BigDecimal.valueOf(500000));
         ec.getFlash().put("tenure", 20);
 
-//        Long newCustomerAdvancedId = cRMCustomerSessionBeanLocal.updateCustomerAdvanced("G1320505T", 
-//                3, "Degree", "Rented", 3, "Government", 
-//                5, "Employee", 10000, "HDB", "company address", 
-//                "118426", "Senior Management", "CEO", "Monsta BBQ", 3,
-//                2000, "other income source");
         ArrayList<CustomerDebt> debts = new ArrayList<CustomerDebt>();
         debts.add(loanApplicationSessionBeanLocal.addNewCustomerDebt("car loan", "DBS", 500000, 1000));
         debts.add(loanApplicationSessionBeanLocal.addNewCustomerDebt("HDB loan", "UOB", 800000, 2000));
-
-        customerPropertyOwners.add("Han Fengwei");
-        customerPropertyOwners.add("Dai Hailang");
+        
         CustomerProperty cp = new CustomerProperty();
         cp.create("property address", "118427", customerPropertyOwners, "3-Room",
                 170.8, 200, "Completed",
@@ -268,6 +258,97 @@ public class PublicMortgageLoanApplicationManagedBean implements Serializable {
                 5000, 2012, "yes", 30000,
                 20000, 30000, "Employee");
         loanApplicationSessionBeanLocal.submitLoanApplication(true, false, newCustomerBasicId, newCustomerAdvancedId, debts, cp, mortgage, null, "purchase", "HDB-Fixed");
+
+        //add HDB - refinancing
+        Long customerId2 = cRMCustomerSessionBeanLocal.addNewCustomerBasic("Dai Hailang",
+                "Mr", "G22334455",
+                "Male", "hanfengwei96@gmail.com", "83114121", "08/Mar/1993",
+                "China", "China", "Chinese",
+                "Single", "Student", "AfterYou",
+                "customer address", "118425", null, null, null, null);
+        
+        Long customerAdvancedId2 = cRMCustomerSessionBeanLocal.addNewCustomerAdvanced(3, "Degree", "Rented",
+                3, "CEO", 5, "Self-Employed",
+                10000, "HDB", "company address",
+                "118426", "Senior Management", "CEO",
+                "Monsta BBQ", 3, 2000,
+                "other income source");
+        
+        ArrayList<CustomerDebt> debts2 = new ArrayList<CustomerDebt>();
+        debts2.add(loanApplicationSessionBeanLocal.addNewCustomerDebt("car loan", "DBS", 500000, 1000));
+        debts2.add(loanApplicationSessionBeanLocal.addNewCustomerDebt("HDB loan", "UOB", 800000, 2000));
+
+        CustomerProperty cp2 = new CustomerProperty();
+        cp2.create("property address", "118427", customerPropertyOwners, "3-Room",
+                170.8, 200, "Completed",
+                null, "Owner Occupation", "Leasehold",
+                99, 2012, null);
+        RefinancingApplication refinancing2 = new RefinancingApplication();
+        refinancing2.create("HDB - Refinancing", 450000, 17, "POSB",
+                            450000, 15, 3, 50000, "Self-Employed");
+        loanApplicationSessionBeanLocal.submitLoanApplication(false, false, customerId2, customerAdvancedId2, debts2, cp2, null, refinancing2, "refinancing", "HDB-Floating");
+        
+        //add Private Property - Refinancing
+        Long customerId3 = cRMCustomerSessionBeanLocal.addNewCustomerBasic("Guo Ziyu",
+                "Mr", "G33445566",
+                "Male", "hanfengwei96@gmail.com", "83114121", "08/Mar/1993",
+                "China", "China", "Chinese",
+                "Single", "Student", "AfterYou",
+                "customer address", "118425", null, null, null, null);
+        
+        Long customerAdvancedId3 = cRMCustomerSessionBeanLocal.addNewCustomerAdvanced(3, "Degree", "Rented",
+                3, "CEO", 5, "Self-Employed",
+                10000, "HDB", "company address",
+                "118426", "Senior Management", "CEO",
+                "Monsta BBQ", 3, 2000,
+                "other income source");
+        
+        ArrayList<CustomerDebt> debts3 = new ArrayList<CustomerDebt>();
+        debts3.add(loanApplicationSessionBeanLocal.addNewCustomerDebt("car loan", "DBS", 500000, 1000));
+        debts3.add(loanApplicationSessionBeanLocal.addNewCustomerDebt("HDB loan", "UOB", 800000, 2000));
+
+        CustomerProperty cp3 = new CustomerProperty();
+        cp3.create("property address", "118427", customerPropertyOwners, "Bungalow",
+                170.8, 200, "Completed",
+                null, "Owner Occupation", "Leasehold",
+                99, 2012, null);
+        RefinancingApplication refinancing3 = new RefinancingApplication();
+        refinancing3.create("Private Property - Refinancing", 450000, 17, "POSB",
+                            450000, 15, 3, 50000, "Self-Employed");
+        loanApplicationSessionBeanLocal.submitLoanApplication(false, false, customerId3, customerAdvancedId3, debts3, cp3, null, refinancing3, "refinancing", "Private Property-Floating");
+
+        //add Private Property - New Purchase
+        Long customerId4 = cRMCustomerSessionBeanLocal.addNewCustomerBasic("Yang Shuanghe",
+                "Ms", "G44556677",
+                "Male", "hanfengwei96@gmail.com", "83114121", "08/Mar/1993",
+                "China", "China", "Chinese",
+                "Single", "Student", "AfterYou",
+                "customer address", "118425", null, null, null, null);
+
+        Long customerAdvancedId4 = cRMCustomerSessionBeanLocal.addNewCustomerAdvanced(3, "Degree", "Rented",
+                3, "Government", 5, "Employee",
+                10000, "HDB", "company address",
+                "118426", "Senior Management", "CEO",
+                "NTU", 3, 2000,
+                "other income source");
+
+
+        ArrayList<CustomerDebt> debts4 = new ArrayList<CustomerDebt>();
+        debts4.add(loanApplicationSessionBeanLocal.addNewCustomerDebt("car loan", "DBS", 500000, 1000));
+        debts4.add(loanApplicationSessionBeanLocal.addNewCustomerDebt("HDB loan", "UOB", 800000, 2000));
+
+        CustomerProperty cp4 = new CustomerProperty();
+        cp4.create("property address", "118427", customerPropertyOwners, "Bungalow",
+                170.8, 200, "Completed",
+                null, "Owner Occupation", "Leasehold",
+                99, 2012, null);
+        MortgageLoanApplication mortgage4 = new MortgageLoanApplication();
+        mortgage4.create("Private Property - New Purchase", 500000, 20, 550000,
+                new Date(), "Developer/HDB", "no", null, "yes",
+                5000, 2012, "yes", 30000,
+                20000, 30000, "Employee");
+        loanApplicationSessionBeanLocal.submitLoanApplication(false, false, customerId4, customerAdvancedId4, debts4, cp4, mortgage4, null, "purchase", "Private Property-Fixed");
+        
         ec.redirect(ec.getRequestContextPath() + "/web/merlionBank/loan/publicMortgageLoanApplicationDone.xhtml?faces-redirect=true");
     }
 
@@ -284,7 +365,6 @@ public class PublicMortgageLoanApplicationManagedBean implements Serializable {
             }
         } else {
             //create or update CustomerBasic
-            String newCustomer = "Yes";
             if (customerSalutation.equals("Others")) {
                 customerSalutation = customerSalutationOthers;
             }
@@ -305,7 +385,7 @@ public class PublicMortgageLoanApplicationManagedBean implements Serializable {
                         customerGender, customerEmail, customerMobile, dateOfBirth,
                         customerNationality, customerCountryOfResidence, customerRace,
                         customerMaritalStatus, customerOccupation, customerCompanyName,
-                        customerAddress, customerPostal, null, null, customerSignature.getBytes(), newCustomer);
+                        customerAddress, customerPostal, null, null, customerSignature.getBytes(), null);
             }
 
             //create CustomerAdvanced
