@@ -6,6 +6,7 @@ import ejb.deposit.session.BankAccountSessionBeanLocal;
 import ejb.deposit.session.TransactionSessionBeanLocal;
 import ejb.payment.entity.NonStandingGIRO;
 import ejb.payment.entity.RegisteredBillingOrganization;
+import ejb.payment.entity.StandingGIRO;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -40,7 +41,7 @@ public class NonStandingGIROSessionBean implements NonStandingGIROSessionBeanLoc
     @Override
     public Long addNewNonStandingGIRO(String billingOrganizationName, String billReference, String bankAccountNum,
             String bankAccountNumWithType, String paymentFrequency, String paymentAmt,
-            String giroType, Long customerBasicId) {
+            String giroType, String nonStandingStatus, Long customerBasicId) {
 
         NonStandingGIRO nonStandingGIRO = new NonStandingGIRO();
 
@@ -51,6 +52,7 @@ public class NonStandingGIROSessionBean implements NonStandingGIROSessionBeanLoc
         nonStandingGIRO.setPaymentAmt(paymentAmt);
         nonStandingGIRO.setPaymentFrequency(paymentFrequency);
         nonStandingGIRO.setGiroType(giroType);
+        nonStandingGIRO.setNonStandingStatus(nonStandingStatus);
         nonStandingGIRO.setCustomerBasic(bankAccountSessionBeanLocal.retrieveCustomerBasicById(customerBasicId));
 
         entityManager.persist(nonStandingGIRO);
@@ -111,6 +113,7 @@ public class NonStandingGIROSessionBean implements NonStandingGIROSessionBeanLoc
         NonStandingGIRO nonStandingGiro = retrieveNonStandingGIROById(giroId);
 
         nonStandingGiro.setPaymentAmt(paymentAmt);
+        nonStandingGiro.setNonStandingStatus("Complete");
     }
 
     @Override
@@ -286,6 +289,12 @@ public class NonStandingGIROSessionBean implements NonStandingGIROSessionBeanLoc
             System.out.println("Entity not found error: " + enfe.getMessage());
             return new ArrayList<NonStandingGIRO>();
         }
+    }
+    
+    @Override
+    public void updateNonStandingStatus(Long giroId, String paymentFrequency) {
+        NonStandingGIRO nonStandingGiro = retrieveNonStandingGIROById(giroId);
+        nonStandingGiro.setPaymentFrequency(paymentFrequency);
     }
 
     private void sachNonStandingGIROTransferMTD(java.lang.String fromBankAccountNum, java.lang.String toBankAccountNum, java.lang.Double transferAmt) {

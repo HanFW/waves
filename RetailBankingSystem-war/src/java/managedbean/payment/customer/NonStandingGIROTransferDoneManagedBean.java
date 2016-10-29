@@ -56,6 +56,7 @@ public class NonStandingGIROTransferDoneManagedBean implements Serializable {
     private Double fromBankAccountAvailableBalance;
     private Double fromBankAccountTotalBalance;
     private Long giroId;
+    private String transactionFrequencyForOneTime;
 
     private ExternalContext ec;
 
@@ -159,6 +160,14 @@ public class NonStandingGIROTransferDoneManagedBean implements Serializable {
         this.giroId = giroId;
     }
 
+    public String getTransactionFrequencyForOneTime() {
+        return transactionFrequencyForOneTime;
+    }
+
+    public void setTransactionFrequencyForOneTime(String transactionFrequencyForOneTime) {
+        this.transactionFrequencyForOneTime = transactionFrequencyForOneTime;
+    }
+
     public void nonStandingGIROTransfer() throws IOException {
 
         ec = FacesContext.getCurrentInstance().getExternalContext();
@@ -170,7 +179,7 @@ public class NonStandingGIROTransferDoneManagedBean implements Serializable {
         String bankAccountNum = giro.getBankAccountNum();
 
         BankAccount bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountByNum(bankAccountNum);
-        
+
         Double currentAvailableBankAccountBalance = Double.valueOf(bankAccount.getAvailableBankAccountBalance()) - paymentAmt;
         bankAccountSessionBeanLocal.updateBankAccountAvailableBalance(bankAccountNum, currentAvailableBankAccountBalance.toString());
 
@@ -227,20 +236,25 @@ public class NonStandingGIROTransferDoneManagedBean implements Serializable {
 
         }
     }
-    
+
     public void delete() {
-        
+
         ec = FacesContext.getCurrentInstance().getExternalContext();
-        
+
         GIRO giro = gIROSessionBeanLocal.retrieveGIROById(giroId);
-        
+
         if (giro.getGiroId() == null) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! GIRO does not exist.", "Failed!"));
         } else {
             gIROSessionBeanLocal.deleteGIRO(giroId);
-            
+
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Successfully! GIRO deleted Successfully.", "Successfuly!"));
         }
+    }
+
+    public void changeToRecurrentPayment() {
+        nonStandingGIROSessionBeanLocal.updateNonStandingStatus(giroId, transactionFrequencyForOneTime);
+        transactionFrequencyForOneTime = null;
     }
 
     private void sachNonStandingGIROTransferMTD(java.lang.String fromBankAccountNum, java.lang.String toBankAccountNum, java.lang.Double transferAmt) {

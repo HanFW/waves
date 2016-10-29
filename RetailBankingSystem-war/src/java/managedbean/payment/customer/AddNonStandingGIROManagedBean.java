@@ -23,6 +23,7 @@ import javax.faces.view.ViewScoped;
 @ViewScoped
 
 public class AddNonStandingGIROManagedBean implements Serializable {
+
     @EJB
     private NonStandingGIROSessionBeanLocal nonStandingGIROSessionBeanLocal;
 
@@ -219,17 +220,17 @@ public class AddNonStandingGIROManagedBean implements Serializable {
     public void addNewBillingOrganization() throws IOException {
 
         ec = FacesContext.getCurrentInstance().getExternalContext();
-        
+
         CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
         giroType = "Non Standing";
 
         if (transferMethod.equals("One Time")) {
             paymentFrequency = "One Time";
             bankAccountNum = handleAccountString(bankAccountNumWithType);
-            
+
             giroId = nonStandingGIROSessionBeanLocal.addNewNonStandingGIRO(billingOrganization,
                     billReference, bankAccountNum, bankAccountNumWithType,
-                    paymentFrequency, paymentAmt, giroType, customerBasic.getCustomerBasicId());
+                    paymentFrequency, paymentAmt, giroType, "Incompleted", customerBasic.getCustomerBasicId());
 
             statusMessage = "Your new billing organization has been added!";
             Calendar cal = Calendar.getInstance();
@@ -245,10 +246,10 @@ public class AddNonStandingGIROManagedBean implements Serializable {
 
         } else {
             bankAccountNum = handleAccountString(bankAccountNumWithType);
-            
+
             giroId = nonStandingGIROSessionBeanLocal.addNewNonStandingGIRO(billingOrganization, billReference,
                     bankAccountNum, bankAccountNumWithType, transferFrequency,
-                    paymentAmt, giroType, customerBasic.getCustomerBasicId());
+                    paymentAmt, giroType, "Incompleted", customerBasic.getCustomerBasicId());
 
             statusMessage = "Your new billing organization has been added!";
             Calendar cal = Calendar.getInstance();
@@ -263,7 +264,7 @@ public class AddNonStandingGIROManagedBean implements Serializable {
             ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/payment/customerAddBillingOrganizationDone.xhtml?faces-redirect=true");
         }
     }
-    
+
     private String handleAccountString(String bankAccountNumWithType) {
 
         String[] bankAccountNums = bankAccountNumWithType.split("-");
