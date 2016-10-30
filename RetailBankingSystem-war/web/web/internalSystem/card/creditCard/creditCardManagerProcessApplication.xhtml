@@ -115,7 +115,7 @@
                                 <p:media value="/Users/aaa/Desktop/ID/#{creditCardManagerProcessManagedBean.customerIdentificationNum}.pdf" width="100%" height="300px"/>  
                             </p:tab>
                             <p:tab title="Proof of Income" rendered="true">
-                                <p:media value="/Users/aaa/Desktop/supportingDoc/#{creditCardManagerProcessManagedBean.customerIdentificationNum}-income.pdf" width="100%" height="300px"/>  
+                                <p:media value="/#{creditCardManagerProcessManagedBean.customerIdentificationNum}-income.pdf" width="100%" height="300px"/>  
                             </p:tab>                                 
                         </p:accordionPanel>
                     </p:tab>
@@ -221,9 +221,10 @@
             <div class="ui-g-2">
                 <p:panelGrid columns="1">
 
-                    <p:outputLabel  style="font-weight: bold;" value="Credit Limit"/>
-                    <p:inputText value="#{creditCardManagerProcessManagedBean.creditLimit}"/>
-
+                    <p:outputLabel style="font-weight: bold;" value="Credit Limit"/>
+                    <p:inputText id="creditlimit" required="true" requiredMessage="Please indicate the approved credit limit" value="#{creditCardManagerProcessManagedBean.creditLimit}"/>
+                    <p:message for="creditlimit"/>
+                    
                 </p:panelGrid>
                 <p:panelGrid>
                     <p:commandButton value="Approve" actionListener="#{creditCardManagerProcessManagedBean.approveRequest}" />

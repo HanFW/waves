@@ -5,6 +5,7 @@
  */
 package ejb.card.session;
 
+import ejb.card.entity.CreditCard;
 import ejb.card.entity.DebitCard;
 import ejb.customer.entity.CustomerBasic;
 import ejb.infrastructure.session.CustomerEmailSessionBeanLocal;
@@ -71,6 +72,53 @@ public class CardActivationManagementSessionBean implements CardActivationManage
              }
              else {
                  debitCard.setStatus("close");
+             }
+                     
+         }
+     }
+     
+    }
+    
+    @Override
+    public void handleCreditCardActivation() {
+     Query q=em.createQuery("SELECT c FROM CreditCard c WHERE c.status =:status");
+     q.setParameter("status","Approved");
+     List<CreditCard> allCreditCards=q.getResultList();
+     if(!allCreditCards.isEmpty()){
+         System.out.println("update the remaining activation months of all the credit cards");
+         for(int i=0;i<allCreditCards.size();i++){
+             int remainingActivationDays = allCreditCards.get(i).getRemainingActivationDays();
+             int newRemainingActivationDays = remainingActivationDays-1;
+             allCreditCards.get(i).setRemainingActivationDays(newRemainingActivationDays);
+         }
+     }
+     
+     System.out.println("find all cards whose activation days is less than 3 days");
+     Query query=em.createQuery("SELECT c FROM CreditCard c WHERE c.remainingActivationDays <=3 AND c.status=:status");
+     String requiredStatus = "Approved";
+     query.setParameter("status",requiredStatus);
+     
+     List<CreditCard> findCreditCards=q.getResultList();
+     if(!findCreditCards.isEmpty()){
+         for(int j=0;j<findCreditCards.size();j++){
+             CreditCard creditCard = findCreditCards.get(j);
+             CustomerBasic findCustomer = creditCard.getCustomerBasic();
+             String creditCardTypeName = creditCard.getCreditCardType().getCreditCardTypeName();
+             String cardNumber = creditCard.getCardNum();
+             int remainingActivationDays = creditCard.getRemainingActivationDays();
+             
+             
+             if(remainingActivationDays>0){
+                     
+             Map emailActions =new HashMap();
+             emailActions.put("cardTypeName",creditCardTypeName);
+             emailActions.put("cardNumber", cardNumber);
+             emailActions.put("remainingDays",remainingActivationDays);
+             
+             customerEmailSessionBeanLocal.sendEmail(findCustomer, "cardToBeActivated", emailActions);
+             }
+             else {
+                 creditCard.setStatus("close");
              }
                      
          }

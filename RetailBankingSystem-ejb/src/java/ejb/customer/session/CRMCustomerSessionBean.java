@@ -574,4 +574,14 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
         entityManager.flush();
         return ca.getCustomerAdvancedId();
     }
+    
+    @Override
+    public boolean hasOnlineBankingAcc(Long customerBasicId){
+        CustomerBasic customer = entityManager.find(CustomerBasic.class, customerBasicId);
+        if (customer.getCustomerOnlineBankingAccountNum().isEmpty()){
+            return false;
+        }else{
+            return true;
+        }
+    }
 }

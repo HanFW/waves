@@ -319,6 +319,7 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
         System.out.println("*** 2000MS Timer timeout");
 
         cardActivationManagementSessionBeanLocal.handleCardActivation();
+        cardActivationManagementSessionBeanLocal.handleCreditCardActivation();
 
     }
     

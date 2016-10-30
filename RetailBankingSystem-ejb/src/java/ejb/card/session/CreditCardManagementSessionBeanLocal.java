@@ -5,6 +5,7 @@
  */
 package ejb.card.session;
 
+import ejb.card.entity.PrincipalCard;
 import javax.ejb.Local;
 
 /**
@@ -17,4 +18,5 @@ public interface CreditCardManagementSessionBeanLocal {
     public String reportCreditCardLoss(String creditCardNum, String identificationNum);
     public void replaceDamagedCreditCard(String creditCardNum);
     public String cancelCreditCard(String creditCardNum, String securityCode);
+    public PrincipalCard getPrincipalByCardNum (String cardNum);
 }

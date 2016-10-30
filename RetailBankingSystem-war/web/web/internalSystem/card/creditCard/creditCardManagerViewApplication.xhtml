@@ -8,22 +8,41 @@
                 template="/WEB-INF/internalSystemTemplate.xhtml">
 
     <ui:define name="content">
-        <p:dataTable var="creditCard" value="#{creditCardManagerViewManagedBean.creditCards}">
+        <p:dataTable var="principalCard" value="#{creditCardManagerViewManagedBean.principalCards}">
             <p:column headerText="Applicant">
-                <h:outputText value="#{creditCard.cardHolderName}" />
+                <h:outputText value="#{principalCard.cardHolderName}" />
             </p:column>
             <p:column headerText="Card Type">
-                <h:outputText value="#{creditCard.creditCardType.creditCardTypeName}" />
+                <h:outputText value="#{principalCard.creditCardType.creditCardTypeName}" />
             </p:column>
             <p:column headerText="Credit Limit">
-                <h:outputText value="#{creditCard.creditLimit}" />
+                <h:outputText value="#{principalCard.creditLimit}" />
             </p:column>
             <p:column headerText="Status">
-                <h:outputText value="#{creditCard.status}" />
+                <h:outputText value="#{principalCard.status}" />
             </p:column>
             <p:column>
-                <p:commandButton value="View" action="#{creditCardManagerViewManagedBean.viewApplication(creditCard.cardId)}"/>
+                <p:commandButton value="Process" action="#{creditCardManagerViewManagedBean.viewApplication(principalCard.cardId)}"/>
             </p:column>
         </p:dataTable>
+        
+        <p:dataTable var="supplementaryCard" value="#{creditCardManagerViewManagedBean.supplementaryCards}">
+            <p:column headerText="Applicant">
+                <h:outputText value="#{supplementaryCard.cardHolderName}" />
+            </p:column>
+            <p:column headerText="Card Type">
+                <h:outputText value="#{supplementaryCard.creditCardType.creditCardTypeName}" />
+            </p:column>
+            <p:column headerText="Relationship">
+                <h:outputText value="#{supplementaryCard.relationship}" />
+            </p:column>
+            <p:column headerText="Status">
+                <h:outputText value="#{supplementaryCard.status}" />
+            </p:column>
+            <p:column>
+                <p:commandButton value="Process" action="#{creditCardManagerViewManagedBean.viewSupplementaryApplication(supplementaryCard.cardId)}"/>
+            </p:column>
+        </p:dataTable>
+        
     </ui:define>
 </ui:composition>
