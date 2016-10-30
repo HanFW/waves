@@ -8,6 +8,7 @@ package managedbean.loan.employee;
 import ejb.loan.entity.LoanApplication;
 import ejb.loan.session.LoanApplicationSessionBeanLocal;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -25,11 +26,11 @@ import javax.faces.view.ViewScoped;
 public class LoanManagerViewAllLoanApplicationsManagedBean implements Serializable{
     @EJB
     private LoanApplicationSessionBeanLocal loanApplicationSessionBeanLocal;
-    private List<LoanApplication> approvedLoanApplications;
-    private List<LoanApplication> startedLoanApplications;
-    private List<LoanApplication> pendingLoanApplications;
-    private List<LoanApplication> inProgressLoanApplications;
-    
+    private List<LoanApplication> appraisalApplications;
+    private List<LoanApplication> pendingMortgageApplications;
+    private List<LoanApplication> inprogressMortgageApplications;
+    private List<LoanApplication> approvedMortgageApplications;
+
     /**
      * Creates a new instance of LoanManagerStartNewLoanManagedBean
      */
@@ -38,10 +39,18 @@ public class LoanManagerViewAllLoanApplicationsManagedBean implements Serializab
     
     @PostConstruct
     public void init() {
-        approvedLoanApplications = loanApplicationSessionBeanLocal.getAllApprovedLoans();
-        startedLoanApplications = loanApplicationSessionBeanLocal.getAllStartedLoans();
-        pendingLoanApplications = loanApplicationSessionBeanLocal.getAllLoanApplications();
-        inProgressLoanApplications = loanApplicationSessionBeanLocal.getAllInProgressLoans();
+        ArrayList<String> status = new ArrayList<String>();
+        status.add("waiting for valuation");
+        appraisalApplications = loanApplicationSessionBeanLocal.getLoanApplications(status, "mortgage");
+        status = new ArrayList<String>();
+        status.add("pending");
+        pendingMortgageApplications = loanApplicationSessionBeanLocal.getLoanApplications(status, "mortgage");
+        status = new ArrayList<String>();
+        status.add("in progress");
+        inprogressMortgageApplications = loanApplicationSessionBeanLocal.getLoanApplications(status, "mortgage");
+        status = new ArrayList<String>();
+        status.add("approved");
+        approvedMortgageApplications = loanApplicationSessionBeanLocal.getLoanApplications(status, "mortgage");
     }
     
     public void startNewLoan(Long applicationId){
@@ -50,10 +59,18 @@ public class LoanManagerViewAllLoanApplicationsManagedBean implements Serializab
         String msg = "Loan - " + applicationId + " start successfully";
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, null);
         context.addMessage(null, message);
-        approvedLoanApplications = loanApplicationSessionBeanLocal.getAllApprovedLoans();
-        startedLoanApplications = loanApplicationSessionBeanLocal.getAllStartedLoans();
-        pendingLoanApplications = loanApplicationSessionBeanLocal.getAllLoanApplications();
-        inProgressLoanApplications = loanApplicationSessionBeanLocal.getAllInProgressLoans();
+        ArrayList<String> status = new ArrayList<String>();
+        status.add("waiting for valuation");
+        appraisalApplications = loanApplicationSessionBeanLocal.getLoanApplications(status, "mortgage");
+        status = new ArrayList<String>();
+        status.add("pending");
+        pendingMortgageApplications = loanApplicationSessionBeanLocal.getLoanApplications(status, "mortgage");
+        status = new ArrayList<String>();
+        status.add("in progress");
+        inprogressMortgageApplications = loanApplicationSessionBeanLocal.getLoanApplications(status, "mortgage");
+        status = new ArrayList<String>();
+        status.add("approved");
+        approvedMortgageApplications = loanApplicationSessionBeanLocal.getLoanApplications(status, "mortgage");
     }
 
     public LoanApplicationSessionBeanLocal getLoanApplicationSessionBeanLocal() {
@@ -64,36 +81,36 @@ public class LoanManagerViewAllLoanApplicationsManagedBean implements Serializab
         this.loanApplicationSessionBeanLocal = loanApplicationSessionBeanLocal;
     }
 
-    public List<LoanApplication> getApprovedLoanApplications() {
-        return approvedLoanApplications;
+    public List<LoanApplication> getAppraisalApplications() {
+        return appraisalApplications;
     }
 
-    public void setApprovedLoanApplications(List<LoanApplication> approvedLoanApplications) {
-        this.approvedLoanApplications = approvedLoanApplications;
+    public void setAppraisalApplications(List<LoanApplication> appraisalApplications) {
+        this.appraisalApplications = appraisalApplications;
     }
 
-    public List<LoanApplication> getStartedLoanApplications() {
-        return startedLoanApplications;
+    public List<LoanApplication> getPendingMortgageApplications() {
+        return pendingMortgageApplications;
     }
 
-    public void setStartedLoanApplications(List<LoanApplication> startedLoanApplications) {
-        this.startedLoanApplications = startedLoanApplications;
+    public void setPendingMortgageApplications(List<LoanApplication> pendingMortgageApplications) {
+        this.pendingMortgageApplications = pendingMortgageApplications;
     }
 
-    public List<LoanApplication> getPendingLoanApplications() {
-        return pendingLoanApplications;
+    public List<LoanApplication> getInprogressMortgageApplications() {
+        return inprogressMortgageApplications;
     }
 
-    public void setPendingLoanApplications(List<LoanApplication> pendingLoanApplications) {
-        this.pendingLoanApplications = pendingLoanApplications;
+    public void setInprogressMortgageApplications(List<LoanApplication> inprogressMortgageApplications) {
+        this.inprogressMortgageApplications = inprogressMortgageApplications;
     }
 
-    public List<LoanApplication> getInProgressLoanApplications() {
-        return inProgressLoanApplications;
+    public List<LoanApplication> getApprovedMortgageApplications() {
+        return approvedMortgageApplications;
     }
 
-    public void setInProgressLoanApplications(List<LoanApplication> inProgressLoanApplications) {
-        this.inProgressLoanApplications = inProgressLoanApplications;
+    public void setApprovedMortgageApplications(List<LoanApplication> approvedMortgageApplications) {
+        this.approvedMortgageApplications = approvedMortgageApplications;
     }
-
+    
 }

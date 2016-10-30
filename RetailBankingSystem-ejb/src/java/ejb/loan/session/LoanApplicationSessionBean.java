@@ -137,6 +137,61 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
                         break;
                 }
             }
+        }else if(loanType.equals("mortgage")){
+            for (String loan : loans) {
+                switch (loan) {
+                    case "waiting for valuation":
+                        Query query1 = em.createQuery("SELECT ma FROM LoanApplication ma WHERE ma.applicationStatus = :applicationStatus "
+                                + "AND (ma.loanType =:loanType1 OR ma.loanType =:loanType2 OR ma.loanType =:loanType3 OR ma.loanType =:loanType4)");
+                        query1.setParameter("applicationStatus", "waiting for valuation");
+                        query1.setParameter("loanType1", "HDB - New Purchase");
+                        query1.setParameter("loanType2", "HDB - Refinancing");
+                        query1.setParameter("loanType3", "Private Property - New Purchase");
+                        query1.setParameter("loanType4", "Private Property - Refinancing");
+                        applications.addAll(query1.getResultList());
+                        break;
+                    case "pending":
+                        Query query2 = em.createQuery("SELECT ma FROM LoanApplication ma WHERE ma.applicationStatus = :applicationStatus "
+                                + "AND (ma.loanType =:loanType1 OR ma.loanType =:loanType2 OR ma.loanType =:loanType3 OR ma.loanType =:loanType4)");
+                        query2.setParameter("applicationStatus", "pending");
+                        query2.setParameter("loanType1", "HDB - New Purchase");
+                        query2.setParameter("loanType2", "HDB - Refinancing");
+                        query2.setParameter("loanType3", "Private Property - New Purchase");
+                        query2.setParameter("loanType4", "Private Property - Refinancing");
+                        applications.addAll(query2.getResultList());
+                        break;
+                    case "in progress":
+                        Query query3 = em.createQuery("SELECT ma FROM LoanApplication ma WHERE ma.applicationStatus = :applicationStatus "
+                                + "AND (ma.loanType =:loanType1 OR ma.loanType =:loanType2 OR ma.loanType =:loanType3 OR ma.loanType =:loanType4)");
+                        query3.setParameter("applicationStatus", "in progress");
+                        query3.setParameter("loanType1", "HDB - New Purchase");
+                        query3.setParameter("loanType2", "HDB - Refinancing");
+                        query3.setParameter("loanType3", "Private Property - New Purchase");
+                        query3.setParameter("loanType4", "Private Property - Refinancing");
+                        applications.addAll(query3.getResultList());
+                        break;
+                    case "approved":
+                        Query query4 = em.createQuery("SELECT ma FROM LoanApplication ma WHERE ma.applicationStatus = :applicationStatus "
+                                + "AND (ma.loanType =:loanType1 OR ma.loanType =:loanType2 OR ma.loanType =:loanType3 OR ma.loanType =:loanType4)");
+                        query4.setParameter("applicationStatus", "approved");
+                        query4.setParameter("loanType1", "HDB - New Purchase");
+                        query4.setParameter("loanType2", "HDB - Refinancing");
+                        query4.setParameter("loanType3", "Private Property - New Purchase");
+                        query4.setParameter("loanType4", "Private Property - Refinancing");
+                        applications.addAll(query4.getResultList());
+                        break;
+                    case "started":
+                        Query query5 = em.createQuery("SELECT ma FROM LoanApplication ma WHERE ma.applicationStatus = :applicationStatus "
+                                + "AND (ma.loanType =:loanType1 OR ma.loanType =:loanType2 OR ma.loanType =:loanType3 OR ma.loanType =:loanType4)");
+                        query5.setParameter("applicationStatus", "started");
+                        query5.setParameter("loanType1", "HDB - New Purchase");
+                        query5.setParameter("loanType2", "HDB - Refinancing");
+                        query5.setParameter("loanType3", "Private Property - New Purchase");
+                        query5.setParameter("loanType4", "Private Property - Refinancing");
+                        applications.addAll(query5.getResultList());
+                        break;
+                }
+            }
         }else{
             for (String loan : loans) {
                 switch (loan) {
