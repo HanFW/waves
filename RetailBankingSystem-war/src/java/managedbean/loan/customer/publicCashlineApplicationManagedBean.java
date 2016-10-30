@@ -13,6 +13,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
@@ -31,7 +32,7 @@ import org.primefaces.model.UploadedFile;
  */
 @Named(value = "publicCashlineApplicationManagedBean")
 @ViewScoped
-public class publicCashlineApplicationManagedBean {
+public class publicCashlineApplicationManagedBean implements Serializable{
     @EJB
     private CustomerEmailSessionBeanLocal customerEmailSessionBeanLocal;
 
@@ -91,6 +92,8 @@ public class publicCashlineApplicationManagedBean {
     private HashMap uploads = new HashMap();
     
     //confirmation
+    private Integer customerPreferredLimit;
+    private Integer customerMaxLimit;
     private boolean agreement;
     private String customerSignature;
     
@@ -116,6 +119,10 @@ public class publicCashlineApplicationManagedBean {
         uploads.put("identification", false);
         uploads.put("employeeTax", false);
         uploads.put("selfEmployedTax", false);
+    }
+    
+    public void addCashlineApplication(){
+        
     }
     
     public String onFlowProcess(FlowEvent event) {
@@ -367,6 +374,12 @@ public class publicCashlineApplicationManagedBean {
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cannot find the file, please upload again.", "");
             FacesContext.getCurrentInstance().addMessage("selfEmployedTaxUpload", message);
         }
+    }
+    
+    public void calculateMaxLimit(){
+        double grossIncome = customerOtherMonthlyIncome.doubleValue() + customerMonthlyFixedIncome.doubleValue();
+        Double max = grossIncome * 4;
+        customerMaxLimit = max.intValue();
     }
 
     public String getCustomerSalutation() {
@@ -671,6 +684,7 @@ public class publicCashlineApplicationManagedBean {
 
     public void setCustomerOtherMonthlyIncome(BigDecimal customerOtherMonthlyIncome) {
         this.customerOtherMonthlyIncome = customerOtherMonthlyIncome;
+        this.calculateMaxLimit();
     }
 
     public String getCustomerOtherMonthlyIncomeSource() {
@@ -783,6 +797,22 @@ public class publicCashlineApplicationManagedBean {
 
     public void setEmploymentPanelVisible(boolean employmentPanelVisible) {
         this.employmentPanelVisible = employmentPanelVisible;
+    }
+
+    public Integer getCustomerPreferredLimit() {
+        return customerPreferredLimit;
+    }
+
+    public void setCustomerPreferredLimit(Integer customerPreferredLimit) {
+        this.customerPreferredLimit = customerPreferredLimit;
+    }
+
+    public Integer getCustomerMaxLimit() {
+        return customerMaxLimit;
+    }
+
+    public void setCustomerMaxLimit(Integer customerMaxLimit) {
+        this.customerMaxLimit = customerMaxLimit;
     }
     
 }

@@ -886,6 +886,14 @@
                     </h:panelGrid>
 
                     <p:panelGrid>
+                        <p:outputLabel for="customerPreferredLimit" style="font-weight: bold" value="Preferred Credit Limit: "/>
+                        <p:inputText id="customerPreferredLimit" value="#{publicCashlineApplicationManagedBean.customerPreferredLimit}"
+                                     required="true" requiredMessage="Required Field" validatorMessage="Please enter a valid number between 0-#{publicCashlineApplicationManagedBean.customerMaxLimit}" converterMessage="Please enter a valid number">
+                            <f:validateLongRange minimum="0" maximum="#{publicCashlineApplicationManagedBean.customerMaxLimit}"/>
+                            <f:convertNumber integerOnly="true"/>
+                        </p:inputText>
+                        <p:message for="customerPreferredLimit"/>
+
                         <p:messages id="agreementMessages" for="agreement"/>
                         <p:message for="agreement"/>
                         <p:selectBooleanCheckbox id = "agreement" value="#{publicCashlineApplicationManagedBean.agreement}" 
@@ -909,7 +917,7 @@
 
                     <h:panelGrid columns="2" class="ui-lg-6"> 
                         <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('cashlineWizard').back()"/>
-                        <p:commandButton id="saveBtn" value="Submit Request" ajax="false" update="@form" actionListener="#{publicCashlineApplicationManagedBean.addLoanApplication}"/>                        
+                        <p:commandButton id="saveBtn" value="Submit Request" ajax="false" update="@form" actionListener="#{publicCashlineApplicationManagedBean.addCashlineApplication}"/>                        
                     </h:panelGrid>
                 </p:tab>
             </p:wizard>
