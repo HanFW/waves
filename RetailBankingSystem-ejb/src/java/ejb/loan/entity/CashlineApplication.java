@@ -5,13 +5,18 @@
  */
 package ejb.loan.entity;
 
+import ejb.customer.entity.CustomerBasic;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 
 /**
@@ -34,6 +39,30 @@ public class CashlineApplication implements Serializable {
     private int amountGranted;
     private HashMap uploads;
     
+    @ManyToOne(fetch = FetchType.EAGER)
+    private CustomerBasic customerBasic;
+    
+    @ManyToOne(fetch = FetchType.EAGER)
+    private LoanInterestPackage loanInterestPackage;
+    
+    @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    private CashlineAccount cashlineAccount;
+    
+    public void create(int amount, String employmentStatus){
+        this.setAmountRequired(amount);
+        this.setApplicationDate(new Date());
+        this.setApplicationStatus("pending");
+        HashMap docs = new HashMap();
+        docs.put("identification", true);
+        if (employmentStatus.equals("Self-Employed")) {
+            docs.put("selfEmployedTax", true);
+            docs.put("employeeTax", false);
+        } else {
+            docs.put("selfEmployedTax", false);
+            docs.put("employeeTax", true);
+        } 
+        this.setUploads(docs);
+    }
 
     public Long getId() {
         return id;
@@ -89,6 +118,30 @@ public class CashlineApplication implements Serializable {
 
     public void setUploads(HashMap uploads) {
         this.uploads = uploads;
+    }
+
+    public CustomerBasic getCustomerBasic() {
+        return customerBasic;
+    }
+
+    public void setCustomerBasic(CustomerBasic customerBasic) {
+        this.customerBasic = customerBasic;
+    }
+
+    public LoanInterestPackage getLoanInterestPackage() {
+        return loanInterestPackage;
+    }
+
+    public void setLoanInterestPackage(LoanInterestPackage loanInterestPackage) {
+        this.loanInterestPackage = loanInterestPackage;
+    }
+
+    public CashlineAccount getCashlineAccount() {
+        return cashlineAccount;
+    }
+
+    public void setCashlineAccount(CashlineAccount cashlineAccount) {
+        this.cashlineAccount = cashlineAccount;
     }
 
     @Override

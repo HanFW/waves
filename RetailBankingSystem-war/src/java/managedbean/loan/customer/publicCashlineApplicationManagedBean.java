@@ -7,6 +7,7 @@ package managedbean.loan.customer;
 
 import ejb.customer.session.CRMCustomerSessionBean;
 import ejb.infrastructure.session.CustomerEmailSessionBeanLocal;
+import ejb.loan.entity.CashlineApplication;
 import ejb.loan.session.LoanApplicationSessionBeanLocal;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -19,6 +20,7 @@ import java.util.Date;
 import java.util.HashMap;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
@@ -32,7 +34,8 @@ import org.primefaces.model.UploadedFile;
  */
 @Named(value = "publicCashlineApplicationManagedBean")
 @ViewScoped
-public class publicCashlineApplicationManagedBean implements Serializable{
+public class publicCashlineApplicationManagedBean implements Serializable {
+
     @EJB
     private CustomerEmailSessionBeanLocal customerEmailSessionBeanLocal;
 
@@ -86,24 +89,24 @@ public class publicCashlineApplicationManagedBean implements Serializable{
     private BigDecimal customerMonthlyFixedIncome;
     private BigDecimal customerOtherMonthlyIncome;
     private String customerOtherMonthlyIncomeSource;
-    
+
     //documents
     private UploadedFile file;
     private HashMap uploads = new HashMap();
-    
+
     //confirmation
     private Integer customerPreferredLimit;
     private Integer customerMaxLimit;
     private boolean agreement;
     private String customerSignature;
-    
+
     //basic information
     private boolean salutationPanelVisible;
     private boolean nationalitySGPanelVisible;
     private boolean nationalityOthersPanelVisible;
     private boolean nricPanelVisible;
     private boolean passportPanelVisible;
-    
+
     //personal details
     private boolean industryTypePanelVisible;
     private boolean currentPositionPanelVisible;
@@ -111,7 +114,7 @@ public class publicCashlineApplicationManagedBean implements Serializable{
     //employement
     private boolean occupationPanelVisible;
     private boolean employmentPanelVisible;
-    
+
     /**
      * Creates a new instance of publicCashlineApplicationManagedBean
      */
@@ -120,11 +123,183 @@ public class publicCashlineApplicationManagedBean implements Serializable{
         uploads.put("employeeTax", false);
         uploads.put("selfEmployedTax", false);
     }
-    
-    public void addCashlineApplication(){
+
+    public void addCashlineApplicationFast() throws IOException {
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        //create or update CustomerBasic
+        Long newCustomerBasicId;
+
+        boolean isExistingCustomer = cRMCustomerSessionBeanLocal.checkExistingCustomerByIdentification("C11223344");
+        if (isExistingCustomer) {
+            newCustomerBasicId = cRMCustomerSessionBeanLocal.updateCustomerBasic("C11223344", "hanfengwei96@gmail.com", "83114121",
+                    "China", "China", "Single", "Student", "AfterYou",
+                    "Peng Yongxue", "123123");
+        } else {
+            newCustomerBasicId = cRMCustomerSessionBeanLocal.addNewCustomerBasic("Peng Yongxue",
+                    "Ms", "C11223344",
+                    "Female", "hanfengwei96@gmail.com", "83114121", "08/Mar/1993",
+                    "China", "China", "Chinese",
+                    "Single", "Student", "AfterYou",
+                    "address", "123123", null, null, null, null);
+        }
+
+        //create CustomerAdvanced
+        Long newCustomerAdvancedId;
+        boolean hasCustomerAdvanced = cRMCustomerSessionBeanLocal.checkExistingCustomerAdvanced("C11223344");
+        if (hasCustomerAdvanced) {
+            newCustomerAdvancedId = cRMCustomerSessionBeanLocal.updateCustomerAdvanced("C11223344", 2,
+                    "Degree", "Rented", 5, "Government", 6,
+                    "Employee", 3000, "HDB", "company address",
+                    "123123", "Senior Management", "job title", null,
+                    0, 2000, "income source");
+        } else {
+            newCustomerAdvancedId = cRMCustomerSessionBeanLocal.addNewCustomerAdvanced(5, "Degree", "Rented",
+                    5, "Government", 6, "Employee",
+                    3000, "HDB", "company address",
+                    "123123", "Senior Management", "job title",
+                    null, 0, 2000,
+                    "income source");
+        }
+
+        //create cashline application
+        CashlineApplication cashline = new CashlineApplication();
+        cashline.create(15000, "Employee");
+        loanApplicationSessionBeanLocal.submitCashlineApplication(isExistingCustomer, hasCustomerAdvanced, cashline, newCustomerBasicId, newCustomerAdvancedId);
+
         
+        //second cashline application
+        isExistingCustomer = cRMCustomerSessionBeanLocal.checkExistingCustomerByIdentification("G11223344");
+        if (isExistingCustomer) {
+            newCustomerBasicId = cRMCustomerSessionBeanLocal.updateCustomerBasic("G11223344", "hanfengwei96@gmail.com", "83114121",
+                    "China", "China", "Single", "Student", "AfterYou",
+                    "Han Fengwei", "123123");
+        } else {
+            newCustomerBasicId = cRMCustomerSessionBeanLocal.addNewCustomerBasic("Han Fengwei",
+                    "Ms", "G11223344",
+                    "Female", "hanfengwei96@gmail.com", "83114121", "08/Mar/1993",
+                    "China", "China", "Chinese",
+                    "Single", "Student", "AfterYou",
+                    "address", "123123", null, null, null, null);
+        }
+
+        //create CustomerAdvanced
+        hasCustomerAdvanced = cRMCustomerSessionBeanLocal.checkExistingCustomerAdvanced("G11223344");
+        if (hasCustomerAdvanced) {
+            newCustomerAdvancedId = cRMCustomerSessionBeanLocal.updateCustomerAdvanced("G11223344", 2,
+                    "Degree", "Rented", 5, "Government", 6,
+                    "Employee", 3000, "HDB", "company address",
+                    "123123", "Senior Management", "job title", null,
+                    0, 2000, "income source");
+        } else {
+            newCustomerAdvancedId = cRMCustomerSessionBeanLocal.addNewCustomerAdvanced(5, "Degree", "Rented",
+                    5, "Government", 6, "Employee",
+                    3000, "HDB", "company address",
+                    "123123", "Senior Management", "job title",
+                    null, 0, 2000,
+                    "income source");
+        }
+
+        //create cashline application
+        cashline = new CashlineApplication();
+        cashline.create(15000, "Employee");
+        loanApplicationSessionBeanLocal.submitCashlineApplication(isExistingCustomer, hasCustomerAdvanced, cashline, newCustomerBasicId, newCustomerAdvancedId);
+        
+        ec.getFlash().put("amountRequired", 15000);
+        ec.getFlash().put("loanType", "Cashline");
+        ec.redirect(ec.getRequestContextPath() + "/web/merlionBank/loan/publicCashlineApplicationDone.xhtml?faces-redirect=true");
     }
-    
+
+    public void addCashlineApplication() throws IOException {
+        System.out.println("====== loan/PublicCashlineApplicationManagedBean: addCashlineApplication() ======");
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        customerSignature = ec.getSessionMap().get("customerSignature").toString();
+        if (customerSignature.equals("") || !agreement) {
+            if (customerSignature.equals("")) {
+                FacesContext.getCurrentInstance().addMessage("input", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Please provide your digital signature", "Failed!"));
+            }
+            if (!agreement) {
+                FacesContext.getCurrentInstance().addMessage("agreement", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Please agree to terms to proceed", "Failed!"));
+            }
+        } else {
+            //create or update CustomerBasic
+            if (customerSalutation.equals("Others")) {
+                customerSalutation = customerSalutationOthers;
+            }
+
+            String dateOfBirth = changeDateFormat(customerDateOfBirth);
+            String customerAddress = customerStreetName + ", " + customerBlockNum + ", " + customerUnitNum + ", " + customerPostal;
+
+            Long newCustomerBasicId;
+
+            boolean isExistingCustomer = cRMCustomerSessionBeanLocal.checkExistingCustomerByIdentification(customerIdentificationNum);
+            if (isExistingCustomer) {
+                newCustomerBasicId = cRMCustomerSessionBeanLocal.updateCustomerBasic(customerIdentificationNum, customerEmail, customerMobile,
+                        customerNationality, customerCountryOfResidence, customerMaritalStatus, customerOccupation, customerCompanyName,
+                        customerName, customerPostal);
+            } else {
+                newCustomerBasicId = cRMCustomerSessionBeanLocal.addNewCustomerBasic(customerName,
+                        customerSalutation, customerIdentificationNum.toUpperCase(),
+                        customerGender, customerEmail, customerMobile, dateOfBirth,
+                        customerNationality, customerCountryOfResidence, customerRace,
+                        customerMaritalStatus, customerOccupation, customerCompanyName,
+                        customerAddress, customerPostal, null, null, customerSignature.getBytes(), null);
+            }
+
+            //create CustomerAdvanced
+            if (customerEmploymentStatus.equals("Employee") || customerEmploymentStatus.equals("Self-Employed")) {
+                if (customerIndustryType.equals("Others")) {
+                    customerIndustryType = customerIndustryTypeOthers;
+                }
+                if (customerCurrentPosition.equals("Others")) {
+                    customerCurrentPosition = customerCurrentPositionOthers;
+                }
+            }
+
+            Long newCustomerAdvancedId;
+            boolean hasCustomerAdvanced = cRMCustomerSessionBeanLocal.checkExistingCustomerAdvanced(customerIdentificationNum);
+            if (customerEmploymentStatus.equals("Unemployed")) {
+                if (hasCustomerAdvanced) {
+                    newCustomerAdvancedId = cRMCustomerSessionBeanLocal.updateCustomerAdvanced(customerIdentificationNum, customerNumOfDependents,
+                            customerEducation, customerResidentialStatus, customerLengthOfResidence, null, 0,
+                            customerEmploymentStatus, customerMonthlyFixedIncome.doubleValue(), customerResidentialType, null,
+                            null, null, null, null, 0, customerOtherMonthlyIncome.doubleValue(), customerOtherMonthlyIncomeSource);
+                } else {
+                    newCustomerAdvancedId = cRMCustomerSessionBeanLocal.addNewCustomerAdvanced(customerNumOfDependents, customerEducation, customerResidentialStatus,
+                            customerLengthOfResidence, null, 0, customerEmploymentStatus,
+                            customerMonthlyFixedIncome.doubleValue(), customerResidentialType, null,
+                            null, null, null,
+                            null, 0, customerOtherMonthlyIncome.doubleValue(),
+                            customerOtherMonthlyIncomeSource);
+                }
+            } else {
+                if (hasCustomerAdvanced) {
+                    newCustomerAdvancedId = cRMCustomerSessionBeanLocal.updateCustomerAdvanced(customerIdentificationNum, customerNumOfDependents,
+                            customerEducation, customerResidentialStatus, customerLengthOfResidence, customerIndustryType, customerLengthOfCurrentJob,
+                            customerEmploymentStatus, customerMonthlyFixedIncome.doubleValue(), customerResidentialType, customerCompanyAddress,
+                            customerCompanyPostal, customerCurrentPosition, customerCurrentJobTitle, null,
+                            0, customerOtherMonthlyIncome.doubleValue(), customerOtherMonthlyIncomeSource);
+                } else {
+                    newCustomerAdvancedId = cRMCustomerSessionBeanLocal.addNewCustomerAdvanced(customerNumOfDependents, customerEducation, customerResidentialStatus,
+                            customerLengthOfResidence, customerIndustryType, customerLengthOfCurrentJob, customerEmploymentStatus,
+                            customerMonthlyFixedIncome.doubleValue(), customerResidentialType, customerCompanyAddress,
+                            customerCompanyPostal, customerCurrentPosition, customerCurrentJobTitle,
+                            null, 0, customerOtherMonthlyIncome.doubleValue(),
+                            customerOtherMonthlyIncomeSource);
+                }
+            }
+
+            //create cashline application
+            CashlineApplication cashline = new CashlineApplication();
+            cashline.create(customerPreferredLimit, customerEmploymentStatus);
+            loanApplicationSessionBeanLocal.submitCashlineApplication(isExistingCustomer, hasCustomerAdvanced, cashline, newCustomerBasicId, newCustomerAdvancedId);
+
+            customerEmailSessionBeanLocal.sendEmail(cRMCustomerSessionBeanLocal.getCustomerBasicById(newCustomerBasicId), "cashlineApplication", null);
+            ec.getFlash().put("amountRequired", customerPreferredLimit);
+            ec.getFlash().put("loanType", "Cashline");
+            ec.redirect(ec.getRequestContextPath() + "/web/merlionBank/loan/publicCashlineApplicationDone.xhtml?faces-redirect=true");
+        }
+    }
+
     public String onFlowProcess(FlowEvent event) {
         String nextStep = event.getNewStep();
 
@@ -188,7 +363,7 @@ public class publicCashlineApplicationManagedBean implements Serializable{
         }
         return nextStep;
     }
-    
+
     public void showSalutationPanel() {
         salutationPanelVisible = customerSalutation.equals("Others");
     }
@@ -223,7 +398,7 @@ public class publicCashlineApplicationManagedBean implements Serializable{
             nricPanelVisible = false;
         }
     }
-    
+
     public void identificationUpload(FileUploadEvent event) throws FileNotFoundException, IOException {
         this.file = event.getFile();
 
@@ -262,7 +437,7 @@ public class publicCashlineApplicationManagedBean implements Serializable{
             FacesContext.getCurrentInstance().addMessage("identificationUpload", message);
         }
     }
-    
+
     public void showIndustryTypePanel() {
         industryTypePanelVisible = customerIndustryType.equals("Others");
     }
@@ -277,29 +452,26 @@ public class publicCashlineApplicationManagedBean implements Serializable{
             occupationPanelVisible = true;
             uploads.replace("selfEmployedTax", true);
             uploads.replace("employeeTax", false);
-            uploads.replace("employeeCPF", false);
         } else if (customerEmploymentStatus.equals("Self-Employed")) {
             employmentPanelVisible = true;
             occupationPanelVisible = false;
             uploads.replace("selfEmployedTax", false);
             uploads.replace("employeeTax", true);
-            uploads.replace("employeeCPF", true);
         } else {
             occupationPanelVisible = false;
             employmentPanelVisible = false;
             uploads.replace("selfEmployedTax", true);
-            uploads.replace("employeeTax", true);
-            uploads.replace("employeeCPF", true);
+            uploads.replace("employeeTax", false);
         }
     }
-    
+
     private String changeDateFormat(Date inputDate) {
         String dateString = inputDate.toString();
         String[] dateSplit = dateString.split(" ");
         String outputDate = dateSplit[2] + "/" + dateSplit[1] + "/" + dateSplit[5];
         return outputDate;
     }
-    
+
     public void employeeTaxUpload(FileUploadEvent event) throws FileNotFoundException, IOException {
         this.file = event.getFile();
         if (file != null) {
@@ -337,7 +509,7 @@ public class publicCashlineApplicationManagedBean implements Serializable{
             FacesContext.getCurrentInstance().addMessage("employeeTaxUpload", message);
         }
     }
-    
+
     public void selfEmployedTaxUpload(FileUploadEvent event) throws FileNotFoundException, IOException {
         this.file = event.getFile();
         if (file != null) {
@@ -375,8 +547,8 @@ public class publicCashlineApplicationManagedBean implements Serializable{
             FacesContext.getCurrentInstance().addMessage("selfEmployedTaxUpload", message);
         }
     }
-    
-    public void calculateMaxLimit(){
+
+    public void calculateMaxLimit() {
         double grossIncome = customerOtherMonthlyIncome.doubleValue() + customerMonthlyFixedIncome.doubleValue();
         Double max = grossIncome * 4;
         customerMaxLimit = max.intValue();
@@ -814,5 +986,5 @@ public class publicCashlineApplicationManagedBean implements Serializable{
     public void setCustomerMaxLimit(Integer customerMaxLimit) {
         this.customerMaxLimit = customerMaxLimit;
     }
-    
+
 }

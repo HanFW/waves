@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 
 /**
@@ -34,6 +35,8 @@ public class CashlineAccount implements Serializable {
     private double fees;
     private double overdueBalance;
     
+    @OneToOne(mappedBy = "cashlineAccount")
+    private CashlineApplication cashlineApplication;
 
     public Long getId() {
         return id;
@@ -97,6 +100,14 @@ public class CashlineAccount implements Serializable {
 
     public void setOverdueBalance(double overdueBalance) {
         this.overdueBalance = overdueBalance;
+    }
+
+    public CashlineApplication getCashlineApplication() {
+        return cashlineApplication;
+    }
+
+    public void setCashlineApplication(CashlineApplication cashlineApplication) {
+        this.cashlineApplication = cashlineApplication;
     }
 
     @Override

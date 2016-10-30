@@ -16,36 +16,23 @@ import javax.faces.context.FacesContext;
  *
  * @author hanfengwei
  */
-@Named(value = "publicHDBLoanApplicationDoneManagedBean")
+@Named(value = "publicCashlineApplicationDoneManagedBean")
 @RequestScoped
-public class PublicHDBLoanApplicationDoneManagedBean {
-    
+public class PublicCashlineApplicationDoneManagedBean {
     private String loanType;
-    private Integer loanAmount;
-    private int tenure;
-
+    private BigDecimal loanAmount;
     /**
-     * Creates a new instance of PublicHDBLoanApplicationDoneManagedBean
+     * Creates a new instance of PublicCashlineApplicationDoneManagedBean
      */
-    public PublicHDBLoanApplicationDoneManagedBean() {
+    public PublicCashlineApplicationDoneManagedBean() {
     }
     
     @PostConstruct
     public void init(){
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         loanType = (String) ec.getFlash().get("loanType");
-        loanAmount = (Integer) ec.getFlash().get("amountRequired");
-        tenure = (int) ec.getFlash().get("tenure");
+        loanAmount = (BigDecimal) ec.getFlash().get("amountRequired");
     }
-
-    public Integer getLoanAmount() {
-        return loanAmount;
-    }
-
-    public void setLoanAmount(Integer loanAmount) {
-        this.loanAmount = loanAmount;
-    }
-    
 
     public String getLoanType() {
         return loanType;
@@ -55,13 +42,12 @@ public class PublicHDBLoanApplicationDoneManagedBean {
         this.loanType = loanType;
     }
 
-    public int getTenure() {
-        return tenure;
+    public BigDecimal getLoanAmount() {
+        return loanAmount;
     }
 
-    public void setTenure(int tenure) {
-        this.tenure = tenure;
+    public void setLoanAmount(BigDecimal loanAmount) {
+        this.loanAmount = loanAmount;
     }
-    
     
 }

@@ -13,7 +13,7 @@
 
     <ui:define name="content">  
         <h:form>
-            <p:commandButton value="Apply for Cashlline" action="#{publicCashlineApplicationManagedBean.addLoanApplicationFast()}"/>
+            <p:commandButton value="Apply for Cashline" action="#{publicCashlineApplicationManagedBean.addCashlineApplicationFast}"/>
         </h:form>
         <h:form>
             <p:wizard widgetVar ="cashlineWizard" flowListener="#{publicCashlineApplicationManagedBean.onFlowProcess}" showNavBar="false">
@@ -743,7 +743,6 @@
                             <p:outputLabel for="customerCompanyPostal" style="font-weight: bold" value="Company Postal Code: "/>
                             <p:inputText id="customerCompanyPostal" value="#{publicCashlineApplicationManagedBean.customerCompanyPostal}"
                                          required="#{publicCashlineApplicationManagedBean.employmentPanelVisible}" requiredMessage="Required Field" validatorMessage="Invalid postal code">
-                                <f:validateDoubleRange minimum="100000" maximum="999999" />
                             </p:inputText>
                             <p:message for="customerCompanyPostal"/>
 
@@ -849,14 +848,10 @@
                                           mode="advanced" skinSimple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(pdf)$/" multiple="false"/>
                         </p:panel>
 
-                        <p:panel visible="#{publicCashlineApplicationManagedBean.customerEmploymentStatus eq 'Employee'}">
+                        <p:panel visible="#{publicCashlineApplicationManagedBean.customerEmploymentStatus ne 'Self-Employed'}">
                             <p:outputLabel value="Please upload your lastest tax assessment"/>
                             <p:messages id="employeeTaxUploadMessage" for="employeeTaxUpload"/>
                             <p:fileUpload id="employeeTaxUpload" update="employeeTaxUploadMessage" fileUploadListener="#{publicCashlineApplicationManagedBean.employeeTaxUpload}"
-                                          mode="advanced" skinSimple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(pdf)$/" multiple="false"/>
-                            <p:outputLabel value="Please upload your lastest CPF statement"/>
-                            <p:messages id="employeeCPFUploadMessage" for="employeeCPFUpload"/>
-                            <p:fileUpload id="employeeCPFUpload" update="employeeCPFUploadMessage" fileUploadListener="#{publicCashlineApplicationManagedBean.employeeCPFUpload}"
                                           mode="advanced" skinSimple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(pdf)$/" multiple="false"/>
                         </p:panel>
 

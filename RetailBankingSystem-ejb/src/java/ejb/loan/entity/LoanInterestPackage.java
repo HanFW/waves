@@ -37,8 +37,15 @@ public class LoanInterestPackage implements Serializable {
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "loanInterestPackage")
     private List<LoanApplication> loanApplication;
     
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "loanInterestPackage")
+    private List<CashlineApplication> cashlineApplication;
+    
     public void addLoanApplication(LoanApplication application){
         loanApplication.add(application);
+    }
+    
+    public void addCashlineApplication(CashlineApplication application){
+        cashlineApplication.add(application);
     }
 
     public Long getPackageId() {
@@ -79,6 +86,14 @@ public class LoanInterestPackage implements Serializable {
 
     public void setUpdatedDate(Date updatedDate) {
         this.updatedDate = updatedDate;
+    }
+
+    public List<CashlineApplication> getCashlineApplication() {
+        return cashlineApplication;
+    }
+
+    public void setCashlineApplication(List<CashlineApplication> cashlineApplication) {
+        this.cashlineApplication = cashlineApplication;
     }
     
 }

@@ -752,7 +752,6 @@
                             <p:outputLabel for="customerCompanyPostal" style="font-weight: bold" value="Company Postal Code: "/>
                             <p:inputText id="customerCompanyPostal" value="#{publicMortgageLoanApplicationManagedBean.customerCompanyPostal}"
                                          required="#{publicMortgageLoanApplicationManagedBean.employmentPanelVisible}" requiredMessage="Required Field" validatorMessage="Invalid postal code">
-                                <f:validateDoubleRange minimum="100000" maximum="999999" />
                             </p:inputText>
                             <p:message for="customerCompanyPostal"/>
 

@@ -7,6 +7,7 @@ package ejb.loan.session;
 
 import ejb.customer.entity.CustomerAdvanced;
 import ejb.customer.entity.CustomerBasic;
+import ejb.loan.entity.CashlineApplication;
 import ejb.loan.entity.CreditReportAccountStatus;
 import ejb.loan.entity.CreditReportBureauScore;
 import ejb.loan.entity.CreditReportDefaultRecords;
@@ -85,6 +86,39 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
                 refinancing.setCustomerBasic(cb);
                 cb.addLoanApplication(refinancing);
             }
+        }
+
+        em.flush();
+    }
+    
+    @Override
+    public void submitCashlineApplication(boolean isExistingCustomer, boolean hasCustomerAdvanced, CashlineApplication cashline, Long newCustomerBasicId, Long newCustomerAdvancedId){
+        System.out.println("****** loan/LoanApplicationSessionBean: submitCashlineApplication() ******");
+        CustomerBasic cb = em.find(CustomerBasic.class, newCustomerBasicId);
+
+        //set on both side (1-1 bi)
+        if (!hasCustomerAdvanced) {
+            CustomerAdvanced ca = em.find(CustomerAdvanced.class, newCustomerAdvancedId);
+            cb.setCustomerAdvanced(ca);
+            ca.setCustomerBasic(cb);
+        }
+
+        Query query = em.createQuery("SELECT p FROM LoanInterestPackage p WHERE p.packageName = :packageName");
+        query.setParameter("packageName", "Cashline");
+        List resultList = query.getResultList();
+
+        if (!resultList.isEmpty()) {
+            LoanInterestPackage pkg = (LoanInterestPackage) resultList.get(0);
+            System.out.println("****** loan/LoanApplicationSessionBean: submitCashlineApplication(): interest package: " + pkg.getPackageName());
+            //set on both side
+            cashline.setCustomerBasic(cb);
+            cb.addCashlineApplication(cashline);
+            cashline.setLoanInterestPackage(pkg);
+            pkg.addCashlineApplication(cashline);
+        } else {
+            System.out.println("****** loan/LoanApplicationSessionBean: submitCashlineApplication(): no interest package found");
+            cashline.setCustomerBasic(cb);
+            cb.addCashlineApplication(cashline);
         }
 
         em.flush();
