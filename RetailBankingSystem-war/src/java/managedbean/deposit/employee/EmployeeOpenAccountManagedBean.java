@@ -20,6 +20,7 @@ import org.primefaces.event.FlowEvent;
 import org.primefaces.model.UploadedFile;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import ejb.deposit.session.InterestSessionBeanLocal;
+import java.util.Calendar;
 import javax.faces.view.ViewScoped;
 import org.apache.commons.io.IOUtils;
 
@@ -811,10 +812,13 @@ public class EmployeeOpenAccountManagedBean implements Serializable {
                 bankAccountDepositPeriod = "None";
             }
 
+            Calendar cal = Calendar.getInstance();
+            Long currentTimeMilis = cal.getTimeInMillis();
+            
             newAccountId = bankAccountSessionLocal.addNewAccount(bankAccountNum, bankAccountType,
                     totalBankAccountBalance, availableBankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
                     bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
-                    statementDateDouble, customerBasicId, newInterestId);
+                    statementDateDouble, currentTimeMilis, customerBasicId, newInterestId);
 
             bankAccount = bankAccountSessionLocal.retrieveBankAccountById(newAccountId);
             bankAccountSessionLocal.retrieveBankAccountByCusIC(customerIdentificationNum).add(bankAccount);
@@ -867,10 +871,13 @@ public class EmployeeOpenAccountManagedBean implements Serializable {
                 bankAccountDepositPeriod = "None";
             }
 
+            Calendar cal = Calendar.getInstance();
+            Long currentTimeMilis = cal.getTimeInMillis();
+            
             newAccountId = bankAccountSessionLocal.addNewAccount(bankAccountNum, bankAccountType,
                     totalBankAccountBalance, availableBankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
                     bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
-                    statementDateDouble, newCustomerBasicId, newInterestId);
+                    statementDateDouble, currentTimeMilis, newCustomerBasicId, newInterestId);
 
             bankAccount = bankAccountSessionLocal.retrieveBankAccountById(newAccountId);
 

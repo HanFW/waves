@@ -846,7 +846,7 @@ public class AccountManagedBean implements Serializable {
         if (file == null) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please upload your identification softcopy", "Failed!"));
         } else {
-            
+
             if ((customerNRIC.length() > 9 || customerNRIC.length() < 9 || customerNRICSG.length() < 9 || customerNRICSG.length() > 9)
                     && (customerPassport == null)) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid NRIC", "Failed!"));
@@ -900,11 +900,14 @@ public class AccountManagedBean implements Serializable {
                                 bankAccountDepositPeriod = "None";
                             }
 
+                            Calendar cal = Calendar.getInstance();
+                            Long currentTimeMilis = cal.getTimeInMillis();
+
                             newAccountId = bankAccountSessionLocal.addNewAccount(bankAccountNum, bankAccountType,
-                                    totalBankAccountBalance, availableBankAccountBalance, transferDailyLimit, 
+                                    totalBankAccountBalance, availableBankAccountBalance, transferDailyLimit,
                                     transferBalance, bankAccountStatus, bankAccountMinSaving,
                                     bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
-                                    statementDateDouble, customerBasicId, newInterestId);
+                                    statementDateDouble, currentTimeMilis, customerBasicId, newInterestId);
 
                             bankAccount = bankAccountSessionLocal.retrieveBankAccountById(newAccountId);
                             bankAccountSessionLocal.retrieveBankAccountByCusIC(customerIdentificationNum).add(bankAccount);
@@ -917,7 +920,6 @@ public class AccountManagedBean implements Serializable {
                             loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "open account", "successful", null);
 
                             subject = "Welcome to Merlion Bank";
-                            Calendar cal = Calendar.getInstance();
                             receivedDate = cal.getTime();
                             messageContent = "Welcome to Merlion Bank! Please deposit/transfer sufficient fund to your bank account.\n"
                                     + "For fixed deposit account, please declare your deposit period before activating your account.\n"
@@ -980,10 +982,13 @@ public class AccountManagedBean implements Serializable {
                                 bankAccountDepositPeriod = "None";
                             }
 
+                            Calendar cal = Calendar.getInstance();
+                            Long currentTimeMilis = cal.getTimeInMillis();
+
                             newAccountId = bankAccountSessionLocal.addNewAccount(bankAccountNum, bankAccountType,
                                     totalBankAccountBalance, availableBankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
                                     bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
-                                    statementDateDouble, newCustomerBasicId, newInterestId);
+                                    statementDateDouble, currentTimeMilis, newCustomerBasicId, newInterestId);
 
                             bankAccount = bankAccountSessionLocal.retrieveBankAccountById(newAccountId);
 
@@ -995,7 +1000,6 @@ public class AccountManagedBean implements Serializable {
                             loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "open account", "successful", null);
 
                             subject = "Welcome to Merlion Bank";
-                            Calendar cal = Calendar.getInstance();
                             receivedDate = cal.getTime();
                             messageContent = "Welcome to Merlion Bank! Please deposit/transfer sufficient fund to your bank account.\n"
                                     + "For fixed deposit account, please declare your deposit period before activating your account.\n"
@@ -1139,21 +1143,22 @@ public class AccountManagedBean implements Serializable {
 //            bankAccountStatus = "Inactive";
 //        }
 
+        Calendar cal = Calendar.getInstance();
+        Long currentTimeMilis = cal.getTimeInMillis();
+
         newAccountId = bankAccountSessionLocal.addNewAccountOneTime(bankAccountNum, bankAccountType,
                 totalBankAccountBalance, availableBankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
                 bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
-                statementDateDouble, newCustomerBasicId, newInterestId);
+                statementDateDouble, currentTimeMilis, newCustomerBasicId, newInterestId);
 
         accountId = bankAccountSessionLocal.addNewAccountOneTime(bankAccountSessionLocal.generateBankAccount(),
-                "Basic Savings Account",
-                totalBankAccountBalance, availableBankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
+                "Basic Savings Account", totalBankAccountBalance, availableBankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
                 bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
-                statementDateDouble, customerBasicId, interestId);
+                statementDateDouble, currentTimeMilis, customerBasicId, interestId);
 
         statusMessage = "New Account Saved Successfully.";
 
         subject = "Welcome to Merlion Bank";
-        Calendar cal = Calendar.getInstance();
         receivedDate = cal.getTime();
         messageContent = "Welcome to Merlion Bank! Please deposit/transfer sufficient fund to your bank account.\n"
                 + "For fixed deposit account, please declare your deposit period before activating your account.\n"

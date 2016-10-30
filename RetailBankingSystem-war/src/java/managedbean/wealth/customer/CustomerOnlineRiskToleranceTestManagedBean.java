@@ -68,13 +68,13 @@ public class CustomerOnlineRiskToleranceTestManagedBean implements Serializable 
 
         if (score > 0 && score < 8) {
             risk3 = true;
-            createCustomerRiskProfileSessionBeanLocal.createRiskProfile(id, answer1, answer2, answer3, answer4, answer5, answer6,score,"conservative");
+            createCustomerRiskProfileSessionBeanLocal.createRiskProfile(id, answer1, answer2, answer3, answer4, answer5, answer6, score, "conservative");
         } else if (score >= 8 && score < 15) {
             risk2 = true;
-            createCustomerRiskProfileSessionBeanLocal.createRiskProfile(id, answer1, answer2, answer3, answer4, answer5, answer6,score,"moderate");
+            createCustomerRiskProfileSessionBeanLocal.createRiskProfile(id, answer1, answer2, answer3, answer4, answer5, answer6, score, "moderate");
         } else {
             risk1 = true;
-            createCustomerRiskProfileSessionBeanLocal.createRiskProfile(id, answer1, answer2, answer3, answer4, answer5, answer6,score,"agressive");
+            createCustomerRiskProfileSessionBeanLocal.createRiskProfile(id, answer1, answer2, answer3, answer4, answer5, answer6, score, "agressive");
         }
 
         RequestContext rc = RequestContext.getCurrentInstance();

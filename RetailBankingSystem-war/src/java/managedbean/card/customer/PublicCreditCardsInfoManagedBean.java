@@ -6,7 +6,6 @@
 package managedbean.card.customer;
 
 import java.io.IOException;
-import java.io.Serializable;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import javax.faces.context.ExternalContext;
@@ -18,10 +17,9 @@ import javax.faces.context.FacesContext;
  */
 @Named(value = "publicCreditCardsInfoManagedBean")
 @RequestScoped
-public class PublicCreditCardsInfoManagedBean{
+public class PublicCreditCardsInfoManagedBean {
 
     private Long creditCardTypeId;
-    
 
     public PublicCreditCardsInfoManagedBean() {
     }

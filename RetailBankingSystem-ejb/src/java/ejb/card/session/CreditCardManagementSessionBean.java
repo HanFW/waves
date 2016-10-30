@@ -51,11 +51,11 @@ public class CreditCardManagementSessionBean implements CreditCardManagementSess
 
                 if (!findCreditCard.getCardSecurityCode().equals(hashedInputPwd)) {
                     return "wrong pwd";
-                } else if (findCreditCard.getOutstandingBalance() != 0.0){
+                } else if (findCreditCard.getOutstandingBalance() != 0.0) {
                     return "credit limit unpaid";
                 } else {
                     findCreditCard.setStatus("cancel");
-                    
+
                     return "success";
                 }
             } catch (NoSuchAlgorithmException ex) {
@@ -66,7 +66,7 @@ public class CreditCardManagementSessionBean implements CreditCardManagementSess
         return null;
 
     }
-    
+
     @Override
     public void cancelCreditCardAfterReplacement(Long creditCardId) {
         CreditCard findCreditCard = em.find(CreditCard.class, creditCardId);

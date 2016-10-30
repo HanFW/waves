@@ -102,7 +102,7 @@ public class CustomerReplaceDamagedCardManagedBean {
 
         String[] creditCardInfo = selectedCreditCard.split("-");
         String creditCardNum = creditCardInfo[2];
-        
+
         creditCardManagementSessionBeanLocal.replaceDamagedCreditCard(creditCardNum);
         message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Replacement successful! Please wait for 2-3 days and your new card will be mailed to your preferred address.", null);
         context.addMessage(null, message);
@@ -197,6 +197,7 @@ public class CustomerReplaceDamagedCardManagedBean {
     public void setDebitPanelVisible(boolean debitPanelVisible) {
         this.debitPanelVisible = debitPanelVisible;
     }
+
     public CustomerBasic getCustomerViaSessionMap() {
         FacesContext context = FacesContext.getCurrentInstance();
         customer = (CustomerBasic) context.getExternalContext().getSessionMap().get("customer");
@@ -204,5 +205,5 @@ public class CustomerReplaceDamagedCardManagedBean {
         return customer;
 
     }
-    
+
 }

@@ -869,16 +869,16 @@ public class PublicCreditCardApplicationManagedBean implements Serializable {
             Long newCustomerBasicId = customer.getCustomerBasicId();
             Long newCustomerAdvancedId;
             if (customerEmploymentStatus.equals("Employee") || customerEmploymentStatus.equals("Self-Employed")) {
-                    if (customerIndustryType.equals("Others")) {
-                        customerIndustryType = customerIndustryTypeOthers;
-                    }
-                    if (customerCurrentPosition.equals("Others")) {
-                        customerCurrentPosition = customerCurrentPositionOthers;
-                    }
+                if (customerIndustryType.equals("Others")) {
+                    customerIndustryType = customerIndustryTypeOthers;
                 }
+                if (customerCurrentPosition.equals("Others")) {
+                    customerCurrentPosition = customerCurrentPositionOthers;
+                }
+            }
             if (customer.getCustomerAdvanced() == null) {
                 //create CustomerAdvanced
-                             
+
                 if (customerEmploymentStatus.equals("Unemployed")) {
                     newCustomerAdvancedId = cRMCustomerSessionBeanLocal.addNewCustomerAdvanced(customerNumOfDependents, customerEducation, customerResidentialStatus,
                             customerLengthOfResidence, null, 0, customerEmploymentStatus,
@@ -896,19 +896,19 @@ public class PublicCreditCardApplicationManagedBean implements Serializable {
                 }
             } else {
                 if (customerEmploymentStatus.equals("Unemployed")) {
-                    newCustomerAdvancedId = cRMCustomerSessionBeanLocal.updateCustomerAdvanced(customer.getCustomerIdentificationNum(), customerNumOfDependents, 
-                            customerEducation, customerResidentialStatus, customerLengthOfResidence, customerIndustryType, customerLengthOfCurrentJob, 
-                            customerEmploymentStatus, customerMonthlyFixedIncome.doubleValue(), customerResidentialType, null, null, 
-                            null, null, customerPostal, 0, 0, 
+                    newCustomerAdvancedId = cRMCustomerSessionBeanLocal.updateCustomerAdvanced(customer.getCustomerIdentificationNum(), customerNumOfDependents,
+                            customerEducation, customerResidentialStatus, customerLengthOfResidence, customerIndustryType, customerLengthOfCurrentJob,
+                            customerEmploymentStatus, customerMonthlyFixedIncome.doubleValue(), customerResidentialType, null, null,
+                            null, null, customerPostal, 0, 0,
                             null);
-                }else {
-                    newCustomerAdvancedId = cRMCustomerSessionBeanLocal.updateCustomerAdvanced(customer.getCustomerIdentificationNum(), customerNumOfDependents, 
-                            customerEducation, customerResidentialStatus, customerLengthOfResidence, customerIndustryType, customerLengthOfCurrentJob, 
-                            customerEmploymentStatus, customerMonthlyFixedIncome.doubleValue(), customerResidentialType, customerCompanyAddress, customerCompanyPostal, 
-                            customerCurrentPosition, customerCurrentJobTitle, customerPostal, 0, 0, 
+                } else {
+                    newCustomerAdvancedId = cRMCustomerSessionBeanLocal.updateCustomerAdvanced(customer.getCustomerIdentificationNum(), customerNumOfDependents,
+                            customerEducation, customerResidentialStatus, customerLengthOfResidence, customerIndustryType, customerLengthOfCurrentJob,
+                            customerEmploymentStatus, customerMonthlyFixedIncome.doubleValue(), customerResidentialType, customerCompanyAddress, customerCompanyPostal,
+                            customerCurrentPosition, customerCurrentJobTitle, customerPostal, 0, 0,
                             null);
                 }
-                    
+
             }
 
             creditCardTypeId = (Long) ec.getSessionMap().get("cardTypeId");

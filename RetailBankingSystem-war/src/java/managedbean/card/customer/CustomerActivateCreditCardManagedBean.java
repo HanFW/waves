@@ -39,8 +39,6 @@ public class CustomerActivateCreditCardManagedBean implements Serializable {
     @EJB
     private SMSSessionBeanLocal smsSessionBeanLocal;
 
-    
-
     private CustomerBasic customer;
     private String cardHolderName;
     private String creditCardSecurityCode;
@@ -49,7 +47,6 @@ public class CustomerActivateCreditCardManagedBean implements Serializable {
     private String selectedCreditCard;
 
     private String customerOTP;
-
 
     public CustomerActivateCreditCardManagedBean() {
     }
@@ -116,10 +113,9 @@ public class CustomerActivateCreditCardManagedBean implements Serializable {
 
         String[] creditCardInfo = selectedCreditCard.split("-");
         String creditCardNum = creditCardInfo[2];
-        System.out.println("!!!!!!!!!!!!!!!first split"+ creditCardNum);
-        
-        
-        System.out.println("!!!!!!!!!!!!!!!!cardNUm"+creditCardNum+"!!!!!!!!!!!!!");
+        System.out.println("!!!!!!!!!!!!!!!first split" + creditCardNum);
+
+        System.out.println("!!!!!!!!!!!!!!!!cardNUm" + creditCardNum + "!!!!!!!!!!!!!");
 
         String result = creditCardSessionBeanLocal.creditCardNumValiadation(creditCardNum, cardHolderName, creditCardSecurityCode);
 

@@ -47,7 +47,7 @@ public class CustomerReportLossManagedBean implements Serializable {
 
     @EJB
     private CreditCardSessionBeanLocal creditCardSessionBeanLocal;
-    
+
     @EJB
     private CRMCustomerSessionBeanLocal cRMCustomerSession;
 
@@ -74,7 +74,7 @@ public class CustomerReportLossManagedBean implements Serializable {
         if (cardType.equals("debit")) {
             reportDebitCardLoss();
         }
-        if (cardType.equals("credit")){
+        if (cardType.equals("credit")) {
             reportCreditCardLoss();
         }
     }
@@ -124,7 +124,7 @@ public class CustomerReportLossManagedBean implements Serializable {
         }
     }
 
-        public void reportCreditCardLoss() {
+    public void reportCreditCardLoss() {
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext ec = context.getExternalContext();
         FacesMessage message = null;
@@ -156,7 +156,7 @@ public class CustomerReportLossManagedBean implements Serializable {
                 break;
         }
     }
-    
+
     public String getCardType() {
         return cardType;
     }

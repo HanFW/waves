@@ -28,23 +28,23 @@ public class LoanManagementSessionBean implements LoanManagementSessionBeanLocal
         Query query = em.createQuery("SELECT a FROM LoanPayableAccount a WHERE a.loanApplication.customerBasic.customerIdentificationNum = :identification AND a.accountStatus = :status");
         query.setParameter("identification", identification);
         query.setParameter("status", "started");
-        
+
         List<LoanPayableAccount> accounts = query.getResultList();
-        
+
         return accounts;
     }
-    
+
     @Override
-    public List<LoanApplication> getLoanApplicationsByIdentification(String identification){
+    public List<LoanApplication> getLoanApplicationsByIdentification(String identification) {
         System.out.println("get identification: " + identification);
         Query query = em.createQuery("SELECT a FROM LoanApplication a WHERE a.customerBasic.customerIdentificationNum = :identification");
         query.setParameter("identification", identification);
-        
+
         List<LoanApplication> applications = query.getResultList();
-        
+
         return applications;
     }
-    
+
     @Override
     public LoanPayableAccount getLoanPayableAccountById(Long loanId) {
         LoanPayableAccount account = em.find(LoanPayableAccount.class, loanId);

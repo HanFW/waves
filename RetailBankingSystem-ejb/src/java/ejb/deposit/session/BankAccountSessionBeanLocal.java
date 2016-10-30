@@ -26,7 +26,7 @@ public interface BankAccountSessionBeanLocal {
             String availableBankAccountBalance, String transferDailyLimit,
             String transferBalance, String bankAccountStatus, String bankAccountMinSaving,
             String bankAccountDepositPeriod, String currentFixedDepositPeriod,
-            String fixedDepositStatus, Double statementDateDouble,
+            String fixedDepositStatus, Double statementDateDouble, Long currentTimeMilis,
             Long customerBasicId, Long interestId);
 
     public String deleteAccount(String bankAccountNum);
@@ -59,8 +59,8 @@ public interface BankAccountSessionBeanLocal {
             String totalBankAccountBalance, String availableBankAccountBalance, String transferDailyLimit,
             String transferBalance, String bankAccountStatus, String bankAccountMinSaving,
             String bankAccountDepositPeriod, String currentFixedDepositPeriod,
-            String fixedDepositStatus, Double statementDateDouble, Long customerBasicId,
-            Long interestId);
+            String fixedDepositStatus, Double statementDateDouble, Long currentTimeMilis,
+            Long customerBasicId, Long interestId);
 
     public void updateBankAccountAvailableBalance(String bankAccountNum, String availableBankAccountBalance);
 

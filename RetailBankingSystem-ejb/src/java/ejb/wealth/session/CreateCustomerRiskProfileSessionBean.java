@@ -9,7 +9,6 @@ import ejb.customer.entity.CustomerBasic;
 import ejb.wealth.entity.RiskProfile;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.LockModeType;
 import javax.persistence.PersistenceContext;
 
 /**
@@ -23,11 +22,11 @@ public class CreateCustomerRiskProfileSessionBean implements CreateCustomerRiskP
     // "Insert Code > Add Business Method")
     @PersistenceContext
     private EntityManager em;
-    
+
     @Override
-    public void createRiskProfile(Long id, int answer1,int answer2,int answer3,int answer4,int answer5,int answer6,int score, String level){
-        RiskProfile riskProfile=new RiskProfile();
-        
+    public void createRiskProfile(Long id, int answer1, int answer2, int answer3, int answer4, int answer5, int answer6, int score, String level) {
+        RiskProfile riskProfile = new RiskProfile();
+
         riskProfile.setAnswer1(answer1);
         riskProfile.setAnswer2(answer2);
         riskProfile.setAnswer3(answer3);
@@ -36,8 +35,8 @@ public class CreateCustomerRiskProfileSessionBean implements CreateCustomerRiskP
         riskProfile.setAnswer6(answer6);
         riskProfile.setScore(score);
         riskProfile.setLevel(level);
-        
-        CustomerBasic customer = em.find(CustomerBasic.class,id);
+
+        CustomerBasic customer = em.find(CustomerBasic.class, id);
         riskProfile.setCustomer(customer);
         customer.setRiskProfile(riskProfile);
         em.persist(riskProfile);

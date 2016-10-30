@@ -262,16 +262,16 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
         application.setApplicationStatus(status);
         em.flush();
     }
-    
+
     @Override
-    public List<MortgageLoanApplication> getAllMortgageApplicationsPendingAppraisal(){
+    public List<MortgageLoanApplication> getAllMortgageApplicationsPendingAppraisal() {
         Query query = em.createQuery("SELECT ma FROM MortgageLoanApplication ma WHERE ma.applicationStatus = :applicationStatus");
         query.setParameter("applicationStatus", "waiting for valuation");
         return query.getResultList();
     }
-    
+
     @Override
-    public void submitAppraisal(double appraisedValue, Long applicationId){
+    public void submitAppraisal(double appraisedValue, Long applicationId) {
         System.out.println("****** loan/LoanApplicationSessionBean: submitAppraisal() ******");
         MortgageLoanApplication application = em.find(MortgageLoanApplication.class, applicationId);
         application.setApplicationStatus("pending");

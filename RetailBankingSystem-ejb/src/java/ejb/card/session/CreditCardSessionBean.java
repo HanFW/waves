@@ -11,12 +11,6 @@ import ejb.card.entity.SupplementaryCard;
 import ejb.customer.entity.CustomerAdvanced;
 import ejb.customer.entity.CustomerBasic;
 import ejb.infrastructure.session.CustomerAdminSessionBeanLocal;
-import ejb.loan.entity.CreditReportAccountStatus;
-import ejb.loan.entity.CreditReportBureauScore;
-import ejb.loan.entity.CreditReportDefaultRecords;
-import ejb.loan.entity.CustomerDebt;
-import ejb.loan.entity.CustomerProperty;
-import ejb.loan.entity.LoanApplication;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -407,23 +401,23 @@ public class CreditCardSessionBean implements CreditCardSessionBeanLocal {
         interval[1] = 20000;
         return interval;
     }
-    
+
     @Override
-    public void approveRequest(Long creditCardId, double creditLimit){
+    public void approveRequest(Long creditCardId, double creditLimit) {
         System.out.println("****** loan/LoanApplicationSessionBean: approveMortgageLoanRequest() ******");
         CreditCard cc = em.find(CreditCard.class, creditCardId);
         cc.setCreditLimit(creditLimit);
         cc.setStatus("Approved");
         em.flush();
     }
-    
+
     @Override
-    public void rejectRequest(Long creditCardId){
+    public void rejectRequest(Long creditCardId) {
         System.out.println("****** loan/LoanApplicationSessionBean: rejectMortgageLoanRequest() ******");
         CreditCard cc = em.find(CreditCard.class, creditCardId);
         CustomerBasic customer = cc.getCustomerBasic();
         CustomerAdvanced ca = customer.getCustomerAdvanced();
-        
+
 //        CreditReportBureauScore report = customer.getBureauScore();
 //        
 //        em.remove(report);
