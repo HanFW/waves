@@ -20,7 +20,7 @@ import javax.faces.context.FacesContext;
 @RequestScoped
 public class PublicCashlineApplicationDoneManagedBean {
     private String loanType;
-    private BigDecimal loanAmount;
+    private Integer loanAmount;
     /**
      * Creates a new instance of PublicCashlineApplicationDoneManagedBean
      */
@@ -31,7 +31,7 @@ public class PublicCashlineApplicationDoneManagedBean {
     public void init(){
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         loanType = (String) ec.getFlash().get("loanType");
-        loanAmount = (BigDecimal) ec.getFlash().get("amountRequired");
+        loanAmount = (Integer) ec.getFlash().get("amountRequired");
     }
 
     public String getLoanType() {
@@ -42,11 +42,11 @@ public class PublicCashlineApplicationDoneManagedBean {
         this.loanType = loanType;
     }
 
-    public BigDecimal getLoanAmount() {
+    public Integer getLoanAmount() {
         return loanAmount;
     }
 
-    public void setLoanAmount(BigDecimal loanAmount) {
+    public void setLoanAmount(Integer loanAmount) {
         this.loanAmount = loanAmount;
     }
     

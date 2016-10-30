@@ -553,7 +553,7 @@
                                             </p:column>
                                         </p:panelGrid>
                                         <p:separator/>
-                                        <p:commandButton type="submit" value="Apply for HDB Loan" action="#{publicChooseMortgageLoanManagedBean.chooseMortgageLoan('HDB')}"/>
+                                        <p:commandButton type="submit" value="Apply for HDB Loan" action="#{publicChooseLoanManagedBean.chooseMortgageLoan('HDB')}"/>
                                     </p:tab>
 
                                     <p:tab title="Private Property Loan">
@@ -649,7 +649,7 @@
                                             </p:column>
                                         </p:panelGrid>
                                         <p:separator/>
-                                        <p:commandButton value="Apply for Private Property Loan" action="#{publicChooseMortgageLoanManagedBean.chooseMortgageLoan('Private Property')}"/>
+                                        <p:commandButton value="Apply for Private Property Loan" action="#{publicChooseLoanManagedBean.chooseMortgageLoan('Private Property')}"/>
                                     </p:tab>
 
                                     <p:tab title="Renovation Loan">
@@ -657,11 +657,66 @@
                                     </p:tab>
                                 </p:tabView>
                             </div>
-                            
+
                         </p:dialog>  
 
-                        <p:dialog header="Personal Loan" widgetVar="LoanIntro2" modal="true" height="450" width="90%" responsive="true">
-                            <h:outputText value="Personal Loan Info" />
+                        <p:dialog header="Cashline" widgetVar="LoanIntro2" modal="true" height="450" width="90%" responsive="true">
+                            <div align="center">
+                                <p:panelGrid>
+                                    <p:outputLabel value="Take a load off your mind with Merlion Bank Cashline – your personal credit line. Enjoy credit line of up to 4X your monthly income, with easy access via chequebook or ATM Card+. So whether it’s for your outstanding bills or that perfect holiday, you will always have that extra cash on hand."/>
+                                </p:panelGrid>
+                                <p:separator/>
+                                <p:panelGrid columns="2">
+                                    <p:outputLabel value="Eligibility"/>
+                                    <p:column>
+                                        <p:panelGrid columns="2">
+                                            <p:outputLabel value="Age Requirement: "/>
+                                            <h:outputText value="21 years old and above"/>
+                                            <p:outputLabel value="Income Requirement: "/>
+                                            <p:column>
+                                                <p:panelGrid columns="2">
+                                                    <h:outputText value="S$20,000 – below S$30,000"/>
+                                                    <h:outputText value="Effective Interest Rate: 29.8% per annum"/>
+                                                    <h:outputText value="S$30,000 and above"/>
+                                                    <h:outputText value="Effective Interest Rate: 19.8% per annum"/>
+                                                </p:panelGrid>
+                                            </p:column>
+                                            <p:outputLabel value="Minimum Loan Amount: "/>
+                                            <h:outputText value="S$100,000"/>
+                                        </p:panelGrid>
+                                    </p:column>
+
+                                    <p:outputLabel value="Fees and Charges"/>
+                                    <p:column>
+                                        <p:panelGrid columns="2">
+                                            <h:outputText value="Minimum monthly repayment"/>
+                                            <h:outputText value="2.5% of outstanding balance or S$50, whichever is higher"/>
+                                            <h:outputText value="Minimum interest charge"/>
+                                            <h:outputText value="S$10"/>
+                                            <h:outputText value="Late payment fee"/>
+                                            <h:outputText value="S$90"/>
+                                            <h:outputText value="Late payment interest adjustment"/>
+                                            <h:outputText value="Additional 6% above effective interest rate"/>
+                                            <h:outputText value="Annual fee"/>
+                                            <h:outputText value="S$100 (waived for first year)"/>
+                                        </p:panelGrid>
+                                    </p:column>
+
+
+                                    <p:outputLabel value="Documents Required"/>
+                                    <p:column>
+                                        <h:outputText value="• Photocopy of NRIC/Passport for all Applicants and Owners"/>
+                                        <br/>
+                                        <h:outputText value="• Latest Tax Assessment &amp; CPF Statement (for salaried employees or commission earners)"/>
+                                        <br/>
+                                        <h:outputText value="• 2 Years Income Tax Assessment (for self-employed applicants)"/>
+                                        <br/>
+                                    </p:column>
+
+                                </p:panelGrid>
+                                <p:separator/>
+                                <p:commandButton value="Apply for Merlion Bank Cashline" action="/web/merlionBank/loan/publicCashlineApplication.xhtml?faces-redirect=true"/>
+                            </div>
                         </p:dialog>  
 
                         <p:dialog header="Education Loan" widgetVar="LoanIntro3" modal="true" height="450" width="90%" responsive="true">

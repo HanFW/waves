@@ -15,14 +15,14 @@ import javax.faces.context.FacesContext;
  *
  * @author hanfengwei
  */
-@Named(value = "publicChooseMortgageLoanManagedBean")
+@Named(value = "publicChooseLoanManagedBean")
 @RequestScoped
-public class PublicChooseMortgageLoanManagedBean {
+public class PublicChooseLoanManagedBean {
 
     /**
      * Creates a new instance of PublicChooseMortgageLoanManagedBean
      */
-    public PublicChooseMortgageLoanManagedBean() {
+    public PublicChooseLoanManagedBean() {
     }
     
     public void chooseMortgageLoan(String loanType) throws IOException{

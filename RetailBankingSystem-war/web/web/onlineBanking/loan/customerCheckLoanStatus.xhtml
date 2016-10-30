@@ -22,30 +22,54 @@
                 <h1>Check My Loans Status</h1>
             </div>
 
-            <p:dataTable var="loanApp" value="#{customerViewAllLoansManagedBean.applications}" reflow="true" paginator="true" rows="10" emptyMessage="No Loan Account">
-                
+            <p:dataTable var="loanApp" value="#{customerViewAllLoansManagedBean.applications}" reflow="true" emptyMessage="No Loan Account">
                 <p:column headerText="Loan Type"> 
                     <h:outputText value="#{loanApp.loanType}" />
                 </p:column>
-                
+
                 <p:column headerText="Amount Requested"> 
                     <h:outputText value="#{loanApp.amountRequired}" />
                 </p:column>
-                
+
                 <p:column headerText="Tenure Requested"> 
                     <h:outputText value="#{loanApp.periodRequired}" />
                 </p:column>
-                
+
                 <p:column headerText="Amount Granted"> 
                     <h:outputText value="#{loanApp.amountGranted}" />
                 </p:column>
-                
+
                 <p:column headerText="Actual Tenure"> 
                     <h:outputText value="#{loanApp.periodSuggested}" />
                 </p:column>
-                
+
                 <p:column headerText="Status"> 
                     <h:outputText value="#{loanApp.applicationStatus}" />
+                </p:column>
+            </p:dataTable>    
+            <p:dataTable var="cashline" value="#{customerViewAllLoansManagedBean.cashlineApplications}" reflow="true">
+                <p:column> 
+                    <h:outputText value="Cashline" />
+                </p:column>
+
+                <p:column> 
+                    <h:outputText value="#{cashline.amountRequired}" />
+                </p:column>
+
+                <p:column> 
+                    <h:outputText value="N.A."/>
+                </p:column>
+
+                <p:column> 
+                    <h:outputText value="#{cashline.amountGranted}" />
+                </p:column>
+
+                <p:column> 
+                    <h:outputText value="N.A."/>
+                </p:column>
+
+                <p:column> 
+                    <h:outputText value="#{cashline.applicationStatus}" />
                 </p:column>
             </p:dataTable>
         </h:form>

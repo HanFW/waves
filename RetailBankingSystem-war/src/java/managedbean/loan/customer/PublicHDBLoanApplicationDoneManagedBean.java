@@ -21,7 +21,7 @@ import javax.faces.context.FacesContext;
 public class PublicHDBLoanApplicationDoneManagedBean {
     
     private String loanType;
-    private Integer loanAmount;
+    private BigDecimal loanAmount;
     private int tenure;
 
     /**
@@ -34,18 +34,18 @@ public class PublicHDBLoanApplicationDoneManagedBean {
     public void init(){
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         loanType = (String) ec.getFlash().get("loanType");
-        loanAmount = (Integer) ec.getFlash().get("amountRequired");
+        loanAmount = (BigDecimal) ec.getFlash().get("amountRequired");
         tenure = (int) ec.getFlash().get("tenure");
     }
 
-    public Integer getLoanAmount() {
+    public BigDecimal getLoanAmount() {
         return loanAmount;
     }
 
-    public void setLoanAmount(Integer loanAmount) {
+    public void setLoanAmount(BigDecimal loanAmount) {
         this.loanAmount = loanAmount;
     }
-    
+
 
     public String getLoanType() {
         return loanType;
