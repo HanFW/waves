@@ -91,6 +91,7 @@ public class NonStandingGIROManagedBean implements Serializable {
     }
 
     public List<NonStandingGIRO> getOneTimeGIROs() throws IOException {
+        
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
         CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
@@ -101,6 +102,7 @@ public class NonStandingGIROManagedBean implements Serializable {
     }
 
     public List<NonStandingGIRO> getRecurrentGIROs() throws IOException {
+        
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
         CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");

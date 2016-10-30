@@ -78,9 +78,9 @@ public class SWIFTTransferManagedBean {
             }
 
             for (int j = 0; j < swiftPayees.size(); j++) {
-                customerSWIFTPayee.put(swiftPayees.get(j).getSwiftPayeeAccountType() + "-" + swiftPayees.get(j).getSwiftPayeeAccountNum() + "-"
-                        + swiftPayees.get(j).getSwiftInstitution(), swiftPayees.get(j).getSwiftPayeeAccountType() + "-"
-                        + swiftPayees.get(j).getSwiftPayeeAccountNum() + "-" + swiftPayees.get(j).getSwiftInstitution());
+                customerSWIFTPayee.put(swiftPayees.get(j).getPayeeAccountType() + "-" + swiftPayees.get(j).getPayeeAccountNum() + "-"
+                        + swiftPayees.get(j).getSwiftInstitution(), swiftPayees.get(j).getPayeeAccountType() + "-"
+                        + swiftPayees.get(j).getPayeeAccountNum() + "-" + swiftPayees.get(j).getSwiftInstitution());
             }
         }
     }

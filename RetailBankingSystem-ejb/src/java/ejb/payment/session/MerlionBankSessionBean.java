@@ -15,8 +15,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.xml.ws.WebServiceRef;
 import ws.client.chips.CHIPSWebService_Service;
-import ws.client.otherbanks.OtherBankAccount;
-import ws.client.otherbanks.OtherBanksWebService_Service;
 import ws.client.swift.SWIFTWebService_Service;
 
 @Stateless
@@ -27,9 +25,6 @@ public class MerlionBankSessionBean implements MerlionBankSessionBeanLocal {
 
     @WebServiceRef(wsdlLocation = "META-INF/wsdl/localhost_8080/SWIFTWebService/SWIFTWebService.wsdl")
     private SWIFTWebService_Service service_swift;
-
-    @WebServiceRef(wsdlLocation = "META-INF/wsdl/localhost_8080/OtherBanksWebService/OtherBanksWebService.wsdl")
-    private OtherBanksWebService_Service service_otherBank;
 
     @EJB
     private BankAccountSessionBeanLocal bankAccountSessionBeanLocal;
@@ -99,13 +94,6 @@ public class MerlionBankSessionBean implements MerlionBankSessionBeanLocal {
                 transferedBankAccountNum);
 
         clearSWIFTTransferMTK(newSwiftId);
-    }
-
-    private OtherBankAccount retrieveBankAccountByNum(java.lang.String otherBankAccountNum) {
-        // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
-        // If the calling of port operations may lead to race condition some synchronization is required.
-        ws.client.otherbanks.OtherBanksWebService port = service_otherBank.getOtherBanksWebServicePort();
-        return port.retrieveBankAccountByNum(otherBankAccountNum);
     }
 
     private void clearSWIFTTransferMTK(java.lang.Long swiftId) {

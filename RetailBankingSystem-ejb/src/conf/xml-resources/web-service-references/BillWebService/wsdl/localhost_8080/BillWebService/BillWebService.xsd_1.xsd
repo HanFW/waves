@@ -12,6 +12,7 @@
 <xs:element name="billingOrganizationName" type="xs:string" minOccurs="0"/>
 <xs:element name="debitBank" type="xs:string" minOccurs="0"/>
 <xs:element name="debitBankAccountNum" type="xs:string" minOccurs="0"/>
+<xs:element name="paymentLimit" type="xs:string" minOccurs="0"/>
 </xs:sequence>
 </xs:complexType>
 

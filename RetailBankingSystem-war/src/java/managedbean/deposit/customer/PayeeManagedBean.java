@@ -3,6 +3,7 @@ package managedbean.deposit.customer;
 import ejb.deposit.entity.BankAccount;
 import ejb.customer.entity.CustomerBasic;
 import ejb.deposit.entity.Payee;
+import ejb.deposit.entity.RegularPayee;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
@@ -14,6 +15,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import ejb.deposit.session.PayeeSessionBeanLocal;
+import ejb.deposit.session.RegularPayeeSessionBeanLocal;
 import ejb.infrastructure.session.LoggingSessionBeanLocal;
 
 @Named(value = "payeeManagedBean")
@@ -22,13 +24,16 @@ import ejb.infrastructure.session.LoggingSessionBeanLocal;
 public class PayeeManagedBean implements Serializable {
 
     @EJB
+    private PayeeSessionBeanLocal payeeSessionBeanLocal;
+
+    @EJB
+    private RegularPayeeSessionBeanLocal regularPayeeSessionBeanLocal;
+
+    @EJB
     private LoggingSessionBeanLocal loggingSessionBeanLocal;
 
     @EJB
     private BankAccountSessionBeanLocal bankAccountSessionLocal;
-
-    @EJB
-    private PayeeSessionBeanLocal payeeSessionLocal;
 
     private Long payeeId;
     private String payeeName;
@@ -148,8 +153,8 @@ public class PayeeManagedBean implements Serializable {
 
                         lastTransactionDate = "";
                         customerBasicId = customerBasic.getCustomerBasicId();
-                        newPayeeId = payeeSessionLocal.addNewPayee(payeeName, payeeAccountNum, payeeAccountType, lastTransactionDate, customerBasicId);
-                        Payee payee = payeeSessionLocal.retrievePayeeById(newPayeeId);
+                        newPayeeId = regularPayeeSessionBeanLocal.addNewRegularPayee(payeeName, payeeAccountNum, payeeAccountType, lastTransactionDate, "Regular", customerBasicId);
+                        Payee payee = payeeSessionBeanLocal.retrievePayeeById(newPayeeId);
 
                         customerBasic.getPayee().add(payee);
                         statusMessage = "New Recipient Added Successfully.";
@@ -171,41 +176,13 @@ public class PayeeManagedBean implements Serializable {
         }
     }
 
-    public List<Payee> getPayee() throws IOException {
+    public List<RegularPayee> getRegularPayee() throws IOException {
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
         CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
 
-        List<Payee> payee = payeeSessionLocal.retrievePayeeByCusId(customerBasic.getCustomerBasicId());
+        List<RegularPayee> regularPayee = regularPayeeSessionBeanLocal.retrieveRegularPayeeByCusId(customerBasic.getCustomerBasicId());
 
-        return payee;
-    }
-
-    public void deletePayee() throws IOException {
-        System.out.println("=");
-        System.out.println("====== deposit/PayeeManagedBean: deletePayee() ======");
-        CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
-        ec = FacesContext.getCurrentInstance().getExternalContext();
-
-        Payee payee = payeeSessionLocal.retrievePayeeByName(customerPayee.getPayeeAccountNum());
-
-        if (payee.getPayeeId() == null) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Recipient does not exist.", "Failed!"));
-        } else {
-            payeeAccountNum = payee.getPayeeAccountNum();
-            payeeAccountType = payee.getPayeeAccountType();
-
-            payeeSessionLocal.deletePayee(payeeAccountNum);
-
-            statusMessage = "Recipient deleted Successfully.";
-            loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "delete payee", "successful", null);
-
-            ec.getFlash().put("statusMessage", statusMessage);
-            ec.getFlash().put("payeeName", payeeName);
-            ec.getFlash().put("payeeAccountNum", payeeAccountNum);
-            ec.getFlash().put("payeeAccountType", payeeAccountType);
-
-            ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerDeleteRecipientDone.xhtml?faces-redirect=true");
-        }
+        return regularPayee;
     }
 }
