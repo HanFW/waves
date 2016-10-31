@@ -83,7 +83,7 @@ public class EmployeeEnterReceivedChequeInformationManagedBean {
         String currentAvailableBalance = bankAccount.getAvailableBankAccountBalance();
         Double totalBalance = Double.valueOf(currentAvailableBalance) + Double.valueOf(transactionAmt);
 
-        bankAccountSessionBeanLocal.updateBankAccountAvailableBalance(receivedBankAccountNum, totalBalance.toString());
+//        bankAccountSessionBeanLocal.updateBankAccountAvailableBalance(receivedBankAccountNum, totalBalance.toString());
 
         Long receivedChequeId = receivedChequeSessionBeanLocal.addNewReceivedCheque(
                 transactionDate, transactionAmt, receivedBankAccountNum, customerName,
