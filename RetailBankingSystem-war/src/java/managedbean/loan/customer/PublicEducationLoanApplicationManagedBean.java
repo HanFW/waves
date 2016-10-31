@@ -19,7 +19,6 @@ import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.logging.Level;
@@ -129,20 +128,6 @@ public class PublicEducationLoanApplicationManagedBean implements Serializable {
     //employement
     private boolean occupationPanelVisible;
     private boolean employmentPanelVisible;
-
-    //property details
-    private boolean propertyTOPPanelVisible;
-    private boolean propertyTenurePanelVisible;
-
-    //loan
-    private boolean propertyNewPurchasePanelVisible;
-    private boolean propertyRefinancingPanelVisible;
-    private boolean propertyOTPPanelVisible;
-    private boolean propertyTenancyPanelVisible;
-    private boolean propertyBenefitsPanelVisible;
-
-    private ArrayList propertyTypes = new ArrayList();
-    private String property;
 
     /**
      * Creates a new instance of PublicEducationLoanApplicationManagedBean
@@ -1158,78 +1143,6 @@ public class PublicEducationLoanApplicationManagedBean implements Serializable {
 
     public void setEmploymentPanelVisible(boolean employmentPanelVisible) {
         this.employmentPanelVisible = employmentPanelVisible;
-    }
-
-    public boolean isPropertyTOPPanelVisible() {
-        return propertyTOPPanelVisible;
-    }
-
-    public void setPropertyTOPPanelVisible(boolean propertyTOPPanelVisible) {
-        this.propertyTOPPanelVisible = propertyTOPPanelVisible;
-    }
-
-    public boolean isPropertyTenurePanelVisible() {
-        return propertyTenurePanelVisible;
-    }
-
-    public void setPropertyTenurePanelVisible(boolean propertyTenurePanelVisible) {
-        this.propertyTenurePanelVisible = propertyTenurePanelVisible;
-    }
-
-    public boolean isPropertyNewPurchasePanelVisible() {
-        return propertyNewPurchasePanelVisible;
-    }
-
-    public void setPropertyNewPurchasePanelVisible(boolean propertyNewPurchasePanelVisible) {
-        this.propertyNewPurchasePanelVisible = propertyNewPurchasePanelVisible;
-    }
-
-    public boolean isPropertyRefinancingPanelVisible() {
-        return propertyRefinancingPanelVisible;
-    }
-
-    public void setPropertyRefinancingPanelVisible(boolean propertyRefinancingPanelVisible) {
-        this.propertyRefinancingPanelVisible = propertyRefinancingPanelVisible;
-    }
-
-    public boolean isPropertyOTPPanelVisible() {
-        return propertyOTPPanelVisible;
-    }
-
-    public void setPropertyOTPPanelVisible(boolean propertyOTPPanelVisible) {
-        this.propertyOTPPanelVisible = propertyOTPPanelVisible;
-    }
-
-    public boolean isPropertyTenancyPanelVisible() {
-        return propertyTenancyPanelVisible;
-    }
-
-    public void setPropertyTenancyPanelVisible(boolean propertyTenancyPanelVisible) {
-        this.propertyTenancyPanelVisible = propertyTenancyPanelVisible;
-    }
-
-    public boolean isPropertyBenefitsPanelVisible() {
-        return propertyBenefitsPanelVisible;
-    }
-
-    public void setPropertyBenefitsPanelVisible(boolean propertyBenefitsPanelVisible) {
-        this.propertyBenefitsPanelVisible = propertyBenefitsPanelVisible;
-    }
-
-    public ArrayList getPropertyTypes() {
-        return propertyTypes;
-    }
-
-    public void setPropertyTypes(ArrayList propertyTypes) {
-        this.propertyTypes = propertyTypes;
-    }
-
-    public String getProperty() {
-        return property;
-    }
-
-    public void setProperty(String property) {
-        this.property = property;
     }
 
 }

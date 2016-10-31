@@ -16,7 +16,7 @@
             <p:commandButton value="Apply for Education Loan" action="#{publicEducationLoanApplicationManagedBean.addEducationLoanApplicationFast}"/>
         </h:form>
         <h:form>
-            <p:wizard widgetVar ="cashlineWizard" flowListener="#{publicEducationLoanApplicationManagedBean.onFlowProcess}" showNavBar="false">
+            <p:wizard widgetVar ="educationLoanWizard" flowListener="#{publicEducationLoanApplicationManagedBean.onFlowProcess}" showNavBar="false">
                 <p:tab id="basic">
                     <h:panelGrid columns="1">
                         <p:steps activeIndex="0">
@@ -549,7 +549,7 @@
 
                     <h:panelGrid columns="2" class="ui-lg-6"> 
                         <p:commandButton value="Back" icon="ui-icon-arrow-1-w" iconPos="left" disabled="true"/>
-                        <p:commandButton value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('cashlineWizard').next();"/>
+                        <p:commandButton value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('educationLoanWizard').next();"/>
                     </h:panelGrid>
                 </p:tab>
 
@@ -664,8 +664,8 @@
                     </p:panelGrid>
 
                     <h:panelGrid columns="2" class="ui-lg-6"> 
-                        <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('cashlineWizard').back();"/>
-                        <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('cashlineWizard').next();"/>
+                        <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('educationLoanWizard').back();"/>
+                        <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('educationLoanWizard').next();"/>
                     </h:panelGrid>
                 </p:tab>
 
@@ -838,8 +838,8 @@
                     </p:panelGrid>
 
                     <h:panelGrid columns="2" class="ui-lg-6"> 
-                        <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('cashlineWizard').back()"/>
-                        <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('cashlineWizard').next();"/>
+                        <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('educationLoanWizard').back()"/>
+                        <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('educationLoanWizard').next();"/>
                     </h:panelGrid>
                 </p:tab>
                 
@@ -864,13 +864,13 @@
                         <p:outputLabel for="customerEducationStarton" style="font-weight: bold" value="Education Starting on: "/>
                         <p:calendar id="customerEducationStarton" value="#{publicEducationLoanApplicationManagedBean.customerEducationStarton}" 
                                     showOn="button" locale="de" navigator="true" pattern="dd/MM/yyyy" 
-                                    yearRange="c-200:c+0" required="true" requiredMessage="Required Field"/>
+                                    yearRange="c-10:c+20" required="true" requiredMessage="Required Field"/>
                         <p:message for="customerEducationStarton"/>
                         
                         <p:outputLabel for="customerEducationEndon" style="font-weight: bold" value="Education Ending on: "/>
                         <p:calendar id="customerEducationEndon" value="#{publicEducationLoanApplicationManagedBean.customerEducationEndon}" 
                                     showOn="button" locale="de" navigator="true" pattern="dd/MM/yyyy" 
-                                    yearRange="c-200:c+0" required="true" requiredMessage="Required Field"/>
+                                    yearRange="c-10:c+20" required="true" requiredMessage="Required Field"/>
                         <p:message for="customerEducationEndon"/>
                         
                         <p:outputLabel for="customerCourseDuration" style="font-weight: bold" value="Course Duration: "/>
@@ -903,6 +903,11 @@
                         </p:inputText>
                         <p:message for="customerLoanTenure"/>
                     </p:panelGrid>
+                    
+                    <h:panelGrid columns="2" class="ui-lg-6"> 
+                        <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('educationLoanWizard').back()"/>
+                        <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('educationLoanWizard').next();"/>
+                    </h:panelGrid>
                 </p:tab>
 
                 <p:tab id="documents">
@@ -958,8 +963,8 @@
                     </h:panelGrid>
 
                     <h:panelGrid columns="2" class="ui-lg-6"> 
-                        <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('cashlineWizard').back()"/>
-                        <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('cashlineWizard').next();"/>
+                        <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('educationLoanWizard').back()"/>
+                        <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('educationLoanWizard').next();"/>
                     </h:panelGrid>
                 </p:tab>
 
@@ -998,7 +1003,7 @@
                     </p:panelGrid>
 
                     <h:panelGrid columns="2" class="ui-lg-6"> 
-                        <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('cashlineWizard').back()"/>
+                        <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('educationLoanWizard').back()"/>
                         <p:commandButton id="saveBtn" value="Submit Request" ajax="false" update="@form" actionListener="#{publicEducationLoanApplicationManagedBean.addEducationLoanApplication}"/>                        
                     </h:panelGrid>
                 </p:tab>

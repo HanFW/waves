@@ -13,16 +13,17 @@
 
     <ui:define name="content">  
         <h:form>
-            <p:commandButton value="Apply for Education Loan" action="#{publicCarLoanApplicationManagedBean.addEducationLoanApplicationFast}"/>
+            <p:commandButton value="Apply for Car Loan" action="#{publicCarLoanApplicationManagedBean.addCarLoanApplicationFast}"/>
         </h:form>
         <h:form>
-            <p:wizard widgetVar ="cashlineWizard" flowListener="#{publicCarLoanApplicationManagedBean.onFlowProcess}" showNavBar="false">
+            <p:wizard widgetVar ="carLoanWizard" flowListener="#{publicCarLoanApplicationManagedBean.onFlowProcess}" showNavBar="false">
                 <p:tab id="basic">
                     <h:panelGrid columns="1">
                         <p:steps activeIndex="0">
                             <p:menuitem value="Basic Information" />
                             <p:menuitem value="Personal Details" />
                             <p:menuitem value="Employment Details" />
+                            <p:menuitem value="Financial Commitments"/>
                             <p:menuitem value="Financial Request" />
                             <p:menuitem value="Supporting Documents"/>
                             <p:menuitem value="Confirmation"/>
@@ -549,7 +550,7 @@
 
                     <h:panelGrid columns="2" class="ui-lg-6"> 
                         <p:commandButton value="Back" icon="ui-icon-arrow-1-w" iconPos="left" disabled="true"/>
-                        <p:commandButton value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('cashlineWizard').next();"/>
+                        <p:commandButton value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('carLoanWizard').next();"/>
                     </h:panelGrid>
                 </p:tab>
 
@@ -559,6 +560,7 @@
                             <p:menuitem value="Basic Information" />
                             <p:menuitem value="Personal Details" />
                             <p:menuitem value="Employment Details" />
+                            <p:menuitem value="Financial Commitments"/>
                             <p:menuitem value="Financial Request" />
                             <p:menuitem value="Supporting Documents"/>
                             <p:menuitem value="Confirmation"/>
@@ -664,8 +666,8 @@
                     </p:panelGrid>
 
                     <h:panelGrid columns="2" class="ui-lg-6"> 
-                        <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('cashlineWizard').back();"/>
-                        <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('cashlineWizard').next();"/>
+                        <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('carLoanWizard').back();"/>
+                        <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('carLoanWizard').next();"/>
                     </h:panelGrid>
                 </p:tab>
 
@@ -675,6 +677,7 @@
                             <p:menuitem value="Basic Information" />
                             <p:menuitem value="Personal Details" />
                             <p:menuitem value="Employment Details" />
+                            <p:menuitem value="Financial Commitments"/>
                             <p:menuitem value="Financial Request" />
                             <p:menuitem value="Supporting Documents"/>
                             <p:menuitem value="Confirmation"/>
@@ -803,7 +806,7 @@
                                 <f:convertNumber integerOnly="true"/>
                             </p:inputText>
                             <p:message for="customerLengthOfCurrentJob"/>
-                            
+
                             <p:outputLabel for="customerPreviousCompany" style="font-weight: bold" value="Name of Previous Company"/>
                             <p:inputText id="customerPreviousCompany" value="#{publicCarLoanApplicationManagedBean.customerPreviousCompany}"
                                          required="#{publicCarLoanApplicationManagedBean.employmentPanelVisible}" requiredMessage="Required Field">
@@ -838,63 +841,122 @@
                     </p:panelGrid>
 
                     <h:panelGrid columns="2" class="ui-lg-6"> 
-                        <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('cashlineWizard').back()"/>
-                        <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('cashlineWizard').next();"/>
+                        <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('carLoanWizard').back()"/>
+                        <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('carLoanWizard').next();"/>
                     </h:panelGrid>
                 </p:tab>
-                
-                <p:tab id="loan">
+
+                <p:tab id="commitments">
                     <h:panelGrid columns="1">
                         <p:steps activeIndex="3">
                             <p:menuitem value="Basic Information" />
                             <p:menuitem value="Personal Details" />
                             <p:menuitem value="Employment Details" />
+                            <p:menuitem value="Financial Commitments"/>
                             <p:menuitem value="Financial Request" />
                             <p:menuitem value="Supporting Documents"/>
                             <p:menuitem value="Confirmation"/>
                         </p:steps>
                     </h:panelGrid>
-                    
+
                     <p:panelGrid>
-                        <p:outputLabel for="customerEducationInstitution" style="font-weight: bold" value="Education Institution: "/>
-                        <p:inputText id="customerEducationInstitution" value="#{publicCarLoanApplicationManagedBean.customerEducationInstitution}"
+                        <p:dataList id="commitmentTable" var="customerFinancialCommitment" value="#{publicCarLoanApplicationManagedBean.customerFinancialCommitments}"
+                                    emptyMessage="Please list ALL your credit facilities with other financial institutions, e.g. credit card, residential property loan, car loan, personal credit line">
+                            #{customerFinancialCommitment.get('institution')}, #{customerFinancialCommitment.get('type')}, #{customerFinancialCommitment.get('amount')}, #{customerFinancialCommitment.get('instalment')}
+                            <p:commandLink value="Remove" process="@this" update="commitmentTable" action="#{publicCarLoanApplicationManagedBean.deleteCustomerFinancialCommitment(customerFinancialCommitment)}"/>
+                        </p:dataList>
+                        <p:separator/>
+                        <p:messages globalOnly="true"/>
+                        <p:outputLabel value="Add a new financial commitment here: "/>
+                        <br/>
+                        <p:outputLabel for="customerFinancialInstitution" style="font-weight: bold" value="Financial Institution: "/>
+                        <p:inputText id="customerFinancialInstitution" value="#{publicCarLoanApplicationManagedBean.customerFinancialInstitution}"/>
+                        <p:message for="customerFinancialInstitution"/>
+
+                        <p:outputLabel for="customerFacilityType" style="font-weight: bold" value="Facility Type: "/>
+                        <p:inputText id="customerFacilityType" value="#{publicCarLoanApplicationManagedBean.customerFacilityType}"/>
+                        <p:message for="customerFacilityType"/>
+
+                        <p:outputLabel for="customerLoanAmount" style="font-weight: bold" value="Loan Amount/Credit Limit: "/>
+                        <p:inputText id="customerLoanAmount" value="#{publicCarLoanApplicationManagedBean.customerLoanAmount}"
+                                     converterMessage="Please enter a valid number">
+                        </p:inputText>
+                        <p:message for="customerLoanAmount"/>
+
+                        <p:outputLabel for="customerMonthlyInstalment" style="font-weight: bold" value="Monthly Instalment: "/>
+                        <p:inputText id="customerMonthlyInstalment" value="#{publicCarLoanApplicationManagedBean.customerMonthlyInstalment}"
+                                     converterMessage="Please enter a valid number">
+                        </p:inputText>
+                        <p:message for="customerMonthlyInstalment"/>
+
+                        <p:commandLink partialSubmit="true" value="Add Commitment" process="@this" ajax="false" update="commitments" actionListener="#{publicCarLoanApplicationManagedBean.addCustomerFinancialCommitment}"/>
+                    </p:panelGrid>
+
+                    <h:panelGrid columns="2" class="ui-lg-6"> 
+                        <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('carLoanWizard').back()"/>
+                        <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('carLoanWizard').next();"/>
+                    </h:panelGrid>
+                </p:tab>
+
+                <p:tab id="loan">
+                    <h:panelGrid columns="1">
+                        <p:steps activeIndex="4">
+                            <p:menuitem value="Basic Information" />
+                            <p:menuitem value="Personal Details" />
+                            <p:menuitem value="Employment Details" />
+                            <p:menuitem value="Financial Commitments"/>
+                            <p:menuitem value="Financial Request" />
+                            <p:menuitem value="Supporting Documents"/>
+                            <p:menuitem value="Confirmation"/>
+                        </p:steps>
+                    </h:panelGrid>
+
+                    <p:panelGrid>
+                        <p:outputLabel for="isNewCar" style="font-weight: bold" value="New Car: " />
+                        <p:selectOneRadio id="isNewCar" value="#{publicCarLoanApplicationManagedBean.isNewCar}"
+                                          required="true" requiredMessage="Required Field">
+                            <f:selectItem itemLabel="Yes" itemValue="Yes" />
+                            <f:selectItem itemLabel="No" itemValue="No" />
+                            <p:ajax event="change" listener="#{publicCarLoanApplicationManagedBean.changeCarStatus}"/>
+                        </p:selectOneRadio>
+                        <p:message for="isNewCar" />
+                        
+                        <p:outputLabel for="customerCarMake" style="font-weight: bold" value="Car Make: "/>
+                        <p:inputText id="customerCarModel" value="#{publicCarLoanApplicationManagedBean.customerCarModel}"
                                      required="true" requiredMessage="Required Field"/>
-                        <p:message for="customerEducationInstitution"/>
-                        
-                        <p:outputLabel for="customerEducationStarton" style="font-weight: bold" value="Education Starting on: "/>
-                        <p:calendar id="customerEducationStarton" value="#{publicCarLoanApplicationManagedBean.customerEducationStarton}" 
-                                    showOn="button" locale="de" navigator="true" pattern="dd/MM/yyyy" 
-                                    yearRange="c-200:c+0" required="true" requiredMessage="Required Field"/>
-                        <p:message for="customerEducationStarton"/>
-                        
-                        <p:outputLabel for="customerEducationEndon" style="font-weight: bold" value="Education Ending on: "/>
-                        <p:calendar id="customerEducationEndon" value="#{publicCarLoanApplicationManagedBean.customerEducationEndon}" 
-                                    showOn="button" locale="de" navigator="true" pattern="dd/MM/yyyy" 
-                                    yearRange="c-200:c+0" required="true" requiredMessage="Required Field"/>
-                        <p:message for="customerEducationEndon"/>
-                        
-                        <p:outputLabel for="customerCourseDuration" style="font-weight: bold" value="Course Duration: "/>
-                        <p:inputText id="customerCourseDuration" value="#{publicCarLoanApplicationManagedBean.customerCourseDuration}"
+                        <p:message for="customerCarModel"/>
+
+                        <p:outputLabel for="customerCarModel" style="font-weight: bold" value="Car Model: "/>
+                        <p:inputText id="customerCarMake" value="#{publicCarLoanApplicationManagedBean.customerCarMake}"
+                                     required="true" requiredMessage="Required Field"/>
+                        <p:message for="customerCarMake"/>
+
+                        <p:outputLabel for="customerChassis" style="font-weight: bold" value="Car Chassis No.: "/>
+                        <p:inputText id="customerChassis" value="#{publicCarLoanApplicationManagedBean.customerChassis}"
+                                     required="true" requiredMessage="Required Field"/>
+                        <p:message for="customerChassis"/>
+
+                        <p:outputLabel for="customerCarPurchasePrice" style="font-weight: bold" value="Car Purchase Price: "/>
+                        <p:inputText id="customerCarPurchasePrice" value="#{publicCarLoanApplicationManagedBean.customerCarPurchasePrice}"
                                      required="true" requiredMessage="Required Field" validatorMessage="Please enter a valid number" converterMessage="Please enter a valid number">
                             <f:validateLongRange minimum="0"/>
+                        </p:inputText>
+                        <p:message for="customerCarPurchasePrice"/>
+
+                        <p:outputLabel for="customerCarYearOfManufacture" style="font-weight: bold" value="Car Year of Manufacture "/>
+                        <p:inputText id="customerCarYearOfManufacture" value="#{publicCarLoanApplicationManagedBean.customerCarYearOfManufacture}"
+                                     required="true" requiredMessage="Required Field" validatorMessage="Please enter a valid year" converterMessage="Please enter a valid number">
+                            <f:validateLongRange minimum="1900" maximum="2016"/>
                             <f:convertNumber integerOnly="true"/>
                         </p:inputText>
-                        <p:message for="customerCourseDuration"/>
-                        
-                        <p:outputLabel for="customerCourseFee" style="font-weight: bold" value="Course Fee: "/>
-                        <p:inputText id="customerCourseFee" value="#{publicCarLoanApplicationManagedBean.customerCourseFee}"
-                                     required="true" requiredMessage="Required Field" validatorMessage="Please enter a valid number" converterMessage="Please enter a valid number">
-                            <f:validateLongRange minimum="0"/>
-                            <f:convertNumber integerOnly="true"/>
-                        </p:inputText>
-                        <p:message for="customerCourseFee"/>
-                        
+                        <p:message for="customerCarYearOfManufacture"/>
+
                         <p:outputLabel for="customerLoanAmountRequired" style="font-weight: bold" value="Loan Amount Required (SGD): "/>
                         <p:inputText id="customerLoanAmountRequired" value="#{publicCarLoanApplicationManagedBean.customerLoanAmountRequired}"
                                      required="true" requiredMessage="Required Field" converterMessage="Please enter a valid number">
                         </p:inputText>
                         <p:message for="customerLoanAmountRequired"/>
-                        
+
                         <p:outputLabel for="customerLoanTenure" style="font-weight: bold" value="Loan Tenure: "/>
                         <p:inputText id="customerLoanTenure" value="#{publicCarLoanApplicationManagedBean.customerLoanTenure}"
                                      required="true" requiredMessage="Required Field" validatorMessage="Please enter a valid number between 0-30" converterMessage="Please enter a valid number">
@@ -903,14 +965,20 @@
                         </p:inputText>
                         <p:message for="customerLoanTenure"/>
                     </p:panelGrid>
+                    
+                    <h:panelGrid columns="2" class="ui-lg-6"> 
+                        <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('carLoanWizard').back()"/>
+                        <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('carLoanWizard').next();"/>
+                    </h:panelGrid>
                 </p:tab>
 
                 <p:tab id="documents">
                     <h:panelGrid columns="1">
-                        <p:steps activeIndex="4">
+                        <p:steps activeIndex="5">
                             <p:menuitem value="Basic Information" />
                             <p:menuitem value="Personal Details" />
                             <p:menuitem value="Employment Details" />
+                            <p:menuitem value="Financial Commitments"/>
                             <p:menuitem value="Financial Request" />
                             <p:menuitem value="Supporting Documents"/>
                             <p:menuitem value="Confirmation"/>
@@ -921,24 +989,24 @@
                         <p:messages globalOnly="true"/>
                         <p:outputLabel value="Please upload all the files in PDF format"/>
                         <p:panel>
-                            <p:outputLabel value="Please upload photocopy of NRIC/Passport for all Applicants and Owners:"/>
+                            <p:outputLabel value="Please upload photocopy of NRIC/Passport for all Applicants and Owners"/>
                             <p:outputLabel value="(Please upload all photocopies in one single PDF file)"/>
                             <p:messages id="identificationUploadMessage" for="identificationUpload"/>
                             <p:fileUpload id="identificationUpload" update="identificationUploadMessage" fileUploadListener="#{publicCarLoanApplicationManagedBean.identificationUpload}"
                                           mode="advanced" skinSimple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(pdf)$/" multiple="false"/>
                         </p:panel>
-                        
-                        <p:panel>
-                            <p:outputLabel value="Please upload the acceptance letter from school:"/>
-                            <p:messages id="acceptanceLetterUploadMessage" for="acceptanceLetterUpload"/>
-                            <p:fileUpload id="acceptanceLetterUpload" update="acceptanceLetterUploadMessage" fileUploadListener="#{publicCarLoanApplicationManagedBean.acceptanceLetterUpload}"
+
+                        <p:panel visible="#{publicCarLoanApplicationManagedBean.isNewCar eq 'Yes'}">
+                            <p:outputLabel value="Please upload sales/purchase order from supplier"/>
+                            <p:messages id="carSalesOrderUploadMessage" for="carSalesOrderUpload"/>
+                            <p:fileUpload id="carSalesOrderUpload" update="carSalesOrderUploadMessage" fileUploadListener="#{publicCarLoanApplicationManagedBean.carSalesOrderUpload}"
                                           mode="advanced" skinSimple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(pdf)$/" multiple="false"/>
                         </p:panel>
-                        
-                        <p:panel>
-                            <p:outputLabel value="Please upload the course fee invoice or schedule of payment:"/>
-                            <p:messages id="courseInvoiceUploadMessage" for="courseInvoiceUpload"/>
-                            <p:fileUpload id="courseInvoiceUpload" update="courseInvoiceUploadMessage" fileUploadListener="#{publicCarLoanApplicationManagedBean.courseInvoiceUpload}"
+
+                        <p:panel visible="#{publicCarLoanApplicationManagedBean.isNewCar eq 'No'}">
+                            <p:outputLabel value="Please upload copy of registration/COE card"/>
+                            <p:messages id="carRegistrationCardUploadMessage" for="carRegistrationCardUpload"/>
+                            <p:fileUpload id="carRegistrationCardUpload" update="carRegistrationCardUploadMessage" fileUploadListener="#{publicCarLoanApplicationManagedBean.carRegistrationCardUpload}"
                                           mode="advanced" skinSimple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(pdf)$/" multiple="false"/>
                         </p:panel>
 
@@ -958,17 +1026,18 @@
                     </h:panelGrid>
 
                     <h:panelGrid columns="2" class="ui-lg-6"> 
-                        <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('cashlineWizard').back()"/>
-                        <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('cashlineWizard').next();"/>
+                        <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('carLoanWizard').back()"/>
+                        <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('carLoanWizard').next();"/>
                     </h:panelGrid>
                 </p:tab>
 
                 <p:tab id="confirmation">
                     <h:panelGrid columns="1">
-                        <p:steps activeIndex="5">
+                        <p:steps activeIndex="6">
                             <p:menuitem value="Basic Information" />
                             <p:menuitem value="Personal Details" />
                             <p:menuitem value="Employment Details" />
+                            <p:menuitem value="Financial Commitments"/>
                             <p:menuitem value="Financial Request" />
                             <p:menuitem value="Supporting Documents"/>
                             <p:menuitem value="Confirmation"/>
@@ -998,8 +1067,8 @@
                     </p:panelGrid>
 
                     <h:panelGrid columns="2" class="ui-lg-6"> 
-                        <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('cashlineWizard').back()"/>
-                        <p:commandButton id="saveBtn" value="Submit Request" ajax="false" update="@form" actionListener="#{publicCarLoanApplicationManagedBean.addEducationLoanApplication}"/>                        
+                        <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('carLoanWizard').back()"/>
+                        <p:commandButton id="saveBtn" value="Submit Request" ajax="false" update="@form" actionListener="#{publicCarLoanApplicationManagedBean.addCarLoanApplication}"/>                        
                     </h:panelGrid>
                 </p:tab>
             </p:wizard>
