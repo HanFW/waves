@@ -30,33 +30,33 @@
                         <p:outputLabel style="font-size: 20px" value="Principal card holders are responsible for managing supplementary cards, such as card activation and repayment."/>
                         <br/>
                     </h:panelGrid>
-                    <p:messages autoUpdate="true"/>
+                    <p:messages autoUpdate="true" globalOnly="true"/>
 
                     <p:panel id="creditPanel">
-                        <h:panelGrid columns="3" class="ui-lg-6">
-                            <p:outputLabel value="Credit Card:"/>
+                        <h:panelGrid columns="3" class="ui-lg-8">
+                            <p:outputLabel for="selectCreditCard" value="Credit Card:"/>
                             <p:selectOneMenu id="selectCreditCard" required="true" requiredMessage="Please select a credit card" style="text-align:left" value="#{customerAddSupplementaryManagedBean.principalCardName}">
                                 <f:selectItem itemLabel="Please select..." itemValue=""/>
                                 <f:selectItems value="#{customerAddSupplementaryManagedBean.allPrincipalCards}"/> 
                             </p:selectOneMenu>
                             <p:message for="selectCreditCard"/>
 
-                            <p:outputLabel id="cardHolderName" value="Supplementary Card Holder Name: "/>
-                            <p:inputText  id="cardHolderName2" required="true" requiredMessage="Please enter card holder name" value="#{customerAddSupplementaryManagedBean.cardHolderName}"/>
-                            <p:message for="cardHolderName2"/>
+                            <p:outputLabel for="cardHolderName" value="Supplementary Card Holder Name: "/>
+                            <p:inputText id="cardHolderName" required="true" requiredMessage="Please enter card holder name" value="#{customerAddSupplementaryManagedBean.cardHolderName}"/>
+                            <p:message for="cardHolderName"/>
 
-                            <p:outputLabel id="cardHolderID" value="Supplementary Card Holder NRIC/Passport: "/>
-                            <p:inputText  id="cardHolderID2" required="true" requiredMessage="Please enter card holder ID" value="#{customerAddSupplementaryManagedBean.identificationNum}"/>
-                            <p:message for="cardHolderID2"/>
+                            <p:outputLabel for="cardHolderID" value="Supplementary Card Holder NRIC/Passport: "/>
+                            <p:inputText id="cardHolderID" required="true" requiredMessage="Please enter card holder ID" value="#{customerAddSupplementaryManagedBean.identificationNum}"/>
+                            <p:message for="cardHolderID"/>
 
-                            <p:outputLabel id="dob" value="Supplementary Card Holder Date of Birth: "/>
-                            <p:calendar id="customerDateOfBirth" value="#{customerAddSupplementaryManagedBean.dateOfBirth}" 
+                            <p:outputLabel for="dob" value="Supplementary Card Holder Date of Birth: "/>
+                            <p:calendar id="dob" value="#{customerAddSupplementaryManagedBean.dateOfBirth}" 
                                         showOn="button" locale="de" navigator="true" pattern="dd/MM/yyyy" 
                                         yearRange="c-200:c" required="true" requiredMessage="Required Field" />
-                            <p:message for="customerDateOfBirth"/>
+                            <p:message for="dob"/>
 
-                            <p:outputLabel id="relationship" value="Relationship to you: "/>
-                            <p:selectOneMenu id="selectRelationship" required="true" requiredMessage="Please select a relationship" style="text-align:left" value="#{customerAddSupplementaryManagedBean.relationship}">
+                            <p:outputLabel for="relationship"  value="Relationship to you: "/>
+                            <p:selectOneMenu id="relationship" required="true" requiredMessage="Please select a relationship" style="text-align:left" value="#{customerAddSupplementaryManagedBean.relationship}">
                                 <f:selectItem itemLabel="Please select..." itemValue=""/>
                                 <f:selectItem itemLabel="Children" itemValue="Children"/> 
                                 <f:selectItem itemLabel="Spouse" itemValue="Spouse"/>
@@ -64,7 +64,7 @@
                                 <f:selectItem itemLabel="Siblings" itemValue="Siblings"/>
                                 <f:selectItem itemLabel="Others" itemValue="Others"/>
                             </p:selectOneMenu>
-                            <p:message for="selectRelationship"/>
+                            <p:message for="relationship"/>
 
                             <p:outputLabel value="Please upload files in PDF format"/>
                             <p:panel>
@@ -76,7 +76,7 @@
                             </p:panel>
 
                         </h:panelGrid>
-                        <p:commandButton value="Submit Application" actionListener="#{customerAddSupplementaryManagedBean.addSupplementaryCard}" style="width:150px"/>        
+                        <p:commandButton value="Submit Application" actionListener="#{customerAddSupplementaryManagedBean.addSupplementaryCard}" style="width:150px" update="@form"/>        
                     </p:panel>
                     <br/>
                 </div>

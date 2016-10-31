@@ -53,7 +53,6 @@ public class CreditCardSessionBean implements CreditCardSessionBeanLocal {
         } else {
             creditCard.setCreditLimit(0.0);
         }
-
         creditCard.setCreditCardType(cct);
         creditCard.setCardNum(cardNum);
         creditCard.setCardHolderName(cardHolderName);
@@ -102,10 +101,12 @@ public class CreditCardSessionBean implements CreditCardSessionBeanLocal {
 
         sc.setCardExpiryDate(pc.getCardExpiryDate());
         sc.setCardType("SupplementaryCard");
+        sc.setCreditCardType(pc.getCreditCardType());
         sc.setDateOfBirth(dateOfBirth);
         sc.setCardHolderName(cardHolderName);
         sc.setIdentificationNum(identificationNum);
         sc.setPrincipalCard(pc);
+        sc.setCustomerBasic(pc.getCustomerBasic());
         sc.setRelationship(relationship);
         sc.setRemainingActivationDays(15);
         sc.setRemainingExpirationMonths(pc.getRemainingExpirationMonths());
@@ -292,6 +293,13 @@ public class CreditCardSessionBean implements CreditCardSessionBeanLocal {
         }
 
         return creditCardNames;
+    }
+    
+    @Override
+    public SupplementaryCard getSupplementaryCardById(Long supplementaryCardId){
+        SupplementaryCard sc = em.find(SupplementaryCard.class, supplementaryCardId);
+
+        return sc;
     }
 
     @Override
@@ -492,6 +500,20 @@ public class CreditCardSessionBean implements CreditCardSessionBeanLocal {
         em.flush();
 
     }
+    
+    @Override
+    public void approveSupplementary (Long supplementaryCardId){
+        SupplementaryCard sc = em.find(SupplementaryCard.class, supplementaryCardId);
+        sc.setStatus("Approved");
+        em.flush();
+    }
+    @Override
+    public void rejectSupplementary (Long supplementaryCardId) {
+        SupplementaryCard sc = em.find(SupplementaryCard.class, supplementaryCardId);
+        em.remove(sc);
+        em.flush();
+    }
+        
 
     private PrincipalCard getPrincipalByCardNum(String cardNum) {
         Query query = em.createQuery("SELECT p FROM PrincipalCard p WHERE p.cardNum = :cardNum");

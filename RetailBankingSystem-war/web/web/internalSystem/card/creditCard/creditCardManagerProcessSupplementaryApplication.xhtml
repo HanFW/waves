@@ -1,12 +1,74 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
-    <h:head>
-        <title>Facelet Title</title>
-    </h:head>
-    <h:body>
-        Hello from Facelets
-    </h:body>
-</html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/internalSystemTemplate.xhtml">
 
+    <ui:define name="content">
+        <h:form>
+            <p:tabView>
+                <p:tab title="Application Information">
+                    <p:accordionPanel multiple="true">
+                        <p:tab title="Principal Card Holder Information">
+                            <p:panelGrid columns="4">
+
+                                <p:outputLabel style="font-weight: bold;" value="Name:"/>
+                                <p:outputLabel value="#{creditCardManagerSupplementaryManagedBean.customerName}"/>
+
+                                <p:outputLabel style="font-weight: bold;" value="Date of Birth: "/>
+                                <p:outputLabel value="#{creditCardManagerSupplementaryManagedBean.customerDateOfBirth}"/>
+
+                                <p:outputLabel style="font-weight: bold;" value="Nationality: "/>
+                                <p:outputLabel value="#{creditCardManagerSupplementaryManagedBean.customerNationality}"/>
+
+                            </p:panelGrid>
+                        </p:tab>
+                        <p:tab title="Supplementary Card Holder Information">
+                            <p:panelGrid columns="4">
+                                <p:outputLabel style="font-weight: bold;" value="Relationship with Principal Card Holder: "/>
+                                <p:outputLabel value="#{creditCardManagerSupplementaryManagedBean.relationship}"/>
+
+                                <p:outputLabel style="font-weight: bold;" value="Name: "/>
+                                <p:outputLabel value="#{creditCardManagerSupplementaryManagedBean.cardHolderName}"/>
+
+                                <p:outputLabel style="font-weight: bold;" value="NRIC/Passport: "/>
+                                <p:outputLabel value="#{creditCardManagerSupplementaryManagedBean.cardHolderIdentificationNum}"/>
+
+                                <p:outputLabel style="font-weight: bold;" value="Date Of Birth "/>
+                                <p:outputLabel value="#{creditCardManagerSupplementaryManagedBean.cardHolderDateOfBirth}"/>
+
+                            </p:panelGrid>
+                        </p:tab>
+                        <p:tab title="Credit Card Details">
+                            <p:panelGrid columns="4">
+                                <p:outputLabel style="font-weight: bold;" value="Card Type: "/>
+                                <p:outputLabel value="#{creditCardManagerSupplementaryManagedBean.creditCardTypeName}"/>
+
+                                <p:outputLabel style="font-weight: bold;" value="Credit Limit: "/>
+                                <p:outputLabel value="#{creditCardManagerSupplementaryManagedBean.creditLimit}"/>
+
+                            </p:panelGrid>
+                        </p:tab>
+                    </p:accordionPanel>
+                </p:tab>
+
+                <p:tab title="Documents">
+                    <p:accordionPanel multiple="true" activeIndex="-1">
+                        <p:tab title="Identification" >
+                            <p:media value="/Users/aaa/Desktop/ID/Supplementary-#{creditCardManagerSupplementaryManagedBean.customerIdentificationNum}.pdf" width="100%" height="300px"/>  
+                        </p:tab>                              
+                    </p:accordionPanel>
+                </p:tab>
+            </p:tabView>
+
+            <p:panelGrid>
+                <p:commandButton value="Approve" actionListener="#{creditCardManagerSupplementaryManagedBean.approveRequest}" />
+                <p:commandButton value="Reject" actionListener="#{creditCardManagerSupplementaryManagedBean.rejectRequest}"/>
+            </p:panelGrid>
+            
+        </h:form>
+    </ui:define>
+</ui:composition>

@@ -8,6 +8,7 @@
                 template="/WEB-INF/internalSystemTemplate.xhtml">
 
     <ui:define name="content">
+        <h1>Credit Card Application </h1>
         <p:dataTable var="principalCard" value="#{creditCardManagerViewManagedBean.principalCards}">
             <p:column headerText="Applicant">
                 <h:outputText value="#{principalCard.cardHolderName}" />
@@ -26,6 +27,7 @@
             </p:column>
         </p:dataTable>
         
+        <h1>Supplementary Card Application </h1>
         <p:dataTable var="supplementaryCard" value="#{creditCardManagerViewManagedBean.supplementaryCards}">
             <p:column headerText="Applicant">
                 <h:outputText value="#{supplementaryCard.cardHolderName}" />
