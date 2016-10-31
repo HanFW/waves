@@ -29,22 +29,18 @@
                         <br/>
 
                         <p:outputLabel for="transferToAccount" style="font-weight: bold" value="Account: " />
-
                         <p:selectOneMenu id="transferToAccount" value="#{transferManagedBean.toBankAccountNumWithType}" 
                                          effect="fold" editable="false">
                             <f:selectItem itemLabel="Please Select One" itemValue=""/> 
                             <f:selectItems value="#{transferManagedBean.customerPayees}" />
                         </p:selectOneMenu>
-
                         <p:message for="transferToAccount" />
 
                         <p:outputLabel for="transferToCurrency" style="font-weight: bold" value="Currency: " />
-
                         <p:selectOneMenu id="transferToCurrency" value="#{transferManagedBean.toCurrency}" 
                                          required="true">
                             <f:selectItem itemLabel="Singapore Dollar" itemValue="SGD - Singapore Dollar" />
                         </p:selectOneMenu>
-
                         <p:message for="transferToCurrency" />
 
                         <p:panel id="dailytransferLimitPanel" visible="#{transferManagedBean.dailyTransferRender}">
@@ -57,32 +53,26 @@
                         <br/>
 
                         <p:outputLabel for="transferFromAccount" style="font-weight: bold" value="Account: " />
-
                         <p:selectOneMenu id="transferFromAccount" value="#{transferManagedBean.fromBankAccountNumWithType}" 
                                          effect="fold" editable="false">
                             <f:selectItem itemLabel="Please Select One" itemValue=""/> 
                             <f:selectItems value="#{transferManagedBean.fromAccounts}" />
                             <p:ajax event="change" update="dailytransferLimitPanel" listener="#{transferManagedBean.show()}"/>
                         </p:selectOneMenu>
-
                         <p:message for="transferFromAccount" />
 
                         <p:outputLabel for="transferFromCurrency" style="font-weight: bold" value="Currency: " />
-
                         <p:selectOneMenu id="transferFromCurrency" value="#{transferManagedBean.fromCurrency}" 
                                          required="true">
                             <f:selectItem itemLabel="Singapore Dollar" itemValue="SGD - Singapore Dollar" />
                         </p:selectOneMenu>
-
                         <p:message for="transferFromCurrency" />
 
-                        <p:outputLabel for="transferAmt" style="font-weight: bold" value="Amount: " />
-
-                        <p:inputText required="true" label="Amount" requiredMessage="Amount is required." id="transferAmt"
+                        <p:outputLabel for="transferAmt" style="font-weight: bold" value="Amount(S$): " />
+                        <p:inputText required="true" label="Amount" requiredMessage="Required Field" id="transferAmt"
                                      value="#{transferManagedBean.transferAmt}" converterMessage="Invalid input">
                             <f:validateDoubleRange minimum="0.0" maximum="99999999.0" />
                         </p:inputText>
-
                         <p:message for="transferAmt" />
 
                     </h:panelGrid>

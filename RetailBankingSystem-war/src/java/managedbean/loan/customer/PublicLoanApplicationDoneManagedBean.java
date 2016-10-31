@@ -16,9 +16,9 @@ import javax.faces.context.FacesContext;
  *
  * @author hanfengwei
  */
-@Named(value = "publicHDBLoanApplicationDoneManagedBean")
+@Named(value = "publicLoanApplicationDoneManagedBean")
 @RequestScoped
-public class PublicHDBLoanApplicationDoneManagedBean {
+public class PublicLoanApplicationDoneManagedBean {
     
     private String loanType;
     private BigDecimal loanAmount;
@@ -27,7 +27,7 @@ public class PublicHDBLoanApplicationDoneManagedBean {
     /**
      * Creates a new instance of PublicHDBLoanApplicationDoneManagedBean
      */
-    public PublicHDBLoanApplicationDoneManagedBean() {
+    public PublicLoanApplicationDoneManagedBean() {
     }
     
     @PostConstruct
@@ -38,20 +38,21 @@ public class PublicHDBLoanApplicationDoneManagedBean {
         tenure = (int) ec.getFlash().get("tenure");
     }
 
-    public String getLoanType() {
-        return loanType;
-    }
-
-    public void setLoanType(String loanType) {
-        this.loanType = loanType;
-    }
-
     public BigDecimal getLoanAmount() {
         return loanAmount;
     }
 
     public void setLoanAmount(BigDecimal loanAmount) {
         this.loanAmount = loanAmount;
+    }
+
+
+    public String getLoanType() {
+        return loanType;
+    }
+
+    public void setLoanType(String loanType) {
+        this.loanType = loanType;
     }
 
     public int getTenure() {

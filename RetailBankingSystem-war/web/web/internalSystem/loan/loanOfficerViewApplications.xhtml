@@ -8,28 +8,71 @@
                 template="/WEB-INF/internalSystemTemplate.xhtml">
 
     <ui:define name="content">
-        <p:dataTable var="loanApplication" value="#{loanOfficerViewLoanApplicationsManagedBean.loanApplications}">
-            <p:column headerText="Applicant">
-                <h:outputText value="#{loanApplication.customerBasic.customerName}" />
-            </p:column>
-            <p:column headerText="Type">
-                <h:outputText value="#{loanApplication.loanType}" />
-            </p:column>
-            <p:column headerText="Application Time">
-                <h:outputText value="#{loanApplication.applicationDate}" />
-            </p:column>
-            <p:column headerText="Amount">
-                <h:outputText value="#{loanApplication.amountRequired}" />
-            </p:column>
-            <p:column headerText="Period">
-                <h:outputText value="#{loanApplication.periodRequired}" />
-            </p:column>
-            <p:column headerText="Status">
-                <h:outputText value="#{loanApplication.applicationStatus}" />
-            </p:column>
-            <p:column>
-                <p:commandButton value="View" action="#{loanOfficerViewLoanApplicationsManagedBean.viewApplication(loanApplication.loanApplicationId, loanApplication.loanType)}"/>
-            </p:column>
-        </p:dataTable>
+        <h:form>
+            <p:tabView>
+                <p:tab title="Mortgage Loan - Purchase">
+                    <p:dataTable var="mortgageApplication" value="#{loanOfficerViewLoanApplicationsManagedBean.mortgagePurchaseApplications}">
+                        <p:column headerText="Applicant">
+                            <h:outputText value="#{mortgageApplication.customerBasic.customerName}" />
+                        </p:column>
+                        <p:column headerText="Type">
+                            <h:outputText value="#{mortgageApplication.loanType}" />
+                        </p:column>
+                        <p:column headerText="Application Time">
+                            <h:outputText value="#{mortgageApplication.applicationDate}" />
+                        </p:column>
+                        <p:column headerText="Amount">
+                            <h:outputText value="#{mortgageApplication.amountRequired}" />
+                        </p:column>
+                        <p:column headerText="Period">
+                            <h:outputText value="#{mortgageApplication.periodRequired}" />
+                        </p:column>
+                        <p:column headerText="Status">
+                            <h:outputText value="#{mortgageApplication.applicationStatus}" />
+                        </p:column>
+                        <p:column>
+                            <p:commandButton value="View" action="#{loanOfficerViewLoanApplicationsManagedBean.viewApplication(mortgageApplication.loanApplicationId, mortgageApplication.loanType)}"/>
+                        </p:column>
+                    </p:dataTable>
+                </p:tab>
+                <p:tab title="Mortgage Loan - Refinancing">
+                    <p:dataTable var="refinancingApplication" value="#{loanOfficerViewLoanApplicationsManagedBean.mortgageRefinancingApplications}">
+                        <p:column headerText="Applicant">
+                            <h:outputText value="#{refinancingApplication.customerBasic.customerName}" />
+                        </p:column>
+                        <p:column headerText="Type">
+                            <h:outputText value="#{refinancingApplication.loanType}" />
+                        </p:column>
+                        <p:column headerText="Application Time">
+                            <h:outputText value="#{refinancingApplication.applicationDate}" />
+                        </p:column>
+                        <p:column headerText="Amount">
+                            <h:outputText value="#{refinancingApplication.amountRequired}" />
+                        </p:column>
+                        <p:column headerText="Period">
+                            <h:outputText value="#{refinancingApplication.periodRequired}" />
+                        </p:column>
+                        <p:column headerText="Status">
+                            <h:outputText value="#{refinancingApplication.applicationStatus}" />
+                        </p:column>
+                        <p:column>
+                            <p:commandButton value="View" action="#{loanOfficerViewLoanApplicationsManagedBean.viewApplication(refinancingApplication.loanApplicationId, refinancingApplication.loanType)}"/>
+                        </p:column>
+                    </p:dataTable>
+                </p:tab>
+                <p:tab title="Renovation Loan">
+
+                </p:tab>
+                <p:tab title="Cashline">
+
+                </p:tab>
+                <p:tab title="Car Loan">
+
+                </p:tab>
+                <p:tab title="Study Loan">
+
+                </p:tab>
+            </p:tabView>
+        </h:form>        
     </ui:define>
 </ui:composition>

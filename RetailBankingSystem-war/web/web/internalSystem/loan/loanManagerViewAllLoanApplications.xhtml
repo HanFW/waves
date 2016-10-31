@@ -1,0 +1,136 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/internalSystemTemplate.xhtml">
+
+    <ui:define name="content">
+        <h:form>
+            <p:tabView>
+                <p:tab title="Mortgage Loan">
+                    <p:tabView>
+                        <p:tab title="Waiting for Appraisal">
+                            <p:dataTable var="mortgage1" value="#{loanManagerStartNewLoanManagedBean.appraisalApplications}">
+                                <p:column headerText="Loan ID" filterBy="#{mortgage1.loanApplicationId}" filterMatchMode="contains">
+                                    <h:outputText value="#{mortgage1.loanApplicationId}" />
+                                </p:column>
+                                <p:column headerText="Application Date" filterBy="#{mortgage1.applicationDate}" filterMatchMode="contains" sortBy="#{mortgage1.applicationDate}">
+                                    <h:outputText value="#{mortgage1.applicationDate}"/>
+                                </p:column>
+                                <p:column headerText="Type" filterBy="#{mortgage1.loanType}" filterMatchMode="contains">
+                                    <h:outputText value="#{mortgage1.loanType}" />
+                                </p:column>
+                                <p:column headerText="Amount">
+                                    <h:outputText value="#{mortgage1.amountRequired}" />
+                                </p:column>
+                                <p:column headerText="Period">
+                                    <h:outputText value="#{mortgage1.periodRequired}" />
+                                </p:column>
+                                <p:column headerText="Status">
+                                    <h:outputText value="#{mortgage1.applicationStatus}" />
+                                </p:column>
+                                <p:column headerText="View">
+                                    <p:commandButton value="View" update="@form"/>
+                                </p:column>
+                            </p:dataTable>
+                        </p:tab>
+                        <p:tab title="Pending">
+                            <p:dataTable var="mortgage2" value="#{loanManagerStartNewLoanManagedBean.pendingMortgageApplications}">
+                                <p:column headerText="Loan ID" filterBy="#{mortgage2.loanApplicationId}" filterMatchMode="contains">
+                                    <h:outputText value="#{mortgage2.loanApplicationId}" />
+                                </p:column>
+                                <p:column headerText="Application Date" filterBy="#{mortgage2.applicationDate}" filterMatchMode="contains" sortBy="#{mortgage2.applicationDate}">
+                                    <h:outputText value="#{mortgage2.applicationDate}"/>
+                                </p:column>
+                                <p:column headerText="Type" filterBy="#{mortgage2.loanType}" filterMatchMode="contains">
+                                    <h:outputText value="#{mortgage2.loanType}" />
+                                </p:column>
+                                <p:column headerText="Amount">
+                                    <h:outputText value="#{mortgage2.amountRequired}" />
+                                </p:column>
+                                <p:column headerText="Period">
+                                    <h:outputText value="#{mortgage2.periodRequired}" />
+                                </p:column>
+                                <p:column headerText="Status">
+                                    <h:outputText value="#{mortgage2.applicationStatus}" />
+                                </p:column>
+                                <p:column headerText="View">
+                                    <p:commandButton value="View" update="@form"/>
+                                </p:column>
+                            </p:dataTable>
+                        </p:tab>
+                        <p:tab title="In Progress">
+                            <p:messages autoUpdate="true"/>
+                            <p:dataTable var="mortgage3" value="#{loanManagerStartNewLoanManagedBean.inprogressMortgageApplications}">
+                                <p:column headerText="Loan ID" filterBy="#{mortgage3.loanApplicationId}" filterMatchMode="contains">
+                                    <h:outputText value="#{mortgage3.loanApplicationId}" />
+                                </p:column>
+                                <p:column headerText="Application Date" filterBy="#{mortgage3.applicationDate}" filterMatchMode="contains" sortBy="#{mortgage3.applicationDate}">
+                                    <h:outputText value="#{mortgage3.applicationDate}"/>
+                                </p:column>
+                                <p:column headerText="Type" filterBy="#{mortgage3.loanType}" filterMatchMode="contains">
+                                    <h:outputText value="#{mortgage3.loanType}" />
+                                </p:column>
+                                <p:column headerText="Amount">
+                                    <h:outputText value="#{mortgage3.amountRequired}" />
+                                </p:column>
+                                <p:column headerText="Period">
+                                    <h:outputText value="#{mortgage3.periodRequired}" />
+                                </p:column>
+                                <p:column headerText="Status">
+                                    <h:outputText value="#{mortgage3.applicationStatus}" />
+                                </p:column>
+                                <p:column headerText="View">
+                                    <p:commandButton value="View"/>
+                                </p:column>
+                            </p:dataTable>
+                        </p:tab>
+                        <p:tab title="Approved">
+                            <p:dataTable var="mortgage4" value="#{loanManagerStartNewLoanManagedBean.approvedMortgageApplications}">
+                                <p:column headerText="Loan ID">
+                                    <h:outputText value="#{mortgage4.loanApplicationId}" />
+                                </p:column>
+                                <p:column headerText="Application Date" filterBy="#{mortgage4.applicationDate}" filterMatchMode="contains" sortBy="#{mortgage4.applicationDate}">
+                                    <h:outputText value="#{mortgage4.applicationDate}"/>
+                                </p:column>
+                                <p:column headerText="Approval Date" filterBy="#{mortgage4.applicationDate}" filterMatchMode="contains" sortBy="#{mortgage4.applicationDate}">
+                                    <h:outputText value="#{mortgage4.finalActionDate}"/>
+                                </p:column>
+                                <p:column headerText="Type">
+                                    <h:outputText value="#{mortgage4.loanType}" />
+                                </p:column>
+                                <p:column headerText="Amount">
+                                    <h:outputText value="#{mortgage4.amountRequired}" />
+                                </p:column>
+                                <p:column headerText="Period">
+                                    <h:outputText value="#{mortgage4.periodRequired}" />
+                                </p:column>
+                                <p:column headerText="Status">
+                                    <h:outputText value="#{mortgage4.applicationStatus}" />
+                                </p:column>
+                                <p:column headerText="View">
+                                    <p:commandButton value="View"/>
+                                </p:column>
+                            </p:dataTable>
+                        </p:tab>
+                    </p:tabView>
+                </p:tab>
+                <p:tab title="Renovation Loan">
+
+                </p:tab>
+                <p:tab title="Car Loan">
+
+                </p:tab>
+                <p:tab title="Study Loan">
+
+                </p:tab>
+                <p:tab title="Cashline">
+
+                </p:tab>
+            </p:tabView>
+        </h:form>
+    </ui:define>
+</ui:composition>

@@ -1106,7 +1106,7 @@ public class AccountManagedBean implements Serializable {
                 customerAddress, customerPostal.toString(), customerOnlineBankingAccountNum,
                 customerOnlineBankingPassword, customerSignature.getBytes(), newCustomer);
 
-        customerBasicId = customerSessionBeanLocal.addNewCustomerOneTime("Han FengWei",
+        customerBasicId = customerSessionBeanLocal.addNewCustomerOneTime("Han Fengwei",
                 "Ms", "G11223344".toUpperCase(),
                 "Female", "yongxue0701@gmail.com", "84819970", "02/Jul/1993",
                 customerNationality, customerCountryOfResidence, customerRace,
