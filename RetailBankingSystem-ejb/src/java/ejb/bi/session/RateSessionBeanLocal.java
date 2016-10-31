@@ -6,9 +6,10 @@ import javax.ejb.Local;
 @Local
 public interface RateSessionBeanLocal {
 
-    public Long addNewRate(Double rateValue, String updateDate, String rateType);
+    public Long addNewRate(Double rateValue, int updateDate, String rateType,
+            String openAccountNumOfPeople, String closeAccountNumOfPeople);
 
-    public Rate retrieveAcquisitionRateByDate(String updateDate);
+    public Rate retrieveAcquisitionRateByDate(int updateDate);
 
-    public Rate retrieveAttritionRateByDate(String updateDate);
+    public Rate retrieveAttritionRateByDate(int updateDate);
 }

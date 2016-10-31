@@ -15,13 +15,16 @@ public class RateSessionBean implements RateSessionBeanLocal {
     private EntityManager entityManager;
 
     @Override
-    public Long addNewRate(Double rateValue, String updateDate, String rateType) {
+    public Long addNewRate(Double rateValue, int updateDate, String rateType,
+            String openAccountNumOfPeople, String closeAccountNumOfPeople) {
 
         Rate rate = new Rate();
 
         rate.setRateType(rateType);
         rate.setRateValue(rateValue);
         rate.setUpdateDate(updateDate);
+        rate.setOpenAccountNumOfPeople(openAccountNumOfPeople);
+        rate.setCloseAccountNumOfPeople(closeAccountNumOfPeople);
 
         entityManager.persist(rate);
         entityManager.flush();
@@ -30,7 +33,7 @@ public class RateSessionBean implements RateSessionBeanLocal {
     }
 
     @Override
-    public Rate retrieveAcquisitionRateByDate(String updateDate) {
+    public Rate retrieveAcquisitionRateByDate(int updateDate) {
         Rate rate = new Rate();
 
         try {
@@ -54,7 +57,7 @@ public class RateSessionBean implements RateSessionBeanLocal {
     }
     
     @Override
-    public Rate retrieveAttritionRateByDate(String updateDate) {
+    public Rate retrieveAttritionRateByDate(int updateDate) {
         Rate rate = new Rate();
 
         try {

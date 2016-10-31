@@ -13,8 +13,10 @@ public class Rate implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long rateId;
     private Double rateValue;
-    private String updateDate;
+    private int updateDate;
     private String rateType;
+    private String openAccountNumOfPeople;
+    private String closeAccountNumOfPeople;
 
     public Long getRateId() {
         return rateId;
@@ -32,11 +34,11 @@ public class Rate implements Serializable {
         this.rateValue = rateValue;
     }
 
-    public String getUpdateDate() {
+    public int getUpdateDate() {
         return updateDate;
     }
 
-    public void setUpdateDate(String updateDate) {
+    public void setUpdateDate(int updateDate) {
         this.updateDate = updateDate;
     }
 
@@ -46,6 +48,22 @@ public class Rate implements Serializable {
 
     public void setRateType(String rateType) {
         this.rateType = rateType;
+    }
+
+    public String getOpenAccountNumOfPeople() {
+        return openAccountNumOfPeople;
+    }
+
+    public void setOpenAccountNumOfPeople(String openAccountNumOfPeople) {
+        this.openAccountNumOfPeople = openAccountNumOfPeople;
+    }
+
+    public String getCloseAccountNumOfPeople() {
+        return closeAccountNumOfPeople;
+    }
+
+    public void setCloseAccountNumOfPeople(String closeAccountNumOfPeople) {
+        this.closeAccountNumOfPeople = closeAccountNumOfPeople;
     }
 
     @Override
