@@ -105,31 +105,47 @@ public class MerlionBankWebService {
             String debitOrCredit = onHoldRecord.getDebitOrCredit();
             String debitOrCreditBankAccountNum = onHoldRecord.getDebitOrCreditBankAccountNum();
             String debitOrCreditBankName = onHoldRecord.getDebitOrCreditBankName();
+            String paymentMethod = onHoldRecord.getPaymentMethod();
 
             BankAccount bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountByNum(bankAccountNum);
             String currenttTotalBalance = bankAccount.getTotalBankAccountBalance();
 
             if (debitOrCredit.equals("Debit") && debitOrCreditBankName.equals("DBS")) {
 
-                Double totalBalance = Double.valueOf(currenttTotalBalance) - Double.valueOf(paymentAmt);
-                bankAccount.setTotalBankAccountBalance(df.format(totalBalance));
+                if (paymentAmt != null) {
 
-                if (onHoldRecord.getPaymentMethod().equals("Cheque")) {
-                    String currentAvailableBalance = bankAccount.getAvailableBankAccountBalance();
-                    Double totalAvailableBalance = Double.valueOf(currentAvailableBalance) - Double.valueOf(paymentAmt);
-                    bankAccount.setAvailableBankAccountBalance(totalAvailableBalance.toString());
+                    Double totalBalance = Double.valueOf(currenttTotalBalance) - Double.valueOf(paymentAmt);
+                    bankAccount.setTotalBankAccountBalance(df.format(totalBalance));
+
+                    if (onHoldRecord.getPaymentMethod().equals("Cheque")) {
+                        String currentAvailableBalance = bankAccount.getAvailableBankAccountBalance();
+                        Double totalAvailableBalance = Double.valueOf(currentAvailableBalance) - Double.valueOf(paymentAmt);
+                        bankAccount.setAvailableBankAccountBalance(totalAvailableBalance.toString());
+                    }
+
+                    onHoldRecord.setOnHoldStatus("Done");
+
+                    OtherBankAccount dbsBankAccount = retrieveBankAccountByNum_other(debitOrCreditBankAccountNum);
+                    Calendar cal = Calendar.getInstance();
+                    String transactionDate = cal.getTime().toString();
+                    String transactionCode = "";
+                    String transactionRef = "";
+
+                    if (paymentMethod.equals("Non Standing GIRO") || paymentMethod.equals("Standing GIRO")) {
+                        transactionCode = "BILL";
+                        transactionRef = "Pay bills to NTUC";
+                    } else if (paymentMethod.equals("Cheque")) {
+                        transactionCode = "CHQ";
+                        transactionRef = dbsBankAccount.getOtherBankAccountType() + "-" + dbsBankAccount.getOtherBankAccountNum();
+                    } else if (paymentMethod.equals("Regular GIRO")) {
+                        transactionCode = "GIRO";
+                        transactionRef = dbsBankAccount.getOtherBankAccountType() + "-" + dbsBankAccount.getOtherBankAccountNum();
+                    }
+
+                    Long transactionId = transactionSessionBeanLocal.addNewTransaction(transactionDate,
+                            transactionCode, transactionRef, paymentAmt, " ",
+                            cal.getTimeInMillis(), bankAccount.getBankAccountId());
                 }
-                onHoldRecord.setOnHoldStatus("Done");
-
-                OtherBankAccount dbsBankAccount = retrieveBankAccountByNum_other(debitOrCreditBankAccountNum);
-                Calendar cal = Calendar.getInstance();
-                String transactionDate = cal.getTime().toString();
-                String transactionCode = "BILL";
-                String transactionRef = "Pay bills to NTUC";
-
-                Long transactionId = transactionSessionBeanLocal.addNewTransaction(transactionDate,
-                        transactionCode, transactionRef, paymentAmt, " ",
-                        cal.getTimeInMillis(), bankAccount.getBankAccountId());
 
             } else if (debitOrCredit.equals("Credit") && debitOrCreditBankName.equals("DBS")) {
 
@@ -141,12 +157,27 @@ public class MerlionBankWebService {
                 Double totalBalance = Double.valueOf(currenttTotalBalance) + Double.valueOf(paymentAmt);
                 bankAccount.setTotalBankAccountBalance(df.format(totalBalance));
 
+                if (onHoldRecord.getPaymentMethod().equals("Cheque")) {
+                    String currentAvailableBalance = bankAccount.getAvailableBankAccountBalance();
+                    Double totalAvailableBalance = Double.valueOf(currentAvailableBalance) + Double.valueOf(paymentAmt);
+                    bankAccount.setAvailableBankAccountBalance(totalAvailableBalance.toString());
+                }
+
                 onHoldRecord.setOnHoldStatus("Done");
 
                 OtherBankAccount dbsBankAccount = retrieveBankAccountByNum_other(debitOrCreditBankAccountNum);
                 Calendar cal = Calendar.getInstance();
                 String transactionDate = cal.getTime().toString();
-                String transactionCode = "BILL";
+                String transactionCode = "";
+
+                if (paymentMethod.equals("Non Standing GIRO") || paymentMethod.equals("Standing GIRO")) {
+                    transactionCode = "BILL";
+                } else if (paymentMethod.equals("Cheque")) {
+                    transactionCode = "CHQ";
+                } else if (paymentMethod.equals("Regular GIRO")) {
+                    transactionCode = "GIRO";
+                }
+
                 String transactionRef = dbsBankAccount.getOtherBankAccountType() + "-" + dbsBankAccount.getOtherBankAccountNum();
 
                 Long transactionId = transactionSessionBeanLocal.addNewTransaction(transactionDate,

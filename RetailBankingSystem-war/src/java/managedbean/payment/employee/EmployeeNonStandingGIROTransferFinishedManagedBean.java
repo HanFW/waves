@@ -178,11 +178,10 @@ public class EmployeeNonStandingGIROTransferFinishedManagedBean implements Seria
 
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
-        GIRO giro = gIROSessionBeanLocal.retrieveGIROById(giroId);
         NonStandingGIRO nonStandingGiro = nonStandingGIROSessionBeanLocal.retrieveNonStandingGIROById(giroId);
 
-        String billingOrganizationName = giro.getBillingOrganizationName();
-        String bankAccountNum = giro.getBankAccountNum();
+        String billingOrganizationName = nonStandingGiro.getBillingOrganizationName();
+        String bankAccountNum = nonStandingGiro.getBankAccountNum();
 
         BankAccount bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountByNum(bankAccountNum);
         

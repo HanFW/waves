@@ -6,6 +6,7 @@ import ejb.deposit.session.BankAccountSessionBeanLocal;
 import ejb.deposit.session.TransactionSessionBeanLocal;
 import ejb.payment.entity.NonStandingGIRO;
 import ejb.payment.entity.RegisteredBillingOrganization;
+import ejb.payment.entity.RegularGIRO;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -17,10 +18,15 @@ import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.xml.ws.WebServiceRef;
+import ws.client.otherbanks.OtherBankAccount;
+import ws.client.otherbanks.OtherBanksWebService_Service;
 import ws.client.sach.SACHWebService_Service;
 
 @Stateless
 public class NonStandingGIROSessionBean implements NonStandingGIROSessionBeanLocal {
+
+    @WebServiceRef(wsdlLocation = "META-INF/wsdl/localhost_8080/OtherBanksWebService/OtherBanksWebService.wsdl")
+    private OtherBanksWebService_Service service_otherBank;
 
     @EJB
     private TransactionSessionBeanLocal transactionSessionBeanLocal;
@@ -120,8 +126,9 @@ public class NonStandingGIROSessionBean implements NonStandingGIROSessionBeanLoc
     @Override
     public void weeklyRecurrentPayment() {
 
-        Query query = entityManager.createQuery("SELECT n FROM NonStandingGIRO n WHERE n.paymentFrequency = :paymentFrequency");
+        Query query = entityManager.createQuery("SELECT n FROM NonStandingGIRO n WHERE n.paymentFrequency = :paymentFrequency And n.giroType=:giroType");
         query.setParameter("paymentFrequency", "Weekly");
+        query.setParameter("giroType", "Non Standing GIRO");
         List<NonStandingGIRO> nonStandingGiros = query.getResultList();
 
         if (nonStandingGiros.isEmpty()) {
@@ -140,7 +147,7 @@ public class NonStandingGIROSessionBean implements NonStandingGIROSessionBeanLoc
                 String paymentAmt = nonStandingGiro.getPaymentAmt();
 
                 if (paymentAmt != null) {
-                    
+
                     Double currentAvailableBalance = Double.valueOf(bankAccount.getAvailableBankAccountBalance()) - Double.valueOf(paymentAmt);
                     bankAccount.setAvailableBankAccountBalance(currentAvailableBalance.toString());
 
@@ -164,8 +171,9 @@ public class NonStandingGIROSessionBean implements NonStandingGIROSessionBeanLoc
     @Override
     public void dailyRecurrentPayment() {
 
-        Query query = entityManager.createQuery("SELECT n FROM NonStandingGIRO n WHERE n.paymentFrequency = :paymentFrequency");
+        Query query = entityManager.createQuery("SELECT n FROM NonStandingGIRO n WHERE n.paymentFrequency = :paymentFrequency And n.giroType=:giroType");
         query.setParameter("paymentFrequency", "Daily");
+        query.setParameter("giroType", "Non Standing GIRO");
         List<NonStandingGIRO> nonStandingGiros = query.getResultList();
 
         if (nonStandingGiros.isEmpty()) {
@@ -209,8 +217,9 @@ public class NonStandingGIROSessionBean implements NonStandingGIROSessionBeanLoc
     @Override
     public void monthlyRecurrentPayment() {
 
-        Query query = entityManager.createQuery("SELECT n FROM NonStandingGIRO n WHERE n.paymentFrequency = :paymentFrequency");
+        Query query = entityManager.createQuery("SELECT n FROM NonStandingGIRO n WHERE n.paymentFrequency = :paymentFrequency And n.giroType=:giroType");
         query.setParameter("paymentFrequency", "Monthly");
+        query.setParameter("giroType", "Non Standing GIRO");
         List<NonStandingGIRO> nonStandingGiros = query.getResultList();
 
         if (nonStandingGiros.isEmpty()) {
@@ -302,6 +311,141 @@ public class NonStandingGIROSessionBean implements NonStandingGIROSessionBeanLoc
     }
 
     @Override
+    public void dailyRecurrentRegularGIROTransfer() {
+
+        Query query = entityManager.createQuery("SELECT r FROM RegularGIRO r WHERE r.paymentFrequency = :paymentFrequency And r.giroType=:giroType");
+        query.setParameter("paymentFrequency", "Daily");
+        query.setParameter("giroType", "Regular GIRO");
+        List<RegularGIRO> regularGIROs = query.getResultList();
+
+        if (regularGIROs.isEmpty()) {
+            System.out.println("No daily recurrent regular giro");
+        } else {
+
+            for (RegularGIRO regularGIRO : regularGIROs) {
+
+                String bankAccountNum = regularGIRO.getBankAccountNum();
+                String payeeAccountNum = regularGIRO.getPayeeAccountNum();
+
+                BankAccount bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountByNum(bankAccountNum);
+                OtherBankAccount otherBankAccount = retrieveBankAccountByNum(payeeAccountNum);
+
+                String paymentAmt = regularGIRO.getPaymentAmt();
+                String payeeBankName = regularGIRO.getPayeeBankName();
+
+                if (paymentAmt != null) {
+
+                    Double currentAvailableBalance = Double.valueOf(bankAccount.getAvailableBankAccountBalance()) - Double.valueOf(paymentAmt);
+                    bankAccount.setAvailableBankAccountBalance(currentAvailableBalance.toString());
+
+                    Calendar cal = Calendar.getInstance();
+                    String currentTime = cal.getTime().toString();
+                    String transactionCode = "GIRO";
+                    String transactionRef = otherBankAccount.getOtherBankAccountType() + otherBankAccount.getOtherBankAccountNum();
+                    String accountDebit = paymentAmt;
+
+                    Long transactionId = transactionSessionBeanLocal.addNewTransaction(currentTime, transactionCode,
+                            transactionRef, accountDebit, " ", cal.getTimeInMillis(), bankAccount.getBankAccountId());
+
+                    if (payeeBankName.equals("DBS")) {
+                        sachRegularGIROTransferMTD(bankAccountNum, payeeAccountNum, Double.valueOf(paymentAmt));
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    public void monthlyRecurrentRegularGIROTransfer() {
+
+        Query query = entityManager.createQuery("SELECT r FROM RegularGIRO r WHERE r.paymentFrequency = :paymentFrequency And r.giroType=:giroType");
+        query.setParameter("paymentFrequency", "Monthly");
+        query.setParameter("giroType", "Regular GIRO");
+        List<RegularGIRO> regularGIROs = query.getResultList();
+
+        if (regularGIROs.isEmpty()) {
+            System.out.println("No daily recurrent regular giro");
+        } else {
+
+            for (RegularGIRO regularGIRO : regularGIROs) {
+
+                String bankAccountNum = regularGIRO.getBankAccountNum();
+                String payeeAccountNum = regularGIRO.getPayeeAccountNum();
+
+                BankAccount bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountByNum(bankAccountNum);
+                OtherBankAccount otherBankAccount = retrieveBankAccountByNum(payeeAccountNum);
+
+                String paymentAmt = regularGIRO.getPaymentAmt();
+                String payeeBankName = regularGIRO.getPayeeBankName();
+
+                if (paymentAmt != null) {
+
+                    Double currentAvailableBalance = Double.valueOf(bankAccount.getAvailableBankAccountBalance()) - Double.valueOf(paymentAmt);
+                    bankAccount.setAvailableBankAccountBalance(currentAvailableBalance.toString());
+
+                    Calendar cal = Calendar.getInstance();
+                    String currentTime = cal.getTime().toString();
+                    String transactionCode = "GIRO";
+                    String transactionRef = otherBankAccount.getOtherBankAccountType() + otherBankAccount.getOtherBankAccountNum();
+                    String accountDebit = paymentAmt;
+
+                    Long transactionId = transactionSessionBeanLocal.addNewTransaction(currentTime, transactionCode,
+                            transactionRef, accountDebit, " ", cal.getTimeInMillis(), bankAccount.getBankAccountId());
+
+                    if (payeeBankName.equals("DBS")) {
+                        sachRegularGIROTransferMTD(bankAccountNum, payeeAccountNum, Double.valueOf(paymentAmt));
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    public void weeklyRecurrentRegularGIROTransfer() {
+
+        Query query = entityManager.createQuery("SELECT r FROM RegularGIRO r WHERE r.paymentFrequency = :paymentFrequency And r.giroType=:giroType");
+        query.setParameter("paymentFrequency", "Weekly");
+        query.setParameter("giroType", "Regular GIRO");
+        List<RegularGIRO> regularGIROs = query.getResultList();
+
+        if (regularGIROs.isEmpty()) {
+            System.out.println("No daily recurrent regular giro");
+        } else {
+
+            for (RegularGIRO regularGIRO : regularGIROs) {
+
+                String bankAccountNum = regularGIRO.getBankAccountNum();
+                String payeeAccountNum = regularGIRO.getPayeeAccountNum();
+
+                BankAccount bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountByNum(bankAccountNum);
+                OtherBankAccount otherBankAccount = retrieveBankAccountByNum(payeeAccountNum);
+
+                String paymentAmt = regularGIRO.getPaymentAmt();
+                String payeeBankName = regularGIRO.getPayeeBankName();
+
+                if (paymentAmt != null) {
+
+                    Double currentAvailableBalance = Double.valueOf(bankAccount.getAvailableBankAccountBalance()) - Double.valueOf(paymentAmt);
+                    bankAccount.setAvailableBankAccountBalance(currentAvailableBalance.toString());
+
+                    Calendar cal = Calendar.getInstance();
+                    String currentTime = cal.getTime().toString();
+                    String transactionCode = "GIRO";
+                    String transactionRef = otherBankAccount.getOtherBankAccountType() + otherBankAccount.getOtherBankAccountNum();
+                    String accountDebit = paymentAmt;
+
+                    Long transactionId = transactionSessionBeanLocal.addNewTransaction(currentTime, transactionCode,
+                            transactionRef, accountDebit, " ", cal.getTimeInMillis(), bankAccount.getBankAccountId());
+
+                    if (payeeBankName.equals("DBS")) {
+                        sachRegularGIROTransferMTD(bankAccountNum, payeeAccountNum, Double.valueOf(paymentAmt));
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
     public void updateNonStandingStatus(Long giroId, String paymentFrequency) {
         NonStandingGIRO nonStandingGiro = retrieveNonStandingGIROById(giroId);
         nonStandingGiro.setPaymentFrequency(paymentFrequency);
@@ -318,5 +462,19 @@ public class NonStandingGIROSessionBean implements NonStandingGIROSessionBeanLoc
         // If the calling of port operations may lead to race condition some synchronization is required.
         ws.client.sach.SACHWebService port = service_sach.getSACHWebServicePort();
         port.sachNonStandingGIROTransferMTD(fromBankAccountNum, toBankAccountNum, transferAmt);
+    }
+
+    private OtherBankAccount retrieveBankAccountByNum(java.lang.String otherBankAccountNum) {
+        // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
+        // If the calling of port operations may lead to race condition some synchronization is required.
+        ws.client.otherbanks.OtherBanksWebService port = service_otherBank.getOtherBanksWebServicePort();
+        return port.retrieveBankAccountByNum(otherBankAccountNum);
+    }
+
+    private void sachRegularGIROTransferMTD(java.lang.String fromBankAccountNum, java.lang.String toBankAccountNum, java.lang.Double transferAmt) {
+        // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
+        // If the calling of port operations may lead to race condition some synchronization is required.
+        ws.client.sach.SACHWebService port = service_sach.getSACHWebServicePort();
+        port.sachRegularGIROTransferMTD(fromBankAccountNum, toBankAccountNum, transferAmt);
     }
 }
