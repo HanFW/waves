@@ -349,7 +349,7 @@ public class PublicMortgageLoanApplicationManagedBean implements Serializable {
                 20000, 30000, "Employee");
         loanApplicationSessionBeanLocal.submitLoanApplication(false, false, customerId4, customerAdvancedId4, debts4, cp4, mortgage4, null, "purchase", "Private Property-Fixed");
         
-        ec.redirect(ec.getRequestContextPath() + "/web/merlionBank/loan/publicMortgageLoanApplicationDone.xhtml?faces-redirect=true");
+        ec.redirect(ec.getRequestContextPath() + "/web/merlionBank/loan/publicLoanApplicationDone.xhtml?faces-redirect=true");
     }
 
     public void addLoanApplication() throws IOException {
@@ -510,7 +510,7 @@ public class PublicMortgageLoanApplicationManagedBean implements Serializable {
             customerEmailSessionBeanLocal.sendEmail(cRMCustomerSessionBeanLocal.getCustomerBasicById(newCustomerBasicId), "mortgageLoanApplication", emailActions);
             ec.getFlash().put("amountRequired", customerLoanAmountRequired);
             ec.getFlash().put("tenure", customerLoanTenure);
-            ec.redirect(ec.getRequestContextPath() + "/web/merlionBank/loan/publicMortgageLoanApplicationDone.xhtml?faces-redirect=true");
+            ec.redirect(ec.getRequestContextPath() + "/web/merlionBank/loan/publicLoanApplicationDone.xhtml?faces-redirect=true");
         }
     }
 

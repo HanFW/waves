@@ -95,6 +95,10 @@ public class CustomerEmailSessionBean implements CustomerEmailSessionBeanLocal {
                 emailText += "Your Cashline application has been submitted successfully. \n";
                 emailText += "Cashline application usually takes a few weeks to process. We will contact you via email once we have finished processing your request.\n";
                 emailText += "Thank you for your cooperation. \n";
+            case "educationLoanApplication":
+                emailText += "Your Education Loan application has been submitted successfully. \n";
+                emailText += "Education Loan application usually takes a few weeks to process. We will contact you via email once we have finished processing your request.\n";
+                emailText += "Thank you for your cooperation. \n";
         }
 
         try {

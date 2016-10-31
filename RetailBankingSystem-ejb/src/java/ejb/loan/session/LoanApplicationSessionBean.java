@@ -7,18 +7,21 @@ package ejb.loan.session;
 
 import ejb.customer.entity.CustomerAdvanced;
 import ejb.customer.entity.CustomerBasic;
+import ejb.loan.entity.CarLoanApplication;
 import ejb.loan.entity.CashlineApplication;
 import ejb.loan.entity.CreditReportAccountStatus;
 import ejb.loan.entity.CreditReportBureauScore;
 import ejb.loan.entity.CreditReportDefaultRecords;
 import ejb.loan.entity.CustomerDebt;
 import ejb.loan.entity.CustomerProperty;
+import ejb.loan.entity.EducationLoanApplication;
 import ejb.loan.entity.LoanApplication;
 import ejb.loan.entity.LoanInterestPackage;
 import ejb.loan.entity.LoanPayableAccount;
 import ejb.loan.entity.LoanRepaymentAccount;
 import ejb.loan.entity.MortgageLoanApplication;
 import ejb.loan.entity.RefinancingApplication;
+import ejb.loan.entity.RenovationLoanApplication;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -122,6 +125,75 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
         }
 
         em.flush();
+    }
+    
+    @Override
+    public void submitEducationLoanApplication(boolean isExistingCustomer, boolean hasCustomerAdvanced, EducationLoanApplication application, Long newCustomerBasicId, Long newCustomerAdvancedId){
+        System.out.println("****** loan/LoanApplicationSessionBean: submitEducationLoanApplication() ******");
+        CustomerBasic cb = em.find(CustomerBasic.class, newCustomerBasicId);
+
+        //set on both side (1-1 bi)
+        if (!hasCustomerAdvanced) {
+            CustomerAdvanced ca = em.find(CustomerAdvanced.class, newCustomerAdvancedId);
+            cb.setCustomerAdvanced(ca);
+            ca.setCustomerBasic(cb);
+        }
+
+        Query query = em.createQuery("SELECT p FROM LoanInterestPackage p WHERE p.packageName = :packageName");
+        query.setParameter("packageName", "Education Loan");
+        List resultList = query.getResultList();
+
+        if (!resultList.isEmpty()) {
+            LoanInterestPackage pkg = (LoanInterestPackage) resultList.get(0);
+            System.out.println("****** loan/LoanApplicationSessionBean: submitEducationLoanApplication(): interest package: " + pkg.getPackageName());
+            application.setCustomerBasic(cb);
+            cb.addLoanApplication(application);
+            application.setLoanInterestPackage(pkg);
+            pkg.addLoanApplication(application);
+        } else {
+            System.out.println("****** loan/LoanApplicationSessionBean: submitEducationLoanApplication(): no interest package found");
+            application.setCustomerBasic(cb);
+            cb.addLoanApplication(application);
+        }
+
+        em.flush();
+    }
+    
+    @Override
+    public void submitCarLoanApplication(boolean isExistingCustomer, boolean hasCustomerAdvanced, CarLoanApplication application, Long newCustomerBasicId, Long newCustomerAdvancedId){
+        System.out.println("****** loan/LoanApplicationSessionBean: submitCarLoanApplication() ******");
+        CustomerBasic cb = em.find(CustomerBasic.class, newCustomerBasicId);
+
+        //set on both side (1-1 bi)
+        if (!hasCustomerAdvanced) {
+            CustomerAdvanced ca = em.find(CustomerAdvanced.class, newCustomerAdvancedId);
+            cb.setCustomerAdvanced(ca);
+            ca.setCustomerBasic(cb);
+        }
+
+        Query query = em.createQuery("SELECT p FROM LoanInterestPackage p WHERE p.packageName = :packageName");
+        query.setParameter("packageName", "Car Loan");
+        List resultList = query.getResultList();
+
+        if (!resultList.isEmpty()) {
+            LoanInterestPackage pkg = (LoanInterestPackage) resultList.get(0);
+            System.out.println("****** loan/LoanApplicationSessionBean: submitCarLoanApplication(): interest package: " + pkg.getPackageName());
+            application.setCustomerBasic(cb);
+            cb.addLoanApplication(application);
+            application.setLoanInterestPackage(pkg);
+            pkg.addLoanApplication(application);
+        } else {
+            System.out.println("****** loan/LoanApplicationSessionBean: submitCarLoanApplication(): no interest package found");
+            application.setCustomerBasic(cb);
+            cb.addLoanApplication(application);
+        }
+
+        em.flush();
+    }
+    
+    @Override
+    public void submitRenovationLoanApplication(boolean isExistingCustomer, boolean hasCustomerAdvanced, RenovationLoanApplication application, MortgageLoanApplication mortgage, Long newCustomerBasicId, Long newCustomerAdvancedId){
+        
     }
 
     @Override

@@ -38,6 +38,7 @@ public class CashlineApplication implements Serializable {
     private String applicationStatus;
     private int amountGranted;
     private HashMap uploads;
+    private String loanType;
     
     @ManyToOne(fetch = FetchType.EAGER)
     private CustomerBasic customerBasic;
@@ -62,6 +63,7 @@ public class CashlineApplication implements Serializable {
             docs.put("employeeTax", true);
         } 
         this.setUploads(docs);
+        this.setLoanType("Cashline");
     }
 
     public Long getId() {
@@ -142,6 +144,14 @@ public class CashlineApplication implements Serializable {
 
     public void setCashlineAccount(CashlineAccount cashlineAccount) {
         this.cashlineAccount = cashlineAccount;
+    }
+
+    public String getLoanType() {
+        return loanType;
+    }
+
+    public void setLoanType(String loanType) {
+        this.loanType = loanType;
     }
 
     @Override

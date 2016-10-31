@@ -34,7 +34,7 @@ import org.primefaces.model.UploadedFile;
  */
 @Named(value = "publicCashlineApplicationManagedBean")
 @ViewScoped
-public class publicCashlineApplicationManagedBean implements Serializable {
+public class PublicCashlineApplicationManagedBean implements Serializable {
 
     @EJB
     private CustomerEmailSessionBeanLocal customerEmailSessionBeanLocal;
@@ -118,7 +118,7 @@ public class publicCashlineApplicationManagedBean implements Serializable {
     /**
      * Creates a new instance of publicCashlineApplicationManagedBean
      */
-    public publicCashlineApplicationManagedBean() {
+    public PublicCashlineApplicationManagedBean() {
         uploads.put("identification", false);
         uploads.put("employeeTax", false);
         uploads.put("selfEmployedTax", false);
