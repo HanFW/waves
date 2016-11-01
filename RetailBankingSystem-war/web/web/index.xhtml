@@ -650,7 +650,56 @@
                                     </p:tab>
 
                                     <p:tab title="Renovation Loan">
+                                        <div align="center">
+                                            <p:panelGrid columns="2">
+                                                <p:outputLabel value="Eligibility"/>
+                                                <p:column>
+                                                    <p:outputLabel value="Age Requirement: "/>
+                                                    <br/>
+                                                    <h:outputText value="Minimum 21, maximum 60 years of age upon loan maturity"/>
+                                                    <br/>
+                                                    <br/>
+                                                    <p:outputLabel value="Income Requirement: "/>
+                                                    <br/>
+                                                    <h:outputText value="S$30,000 per annum"/>
+                                                </p:column>
 
+                                                <p:outputLabel value="Interest Rate"/>
+                                                <p:outputLabel value="2.31% p.a."/>
+
+                                                <p:outputLabel value="Margin of Financing: "/>
+                                                <p:outputLabel value="S$30,000 or six times your monthly salary, whichever is lower"/>
+
+                                                <p:outputLabel value="Loan Tenure"/>
+                                                <p:outputLabel value="From 1 to 5 years"/>
+
+                                                <p:outputLabel value="Documents Required"/>
+                                                <p:column>
+                                                    <h:outputText value="• Photocopy of NRIC/Passport for all Applicants and Owners"/>
+                                                    <br/>
+                                                    <h:outputText value="• Proof of renovation (final renovation quotation / invoice)"/>
+                                                    <br/>
+                                                    <h:outputText value="• Proof of property ownership (one of the below): "/>
+                                                    <br/>
+                                                    <h:outputText value="  - Statement of CPF withdrawals for property payment"/>
+                                                    <br/>
+                                                    <h:outputText value="  - Information on the HDB flat to be renovated (from HDB’s website)"/>
+                                                    <br/>
+                                                    <h:outputText value="  - HDB Sales Order "/>
+                                                    <br/>
+                                                    <h:outputText value="  - HDB Confirmation Letter"/>
+                                                    <br/>
+                                                    <h:outputText value="  - Property tax bill"/>
+                                                    <br/>
+                                                    <h:outputText value="• Latest Tax Assessment (for salaried employees or commission earners)"/>
+                                                    <br/>
+                                                    <h:outputText value="• 2 Years Income Tax Assessment (for self-employed applicants)"/>
+                                                    <br/>
+                                                </p:column>
+                                            </p:panelGrid>
+                                            <p:separator/>
+                                            <p:commandButton value="Apply for Merlion Bank Renovation Loan" action="/web/merlionBank/loan/publicCheckRenovationExisting.xhtml?faces-redirect=true"/>
+                                        </div>
                                     </p:tab>
                                 </p:tabView>
                             </div>
@@ -696,7 +745,7 @@
                                     <p:column>
                                         <h:outputText value="• Photocopy of NRIC/Passport for all Applicants and Owners"/>
                                         <br/>
-                                        <h:outputText value="• Latest Tax Assessment &amp; CPF Statement (for salaried employees or commission earners)"/>
+                                        <h:outputText value="• Latest Tax Assessment (for salaried employees or commission earners)"/>
                                         <br/>
                                         <h:outputText value="• 2 Years Income Tax Assessment (for self-employed applicants)"/>
                                         <br/>
@@ -742,7 +791,7 @@
                                         <br/>
                                         <h:outputText value="• Proof of relationship between student and/or main applicant and/or guarantor"/>
                                         <br/>
-                                        <h:outputText value="• Latest Tax Assessment &amp; CPF Statement (for salaried employees or commission earners)"/>
+                                        <h:outputText value="• Latest Tax Assessment (for salaried employees or commission earners)"/>
                                         <br/>
                                         <h:outputText value="• 2 Years Income Tax Assessment (for self-employed applicants)"/>
                                         <br/>
@@ -759,16 +808,16 @@
                                 <p:panelGrid columns="2">
                                     <p:outputLabel value="Eligibility"/>
                                     <h:outputText value="Age requirement: 21 years old and above"/>
-                                    
+
                                     <p:outputLabel value="Interest Rate"/>
                                     <p:outputLabel value="From as low as 3.25% p.a."/>
-                                    
+
                                     <p:outputLabel value="Margin of Financing: "/>
                                     <p:outputLabel value="60% of the purchase or valuation price, whichever is lower"/>
-                                    
+
                                     <p:outputLabel value="Loan Tenure"/>
                                     <p:outputLabel value="From 1 to 7 years"/>
-                                    
+
                                     <p:outputLabel value="Documents Required"/>
                                     <p:column>
                                         <h:outputText value="• Photocopy of NRIC/Passport for all Applicants and Owners"/>
@@ -777,7 +826,7 @@
                                         <br/>
                                         <h:outputText value="• Copy of Registration/COE Card (for used passenger vehicle)"/>
                                         <br/>
-                                        <h:outputText value="• Latest Tax Assessment &amp; CPF Statement (for salaried employees or commission earners)"/>
+                                        <h:outputText value="• Latest Tax Assessment (for salaried employees or commission earners)"/>
                                         <br/>
                                         <h:outputText value="• 2 Years Income Tax Assessment (for self-employed applicants)"/>
                                         <br/>

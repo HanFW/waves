@@ -8,7 +8,10 @@ package ejb.loan.entity;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 
 /**
@@ -26,6 +29,9 @@ public class EducationLoanApplication extends LoanApplication implements Seriali
     private Date educationEndon;
     private int courseDuration;
     private int courseFee;
+    
+    @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.ALL})
+    private EducationLoanGuarantor educationLoanGuarantor;
     
     
     public void create(double amountRequired, int periodRequired,
@@ -93,6 +99,14 @@ public class EducationLoanApplication extends LoanApplication implements Seriali
 
     public void setCourseFee(int courseFee) {
         this.courseFee = courseFee;
+    }
+
+    public EducationLoanGuarantor getEducationLoanGuarantor() {
+        return educationLoanGuarantor;
+    }
+
+    public void setEducationLoanGuarantor(EducationLoanGuarantor educationLoanGuarantor) {
+        this.educationLoanGuarantor = educationLoanGuarantor;
     }
     
     

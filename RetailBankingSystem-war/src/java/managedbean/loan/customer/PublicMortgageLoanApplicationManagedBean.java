@@ -1113,7 +1113,7 @@ public class PublicMortgageLoanApplicationManagedBean implements Serializable {
             occupationPanelVisible = false;
             employmentPanelVisible = false;
             uploads.replace("selfEmployedTax", true);
-            uploads.replace("employeeTax", true);
+            uploads.replace("employeeTax", false);
             uploads.replace("employeeCPF", true);
         }
     }

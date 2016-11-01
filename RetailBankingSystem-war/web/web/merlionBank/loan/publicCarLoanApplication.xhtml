@@ -959,8 +959,8 @@
 
                         <p:outputLabel for="customerLoanTenure" style="font-weight: bold" value="Loan Tenure: "/>
                         <p:inputText id="customerLoanTenure" value="#{publicCarLoanApplicationManagedBean.customerLoanTenure}"
-                                     required="true" requiredMessage="Required Field" validatorMessage="Please enter a valid number between 0-30" converterMessage="Please enter a valid number">
-                            <f:validateLongRange minimum="0" maximum="30"/>
+                                     required="true" requiredMessage="Required Field" validatorMessage="Please enter a valid number between 1-7" converterMessage="Please enter a valid number">
+                            <f:validateLongRange minimum="1" maximum="7"/>
                             <f:convertNumber integerOnly="true"/>
                         </p:inputText>
                         <p:message for="customerLoanTenure"/>

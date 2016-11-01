@@ -31,8 +31,8 @@ public class CustomerEmailSessionBean implements CustomerEmailSessionBeanLocal {
         System.out.println("@@@@@@ infrastructure/CustomerEmailSessionBean: sendEmail() @@@@@@");
 
         String emailServerName = "smtp.gmail.com";
-        String emailFromAddress = "Han Fengwei Test Send<merlionbankes05@gmail.com>";
-        String toEmailAddress = "Han Fengwei Test Receive<" + customer.getCustomerEmail() + ">";
+        String emailFromAddress = "Merlion Bank<merlionbankes05@gmail.com>";
+        String toEmailAddress = "Merlion Bank Customer<" + customer.getCustomerEmail() + ">";
         String mailer = "JavaMailer";
         String emailText = "Dear " + customer.getCustomerName() + ", \n";
 
@@ -99,6 +99,10 @@ public class CustomerEmailSessionBean implements CustomerEmailSessionBeanLocal {
                 emailText += "Your Education Loan application has been submitted successfully. \n";
                 emailText += "Education Loan application usually takes a few weeks to process. We will contact you via email once we have finished processing your request.\n";
                 emailText += "Thank you for your cooperation. \n";
+            case "renovationLoanApplication":
+                emailText += "Your Renovation Loan application has been submitted successfully. \n";
+                emailText += "Renovation Loan application usually takes a few weeks to process. We will contact you via email once we have finished processing your request.\n";
+                emailText += "Thank you for your cooperation. \n";
         }
 
         try {
@@ -116,7 +120,7 @@ public class CustomerEmailSessionBean implements CustomerEmailSessionBeanLocal {
             if (msg != null) {
                 msg.setFrom(InternetAddress.parse(emailFromAddress, false)[0]);
                 msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmailAddress, false));
-                msg.setSubject("Thank you for using our service! ");;
+                msg.setSubject("Thank you for choosing Merlion Bank! ");;
                 msg.setText(emailText);
                 msg.setHeader("X-Mailer", mailer);
                 Date timeStamp = new Date();

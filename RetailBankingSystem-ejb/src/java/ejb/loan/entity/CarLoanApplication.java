@@ -7,6 +7,7 @@ package ejb.loan.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashMap;
 import javax.persistence.Entity;
 
 /**
@@ -24,7 +25,7 @@ public class CarLoanApplication extends LoanApplication implements Serializable 
     private double purchasePrice;
     private int yearOfManufacture;
     
-    public void create(double amountRequired, int periodRequired, 
+    public void create(double amountRequired, int periodRequired, String employmentStatus,
             String isNewCar, String make, String model, String chassis, double purchasePrice, int yearOfManufacture){
         this.setAmountRequired(amountRequired);
         this.setPeriodRequired(periodRequired);
@@ -38,6 +39,19 @@ public class CarLoanApplication extends LoanApplication implements Serializable 
         this.setChassis(chassis);
         this.setPurchasePrice(purchasePrice);
         this.setYearOfManufacture(yearOfManufacture);
+        
+        HashMap docs = new HashMap();
+        docs.put("identification", true);
+        docs.put("order", true);
+        docs.put("registration", true);
+        if (employmentStatus.equals("Self-Employed")) {
+            docs.put("selfEmployedTax", true);
+            docs.put("employeeTax", false);
+        } else {
+            docs.put("selfEmployedTax", false);
+            docs.put("employeeTax", true);
+        } 
+        this.setUploads(docs);
     }
 
     public String getIsNewCar() {

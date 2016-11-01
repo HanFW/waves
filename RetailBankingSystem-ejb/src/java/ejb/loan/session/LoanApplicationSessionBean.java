@@ -192,8 +192,39 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
     }
     
     @Override
-    public void submitRenovationLoanApplication(boolean isExistingCustomer, boolean hasCustomerAdvanced, RenovationLoanApplication application, MortgageLoanApplication mortgage, Long newCustomerBasicId, Long newCustomerAdvancedId){
+    public void submitRenovationLoanApplication(boolean isExistingCustomer, boolean hasCustomerAdvanced, RenovationLoanApplication application, CustomerProperty property, Long newCustomerBasicId, Long newCustomerAdvancedId){
+        System.out.println("****** loan/LoanApplicationSessionBean: submitRenovationLoanApplication() ******");
+        CustomerBasic cb = em.find(CustomerBasic.class, newCustomerBasicId);
+
+        //set on both side (1-1 bi)
+        property.setCustomerBasic(cb);
+        cb.setCustomerProperty(property);
+
+        //set on both side (1-1 bi)
+        if (!hasCustomerAdvanced) {
+            CustomerAdvanced ca = em.find(CustomerAdvanced.class, newCustomerAdvancedId);
+            cb.setCustomerAdvanced(ca);
+            ca.setCustomerBasic(cb);
+        }
+
+        Query query = em.createQuery("SELECT p FROM LoanInterestPackage p WHERE p.packageName = :packageName");
+        query.setParameter("packageName", "Renovation Loan");
+        List resultList = query.getResultList();
         
+        if (!resultList.isEmpty()) {
+            LoanInterestPackage pkg = (LoanInterestPackage) resultList.get(0);
+            System.out.println("****** loan/LoanApplicationSessionBean: submitRenovationLoanApplication(): interest package: " + pkg.getPackageName());
+            application.setCustomerBasic(cb);
+            cb.addLoanApplication(application);
+            application.setLoanInterestPackage(pkg);
+            pkg.addLoanApplication(application);
+        } else {
+            System.out.println("****** loan/LoanApplicationSessionBean: submitRenovationLoanApplication(): no interest package found");
+            application.setCustomerBasic(cb);
+            cb.addLoanApplication(application);
+        }
+
+        em.flush();
     }
 
     @Override
@@ -342,6 +373,7 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
     public MortgageLoanApplication getMortgageLoanApplicationById(Long applicationId) {
         System.out.println("****** loan/LoanApplicationSessionBean: getMortgageLoanApplicationById() ******");
         MortgageLoanApplication application = em.find(MortgageLoanApplication.class, applicationId);
+        em.refresh(application);
         return application;
     }
 
