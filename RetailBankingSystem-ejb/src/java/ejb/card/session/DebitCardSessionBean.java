@@ -386,6 +386,22 @@ public class DebitCardSessionBean implements DebitCardSessionBeanLocal {
         return Arrays.toString(md.digest(stringToHash.getBytes()));
     }
 
+    //get all deposit accounts of a customer
+    @Override
+    public List<String> getAllDepositAccounts(Long customerId) {
+        List<String> depositAccounts = new ArrayList();
+        CustomerBasic customer = em.find(CustomerBasic.class, customerId);
+
+        System.out.println("check customer" + customer);
+        List<BankAccount> depositAccountsOfCustomer = customer.getBankAccount();
+        for (int i = 0; i < depositAccountsOfCustomer.size(); i++) {
+            String info = depositAccountsOfCustomer.get(i).getBankAccountType() + "-" + depositAccountsOfCustomer.get(i).getBankAccountNum();
+            depositAccounts.add(i, info);
+        }
+        
+        return depositAccounts;
+    }
+
     //get all debit cards of a customer
     @Override
     public List<String> getAllDebitCards(Long customerId) {

@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='UTF-8'?><!-- Published by JAX-WS RI (http://jax-ws.java.net). RI's version is Metro/2.3.1-b419 (branches/2.3.1.x-7937; 2014-08-04T08:11:03+0000) JAXWS-RI/2.2.10-b140803.1500 JAXWS-API/2.2.11 JAXB-RI/2.2.10-b140802.1033 JAXB-API/2.2.12-b140109.1041 svn-revision#unknown. --><xs:schema xmlns:tns="http://session.ws.ejb/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://session.ws.ejb/">
+
+<xs:element name="createNewVisaClearingRecord" type="tns:createNewVisaClearingRecord"/>
+
+<xs:element name="createNewVisaClearingRecordResponse" type="tns:createNewVisaClearingRecordResponse"/>
+
+<xs:element name="createTransactionToBeAuthorized" type="tns:createTransactionToBeAuthorized"/>
+
+<xs:element name="createTransactionToBeAuthorizedResponse" type="tns:createTransactionToBeAuthorizedResponse"/>
+
+<xs:element name="getAllPendingTransactionsToBeAuthorized" type="tns:getAllPendingTransactionsToBeAuthorized"/>
+
+<xs:element name="getAllPendingTransactionsToBeAuthorizedResponse" type="tns:getAllPendingTransactionsToBeAuthorizedResponse"/>
+
+<xs:element name="getTransactionToBeAuthorizedById" type="tns:getTransactionToBeAuthorizedById"/>
+
+<xs:element name="getTransactionToBeAuthorizedByIdResponse" type="tns:getTransactionToBeAuthorizedByIdResponse"/>
+
+<xs:complexType name="createNewVisaClearingRecord">
+<xs:sequence>
+<xs:element name="transactionAmt" type="xs:double" minOccurs="0"/>
+<xs:element name="reference" type="xs:string" minOccurs="0"/>
+<xs:element name="transactionTime" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="createNewVisaClearingRecordResponse">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="getTransactionToBeAuthorizedById">
+<xs:sequence>
+<xs:element name="id" type="xs:long" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getTransactionToBeAuthorizedByIdResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:transactionToBeAuthorized" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="transactionToBeAuthorized">
+<xs:sequence>
+<xs:element name="cardNum" type="xs:string" minOccurs="0"/>
+<xs:element name="cardPwd" type="xs:string" minOccurs="0"/>
+<xs:element name="cardType" type="xs:string" minOccurs="0"/>
+<xs:element name="customerSignature" type="xs:string" minOccurs="0"/>
+<xs:element name="transactionAmt" type="xs:double"/>
+<xs:element name="transactionStatus" type="xs:string" minOccurs="0"/>
+<xs:element name="transactionTime" type="xs:string" minOccurs="0"/>
+<xs:element name="transactionToBeAuthorizedId" type="xs:long" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getAllPendingTransactionsToBeAuthorized">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="getAllPendingTransactionsToBeAuthorizedResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:transactionToBeAuthorized" minOccurs="0" maxOccurs="unbounded"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="createTransactionToBeAuthorized">
+<xs:sequence>
+<xs:element name="cardType" type="xs:string" minOccurs="0"/>
+<xs:element name="cardNum" type="xs:string" minOccurs="0"/>
+<xs:element name="customerSignature" type="xs:string" minOccurs="0"/>
+<xs:element name="debitCardPwd" type="xs:string" minOccurs="0"/>
+<xs:element name="transactionAmt" type="xs:double"/>
+<xs:element name="transactionTime" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="createTransactionToBeAuthorizedResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:transactionToBeAuthorized" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+</xs:schema>

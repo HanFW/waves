@@ -28,6 +28,8 @@ public interface DebitCardSessionBeanLocal {
     
     public String debitCardNumValiadation(String debitCardNum, String cardHolderName, String debitCardSecurityCode);
     
+    public List<String> getAllDepositAccounts(Long customerId);
+    
     public List<String> getAllActivatedDebitCards(Long customerId);
     
     public List<String> getAllNonActivatedDebitCards(Long customerId);
