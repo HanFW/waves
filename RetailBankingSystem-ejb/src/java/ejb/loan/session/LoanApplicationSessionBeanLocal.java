@@ -28,7 +28,7 @@ public interface LoanApplicationSessionBeanLocal {
     public void submitLoanApplication(boolean isExistingCustomer, boolean hasCustomerAdvanced, Long customerBasicId, Long customerAdvancedId, ArrayList<CustomerDebt> debts, 
             CustomerProperty cp, MortgageLoanApplication mortgage, RefinancingApplication refinancing, String loanType, String interestPackage);
     public void submitCashlineApplication(boolean isExistingCustomer, boolean hasCustomerAdvanced, CashlineApplication cashline, Long newCustomerBasicId, Long newCustomerAdvancedId);
-    public void submitEducationLoanApplication(boolean isExistingCustomer, boolean hasCustomerAdvanced, EducationLoanApplication application, Long newCustomerBasicId, Long newCustomerAdvancedId);
+    public void submitEducationLoanApplication(boolean isExistingCustomer, boolean hasCustomerAdvanced, EducationLoanApplication application, Long newCustomerBasicId, Long newCustomerAdvancedId, Long guarantorId);
     public void submitCarLoanApplication(boolean isExistingCustomer, boolean hasCustomerAdvanced, CarLoanApplication application, Long newCustomerBasicId, Long newCustomerAdvancedId);
     public void submitRenovationLoanApplication(boolean isExistingCustomer, boolean hasCustomerAdvanced, RenovationLoanApplication application, CustomerProperty property, Long newCustomerBasicId, Long newCustomerAdvancedId);
     public CustomerDebt addNewCustomerDebt(String facilityType, String financialInstitution, double totalAmount, double monthlyInstalment);
@@ -46,4 +46,16 @@ public interface LoanApplicationSessionBeanLocal {
     public List<MortgageLoanApplication> getAllMortgageApplicationsPendingAppraisal();
     public void submitAppraisal(double appraisedValue, Long applicationId);
     public List<CreditReportAccountStatus> getAccountStatusByBureauScoreId(Long id);
+    public Long createLoanGuarantor(String guarantorName, String guarantorSalutation,
+            String guarantorIdentificationNum, String guarantorGender,
+            String guarantorEmail, String guarantorMobile, String guarantorDateOfBirth,
+            String guarantorNationality, String guarantorCountryOfResidence, String guarantorRace,
+            String guarantorMaritalStatus, String guarantorOccupation, String guarantorCompany,
+            String guarantorAddress, String guarantorPostal, byte[] guarantorSignature, 
+            int guarantorNumOfDependents, String guarantorEducation, String guarantorResidentialStatus,
+            int guarantorLengthOfResidence, String guarantorIndustryType, int guarantorLengthOfCurrentJob, String guarantorEmploymentStatus,
+            double guarantorMonthlyFixedIncome, String guarantorResidentialType, String guarantorCompanyAddress,
+            String guarantorCompanyPostal, String guarantorCurrentPosition, String guarantorCurrentJobTitle,
+            String guarantorPreviousCompany, int guarantorLengthOfPreviousJob, double guarantorOtherMonthlyIncome,
+            String guarantorOtherMonthlyIncomeSource);
 }

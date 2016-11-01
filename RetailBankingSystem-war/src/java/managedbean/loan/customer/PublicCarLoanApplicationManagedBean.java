@@ -297,14 +297,14 @@ public class PublicCarLoanApplicationManagedBean implements Serializable {
                     newCustomerAdvancedId = cRMCustomerSessionBeanLocal.updateCustomerAdvanced(customerIdentificationNum, customerNumOfDependents,
                             customerEducation, customerResidentialStatus, customerLengthOfResidence, customerIndustryType, customerLengthOfCurrentJob,
                             customerEmploymentStatus, customerMonthlyFixedIncome.doubleValue(), customerResidentialType, customerCompanyAddress,
-                            customerCompanyPostal, customerCurrentPosition, customerCurrentJobTitle, null,
-                            0, customerOtherMonthlyIncome.doubleValue(), customerOtherMonthlyIncomeSource);
+                            customerCompanyPostal, customerCurrentPosition, customerCurrentJobTitle, customerPreviousCompany,
+                            customerLengthOfPreviousJob, customerOtherMonthlyIncome.doubleValue(), customerOtherMonthlyIncomeSource);
                 } else {
                     newCustomerAdvancedId = cRMCustomerSessionBeanLocal.addNewCustomerAdvanced(customerNumOfDependents, customerEducation, customerResidentialStatus,
                             customerLengthOfResidence, customerIndustryType, customerLengthOfCurrentJob, customerEmploymentStatus,
                             customerMonthlyFixedIncome.doubleValue(), customerResidentialType, customerCompanyAddress,
                             customerCompanyPostal, customerCurrentPosition, customerCurrentJobTitle,
-                            null, 0, customerOtherMonthlyIncome.doubleValue(),
+                            customerPreviousCompany, customerLengthOfPreviousJob, customerOtherMonthlyIncome.doubleValue(),
                             customerOtherMonthlyIncomeSource);
                 }
             }

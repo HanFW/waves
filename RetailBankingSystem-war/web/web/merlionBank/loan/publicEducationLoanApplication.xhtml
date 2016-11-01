@@ -24,6 +24,9 @@
                             <p:menuitem value="Personal Details" />
                             <p:menuitem value="Employment Details" />
                             <p:menuitem value="Financial Request" />
+                            <p:menuitem value="Guarantor's Basic Information" />
+                            <p:menuitem value="Guarantor's Personal Details" />
+                            <p:menuitem value="Guarantor's Employment Details"/>
                             <p:menuitem value="Supporting Documents"/>
                             <p:menuitem value="Confirmation"/>
                         </p:steps>
@@ -560,6 +563,9 @@
                             <p:menuitem value="Personal Details" />
                             <p:menuitem value="Employment Details" />
                             <p:menuitem value="Financial Request" />
+                            <p:menuitem value="Guarantor's Basic Information" />
+                            <p:menuitem value="Guarantor's Personal Details" />
+                            <p:menuitem value="Guarantor's Employment Details"/>
                             <p:menuitem value="Supporting Documents"/>
                             <p:menuitem value="Confirmation"/>
                         </p:steps>
@@ -676,6 +682,9 @@
                             <p:menuitem value="Personal Details" />
                             <p:menuitem value="Employment Details" />
                             <p:menuitem value="Financial Request" />
+                            <p:menuitem value="Guarantor's Basic Information" />
+                            <p:menuitem value="Guarantor's Personal Details" />
+                            <p:menuitem value="Guarantor's Employment Details"/>
                             <p:menuitem value="Supporting Documents"/>
                             <p:menuitem value="Confirmation"/>
                         </p:steps>
@@ -850,6 +859,9 @@
                             <p:menuitem value="Personal Details" />
                             <p:menuitem value="Employment Details" />
                             <p:menuitem value="Financial Request" />
+                            <p:menuitem value="Guarantor's Basic Information" />
+                            <p:menuitem value="Guarantor's Personal Details" />
+                            <p:menuitem value="Guarantor's Employment Details"/>
                             <p:menuitem value="Supporting Documents"/>
                             <p:menuitem value="Confirmation"/>
                         </p:steps>
@@ -873,7 +885,7 @@
                                     yearRange="c-10:c+20" required="true" requiredMessage="Required Field"/>
                         <p:message for="customerEducationEndon"/>
                         
-                        <p:outputLabel for="customerCourseDuration" style="font-weight: bold" value="Course Duration: "/>
+                        <p:outputLabel for="customerCourseDuration" style="font-weight: bold" value="Course Duration (months): "/>
                         <p:inputText id="customerCourseDuration" value="#{publicEducationLoanApplicationManagedBean.customerCourseDuration}"
                                      required="true" requiredMessage="Required Field" validatorMessage="Please enter a valid number" converterMessage="Please enter a valid number">
                             <f:validateLongRange minimum="0"/>
@@ -909,14 +921,852 @@
                         <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('educationLoanWizard').next();"/>
                     </h:panelGrid>
                 </p:tab>
-
-                <p:tab id="documents">
+                
+                <p:tab id="guarantorBasic">
                     <h:panelGrid columns="1">
                         <p:steps activeIndex="4">
                             <p:menuitem value="Basic Information" />
                             <p:menuitem value="Personal Details" />
                             <p:menuitem value="Employment Details" />
                             <p:menuitem value="Financial Request" />
+                            <p:menuitem value="Guarantor's Basic Information" />
+                            <p:menuitem value="Guarantor's Personal Details" />
+                            <p:menuitem value="Guarantor's Employment Details"/>
+                            <p:menuitem value="Supporting Documents"/>
+                            <p:menuitem value="Confirmation"/>
+                        </p:steps>
+                    </h:panelGrid>
+                    
+                    <p:panelGrid>
+                        <p:messages globalOnly="true"/>
+
+                        <p:outputLabel style="font-weight: bold" for="guarantorSalutation" value="Salutation: " />
+                        <p:selectOneMenu id="guarantorSalutation" value="#{publicEducationLoanApplicationManagedBean.guarantorSalutation}" 
+                                         required="true" requiredMessage="Required Field">
+                            <f:selectItem itemLabel="Please Select" itemValue="" noSelectionOption="true"/>
+                            <f:selectItem itemLabel="Dr" itemValue="Dr" />
+                            <f:selectItem itemLabel="Mr" itemValue="Mr" />
+                            <f:selectItem itemLabel="Mrs" itemValue="Mrs" />
+                            <f:selectItem itemLabel="Ms" itemValue="Ms" />
+                            <f:selectItem itemLabel="Mdm" itemValue="Mdm" />
+                            <f:selectItem itemLabel="Others" itemValue="Others" />
+                            <p:ajax event="change" update="panelGuarantorSalutation" listener="#{publicEducationLoanApplicationManagedBean.showGuarantorSalutationPanel()}"/>
+                        </p:selectOneMenu>
+                        <p:panel style="border: none;" id="panelGuarantorSalutation" visible="#{publicEducationLoanApplicationManagedBean.guarantorSalutationPanelVisible}">
+                            <p:inputText id="guarantorSalutationOthers" requiredMessage="Required Field" 
+                                         value="#{publicEducationLoanApplicationManagedBean.guarantorSalutationOthers}" required="#{publicEducationLoanApplicationManagedBean.guarantorSalutationPanelVisible}"/>  
+                        </p:panel>
+                        <p:message for="guarantorSalutation"/>
+                        <p:message for="guarantorSalutationOthers" />
+
+                        <p:outputLabel for="guarantorName" style="font-weight: bold" value="Name(As per NRIC/Passport): "/>
+                        <p:inputText id="guarantorName" value="#{publicEducationLoanApplicationManagedBean.guarantorName}" required="true" requiredMessage="Required Field"/>
+                        <p:message for="guarantorName"/>
+
+                        <p:outputLabel for="guarantorDateOfBirth" style="font-weight: bold" value="Date of Birth: "/>
+                        <p:calendar id="guarantorDateOfBirth" value="#{publicEducationLoanApplicationManagedBean.guarantorDateOfBirth}" 
+                                    showOn="button" locale="de" navigator="true" pattern="dd/MM/yyyy" 
+                                    yearRange="c-200:c+0" required="true" requiredMessage="Required Field"/>
+                        <p:message for="guarantorDateOfBirth"/>
+
+                        <p:outputLabel for="guarantorGender" style="font-weight: bold" value="Gender: "/>
+                        <p:selectOneRadio id="guarantorGender" value="#{publicEducationLoanApplicationManagedBean.guarantorGender}"
+                                          required="true" requiredMessage="Required Field">
+                            <f:selectItem itemLabel="Male" itemValue="Male" />
+                            <f:selectItem itemLabel="Female" itemValue="Female" />
+                        </p:selectOneRadio>
+                        <p:message for="guarantorGender"/>
+
+                        <p:outputLabel for="guarantorNationality" style="font-weight: bold" value="Nationality: "/>
+                        <p:selectOneMenu id="guarantorNationality" value="#{publicEducationLoanApplicationManagedBean.guarantorNationality}" 
+                                         required="true" requiredMessage="Required Field">
+                            <f:selectItem itemLabel="Please Select" itemValue="" noSelectionOption="true"/>
+                            <f:selectItem itemLabel="Afghanistan" itemValue="Afghanistan" />
+                            <f:selectItem itemLabel="Albania" itemValue="Albania" />
+                            <f:selectItem itemLabel="Algeria" itemValue="Algeria" />
+                            <f:selectItem itemLabel="Andorra" itemValue="Andorra" />
+                            <f:selectItem itemLabel="Angola" itemValue="Angola" />
+                            <f:selectItem itemLabel="Antigua and Barbuda" itemValue="Antigua and Barbuda" />
+                            <f:selectItem itemLabel="Argentina" itemValue="Argentina" />
+                            <f:selectItem itemLabel="Armenia" itemValue="Armenia" />
+                            <f:selectItem itemLabel="Aruba" itemValue="Aruba" />
+                            <f:selectItem itemLabel="Australia" itemValue="Australia" />
+                            <f:selectItem itemLabel="Austria" itemValue="Austria" />
+                            <f:selectItem itemLabel="Azerbaijan" itemValue="Azerbaijan" />
+                            <f:selectItem itemLabel="Bahrain" itemValue="Bahrain" />
+                            <f:selectItem itemLabel="Bangladesh" itemValue="Bangladesh" />
+                            <f:selectItem itemLabel="Barbados" itemValue="Barbados" />
+                            <f:selectItem itemLabel="Belarus" itemValue="Belarus" />
+                            <f:selectItem itemLabel="Belgium" itemValue="Belgium" />
+                            <f:selectItem itemLabel="Belize" itemValue="Belize" />
+                            <f:selectItem itemLabel="Benin" itemValue="Benin" />
+                            <f:selectItem itemLabel="Bhutan" itemValue="Bhutan" />
+                            <f:selectItem itemLabel="Bolivia" itemValue="Bolivia" />
+                            <f:selectItem itemLabel="Bosnia and Herzegovina" itemValue="Bosnia and Herzegovina" />
+                            <f:selectItem itemLabel="Botswana" itemValue="Botswana" />
+                            <f:selectItem itemLabel="Brazil" itemValue="Brazil" />
+                            <f:selectItem itemLabel="Brunei " itemValue="Brunei " />
+                            <f:selectItem itemLabel="Bulgaria" itemValue="Bulgaria" />
+                            <f:selectItem itemLabel="Burkina Faso" itemValue="Burkina Faso" />
+                            <f:selectItem itemLabel="Burma" itemValue="Burma" />
+                            <f:selectItem itemLabel="Burundi" itemValue="Burundi" />
+                            <f:selectItem itemLabel="Cambodia" itemValue="Cambodia" />
+                            <f:selectItem itemLabel="Cameroon" itemValue="Cameroon" />
+                            <f:selectItem itemLabel="Canada" itemValue="Canada" />
+                            <f:selectItem itemLabel="Cabo Verde" itemValue="Cabo Verde" />
+                            <f:selectItem itemLabel="Central African Republic" itemValue="Central African Republic" />
+                            <f:selectItem itemLabel="Chad" itemValue="Chad" />
+                            <f:selectItem itemLabel="Chile" itemValue="Chile" />
+                            <f:selectItem itemLabel="China" itemValue="China" />
+                            <f:selectItem itemLabel="Colombia" itemValue="Colombia" />
+                            <f:selectItem itemLabel="Comoros" itemValue="Comoros" />
+                            <f:selectItem itemLabel="Congo, Democratic Republic of the" itemValue="Congo, Democratic Republic of the" />
+                            <f:selectItem itemLabel="Congo, Republic of the" itemValue="Congo, Republic of the" />
+                            <f:selectItem itemLabel="Costa Rica" itemValue="Costa Rica" />
+                            <f:selectItem itemLabel="Cote d'Ivoire" itemValue="Cote d'Ivoire" />
+                            <f:selectItem itemLabel="Croatia" itemValue="Croatia" />
+                            <f:selectItem itemLabel="Cuba" itemValue="Cuba" />
+                            <f:selectItem itemLabel="Curacao" itemValue="Curacao" />
+                            <f:selectItem itemLabel="Cyprus" itemValue="Cyprus" />
+                            <f:selectItem itemLabel="Czech Republic" itemValue="Czech Republic" />
+                            <f:selectItem itemLabel="Denmark" itemValue="Denmark" />
+                            <f:selectItem itemLabel="Djibouti" itemValue="Djibouti" />
+                            <f:selectItem itemLabel="Dominica" itemValue="Dominica" />
+                            <f:selectItem itemLabel="Dominican Republic" itemValue="Dominican Republic" />
+                            <f:selectItem itemLabel="Ecuador" itemValue="Ecuador" />
+                            <f:selectItem itemLabel="Egypt" itemValue="Egypt" />
+                            <f:selectItem itemLabel="El Salvador" itemValue="El Salvador" />
+                            <f:selectItem itemLabel="Equatorial Guinea" itemValue="Equatorial Guinea" />
+                            <f:selectItem itemLabel="Eritrea" itemValue="Eritrea" />
+                            <f:selectItem itemLabel="Estonia" itemValue="Estonia" />
+                            <f:selectItem itemLabel="Ethiopia" itemValue="Ethiopia" />
+                            <f:selectItem itemLabel="Fiji" itemValue="Fiji" />
+                            <f:selectItem itemLabel="Finland" itemValue="Finland" />
+                            <f:selectItem itemLabel="France" itemValue="France" />
+                            <f:selectItem itemLabel="Gabon" itemValue="Gabon" />
+                            <f:selectItem itemLabel="Georgia" itemValue="Georgia" />
+                            <f:selectItem itemLabel="Germany" itemValue="Germany" />
+                            <f:selectItem itemLabel="Ghana" itemValue="Ghana" />
+                            <f:selectItem itemLabel="Greece" itemValue="Greece" />
+                            <f:selectItem itemLabel="Grenada" itemValue="Grenada" />
+                            <f:selectItem itemLabel="Guatemala" itemValue="Guatemala" />
+                            <f:selectItem itemLabel="Guinea" itemValue="Guinea" />
+                            <f:selectItem itemLabel="Guinea-Bissau" itemValue="Guinea-Bissau" />
+                            <f:selectItem itemLabel="Guyana" itemValue="Guyana" />
+                            <f:selectItem itemLabel="Haiti" itemValue="Haiti" />
+                            <f:selectItem itemLabel="Holy See" itemValue="Holy See" />
+                            <f:selectItem itemLabel="Honduras" itemValue="Honduras" />
+                            <f:selectItem itemLabel="Hong Kong" itemValue="Hong Kong" />
+                            <f:selectItem itemLabel="Hungary" itemValue="Hungary" />
+                            <f:selectItem itemLabel="Iceland" itemValue="Iceland" />
+                            <f:selectItem itemLabel="India" itemValue="India" />
+                            <f:selectItem itemLabel="Indonesia" itemValue="Indonesia" />
+                            <f:selectItem itemLabel="Iran" itemValue="Iran" />
+                            <f:selectItem itemLabel="Iraq" itemValue="Iraq" />
+                            <f:selectItem itemLabel="Ireland" itemValue="Ireland" />
+                            <f:selectItem itemLabel="Israel" itemValue="Israel" />
+                            <f:selectItem itemLabel="Italy" itemValue="Italy" />
+                            <f:selectItem itemLabel="Jamaica" itemValue="Jamaica" />
+                            <f:selectItem itemLabel="Japan" itemValue="Japan" />
+                            <f:selectItem itemLabel="Jordan" itemValue="Jordan" />
+                            <f:selectItem itemLabel="Kazakhstan" itemValue="Kazakhstan" />
+                            <f:selectItem itemLabel="Kenya" itemValue="Kenya" />
+                            <f:selectItem itemLabel="Kiribati" itemValue="Kiribati" />
+                            <f:selectItem itemLabel="Korea, North" itemValue="Korea, North" />
+                            <f:selectItem itemLabel="Korea, South" itemValue="Korea, South" />
+                            <f:selectItem itemLabel="Kosovo" itemValue="Kosovo" />
+                            <f:selectItem itemLabel="Kuwait" itemValue="Kuwait" />
+                            <f:selectItem itemLabel="Kyrgyzstan" itemValue="Kyrgyzstan" />
+                            <f:selectItem itemLabel="Laos" itemValue="Laos" />
+                            <f:selectItem itemLabel="Latvia" itemValue="Latvia" />
+                            <f:selectItem itemLabel="Lebanon" itemValue="Lebanon" />
+                            <f:selectItem itemLabel="Lesotho" itemValue="Lesotho" />
+                            <f:selectItem itemLabel="Liberia" itemValue="Liberia" />
+                            <f:selectItem itemLabel="Libya" itemValue="Libya" />
+                            <f:selectItem itemLabel="Liechtenstein" itemValue="Liechtenstein" />
+                            <f:selectItem itemLabel="Lithuania" itemValue="Lithuania" />
+                            <f:selectItem itemLabel="Luxembourg" itemValue="Luxembourg" />
+                            <f:selectItem itemLabel="Macau" itemValue="Macau" />
+                            <f:selectItem itemLabel="Macedonia" itemValue="Macedonia" />
+                            <f:selectItem itemLabel="Madagascar" itemValue="Madagascar" />
+                            <f:selectItem itemLabel="Malawi" itemValue="Malawi" />
+                            <f:selectItem itemLabel="Malaysia" itemValue="Malaysia" />
+                            <f:selectItem itemLabel="Maldives" itemValue="Maldives" />
+                            <f:selectItem itemLabel="Mali" itemValue="Mali" />
+                            <f:selectItem itemLabel="Malta" itemValue="Malta" />
+                            <f:selectItem itemLabel="Marshall Islands" itemValue="Marshall Islands" />
+                            <f:selectItem itemLabel="Mauritania" itemValue="Mauritania" />
+                            <f:selectItem itemLabel="Mauritius" itemValue="Mauritius" />
+                            <f:selectItem itemLabel="Mexico" itemValue="Mexico" />
+                            <f:selectItem itemLabel="Micronesia" itemValue="Micronesia" />
+                            <f:selectItem itemLabel="Moldova" itemValue="Moldova" />
+                            <f:selectItem itemLabel="Monaco" itemValue="Monaco" />
+                            <f:selectItem itemLabel="Mongolia" itemValue="Mongolia" />
+                            <f:selectItem itemLabel="Montenegro" itemValue="Montenegro" />
+                            <f:selectItem itemLabel="Morocco" itemValue="Morocco" />
+                            <f:selectItem itemLabel="Mozambique" itemValue="Mozambique" />
+                            <f:selectItem itemLabel="Namibia" itemValue="Namibia" />
+                            <f:selectItem itemLabel="Nauru" itemValue="Nauru" />
+                            <f:selectItem itemLabel="Nepal" itemValue="Nepal" />
+                            <f:selectItem itemLabel="Netherlands" itemValue="Netherlands" />
+                            <f:selectItem itemLabel="Netherlands Antilles" itemValue="Netherlands Antilles" />
+                            <f:selectItem itemLabel="New Zealand" itemValue="New Zealand" />
+                            <f:selectItem itemLabel="Nicaragua" itemValue="Nicaragua" />
+                            <f:selectItem itemLabel="Niger" itemValue="Niger" />
+                            <f:selectItem itemLabel="Nigeria" itemValue="Nigeria" />
+                            <f:selectItem itemLabel="North Korea" itemValue="North Korea" />
+                            <f:selectItem itemLabel="Oman" itemValue="Oman" />
+                            <f:selectItem itemLabel="Pakistan" itemValue="Pakistan" />
+                            <f:selectItem itemLabel="Palau" itemValue="Palau" />
+                            <f:selectItem itemLabel="Palestinian Territories" itemValue="Palestinian Territories" />
+                            <f:selectItem itemLabel="Panama" itemValue="Panama" />
+                            <f:selectItem itemLabel="Papua New Guinea" itemValue="Papua New Guinea" />
+                            <f:selectItem itemLabel="Paraguay" itemValue="Paraguay" />
+                            <f:selectItem itemLabel="Peru" itemValue="Peru" />
+                            <f:selectItem itemLabel="Philippines" itemValue="Philippines" />
+                            <f:selectItem itemLabel="Poland" itemValue="Poland" />
+                            <f:selectItem itemLabel="Portugal" itemValue="Portugal" />
+                            <f:selectItem itemLabel="Qatar" itemValue="Qatar" />
+                            <f:selectItem itemLabel="Romania" itemValue="Romania" />
+                            <f:selectItem itemLabel="Russia" itemValue="Russia" />
+                            <f:selectItem itemLabel="Rwanda" itemValue="Rwanda" />
+                            <f:selectItem itemLabel="Saint Kitts and Nevis" itemValue="Saint Kitts and Nevis" />
+                            <f:selectItem itemLabel="Saint Lucia" itemValue="Saint Lucia" />
+                            <f:selectItem itemLabel="Saint Vincent and the Grenadines" itemValue="Saint Vincent and the Grenadines" />
+                            <f:selectItem itemLabel="Samoa " itemValue="Samoa " />
+                            <f:selectItem itemLabel="San Marino" itemValue="San Marino" />
+                            <f:selectItem itemLabel="Sao Tome and Principe" itemValue="Sao Tome and Principe" />
+                            <f:selectItem itemLabel="Saudi Arabia" itemValue="Saudi Arabia" />
+                            <f:selectItem itemLabel="Senegal" itemValue="Senegal" />
+                            <f:selectItem itemLabel="Serbia" itemValue="Serbia" />
+                            <f:selectItem itemLabel="Seychelles" itemValue="Seychelles" />
+                            <f:selectItem itemLabel="Sierra Leone" itemValue="Sierra Leone" />
+                            <f:selectItem itemLabel="Singapore" itemValue="Singapore" />
+                            <f:selectItem itemLabel="Sint Maarten" itemValue="Sint Maarten" />
+                            <f:selectItem itemLabel="Slovakia" itemValue="Slovakia" />
+                            <f:selectItem itemLabel="Slovenia" itemValue="Slovenia" />
+                            <f:selectItem itemLabel="Solomon Islands" itemValue="Solomon Islands" />
+                            <f:selectItem itemLabel="Somalia" itemValue="Somalia" />
+                            <f:selectItem itemLabel="South Africa" itemValue="South Africa" />
+                            <f:selectItem itemLabel="South Korea" itemValue="South Korea" />
+                            <f:selectItem itemLabel="South Sudan" itemValue="South Sudan" />
+                            <f:selectItem itemLabel="Spain " itemValue="Spain " />
+                            <f:selectItem itemLabel="Sri Lanka" itemValue="Sri Lanka" />
+                            <f:selectItem itemLabel="Sudan" itemValue="Sudan" />
+                            <f:selectItem itemLabel="Suriname" itemValue="Suriname" />
+                            <f:selectItem itemLabel="Swaziland " itemValue="Swaziland " />
+                            <f:selectItem itemLabel="Sweden" itemValue="Sweden" />
+                            <f:selectItem itemLabel="Switzerland" itemValue="Switzerland" />
+                            <f:selectItem itemLabel="Syria" itemValue="Syria" />
+                            <f:selectItem itemLabel="Taiwan" itemValue="Taiwan" />
+                            <f:selectItem itemLabel="Tajikistan" itemValue="Tajikistan" />
+                            <f:selectItem itemLabel="Tanzania" itemValue="Tanzania" />
+                            <f:selectItem itemLabel="Thailand " itemValue="Thailand" />
+                            <f:selectItem itemLabel="Timor-Leste" itemValue="Timor-Leste" />
+                            <f:selectItem itemLabel="Togo" itemValue="Togo" />
+                            <f:selectItem itemLabel="Tonga" itemValue="Tonga" />
+                            <f:selectItem itemLabel="Trinidad and Tobago" itemValue="Trinidad and Tobago" />
+                            <f:selectItem itemLabel="Tunisia" itemValue="Tunisia" />
+                            <f:selectItem itemLabel="Turkey" itemValue="Turkey" />
+                            <f:selectItem itemLabel="Turkmenistan" itemValue="Turkmenistan" />
+                            <f:selectItem itemLabel="Tuvalu" itemValue="Tuvalu" />
+                            <f:selectItem itemLabel="Uganda" itemValue="Uganda" />
+                            <f:selectItem itemLabel="Ukraine" itemValue="Ukraine" />
+                            <f:selectItem itemLabel="United Arab Emirates" itemValue="United Arab Emirates" />
+                            <f:selectItem itemLabel="United Kingdom" itemValue="United Kingdom" />
+                            <f:selectItem itemLabel="United States" itemValue="United States" />
+                            <f:selectItem itemLabel="Uruguay" itemValue="Uruguay" />
+                            <f:selectItem itemLabel="Uzbekistan" itemValue="Uzbekistan" />
+                            <f:selectItem itemLabel="Vanuatu" itemValue="Vanuatu" />
+                            <f:selectItem itemLabel="Venezuela" itemValue="Venezuela" />
+                            <f:selectItem itemLabel="Vietnam" itemValue="Vietnam" />
+                            <f:selectItem itemLabel="Yemen" itemValue="Yemen" />
+                            <f:selectItem itemLabel="Zambia" itemValue="Zambia" />
+                            <f:selectItem itemLabel="Zimbabwe" itemValue="Zimbabwe" />
+                            <p:ajax event="change" update="panelGuarantorNationalitySG panelGuarantorNationalityOthers panelGuarantorNRIC panelGuarantorPassport" listener="#{publicEducationLoanApplicationManagedBean.showGuarantorNationalityPanel}"/>
+                        </p:selectOneMenu>
+                        <p:message for="guarantorNationality" />
+
+                        <p:panel style="border: none;" id="panelGuarantorNationalitySG" visible="#{publicEducationLoanApplicationManagedBean.guarantorNationalitySGPanelVisible}">
+                            <p:outputLabel for="guarantorNRICSG" style="font-weight: bold" value="NRIC No.: " />
+                            <p:inputText id="guarantorNRICSG" value="#{publicEducationLoanApplicationManagedBean.guarantorSingaporeNRIC}" requiredMessage="Required Field"/>
+                            <p:message for="guarantorNRICSG"/>
+                        </p:panel>
+
+                        <p:panel style="border: none;" id="panelGuarantorNationalityOthers" visible="#{publicEducationLoanApplicationManagedBean.guarantorNationalityOthersPanelVisible}">
+                            <p:outputLabel for="guarantorSingaporePR" style="font-weight: bold" value="Singapore PR: " />
+                            <p:selectOneRadio id="guarantorSingaporePR" value="#{publicEducationLoanApplicationManagedBean.guarantorIsPR}"
+                                              required="#{publicEducationLoanApplicationManagedBean.guarantorNationalityOthersPanelVisible}" requiredMessage="Required Field">
+                                <f:selectItem itemLabel="Yes" itemValue="Yes" />
+                                <f:selectItem itemLabel="No" itemValue="No" />
+                                <p:ajax event="change" update="panelGuarantorNRIC panelPassport" listener="#{publicEducationLoanApplicationManagedBean.showGuarantorIdentificationPanel}"/>
+                            </p:selectOneRadio>
+                            <p:message for="singaporePR" />
+                        </p:panel>
+
+                        <p:panel style="border: none;" id="panelGuarantorNRIC" visible="#{publicEducationLoanApplicationManagedBean.guarantorNricPanelVisible}">
+                            <p:outputLabel for="guarantorNRIC" style="font-weight: bold" value="NRIC No.: " />
+                            <p:inputText id="guarantorNRIC" value="#{publicEducationLoanApplicationManagedBean.guarantorForeignNRIC}" 
+                                         required="#{publicEducationLoanApplicationManagedBean.guarantorNricPanelVisible}" requiredMessage="Required Field"/>
+                            <p:message for="guarantorNRIC" />
+                        </p:panel>
+
+                        <p:panel style="border: none;" id="panelGuarantorPassport" visible="#{publicEducationLoanApplicationManagedBean.guarantorPassportPanelVisible}">
+                            <p:outputLabel for="guarantorPassport" style="font-weight: bold" value="Passport No. " />
+                            <p:inputText id="guarantorPassport" required="#{publicEducationLoanApplicationManagedBean.guarantorPassportPanelVisible}"
+                                         value="#{publicEducationLoanApplicationManagedBean.guarantorForeignPassport}" requiredMessage="Required Field"/>
+                            <p:message for="guarantorPassport" />
+                        </p:panel>
+
+                        <p:outputLabel for="guarantorCountryOfResidence" style="font-weight: bold" value="Country of Residence: " />
+                        <p:selectOneMenu id="guarantorCountryOfResidence" value="#{publicEducationLoanApplicationManagedBean.guarantorCountryOfResidence}" 
+                                         required="true" requiredMessage="Required Field">
+                            <f:selectItem itemLabel="Please Select" itemValue="" />
+                            <f:selectItem itemLabel="Afghanistan" itemValue="Afghanistan" />
+                            <f:selectItem itemLabel="Albania" itemValue="Albania" />
+                            <f:selectItem itemLabel="Algeria" itemValue="Algeria" />
+                            <f:selectItem itemLabel="Andorra" itemValue="Andorra" />
+                            <f:selectItem itemLabel="Angola" itemValue="Angola" />
+                            <f:selectItem itemLabel="Antigua and Barbuda" itemValue="Antigua and Barbuda" />
+                            <f:selectItem itemLabel="Argentina" itemValue="Argentina" />
+                            <f:selectItem itemLabel="Armenia" itemValue="Armenia" />
+                            <f:selectItem itemLabel="Aruba" itemValue="Aruba" />
+                            <f:selectItem itemLabel="Australia" itemValue="Australia" />
+                            <f:selectItem itemLabel="Austria" itemValue="Austria" />
+                            <f:selectItem itemLabel="Azerbaijan" itemValue="Azerbaijan" />
+                            <f:selectItem itemLabel="Bahrain" itemValue="Bahrain" />
+                            <f:selectItem itemLabel="Bangladesh" itemValue="Bangladesh" />
+                            <f:selectItem itemLabel="Barbados" itemValue="Barbados" />
+                            <f:selectItem itemLabel="Belarus" itemValue="Belarus" />
+                            <f:selectItem itemLabel="Belgium" itemValue="Belgium" />
+                            <f:selectItem itemLabel="Belize" itemValue="Belize" />
+                            <f:selectItem itemLabel="Benin" itemValue="Benin" />
+                            <f:selectItem itemLabel="Bhutan" itemValue="Bhutan" />
+                            <f:selectItem itemLabel="Bolivia" itemValue="Bolivia" />
+                            <f:selectItem itemLabel="Bosnia and Herzegovina" itemValue="Bosnia and Herzegovina" />
+                            <f:selectItem itemLabel="Botswana" itemValue="Botswana" />
+                            <f:selectItem itemLabel="Brazil" itemValue="Brazil" />
+                            <f:selectItem itemLabel="Brunei " itemValue="Brunei " />
+                            <f:selectItem itemLabel="Bulgaria" itemValue="Bulgaria" />
+                            <f:selectItem itemLabel="Burkina Faso" itemValue="Burkina Faso" />
+                            <f:selectItem itemLabel="Burma" itemValue="Burma" />
+                            <f:selectItem itemLabel="Burundi" itemValue="Burundi" />
+                            <f:selectItem itemLabel="Cambodia" itemValue="Cambodia" />
+                            <f:selectItem itemLabel="Cameroon" itemValue="Cameroon" />
+                            <f:selectItem itemLabel="Canada" itemValue="Canada" />
+                            <f:selectItem itemLabel="Cabo Verde" itemValue="Cabo Verde" />
+                            <f:selectItem itemLabel="Central African Republic" itemValue="Central African Republic" />
+                            <f:selectItem itemLabel="Chad" itemValue="Chad" />
+                            <f:selectItem itemLabel="Chile" itemValue="Chile" />
+                            <f:selectItem itemLabel="China" itemValue="China" />
+                            <f:selectItem itemLabel="Colombia" itemValue="Colombia" />
+                            <f:selectItem itemLabel="Comoros" itemValue="Comoros" />
+                            <f:selectItem itemLabel="Congo, Democratic Republic of the" itemValue="Congo, Democratic Republic of the" />
+                            <f:selectItem itemLabel="Congo, Republic of the" itemValue="Congo, Republic of the" />
+                            <f:selectItem itemLabel="Costa Rica" itemValue="Costa Rica" />
+                            <f:selectItem itemLabel="Cote d'Ivoire" itemValue="Cote d'Ivoire" />
+                            <f:selectItem itemLabel="Croatia" itemValue="Croatia" />
+                            <f:selectItem itemLabel="Cuba" itemValue="Cuba" />
+                            <f:selectItem itemLabel="Curacao" itemValue="Curacao" />
+                            <f:selectItem itemLabel="Cyprus" itemValue="Cyprus" />
+                            <f:selectItem itemLabel="Czech Republic" itemValue="Czech Republic" />
+                            <f:selectItem itemLabel="Denmark" itemValue="Denmark" />
+                            <f:selectItem itemLabel="Djibouti" itemValue="Djibouti" />
+                            <f:selectItem itemLabel="Dominica" itemValue="Dominica" />
+                            <f:selectItem itemLabel="Dominican Republic" itemValue="Dominican Republic" />
+                            <f:selectItem itemLabel="Ecuador" itemValue="Ecuador" />
+                            <f:selectItem itemLabel="Egypt" itemValue="Egypt" />
+                            <f:selectItem itemLabel="El Salvador" itemValue="El Salvador" />
+                            <f:selectItem itemLabel="Equatorial Guinea" itemValue="Equatorial Guinea" />
+                            <f:selectItem itemLabel="Eritrea" itemValue="Eritrea" />
+                            <f:selectItem itemLabel="Estonia" itemValue="Estonia" />
+                            <f:selectItem itemLabel="Ethiopia" itemValue="Ethiopia" />
+                            <f:selectItem itemLabel="Fiji" itemValue="Fiji" />
+                            <f:selectItem itemLabel="Finland" itemValue="Finland" />
+                            <f:selectItem itemLabel="France" itemValue="France" />
+                            <f:selectItem itemLabel="Gabon" itemValue="Gabon" />
+                            <f:selectItem itemLabel="Georgia" itemValue="Georgia" />
+                            <f:selectItem itemLabel="Germany" itemValue="Germany" />
+                            <f:selectItem itemLabel="Ghana" itemValue="Ghana" />
+                            <f:selectItem itemLabel="Greece" itemValue="Greece" />
+                            <f:selectItem itemLabel="Grenada" itemValue="Grenada" />
+                            <f:selectItem itemLabel="Guatemala" itemValue="Guatemala" />
+                            <f:selectItem itemLabel="Guinea" itemValue="Guinea" />
+                            <f:selectItem itemLabel="Guinea-Bissau" itemValue="Guinea-Bissau" />
+                            <f:selectItem itemLabel="Guyana" itemValue="Guyana" />
+                            <f:selectItem itemLabel="Haiti" itemValue="Haiti" />
+                            <f:selectItem itemLabel="Holy See" itemValue="Holy See" />
+                            <f:selectItem itemLabel="Honduras" itemValue="Honduras" />
+                            <f:selectItem itemLabel="Hong Kong" itemValue="Hong Kong" />
+                            <f:selectItem itemLabel="Hungary" itemValue="Hungary" />
+                            <f:selectItem itemLabel="Iceland" itemValue="Iceland" />
+                            <f:selectItem itemLabel="India" itemValue="India" />
+                            <f:selectItem itemLabel="Indonesia" itemValue="Indonesia" />
+                            <f:selectItem itemLabel="Iran" itemValue="Iran" />
+                            <f:selectItem itemLabel="Iraq" itemValue="Iraq" />
+                            <f:selectItem itemLabel="Ireland" itemValue="Ireland" />
+                            <f:selectItem itemLabel="Israel" itemValue="Israel" />
+                            <f:selectItem itemLabel="Italy" itemValue="Italy" />
+                            <f:selectItem itemLabel="Jamaica" itemValue="Jamaica" />
+                            <f:selectItem itemLabel="Japan" itemValue="Japan" />
+                            <f:selectItem itemLabel="Jordan" itemValue="Jordan" />
+                            <f:selectItem itemLabel="Kazakhstan" itemValue="Kazakhstan" />
+                            <f:selectItem itemLabel="Kenya" itemValue="Kenya" />
+                            <f:selectItem itemLabel="Kiribati" itemValue="Kiribati" />
+                            <f:selectItem itemLabel="Korea, North" itemValue="Korea, North" />
+                            <f:selectItem itemLabel="Korea, South" itemValue="Korea, South" />
+                            <f:selectItem itemLabel="Kosovo" itemValue="Kosovo" />
+                            <f:selectItem itemLabel="Kuwait" itemValue="Kuwait" />
+                            <f:selectItem itemLabel="Kyrgyzstan" itemValue="Kyrgyzstan" />
+                            <f:selectItem itemLabel="Laos" itemValue="Laos" />
+                            <f:selectItem itemLabel="Latvia" itemValue="Latvia" />
+                            <f:selectItem itemLabel="Lebanon" itemValue="Lebanon" />
+                            <f:selectItem itemLabel="Lesotho" itemValue="Lesotho" />
+                            <f:selectItem itemLabel="Liberia" itemValue="Liberia" />
+                            <f:selectItem itemLabel="Libya" itemValue="Libya" />
+                            <f:selectItem itemLabel="Liechtenstein" itemValue="Liechtenstein" />
+                            <f:selectItem itemLabel="Lithuania" itemValue="Lithuania" />
+                            <f:selectItem itemLabel="Luxembourg" itemValue="Luxembourg" />
+                            <f:selectItem itemLabel="Macau" itemValue="Macau" />
+                            <f:selectItem itemLabel="Macedonia" itemValue="Macedonia" />
+                            <f:selectItem itemLabel="Madagascar" itemValue="Madagascar" />
+                            <f:selectItem itemLabel="Malawi" itemValue="Malawi" />
+                            <f:selectItem itemLabel="Malaysia" itemValue="Malaysia" />
+                            <f:selectItem itemLabel="Maldives" itemValue="Maldives" />
+                            <f:selectItem itemLabel="Mali" itemValue="Mali" />
+                            <f:selectItem itemLabel="Malta" itemValue="Malta" />
+                            <f:selectItem itemLabel="Marshall Islands" itemValue="Marshall Islands" />
+                            <f:selectItem itemLabel="Mauritania" itemValue="Mauritania" />
+                            <f:selectItem itemLabel="Mauritius" itemValue="Mauritius" />
+                            <f:selectItem itemLabel="Mexico" itemValue="Mexico" />
+                            <f:selectItem itemLabel="Micronesia" itemValue="Micronesia" />
+                            <f:selectItem itemLabel="Moldova" itemValue="Moldova" />
+                            <f:selectItem itemLabel="Monaco" itemValue="Monaco" />
+                            <f:selectItem itemLabel="Mongolia" itemValue="Mongolia" />
+                            <f:selectItem itemLabel="Montenegro" itemValue="Montenegro" />
+                            <f:selectItem itemLabel="Morocco" itemValue="Morocco" />
+                            <f:selectItem itemLabel="Mozambique" itemValue="Mozambique" />
+                            <f:selectItem itemLabel="Namibia" itemValue="Namibia" />
+                            <f:selectItem itemLabel="Nauru" itemValue="Nauru" />
+                            <f:selectItem itemLabel="Nepal" itemValue="Nepal" />
+                            <f:selectItem itemLabel="Netherlands" itemValue="Netherlands" />
+                            <f:selectItem itemLabel="Netherlands Antilles" itemValue="Netherlands Antilles" />
+                            <f:selectItem itemLabel="New Zealand" itemValue="New Zealand" />
+                            <f:selectItem itemLabel="Nicaragua" itemValue="Nicaragua" />
+                            <f:selectItem itemLabel="Niger" itemValue="Niger" />
+                            <f:selectItem itemLabel="Nigeria" itemValue="Nigeria" />
+                            <f:selectItem itemLabel="North Korea" itemValue="North Korea" />
+                            <f:selectItem itemLabel="Oman" itemValue="Oman" />
+                            <f:selectItem itemLabel="Pakistan" itemValue="Pakistan" />
+                            <f:selectItem itemLabel="Palau" itemValue="Palau" />
+                            <f:selectItem itemLabel="Palestinian Territories" itemValue="Palestinian Territories" />
+                            <f:selectItem itemLabel="Panama" itemValue="Panama" />
+                            <f:selectItem itemLabel="Papua New Guinea" itemValue="Papua New Guinea" />
+                            <f:selectItem itemLabel="Paraguay" itemValue="Paraguay" />
+                            <f:selectItem itemLabel="Peru" itemValue="Peru" />
+                            <f:selectItem itemLabel="Philippines" itemValue="Philippines" />
+                            <f:selectItem itemLabel="Poland" itemValue="Poland" />
+                            <f:selectItem itemLabel="Portugal" itemValue="Portugal" />
+                            <f:selectItem itemLabel="Qatar" itemValue="Qatar" />
+                            <f:selectItem itemLabel="Romania" itemValue="Romania" />
+                            <f:selectItem itemLabel="Russia" itemValue="Russia" />
+                            <f:selectItem itemLabel="Rwanda" itemValue="Rwanda" />
+                            <f:selectItem itemLabel="Saint Kitts and Nevis" itemValue="Saint Kitts and Nevis" />
+                            <f:selectItem itemLabel="Saint Lucia" itemValue="Saint Lucia" />
+                            <f:selectItem itemLabel="Saint Vincent and the Grenadines" itemValue="Saint Vincent and the Grenadines" />
+                            <f:selectItem itemLabel="Samoa " itemValue="Samoa " />
+                            <f:selectItem itemLabel="San Marino" itemValue="San Marino" />
+                            <f:selectItem itemLabel="Sao Tome and Principe" itemValue="Sao Tome and Principe" />
+                            <f:selectItem itemLabel="Saudi Arabia" itemValue="Saudi Arabia" />
+                            <f:selectItem itemLabel="Senegal" itemValue="Senegal" />
+                            <f:selectItem itemLabel="Serbia" itemValue="Serbia" />
+                            <f:selectItem itemLabel="Seychelles" itemValue="Seychelles" />
+                            <f:selectItem itemLabel="Sierra Leone" itemValue="Sierra Leone" />
+                            <f:selectItem itemLabel="Singapore" itemValue="Singapore" />
+                            <f:selectItem itemLabel="Sint Maarten" itemValue="Sint Maarten" />
+                            <f:selectItem itemLabel="Slovakia" itemValue="Slovakia" />
+                            <f:selectItem itemLabel="Slovenia" itemValue="Slovenia" />
+                            <f:selectItem itemLabel="Solomon Islands" itemValue="Solomon Islands" />
+                            <f:selectItem itemLabel="Somalia" itemValue="Somalia" />
+                            <f:selectItem itemLabel="South Africa" itemValue="South Africa" />
+                            <f:selectItem itemLabel="South Korea" itemValue="South Korea" />
+                            <f:selectItem itemLabel="South Sudan" itemValue="South Sudan" />
+                            <f:selectItem itemLabel="Spain " itemValue="Spain " />
+                            <f:selectItem itemLabel="Sri Lanka" itemValue="Sri Lanka" />
+                            <f:selectItem itemLabel="Sudan" itemValue="Sudan" />
+                            <f:selectItem itemLabel="Suriname" itemValue="Suriname" />
+                            <f:selectItem itemLabel="Swaziland " itemValue="Swaziland " />
+                            <f:selectItem itemLabel="Sweden" itemValue="Sweden" />
+                            <f:selectItem itemLabel="Switzerland" itemValue="Switzerland" />
+                            <f:selectItem itemLabel="Syria" itemValue="Syria" />
+                            <f:selectItem itemLabel="Taiwan" itemValue="Taiwan" />
+                            <f:selectItem itemLabel="Tajikistan" itemValue="Tajikistan" />
+                            <f:selectItem itemLabel="Tanzania" itemValue="Tanzania" />
+                            <f:selectItem itemLabel="Thailand " itemValue="Thailand" />
+                            <f:selectItem itemLabel="Timor-Leste" itemValue="Timor-Leste" />
+                            <f:selectItem itemLabel="Togo" itemValue="Togo" />
+                            <f:selectItem itemLabel="Tonga" itemValue="Tonga" />
+                            <f:selectItem itemLabel="Trinidad and Tobago" itemValue="Trinidad and Tobago" />
+                            <f:selectItem itemLabel="Tunisia" itemValue="Tunisia" />
+                            <f:selectItem itemLabel="Turkey" itemValue="Turkey" />
+                            <f:selectItem itemLabel="Turkmenistan" itemValue="Turkmenistan" />
+                            <f:selectItem itemLabel="Tuvalu" itemValue="Tuvalu" />
+                            <f:selectItem itemLabel="Uganda" itemValue="Uganda" />
+                            <f:selectItem itemLabel="Ukraine" itemValue="Ukraine" />
+                            <f:selectItem itemLabel="United Arab Emirates" itemValue="United Arab Emirates" />
+                            <f:selectItem itemLabel="United Kingdom" itemValue="United Kingdom" />
+                            <f:selectItem itemLabel="United States" itemValue="United States" />
+                            <f:selectItem itemLabel="Uruguay" itemValue="Uruguay" />
+                            <f:selectItem itemLabel="Uzbekistan" itemValue="Uzbekistan" />
+                            <f:selectItem itemLabel="Vanuatu" itemValue="Vanuatu" />
+                            <f:selectItem itemLabel="Venezuela" itemValue="Venezuela" />
+                            <f:selectItem itemLabel="Vietnam" itemValue="Vietnam" />
+                            <f:selectItem itemLabel="Yemen" itemValue="Yemen" />
+                            <f:selectItem itemLabel="Zambia" itemValue="Zambia" />
+                            <f:selectItem itemLabel="Zimbabwe" itemValue="Zimbabwe" />
+                        </p:selectOneMenu>
+                        <p:message for="guarantorCountryOfResidence" />
+
+                        <p:outputLabel for="guarantorRace" style="font-weight: bold" value="Race: " />
+                        <p:selectOneMenu id="guarantorRace" value="#{publicEducationLoanApplicationManagedBean.guarantorRace}" 
+                                         required="true" requiredMessage="Required Field">
+                            <f:selectItem itemLabel="Please Select" itemValue="" />
+                            <f:selectItem itemLabel="Chinese" itemValue="Chinese" />
+                            <f:selectItem itemLabel="Malay" itemValue="Malay" />
+                            <f:selectItem itemLabel="Indian" itemValue="Indian" />
+                            <f:selectItem itemLabel="Eurasian" itemValue="Eurasian" />
+                        </p:selectOneMenu>
+                        <p:message for="guarantorRace" />
+
+                        <p:outputLabel for="guarantorMobile" style="font-weight: bold" value="Mobile Number: " />
+                        <p:inputText id="guarantorMobile" value="#{publicEducationLoanApplicationManagedBean.guarantorMobile}"
+                                     required="true" requiredMessage="Required Field" validatorMessage="Invalid Moblie Number"
+                                     converterMessage="Invalid Input">
+                            <f:validateDoubleRange minimum="10000000" maximum="99999999" />
+                        </p:inputText>
+                        <p:message for="guarantorMobile"/>
+
+                        <p:outputLabel for="guarantorEmail" style="font-weight: bold" value="Email: " />
+                        <p:inputText label="Email" id="guarantorEmail" validatorMessage="Invalid email format"
+                                     value="#{publicEducationLoanApplicationManagedBean.guarantorEmail}" required="true" requiredMessage="Required Field">
+                            <f:validateRegex
+                                pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                        </p:inputText>
+                        <p:message for="guarantorEmail" />
+                    </p:panelGrid>
+                    
+                    <h:panelGrid columns="2" class="ui-lg-6"> 
+                        <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('educationLoanWizard').back()"/>
+                        <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('educationLoanWizard').next();"/>
+                    </h:panelGrid>
+                </p:tab>
+                
+                <p:tab id="guarantorPersonal">
+                    <h:panelGrid columns="1">
+                        <p:steps activeIndex="5">
+                            <p:menuitem value="Basic Information" />
+                            <p:menuitem value="Personal Details" />
+                            <p:menuitem value="Employment Details" />
+                            <p:menuitem value="Financial Request" />
+                            <p:menuitem value="Guarantor's Basic Information" />
+                            <p:menuitem value="Guarantor's Personal Details" />
+                            <p:menuitem value="Guarantor's Employment Details"/>
+                            <p:menuitem value="Supporting Documents"/>
+                            <p:menuitem value="Confirmation"/>
+                        </p:steps>
+                    </h:panelGrid>
+                    
+                    <p:panelGrid>
+                        <p:outputLabel for="guarantorEducation" style="font-weight: bold" value="Highest Education: "/>
+                        <p:selectOneMenu id="guarantorEducation" value="#{publicEducationLoanApplicationManagedBean.guarantorEducation}"
+                                         required="true" requiredMessage="Required Field">
+                            <f:selectItem itemLabel="Please Select" itemValue="" />
+                            <f:selectItem itemLabel="Primary" itemValue="Primary" />
+                            <f:selectItem itemLabel="Secondary" itemValue="Secondary" />
+                            <f:selectItem itemLabel="Diploma/Pre-University" itemValue="Diploma" />
+                            <f:selectItem itemLabel="Degree" itemValue="Degree" />
+                            <f:selectItem itemLabel="Post-Graduate" itemValue="Post-Graduate"/>
+                        </p:selectOneMenu>
+                        <p:message for="guarantorEducation"/>
+
+                        <p:outputLabel for="guarantorMaritalStatus" style="font-weight: bold" value="Marital Status: " />
+                        <p:selectOneMenu id="guarantorMaritalStatus" value="#{publicEducationLoanApplicationManagedBean.guarantorMaritalStatus}" 
+                                         required="true" requiredMessage="Required Field">
+                            <f:selectItem itemLabel="Please Select" itemValue="" />
+                            <f:selectItem itemLabel="Single" itemValue="Single" />
+                            <f:selectItem itemLabel="Married" itemValue="Married" />
+                            <f:selectItem itemLabel="Divorced" itemValue="Divorced" />
+                            <f:selectItem itemLabel="Widowed" itemValue="Widowed" />
+                        </p:selectOneMenu>
+                        <p:message for="guarantorMaritalStatus" />
+
+                        <p:outputLabel for="guarantorNumOfDepedents" style="font-weight: bold" value="Number of Dependents: "/>
+                        <p:selectOneMenu id="guarantorNumOfDepedents" value="#{publicEducationLoanApplicationManagedBean.guarantorNumOfDependents}"
+                                         required="true" requiredMessage="Required Field">
+                            <f:selectItem itemLabel="Please Select" itemValue="" />
+                            <f:selectItem itemLabel="0" itemValue="0" />
+                            <f:selectItem itemLabel="1" itemValue="1" />
+                            <f:selectItem itemLabel="2" itemValue="2" />
+                            <f:selectItem itemLabel="3" itemValue="3" />
+                            <f:selectItem itemLabel="4" itemValue="4" />
+                            <f:selectItem itemLabel="5" itemValue="5" />
+                            <f:selectItem itemLabel="6" itemValue="6" />
+                            <f:selectItem itemLabel="7" itemValue="7" />
+                            <f:selectItem itemLabel="8" itemValue="8" />
+                            <f:selectItem itemLabel="9" itemValue="9" />
+                            <f:selectItem itemLabel="10" itemValue="10" />
+                        </p:selectOneMenu>
+                        <p:message for="guarantorNumOfDepedents"/>
+
+                        <p:outputLabel for="guarantorStreetName" style="font-weight: bold" value="Residential Street Name: " />
+                        <p:inputText label="Residential Address" id="guarantorStreetName" value="#{publicEducationLoanApplicationManagedBean.guarantorStreetName}"
+                                     required="true" requiredMessage="Required Field">
+                        </p:inputText>
+                        <p:message for="guarantorStreetName" />
+
+                        <p:outputLabel for="guarantorBlockNum" style="font-weight: bold" value="Residential Block/House No.: " />
+                        <p:inputText label="Residential Address" id="guarantorBlockNum" value="#{publicEducationLoanApplicationManagedBean.guarantorBlockNum}" 
+                                     required="true" requiredMessage="Required Field">
+                        </p:inputText>
+                        <p:message for="guarantorBlockNum" />
+
+                        <p:outputLabel for="guarantorUnitNum" style="font-weight: bold" value="Residential Unit No.: " />
+                        <p:inputText id="guarantorUnitNum" value="#{publicEducationLoanApplicationManagedBean.guarantorUnitNum}"
+                                     required="true" requiredMessage="Required Field">
+                        </p:inputText>
+                        <p:message for="guarantorUnitNum" />
+
+                        <p:outputLabel for="guarantorPostal" style="font-weight: bold" value="Postal Code" />
+                        <p:inputText label="Postal Code" id="guarantorPostal" value="#{publicEducationLoanApplicationManagedBean.guarantorPostal}" validatorMessage="Invalid Postal Code"
+                                     required="true" requiredMessage="Required Field" converterMessage="Invalid Input">
+                            <f:validateDoubleRange minimum="100000" maximum="999999" />
+                        </p:inputText>
+                        <p:message for="guarantorPostal" />
+
+                        <p:outputLabel for="guarantorResidentialStatus" style="font-weight: bold" value="Residential Ownership: "/>
+                        <p:selectOneMenu id="guarantorResidentialStatus" value="#{publicEducationLoanApplicationManagedBean.guarantorResidentialStatus}"
+                                         required="true" requiredMessage="Required Field">
+                            <f:selectItem itemLabel="Please Select" itemValue="" />
+                            <f:selectItem itemLabel="Fully owned" itemValue="Owned" />
+                            <f:selectItem itemLabel="Mortgaged" itemValue="Mortgaged" />
+                            <f:selectItem itemLabel="Rented" itemValue="Rented" />
+                            <f:selectItem itemLabel="Parents'" itemValue="Parents'" />
+                            <f:selectItem itemLabel="Employer's" itemValue="Employer's" />
+                        </p:selectOneMenu>
+                        <p:message for="guarantorResidentialStatus"/>
+
+                        <p:outputLabel for="guarantorResidentialType" style="font-weight: bold" value="Residential Type: "/>
+                        <p:selectOneMenu id="guarantorResidentialType" value="#{publicEducationLoanApplicationManagedBean.guarantorResidentialType}"
+                                         required="true" requiredMessage="Required Field">
+                            <f:selectItem itemLabel="Please Select" itemValue="" />
+                            <f:selectItem itemLabel="HDB" itemValue="HDB" />
+                            <f:selectItem itemLabel="Condominium/Apartment" itemValue="Condominium/Apartment" />
+                            <f:selectItem itemLabel="Landed Properties" itemValue="Landed Properties" />
+                        </p:selectOneMenu>
+                        <p:message for="guarantorResidentialType"/>
+
+                        <p:outputLabel for="guarantorLengthOfResidence" style="font-weight: bold" value="Years of Stay in Residence: "/>
+                        <p:inputText id="guarantorLengthOfResidence" value="#{publicEducationLoanApplicationManagedBean.guarantorLengthOfResidence}"
+                                     required="true" requiredMessage="Required Field" validatorMessage="Please enter a valid number between 0-100" converterMessage="Please enter a valid number">
+                            <f:validateLongRange minimum="0" maximum="100"/>
+                            <f:convertNumber integerOnly="true"/>
+                        </p:inputText>
+                        <p:message for="guarantorLengthOfResidence"/>
+                    </p:panelGrid>
+                    
+                    <h:panelGrid columns="2" class="ui-lg-6"> 
+                        <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('educationLoanWizard').back()"/>
+                        <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('educationLoanWizard').next();"/>
+                    </h:panelGrid>
+                </p:tab>
+                
+                <p:tab id="guarantorEmployment">
+                    <h:panelGrid columns="1">
+                        <p:steps activeIndex="6">
+                            <p:menuitem value="Basic Information" />
+                            <p:menuitem value="Personal Details" />
+                            <p:menuitem value="Employment Details" />
+                            <p:menuitem value="Financial Request" />
+                            <p:menuitem value="Guarantor's Basic Information" />
+                            <p:menuitem value="Guarantor's Personal Details" />
+                            <p:menuitem value="Guarantor's Employment Details"/>
+                            <p:menuitem value="Supporting Documents"/>
+                            <p:menuitem value="Confirmation"/>
+                        </p:steps>
+                    </h:panelGrid>
+                    
+                    <p:panelGrid>
+                        <p:messages globalOnly="true"/>
+
+                        <p:outputLabel for="guarantorEmploymentStatus" style="font-weight: bold" value="Employment Status: "/>
+                        <p:selectOneMenu id="guarantorEmploymentStatus" value="#{publicEducationLoanApplicationManagedBean.guarantorEmploymentStatus}"
+                                         required="true" requiredMessage="Required Field">
+                            <f:selectItem itemLabel="Please Select" itemValue="" />
+                            <f:selectItem itemLabel="Employee" itemValue="Employee" />
+                            <f:selectItem itemLabel="Self-Employed" itemValue="Self-Employed" />
+                            <f:selectItem itemLabel="Unemployed" itemValue="Unemployed" />
+                            <p:ajax event="change" update="panelGuarantorOccupation panelGuarantorEmployment" listener="#{publicEducationLoanApplicationManagedBean.changeGuarantorEmployeeStatus}"/>
+                        </p:selectOneMenu>
+                        <p:message for="guarantorEmploymentStatus"/>
+                        <p:panel style="border: none;" id="panelGuarantorOccupation" visible="#{publicEducationLoanApplicationManagedBean.guarantorOccupationPanelVisible}">
+                            <p:outputLabel for="guarantorOccupation" style="font-weight: bold" value="Occupation: " />
+                            <p:selectOneMenu id="guarantorOccupation" value="#{publicEducationLoanApplicationManagedBean.guarantorOccupation}" 
+                                             required="#{publicEducationLoanApplicationManagedBean.guarantorOccupationPanelVisible}" requiredMessage="Required Field">
+                                <f:selectItem itemLabel="Please Select" itemValue="" />
+                                <f:selectItem itemLabel="Accountant" itemValue="Accountant" />
+                                <f:selectItem itemLabel="Architect" itemValue="Architect" />
+                                <f:selectItem itemLabel="Armed Forces" itemValue="Armed Forces" />
+                                <f:selectItem itemLabel="Auditor" itemValue="Auditor" />
+                                <f:selectItem itemLabel="Cook/Baker/Chef" itemValue="Cook/Baker/Chef" />
+                                <f:selectItem itemLabel="Clerical/Admin" itemValue="Clerical/Admin" />
+                                <f:selectItem itemLabel="Construction Worker" itemValue="Construction Worker" />
+                                <f:selectItem itemLabel="Consultant" itemValue="Consultant" />
+                                <f:selectItem itemLabel="Diplomat" itemValue="Diplomat" />
+                                <f:selectItem itemLabel="Director" itemValue="Director" />
+                                <f:selectItem itemLabel="Electrician" itemValue="Electrician" />
+                                <f:selectItem itemLabel="Engineer" itemValue="Engineer" />
+                                <f:selectItem itemLabel="Fund Manager" itemValue="Fund Manager" />
+                                <f:selectItem itemLabel="Headmaster/Principal" itemValue="Headmaster/Principal" />
+                                <f:selectItem itemLabel="Insurance Agent" itemValue="Insurance Agent" />
+                                <f:selectItem itemLabel="IT Systems Analyst/Programmer" itemValue="IT Systems Analyst/Programmer" />
+                                <f:selectItem itemLabel="Journalist/Reporter" itemValue="Journalist/Reporter" />
+                                <f:selectItem itemLabel="Lawyer" itemValue="Lawyer" />
+                                <f:selectItem itemLabel="Lecturer" itemValue="Lecturer" />
+                                <f:selectItem itemLabel="Legal Advisor (of a company)" itemValue="Legal Advisor (of a company)" />
+                                <f:selectItem itemLabel="Medical Professional" itemValue="Medical Professional" />
+                                <f:selectItem itemLabel="Managerial(AVP,VP ETC)" itemValue="Managerial(AVP,VP ETC)" />
+                                <f:selectItem itemLabel="Pawnbrokers" itemValue="Pawnbrokers" />
+                                <f:selectItem itemLabel="Pilot/Ship Master" itemValue="Pilot/Ship Master" />
+                                <f:selectItem itemLabel="Politician" itemValue="Politician" />
+                                <f:selectItem itemLabel="Sales/Marketing Exclusive" itemValue="Sales/Marketing Exclusive" />
+                                <f:selectItem itemLabel="Student" itemValue="Student" />
+                                <f:selectItem itemLabel="Teacher" itemValue="Teacher" />
+                                <f:selectItem itemLabel="Technician/Mechanics" itemValue="Technician/Mechanics" />
+                                <f:selectItem itemLabel="Tutor" itemValue="Tutor" />
+                            </p:selectOneMenu>
+                            <p:message for="guarantorOccupation" />
+                        </p:panel>
+                        <p:panel style="border: none;" id="panelGuarantorEmployment" visible="#{publicEducationLoanApplicationManagedBean.guarantorEmploymentPanelVisible}">
+                            <p:outputLabel for="guarantorCompanyName" style="font-weight: bold" value="Company Name: "/>
+                            <p:inputText id="guarantorCompanyName" value="#{publicEducationLoanApplicationManagedBean.guarantorCompanyName}"
+                                         required="#{publicEducationLoanApplicationManagedBean.guarantorEmploymentPanelVisible}" requiredMessage="Required Field"/>
+                            <p:message for="guarantorCompanyName"/>
+
+                            <p:outputLabel for="guarantorCompanyAddress" style="font-weight: bold" value="Company Address: "/>
+                            <p:inputText id="guarantorCompanyAddress" value="#{publicEducationLoanApplicationManagedBean.guarantorCompanyAddress}"
+                                         required="#{publicEducationLoanApplicationManagedBean.guarantorEmploymentPanelVisible}" requiredMessage="Required Field"/>
+                            <p:message for="guarantorCompanyAddress"/>
+
+                            <p:outputLabel for="guarantorCompanyPostal" style="font-weight: bold" value="Company Postal Code: "/>
+                            <p:inputText id="guarantorCompanyPostal" value="#{publicEducationLoanApplicationManagedBean.guarantorCompanyPostal}"
+                                         required="#{publicEducationLoanApplicationManagedBean.guarantorEmploymentPanelVisible}" requiredMessage="Required Field" validatorMessage="Invalid postal code">
+                            </p:inputText>
+                            <p:message for="guarantorCompanyPostal"/>
+
+                            <p:outputLabel for="guarantorIndustryType" style="font-weight: bold" value="Company Industry Type: "/>
+                            <p:selectOneMenu id="guarantorIndustryType" value="#{publicEducationLoanApplicationManagedBean.guarantorIndustryType}"
+                                             required="#{publicEducationLoanApplicationManagedBean.guarantorEmploymentPanelVisible}" requiredMessage="Required Field">
+                                <f:selectItem itemLabel="Please Select" itemValue="" />
+                                <f:selectItem itemLabel="Banking/Finance" itemValue="Banking/Finance" />
+                                <f:selectItem itemLabel="Building/Construction" itemValue="Building/Construction" />
+                                <f:selectItem itemLabel="Government" itemValue="Government" />
+                                <f:selectItem itemLabel="IT/Communications" itemValue="IT/Communications" />
+                                <f:selectItem itemLabel="Manufacturing" itemValue="Manufacturing" />
+                                <f:selectItem itemLabel="Retail/F&amp;B" itemValue="Retail/F&amp;B" />
+                                <f:selectItem itemLabel="Travel/Hospitality" itemValue="Travel/Hospitality" />
+                                <f:selectItem itemLabel="Shipping/Transport" itemValue="Shipping/Transport" />
+                                <f:selectItem itemLabel="Entertainment" itemValue="Entertainment" />
+                                <f:selectItem itemLabel="Others" itemValue="Others" />
+                                <p:ajax partialSubmit="true" event="change" update="panelGuarantorIndustryType" listener="#{publicEducationLoanApplicationManagedBean.showGuarantorIndustryTypePanel}"/>
+                            </p:selectOneMenu>
+                            <p:message for="guarantorIndustryType"/>
+                            <p:panel style="border: none;" id="panelGuarantorIndustryType" visible="#{publicEducationLoanApplicationManagedBean.guarantorIndustryTypePanelVisible}">
+                                <p:inputText id="guarantorIndustryTypeOthers" requiredMessage="Required Field" 
+                                             value="#{publicEducationLoanApplicationManagedBean.guarantorIndustryTypeOthers}" required="#{publicEducationLoanApplicationManagedBean.guarantorIndustryTypePanelVisible}"/>
+                                <p:message for="guarantorIndustryTypeOthers"/>
+                            </p:panel>
+
+                            <p:outputLabel for="guarantorCurrentPosition" style="font-weight: bold" value="Current Position: "/>
+                            <p:selectOneMenu id="guarantorCurrentPosition" value="#{publicEducationLoanApplicationManagedBean.guarantorCurrentPosition}"
+                                             required="#{publicEducationLoanApplicationManagedBean.guarantorCurrentPositionPanelVisible}" requiredMessage="Required Field">
+                                <f:selectItem itemLabel="Please Select" itemValue="" />
+                                <f:selectItem itemLabel="Senior Management" itemValue="Senior Management" />
+                                <f:selectItem itemLabel="Professional" itemValue="Professional" />
+                                <f:selectItem itemLabel="Middle Management" itemValue="Middle Management" />
+                                <f:selectItem itemLabel="Executive" itemValue="Executive" />
+                                <f:selectItem itemLabel="Skilled Trades/Clerica" itemValue="Skilled Trades/Clerica" />
+                                <f:selectItem itemLabel="Others" itemValue="Others" />
+                                <p:ajax event="change" update="panelGuarantorCurrentPosition" listener="#{publicEducationLoanApplicationManagedBean.showGuarantorCurrentPositionPanel}"/>
+                            </p:selectOneMenu>
+                            <p:message for="guarantorCurrentPosition"/>
+                            <p:panel style="border: none;" id="panelGuarantorCurrentPosition" visible="#{publicEducationLoanApplicationManagedBean.guarantorCurrentPositionPanelVisible}">
+                                <p:inputText id="guarantorCurrentPositionOthers" requiredMessage="Required Field" 
+                                             value="#{publicEducationLoanApplicationManagedBean.guarantorCurrentPositionOthers}" required="#{publicEducationLoanApplicationManagedBean.guarantorCurrentPositionPanelVisible}"/>  
+                                <p:message for="guarantorCurrentPositionOthers"/>
+                            </p:panel>
+
+                            <p:outputLabel for="guarantorCurrentJobTitle" style="font-weight: bold" value="Current Job Title: "/>
+                            <p:inputText id="guarantorCurrentJobTitle" value="#{publicEducationLoanApplicationManagedBean.guarantorCurrentJobTitle}"
+                                         required="#{publicEducationLoanApplicationManagedBean.guarantorEmploymentPanelVisible}" requiredMessage="Required Field"/>
+                            <p:message for="guarantorCurrentJobTitle"/>
+
+                            <p:outputLabel for="guarantorLengthOfCurrentJob" style="font-weight: bold" value="Years of Current Employment/Business: "/>
+                            <p:inputText id="guarantorLengthOfCurrentJob" value="#{publicEducationLoanApplicationManagedBean.guarantorLengthOfCurrentJob}"
+                                         required="#{publicEducationLoanApplicationManagedBean.guarantorEmploymentPanelVisible}" requiredMessage="Required Field" validatorMessage="Please enter a valid number between 0-100" converterMessage="Please enter a valid number">
+                                <f:validateLongRange minimum="0" maximum="100"/>
+                                <f:convertNumber integerOnly="true"/>
+                            </p:inputText>
+                            <p:message for="guarantorLengthOfCurrentJob"/>
+                            
+                            <p:outputLabel for="guarantorPreviousCompany" style="font-weight: bold" value="Name of Previous Company"/>
+                            <p:inputText id="guarantorPreviousCompany" value="#{publicEducationLoanApplicationManagedBean.guarantorPreviousCompany}"
+                                         required="#{publicEducationLoanApplicationManagedBean.guarantorEmploymentPanelVisible}" requiredMessage="Required Field">
+                            </p:inputText>
+                            <p:message for="guarantorPreviousCompany"/>
+
+                            <p:outputLabel for="guarantorLengthOfPreviousJob" style="font-weight: bold" value="Years of Previous Employment/Business: "/>
+                            <p:inputText id="guarantorLengthOfPreviousJob" value="#{publicEducationLoanApplicationManagedBean.guarantorLengthOfPreviousJob}"
+                                         required="#{publicEducationLoanApplicationManagedBean.guarantorEmploymentPanelVisible}" requiredMessage="Required Field" validatorMessage="Please enter a valid number between 0-100" converterMessage="Please enter a valid number">
+                                <f:validateLongRange minimum="0" maximum="100"/>
+                                <f:convertNumber integerOnly="true"/>
+                            </p:inputText>
+                            <p:message for="guarantorLengthOfPreviousJob"/>
+                        </p:panel>
+
+                        <p:outputLabel for="guarantorMonthlyFixedIncome" style="font-weight: bold" value="Monthly Fixed Income(SGD): "/>
+                        <p:inputText id="guarantorMonthlyFixedIncome" value="#{publicEducationLoanApplicationManagedBean.guarantorMonthlyFixedIncome}"
+                                     required="true" requiredMessage="Required Field" converterMessage="Please enter a valid number">
+                        </p:inputText>
+                        <p:message for="guarantorMonthlyFixedIncome"/>
+
+                        <p:outputLabel for="guarantorOtherMonthlyIncome" style="font-weight: bold" value="Other Monthly Income(SGD): "/>
+                        <p:inputText id="guarantorOtherMonthlyIncome" value="#{publicEducationLoanApplicationManagedBean.guarantorOtherMonthlyIncome}"
+                                     required="true" requiredMessage="Required Field" converterMessage="Please enter a valid number">
+                        </p:inputText>
+                        <p:message for="guarantorOtherMonthlyIncome"/>
+
+                        <p:outputLabel for="guarantorOtherMonthlyIncomeSource" style="font-weight: bold" value="Source of Other Income: "/>
+                        <p:inputText id="guarantorOtherMonthlyIncomeSource" value="#{publicEducationLoanApplicationManagedBean.guarantorOtherMonthlyIncomeSource}"
+                                     required="true" requiredMessage="Required Field"/>
+                        <p:message for="guarantorOtherMonthlyIncomeSource"/>
+                    </p:panelGrid>
+                    
+                    <h:panelGrid columns="2" class="ui-lg-6"> 
+                        <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('educationLoanWizard').back()"/>
+                        <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('educationLoanWizard').next();"/>
+                    </h:panelGrid>
+                </p:tab>
+
+                <p:tab id="documents">
+                    <h:panelGrid columns="1">
+                        <p:steps activeIndex="7">
+                            <p:menuitem value="Basic Information" />
+                            <p:menuitem value="Personal Details" />
+                            <p:menuitem value="Employment Details" />
+                            <p:menuitem value="Financial Request" />
+                            <p:menuitem value="Guarantor's Basic Information" />
+                            <p:menuitem value="Guarantor's Personal Details" />
+                            <p:menuitem value="Guarantor's Employment Details"/>
                             <p:menuitem value="Supporting Documents"/>
                             <p:menuitem value="Confirmation"/>
                         </p:steps>
@@ -926,10 +1776,19 @@
                         <p:messages globalOnly="true"/>
                         <p:outputLabel value="Please upload all the files in PDF format"/>
                         <p:panel>
-                            <p:outputLabel value="Please upload photocopy of NRIC/Passport for all Applicants and Owners:"/>
-                            <p:outputLabel value="(Please upload all photocopies in one single PDF file)"/>
+                            <p:outputLabel value="Please upload photocopy of applicant's NRIC/Passport:"/>
                             <p:messages id="identificationUploadMessage" for="identificationUpload"/>
                             <p:fileUpload id="identificationUpload" update="identificationUploadMessage" fileUploadListener="#{publicEducationLoanApplicationManagedBean.identificationUpload}"
+                                          mode="advanced" skinSimple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(pdf)$/" multiple="false"/>
+                            
+                            <p:outputLabel value="Please upload photocopy of guarantor's NRIC/Passport:"/>
+                            <p:messages id="guarantorIdentificationUploadMessage" for="guarantorIdentificationUpload"/>
+                            <p:fileUpload id="guarantorIdentificationUpload" update="guarantorIdentificationUploadMessage" fileUploadListener="#{publicEducationLoanApplicationManagedBean.guarantorIdentificationUpload}"
+                                          mode="advanced" skinSimple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(pdf)$/" multiple="false"/>
+                            
+                            <p:outputLabel value="Please upload your proof of relationship with the guarantor"/>
+                            <p:messages id="guarantorRelationshipUploadMessage" for="guarantorRelationshipUpload"/>
+                            <p:fileUpload id="guarantorRelationshipUpload" update="guarantorRelationshipUploadMessage" fileUploadListener="#{publicEducationLoanApplicationManagedBean.guarantorRelationshipUpload}"
                                           mode="advanced" skinSimple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(pdf)$/" multiple="false"/>
                         </p:panel>
                         
@@ -959,7 +1818,21 @@
                             <p:messages id="selfEmployedTaxUploadMessage" for="selfEmployedTaxUpload"/>
                             <p:fileUpload id="selfEmployedTaxUpload" update="selfEmployedTaxUploadMessage" fileUploadListener="#{publicEducationLoanApplicationManagedBean.selfEmployedTaxUpload}"
                                           mode="advanced" skinSimple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(pdf)$/" multiple="false"/>
-                        </p:panel>                       
+                        </p:panel>    
+                        
+                        <p:panel visible="#{publicEducationLoanApplicationManagedBean.guarantorEmploymentStatus ne 'Self-Employed'}">
+                            <p:outputLabel value="Please upload guarantor's lastest tax assessment"/>
+                            <p:messages id="guarantorEmployeeTaxUploadMessage" for="guarantorEmployeeTaxUpload"/>
+                            <p:fileUpload id="guarantorEmployeeTaxUpload" update="guarantorEmployeeTaxUploadMessage" fileUploadListener="#{publicEducationLoanApplicationManagedBean.guarantorEmployeeTaxUpload}"
+                                          mode="advanced" skinSimple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(pdf)$/" multiple="false"/>
+                        </p:panel>
+
+                        <p:panel visible="#{publicEducationLoanApplicationManagedBean.guarantorEmploymentStatus eq 'Self-Employed'}">
+                            <p:outputLabel value="Please upload guarantor's lastest 2 years income tax assessment"/>
+                            <p:messages id="guarantorSelfEmployedTaxUploadMessage" for="guarantorSelfEmployedTaxUpload"/>
+                            <p:fileUpload id="guarantorSelfEmployedTaxUpload" update="guarantorSelfEmployedTaxUploadMessage" fileUploadListener="#{publicEducationLoanApplicationManagedBean.guarantorSelfEmployedTaxUpload}"
+                                          mode="advanced" skinSimple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(pdf)$/" multiple="false"/>
+                        </p:panel> 
                     </h:panelGrid>
 
                     <h:panelGrid columns="2" class="ui-lg-6"> 
@@ -970,11 +1843,14 @@
 
                 <p:tab id="confirmation">
                     <h:panelGrid columns="1">
-                        <p:steps activeIndex="5">
+                        <p:steps activeIndex="8">
                             <p:menuitem value="Basic Information" />
                             <p:menuitem value="Personal Details" />
                             <p:menuitem value="Employment Details" />
                             <p:menuitem value="Financial Request" />
+                            <p:menuitem value="Guarantor's Basic Information" />
+                            <p:menuitem value="Guarantor's Personal Details" />
+                            <p:menuitem value="Guarantor's Employment Details"/>
                             <p:menuitem value="Supporting Documents"/>
                             <p:menuitem value="Confirmation"/>
                         </p:steps>
@@ -999,6 +1875,19 @@
                             <h:outputText rendered="#{not empty signatureViewManagedBean.customerSignature}" style="font-size:20px;display:block" value="Your Signature" />
                             <p:signature style="width:300px;height:200px;" value="#{signatureViewManagedBean.customerSignature}" readonly="true"
                                          rendered="#{not empty signatureViewManagedBean.customerSignature}" backgroundColor="#eaeaea" color="#03a9f4"/>
+                        </p:outputPanel>
+                        
+                        <p:outputLabel value="Please provide guarantor's signature" />
+                        <br/>
+                        <p:messages id="guarantorSignatureMessages" for="guarantorInput"/>
+                        <p:signature id="guarantorInput" style="width:300px;height:200px" widgetVar="guarantorSig" value="#{signatureViewManagedBean.guarantorSignature}" 
+                                     guideline="true"/>
+                        <p:commandButton process="@this guarantorInput guarantorOutput" value="Submit" icon="ui-icon-check" update="guarantorOutput"/>
+                        <p:commandButton process="@this guarantorInput guarantorOutput" value="Clear" icon="ui-icon-close" type="button" onclick="PF('guarantorSig').clear()"/>
+                        <p:outputPanel id="guarantorOutput">
+                            <h:outputText rendered="#{not empty signatureViewManagedBean.guarantorSignature}" style="font-size:20px;display:block" value="Guarantor's Signature" />
+                            <p:signature style="width:300px;height:200px;" value="#{signatureViewManagedBean.guarantorSignature}" readonly="true"
+                                         rendered="#{not empty signatureViewManagedBean.guarantorSignature}" backgroundColor="#eaeaea" color="#03a9f4"/>
                         </p:outputPanel>
                     </p:panelGrid>
 
