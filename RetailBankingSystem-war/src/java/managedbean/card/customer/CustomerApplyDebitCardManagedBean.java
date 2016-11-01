@@ -196,6 +196,7 @@ public class CustomerApplyDebitCardManagedBean implements Serializable {
         Long id = customer.getCustomerBasicId();
 
         depositAccounts = debitCardSessionBeanLocal.getAllDepositAccounts(id);
+        System.out.println("debug: "+depositAccounts);
 
         return depositAccounts;
     }

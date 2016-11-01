@@ -19,28 +19,28 @@
                     <h:panelGrid columns="3" class="ui-lg-6"> 
 
                         <p:outputLabel value="Card Type:"/>
-                        <p:selectOneRadio required="true" requiredMessage="Please select card type" id="cardType" value="#{customerCancelCardManagedBean.cardType}">
+                        <p:selectOneRadio required="true" requiredMessage="Please select card type" id="cardType" value="#{employeeCancelCardDoneManagedBean.cardType}">
                             <f:selectItem itemLabel="Credit Card" itemValue="credit" />
                             <f:selectItem itemLabel="Debit Card" itemValue="debit" />
                         </p:selectOneRadio>
                         <p:messages for="cardType"/>
 
                         <p:outputLabel value="Debit Card"/>
-                        <p:selectOneMenu id="selectCard" required="true" requiredMessage="Please select a debit card" style="text-align:left" value="#{customerCancelCardManagedBean.selectedDebitCard}">
+                        <p:selectOneMenu id="selectCard" required="true" requiredMessage="Please select a debit card" style="text-align:left" value="#{employeeCancelCardDoneManagedBean.selectedDebitCard}">
                             <f:selectItem itemLabel="Please select..." itemValue=""/>
-                            <f:selectItems value="#{customerCancelCardManagedBean.debitCards}"/> 
+                            <f:selectItems value="#{employeeCancelCardDoneManagedBean.debitCards}"/> 
                         </p:selectOneMenu>
                         <p:message for="selectCard"/>
 
                         <p:outputLabel value="Card Password:" />
-                        <p:inputText type="password" validatorMessage="Card password is 6-digit" required="true" requiredMessage="Please input your card password" id="cardPwd" value="#{customerCancelCardManagedBean.debitCardPwd}">
+                        <p:inputText type="password" validatorMessage="Card password is 6-digit" required="true" requiredMessage="Please input your card password" id="cardPwd" value="#{employeeCancelCardDoneManagedBean.debitCardPwd}">
                             <f:validateLength minimum="6" maximum="6" /> 
                         </p:inputText>
                         <p:messages for="cardPwd"/>
 
                     </h:panelGrid>
 
-                    <p:commandButton value="Cancel My Card" actionListener="#{customerCancelCardManagedBean.cancelCard}" style="width:auto">
+                    <p:commandButton value="Cancel My Card" actionListener="#{employeeCancelCardDoneManagedBean.cancelCard}" style="width:auto">
                         <p:confirm header="Confirmation" message="Are you sure to cancel the card? This action is not reversible" icon="ui-icon-alert" />
                     </p:commandButton>
 

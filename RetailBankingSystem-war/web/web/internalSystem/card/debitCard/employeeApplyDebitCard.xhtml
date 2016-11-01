@@ -178,12 +178,12 @@
 
                                 <p:row>
                                     <p:outputLabel value="Email: " />
-                                    <p:inputText value="#{employeeApplyDebitCardDoneManagedBean.customerViaSessionMap.customerEmail}"/>
+                                    <p:outputLabel value="#{employeeApplyDebitCardDoneManagedBean.customerViaSessionMap.customerEmail}"/>
                                 </p:row>
 
                                 <p:row>
                                     <p:outputLabel value="Mobile: "/>
-                                    <p:inputText value="#{employeeApplyDebitCardDoneManagedBean.customerViaSessionMap.customerMobile}"/>
+                                    <p:outputLabel value="#{employeeApplyDebitCardDoneManagedBean.customerViaSessionMap.customerMobile}"/>
                                 </p:row>
 
                                 <p:row>
@@ -216,8 +216,12 @@
 
                             <h1>Declaration</h1>
                             <p:selectBooleanCheckbox id="declaration" value="#{employeeApplyDebitCardDoneManagedBean.agreement}"/>
-                            <p:outputLabel value="I have read and agree to be bound by the terms of this application,
-                                           the Merlion Bank Debit Card Agreement and the above Declaration"/>
+                            <p:outputLabel value="I have read and agree to be bound by "/>
+                            <p:commandLink value="the terms of this application and the Merlion Bank Debit Card Agreement Declaration" onclick="PF('dlg1').show();"/>
+
+                            <p:dialog widgetVar="dlg1" width="80%" height="100%">
+                                <p:media value="/resources/cardDocument/MerlionBankDebitCardDeclarationForm.pdf" width="80%" height="100%"/> 
+                            </p:dialog>
 
                             <h:panelGrid columns="2" > 
                                 <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('applyDebitCardWizard').back();" style="width:100px"/>
@@ -317,12 +321,10 @@
                             <h:outputText style="font-size: 32px" value="Application Successful!"/>
                             <br/>
                             <br/>
-                            <h:outputText value="Your application has been succesfuly submitted."/>
+                            <h:outputText value="Your application is successful."/>
                             <br/>
-                            <h:outputText value="It will take 2-3 working days for processing your application."/>
+                            <h:outputText value="Your debit card will be mailed to you in 2-3 working days ."/>
                             <br/>
-                            <h:outputText value="Once processed, we will inform you via email and your
-                                          debit card will be mailed to you immediately."/>
                             <br/>
                             <br/>
                             <br/>
