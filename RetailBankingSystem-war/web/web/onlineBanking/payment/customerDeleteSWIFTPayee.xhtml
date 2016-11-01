@@ -17,34 +17,34 @@
             </p:panel>
 
             <div align="center">
-                <h1>Delete FAST Recipient</h1>
+                <h1>Delete SWIFT Recipient</h1>
             </div>
             <p:messages globalOnly="true"/>
 
-            <p:dataTable var="fastPayee" value="#{deleteFastPayeeManagedBean.fastPayees}" 
+            <p:dataTable var="SWIFTPayee" value="#{deleteSWIFTPayeeManagedBean.SWIFTPayees}" 
                          reflow="true" paginator="true" rows="10" emptyMessage="No Recipient">
 
-                <p:column headerText="Recipient's Name" >
-                    <h:outputText value="#{fastPayee.fastPayeeName}" /> 
+                <p:column headerText="Recipient's Institution" >
+                    <h:outputText value="#{SWIFTPayee.swiftInstitution}" /> 
                 </p:column>
 
                 <p:column headerText="Recipient's Bank Account Number"> 
-                    <h:outputText value="#{fastPayee.fastPayeeAccountNum}" />
+                    <h:outputText value="#{SWIFTPayee.payeeAccountNum}" />
                 </p:column>
 
                 <p:column headerText="Recipient's Bank Account Type"> 
-                    <h:outputText value="#{fastPayee.fastPayeeAccountType}" />
+                    <h:outputText value="#{SWIFTPayee.payeeAccountType}" />
                 </p:column>
 
                 <p:column headerText="Last Transaction Date"> 
-                    <h:outputText value="#{fastPayee.lastTransactionDate}" />
+                    <h:outputText value="#{SWIFTPayee.lastTransactionDate}" />
                 </p:column>
 
                 <p:column headerText="Action" style="width: 10%">
                     <center>
-                        <p:commandButton process="@this" action="#{deleteFastPayeeManagedBean.deletePayee()}"
+                        <p:commandButton process="@this" action="#{deleteSWIFTPayeeManagedBean.deletePayee()}"
                                          icon="ui-icon-trash" ajax="false">
-                            <f:setPropertyActionListener target="#{deleteFastPayeeManagedBean.payeeAccountNum}" value="#{fastPayee.fastPayeeAccountNum}" />
+                            <f:setPropertyActionListener target="#{deleteSWIFTPayeeManagedBean.payeeId}" value="#{SWIFTPayee.payeeId}" />
                         </p:commandButton>
                     </center>
                 </p:column>

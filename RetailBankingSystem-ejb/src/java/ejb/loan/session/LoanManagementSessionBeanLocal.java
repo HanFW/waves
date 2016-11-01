@@ -5,6 +5,7 @@
  */
 package ejb.loan.session;
 
+import ejb.loan.entity.CashlineApplication;
 import ejb.loan.entity.LoanApplication;
 import ejb.loan.entity.LoanPayableAccount;
 import java.util.List;
@@ -20,4 +21,5 @@ public interface LoanManagementSessionBeanLocal {
     List<LoanPayableAccount> getLoanPayableAccountByIdentification(String identification);
     public List<LoanApplication> getLoanApplicationsByIdentification(String identification);
     public LoanPayableAccount getLoanPayableAccountById(Long loanId);
+    public List<CashlineApplication> getCashlineApplicationsByIdentification(String identification);
 }

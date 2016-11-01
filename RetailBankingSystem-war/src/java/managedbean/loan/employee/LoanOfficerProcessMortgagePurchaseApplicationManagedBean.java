@@ -32,7 +32,7 @@ import javax.faces.view.ViewScoped;
  *
  * @author hanfengwei
  */
-@Named(value = "loanOfficerProcessApplicationManagedBean")
+@Named(value = "loanOfficerProcessMortgagePurchaseApplicationManagedBean")
 @ViewScoped
 public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements Serializable{
     @EJB
@@ -150,6 +150,7 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     public void init(){
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         applicationId = (Long) ec.getFlash().get("applicationId"); 
+        
         ma = loanApplicationSessionBeanLocal.getMortgageLoanApplicationById(applicationId);
         
         customer = ma.getCustomerBasic();
@@ -157,7 +158,7 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
         debts = customer.getCustomerDebt();
         property = customer.getCustomerProperty();
         cr = customer.getBureauScore();
-        accountStatus = cr.getAccountStatus();
+        accountStatus = loanApplicationSessionBeanLocal.getAccountStatusByBureauScoreId(cr.getId());
         defaultRecords = cr.getDefaultRecords();
         
         customerSalutation = customer.getCustomerSalutation();
@@ -254,6 +255,8 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     
     public void calculateInstalment(){
         instalmentSuggested = (0.035/12*amountGranted) / (1 - Math.pow((1+0.035/12),-periodSuggested*12));
+        DecimalFormat df = new DecimalFormat("0.00");
+        instalmentSuggested = Double.valueOf(df.format(instalmentSuggested));
     }
 
     public LoanApplicationSessionBeanLocal getLoanApplicationSessionBeanLocal() {

@@ -8,7 +8,10 @@ package ejb.loan.entity;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 
 /**
@@ -35,6 +38,9 @@ public class MortgageLoanApplication extends LoanApplication implements Serializ
     private double cashDownPayment;
     private double cpfDownPayment;
     private double propertyAppraisedValue;
+    
+    @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    private RenovationLoanApplication renovationLoanApplication;
 
     public void create(String loanType, double amountRequired, int periodRequired, double propertyPurchasePrice, Date propertyDateOfPurchase,
             String propertySource, String propertyWithOTP, Date propertyOTPDate, String propertyWithTenancy,
@@ -192,6 +198,14 @@ public class MortgageLoanApplication extends LoanApplication implements Serializ
 
     public void setPropertyAppraisedValue(double propertyAppraisedValue) {
         this.propertyAppraisedValue = propertyAppraisedValue;
+    }
+
+    public RenovationLoanApplication getRenovationLoanApplication() {
+        return renovationLoanApplication;
+    }
+
+    public void setRenovationLoanApplication(RenovationLoanApplication renovationLoanApplication) {
+        this.renovationLoanApplication = renovationLoanApplication;
     }
     
     

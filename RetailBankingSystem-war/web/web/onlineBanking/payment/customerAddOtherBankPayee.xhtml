@@ -15,7 +15,7 @@
                 <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
             </p:panel>
             <div align="center">
-                <h1>Add Recipient(FAST)</h1>
+                <h1>Add Recipient(Other Bank)</h1>
 
                 <h:panelGrid columns="1" styleClass="ui-panelgrid-blank form-group" class="ui-lg-4">
                     <p:panel id="panel"> 
@@ -23,18 +23,18 @@
 
                         <p:outputLabel for="recipientName" style="font-weight: bold" value="Recipent's Name: " />
                         <p:inputText required="true" label="Recipient Name" requiredMessage="Required Field" id="recipientName"
-                                     value="#{addFastPayeeManagedBean.payeeName}">
+                                     value="#{addOtherBankPayeeManagedBean.payeeName}">
                         </p:inputText>
                         <p:message for="recipientName" />
 
                         <p:outputLabel for="recipientAccountNum" style="font-weight: bold" value="Recipent's Account Number: " />
                         <p:inputText required="true" label="Recipient Account Number" requiredMessage="Required Field" id="recipientAccountNum"
-                                     value="#{addFastPayeeManagedBean.payeeAccountNum}">
+                                     value="#{addOtherBankPayeeManagedBean.payeeAccountNum}">
                         </p:inputText>
                         <p:message for="recipientAccountNum" />
 
                         <p:outputLabel for="payeeAccountType" style="font-weight: bold" value="Recipient's Account Type: " />
-                        <p:selectOneMenu id="payeeAccountType" value="#{addFastPayeeManagedBean.payeeAccountType}" 
+                        <p:selectOneMenu id="payeeAccountType" value="#{addOtherBankPayeeManagedBean.payeeAccountType}" 
                                          required="true" requiredMessage="Required Field">
                             <f:selectItem itemLabel="Please Select One" itemValue="" />
                             <f:selectItem itemLabel="DBS Savings Account" itemValue="DBS Savings Account" />
@@ -50,7 +50,7 @@
                     </p:commandButton>
 
                     <p:commandButton id="addBtn" value="Add Recipient" update="panel" 
-                                     actionListener="#{addFastPayeeManagedBean.addFastPayee}" ajax="true"/>
+                                     actionListener="#{addOtherBankPayeeManagedBean.addOtherBankPayee()}" ajax="true"/>
                 
                 </h:panelGrid>
               

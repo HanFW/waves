@@ -56,6 +56,7 @@ public class NonStandingGIROTransferDoneManagedBean implements Serializable {
     private Double fromBankAccountAvailableBalance;
     private Double fromBankAccountTotalBalance;
     private Long giroId;
+    private String transactionFrequencyForOneTime;
 
     private ExternalContext ec;
 
@@ -159,88 +160,105 @@ public class NonStandingGIROTransferDoneManagedBean implements Serializable {
         this.giroId = giroId;
     }
 
+    public String getTransactionFrequencyForOneTime() {
+        return transactionFrequencyForOneTime;
+    }
+
+    public void setTransactionFrequencyForOneTime(String transactionFrequencyForOneTime) {
+        this.transactionFrequencyForOneTime = transactionFrequencyForOneTime;
+    }
+
     public void nonStandingGIROTransfer() throws IOException {
 
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
-        GIRO giro = gIROSessionBeanLocal.retrieveGIROById(giroId);
         NonStandingGIRO nonStandingGiro = nonStandingGIROSessionBeanLocal.retrieveNonStandingGIROById(giroId);
 
-        String billingOrganizationName = giro.getBillingOrganizationName();
-        String bankAccountNum = giro.getBankAccountNum();
+        if (nonStandingGiro.getNonStandingStatus().equals("Incompleted")) {
+            
+            String billingOrganizationName = nonStandingGiro.getBillingOrganizationName();
+            String bankAccountNum = nonStandingGiro.getBankAccountNum();
 
-        BankAccount bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountByNum(bankAccountNum);
-        
-        Double currentAvailableBankAccountBalance = Double.valueOf(bankAccount.getAvailableBankAccountBalance()) - paymentAmt;
-        bankAccountSessionBeanLocal.updateBankAccountAvailableBalance(bankAccountNum, currentAvailableBankAccountBalance.toString());
+            BankAccount bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountByNum(bankAccountNum);
 
-        RegisteredBillingOrganization billOrg = registeredBillingOrganizationSessionBeanLocal.retrieveRegisteredBillingOrganizationByName(billingOrganizationName);
-        String bankName = billOrg.getBankName();
-        String billOrgBankAccountNum = billOrg.getBankAccountNum();
+            Double currentAvailableBankAccountBalance = Double.valueOf(bankAccount.getAvailableBankAccountBalance()) - paymentAmt;
+            bankAccountSessionBeanLocal.updateBankAccountAvailableBalance(bankAccountNum, currentAvailableBankAccountBalance.toString());
 
-        if (bankName.equals("DBS") && nonStandingGiro.getPaymentFrequency().equals("One Time")) {
-            sachNonStandingGIROTransferMTD(bankAccount.getBankAccountNum(), billOrgBankAccountNum, paymentAmt);
+            RegisteredBillingOrganization billOrg = registeredBillingOrganizationSessionBeanLocal.retrieveRegisteredBillingOrganizationByName(billingOrganizationName);
+            String bankName = billOrg.getBankName();
+            String billOrgBankAccountNum = billOrg.getBankAccountNum();
 
-            OtherBankAccount dbsBankAccount = retrieveBankAccountByNum(billOrg.getBankAccountNum());
-            toBankAccountNumWithType = dbsBankAccount.getOtherBankAccountType() + "-" + dbsBankAccount.getOtherBankAccountNum();
-            fromBankAccountNumWithType = bankAccount.getBankAccountType() + "-" + bankAccount.getBankAccountNum();
-            statusMessage = "Successfully Pay Bills";
+            if (bankName.equals("DBS") && nonStandingGiro.getPaymentFrequency().equals("One Time")) {
+                
+                sachNonStandingGIROTransferMTD(bankAccount.getBankAccountNum(), billOrgBankAccountNum, paymentAmt);
 
-            fromBankAccountAvailableBalance = currentAvailableBankAccountBalance;
-            fromBankAccountTotalBalance = Double.valueOf(bankAccount.getTotalBankAccountBalance());
+                OtherBankAccount dbsBankAccount = retrieveBankAccountByNum(billOrg.getBankAccountNum());
+                toBankAccountNumWithType = dbsBankAccount.getOtherBankAccountType() + "-" + dbsBankAccount.getOtherBankAccountNum();
+                fromBankAccountNumWithType = bankAccount.getBankAccountType() + "-" + bankAccount.getBankAccountNum();
+                statusMessage = "Successfully Pay Bills";
 
-            ec.getFlash().put("statusMessage", statusMessage);
-            ec.getFlash().put("toBankAccountNumWithType", toBankAccountNumWithType);
-            ec.getFlash().put("fromBankAccountNumWithType", fromBankAccountNumWithType);
-            ec.getFlash().put("transferAmt", paymentAmt);
-            ec.getFlash().put("fromBankAccountAvailableBalance", fromBankAccountAvailableBalance.toString());
-            ec.getFlash().put("fromBankAccountTotalBalance", fromBankAccountTotalBalance.toString());
+                fromBankAccountAvailableBalance = currentAvailableBankAccountBalance;
+                fromBankAccountTotalBalance = Double.valueOf(bankAccount.getTotalBankAccountBalance());
 
-            paymentAmt = null;
+                ec.getFlash().put("statusMessage", statusMessage);
+                ec.getFlash().put("toBankAccountNumWithType", toBankAccountNumWithType);
+                ec.getFlash().put("fromBankAccountNumWithType", fromBankAccountNumWithType);
+                ec.getFlash().put("transferAmt", paymentAmt);
+                ec.getFlash().put("fromBankAccountAvailableBalance", fromBankAccountAvailableBalance.toString());
+                ec.getFlash().put("fromBankAccountTotalBalance", fromBankAccountTotalBalance.toString());
 
-            ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/payment/customerNonStandingGIROTransferFinished.xhtml?faces-redirect=true");
+                paymentAmt = null;
 
-        } else if (bankName.equals("DBS") && !nonStandingGiro.getPaymentFrequency().equals("One Time")) {
-            sachNonStandingGIROTransferMTD(bankAccount.getBankAccountNum(), billOrgBankAccountNum, paymentAmt);
+                ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/payment/customerNonStandingGIROTransferFinished.xhtml?faces-redirect=true");
 
-            nonStandingGIROSessionBeanLocal.updatePaymentAmt(giroId, paymentAmt.toString());
+            } else if (bankName.equals("DBS") && !nonStandingGiro.getPaymentFrequency().equals("One Time")) {
+                
+                sachNonStandingGIROTransferMTD(bankAccount.getBankAccountNum(), billOrgBankAccountNum, paymentAmt);
 
-            OtherBankAccount dbsBankAccount = retrieveBankAccountByNum(billOrg.getBankAccountNum());
-            toBankAccountNumWithType = dbsBankAccount.getOtherBankAccountType() + "-" + dbsBankAccount.getOtherBankAccountNum();
-            fromBankAccountNumWithType = bankAccount.getBankAccountType() + "-" + bankAccount.getBankAccountNum();
-            statusMessage = "Successfully Pay Bills";
+                nonStandingGIROSessionBeanLocal.updatePaymentAmt(giroId, paymentAmt.toString());
 
-            fromBankAccountAvailableBalance = currentAvailableBankAccountBalance;
-            fromBankAccountTotalBalance = Double.valueOf(bankAccount.getTotalBankAccountBalance());
+                OtherBankAccount dbsBankAccount = retrieveBankAccountByNum(billOrg.getBankAccountNum());
+                toBankAccountNumWithType = dbsBankAccount.getOtherBankAccountType() + "-" + dbsBankAccount.getOtherBankAccountNum();
+                fromBankAccountNumWithType = bankAccount.getBankAccountType() + "-" + bankAccount.getBankAccountNum();
+                statusMessage = "Successfully Pay Bills";
 
-            ec.getFlash().put("statusMessage", statusMessage);
-            ec.getFlash().put("toBankAccountNumWithType", toBankAccountNumWithType);
-            ec.getFlash().put("fromBankAccountNumWithType", fromBankAccountNumWithType);
-            ec.getFlash().put("transferAmt", paymentAmt);
-            ec.getFlash().put("fromBankAccountAvailableBalance", fromBankAccountAvailableBalance.toString());
-            ec.getFlash().put("fromBankAccountTotalBalance", fromBankAccountTotalBalance.toString());
+                fromBankAccountAvailableBalance = currentAvailableBankAccountBalance;
+                fromBankAccountTotalBalance = Double.valueOf(bankAccount.getTotalBankAccountBalance());
 
-            paymentAmt = null;
+                ec.getFlash().put("statusMessage", statusMessage);
+                ec.getFlash().put("toBankAccountNumWithType", toBankAccountNumWithType);
+                ec.getFlash().put("fromBankAccountNumWithType", fromBankAccountNumWithType);
+                ec.getFlash().put("transferAmt", paymentAmt);
+                ec.getFlash().put("fromBankAccountAvailableBalance", fromBankAccountAvailableBalance.toString());
+                ec.getFlash().put("fromBankAccountTotalBalance", fromBankAccountTotalBalance.toString());
 
-            ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/payment/customerNonStandingGIROTransferFinished.xhtml?faces-redirect=true");
-        } else if (bankName.equals("OCBC")) {
+                paymentAmt = null;
 
+                ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/payment/customerNonStandingGIROTransferFinished.xhtml?faces-redirect=true");
+            }
+        } else {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("You have already set your recurrent bill payment", ""));
         }
     }
-    
+
     public void delete() {
-        
+
         ec = FacesContext.getCurrentInstance().getExternalContext();
-        
+
         GIRO giro = gIROSessionBeanLocal.retrieveGIROById(giroId);
-        
+
         if (giro.getGiroId() == null) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! GIRO does not exist.", "Failed!"));
         } else {
             gIROSessionBeanLocal.deleteGIRO(giroId);
-            
+
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Successfully! GIRO deleted Successfully.", "Successfuly!"));
         }
+    }
+
+    public void changeToRecurrentPayment() {
+        nonStandingGIROSessionBeanLocal.updateNonStandingStatus(giroId, transactionFrequencyForOneTime);
+        transactionFrequencyForOneTime = null;
     }
 
     private void sachNonStandingGIROTransferMTD(java.lang.String fromBankAccountNum, java.lang.String toBankAccountNum, java.lang.Double transferAmt) {

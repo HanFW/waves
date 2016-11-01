@@ -1,8 +1,8 @@
 package managedbean.payment.customer;
 
 import ejb.customer.entity.CustomerBasic;
-import ejb.payment.session.FastPayeeSessionBeanLocal;
-import ejb.payment.entity.FastPayee;
+import ejb.payment.session.OtherBankPayeeSessionBeanLocal;
+import ejb.payment.entity.OtherBankPayee;
 import java.io.IOException;
 import javax.ejb.EJB;
 import javax.inject.Named;
@@ -10,24 +10,24 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
-@Named(value = "addFastPayeeManagedBean")
+@Named(value = "addOtherBankPayeeManagedBean")
 @RequestScoped
-public class AddFastPayeeManagedBean {
-    
+public class AddOtherBankPayeeManagedBean {
+
     @EJB
-    private FastPayeeSessionBeanLocal fastPayeeSessionBeanLocal;
+    private OtherBankPayeeSessionBeanLocal otherBankPayeeSessionBeanLocal;
 
     private String payeeName;
     private String payeeAccountNum;
     private String payeeAccountType;
     private String lastTransactionDate;
-    private Long fastPayeeId;
+    private Long otherBankPayeeId;
     private Long customerBasicId;
     private String statusMessage;
 
     private ExternalContext ec;
 
-    public AddFastPayeeManagedBean() {
+    public AddOtherBankPayeeManagedBean() {
     }
 
     public String getPayeeName() {
@@ -62,12 +62,12 @@ public class AddFastPayeeManagedBean {
         this.lastTransactionDate = lastTransactionDate;
     }
 
-    public Long getFastPayeeId() {
-        return fastPayeeId;
+    public Long getOtherBankPayeeId() {
+        return otherBankPayeeId;
     }
 
-    public void setFastPayeeId(Long fastPayeeId) {
-        this.fastPayeeId = fastPayeeId;
+    public void setOtherBankPayeeId(Long otherBankPayeeId) {
+        this.otherBankPayeeId = otherBankPayeeId;
     }
 
     public Long getCustomerBasicId() {
@@ -86,27 +86,27 @@ public class AddFastPayeeManagedBean {
         this.statusMessage = statusMessage;
     }
 
-    public void addFastPayee() throws IOException {
+    public void addOtherBankPayee() throws IOException {
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
         CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
 
         lastTransactionDate = "";
         customerBasicId = customerBasic.getCustomerBasicId();
-        fastPayeeId = fastPayeeSessionBeanLocal.addNewFastPayee(payeeName, payeeAccountNum, payeeAccountType, lastTransactionDate, customerBasicId);
-        FastPayee fastPayee = fastPayeeSessionBeanLocal.retrieveFastPayeeById(fastPayeeId);
+        otherBankPayeeId = otherBankPayeeSessionBeanLocal.addNewOtherBankPayee(payeeName, payeeAccountNum, payeeAccountType, lastTransactionDate, "Other Bank", customerBasicId);
+        OtherBankPayee otherBankPayee = otherBankPayeeSessionBeanLocal.retrieveOtherBankPayeeById(otherBankPayeeId);
 
-        customerBasic.getFastPayee().add(fastPayee);
-        
+        customerBasic.getOtherBankPayee().add(otherBankPayee);
+
         statusMessage = "New Recipient Added Successfully.";
 
         ec.getFlash().put("statusMessage", statusMessage);
-        ec.getFlash().put("fastPayeeId", fastPayeeId);
+        ec.getFlash().put("otherBankPayeeId", otherBankPayeeId);
         ec.getFlash().put("payeeName", payeeName);
         ec.getFlash().put("payeeAccountNum", payeeAccountNum);
         ec.getFlash().put("payeeAccountType", payeeAccountType);
 
-        ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/payment/customerAddFastPayeeDone.xhtml?faces-redirect=true");
+        ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/payment/customerAddOtherBankPayeeDone.xhtml?faces-redirect=true");
     }
 
 }

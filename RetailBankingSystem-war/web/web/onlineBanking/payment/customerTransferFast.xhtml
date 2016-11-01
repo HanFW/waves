@@ -19,71 +19,54 @@
                 <h1>Fund Transfer to Other Bank Account(FAST)</h1>
 
                 <p:panelGrid columns="1" styleClass="ui-panelgrid-blank form-group" class="ui-lg-4">
-                    <!--                <p:messages globalOnly="true"/>-->
 
                     <p:panel id="panel"> 
                         <p:messages globalOnly="true"/>
 
                         <p:outputLabel style="font-weight: bold;font-size: 24px" value="To:" />
-
                         <br/>
-
-
                         <p:outputLabel for="transferToAccount" style="font-weight: bold" value="Account: " />
 
                         <p:selectOneMenu id="transferToAccount" value="#{fastTransferManagedBean.toBankAccountNumWithType}" 
                                          effect="fold" editable="false">
                             <f:selectItem itemLabel="Please Select One" itemValue="" />
-                            <f:selectItems value="#{fastTransferManagedBean.customerFastPayee}" />
+                            <f:selectItems value="#{fastTransferManagedBean.customerOtherBankPayee}" />
                         </p:selectOneMenu>
-
                         <p:message for="transferToAccount" />
 
                         <p:outputLabel for="transferToCurrency" style="font-weight: bold" value="Currency: " />
-
                         <p:selectOneMenu id="transferToCurrency" value="#{fastTransferManagedBean.toCurrency}" 
                                          required="true">
                             <f:selectItem itemLabel="Singapore Dollar" itemValue="SGD - Singapore Dollar" />
                         </p:selectOneMenu>
-
                         <p:message for="transferToCurrency" />
-
                         <br/>
                         <h:outputText value="&lt;br /&gt;" escape="false" />
                         <h:outputText value="&lt;br /&gt;" escape="false" />
 
                         <p:outputLabel style="font-weight: bold;font-size: 24px" value="From:" />
                         <h:outputText value="&lt;br /&gt;" escape="false" />
-
                         <br/>
-
-
                         <p:outputLabel for="transferFromAccount" style="font-weight: bold" value="Account: " />
-
                         <p:selectOneMenu id="transferFromAccount" value="#{fastTransferManagedBean.fromBankAccountNumWithType}" 
                                          effect="fold" editable="false">
                             <f:selectItem itemLabel="Please Select One" itemValue="" />
                             <f:selectItems value="#{fastTransferManagedBean.fromAccounts}" />
                         </p:selectOneMenu>
-
                         <p:message for="transferFromAccount" />
 
                         <p:outputLabel for="transferFromCurrency" style="font-weight: bold" value="Currency: " />
-
                         <p:selectOneMenu id="transferFromCurrency" value="#{fastTransferManagedBean.fromCurrency}" 
                                          required="true">
                             <f:selectItem itemLabel="Singapore Dollar" itemValue="SGD - Singapore Dollar" />
                         </p:selectOneMenu>
-
                         <p:message for="transferFromCurrency" />
 
                         <p:outputLabel for="transferAmt" style="font-weight: bold" value="Amount: " />
-
                         <p:inputText required="true" label="Amount" requiredMessage="Amount is required." id="transferAmt"
                                      value="#{fastTransferManagedBean.transferAmt}" converterMessage="Invalid input">
                             <f:validateDoubleRange minimum="0.0" maximum="99999999.0" />
                         </p:inputText>
-
                         <p:message for="transferAmt" />
 
                     </p:panel>

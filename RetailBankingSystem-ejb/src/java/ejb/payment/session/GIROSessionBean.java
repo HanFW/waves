@@ -1,8 +1,6 @@
 package ejb.payment.session;
 
-import ejb.deposit.session.BankAccountSessionBeanLocal;
 import ejb.payment.entity.GIRO;
-import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
@@ -12,14 +10,13 @@ import javax.persistence.Query;
 
 @Stateless
 public class GIROSessionBean implements GIROSessionBeanLocal {
-    @EJB
-    private BankAccountSessionBeanLocal bankAccountSessionBeanLocal;
 
     @PersistenceContext
     private EntityManager entityManager;
 
     @Override
     public GIRO retrieveGIROById(Long giroId) {
+
         GIRO giro = new GIRO();
 
         try {
@@ -40,7 +37,7 @@ public class GIROSessionBean implements GIROSessionBeanLocal {
 
         return giro;
     }
-    
+
     @Override
     public String deleteGIRO(Long giroId) {
         GIRO giro = retrieveGIROById(giroId);

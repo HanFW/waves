@@ -120,42 +120,6 @@
         </wsimport-option>
       </wsimport-options>
     </client>
-    <client name="BillWebService">
-      <wsdl-url>http://localhost:8080/BillWebService/BillWebService?wsdl</wsdl-url>
-      <local-wsdl-file>localhost_8080/BillWebService/BillWebService.wsdl</local-wsdl-file>
-      <package-name forceReplace="true">ws.client.bill</package-name>
-      <catalog-file>catalog.xml</catalog-file>
-      <wsimport-options>
-        <wsimport-option>
-          <wsimport-option-name>extension</wsimport-option-name>
-          <wsimport-option-value>true</wsimport-option-value>
-        </wsimport-option>
-        <wsimport-option>
-          <wsimport-option-name>verbose</wsimport-option-name>
-          <wsimport-option-value>true</wsimport-option-value>
-        </wsimport-option>
-        <wsimport-option>
-          <wsimport-option-name>fork</wsimport-option-name>
-          <wsimport-option-value>false</wsimport-option-value>
-        </wsimport-option>
-        <wsimport-option>
-          <wsimport-option-name>wsdlLocation</wsimport-option-name>
-          <wsimport-option-value>http://localhost:8080/BillWebService/BillWebService?wsdl</wsimport-option-value>
-        </wsimport-option>
-        <wsimport-option>
-          <wsimport-option-name>xnocompile</wsimport-option-name>
-          <wsimport-option-value>true</wsimport-option-value>
-        </wsimport-option>
-        <wsimport-option>
-          <wsimport-option-name>xendorsed</wsimport-option-name>
-          <wsimport-option-value>true</wsimport-option-value>
-        </wsimport-option>
-        <wsimport-option>
-          <wsimport-option-name>package</wsimport-option-name>
-          <wsimport-option-value>ws.client.bill</wsimport-option-value>
-        </wsimport-option>
-      </wsimport-options>
-    </client>
     <client name="SWIFTWebService">
       <wsdl-url>http://localhost:8080/SWIFTWebService/SWIFTWebService?wsdl</wsdl-url>
       <local-wsdl-file>localhost_8080/SWIFTWebService/SWIFTWebService.wsdl</local-wsdl-file>
@@ -225,6 +189,42 @@
         <wsimport-option>
           <wsimport-option-name>package</wsimport-option-name>
           <wsimport-option-value>ws.client.chips</wsimport-option-value>
+        </wsimport-option>
+      </wsimport-options>
+    </client>
+    <client name="BillWebService">
+      <wsdl-url>http://localhost:8080/BillWebService/BillWebService?wsdl</wsdl-url>
+      <local-wsdl-file>localhost_8080/BillWebService/BillWebService.wsdl</local-wsdl-file>
+      <package-name forceReplace="true">ws.client.bill</package-name>
+      <catalog-file>catalog.xml</catalog-file>
+      <wsimport-options>
+        <wsimport-option>
+          <wsimport-option-name>extension</wsimport-option-name>
+          <wsimport-option-value>true</wsimport-option-value>
+        </wsimport-option>
+        <wsimport-option>
+          <wsimport-option-name>verbose</wsimport-option-name>
+          <wsimport-option-value>true</wsimport-option-value>
+        </wsimport-option>
+        <wsimport-option>
+          <wsimport-option-name>fork</wsimport-option-name>
+          <wsimport-option-value>false</wsimport-option-value>
+        </wsimport-option>
+        <wsimport-option>
+          <wsimport-option-name>wsdlLocation</wsimport-option-name>
+          <wsimport-option-value>http://localhost:8080/BillWebService/BillWebService?wsdl</wsimport-option-value>
+        </wsimport-option>
+        <wsimport-option>
+          <wsimport-option-name>xnocompile</wsimport-option-name>
+          <wsimport-option-value>true</wsimport-option-value>
+        </wsimport-option>
+        <wsimport-option>
+          <wsimport-option-name>xendorsed</wsimport-option-name>
+          <wsimport-option-value>true</wsimport-option-value>
+        </wsimport-option>
+        <wsimport-option>
+          <wsimport-option-name>package</wsimport-option-name>
+          <wsimport-option-value>ws.client.bill</wsimport-option-value>
         </wsimport-option>
       </wsimport-options>
     </client>

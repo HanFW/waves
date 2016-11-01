@@ -19,7 +19,7 @@
                 <h:outputText value="#{loanApplication.applicationDate}" />
             </p:column>
             <p:column headerText="Purchase Price">
-                <h:outputText value="#{loanApplication.amountRequired}" />
+                <h:outputText value="#{loanApplication.propertyPurchasePrice}" />
             </p:column>
             <p:column>
                 <p:commandButton value="View" action="#{appraiserViewAllMortgageApplicationsManagedBean.viewApplication(loanApplication.loanApplicationId)}"/>

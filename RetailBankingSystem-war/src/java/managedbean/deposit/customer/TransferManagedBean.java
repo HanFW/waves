@@ -2,7 +2,7 @@ package managedbean.deposit.customer;
 
 import ejb.deposit.entity.BankAccount;
 import ejb.customer.entity.CustomerBasic;
-import ejb.deposit.entity.Payee;
+import ejb.deposit.entity.RegularPayee;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +16,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import ejb.deposit.session.PayeeSessionBeanLocal;
+import ejb.deposit.session.RegularPayeeSessionBeanLocal;
 import ejb.deposit.session.TransactionSessionBeanLocal;
 import ejb.infrastructure.session.LoggingSessionBeanLocal;
 
@@ -23,6 +24,9 @@ import ejb.infrastructure.session.LoggingSessionBeanLocal;
 @RequestScoped
 
 public class TransferManagedBean {
+
+    @EJB
+    private RegularPayeeSessionBeanLocal regularPayeeSessionBeanLocal;
 
     @EJB
     private LoggingSessionBeanLocal loggingSessionBeanLocal;
@@ -74,7 +78,7 @@ public class TransferManagedBean {
             fromAccounts = new HashMap<String, String>();
             toAccounts = new HashMap<String, String>();
             customerPayees = new HashMap<String, String>();
-            List<Payee> payees = payeeSessionLocal.retrievePayeeByCusId(customerBasic.getCustomerBasicId());
+            List<RegularPayee> regularPayees = regularPayeeSessionBeanLocal.retrieveRegularPayeeByCusId(customerBasic.getCustomerBasicId());
 
             for (int i = 0; i < bankAccounts.size(); i++) {
                 fromAccounts.put(bankAccounts.get(i).getBankAccountType() + "-" + bankAccounts.get(i).getBankAccountNum(), bankAccounts.get(i).getBankAccountType() + "-" + bankAccounts.get(i).getBankAccountNum());
@@ -86,8 +90,8 @@ public class TransferManagedBean {
                 }
             }
 
-            for (int j = 0; j < payees.size(); j++) {
-                customerPayees.put(payees.get(j).getPayeeAccountType() + "-" + payees.get(j).getPayeeAccountNum() + "-" + payees.get(j).getPayeeName(), payees.get(j).getPayeeAccountType() + "-" + payees.get(j).getPayeeAccountNum() + "-" + payees.get(j).getPayeeName());
+            for (int j = 0; j < regularPayees.size(); j++) {
+                customerPayees.put(regularPayees.get(j).getPayeeAccountType() + "-" + regularPayees.get(j).getPayeeAccountNum() + "-" + regularPayees.get(j).getPayeeName(), regularPayees.get(j).getPayeeAccountType() + "-" + regularPayees.get(j).getPayeeAccountNum() + "-" + regularPayees.get(j).getPayeeName());
             }
         }
     }

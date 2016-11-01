@@ -4,12 +4,13 @@ import ejb.card.entity.CreditCard;
 import ejb.deposit.entity.BankAccount;
 import ejb.infrastructure.entity.MessageBox;
 import ejb.deposit.entity.Payee;
+import ejb.loan.entity.CashlineApplication;
 import ejb.loan.entity.CreditReportBureauScore;
 import ejb.loan.entity.CustomerDebt;
 import ejb.loan.entity.CustomerProperty;
 import ejb.loan.entity.LoanApplication;
 import ejb.payment.entity.Cheque;
-import ejb.payment.entity.FastPayee;
+import ejb.payment.entity.OtherBankPayee;
 import ejb.payment.entity.GIRO;
 import ejb.payment.entity.SWIFTPayee;
 import ejb.wealth.entity.RiskProfile;
@@ -77,7 +78,7 @@ public class CustomerBasic implements Serializable {
     private List<CreditCard> creditCard;
 
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
-    private List<FastPayee> fastPayee;
+    private List<OtherBankPayee> otherBankPayee;
 
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
     private List<GIRO> giro;
@@ -94,6 +95,9 @@ public class CustomerBasic implements Serializable {
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
     private List<LoanApplication> loanApplication;
     
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
+    private List<CashlineApplication> cashlineApplication;
+    
     @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     private CreditReportBureauScore bureauScore;
     
@@ -102,6 +106,10 @@ public class CustomerBasic implements Serializable {
     
     public void addLoanApplication(LoanApplication newApplication){
         loanApplication.add(newApplication);
+    }
+    
+    public void addCashlineApplication(CashlineApplication newApplication){
+        cashlineApplication.add(newApplication);
     }
 
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
@@ -359,12 +367,12 @@ public class CustomerBasic implements Serializable {
         this.customerOnlineBankingAccountLocked = customerOnlineBankingAccountLocked;
     }
 
-    public List<FastPayee> getFastPayee() {
-        return fastPayee;
+    public List<OtherBankPayee> getOtherBankPayee() {
+        return otherBankPayee;
     }
 
-    public void setFastPayee(List<FastPayee> fastPayee) {
-        this.fastPayee = fastPayee;
+    public void setOtherBankPayee(List<OtherBankPayee> otherBankPayee) {
+        this.otherBankPayee = otherBankPayee;
     }
 
     public List<GIRO> getGiro() {
@@ -437,6 +445,14 @@ public class CustomerBasic implements Serializable {
 
     public void setRiskProfile(RiskProfile riskProfile) {
         this.riskProfile = riskProfile;
+    }
+
+    public List<CashlineApplication> getCashlineApplication() {
+        return cashlineApplication;
+    }
+
+    public void setCashlineApplication(List<CashlineApplication> cashlineApplication) {
+        this.cashlineApplication = cashlineApplication;
     }
     
     
