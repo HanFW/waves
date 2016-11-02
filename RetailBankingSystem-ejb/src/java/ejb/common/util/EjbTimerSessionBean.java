@@ -284,6 +284,7 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
 //        System.out.println("*** 10000MS Timer timeout");
         bankAccountSessionLocal.interestAccuring();
         nonStandingGIROSessionBeanLocal.dailyRecurrentPayment();
+        nonStandingGIROSessionBeanLocal.dailyRecurrentRegularGIROTransfer();
     }
 
     private void handleTimeout_300000ms() {
@@ -291,7 +292,7 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
 
         bankAccountSessionLocal.interestCrediting();
         statementSessionBeanLocal.generateStatement();
-//        maintainDailyBalance();
+        maintainDailyBalance();
         nonStandingGIROSessionBeanLocal.monthlyRecurrentPayment();
     }
 

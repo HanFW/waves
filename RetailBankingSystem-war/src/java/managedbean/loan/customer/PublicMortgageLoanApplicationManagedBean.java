@@ -17,19 +17,18 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
-import org.apache.commons.io.IOUtils;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.FlowEvent;
 import org.primefaces.model.UploadedFile;
@@ -38,9 +37,9 @@ import org.primefaces.model.UploadedFile;
  *
  * @author hanfengwei
  */
-@Named(value = "publicHDBLoanApplication")
+@Named(value = "publicMortgageLoanApplicationManagedBean")
 @ViewScoped
-public class PublicHDBLoanApplicationManagedBean implements Serializable {
+public class PublicMortgageLoanApplicationManagedBean implements Serializable {
 
     @EJB
     private CustomerEmailSessionBeanLocal customerEmailSessionBeanLocal;
@@ -182,10 +181,13 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
     private boolean propertyTenancyPanelVisible;
     private boolean propertyBenefitsPanelVisible;
 
+    private ArrayList propertyTypes = new ArrayList();
+    private String property;
+
     /**
      * Creates a new instance of PublicHDBLoanApplication
      */
-    public PublicHDBLoanApplicationManagedBean() {
+    public PublicMortgageLoanApplicationManagedBean() {
         uploads.put("identification", false);
         uploads.put("otp", false);
         uploads.put("purchaseAgreement", false);
@@ -198,37 +200,53 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
         uploads.put("selfEmployedTax", false);
     }
 
+    @PostConstruct
+    public void init() {
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        property = (String) ec.getFlash().get("loanType");
+        if (property.equals("HDB")) {
+            propertyTypes.add("3-Room");
+            propertyTypes.add("4-Room");
+            propertyTypes.add("5-Room");
+            propertyTypes.add("Executive Apartment/Mansionette");
+            propertyTypes.add("HUDC");
+        } else if (property.equals("Private Property")) {
+            propertyTypes.add("Bungalow");
+            propertyTypes.add("Semi-D");
+            propertyTypes.add("Intermediate/Comer Terrace");
+            propertyTypes.add("Executive Condominium");
+            propertyTypes.add("Apartment");
+            propertyTypes.add("HUDC");
+            propertyTypes.add("SOHO");
+        }
+    }
+
     public void addLoanApplicationFast() throws IOException {
 
-        Long newCustomerBasicId = cRMCustomerSessionBeanLocal.updateCustomerBasic("G11223344", 
-                "hanfengwei96@gmail.com", "83114121", "China", "China", "Single", 
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        customerPropertyOwners.add("Han Fengwei");
+        customerPropertyOwners.add("Dai Hailang");
+
+        //add HDB - New Purchase
+        Long newCustomerBasicId = cRMCustomerSessionBeanLocal.updateCustomerBasic("G11223344",
+                "hanfengwei96@gmail.com", "83114121", "China", "China", "Single",
                 "Student", "AfterYou", "customer address", "118425");
-        
-//        Long newCustomerBasicId = cRMCustomerSessionBeanLocal.addNewCustomerBasic("Han Fengwei",
-//                "Ms", "G1320505T",
-//                "Female", "hanfengwei96@gmail.com", "83114121", "07/Mar/1996",
-//                "China", "China", "Chinese",
-//                "Single", "Student", "NUS",
-//                "customer address", "118425", null, null, null, "Yes");
-        
+
         Long newCustomerAdvancedId = cRMCustomerSessionBeanLocal.addNewCustomerAdvanced(3, "Degree", "Rented",
                 3, "Government", 5, "Employee",
                 10000, "HDB", "company address",
                 "118426", "Senior Management", "CEO",
                 "NTU", 3, 2000,
                 "other income source");
-//        Long newCustomerAdvancedId = cRMCustomerSessionBeanLocal.updateCustomerAdvanced("G1320505T", 
-//                3, "Degree", "Rented", 3, "Government", 
-//                5, "Employee", 10000, "HDB", "company address", 
-//                "118426", "Senior Management", "CEO", "Monsta BBQ", 3,
-//                2000, "other income source");
+
+        ec.getFlash().put("loanType", "HDB - New Purchase");
+        ec.getFlash().put("amountRequired", BigDecimal.valueOf(500000));
+        ec.getFlash().put("tenure", 20);
 
         ArrayList<CustomerDebt> debts = new ArrayList<CustomerDebt>();
         debts.add(loanApplicationSessionBeanLocal.addNewCustomerDebt("car loan", "DBS", 500000, 1000));
         debts.add(loanApplicationSessionBeanLocal.addNewCustomerDebt("HDB loan", "UOB", 800000, 2000));
-
-        customerPropertyOwners.add("Han Fengwei");
-        customerPropertyOwners.add("Dai Hailang");
+        
         CustomerProperty cp = new CustomerProperty();
         cp.create("property address", "118427", customerPropertyOwners, "3-Room",
                 170.8, 200, "Completed",
@@ -240,8 +258,98 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
                 5000, 2012, "yes", 30000,
                 20000, 30000, "Employee");
         loanApplicationSessionBeanLocal.submitLoanApplication(true, false, newCustomerBasicId, newCustomerAdvancedId, debts, cp, mortgage, null, "purchase", "HDB-Fixed");
-        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-        ec.redirect(ec.getRequestContextPath() + "/web/merlionBank/loan/publicMortgageLoanApplicationDone.xhtml?faces-redirect=true");
+
+        //add HDB - refinancing
+        Long customerId2 = cRMCustomerSessionBeanLocal.addNewCustomerBasic("Dai Hailang",
+                "Mr", "G22334455",
+                "Male", "hanfengwei96@gmail.com", "83114121", "08/Mar/1993",
+                "China", "China", "Chinese",
+                "Single", "Student", "AfterYou",
+                "customer address", "118425", null, null, null, null);
+        
+        Long customerAdvancedId2 = cRMCustomerSessionBeanLocal.addNewCustomerAdvanced(3, "Degree", "Rented",
+                3, "CEO", 5, "Self-Employed",
+                10000, "HDB", "company address",
+                "118426", "Senior Management", "CEO",
+                "Monsta BBQ", 3, 2000,
+                "other income source");
+        
+        ArrayList<CustomerDebt> debts2 = new ArrayList<CustomerDebt>();
+        debts2.add(loanApplicationSessionBeanLocal.addNewCustomerDebt("car loan", "DBS", 500000, 1000));
+        debts2.add(loanApplicationSessionBeanLocal.addNewCustomerDebt("HDB loan", "UOB", 800000, 2000));
+
+        CustomerProperty cp2 = new CustomerProperty();
+        cp2.create("property address", "118427", customerPropertyOwners, "3-Room",
+                170.8, 200, "Completed",
+                null, "Owner Occupation", "Leasehold",
+                99, 2012, null);
+        RefinancingApplication refinancing2 = new RefinancingApplication();
+        refinancing2.create("HDB - Refinancing", 450000, 17, "POSB",
+                            450000, 15, 3, 50000, "Self-Employed");
+        loanApplicationSessionBeanLocal.submitLoanApplication(false, false, customerId2, customerAdvancedId2, debts2, cp2, null, refinancing2, "refinancing", "HDB-Floating");
+        
+        //add Private Property - Refinancing
+        Long customerId3 = cRMCustomerSessionBeanLocal.addNewCustomerBasic("Guo Ziyu",
+                "Mr", "G33445566",
+                "Male", "hanfengwei96@gmail.com", "83114121", "08/Mar/1993",
+                "China", "China", "Chinese",
+                "Single", "Student", "AfterYou",
+                "customer address", "118425", null, null, null, null);
+        
+        Long customerAdvancedId3 = cRMCustomerSessionBeanLocal.addNewCustomerAdvanced(3, "Degree", "Rented",
+                3, "CEO", 5, "Self-Employed",
+                10000, "HDB", "company address",
+                "118426", "Senior Management", "CEO",
+                "Monsta BBQ", 3, 2000,
+                "other income source");
+        
+        ArrayList<CustomerDebt> debts3 = new ArrayList<CustomerDebt>();
+        debts3.add(loanApplicationSessionBeanLocal.addNewCustomerDebt("car loan", "DBS", 500000, 1000));
+        debts3.add(loanApplicationSessionBeanLocal.addNewCustomerDebt("HDB loan", "UOB", 800000, 2000));
+
+        CustomerProperty cp3 = new CustomerProperty();
+        cp3.create("property address", "118427", customerPropertyOwners, "Bungalow",
+                170.8, 200, "Completed",
+                null, "Owner Occupation", "Leasehold",
+                99, 2012, null);
+        RefinancingApplication refinancing3 = new RefinancingApplication();
+        refinancing3.create("Private Property - Refinancing", 450000, 17, "POSB",
+                            450000, 15, 3, 50000, "Self-Employed");
+        loanApplicationSessionBeanLocal.submitLoanApplication(false, false, customerId3, customerAdvancedId3, debts3, cp3, null, refinancing3, "refinancing", "Private Property-Floating");
+
+        //add Private Property - New Purchase
+        Long customerId4 = cRMCustomerSessionBeanLocal.addNewCustomerBasic("Yang Shuanghe",
+                "Ms", "G44556677",
+                "Male", "hanfengwei96@gmail.com", "83114121", "08/Mar/1993",
+                "China", "China", "Chinese",
+                "Single", "Student", "AfterYou",
+                "customer address", "118425", null, null, null, null);
+
+        Long customerAdvancedId4 = cRMCustomerSessionBeanLocal.addNewCustomerAdvanced(3, "Degree", "Rented",
+                3, "Government", 5, "Employee",
+                10000, "HDB", "company address",
+                "118426", "Senior Management", "CEO",
+                "NTU", 3, 2000,
+                "other income source");
+
+
+        ArrayList<CustomerDebt> debts4 = new ArrayList<CustomerDebt>();
+        debts4.add(loanApplicationSessionBeanLocal.addNewCustomerDebt("car loan", "DBS", 500000, 1000));
+        debts4.add(loanApplicationSessionBeanLocal.addNewCustomerDebt("HDB loan", "UOB", 800000, 2000));
+
+        CustomerProperty cp4 = new CustomerProperty();
+        cp4.create("property address", "118427", customerPropertyOwners, "Bungalow",
+                170.8, 200, "Completed",
+                null, "Owner Occupation", "Leasehold",
+                99, 2012, null);
+        MortgageLoanApplication mortgage4 = new MortgageLoanApplication();
+        mortgage4.create("Private Property - New Purchase", 500000, 20, 550000,
+                new Date(), "Developer/HDB", "no", null, "yes",
+                5000, 2012, "yes", 30000,
+                20000, 30000, "Employee");
+        loanApplicationSessionBeanLocal.submitLoanApplication(false, false, customerId4, customerAdvancedId4, debts4, cp4, mortgage4, null, "purchase", "Private Property-Fixed");
+        
+        ec.redirect(ec.getRequestContextPath() + "/web/merlionBank/loan/publicLoanApplicationDone.xhtml?faces-redirect=true");
     }
 
     public void addLoanApplication() throws IOException {
@@ -257,30 +365,29 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
             }
         } else {
             //create or update CustomerBasic
-            String newCustomer = "Yes";
             if (customerSalutation.equals("Others")) {
                 customerSalutation = customerSalutationOthers;
             }
 
             String dateOfBirth = changeDateFormat(customerDateOfBirth);
             String customerAddress = customerStreetName + ", " + customerBlockNum + ", " + customerUnitNum + ", " + customerPostal;
-            
+
             Long newCustomerBasicId;
-            
+
             boolean isExistingCustomer = cRMCustomerSessionBeanLocal.checkExistingCustomerByIdentification(customerIdentificationNum);
             if (isExistingCustomer) {
                 newCustomerBasicId = cRMCustomerSessionBeanLocal.updateCustomerBasic(customerIdentificationNum, customerEmail, customerMobile,
                         customerNationality, customerCountryOfResidence, customerMaritalStatus, customerOccupation, customerCompanyName,
                         customerName, customerPostal);
-            }else{
+            } else {
                 newCustomerBasicId = cRMCustomerSessionBeanLocal.addNewCustomerBasic(customerName,
-                    customerSalutation, customerIdentificationNum.toUpperCase(),
-                    customerGender, customerEmail, customerMobile, dateOfBirth,
-                    customerNationality, customerCountryOfResidence, customerRace,
-                    customerMaritalStatus, customerOccupation, customerCompanyName,
-                    customerAddress, customerPostal, null, null, customerSignature.getBytes(), newCustomer);
+                        customerSalutation, customerIdentificationNum.toUpperCase(),
+                        customerGender, customerEmail, customerMobile, dateOfBirth,
+                        customerNationality, customerCountryOfResidence, customerRace,
+                        customerMaritalStatus, customerOccupation, customerCompanyName,
+                        customerAddress, customerPostal, null, null, customerSignature.getBytes(), null);
             }
-            
+
             //create CustomerAdvanced
             if (customerEmploymentStatus.equals("Employee") || customerEmploymentStatus.equals("Self-Employed")) {
                 if (customerIndustryType.equals("Others")) {
@@ -294,33 +401,33 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
             Long newCustomerAdvancedId;
             boolean hasCustomerAdvanced = cRMCustomerSessionBeanLocal.checkExistingCustomerAdvanced(customerIdentificationNum);
             if (customerEmploymentStatus.equals("Unemployed")) {
-                if(hasCustomerAdvanced){
-                    newCustomerAdvancedId = cRMCustomerSessionBeanLocal.updateCustomerAdvanced(customerIdentificationNum, customerNumOfDependents, 
-                            customerEducation, customerResidentialStatus, customerLengthOfResidence,  null, 0, 
-                            customerEmploymentStatus, customerMonthlyFixedIncome.doubleValue(), customerResidentialType, null, 
+                if (hasCustomerAdvanced) {
+                    newCustomerAdvancedId = cRMCustomerSessionBeanLocal.updateCustomerAdvanced(customerIdentificationNum, customerNumOfDependents,
+                            customerEducation, customerResidentialStatus, customerLengthOfResidence, null, 0,
+                            customerEmploymentStatus, customerMonthlyFixedIncome.doubleValue(), customerResidentialType, null,
                             null, null, null, null, 0, customerOtherMonthlyIncome.doubleValue(), customerOtherMonthlyIncomeSource);
-                }else{
+                } else {
                     newCustomerAdvancedId = cRMCustomerSessionBeanLocal.addNewCustomerAdvanced(customerNumOfDependents, customerEducation, customerResidentialStatus,
-                        customerLengthOfResidence, null, 0, customerEmploymentStatus,
-                        customerMonthlyFixedIncome.doubleValue(), customerResidentialType, null,
-                        null, null, null,
-                        null, 0, customerOtherMonthlyIncome.doubleValue(),
-                        customerOtherMonthlyIncomeSource);
+                            customerLengthOfResidence, null, 0, customerEmploymentStatus,
+                            customerMonthlyFixedIncome.doubleValue(), customerResidentialType, null,
+                            null, null, null,
+                            null, 0, customerOtherMonthlyIncome.doubleValue(),
+                            customerOtherMonthlyIncomeSource);
                 }
             } else {
-                if(hasCustomerAdvanced){
-                    newCustomerAdvancedId = cRMCustomerSessionBeanLocal.updateCustomerAdvanced(customerIdentificationNum, customerNumOfDependents, 
-                            customerEducation, customerResidentialStatus, customerLengthOfResidence, customerIndustryType, customerLengthOfCurrentJob, 
-                            customerEmploymentStatus, customerMonthlyFixedIncome.doubleValue(), customerResidentialType, customerCompanyAddress, 
-                            customerCompanyPostal, customerCurrentPosition, customerCurrentJobTitle, customerPreviousCompany, 
+                if (hasCustomerAdvanced) {
+                    newCustomerAdvancedId = cRMCustomerSessionBeanLocal.updateCustomerAdvanced(customerIdentificationNum, customerNumOfDependents,
+                            customerEducation, customerResidentialStatus, customerLengthOfResidence, customerIndustryType, customerLengthOfCurrentJob,
+                            customerEmploymentStatus, customerMonthlyFixedIncome.doubleValue(), customerResidentialType, customerCompanyAddress,
+                            customerCompanyPostal, customerCurrentPosition, customerCurrentJobTitle, customerPreviousCompany,
                             customerLengthOfPreviousJob, customerOtherMonthlyIncome.doubleValue(), customerOtherMonthlyIncomeSource);
-                }else{
+                } else {
                     newCustomerAdvancedId = cRMCustomerSessionBeanLocal.addNewCustomerAdvanced(customerNumOfDependents, customerEducation, customerResidentialStatus,
-                        customerLengthOfResidence, customerIndustryType, customerLengthOfCurrentJob, customerEmploymentStatus,
-                        customerMonthlyFixedIncome.doubleValue(), customerResidentialType, customerCompanyAddress,
-                        customerCompanyPostal, customerCurrentPosition, customerCurrentJobTitle,
-                        customerPreviousCompany, customerLengthOfPreviousJob, customerOtherMonthlyIncome.doubleValue(),
-                        customerOtherMonthlyIncomeSource);
+                            customerLengthOfResidence, customerIndustryType, customerLengthOfCurrentJob, customerEmploymentStatus,
+                            customerMonthlyFixedIncome.doubleValue(), customerResidentialType, customerCompanyAddress,
+                            customerCompanyPostal, customerCurrentPosition, customerCurrentJobTitle,
+                            customerPreviousCompany, customerLengthOfPreviousJob, customerOtherMonthlyIncome.doubleValue(),
+                            customerOtherMonthlyIncomeSource);
                 }
             }
 
@@ -365,21 +472,36 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
                     customerBenefitsFromVendor = BigDecimal.valueOf(0);
                 }
                 MortgageLoanApplication mortgage = new MortgageLoanApplication();
-                mortgage.create("HDB - New Purchase", customerLoanAmountRequired.doubleValue(), customerLoanTenure, customerPropertyPurchasePrice.doubleValue(),
-                        customerPropertyDateOfPurchase, customerPropertySource, customerPropertyWithOTP, customerPropertyOTPDate, customerPropertyWithTenancy,
-                        customerPropertyTenancyIncome.doubleValue(), customerPropertyTenancyExpiryYear, customerWithBenefitsFromVendor, customerBenefitsFromVendor.doubleValue(),
-                        customerCashDownpayment.doubleValue(), customerCPFDownpayment.doubleValue(), customerEmploymentStatus);
+
+                if (property.equals("HDB")) {
+                    mortgage.create("HDB - New Purchase", customerLoanAmountRequired.doubleValue(), customerLoanTenure, customerPropertyPurchasePrice.doubleValue(),
+                            customerPropertyDateOfPurchase, customerPropertySource, customerPropertyWithOTP, customerPropertyOTPDate, customerPropertyWithTenancy,
+                            customerPropertyTenancyIncome.doubleValue(), customerPropertyTenancyExpiryYear, customerWithBenefitsFromVendor, customerBenefitsFromVendor.doubleValue(),
+                            customerCashDownpayment.doubleValue(), customerCPFDownpayment.doubleValue(), customerEmploymentStatus);
+                    ec.getFlash().put("loanType", "HDB - New Purchase");
+                } else {
+                    mortgage.create("Private Property - New Purchase", customerLoanAmountRequired.doubleValue(), customerLoanTenure, customerPropertyPurchasePrice.doubleValue(),
+                            customerPropertyDateOfPurchase, customerPropertySource, customerPropertyWithOTP, customerPropertyOTPDate, customerPropertyWithTenancy,
+                            customerPropertyTenancyIncome.doubleValue(), customerPropertyTenancyExpiryYear, customerWithBenefitsFromVendor, customerBenefitsFromVendor.doubleValue(),
+                            customerCashDownpayment.doubleValue(), customerCPFDownpayment.doubleValue(), customerEmploymentStatus);
+                    ec.getFlash().put("loanType", "Private Property - New Purchase");
+                }
 
                 loanApplicationSessionBeanLocal.submitLoanApplication(isExistingCustomer, hasCustomerAdvanced, newCustomerBasicId, newCustomerAdvancedId, debts, cp, mortgage, null, customerFinancialRequest, interestPackage);
-                ec.getFlash().put("loanType", "HDB - New Purchase");
 
             } else {
                 RefinancingApplication refinancing = new RefinancingApplication();
-                refinancing.create("HDB - Refinancing", customerLoanAmountRequired.doubleValue(), customerLoanTenure, customerExistingFinancer,
-                        customerOutstandingLoan.doubleValue(), customerOutstandingYear, customerOutstandingMonth, customerTotalCPFWithdrawal.doubleValue(), customerEmploymentStatus);
+                if (property.equals("HDB")) {
+                    refinancing.create("HDB - Refinancing", customerOutstandingLoan.doubleValue(), customerLoanTenure, customerExistingFinancer,
+                            customerOutstandingLoan.doubleValue(), customerOutstandingYear, customerOutstandingMonth, customerTotalCPFWithdrawal.doubleValue(), customerEmploymentStatus);
+                    ec.getFlash().put("loanType", "HDB - Refinancing");
+                } else {
+                    refinancing.create("Private Property - Refinancing", customerOutstandingLoan.doubleValue(), customerLoanTenure, customerExistingFinancer,
+                            customerOutstandingLoan.doubleValue(), customerOutstandingYear, customerOutstandingMonth, customerTotalCPFWithdrawal.doubleValue(), customerEmploymentStatus);
+                    ec.getFlash().put("loanType", "Private Property - Refinancing");
+                }
 
                 loanApplicationSessionBeanLocal.submitLoanApplication(isExistingCustomer, hasCustomerAdvanced, newCustomerBasicId, newCustomerAdvancedId, debts, cp, null, refinancing, customerFinancialRequest, interestPackage);
-                ec.getFlash().put("loanType", "HDB - Refinancing");
             }
 
             HashMap emailActions = new HashMap();
@@ -388,7 +510,7 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
             customerEmailSessionBeanLocal.sendEmail(cRMCustomerSessionBeanLocal.getCustomerBasicById(newCustomerBasicId), "mortgageLoanApplication", emailActions);
             ec.getFlash().put("amountRequired", customerLoanAmountRequired);
             ec.getFlash().put("tenure", customerLoanTenure);
-            ec.redirect(ec.getRequestContextPath() + "/web/merlionBank/loan/publicMortgageLoanApplicationDone.xhtml?faces-redirect=true");
+            ec.redirect(ec.getRequestContextPath() + "/web/merlionBank/loan/publicLoanApplicationDone.xhtml?faces-redirect=true");
         }
     }
 
@@ -414,7 +536,7 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
                 customerIdentificationNum = customerForeignPassport;
             }
 
-            if (age < 16 || age > 65) {
+            if (age < 21 || age > 65) {
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Your age is not qualified to apply for this type of loan", "");
                 FacesContext.getCurrentInstance().addMessage(null, message);
                 nextStep = event.getOldStep();
@@ -538,10 +660,10 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
 
     public void identificationUpload(FileUploadEvent event) throws FileNotFoundException, IOException {
         this.file = event.getFile();
-        
+
         if (file != null) {
             String newFilePath = System.getProperty("user.dir").replace("config", "docroot") + System.getProperty("file.separator");
-            
+
             String filename = customerIdentificationNum + ".pdf";
             File newFile = new File(newFilePath, filename);
             FileOutputStream fileOutputStream = new FileOutputStream(newFile);
@@ -552,12 +674,10 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
 
             InputStream inputStream = file.getInputstream();
 
-            while (true)
-            {
+            while (true) {
                 a = inputStream.read(buffer);
 
-                if (a < 0)
-                {
+                if (a < 0) {
                     break;
                 }
 
@@ -581,7 +701,7 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
         this.file = event.getFile();
         if (file != null) {
             String newFilePath = System.getProperty("user.dir").replace("config", "docroot") + System.getProperty("file.separator");
-            
+
             String filename = customerIdentificationNum + "-otp.pdf";
             File newFile = new File(newFilePath, filename);
             FileOutputStream fileOutputStream = new FileOutputStream(newFile);
@@ -592,12 +712,10 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
 
             InputStream inputStream = file.getInputstream();
 
-            while (true)
-            {
+            while (true) {
                 a = inputStream.read(buffer);
 
-                if (a < 0)
-                {
+                if (a < 0) {
                     break;
                 }
 
@@ -621,7 +739,7 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
         this.file = event.getFile();
         if (file != null) {
             String newFilePath = System.getProperty("user.dir").replace("config", "docroot") + System.getProperty("file.separator");
-            
+
             String filename = customerIdentificationNum + "-purchase_agreement.pdf";
             File newFile = new File(newFilePath, filename);
             FileOutputStream fileOutputStream = new FileOutputStream(newFile);
@@ -632,12 +750,10 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
 
             InputStream inputStream = file.getInputstream();
 
-            while (true)
-            {
+            while (true) {
                 a = inputStream.read(buffer);
 
-                if (a < 0)
-                {
+                if (a < 0) {
                     break;
                 }
 
@@ -661,7 +777,7 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
         this.file = event.getFile();
         if (file != null) {
             String newFilePath = System.getProperty("user.dir").replace("config", "docroot") + System.getProperty("file.separator");
-            
+
             String filename = customerIdentificationNum + "-existing_loan.pdf";
             File newFile = new File(newFilePath, filename);
             FileOutputStream fileOutputStream = new FileOutputStream(newFile);
@@ -672,12 +788,10 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
 
             InputStream inputStream = file.getInputstream();
 
-            while (true)
-            {
+            while (true) {
                 a = inputStream.read(buffer);
 
-                if (a < 0)
-                {
+                if (a < 0) {
                     break;
                 }
 
@@ -701,7 +815,7 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
         this.file = event.getFile();
         if (file != null) {
             String newFilePath = System.getProperty("user.dir").replace("config", "docroot") + System.getProperty("file.separator");
-            
+
             String filename = customerIdentificationNum + "-cpf_withdrawal.pdf";
             File newFile = new File(newFilePath, filename);
             FileOutputStream fileOutputStream = new FileOutputStream(newFile);
@@ -712,12 +826,10 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
 
             InputStream inputStream = file.getInputstream();
 
-            while (true)
-            {
+            while (true) {
                 a = inputStream.read(buffer);
 
-                if (a < 0)
-                {
+                if (a < 0) {
                     break;
                 }
 
@@ -741,7 +853,7 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
         this.file = event.getFile();
         if (file != null) {
             String newFilePath = System.getProperty("user.dir").replace("config", "docroot") + System.getProperty("file.separator");
-            
+
             String filename = customerIdentificationNum + "-evidence_of_sale.pdf";
             File newFile = new File(newFilePath, filename);
             FileOutputStream fileOutputStream = new FileOutputStream(newFile);
@@ -752,12 +864,10 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
 
             InputStream inputStream = file.getInputstream();
 
-            while (true)
-            {
+            while (true) {
                 a = inputStream.read(buffer);
 
-                if (a < 0)
-                {
+                if (a < 0) {
                     break;
                 }
 
@@ -781,7 +891,7 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
         this.file = event.getFile();
         if (file != null) {
             String newFilePath = System.getProperty("user.dir").replace("config", "docroot") + System.getProperty("file.separator");
-            
+
             String filename = customerIdentificationNum + "-tenancy.pdf";
             File newFile = new File(newFilePath, filename);
             FileOutputStream fileOutputStream = new FileOutputStream(newFile);
@@ -792,12 +902,10 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
 
             InputStream inputStream = file.getInputstream();
 
-            while (true)
-            {
+            while (true) {
                 a = inputStream.read(buffer);
 
-                if (a < 0)
-                {
+                if (a < 0) {
                     break;
                 }
 
@@ -821,7 +929,7 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
         this.file = event.getFile();
         if (file != null) {
             String newFilePath = System.getProperty("user.dir").replace("config", "docroot") + System.getProperty("file.separator");
-            
+
             String filename = customerIdentificationNum + "-employee_tax.pdf";
             File newFile = new File(newFilePath, filename);
             FileOutputStream fileOutputStream = new FileOutputStream(newFile);
@@ -832,12 +940,10 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
 
             InputStream inputStream = file.getInputstream();
 
-            while (true)
-            {
+            while (true) {
                 a = inputStream.read(buffer);
 
-                if (a < 0)
-                {
+                if (a < 0) {
                     break;
                 }
 
@@ -861,7 +967,7 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
         this.file = event.getFile();
         if (file != null) {
             String newFilePath = System.getProperty("user.dir").replace("config", "docroot") + System.getProperty("file.separator");
-            
+
             String filename = customerIdentificationNum + "-employee_cpf.pdf";
             File newFile = new File(newFilePath, filename);
             FileOutputStream fileOutputStream = new FileOutputStream(newFile);
@@ -872,12 +978,10 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
 
             InputStream inputStream = file.getInputstream();
 
-            while (true)
-            {
+            while (true) {
                 a = inputStream.read(buffer);
 
-                if (a < 0)
-                {
+                if (a < 0) {
                     break;
                 }
 
@@ -901,7 +1005,7 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
         this.file = event.getFile();
         if (file != null) {
             String newFilePath = System.getProperty("user.dir").replace("config", "docroot") + System.getProperty("file.separator");
-            
+
             String filename = customerIdentificationNum + "-self-employed_tax.pdf";
             File newFile = new File(newFilePath, filename);
             FileOutputStream fileOutputStream = new FileOutputStream(newFile);
@@ -912,12 +1016,10 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
 
             InputStream inputStream = file.getInputstream();
 
-            while (true)
-            {
+            while (true) {
                 a = inputStream.read(buffer);
 
-                if (a < 0)
-                {
+                if (a < 0) {
                     break;
                 }
 
@@ -927,7 +1029,7 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
 
             fileOutputStream.close();
             inputStream.close();
-            
+
             uploads.replace("selfEmployedTax", true);
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, file.getFileName() + " uploaded successfully.", "");
             FacesContext.getCurrentInstance().addMessage("selfEmployedTaxUpload", message);
@@ -1862,4 +1964,13 @@ public class PublicHDBLoanApplicationManagedBean implements Serializable {
     public void setInterestPackage(String interestPackage) {
         this.interestPackage = interestPackage;
     }
+
+    public ArrayList getPropertyTypes() {
+        return propertyTypes;
+    }
+
+    public void setPropertyTypes(ArrayList propertyTypes) {
+        this.propertyTypes = propertyTypes;
+    }
+
 }

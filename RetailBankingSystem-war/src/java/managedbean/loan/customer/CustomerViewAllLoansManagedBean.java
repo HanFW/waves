@@ -6,6 +6,7 @@
 package managedbean.loan.customer;
 
 import ejb.customer.entity.CustomerBasic;
+import ejb.loan.entity.CashlineApplication;
 import ejb.loan.entity.LoanApplication;
 import ejb.loan.entity.LoanPayableAccount;
 import ejb.loan.session.LoanManagementSessionBeanLocal;
@@ -29,6 +30,7 @@ public class CustomerViewAllLoansManagedBean {
     
     private List<LoanPayableAccount> accounts;
     private List<LoanApplication> applications;
+    private List<CashlineApplication> cashlines;
 
     /**
      * Creates a new instance of CustomerViewAllLoansManagedBean
@@ -54,6 +56,13 @@ public class CustomerViewAllLoansManagedBean {
         CustomerBasic customer = (CustomerBasic) ec.getSessionMap().get("customer");
         applications = loanManagementSessionBeanLocal.getLoanApplicationsByIdentification(customer.getCustomerIdentificationNum());
         return applications;
+    }
+    
+    public List<CashlineApplication> getCashlineApplications(){
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        CustomerBasic customer = (CustomerBasic) ec.getSessionMap().get("customer");
+        cashlines = loanManagementSessionBeanLocal.getCashlineApplicationsByIdentification(customer.getCustomerIdentificationNum());
+        return cashlines;
     }
     
 }

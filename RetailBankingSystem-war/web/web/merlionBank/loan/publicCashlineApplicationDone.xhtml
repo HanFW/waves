@@ -13,20 +13,17 @@
 
     <ui:define name="content">  
         <p:panelGrid columns="1">
-            <p:outputLabel value="Loan application submitted successfully! "/>
-            <p:outputLabel value="Loan applications usually take a few weeks to process."/>
+            <p:outputLabel value="Cashline application submitted successfully! "/>
+            <p:outputLabel value="Cashline applications usually take a few weeks to process."/>
             <p:outputLabel value="We will contact you via email once we have finished processing your request."/>
             <p:outputLabel value="Do note that Merlion Bank has the right to grant you less amount than required, or lenghten your tenure, based on your financial abilities. "/>
     </p:panelGrid>
     <p:panelGrid columns="2">
         <p:outputLabel value="Your application: "/>
-        <p:outputLabel value="#{publicHDBLoanApplicationDoneManagedBean.loanType}"/>
+        <p:outputLabel value="#{publicCashlineApplicationDoneManagedBean.loanType}"/>
         
-        <p:outputLabel value="Your required amount: "/>
-        <p:outputLabel value="#{publicHDBLoanApplicationDoneManagedBean.loanAmount}"/>
-        
-        <p:outputLabel value="Your required tenure "/>
-        <p:outputLabel value="#{publicHDBLoanApplicationDoneManagedBean.tenure}"/>
+        <p:outputLabel value="Your preferred limit: "/>
+        <p:outputLabel value="#{publicCashlineApplicationDoneManagedBean.loanAmount}"/>
     </p:panelGrid>
 </ui:define>
 </ui:composition>

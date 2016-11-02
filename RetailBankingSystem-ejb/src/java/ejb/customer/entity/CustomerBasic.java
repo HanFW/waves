@@ -4,6 +4,7 @@ import ejb.card.entity.CreditCard;
 import ejb.deposit.entity.BankAccount;
 import ejb.infrastructure.entity.MessageBox;
 import ejb.deposit.entity.Payee;
+import ejb.loan.entity.CashlineApplication;
 import ejb.loan.entity.CreditReportBureauScore;
 import ejb.loan.entity.CustomerDebt;
 import ejb.loan.entity.CustomerProperty;
@@ -94,6 +95,9 @@ public class CustomerBasic implements Serializable {
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
     private List<LoanApplication> loanApplication;
     
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
+    private List<CashlineApplication> cashlineApplication;
+    
     @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     private CreditReportBureauScore bureauScore;
     
@@ -102,6 +106,10 @@ public class CustomerBasic implements Serializable {
     
     public void addLoanApplication(LoanApplication newApplication){
         loanApplication.add(newApplication);
+    }
+    
+    public void addCashlineApplication(CashlineApplication newApplication){
+        cashlineApplication.add(newApplication);
     }
 
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
@@ -437,6 +445,14 @@ public class CustomerBasic implements Serializable {
 
     public void setRiskProfile(RiskProfile riskProfile) {
         this.riskProfile = riskProfile;
+    }
+
+    public List<CashlineApplication> getCashlineApplication() {
+        return cashlineApplication;
+    }
+
+    public void setCashlineApplication(List<CashlineApplication> cashlineApplication) {
+        this.cashlineApplication = cashlineApplication;
     }
     
     

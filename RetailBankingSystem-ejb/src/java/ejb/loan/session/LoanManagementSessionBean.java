@@ -5,6 +5,7 @@
  */
 package ejb.loan.session;
 
+import ejb.loan.entity.CashlineApplication;
 import ejb.loan.entity.LoanApplication;
 import ejb.loan.entity.LoanPayableAccount;
 import java.util.List;
@@ -51,4 +52,15 @@ public class LoanManagementSessionBean implements LoanManagementSessionBeanLocal
         return account;
     }
 
+    
+    @Override
+    public List<CashlineApplication> getCashlineApplicationsByIdentification(String identification){
+        System.out.println("get identification: " + identification);
+        Query query = em.createQuery("SELECT a FROM CashlineApplication a WHERE a.customerBasic.customerIdentificationNum = :identification");
+        query.setParameter("identification", identification);
+        
+        List<CashlineApplication> resultList = query.getResultList();
+        
+        return resultList;
+    }
 }
