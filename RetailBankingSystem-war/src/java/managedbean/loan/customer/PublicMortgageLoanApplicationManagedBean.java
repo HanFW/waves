@@ -194,7 +194,7 @@ public class PublicMortgageLoanApplicationManagedBean implements Serializable {
 
     //joint basic information
     private String jointRelationship;
-    
+
     private String jointSalutation;
     private String jointSalutationOthers;
     private String jointName;
@@ -336,6 +336,39 @@ public class PublicMortgageLoanApplicationManagedBean implements Serializable {
         debts.add(loanApplicationSessionBeanLocal.addNewCustomerDebt("car loan", "DBS", 500000, 1000, "collateral", 3, 5.6));
         debts.add(loanApplicationSessionBeanLocal.addNewCustomerDebt("HDB loan", "UOB", 800000, 2000, "collateral", 17, 2.8));
 
+        Long newJointBasicId;
+        Long newJointAdvancedId;
+        boolean jointIsExistingCustomer = cRMCustomerSessionBeanLocal.checkExistingCustomerByIdentification("F11223344");
+        if (jointIsExistingCustomer) {
+            newJointBasicId = cRMCustomerSessionBeanLocal.updateCustomerBasic("F11223344",
+                "hanfengwei96@gmail.com", "83114121", "China", "China", "Married",
+                "Accountant", "AfterYou", "customer address", "118425");
+        } else {
+            newJointBasicId = cRMCustomerSessionBeanLocal.addNewCustomerBasic("Han Lei",
+                    "Mr", "F11223344",
+                    "Male", "hanfengwei96@gmail.com", "83114121", "04/Jun/1968",
+                    "China", "China", "Chinese",
+                    "Married", "Teacher", "NUS",
+                    "address", "123123", null, null, null, null);
+        }
+        
+        boolean jointHasCustomerAdvanced = cRMCustomerSessionBeanLocal.checkExistingCustomerAdvanced("F11223344");
+        if(jointHasCustomerAdvanced){
+            newJointAdvancedId = cRMCustomerSessionBeanLocal.updateCustomerAdvanced("F11223344", 2,
+                    "Degree", "Rented", 5, "Government", 6,
+                    "Employee", 3000, "HDB", "company address",
+                    "123123", "Senior Management", "job title", null,
+                    0, 2000, "income source");
+        }else{
+            newJointAdvancedId = cRMCustomerSessionBeanLocal.addNewCustomerAdvanced(3, "Degree", "Rented",
+                3, "Government", 5, "Employee",
+                10000, "HDB", "company address",
+                "118426", "Senior Management", "CEO",
+                "NTU", 3, 2000,
+                "other income source");
+        }
+        
+        
         CustomerProperty cp = new CustomerProperty();
         cp.create("property address", "118427", customerPropertyOwners, "3-Room",
                 170.8, 200, "Completed",
@@ -345,8 +378,10 @@ public class PublicMortgageLoanApplicationManagedBean implements Serializable {
         mortgage.create("HDB - New Purchase", 500000, 20, 550000,
                 new Date(), "Developer/HDB", "no", null, "yes",
                 5000, 2012, "yes", 30000,
-                20000, 30000, "Employee", false, null, null);
-//        loanApplicationSessionBeanLocal.submitLoanApplication(true, false, newCustomerBasicId, newCustomerAdvancedId, debts, cp, mortgage, null, "purchase", "HDB-Fixed");
+                20000, 30000, "Employee", true, "Father", "Employee");
+        loanApplicationSessionBeanLocal.submitLoanApplication(true, false, newCustomerBasicId, newCustomerAdvancedId, debts,
+                true, jointIsExistingCustomer, jointHasCustomerAdvanced, newJointBasicId, newJointAdvancedId, debts,
+                cp, mortgage, null, "purchase", "HDB-Fixed");
 
         //add HDB - refinancing
         Long customerId2 = cRMCustomerSessionBeanLocal.addNewCustomerBasic("Dai Hailang",
@@ -375,7 +410,9 @@ public class PublicMortgageLoanApplicationManagedBean implements Serializable {
         RefinancingApplication refinancing2 = new RefinancingApplication();
         refinancing2.create("HDB - Refinancing", 450000, 17, "POSB",
                 450000, 15, 3, 50000, "Self-Employed", false, null, null);
-//        loanApplicationSessionBeanLocal.submitLoanApplication(false, false, customerId2, customerAdvancedId2, debts2, cp2, null, refinancing2, "refinancing", "HDB-Floating");
+        loanApplicationSessionBeanLocal.submitLoanApplication(false, false, customerId2, customerAdvancedId2, debts2,
+                false, false, false, null, null, null,
+                cp2, null, refinancing2, "refinancing", "HDB-Floating");
 
         //add Private Property - Refinancing
         Long customerId3 = cRMCustomerSessionBeanLocal.addNewCustomerBasic("Guo Ziyu",
@@ -404,7 +441,9 @@ public class PublicMortgageLoanApplicationManagedBean implements Serializable {
         RefinancingApplication refinancing3 = new RefinancingApplication();
         refinancing3.create("Private Property - Refinancing", 450000, 17, "POSB",
                 450000, 15, 3, 50000, "Self-Employed", false, null, null);
-//        loanApplicationSessionBeanLocal.submitLoanApplication(false, false, customerId3, customerAdvancedId3, debts3, cp3, null, refinancing3, "refinancing", "Private Property-Floating");
+        loanApplicationSessionBeanLocal.submitLoanApplication(false, false, customerId3, customerAdvancedId3, debts3,
+                false, false, false, null, null, null,
+                cp3, null, refinancing3, "refinancing", "Private Property-Floating");
 
         //add Private Property - New Purchase
         Long customerId4 = cRMCustomerSessionBeanLocal.addNewCustomerBasic("Yang Shuanghe",
@@ -434,8 +473,10 @@ public class PublicMortgageLoanApplicationManagedBean implements Serializable {
         mortgage4.create("Private Property - New Purchase", 500000, 20, 550000,
                 new Date(), "Developer/HDB", "no", null, "yes",
                 5000, 2012, "yes", 30000,
-                20000, 30000, "Employee", true, "Father","Employee");
-//        loanApplicationSessionBeanLocal.submitLoanApplication(false, false, customerId4, customerAdvancedId4, debts4, cp4, mortgage4, null, "purchase", "Private Property-Fixed");
+                20000, 30000, "Employee", false, null, null);
+        loanApplicationSessionBeanLocal.submitLoanApplication(false, false, customerId4, customerAdvancedId4, debts4,
+                false, false, false, null, null,null,
+                cp4, mortgage4, null, "purchase", "Private Property-Fixed");
 
         ec.redirect(ec.getRequestContextPath() + "/web/merlionBank/loan/publicLoanApplicationDone.xhtml?faces-redirect=true");
     }
@@ -535,13 +576,13 @@ public class PublicMortgageLoanApplicationManagedBean implements Serializable {
                 debts.add(loanApplicationSessionBeanLocal.addNewCustomerDebt(facilityType, financialInstitution,
                         totalAmount, instalment, collateral, tenure, rate.doubleValue()));
             }
-            
+
             boolean jointIsExistingCustomer = false;
-            boolean jointHasCustomerAdvanced =false;
+            boolean jointHasCustomerAdvanced = false;
             Long newJointBasicId = null;
             Long newJointAdvancedId = null;
             ArrayList<CustomerDebt> jointDebts = new ArrayList<CustomerDebt>();
-            
+
             if (hasJointApplicant.equals("Yes")) {
                 //create or update CustomerBasic
                 if (jointSalutation.equals("Others")) {
@@ -551,7 +592,6 @@ public class PublicMortgageLoanApplicationManagedBean implements Serializable {
                 dateOfBirth = changeDateFormat(jointDateOfBirth);
                 String jointAddress = jointStreetName + ", " + jointBlockNum + ", " + jointUnitNum + ", " + jointPostal;
 
-                
                 jointIsExistingCustomer = cRMCustomerSessionBeanLocal.checkExistingCustomerByIdentification(jointIdentificationNum);
                 if (jointIsExistingCustomer) {
                     newJointBasicId = cRMCustomerSessionBeanLocal.updateCustomerBasic(jointIdentificationNum, jointEmail, jointMobile,
@@ -667,7 +707,7 @@ public class PublicMortgageLoanApplicationManagedBean implements Serializable {
                     ec.getFlash().put("loanType", "Private Property - New Purchase");
                 }
 
-                loanApplicationSessionBeanLocal.submitLoanApplication(isExistingCustomer, hasCustomerAdvanced, newCustomerBasicId, newCustomerAdvancedId, debts, 
+                loanApplicationSessionBeanLocal.submitLoanApplication(isExistingCustomer, hasCustomerAdvanced, newCustomerBasicId, newCustomerAdvancedId, debts,
                         hasJointApplicant.equals("Yes"), jointIsExistingCustomer, jointHasCustomerAdvanced, newJointBasicId, newJointAdvancedId, jointDebts,
                         cp, mortgage, null, customerFinancialRequest, interestPackage);
 
@@ -685,7 +725,7 @@ public class PublicMortgageLoanApplicationManagedBean implements Serializable {
                     ec.getFlash().put("loanType", "Private Property - Refinancing");
                 }
 
-                loanApplicationSessionBeanLocal.submitLoanApplication(isExistingCustomer, hasCustomerAdvanced, newCustomerBasicId, newCustomerAdvancedId, debts, 
+                loanApplicationSessionBeanLocal.submitLoanApplication(isExistingCustomer, hasCustomerAdvanced, newCustomerBasicId, newCustomerAdvancedId, debts,
                         hasJointApplicant.equals("Yes"), jointIsExistingCustomer, jointHasCustomerAdvanced, newJointBasicId, newJointAdvancedId, jointDebts,
                         cp, null, refinancing, customerFinancialRequest, interestPackage);
             }
@@ -823,7 +863,7 @@ public class PublicMortgageLoanApplicationManagedBean implements Serializable {
 
     public void addCustomerFinancialCommitment() {
         System.out.println("====== loan/PublicHDBLoanApplicationManagedBean: addCustomerFinancialCommitment() ======");
-        if (customerFinancialInstitution == null || customerFacilityType == null || customerLoanAmount == null || customerMonthlyInstalment == null 
+        if (customerFinancialInstitution == null || customerFacilityType == null || customerLoanAmount == null || customerMonthlyInstalment == null
                 || customerCollateralDetails == null || customerRemainingTenure == null || customerCurrentInterest == null) {
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please fill in all the fields", "");
             FacesContext.getCurrentInstance().addMessage(null, message);
@@ -848,7 +888,7 @@ public class PublicMortgageLoanApplicationManagedBean implements Serializable {
     }
 
     public void addJointFinancialCommitment() {
-        if (jointFinancialInstitution == null || jointFacilityType == null || jointLoanAmount == null || jointMonthlyInstalment == null 
+        if (jointFinancialInstitution == null || jointFacilityType == null || jointLoanAmount == null || jointMonthlyInstalment == null
                 || jointCollateralDetails == null || jointRemainingTenure == null || jointCurrentInterest == null) {
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please fill in all the fields", "");
             FacesContext.getCurrentInstance().addMessage(null, message);
@@ -940,10 +980,10 @@ public class PublicMortgageLoanApplicationManagedBean implements Serializable {
     }
 
     public void showPropertyOTPPanel() {
-        if(customerPropertyWithOTP.equals("yes")){
+        if (customerPropertyWithOTP.equals("yes")) {
             propertyOTPPanelVisible = true;
             uploads.replace("otp", false);
-        }else{
+        } else {
             propertyOTPPanelVisible = false;
             uploads.replace("otp", true);
         }
