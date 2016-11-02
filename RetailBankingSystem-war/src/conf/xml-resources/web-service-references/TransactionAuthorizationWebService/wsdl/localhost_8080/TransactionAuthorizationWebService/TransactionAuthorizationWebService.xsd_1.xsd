@@ -8,6 +8,10 @@
 
 <xs:element name="createTransactionToBeAuthorizedResponse" type="tns:createTransactionToBeAuthorizedResponse"/>
 
+<xs:element name="getAllAuthorizedTransactions" type="tns:getAllAuthorizedTransactions"/>
+
+<xs:element name="getAllAuthorizedTransactionsResponse" type="tns:getAllAuthorizedTransactionsResponse"/>
+
 <xs:element name="getAllPendingTransactionsToBeAuthorized" type="tns:getAllPendingTransactionsToBeAuthorized"/>
 
 <xs:element name="getAllPendingTransactionsToBeAuthorizedResponse" type="tns:getAllPendingTransactionsToBeAuthorizedResponse"/>
@@ -51,6 +55,16 @@
 <xs:element name="transactionStatus" type="xs:string" minOccurs="0"/>
 <xs:element name="transactionTime" type="xs:string" minOccurs="0"/>
 <xs:element name="transactionToBeAuthorizedId" type="xs:long" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getAllAuthorizedTransactions">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="getAllAuthorizedTransactionsResponse">
+<xs:sequence>
+<xs:element name="return" type="tns:transactionToBeAuthorized" minOccurs="0" maxOccurs="unbounded"/>
 </xs:sequence>
 </xs:complexType>
 

@@ -733,4 +733,26 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
         bankAccount.setAvailableBankAccountBalance(availableBankAccountBalance);
         bankAccount.setTotalBankAccountBalance(totalBankAccountBalance);
     }
+
+    @Override
+    public void updateDepositAccountAvailableBalance(String bankAccountNum, double transactionAmt){
+        System.out.println("!!!!!!!updateDepositAccountAvailableBalance");
+        BankAccount account=retrieveBankAccountByNum(bankAccountNum);
+        Double availableBalance;
+        availableBalance = Double.valueOf(account.getAvailableBankAccountBalance());
+        String newAvailableBalance = String.valueOf(availableBalance-transactionAmt);
+        account.setAvailableBankAccountBalance(newAvailableBalance);
+        entityManager.flush();
+    }
+
+    @Override
+    public void updateDepositAccountTotalBalance(String bankAccountNum, double transactionAmt){
+         BankAccount account=retrieveBankAccountByNum(bankAccountNum);
+        Double totalBalance;
+        totalBalance = Double.valueOf(account.getTotalBankAccountBalance());
+        String newTotalBalance = String.valueOf(totalBalance-transactionAmt);
+        account.setTotalBankAccountBalance(newTotalBalance);
+        entityManager.flush();
+               
+    }
 }

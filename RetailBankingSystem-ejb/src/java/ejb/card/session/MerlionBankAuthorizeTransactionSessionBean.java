@@ -8,9 +8,11 @@ package ejb.card.session;
 import ejb.card.entity.CreditCard;
 import ejb.card.entity.DebitCard;
 import ejb.deposit.entity.BankAccount;
+import ejb.deposit.session.BankAccountSessionBeanLocal;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -31,6 +33,9 @@ public class MerlionBankAuthorizeTransactionSessionBean implements MerlionBankAu
 
     @PersistenceContext
     private EntityManager em;
+    
+    @EJB 
+    private BankAccountSessionBeanLocal bankAccountSessionBeanLocal;
 
     @Override
     public String checkTransactionAuthorizationById(Long id) {
@@ -52,14 +57,14 @@ public class MerlionBankAuthorizeTransactionSessionBean implements MerlionBankAu
             } else {
                 DebitCard findDebitCard = (DebitCard) query.getSingleResult();
                 if (!findDebitCard.getStatus().equals("activated")) {
-                    System.out.println("card not activated");
+                    System.out.println("test test card not activated");
                     return "not authorized";
                 } else {
                     try {
                         String hashedPwd = md5Hashing(cardPwd + cardNum.substring(0, 3));
                         System.out.println("hashed pwd: " + hashedPwd);
                         if (!hashedPwd.equals(findDebitCard.getDebitCardPwd())) {
-                            System.out.println("card pwd is wrong");                           
+                            System.out.println("test test card pwd is wrong");                           
                             return "not authorized";
                         } else {
                             BankAccount depositAccount = findDebitCard.getBankAccount();
@@ -70,8 +75,11 @@ public class MerlionBankAuthorizeTransactionSessionBean implements MerlionBankAu
                             } else {
                                 if (findDebitCard.getDebitCardType().getCardNetwork().equals("Visa")) {
                                     transaction.setTransactionStatus("authorized");
+                                    bankAccountSessionBeanLocal.updateDepositAccountAvailableBalance(cardNum, transactionAmt);
+                                    System.out.println("done");
                                     return "authorized-Visa";
                                 } else {
+                                    bankAccountSessionBeanLocal.updateDepositAccountAvailableBalance(cardNum, transactionAmt);
                                     transaction.setTransactionStatus("authorized");
                                     return "authorized-MasterCard";
                                 }
@@ -128,6 +136,7 @@ public class MerlionBankAuthorizeTransactionSessionBean implements MerlionBankAu
         ws.client.merlionTransactionAuthorization.TransactionAuthorizationWebService port = service.getTransactionAuthorizationWebServicePort();
         return port.getTransactionToBeAuthorizedById(id);
     }
+   
     
     
 

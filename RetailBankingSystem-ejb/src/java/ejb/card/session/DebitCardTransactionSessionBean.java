@@ -30,9 +30,26 @@ public class DebitCardTransactionSessionBean implements DebitCardTransactionSess
 
         String[] debitCardInfo = selectedDebitCard.split("-");
         String debitCardNum = debitCardInfo[1];
-
+       
         DebitCard findDebitCard = getCardByCardNum(debitCardNum);
+        
+        //current transaction limit
+       double transactionLimit = findDebitCard.getTransactionLimit();
+       double currentAvailableBalance = findDebitCard.getAvailableTransactionBalance();
+       double moneySpent = transactionLimit - currentAvailableBalance;
+       
+       double newLimit = 1.00*newTransactionLimit;
+       if(newLimit>moneySpent){
+           findDebitCard.setAvailableTransactionBalance(newLimit - moneySpent);
+       }
+       else{
+            findDebitCard.setAvailableTransactionBalance(0.0);
+       }
+          
         findDebitCard.setTransactionLimit(newTransactionLimit);
+        
+       
+        
         em.flush();
 
     }

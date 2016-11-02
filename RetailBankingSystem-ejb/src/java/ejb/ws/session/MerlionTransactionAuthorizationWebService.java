@@ -1,11 +1,19 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package ejb.ws.session;
 
 import ejb.card.entity.CreditCard;
 import ejb.card.entity.DebitCard;
 import ejb.deposit.entity.BankAccount;
+import ejb.deposit.session.BankAccountSessionBeanLocal;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+import java.util.List;
+import javax.ejb.EJB;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -30,6 +38,9 @@ public class MerlionTransactionAuthorizationWebService {
 
     @PersistenceContext
     private EntityManager em;
+
+    @EJB
+    private BankAccountSessionBeanLocal bankAccountSessionBeanLocal;
 
     @WebMethod(operationName = "checkTransactionAuthorizationById")
     public String checkTransactionAuthorizationById(@WebParam(name = "id") Long id) {
@@ -59,20 +70,33 @@ public class MerlionTransactionAuthorizationWebService {
                         String hashedPwd = md5Hashing(cardPwd + cardNum.substring(0, 3));
                         System.out.println("hashed pwd: " + hashedPwd);
                         if (!hashedPwd.equals(findDebitCard.getDebitCardPwd())) {
-                            System.out.println("card pwd is wrong");
+                            System.out.println("test card pwd is wrong");
                             return "not authorized";
                         } else {
                             BankAccount depositAccount = findDebitCard.getBankAccount();
                             Double accountBalance = Double.valueOf(depositAccount.getTotalBankAccountBalance());
-                            if (transactionAmt > accountBalance) {
-                                System.out.println("depoist account balance insufficient");
+                            double availableTransactionBalance = findDebitCard.getAvailableTransactionBalance();
+                            if (transactionAmt > accountBalance || transactionAmt >availableTransactionBalance ) {
+                                System.out.println("depoist account balance insufficient or transaction exceeds daily transaction limit");
                                 return "not authorized";
                             } else {
+                                double newAvailableTransactionBalance = availableTransactionBalance-transactionAmt;
+                                findDebitCard.setAvailableTransactionBalance(newAvailableTransactionBalance);
+                                em.flush();
+                                
                                 if (findDebitCard.getDebitCardType().getCardNetwork().equals("Visa")) {
-                                    transaction.setTransactionStatus("authorized");
+//                                    bankAccountSessionBeanLocal.updateDepositAccountAvailableBalance(cardNum, transactionAmt);
+//                                    em.detach(findDebitCard);
+//                                    findDebitCard.setBankAccount(null);
+//                                    findDebitCard.setDebitCardType(null);
+                                    System.out.println("authorized haahhahaa");
                                     return "authorized-Visa";
                                 } else {
-                                    transaction.setTransactionStatus("authorized");
+//                                    bankAccountSessionBeanLocal.updateDepositAccountAvailableBalance(cardNum, transactionAmt);
+//                                    em.detach(findDebitCard);
+//                                    findDebitCard.setBankAccount(null);
+//                                    findDebitCard.setDebitCardType(null);
+                                    System.out.println("authorized hahahahah");
                                     return "authorized-MasterCard";
                                 }
                             }//exceed account balance
@@ -129,6 +153,24 @@ public class MerlionTransactionAuthorizationWebService {
         // If the calling of port operations may lead to race condition some synchronization is required.
         ws.client.merlionTransactionAuthorization.TransactionAuthorizationWebService port = service.getTransactionAuthorizationWebServicePort();
         return port.getTransactionToBeAuthorizedById(id);
+    }
+
+    private java.util.List<ws.client.merlionTransactionAuthorization.TransactionToBeAuthorized> getAllAuthorizedTransactions() {
+        // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
+        // If the calling of port operations may lead to race condition some synchronization is required.
+        ws.client.merlionTransactionAuthorization.TransactionAuthorizationWebService port = service.getTransactionAuthorizationWebServicePort();
+        return port.getAllAuthorizedTransactions();
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "merlionCreditCustomerAccountForTransaction")
+    public String merlionCreditCustomerAccountForTransaction() {
+        List<TransactionToBeAuthorized> transactions = getAllAuthorizedTransactions();
+        System.out.println("getAllAuthorizedTransactions(): " + transactions);
+        return "success";
+
     }
 
 }

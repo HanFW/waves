@@ -34,5 +34,6 @@ public interface CreditCardSessionBeanLocal {
     public double[] getCreditLimitSuggestedInterval();
     public void approveRequest(Long creditCardId, double creditLimit);
     public void rejectRequest(Long creditCardId);
+    public void updateCreditCardLimit(String creditCardNum, double transactionAmt);
     
 }

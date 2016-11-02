@@ -437,5 +437,16 @@ public class CreditCardSessionBean implements CreditCardSessionBeanLocal {
         MessageDigest md = MessageDigest.getInstance("MD5");
         return Arrays.toString(md.digest(stringToHash.getBytes()));
     }
+    
+    @Override
+    public void updateCreditCardLimit(String creditCardNum, double transactionAmt){
+        CreditCard card = getCardByCardNum(creditCardNum);
+        double newCreditLimit = card.getCreditLimit()-transactionAmt;
+        card.setCreditLimit(newCreditLimit);
+        double newOutstandingBalance=card.getOutstandingBalance()+transactionAmt;
+        card.setOutstandingBalance(newOutstandingBalance);
+        em.flush();
+        
+    }
 
 }

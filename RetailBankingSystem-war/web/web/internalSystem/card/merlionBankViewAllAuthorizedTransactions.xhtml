@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/internalSystemTemplate.xhtml">
+
+    <ui:define name="content">
+        <h:form>
+            <div align="center">
+                <p:dataTable var="transaction" value="" reflow="true" paginator="true" rows="10">
+
+                    <p:column headerText="Settlemet Date">
+                        <h:outputText value="" />
+                    </p:column>
+
+                    <p:column headerText="Settlement Reference">
+                        <h:outputText value="" />
+                    </p:column>
+
+                    <p:column headerText="Banks" >
+                        <h:outputText value="" /> 
+                    </p:column>
+
+                </p:dataTable>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>
+

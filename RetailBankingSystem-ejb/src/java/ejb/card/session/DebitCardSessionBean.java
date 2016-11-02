@@ -86,6 +86,7 @@ public class DebitCardSessionBean implements DebitCardSessionBeanLocal {
         debitCard.setStatus("not activated");
 
         debitCard.setTransactionLimit(500);
+        debitCard.setAvailableTransactionBalance(500);
 
         em.persist(debitCard);
         depositAccount.addDebitCard(debitCard);
