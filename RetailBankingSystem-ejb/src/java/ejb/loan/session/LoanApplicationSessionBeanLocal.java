@@ -26,6 +26,7 @@ import javax.ejb.Local;
 @Local
 public interface LoanApplicationSessionBeanLocal {
     public void submitLoanApplication(boolean isExistingCustomer, boolean hasCustomerAdvanced, Long customerBasicId, Long customerAdvancedId, ArrayList<CustomerDebt> debts, 
+            boolean hasJoint, boolean jointIsExistingCustomer, boolean jointHasCustomerAdvanced, Long jointBasicId, Long jointAdvancedId, ArrayList<CustomerDebt> jointDebts,
             CustomerProperty cp, MortgageLoanApplication mortgage, RefinancingApplication refinancing, String loanType, String interestPackage);
     public void submitCashlineApplication(boolean isExistingCustomer, boolean hasCustomerAdvanced, CashlineApplication cashline, Long newCustomerBasicId, Long newCustomerAdvancedId);
     public void submitEducationLoanApplication(boolean isExistingCustomer, boolean hasCustomerAdvanced, EducationLoanApplication application, Long newCustomerBasicId, Long newCustomerAdvancedId, Long guarantorId);

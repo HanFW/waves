@@ -1199,9 +1199,9 @@
                                               required="#{publicEducationLoanApplicationManagedBean.guarantorNationalityOthersPanelVisible}" requiredMessage="Required Field">
                                 <f:selectItem itemLabel="Yes" itemValue="Yes" />
                                 <f:selectItem itemLabel="No" itemValue="No" />
-                                <p:ajax event="change" update="panelGuarantorNRIC panelPassport" listener="#{publicEducationLoanApplicationManagedBean.showGuarantorIdentificationPanel}"/>
+                                <p:ajax event="change" update="panelGuarantorNRIC panelGuarantorPassport" listener="#{publicEducationLoanApplicationManagedBean.showGuarantorIdentificationPanel}"/>
                             </p:selectOneRadio>
-                            <p:message for="singaporePR" />
+                            <p:message for="guarantorSingaporePR" />
                         </p:panel>
 
                         <p:panel style="border: none;" id="panelGuarantorNRIC" visible="#{publicEducationLoanApplicationManagedBean.guarantorNricPanelVisible}">

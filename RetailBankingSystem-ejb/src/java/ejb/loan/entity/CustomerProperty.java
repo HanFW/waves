@@ -9,12 +9,14 @@ import ejb.customer.entity.CustomerBasic;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 
 /**
@@ -42,8 +44,8 @@ public class CustomerProperty implements Serializable {
     private int propertyTenureDuration;
     private int propertyTenureStartYear;
     
-    @OneToOne(fetch = FetchType.EAGER, mappedBy = "customerProperty")
-    private CustomerBasic customerBasic;
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerProperty")
+    private List<CustomerBasic> customerBasic;
     
     public void create(String propertyAddress, String propertyPostal, ArrayList<String> propertyOwners, 
             String propertyType, double propertyBuiltUpArea, double propertyLandArea, String propertyStatus, 
@@ -61,7 +63,12 @@ public class CustomerProperty implements Serializable {
         this.setPropertyTenureType(propertyTenureType);
         this.setPropertyTenureDuration(propertyTenureDuration);
         this.setPropertyTenureStartYear(propertyTenureStartYear);
-        this.setCustomerBasic(customerBasic);
+        this.customerBasic = new ArrayList<CustomerBasic>();
+        this.addCustomerBasic(customerBasic);
+    }
+    
+    public void addCustomerBasic(CustomerBasic newCustomer){
+        customerBasic.add(newCustomer);
     }
 
     public Long getCustomerPropertyId() {
@@ -168,11 +175,11 @@ public class CustomerProperty implements Serializable {
         this.propertyTenureStartYear = propertyTenureStartYear;
     }
 
-    public CustomerBasic getCustomerBasic() {
+    public List<CustomerBasic> getCustomerBasic() {
         return customerBasic;
     }
 
-    public void setCustomerBasic(CustomerBasic customerBasic) {
+    public void setCustomerBasic(List<CustomerBasic> customerBasic) {
         this.customerBasic = customerBasic;
     }
     

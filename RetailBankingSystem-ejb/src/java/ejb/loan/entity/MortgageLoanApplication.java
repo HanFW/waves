@@ -5,10 +5,12 @@
  */
 package ejb.loan.entity;
 
+import ejb.customer.entity.CustomerBasic;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import javax.persistence.Entity;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 
 /**
@@ -35,6 +37,9 @@ public class MortgageLoanApplication extends LoanApplication implements Serializ
     private double cashDownPayment;
     private double cpfDownPayment;
     private double propertyAppraisedValue;
+    
+    @OneToOne(mappedBy = "mortgageLoanApplication")
+    private CustomerBasic customer;
 
     public void create(String loanType, double amountRequired, int periodRequired, double propertyPurchasePrice, Date propertyDateOfPurchase,
             String propertySource, String propertyWithOTP, Date propertyOTPDate, String propertyWithTenancy,
@@ -192,6 +197,14 @@ public class MortgageLoanApplication extends LoanApplication implements Serializ
 
     public void setPropertyAppraisedValue(double propertyAppraisedValue) {
         this.propertyAppraisedValue = propertyAppraisedValue;
+    }
+
+    public CustomerBasic getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(CustomerBasic customer) {
+        this.customer = customer;
     }
 
     

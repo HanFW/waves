@@ -14,7 +14,7 @@ public class SignatureViewManagedBean implements Serializable {
 
     private String customerSignature;
     private String guarantorSignature;
-    private String jointApplicantSignature;
+    private String jointSignature;
 
     public SignatureViewManagedBean() {
     }
@@ -44,16 +44,16 @@ public class SignatureViewManagedBean implements Serializable {
         this.guarantorSignature = guarantorSignature;
     }
 
-    public String getJointApplicantSignature() {
+    public String getJointSignature() {
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         Map<String, Object> sessionMap = externalContext.getSessionMap();
-        sessionMap.put("jointApplicantSignature", jointApplicantSignature);
+        sessionMap.put("jointSignature", jointSignature);
         
-        return jointApplicantSignature;
+        return jointSignature;
     }
 
-    public void setJointApplicantSignature(String jointApplicantSignature) {
-        this.jointApplicantSignature = jointApplicantSignature;
+    public void setJointSignature(String jointSignature) {
+        this.jointSignature = jointSignature;
     }
     
     

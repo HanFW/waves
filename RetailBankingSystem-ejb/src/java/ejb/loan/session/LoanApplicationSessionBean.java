@@ -45,23 +45,37 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
     private EntityManager em;
 
     @Override
-    public void submitLoanApplication(boolean isExistingCustomer, boolean hasCustomerAdvanced, Long guarantorBasicId, Long guarantorAdvancedId, ArrayList<CustomerDebt> debts,
+    public void submitLoanApplication(boolean isExistingCustomer, boolean hasCustomerAdvanced, Long customerBasicId, Long customerAdvancedId, ArrayList<CustomerDebt> debts,
+            boolean hasJoint, boolean jointIsExistingCustomer, boolean jointHasCustomerAdvanced, Long jointBasicId, Long jointAdvancedId, ArrayList<CustomerDebt> jointDebts,
             CustomerProperty cp, MortgageLoanApplication mortgage, RefinancingApplication refinancing, String loanType, String interestPackage) {
         System.out.println("****** loan/LoanApplicationSessionBean: submitLoanApplication() ******");
-        CustomerBasic cb = em.find(CustomerBasic.class, guarantorBasicId);
+        CustomerBasic cb = em.find(CustomerBasic.class, customerBasicId);
+        CustomerBasic joint = null;
 
-        //set debts to guarantorBasic (1-M uni)
+        //set debts to customerBasic (1-M uni)
         cb.setCustomerDebt(debts);
 
-        //set on both side (1-1 bi)
-        cp.setCustomerBasic(cb);
+        //set property on both side (1-1 bi)
+        cp.addCustomerBasic(cb);
         cb.setCustomerProperty(cp);
 
-        //set on both side (1-1 bi)
+        //set customer advanced on both side (1-1 bi)
         if (!hasCustomerAdvanced) {
-            CustomerAdvanced ca = em.find(CustomerAdvanced.class, guarantorAdvancedId);
+            CustomerAdvanced ca = em.find(CustomerAdvanced.class, customerAdvancedId);
             cb.setCustomerAdvanced(ca);
             ca.setCustomerBasic(cb);
+        }
+
+        if (hasJoint) {
+            joint = em.find(CustomerBasic.class, jointBasicId);
+            joint.setCustomerDebt(jointDebts);
+            cp.addCustomerBasic(joint);
+            joint.setCustomerProperty(cp);
+            if (!jointHasCustomerAdvanced) {
+                CustomerAdvanced ca = em.find(CustomerAdvanced.class, jointAdvancedId);
+                joint.setCustomerAdvanced(ca);
+                ca.setCustomerBasic(joint);
+            }
         }
 
         Query query = em.createQuery("SELECT p FROM LoanInterestPackage p WHERE p.packageName = :packageName");
@@ -75,11 +89,19 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
             if (loanType.equals("purchase")) {
                 mortgage.setCustomerBasic(cb);
                 cb.addLoanApplication(mortgage);
+                if (hasJoint) {
+                    mortgage.setCustomer(joint);
+                    joint.addLoanApplication(mortgage);
+                }
                 mortgage.setLoanInterestPackage(pkg);
                 pkg.addLoanApplication(mortgage);
             } else {
                 refinancing.setCustomerBasic(cb);
                 cb.addLoanApplication(refinancing);
+                if (hasJoint) {
+                    refinancing.setCustomer(joint);
+                    joint.addLoanApplication(refinancing);
+                }
                 refinancing.setLoanInterestPackage(pkg);
                 pkg.addLoanApplication(refinancing);
             }
@@ -88,17 +110,25 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
             if (loanType.equals("purchase")) {
                 mortgage.setCustomerBasic(cb);
                 cb.addLoanApplication(mortgage);
+                if (hasJoint) {
+                    mortgage.setCustomer(joint);
+                    joint.addLoanApplication(mortgage);
+                }
             } else {
                 refinancing.setCustomerBasic(cb);
                 cb.addLoanApplication(refinancing);
+                if (hasJoint) {
+                    refinancing.setCustomer(joint);
+                    joint.addLoanApplication(refinancing);
+                }
             }
         }
 
         em.flush();
     }
-    
+
     @Override
-    public void submitCashlineApplication(boolean isExistingCustomer, boolean hasCustomerAdvanced, CashlineApplication cashline, Long newCustomerBasicId, Long newCustomerAdvancedId){
+    public void submitCashlineApplication(boolean isExistingCustomer, boolean hasCustomerAdvanced, CashlineApplication cashline, Long newCustomerBasicId, Long newCustomerAdvancedId) {
         System.out.println("****** loan/LoanApplicationSessionBean: submitCashlineApplication() ******");
         CustomerBasic cb = em.find(CustomerBasic.class, newCustomerBasicId);
 
@@ -129,9 +159,9 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
 
         em.flush();
     }
-    
+
     @Override
-    public void submitEducationLoanApplication(boolean isExistingCustomer, boolean hasCustomerAdvanced, EducationLoanApplication application, Long newCustomerBasicId, Long newCustomerAdvancedId, Long guarantorId){
+    public void submitEducationLoanApplication(boolean isExistingCustomer, boolean hasCustomerAdvanced, EducationLoanApplication application, Long newCustomerBasicId, Long newCustomerAdvancedId, Long guarantorId) {
         System.out.println("****** loan/LoanApplicationSessionBean: submitEducationLoanApplication() ******");
         CustomerBasic cb = em.find(CustomerBasic.class, newCustomerBasicId);
 
@@ -141,7 +171,7 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
             cb.setCustomerAdvanced(ca);
             ca.setCustomerBasic(cb);
         }
-        
+
         Query query = em.createQuery("SELECT p FROM LoanInterestPackage p WHERE p.packageName = :packageName");
         query.setParameter("packageName", "Education Loan");
         List resultList = query.getResultList();
@@ -160,17 +190,17 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
         }
 
         em.flush();
-        
+
         //add loan guarantor
         EducationLoanGuarantor guarantor = em.find(EducationLoanGuarantor.class, guarantorId);
         application.setEducationLoanGuarantor(guarantor);
         guarantor.setEducationLoanApplication(application);
-        
+
         em.flush();
     }
-    
+
     @Override
-    public void submitCarLoanApplication(boolean isExistingCustomer, boolean hasCustomerAdvanced, CarLoanApplication application, Long newCustomerBasicId, Long newCustomerAdvancedId){
+    public void submitCarLoanApplication(boolean isExistingCustomer, boolean hasCustomerAdvanced, CarLoanApplication application, Long newCustomerBasicId, Long newCustomerAdvancedId) {
         System.out.println("****** loan/LoanApplicationSessionBean: submitCarLoanApplication() ******");
         CustomerBasic cb = em.find(CustomerBasic.class, newCustomerBasicId);
 
@@ -200,14 +230,14 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
 
         em.flush();
     }
-    
+
     @Override
-    public void submitRenovationLoanApplication(boolean isExistingCustomer, boolean hasCustomerAdvanced, RenovationLoanApplication application, CustomerProperty property, Long newCustomerBasicId, Long newCustomerAdvancedId){
+    public void submitRenovationLoanApplication(boolean isExistingCustomer, boolean hasCustomerAdvanced, RenovationLoanApplication application, CustomerProperty property, Long newCustomerBasicId, Long newCustomerAdvancedId) {
         System.out.println("****** loan/LoanApplicationSessionBean: submitRenovationLoanApplication() ******");
         CustomerBasic cb = em.find(CustomerBasic.class, newCustomerBasicId);
 
         //set on both side (1-1 bi)
-        property.setCustomerBasic(cb);
+        property.addCustomerBasic(cb);
         cb.setCustomerProperty(property);
 
         //set on both side (1-1 bi)
@@ -220,7 +250,7 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
         Query query = em.createQuery("SELECT p FROM LoanInterestPackage p WHERE p.packageName = :packageName");
         query.setParameter("packageName", "Renovation Loan");
         List resultList = query.getResultList();
-        
+
         if (!resultList.isEmpty()) {
             LoanInterestPackage pkg = (LoanInterestPackage) resultList.get(0);
             System.out.println("****** loan/LoanApplicationSessionBean: submitRenovationLoanApplication(): interest package: " + pkg.getPackageName());
@@ -284,7 +314,7 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
                         break;
                 }
             }
-        }else if(loanType.equals("mortgage")){
+        } else if (loanType.equals("mortgage")) {
             for (String loan : loans) {
                 switch (loan) {
                     case "waiting for valuation":
@@ -339,7 +369,7 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
                         break;
                 }
             }
-        }else{
+        } else {
             for (String loan : loans) {
                 switch (loan) {
                     case "waiting for valuation":
@@ -391,6 +421,7 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
     public RefinancingApplication getRefinancingApplicationById(Long applicationId) {
         System.out.println("****** loan/LoanApplicationSessionBean: getRefinancingApplicationById() ******");
         RefinancingApplication application = em.find(RefinancingApplication.class, applicationId);
+        em.refresh(application);
         return application;
     }
 
@@ -519,26 +550,26 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
         MortgageLoanApplication application = em.find(MortgageLoanApplication.class, applicationId);
         application.setApplicationStatus("pending");
     }
-    
+
     @Override
-    public List<CreditReportAccountStatus> getAccountStatusByBureauScoreId(Long id){
+    public List<CreditReportAccountStatus> getAccountStatusByBureauScoreId(Long id) {
         CreditReportBureauScore report = em.find(CreditReportBureauScore.class, id);
         return report.getAccountStatus();
     }
-    
+
     @Override
     public Long createLoanGuarantor(String guarantorName, String guarantorSalutation,
             String guarantorIdentificationNum, String guarantorGender,
             String guarantorEmail, String guarantorMobile, String guarantorDateOfBirth,
             String guarantorNationality, String guarantorCountryOfResidence, String guarantorRace,
             String guarantorMaritalStatus, String guarantorOccupation, String guarantorCompany,
-            String guarantorAddress, String guarantorPostal, byte[] guarantorSignature, 
+            String guarantorAddress, String guarantorPostal, byte[] guarantorSignature,
             int guarantorNumOfDependents, String guarantorEducation, String guarantorResidentialStatus,
             int guarantorLengthOfResidence, String guarantorIndustryType, int guarantorLengthOfCurrentJob, String guarantorEmploymentStatus,
             double guarantorMonthlyFixedIncome, String guarantorResidentialType, String guarantorCompanyAddress,
             String guarantorCompanyPostal, String guarantorCurrentPosition, String guarantorCurrentJobTitle,
             String guarantorPreviousCompany, int guarantorLengthOfPreviousJob, double guarantorOtherMonthlyIncome,
-            String guarantorOtherMonthlyIncomeSource){
+            String guarantorOtherMonthlyIncomeSource) {
         EducationLoanGuarantor guarantor = new EducationLoanGuarantor();
 
         guarantor.setName(guarantorName);
@@ -558,7 +589,7 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
         guarantor.setPostal(guarantorPostal);
         guarantor.setSignature(guarantorSignature);
         guarantor.setAge(getAge(guarantorDateOfBirth));
-        
+
         guarantor.setNumOfDependent(guarantorNumOfDependents);
         guarantor.setEducation(guarantorEducation);
         guarantor.setResidentialStatus(guarantorResidentialStatus);
@@ -582,7 +613,7 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
 
         return guarantor.getId();
     }
-    
+
     private String getAge(String guarantorDateOfBirth) {
         String daystr = guarantorDateOfBirth.substring(0, 2);
         String monthstr = guarantorDateOfBirth.substring(3, 6);

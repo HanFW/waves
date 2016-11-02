@@ -5,10 +5,12 @@
  */
 package ejb.loan.entity;
 
+import ejb.customer.entity.CustomerBasic;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import javax.persistence.Entity;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -24,6 +26,9 @@ public class RefinancingApplication extends LoanApplication implements Serializa
     private int outstandingYear;
     private int outstandingMonth;
     private double totalCPFWithdrawal;
+    
+    @OneToOne(mappedBy = "refinancingApplication")
+    private CustomerBasic customer;
 
     public void create(String loanType, double amountRequired, int periodRequired, String existingFinancer, double outstandingBalance,
             int outstandingYear, int outstandingMonth, double totalCPFWithdrawal, String employmentStatus) {
@@ -104,4 +109,13 @@ public class RefinancingApplication extends LoanApplication implements Serializa
         this.totalCPFWithdrawal = totalCPFWithdrawal;
     }
 
+    public CustomerBasic getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(CustomerBasic customer) {
+        this.customer = customer;
+    }
+
+    
 }
