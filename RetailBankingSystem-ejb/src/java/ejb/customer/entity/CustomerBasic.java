@@ -107,10 +107,10 @@ public class CustomerBasic implements Serializable {
     @OneToOne(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
     private RiskProfile riskProfile;
     
-    @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
     private MortgageLoanApplication mortgageLoanApplication;
     
-    @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
     private RefinancingApplication refinancingApplication;
     
     public void addLoanApplication(LoanApplication newApplication){

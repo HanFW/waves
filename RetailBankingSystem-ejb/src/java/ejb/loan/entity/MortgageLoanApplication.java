@@ -9,7 +9,9 @@ import ejb.customer.entity.CustomerBasic;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 
@@ -37,14 +39,15 @@ public class MortgageLoanApplication extends LoanApplication implements Serializ
     private double cashDownPayment;
     private double cpfDownPayment;
     private double propertyAppraisedValue;
-    
-    @OneToOne(mappedBy = "mortgageLoanApplication")
+    private String relationship;
+
+    @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     private CustomerBasic customer;
 
     public void create(String loanType, double amountRequired, int periodRequired, double propertyPurchasePrice, Date propertyDateOfPurchase,
             String propertySource, String propertyWithOTP, Date propertyOTPDate, String propertyWithTenancy,
             double propertyTenancyIncome, int propertyTenancyExpiryYear, String withBenifits, double benefitsFromVendor,
-            double cashDownPayment, double cpfDownPayment, String employmentStatus) {
+            double cashDownPayment, double cpfDownPayment, String employmentStatus, boolean hasJoint, String relationship, String jointEmploymentStatus) {
         this.setApplicationDate(new Date());
         this.setApplicationStatus("waiting for valuation");
         this.setLoanType(loanType);
@@ -63,6 +66,10 @@ public class MortgageLoanApplication extends LoanApplication implements Serializ
         this.setCashDownPayment(cashDownPayment);
         this.setCpfDownPayment(cpfDownPayment);
         this.setPropertyAppraisedValue(0.0);
+        if (hasJoint) {
+            this.setRelationship(relationship);
+        }
+
         HashMap docs = new HashMap();
         docs.put("identification", true);
         docs.put("otp", true);
@@ -88,8 +95,19 @@ public class MortgageLoanApplication extends LoanApplication implements Serializ
             docs.put("employeeCPF", true);
         } else {
             docs.put("selfEmployedTax", false);
-            docs.put("employeeTax", false);
+            docs.put("employeeTax", true);
             docs.put("employeeCPF", false);
+        }
+
+        if (hasJoint) {
+            docs.put("jointIdentification", true);
+            if (jointEmploymentStatus.equals("Self-Employed")) {
+                docs.put("jointSelfEmployedTax", true);
+                docs.put("jointEmployeeTax", false);
+            } else {
+                docs.put("jointSelfEmployedTax", false);
+                docs.put("jointEmployeeTax", true);
+            }
         }
 
         this.setUploads(docs);
@@ -207,5 +225,12 @@ public class MortgageLoanApplication extends LoanApplication implements Serializ
         this.customer = customer;
     }
 
-    
+    public String getRelationship() {
+        return relationship;
+    }
+
+    public void setRelationship(String relationship) {
+        this.relationship = relationship;
+    }
+
 }

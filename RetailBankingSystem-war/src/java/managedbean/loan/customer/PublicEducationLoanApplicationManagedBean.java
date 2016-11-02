@@ -131,6 +131,8 @@ public class PublicEducationLoanApplicationManagedBean implements Serializable {
     
     
     //guarantor basic information
+    private String guarantorRelationship;
+    
     private String guarantorSalutation;
     private String guarantorSalutationOthers;
     private String guarantorName;
@@ -269,7 +271,7 @@ public class PublicEducationLoanApplicationManagedBean implements Serializable {
         } catch (ParseException ex) {
             Logger.getLogger(PublicEducationLoanApplicationManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         }
-        application.create(30000, 5, "Stockholm University", starton, endon, 4, 25000, "Employee");
+        application.create(30000, 5, "Stockholm University", starton, endon, 4, 25000, "Employee", "Mother", "Employee");
         loanApplicationSessionBeanLocal.submitEducationLoanApplication(isExistingCustomer, hasCustomerAdvanced, application, newCustomerBasicId, newCustomerAdvancedId, guarantorId);
 
         //second loan applicaiton
@@ -320,7 +322,7 @@ public class PublicEducationLoanApplicationManagedBean implements Serializable {
         } catch (ParseException ex) {
             Logger.getLogger(PublicEducationLoanApplicationManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         }
-        application.create(20000, 6, "Peking University", starton, endon, 4, 20000, "Employee");
+        application.create(20000, 6, "Peking University", starton, endon, 4, 20000, "Employee", "Father", "Employee");
         
         
         loanApplicationSessionBeanLocal.submitEducationLoanApplication(isExistingCustomer, hasCustomerAdvanced, application, newCustomerBasicId, newCustomerAdvancedId, guarantorId);
@@ -440,7 +442,7 @@ public class PublicEducationLoanApplicationManagedBean implements Serializable {
 
             //create education loan application
             EducationLoanApplication application = new EducationLoanApplication();
-            application.create(customerLoanAmountRequired.doubleValue(), customerLoanTenure, customerEducationInstitution, customerEducationStarton, customerEducationEndon, customerCourseDuration, customerCourseFee, customerEmploymentStatus);
+            application.create(customerLoanAmountRequired.doubleValue(), customerLoanTenure, customerEducationInstitution, customerEducationStarton, customerEducationEndon, customerCourseDuration, customerCourseFee, customerEmploymentStatus, guarantorRelationship, guarantorEmploymentStatus);
             loanApplicationSessionBeanLocal.submitEducationLoanApplication(isExistingCustomer, hasCustomerAdvanced, application, newCustomerBasicId, newCustomerAdvancedId, guarantorId);
             customerEmailSessionBeanLocal.sendEmail(cRMCustomerSessionBeanLocal.getCustomerBasicById(newCustomerBasicId), "educationLoanApplication", null);
             ec.getFlash().put("amountRequired", customerLoanAmountRequired);
@@ -990,6 +992,15 @@ public class PublicEducationLoanApplicationManagedBean implements Serializable {
         }
     }
 
+    public String getGuarantorRelationship() {
+        return guarantorRelationship;
+    }
+
+    public void setGuarantorRelationship(String guarantorRelationship) {
+        this.guarantorRelationship = guarantorRelationship;
+    }
+
+    
     public String getCustomerSalutation() {
         return customerSalutation;
     }

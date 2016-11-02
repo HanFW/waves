@@ -939,6 +939,10 @@
                     
                     <p:panelGrid>
                         <p:messages globalOnly="true"/>
+                        
+                        <p:outputLabel for="guarantorRelationship" style="font-weight: bold" value="Relationship with applicant: "/>
+                        <p:inputText id="guarantorRelationship" value="#{publicEducationLoanApplicationManagedBean.guarantorRelationship}" required="true" requiredMessage="Required Field"/>
+                        <p:message for="guarantorRelationship"/>
 
                         <p:outputLabel style="font-weight: bold" for="guarantorSalutation" value="Salutation: " />
                         <p:selectOneMenu id="guarantorSalutation" value="#{publicEducationLoanApplicationManagedBean.guarantorSalutation}" 

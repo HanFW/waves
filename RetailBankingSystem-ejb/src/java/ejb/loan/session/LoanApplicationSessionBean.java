@@ -268,7 +268,7 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
     }
 
     @Override
-    public CustomerDebt addNewCustomerDebt(String facilityType, String financialInstitution, double totalAmount, double monthlyInstalment) {
+    public CustomerDebt addNewCustomerDebt(String facilityType, String financialInstitution, double totalAmount, double monthlyInstalment, String collateral, int tenure, double rate) {
         System.out.println("****** loan/LoanApplicationSessionBean: addNewCustomerDebt() ******");
         CustomerDebt cb = new CustomerDebt();
 
@@ -276,6 +276,9 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
         cb.setFinancialInstitution(financialInstitution);
         cb.setTotalAmount(totalAmount);
         cb.setMonthlyInstalment(monthlyInstalment);
+        cb.setCollateralDetails(collateral);
+        cb.setRemainingTenure(tenure);
+        cb.setCurrentInterest(rate);
 
         return cb;
     }

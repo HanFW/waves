@@ -9,7 +9,9 @@ import ejb.customer.entity.CustomerBasic;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.OneToOne;
 
 /**
@@ -26,12 +28,13 @@ public class RefinancingApplication extends LoanApplication implements Serializa
     private int outstandingYear;
     private int outstandingMonth;
     private double totalCPFWithdrawal;
+    private String relationship;
     
-    @OneToOne(mappedBy = "refinancingApplication")
+    @OneToOne(cascade={CascadeType.ALL},fetch=FetchType.EAGER)
     private CustomerBasic customer;
 
     public void create(String loanType, double amountRequired, int periodRequired, String existingFinancer, double outstandingBalance,
-            int outstandingYear, int outstandingMonth, double totalCPFWithdrawal, String employmentStatus) {
+            int outstandingYear, int outstandingMonth, double totalCPFWithdrawal, String employmentStatus, boolean hasJoint, String relationship, String jointEmploymentStatus) {
         this.setApplicationDate(new Date());
         this.setApplicationStatus("pending");
         this.setLoanType(loanType);
@@ -42,7 +45,10 @@ public class RefinancingApplication extends LoanApplication implements Serializa
         this.setOutstandingYear(outstandingYear);
         this.setOutstandingMonth(outstandingMonth);
         this.setTotalCPFWithdrawal(totalCPFWithdrawal);
-
+        if (hasJoint) {
+            this.setRelationship(relationship);
+        }
+        
         HashMap docs = new HashMap();
         docs.put("identification", true);
         docs.put("otp", false);
@@ -62,8 +68,19 @@ public class RefinancingApplication extends LoanApplication implements Serializa
             docs.put("employeeCPF", true);
         } else {
             docs.put("selfEmployedTax", false);
-            docs.put("employeeTax", false);
+            docs.put("employeeTax", true);
             docs.put("employeeCPF", false);
+        }
+        
+        if (hasJoint) {
+            docs.put("jointIdentification", true);
+            if (jointEmploymentStatus.equals("Self-Employed")) {
+                docs.put("jointSelfEmployedTax", true);
+                docs.put("jointEmployeeTax", false);
+            } else {
+                docs.put("jointSelfEmployedTax", false);
+                docs.put("jointEmployeeTax", true);
+            }
         }
 
         this.setUploads(docs);
@@ -115,6 +132,14 @@ public class RefinancingApplication extends LoanApplication implements Serializa
 
     public void setCustomer(CustomerBasic customer) {
         this.customer = customer;
+    }
+
+    public String getRelationship() {
+        return relationship;
+    }
+
+    public void setRelationship(String relationship) {
+        this.relationship = relationship;
     }
 
     

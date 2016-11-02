@@ -871,26 +871,44 @@
                     <p:panelGrid>
                         <p:dataList id="commitmentTable" var="customerFinancialCommitment" value="#{publicMortgageLoanApplicationManagedBean.customerFinancialCommitments}"
                                     emptyMessage="Please list ALL your credit facilities with other financial institutions, e.g. credit card, residential property loan, car loan, personal credit line">
-                            #{customerFinancialCommitment.get('institution')}, #{customerFinancialCommitment.get('type')}, #{customerFinancialCommitment.get('amount')}, #{customerFinancialCommitment.get('instalment')}
+                            #{customerFinancialCommitment.get('institution')}, #{customerFinancialCommitment.get('type')}, #{customerFinancialCommitment.get('collateral')},
+                            #{customerFinancialCommitment.get('amount')}, #{customerFinancialCommitment.get('tenure')}, #{customerFinancialCommitment.get('interest')}, #{customerFinancialCommitment.get('instalment')}
                             <p:commandLink value="Remove" process="@this" update="commitmentTable" action="#{publicMortgageLoanApplicationManagedBean.deleteCustomerFinancialCommitment(customerFinancialCommitment)}"/>
                         </p:dataList>
                         <p:separator/>
                         <p:messages globalOnly="true"/>
                         <p:outputLabel value="Add a new financial commitment here: "/>
                         <br/>
+
+                        <p:outputLabel for="customerFacilityType" style="font-weight: bold" value="Facility Type: "/>
+                        <p:inputText id="customerFacilityType" value="#{publicMortgageLoanApplicationManagedBean.customerFacilityType}"/>
+                        <p:message for="customerFacilityType"/>  
+
                         <p:outputLabel for="customerFinancialInstitution" style="font-weight: bold" value="Financial Institution: "/>
                         <p:inputText id="customerFinancialInstitution" value="#{publicMortgageLoanApplicationManagedBean.customerFinancialInstitution}"/>
                         <p:message for="customerFinancialInstitution"/>
 
-                        <p:outputLabel for="customerFacilityType" style="font-weight: bold" value="Facility Type: "/>
-                        <p:inputText id="customerFacilityType" value="#{publicMortgageLoanApplicationManagedBean.customerFacilityType}"/>
-                        <p:message for="customerFacilityType"/>
+                        <p:outputLabel for="customerCollateralDetails" style="font-weight: bold" value="Collateral Details: "/>
+                        <p:inputText id="customerCollateralDetails" value="#{publicMortgageLoanApplicationManagedBean.customerCollateralDetails}"/>
+                        <p:message for="customerCollateralDetails"/>
 
                         <p:outputLabel for="customerLoanAmount" style="font-weight: bold" value="Loan Amount/Credit Limit: "/>
                         <p:inputText id="customerLoanAmount" value="#{publicMortgageLoanApplicationManagedBean.customerLoanAmount}"
                                      converterMessage="Please enter a valid number">
                         </p:inputText>
                         <p:message for="customerLoanAmount"/>
+
+                        <p:outputLabel for="customerRemainingTenure" style="font-weight: bold" value="Remaining Tenure: "/>
+                        <p:inputText id="customerRemainingTenure" value="#{publicMortgageLoanApplicationManagedBean.customerRemainingTenure}"
+                                     converterMessage="Please enter a valid number">
+                        </p:inputText>
+                        <p:message for="customerRemainingTenure"/>
+
+                        <p:outputLabel for="customerCurrentInterest" style="font-weight: bold" value="Current Interest Rate(%): "/>
+                        <p:inputText id="customerCurrentInterest" value="#{publicMortgageLoanApplicationManagedBean.customerCurrentInterest}"
+                                     converterMessage="Please enter a valid number">
+                        </p:inputText>
+                        <p:message for="customerCurrentInterest"/>
 
                         <p:outputLabel for="customerMonthlyInstalment" style="font-weight: bold" value="Monthly Instalment: "/>
                         <p:inputText id="customerMonthlyInstalment" value="#{publicMortgageLoanApplicationManagedBean.customerMonthlyInstalment}"
@@ -937,14 +955,18 @@
                             <p:tab id="jointBasic">
                                 <h:panelGrid columns="1">
                                     <p:steps activeIndex="0">
-                                        <p:menuitem value="Joint Applicant Basic Information" />
-                                        <p:menuitem value="Joint Applicant Personal Details" />
-                                        <p:menuitem value="Joint Applicant Employment Details" />
-                                        <p:menuitem value="Joint Applicant Financial Commitments"/>
+                                        <p:menuitem value="Basic Information" />
+                                        <p:menuitem value="Personal Details" />
+                                        <p:menuitem value="Employment Details" />
+                                        <p:menuitem value="Financial Commitments"/>
                                     </p:steps>
 
                                     <p:panelGrid>
                                         <p:messages globalOnly="true"/>
+                                        
+                                        <p:outputLabel for="jointRelationship" style="font-weight: bold" value="Relationship with main applicant: "/>
+                                        <p:inputText id="jointRelationship" value="#{publicMortgageLoanApplicationManagedBean.jointRelationship}" required="true" requiredMessage="Required Field"/>
+                                        <p:message for="jointRelationship"/>
 
                                         <p:outputLabel style="font-weight: bold" for="jointSalutation" value="Salutation: " />
                                         <p:selectOneMenu id="jointSalutation" value="#{publicMortgageLoanApplicationManagedBean.jointSalutation}" 
@@ -1470,11 +1492,11 @@
 
                             <p:tab id="jointPersonal">
                                 <h:panelGrid columns="1">
-                                    <p:steps activeIndex="0">
-                                        <p:menuitem value="Joint Applicant Basic Information" />
-                                        <p:menuitem value="Joint Applicant Personal Details" />
-                                        <p:menuitem value="Joint Applicant Employment Details" />
-                                        <p:menuitem value="Joint Applicant Financial Commitments"/>
+                                    <p:steps activeIndex="1">
+                                        <p:menuitem value="Basic Information" />
+                                        <p:menuitem value="Personal Details" />
+                                        <p:menuitem value="Employment Details" />
+                                        <p:menuitem value="Financial Commitments"/>
                                     </p:steps>
                                 </h:panelGrid>
 
@@ -1584,11 +1606,11 @@
 
                             <p:tab id="jointEmployment">
                                 <h:panelGrid columns="1">
-                                    <p:steps activeIndex="0">
-                                        <p:menuitem value="Joint Applicant Basic Information" />
-                                        <p:menuitem value="Joint Applicant Personal Details" />
-                                        <p:menuitem value="Joint Applicant Employment Details" />
-                                        <p:menuitem value="Joint Applicant Financial Commitments"/>
+                                    <p:steps activeIndex="2">
+                                        <p:menuitem value="Basic Information" />
+                                        <p:menuitem value="Personal Details" />
+                                        <p:menuitem value="Employment Details" />
+                                        <p:menuitem value="Financial Commitments"/>
                                     </p:steps>
                                 </h:panelGrid>
 
@@ -1755,36 +1777,57 @@
                             </p:tab>
 
                             <p:tab id="jointCommitments">
-                                <p:steps activeIndex="3">
-                                    <p:menuitem value="Joint Applicant Basic Information" />
-                                    <p:menuitem value="Joint Applicant Personal Details" />
-                                    <p:menuitem value="Joint Applicant Employment Details" />
-                                    <p:menuitem value="Joint Applicant Financial Commitments"/>
-                                </p:steps>
+                                <h:panelGrid columns="1">
+                                    <p:steps activeIndex="3">
+                                        <p:menuitem value="Basic Information" />
+                                        <p:menuitem value="Personal Details" />
+                                        <p:menuitem value="Employment Details" />
+                                        <p:menuitem value="Financial Commitments"/>
+                                    </p:steps>
+                                </h:panelGrid>
 
                                 <p:panelGrid>
                                     <p:dataList id="jointCommitmentTable" var="jointFinancialCommitment" value="#{publicMortgageLoanApplicationManagedBean.jointFinancialCommitments}"
                                                 emptyMessage="Please list ALL joint applicant's credit facilities with other financial institutions, e.g. credit card, residential property loan, car loan, personal credit line">
-                                        #{jointFinancialCommitment.get('institution')}, #{jointFinancialCommitment.get('type')}, #{jointFinancialCommitment.get('amount')}, #{jointFinancialCommitment.get('instalment')}
+                                        #{jointFinancialCommitment.get('type')}, #{jointFinancialCommitment.get('institution')}, #{jointFinancialCommitment.get('collateral')},
+                                        #{jointFinancialCommitment.get('amount')}, #{jointFinancialCommitment.get('tenure')}, #{jointFinancialCommitment.get('interest')}, #{jointFinancialCommitment.get('instalment')}
                                         <p:commandLink value="Remove" process="@this" update="jointCommitmentTable" action="#{publicMortgageLoanApplicationManagedBean.deleteJointFinancialCommitment(jointFinancialCommitment)}"/>
                                     </p:dataList>
                                     <p:separator/>
                                     <p:messages globalOnly="true"/>
                                     <p:outputLabel value="Add a new financial commitment here: "/>
                                     <br/>
-                                    <p:outputLabel for="jointFinancialInstitution" style="font-weight: bold" value="Financial Institution: "/>
-                                    <p:inputText id="jointFinancialInstitution" value="#{publicMortgageLoanApplicationManagedBean.jointFinancialInstitution}"/>
-                                    <p:message for="jointFinancialInstitution"/>
-
                                     <p:outputLabel for="jointFacilityType" style="font-weight: bold" value="Facility Type: "/>
                                     <p:inputText id="jointFacilityType" value="#{publicMortgageLoanApplicationManagedBean.jointFacilityType}"/>
                                     <p:message for="jointFacilityType"/>
+                                    
+                                    <p:outputLabel for="jointFinancialInstitution" style="font-weight: bold" value="Lender: "/>
+                                    <p:inputText id="jointFinancialInstitution" value="#{publicMortgageLoanApplicationManagedBean.jointFinancialInstitution}"/>
+                                    <p:message for="jointFinancialInstitution"/>
+                                    
+                                    <p:outputLabel for="jointCollateralDetails" style="font-weight: bold" value="Collateral Details: "/>
+                                    <p:inputText id="jointCollateralDetails" value="#{publicMortgageLoanApplicationManagedBean.jointCollateralDetails}"
+                                                 converterMessage="Please enter a valid number">
+                                    </p:inputText>
+                                    <p:message for="jointCollateralDetails"/>
 
-                                    <p:outputLabel for="jointLoanAmount" style="font-weight: bold" value="Loan Amount/Credit Limit: "/>
+                                    <p:outputLabel for="jointLoanAmount" style="font-weight: bold" value="Loan Outstanding/Credit Limit: "/>
                                     <p:inputText id="jointLoanAmount" value="#{publicMortgageLoanApplicationManagedBean.jointLoanAmount}"
                                                  converterMessage="Please enter a valid number">
                                     </p:inputText>
                                     <p:message for="jointLoanAmount"/>
+                                    
+                                    <p:outputLabel for="jointRemainingTenure" style="font-weight: bold" value="Remaining Tenure: "/>
+                                    <p:inputText id="jointRemainingTenure" value="#{publicMortgageLoanApplicationManagedBean.jointRemainingTenure}"
+                                                 converterMessage="Please enter a valid number">
+                                    </p:inputText>
+                                    <p:message for="jointRemainingTenure"/>
+                                    
+                                    <p:outputLabel for="jointCurrentInterest" style="font-weight: bold" value="Current Interest Rate(%): "/>
+                                    <p:inputText id="jointCurrentInterest" value="#{publicMortgageLoanApplicationManagedBean.jointCurrentInterest}"
+                                                 converterMessage="Please enter a valid number">
+                                    </p:inputText>
+                                    <p:message for="jointCurrentInterest"/>
 
                                     <p:outputLabel for="jointMonthlyInstalment" style="font-weight: bold" value="Monthly Instalment: "/>
                                     <p:inputText id="jointMonthlyInstalment" value="#{publicMortgageLoanApplicationManagedBean.jointMonthlyInstalment}"
@@ -2054,6 +2097,12 @@
                                          required="#{publicMortgageLoanApplicationManagedBean.propertyNewPurchasePanelVisible}" requiredMessage="Required Field" converterMessage="Please enter a valid number">
                             </p:inputText>
                             <p:message for="customerCPFDownpayment"/>
+
+                            <p:outputLabel for="customerLoanAmountRequired" style="font-weight: bold" value="Loan Amount Required (SGD): "/>
+                            <p:inputText id="customerLoanAmountRequired" value="#{publicMortgageLoanApplicationManagedBean.customerLoanAmountRequired}"
+                                         required="#{publicMortgageLoanApplicationManagedBean.propertyNewPurchasePanelVisible}" requiredMessage="Required Field" converterMessage="Please enter a valid number">
+                            </p:inputText>
+                            <p:message for="customerLoanAmountRequired"/>
                         </p:panel>
 
                         <p:panel style="border:none" id="refinancingPanel" visible="#{publicMortgageLoanApplicationManagedBean.propertyRefinancingPanelVisible}">
@@ -2090,12 +2139,6 @@
                                          required="#{publicMortgageLoanApplicationManagedBean.propertyRefinancingPanelVisible}" requiredMessage="Required Field" converterMessage="Please enter a valid number">
                             </p:inputText>
                             <p:message for="customerTotalCPFWithdrawal"/>
-
-                            <p:outputLabel for="customerLoanAmountRequired" style="font-weight: bold" value="Loan Amount Required (SGD): "/>
-                            <p:inputText id="customerLoanAmountRequired" value="#{publicMortgageLoanApplicationManagedBean.customerLoanAmountRequired}"
-                                         required="#{publicMortgageLoanApplicationManagedBean.propertyNewPurchasePanelVisible}" requiredMessage="Required Field" converterMessage="Please enter a valid number">
-                            </p:inputText>
-                            <p:message for="customerLoanAmountRequired"/>
                         </p:panel>                        
 
                         <p:outputLabel for="customerLoanTenure" style="font-weight: bold" value="Loan Tenure: "/>
@@ -2156,12 +2199,15 @@
                             <p:fileUpload id="jointRelationshipUpload" update="jointRelationshipUploadMessage" fileUploadListener="#{publicMortgageLoanApplicationManagedBean.jointRelationshipUpload}"
                                           mode="advanced" skinSimple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(pdf)$/" multiple="false"/>
                         </p:panel>
-
+                        
                         <p:panel visible="#{publicMortgageLoanApplicationManagedBean.propertyOTPPanelVisible}">
                             <p:outputLabel value="Please upload your Option to Purchase"/>
                             <p:messages id="otpUploadMessage" for="otpUpload"/>
                             <p:fileUpload id="otpUpload" update="otpUploadMessage" fileUploadListener="#{publicMortgageLoanApplicationManagedBean.otpUpload}"
                                           mode="advanced" skinSimple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(pdf)$/" multiple="false"/>
+                        </p:panel>
+
+                        <p:panel visible="#{publicMortgageLoanApplicationManagedBean.propertyNewPurchasePanelVisible}">
                             <p:outputLabel value="Please upload your Purchase Agreement"/>
                             <p:messages id="purchaseAgreementUploadMessage" for="purchaseAgreementUpload"/>
                             <p:fileUpload id="purchaseAgreementUpload" update="purchaseAgreementUploadMessage" fileUploadListener="#{publicMortgageLoanApplicationManagedBean.purchaseAgreementUpload}"

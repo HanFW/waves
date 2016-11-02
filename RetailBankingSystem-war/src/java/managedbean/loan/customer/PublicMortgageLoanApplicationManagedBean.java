@@ -103,6 +103,9 @@ public class PublicMortgageLoanApplicationManagedBean implements Serializable {
     private String customerFinancialInstitution;
     private BigDecimal customerLoanAmount;
     private BigDecimal customerMonthlyInstalment;
+    private String customerCollateralDetails;
+    private Integer customerRemainingTenure;
+    private BigDecimal customerCurrentInterest;
     private HashMap customerFinancialCommitment = new HashMap();
 
     //property details
@@ -190,6 +193,8 @@ public class PublicMortgageLoanApplicationManagedBean implements Serializable {
     private boolean noJointApplicantPanelVisible;
 
     //joint basic information
+    private String jointRelationship;
+    
     private String jointSalutation;
     private String jointSalutationOthers;
     private String jointName;
@@ -242,6 +247,9 @@ public class PublicMortgageLoanApplicationManagedBean implements Serializable {
     private String jointFinancialInstitution;
     private BigDecimal jointLoanAmount;
     private BigDecimal jointMonthlyInstalment;
+    private String jointCollateralDetails;
+    private Integer jointRemainingTenure;
+    private BigDecimal jointCurrentInterest;
     private HashMap jointFinancialCommitment = new HashMap();
 
     //confirmation
@@ -267,6 +275,7 @@ public class PublicMortgageLoanApplicationManagedBean implements Serializable {
      */
     public PublicMortgageLoanApplicationManagedBean() {
         uploads.put("identification", false);
+        uploads.put("jointIdentification", false);
         uploads.put("otp", false);
         uploads.put("purchaseAgreement", false);
         uploads.put("existingLoan", false);
@@ -276,6 +285,8 @@ public class PublicMortgageLoanApplicationManagedBean implements Serializable {
         uploads.put("employeeTax", false);
         uploads.put("employeeCPF", false);
         uploads.put("selfEmployedTax", false);
+        uploads.put("jointSelfEmployedTax", false);
+        uploads.put("jointEmployeeTax", false);
     }
 
     @PostConstruct
@@ -322,8 +333,8 @@ public class PublicMortgageLoanApplicationManagedBean implements Serializable {
         ec.getFlash().put("tenure", 20);
 
         ArrayList<CustomerDebt> debts = new ArrayList<CustomerDebt>();
-        debts.add(loanApplicationSessionBeanLocal.addNewCustomerDebt("car loan", "DBS", 500000, 1000));
-        debts.add(loanApplicationSessionBeanLocal.addNewCustomerDebt("HDB loan", "UOB", 800000, 2000));
+        debts.add(loanApplicationSessionBeanLocal.addNewCustomerDebt("car loan", "DBS", 500000, 1000, "collateral", 3, 5.6));
+        debts.add(loanApplicationSessionBeanLocal.addNewCustomerDebt("HDB loan", "UOB", 800000, 2000, "collateral", 17, 2.8));
 
         CustomerProperty cp = new CustomerProperty();
         cp.create("property address", "118427", customerPropertyOwners, "3-Room",
@@ -334,7 +345,7 @@ public class PublicMortgageLoanApplicationManagedBean implements Serializable {
         mortgage.create("HDB - New Purchase", 500000, 20, 550000,
                 new Date(), "Developer/HDB", "no", null, "yes",
                 5000, 2012, "yes", 30000,
-                20000, 30000, "Employee");
+                20000, 30000, "Employee", false, null, null);
 //        loanApplicationSessionBeanLocal.submitLoanApplication(true, false, newCustomerBasicId, newCustomerAdvancedId, debts, cp, mortgage, null, "purchase", "HDB-Fixed");
 
         //add HDB - refinancing
@@ -353,8 +364,8 @@ public class PublicMortgageLoanApplicationManagedBean implements Serializable {
                 "other income source");
 
         ArrayList<CustomerDebt> debts2 = new ArrayList<CustomerDebt>();
-        debts2.add(loanApplicationSessionBeanLocal.addNewCustomerDebt("car loan", "DBS", 500000, 1000));
-        debts2.add(loanApplicationSessionBeanLocal.addNewCustomerDebt("HDB loan", "UOB", 800000, 2000));
+        debts2.add(loanApplicationSessionBeanLocal.addNewCustomerDebt("car loan", "DBS", 500000, 1000, "collateral", 3, 5.6));
+        debts2.add(loanApplicationSessionBeanLocal.addNewCustomerDebt("HDB loan", "UOB", 800000, 2000, "collateral", 17, 2.8));
 
         CustomerProperty cp2 = new CustomerProperty();
         cp2.create("property address", "118427", customerPropertyOwners, "3-Room",
@@ -363,7 +374,7 @@ public class PublicMortgageLoanApplicationManagedBean implements Serializable {
                 99, 2012, null);
         RefinancingApplication refinancing2 = new RefinancingApplication();
         refinancing2.create("HDB - Refinancing", 450000, 17, "POSB",
-                450000, 15, 3, 50000, "Self-Employed");
+                450000, 15, 3, 50000, "Self-Employed", false, null, null);
 //        loanApplicationSessionBeanLocal.submitLoanApplication(false, false, customerId2, customerAdvancedId2, debts2, cp2, null, refinancing2, "refinancing", "HDB-Floating");
 
         //add Private Property - Refinancing
@@ -382,8 +393,8 @@ public class PublicMortgageLoanApplicationManagedBean implements Serializable {
                 "other income source");
 
         ArrayList<CustomerDebt> debts3 = new ArrayList<CustomerDebt>();
-        debts3.add(loanApplicationSessionBeanLocal.addNewCustomerDebt("car loan", "DBS", 500000, 1000));
-        debts3.add(loanApplicationSessionBeanLocal.addNewCustomerDebt("HDB loan", "UOB", 800000, 2000));
+        debts3.add(loanApplicationSessionBeanLocal.addNewCustomerDebt("car loan", "DBS", 500000, 1000, "collateral", 3, 5.6));
+        debts3.add(loanApplicationSessionBeanLocal.addNewCustomerDebt("HDB loan", "UOB", 800000, 2000, "collateral", 17, 2.8));
 
         CustomerProperty cp3 = new CustomerProperty();
         cp3.create("property address", "118427", customerPropertyOwners, "Bungalow",
@@ -392,7 +403,7 @@ public class PublicMortgageLoanApplicationManagedBean implements Serializable {
                 99, 2012, null);
         RefinancingApplication refinancing3 = new RefinancingApplication();
         refinancing3.create("Private Property - Refinancing", 450000, 17, "POSB",
-                450000, 15, 3, 50000, "Self-Employed");
+                450000, 15, 3, 50000, "Self-Employed", false, null, null);
 //        loanApplicationSessionBeanLocal.submitLoanApplication(false, false, customerId3, customerAdvancedId3, debts3, cp3, null, refinancing3, "refinancing", "Private Property-Floating");
 
         //add Private Property - New Purchase
@@ -411,8 +422,8 @@ public class PublicMortgageLoanApplicationManagedBean implements Serializable {
                 "other income source");
 
         ArrayList<CustomerDebt> debts4 = new ArrayList<CustomerDebt>();
-        debts4.add(loanApplicationSessionBeanLocal.addNewCustomerDebt("car loan", "DBS", 500000, 1000));
-        debts4.add(loanApplicationSessionBeanLocal.addNewCustomerDebt("HDB loan", "UOB", 800000, 2000));
+        debts4.add(loanApplicationSessionBeanLocal.addNewCustomerDebt("car loan", "DBS", 500000, 1000, "collateral", 3, 5.6));
+        debts4.add(loanApplicationSessionBeanLocal.addNewCustomerDebt("HDB loan", "UOB", 800000, 2000, "collateral", 17, 2.8));
 
         CustomerProperty cp4 = new CustomerProperty();
         cp4.create("property address", "118427", customerPropertyOwners, "Bungalow",
@@ -423,7 +434,7 @@ public class PublicMortgageLoanApplicationManagedBean implements Serializable {
         mortgage4.create("Private Property - New Purchase", 500000, 20, 550000,
                 new Date(), "Developer/HDB", "no", null, "yes",
                 5000, 2012, "yes", 30000,
-                20000, 30000, "Employee");
+                20000, 30000, "Employee", true, "Father","Employee");
 //        loanApplicationSessionBeanLocal.submitLoanApplication(false, false, customerId4, customerAdvancedId4, debts4, cp4, mortgage4, null, "purchase", "Private Property-Fixed");
 
         ec.redirect(ec.getRequestContextPath() + "/web/merlionBank/loan/publicLoanApplicationDone.xhtml?faces-redirect=true");
@@ -433,6 +444,7 @@ public class PublicMortgageLoanApplicationManagedBean implements Serializable {
         System.out.println("====== loan/PublicHDBLoanApplicationManagedBean: addLoanApplication() ======");
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         customerSignature = ec.getSessionMap().get("customerSignature").toString();
+        jointSignature = ec.getSessionMap().get("jointSignature").toString();
         if (customerSignature.equals("") || !agreement) {
             if (customerSignature.equals("")) {
                 FacesContext.getCurrentInstance().addMessage("input", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Please provide your digital signature", "Failed!"));
@@ -517,8 +529,11 @@ public class PublicMortgageLoanApplicationManagedBean implements Serializable {
                 double totalAmount = total.doubleValue();
                 BigDecimal monthlyInstalment = (BigDecimal) debt.get("instalment");
                 double instalment = monthlyInstalment.doubleValue();
+                String collateral = (String) debt.get("collateral");
+                int tenure = (Integer) debt.get("tenure");
+                BigDecimal rate = (BigDecimal) debt.get("interest");
                 debts.add(loanApplicationSessionBeanLocal.addNewCustomerDebt(facilityType, financialInstitution,
-                        totalAmount, instalment));
+                        totalAmount, instalment, collateral, tenure, rate.doubleValue()));
             }
             
             boolean jointIsExistingCustomer = false;
@@ -601,8 +616,11 @@ public class PublicMortgageLoanApplicationManagedBean implements Serializable {
                     double totalAmount = total.doubleValue();
                     BigDecimal monthlyInstalment = (BigDecimal) debt.get("instalment");
                     double instalment = monthlyInstalment.doubleValue();
+                    String collateral = (String) debt.get("collateral");
+                    int tenure = (Integer) debt.get("tenure");
+                    BigDecimal rate = (BigDecimal) debt.get("interest");
                     jointDebts.add(loanApplicationSessionBeanLocal.addNewCustomerDebt(facilityType, financialInstitution,
-                            totalAmount, instalment));
+                            totalAmount, instalment, collateral, tenure, rate.doubleValue()));
                 }
             }
 
@@ -639,13 +657,13 @@ public class PublicMortgageLoanApplicationManagedBean implements Serializable {
                     mortgage.create("HDB - New Purchase", customerLoanAmountRequired.doubleValue(), customerLoanTenure, customerPropertyPurchasePrice.doubleValue(),
                             customerPropertyDateOfPurchase, customerPropertySource, customerPropertyWithOTP, customerPropertyOTPDate, customerPropertyWithTenancy,
                             customerPropertyTenancyIncome.doubleValue(), customerPropertyTenancyExpiryYear, customerWithBenefitsFromVendor, customerBenefitsFromVendor.doubleValue(),
-                            customerCashDownpayment.doubleValue(), customerCPFDownpayment.doubleValue(), customerEmploymentStatus);
+                            customerCashDownpayment.doubleValue(), customerCPFDownpayment.doubleValue(), customerEmploymentStatus, hasJointApplicant.equals("Yes"), jointRelationship, jointEmploymentStatus);
                     ec.getFlash().put("loanType", "HDB - New Purchase");
                 } else {
                     mortgage.create("Private Property - New Purchase", customerLoanAmountRequired.doubleValue(), customerLoanTenure, customerPropertyPurchasePrice.doubleValue(),
                             customerPropertyDateOfPurchase, customerPropertySource, customerPropertyWithOTP, customerPropertyOTPDate, customerPropertyWithTenancy,
                             customerPropertyTenancyIncome.doubleValue(), customerPropertyTenancyExpiryYear, customerWithBenefitsFromVendor, customerBenefitsFromVendor.doubleValue(),
-                            customerCashDownpayment.doubleValue(), customerCPFDownpayment.doubleValue(), customerEmploymentStatus);
+                            customerCashDownpayment.doubleValue(), customerCPFDownpayment.doubleValue(), customerEmploymentStatus, hasJointApplicant.equals("Yes"), jointRelationship, jointEmploymentStatus);
                     ec.getFlash().put("loanType", "Private Property - New Purchase");
                 }
 
@@ -657,11 +675,13 @@ public class PublicMortgageLoanApplicationManagedBean implements Serializable {
                 RefinancingApplication refinancing = new RefinancingApplication();
                 if (property.equals("HDB")) {
                     refinancing.create("HDB - Refinancing", customerOutstandingLoan.doubleValue(), customerLoanTenure, customerExistingFinancer,
-                            customerOutstandingLoan.doubleValue(), customerOutstandingYear, customerOutstandingMonth, customerTotalCPFWithdrawal.doubleValue(), customerEmploymentStatus);
+                            customerOutstandingLoan.doubleValue(), customerOutstandingYear, customerOutstandingMonth, customerTotalCPFWithdrawal.doubleValue(), customerEmploymentStatus,
+                            hasJointApplicant.equals("Yes"), jointRelationship, jointEmploymentStatus);
                     ec.getFlash().put("loanType", "HDB - Refinancing");
                 } else {
                     refinancing.create("Private Property - Refinancing", customerOutstandingLoan.doubleValue(), customerLoanTenure, customerExistingFinancer,
-                            customerOutstandingLoan.doubleValue(), customerOutstandingYear, customerOutstandingMonth, customerTotalCPFWithdrawal.doubleValue(), customerEmploymentStatus);
+                            customerOutstandingLoan.doubleValue(), customerOutstandingYear, customerOutstandingMonth, customerTotalCPFWithdrawal.doubleValue(), customerEmploymentStatus,
+                            hasJointApplicant.equals("Yes"), jointRelationship, jointEmploymentStatus);
                     ec.getFlash().put("loanType", "Private Property - Refinancing");
                 }
 
@@ -803,7 +823,8 @@ public class PublicMortgageLoanApplicationManagedBean implements Serializable {
 
     public void addCustomerFinancialCommitment() {
         System.out.println("====== loan/PublicHDBLoanApplicationManagedBean: addCustomerFinancialCommitment() ======");
-        if (customerFinancialInstitution == null || customerFacilityType == null || customerLoanAmount == null || customerMonthlyInstalment == null) {
+        if (customerFinancialInstitution == null || customerFacilityType == null || customerLoanAmount == null || customerMonthlyInstalment == null 
+                || customerCollateralDetails == null || customerRemainingTenure == null || customerCurrentInterest == null) {
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please fill in all the fields", "");
             FacesContext.getCurrentInstance().addMessage(null, message);
         } else {
@@ -811,17 +832,24 @@ public class PublicMortgageLoanApplicationManagedBean implements Serializable {
             customerFinancialCommitment.put("type", customerFacilityType);
             customerFinancialCommitment.put("amount", customerLoanAmount);
             customerFinancialCommitment.put("instalment", customerMonthlyInstalment);
+            customerFinancialCommitment.put("collateral", customerCollateralDetails);
+            customerFinancialCommitment.put("tenure", customerRemainingTenure);
+            customerFinancialCommitment.put("interest", customerCurrentInterest);
             customerFinancialCommitments.add(customerFinancialCommitment);
             customerFinancialInstitution = null;
             customerFacilityType = null;
             customerLoanAmount = null;
             customerMonthlyInstalment = null;
+            customerCollateralDetails = null;
+            customerRemainingTenure = null;
+            customerCurrentInterest = null;
             customerFinancialCommitment = new HashMap();
         }
     }
 
     public void addJointFinancialCommitment() {
-        if (jointFinancialInstitution == null || jointFacilityType == null || jointLoanAmount == null || jointMonthlyInstalment == null) {
+        if (jointFinancialInstitution == null || jointFacilityType == null || jointLoanAmount == null || jointMonthlyInstalment == null 
+                || jointCollateralDetails == null || jointRemainingTenure == null || jointCurrentInterest == null) {
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please fill in all the fields", "");
             FacesContext.getCurrentInstance().addMessage(null, message);
         } else {
@@ -829,11 +857,17 @@ public class PublicMortgageLoanApplicationManagedBean implements Serializable {
             jointFinancialCommitment.put("type", jointFacilityType);
             jointFinancialCommitment.put("amount", jointLoanAmount);
             jointFinancialCommitment.put("instalment", jointMonthlyInstalment);
+            jointFinancialCommitment.put("collateral", jointCollateralDetails);
+            jointFinancialCommitment.put("tenure", jointRemainingTenure);
+            jointFinancialCommitment.put("interest", jointCurrentInterest);
             jointFinancialCommitments.add(jointFinancialCommitment);
             jointFinancialInstitution = null;
             jointFacilityType = null;
             jointLoanAmount = null;
             jointMonthlyInstalment = null;
+            jointCollateralDetails = null;
+            jointRemainingTenure = null;
+            jointCurrentInterest = null;
             jointFinancialCommitment = new HashMap();
         }
     }
@@ -906,7 +940,13 @@ public class PublicMortgageLoanApplicationManagedBean implements Serializable {
     }
 
     public void showPropertyOTPPanel() {
-        propertyOTPPanelVisible = customerPropertyWithOTP.equals("yes");
+        if(customerPropertyWithOTP.equals("yes")){
+            propertyOTPPanelVisible = true;
+            uploads.replace("otp", false);
+        }else{
+            propertyOTPPanelVisible = false;
+            uploads.replace("otp", true);
+        }
     }
 
     public void showPropertyTenancyPanel() {
@@ -2911,6 +2951,62 @@ public class PublicMortgageLoanApplicationManagedBean implements Serializable {
 
     public void setJointFinancialCommitment(HashMap jointFinancialCommitment) {
         this.jointFinancialCommitment = jointFinancialCommitment;
+    }
+
+    public String getCustomerCollateralDetails() {
+        return customerCollateralDetails;
+    }
+
+    public void setCustomerCollateralDetails(String customerCollateralDetails) {
+        this.customerCollateralDetails = customerCollateralDetails;
+    }
+
+    public Integer getCustomerRemainingTenure() {
+        return customerRemainingTenure;
+    }
+
+    public void setCustomerRemainingTenure(Integer customerRemainingTenure) {
+        this.customerRemainingTenure = customerRemainingTenure;
+    }
+
+    public BigDecimal getCustomerCurrentInterest() {
+        return customerCurrentInterest;
+    }
+
+    public void setCustomerCurrentInterest(BigDecimal customerCurrentInterest) {
+        this.customerCurrentInterest = customerCurrentInterest;
+    }
+
+    public String getJointCollateralDetails() {
+        return jointCollateralDetails;
+    }
+
+    public void setJointCollateralDetails(String jointCollateralDetails) {
+        this.jointCollateralDetails = jointCollateralDetails;
+    }
+
+    public Integer getJointRemainingTenure() {
+        return jointRemainingTenure;
+    }
+
+    public void setJointRemainingTenure(Integer jointRemainingTenure) {
+        this.jointRemainingTenure = jointRemainingTenure;
+    }
+
+    public BigDecimal getJointCurrentInterest() {
+        return jointCurrentInterest;
+    }
+
+    public void setJointCurrentInterest(BigDecimal jointCurrentInterest) {
+        this.jointCurrentInterest = jointCurrentInterest;
+    }
+
+    public String getJointRelationship() {
+        return jointRelationship;
+    }
+
+    public void setJointRelationship(String jointRelationship) {
+        this.jointRelationship = jointRelationship;
     }
 
 }
