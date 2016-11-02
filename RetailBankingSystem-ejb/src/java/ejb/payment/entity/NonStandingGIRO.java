@@ -9,6 +9,8 @@ public class NonStandingGIRO extends GIRO implements Serializable {
     
     private String paymentAmt;
     private String paymentFrequency;
+    private String nonStandingStatus;
+    private boolean buttonRender;
 
     public String getPaymentAmt() {
         return paymentAmt;
@@ -24,6 +26,22 @@ public class NonStandingGIRO extends GIRO implements Serializable {
 
     public void setPaymentFrequency(String paymentFrequency) {
         this.paymentFrequency = paymentFrequency;
+    }
+
+    public String getNonStandingStatus() {
+        return nonStandingStatus;
+    }
+
+    public void setNonStandingStatus(String nonStandingStatus) {
+        this.nonStandingStatus = nonStandingStatus;
+    }
+
+    public boolean isButtonRender() {
+        return buttonRender;
+    }
+
+    public void setButtonRender(boolean buttonRender) {
+        this.buttonRender = buttonRender;
     }
     
 }

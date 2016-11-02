@@ -24,7 +24,7 @@ public class AddSWIFTPayeeManagedBean {
     private String payeeSWIFTCode;
     private String payeeBank;
     private String payeeCountry;
-    
+
     private String statusMessage;
 
     private ExternalContext ec;
@@ -80,7 +80,7 @@ public class AddSWIFTPayeeManagedBean {
         this.payeeCountry = payeeCountry;
     }
 
-    public void addSWIFTPayee() throws IOException{
+    public void addSWIFTPayee() throws IOException {
 
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
@@ -89,11 +89,11 @@ public class AddSWIFTPayeeManagedBean {
 
         Long swiftPayeeId = sWIFTPayeeSessionBeanLocal.addNewSWIFTPayee(payeeInstitution,
                 payeeAccountNum, payeeAccountType, payeeSWIFTCode, lastTransactionDate,
-                payeeCountry, payeeBank, customerBasic.getCustomerBasicId());
+                payeeCountry, payeeBank, "SWIFT", customerBasic.getCustomerBasicId());
         SWIFTPayee swiftPayee = sWIFTPayeeSessionBeanLocal.retrieveSWIFTPayeeById(swiftPayeeId);
-        
+
         customerBasic.getSwiftPayee().add(swiftPayee);
-        
+
         statusMessage = "New Recipient Added Successfully.";
 
         ec.getFlash().put("statusMessage", statusMessage);

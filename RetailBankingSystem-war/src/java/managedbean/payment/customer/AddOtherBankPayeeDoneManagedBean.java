@@ -5,24 +5,24 @@ import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 
-@Named(value = "addFastPayeeDoneManagedBean")
+@Named(value = "addOtherBankPayeeDoneManagedBean")
 @RequestScoped
 
-public class AddFastPayeeDoneManagedBean {
+public class AddOtherBankPayeeDoneManagedBean {
 
     private String statusMessage;
-    private Long fastPayeeId;
+    private Long otherBankPayeeId;
     private String payeeName;
     private String payeeAccountNum;
     private String payeeAccountType;
     
-    public AddFastPayeeDoneManagedBean() {
+    public AddOtherBankPayeeDoneManagedBean() {
     }
     
     @PostConstruct
     public void init() {
         statusMessage = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("statusMessage").toString();
-        fastPayeeId = (Long) FacesContext.getCurrentInstance().getExternalContext().getFlash().get("fastPayeeId");
+        otherBankPayeeId = (Long) FacesContext.getCurrentInstance().getExternalContext().getFlash().get("otherBankPayeeId");
         payeeName = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("payeeName").toString();
         payeeAccountNum = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("payeeAccountNum").toString();
         payeeAccountType = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("payeeAccountType").toString();
@@ -36,12 +36,12 @@ public class AddFastPayeeDoneManagedBean {
         this.statusMessage = statusMessage;
     }
 
-    public Long getFastPayeeId() {
-        return fastPayeeId;
+    public Long getOtherBankPayeeId() {
+        return otherBankPayeeId;
     }
 
-    public void setFastPayeeId(Long fastPayeeId) {
-        this.fastPayeeId = fastPayeeId;
+    public void setOtherBankPayeeId(Long otherBankPayeeId) {
+        this.otherBankPayeeId = otherBankPayeeId;
     }
 
     public String getPayeeName() {

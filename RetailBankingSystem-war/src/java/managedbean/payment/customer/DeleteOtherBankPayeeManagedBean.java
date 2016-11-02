@@ -1,8 +1,9 @@
 package managedbean.payment.customer;
 
 import ejb.customer.entity.CustomerBasic;
-import ejb.payment.session.FastPayeeSessionBeanLocal;
-import ejb.payment.entity.FastPayee;
+import ejb.deposit.session.PayeeSessionBeanLocal;
+import ejb.payment.session.OtherBankPayeeSessionBeanLocal;
+import ejb.payment.entity.OtherBankPayee;
 import java.io.IOException;
 import java.util.List;
 import javax.ejb.EJB;
@@ -12,19 +13,22 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
-@Named(value = "deleteFastPayeeManagedBean")
+@Named(value = "deleteOtherBankPayeeManagedBean")
 @RequestScoped
 
-public class DeleteFastPayeeManagedBean {
-    
+public class DeleteOtherBankPayeeManagedBean {
+
     @EJB
-    private FastPayeeSessionBeanLocal fastPayeeSessionBeanLocal;
+    private PayeeSessionBeanLocal payeeSessionBeanLocal;
+
+    @EJB
+    private OtherBankPayeeSessionBeanLocal otherBankPayeeSessionBeanLocal;
 
     private String payeeAccountNum;
-    
+
     private ExternalContext ec;
-    
-    public DeleteFastPayeeManagedBean() {
+
+    public DeleteOtherBankPayeeManagedBean() {
     }
 
     public String getPayeeAccountNum() {
@@ -34,29 +38,25 @@ public class DeleteFastPayeeManagedBean {
     public void setPayeeAccountNum(String payeeAccountNum) {
         this.payeeAccountNum = payeeAccountNum;
     }
-    
-    public List<FastPayee> getFastPayees() throws IOException {
+
+    public List<OtherBankPayee> getOtherBankPayees() throws IOException {
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
         CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
 
-        List<FastPayee> fastPayee = fastPayeeSessionBeanLocal.retrieveFastPayeeByCusId(customerBasic.getCustomerBasicId());
+        List<OtherBankPayee> otherBankPayee = otherBankPayeeSessionBeanLocal.retrieveOtherBankPayeeByCusId(customerBasic.getCustomerBasicId());
 
-        return fastPayee;
+        return otherBankPayee;
     }
-    
+
     public void deletePayee() throws IOException {
-        
-        CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
-        ec = FacesContext.getCurrentInstance().getExternalContext();
 
-        FastPayee fastPayee = fastPayeeSessionBeanLocal.retrieveFastPayeeByNum(payeeAccountNum);
+        OtherBankPayee otherBankPayee = otherBankPayeeSessionBeanLocal.retrieveOtherBankPayeeByNum(payeeAccountNum);
 
-        if (fastPayee.getFastPayeeId() == null) {
+        if (otherBankPayee.getPayeeId() == null) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Recipient does not exist.", "Failed!"));
         } else {
-            String delete = fastPayeeSessionBeanLocal.deleteFastPayee(payeeAccountNum);
-
+            payeeSessionBeanLocal.deletePayee(payeeAccountNum);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Successfully! Recipient deleted Successfully.", "Successfuly!"));
         }
     }

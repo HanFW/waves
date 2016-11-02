@@ -10,39 +10,41 @@
 
     <ui:define name="content">
         <h:form>
+
             <p:panel>
                 <p:outputLabel value="Welcome "/>
                 <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
             </p:panel>
+
             <div align="center">
-                <h1>Delete Recipients</h1>
+                <h1>Delete Other Bank Recipient</h1>
             </div>
-            <p:messages globalOnly="true" />
-            
-            <p:dataTable var="regularPayee" value="#{payeeManagedBean.regularPayee}" 
-                         reflow="true" paginator="true" rows="10" emptyMessage="No Recipients">
+            <p:messages globalOnly="true"/>
+
+            <p:dataTable var="otherBankPayee" value="#{deleteOtherBankPayeeManagedBean.otherBankPayees}" 
+                         reflow="true" paginator="true" rows="10" emptyMessage="No Recipient">
 
                 <p:column headerText="Recipient's Name" >
-                    <h:outputText value="#{regularPayee.payeeName}" /> 
+                    <h:outputText value="#{otherBankPayee.otherBankPayeeName}" /> 
                 </p:column>
 
                 <p:column headerText="Recipient's Bank Account Number"> 
-                    <h:outputText value="#{regularPayee.payeeAccountNum}" />
+                    <h:outputText value="#{otherBankPayee.payeeAccountNum}" />
                 </p:column>
 
                 <p:column headerText="Recipient's Bank Account Type"> 
-                    <h:outputText value="#{regularPayee.payeeAccountType}" />
+                    <h:outputText value="#{otherBankPayee.payeeAccountType}" />
                 </p:column>
 
                 <p:column headerText="Last Transaction Date"> 
-                    <h:outputText value="#{regularPayee.lastTransactionDate}" />
+                    <h:outputText value="#{otherBankPayee.lastTransactionDate}" />
                 </p:column>
 
-                <p:column headerText="Action"> 
+                <p:column headerText="Action" style="width: 10%">
                     <center>
-                        <p:commandButton process="@this" action="#{deletePayeeManagedBean.deletePayee()}"
+                        <p:commandButton process="@this" action="#{deleteOtherBankPayeeManagedBean.deletePayee()}"
                                          icon="ui-icon-trash" ajax="false">
-                            <f:setPropertyActionListener target="#{deletePayeeManagedBean.payeeAccountNum}" value="#{regularPayee.payeeAccountNum}" />
+                            <f:setPropertyActionListener target="#{deleteOtherBankPayeeManagedBean.payeeAccountNum}" value="#{otherBankPayee.payeeAccountNum}" />
                         </p:commandButton>
                     </center>
                 </p:column>

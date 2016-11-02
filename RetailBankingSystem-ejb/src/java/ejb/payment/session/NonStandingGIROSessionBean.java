@@ -40,7 +40,7 @@ public class NonStandingGIROSessionBean implements NonStandingGIROSessionBeanLoc
     @Override
     public Long addNewNonStandingGIRO(String billingOrganizationName, String billReference, String bankAccountNum,
             String bankAccountNumWithType, String paymentFrequency, String paymentAmt,
-            String giroType, Long customerBasicId) {
+            String giroType, String nonStandingStatus, boolean buttonRender, Long customerBasicId) {
 
         NonStandingGIRO nonStandingGIRO = new NonStandingGIRO();
 
@@ -51,6 +51,8 @@ public class NonStandingGIROSessionBean implements NonStandingGIROSessionBeanLoc
         nonStandingGIRO.setPaymentAmt(paymentAmt);
         nonStandingGIRO.setPaymentFrequency(paymentFrequency);
         nonStandingGIRO.setGiroType(giroType);
+        nonStandingGIRO.setNonStandingStatus(nonStandingStatus);
+        nonStandingGIRO.setButtonRender(buttonRender);
         nonStandingGIRO.setCustomerBasic(bankAccountSessionBeanLocal.retrieveCustomerBasicById(customerBasicId));
 
         entityManager.persist(nonStandingGIRO);
@@ -111,6 +113,8 @@ public class NonStandingGIROSessionBean implements NonStandingGIROSessionBeanLoc
         NonStandingGIRO nonStandingGiro = retrieveNonStandingGIROById(giroId);
 
         nonStandingGiro.setPaymentAmt(paymentAmt);
+        nonStandingGiro.setNonStandingStatus("Complete");
+        nonStandingGiro.setButtonRender(true);
     }
 
     @Override
@@ -135,20 +139,23 @@ public class NonStandingGIROSessionBean implements NonStandingGIROSessionBeanLoc
                 String billOrgBankAccountNum = billOrg.getBankAccountNum();
                 String paymentAmt = nonStandingGiro.getPaymentAmt();
 
-                Double currentAvailableBalance = Double.valueOf(bankAccount.getAvailableBankAccountBalance()) - Double.valueOf(paymentAmt);
-                bankAccount.setAvailableBankAccountBalance(currentAvailableBalance.toString());
+                if (paymentAmt != null) {
+                    
+                    Double currentAvailableBalance = Double.valueOf(bankAccount.getAvailableBankAccountBalance()) - Double.valueOf(paymentAmt);
+                    bankAccount.setAvailableBankAccountBalance(currentAvailableBalance.toString());
 
-                Calendar cal = Calendar.getInstance();
-                String currentTime = cal.getTime().toString();
-                String transactionCode = "BILL";
-                String transactionRef = "Pay bills to " + billingOrganizationName;
-                String accountDebit = paymentAmt;
+                    Calendar cal = Calendar.getInstance();
+                    String currentTime = cal.getTime().toString();
+                    String transactionCode = "BILL";
+                    String transactionRef = "Pay bills to " + billingOrganizationName;
+                    String accountDebit = paymentAmt;
 
-                Long transactionId = transactionSessionBeanLocal.addNewTransaction(currentTime, transactionCode,
-                        transactionRef, accountDebit, " ", cal.getTimeInMillis(), bankAccount.getBankAccountId());
+                    Long transactionId = transactionSessionBeanLocal.addNewTransaction(currentTime, transactionCode,
+                            transactionRef, accountDebit, " ", cal.getTimeInMillis(), bankAccount.getBankAccountId());
 
-                if (bankName.equals("DBS")) {
-                    sachNonStandingGIROTransferMTD(bankAccount.getBankAccountNum(), billOrgBankAccountNum, Double.valueOf(paymentAmt));
+                    if (bankName.equals("DBS")) {
+                        sachNonStandingGIROTransferMTD(bankAccount.getBankAccountNum(), billOrgBankAccountNum, Double.valueOf(paymentAmt));
+                    }
                 }
             }
         }
@@ -177,20 +184,23 @@ public class NonStandingGIROSessionBean implements NonStandingGIROSessionBeanLoc
                 String billOrgBankAccountNum = billOrg.getBankAccountNum();
                 String paymentAmt = nonStandingGiro.getPaymentAmt();
 
-                Double currentAvailableBalance = Double.valueOf(bankAccount.getAvailableBankAccountBalance()) - Double.valueOf(paymentAmt);
-                bankAccount.setAvailableBankAccountBalance(currentAvailableBalance.toString());
+                if (paymentAmt != null) {
 
-                Calendar cal = Calendar.getInstance();
-                String currentTime = cal.getTime().toString();
-                String transactionCode = "BILL";
-                String transactionRef = "Pay bills to " + billingOrganizationName;
-                String accountDebit = paymentAmt;
+                    Double currentAvailableBalance = Double.valueOf(bankAccount.getAvailableBankAccountBalance()) - Double.valueOf(paymentAmt);
+                    bankAccount.setAvailableBankAccountBalance(currentAvailableBalance.toString());
 
-                Long transactionId = transactionSessionBeanLocal.addNewTransaction(currentTime, transactionCode,
-                        transactionRef, accountDebit, " ", cal.getTimeInMillis(), bankAccount.getBankAccountId());
+                    Calendar cal = Calendar.getInstance();
+                    String currentTime = cal.getTime().toString();
+                    String transactionCode = "BILL";
+                    String transactionRef = "Pay bills to " + billingOrganizationName;
+                    String accountDebit = paymentAmt;
 
-                if (bankName.equals("DBS")) {
-                    sachNonStandingGIROTransferMTD(bankAccount.getBankAccountNum(), billOrgBankAccountNum, Double.valueOf(paymentAmt));
+                    Long transactionId = transactionSessionBeanLocal.addNewTransaction(currentTime, transactionCode,
+                            transactionRef, accountDebit, " ", cal.getTimeInMillis(), bankAccount.getBankAccountId());
+
+                    if (bankName.equals("DBS")) {
+                        sachNonStandingGIROTransferMTD(bankAccount.getBankAccountNum(), billOrgBankAccountNum, Double.valueOf(paymentAmt));
+                    }
                 }
             }
         }
@@ -219,20 +229,23 @@ public class NonStandingGIROSessionBean implements NonStandingGIROSessionBeanLoc
                 String billOrgBankAccountNum = billOrg.getBankAccountNum();
                 String paymentAmt = nonStandingGiro.getPaymentAmt();
 
-                Double currentAvailableBalance = Double.valueOf(bankAccount.getAvailableBankAccountBalance()) - Double.valueOf(paymentAmt);
-                bankAccount.setAvailableBankAccountBalance(currentAvailableBalance.toString());
+                if (paymentAmt != null) {
 
-                Calendar cal = Calendar.getInstance();
-                String currentTime = cal.getTime().toString();
-                String transactionCode = "BILL";
-                String transactionRef = "Pay bills to " + billingOrganizationName;
-                String accountDebit = paymentAmt;
+                    Double currentAvailableBalance = Double.valueOf(bankAccount.getAvailableBankAccountBalance()) - Double.valueOf(paymentAmt);
+                    bankAccount.setAvailableBankAccountBalance(currentAvailableBalance.toString());
 
-                Long transactionId = transactionSessionBeanLocal.addNewTransaction(currentTime, transactionCode,
-                        transactionRef, accountDebit, " ", cal.getTimeInMillis(), bankAccount.getBankAccountId());
+                    Calendar cal = Calendar.getInstance();
+                    String currentTime = cal.getTime().toString();
+                    String transactionCode = "BILL";
+                    String transactionRef = "Pay bills to " + billingOrganizationName;
+                    String accountDebit = paymentAmt;
 
-                if (bankName.equals("DBS")) {
-                    sachNonStandingGIROTransferMTD(bankAccount.getBankAccountNum(), billOrgBankAccountNum, Double.valueOf(paymentAmt));
+                    Long transactionId = transactionSessionBeanLocal.addNewTransaction(currentTime, transactionCode,
+                            transactionRef, accountDebit, " ", cal.getTimeInMillis(), bankAccount.getBankAccountId());
+
+                    if (bankName.equals("DBS")) {
+                        sachNonStandingGIROTransferMTD(bankAccount.getBankAccountNum(), billOrgBankAccountNum, Double.valueOf(paymentAmt));
+                    }
                 }
             }
         }
@@ -286,6 +299,18 @@ public class NonStandingGIROSessionBean implements NonStandingGIROSessionBeanLoc
             System.out.println("Entity not found error: " + enfe.getMessage());
             return new ArrayList<NonStandingGIRO>();
         }
+    }
+
+    @Override
+    public void updateNonStandingStatus(Long giroId, String paymentFrequency) {
+        NonStandingGIRO nonStandingGiro = retrieveNonStandingGIROById(giroId);
+        nonStandingGiro.setPaymentFrequency(paymentFrequency);
+    }
+
+    @Override
+    public void updateButtonRender(Long giroId) {
+        NonStandingGIRO nonStandingGiro = retrieveNonStandingGIROById(giroId);
+        nonStandingGiro.setButtonRender(true);
     }
 
     private void sachNonStandingGIROTransferMTD(java.lang.String fromBankAccountNum, java.lang.String toBankAccountNum, java.lang.Double transferAmt) {
