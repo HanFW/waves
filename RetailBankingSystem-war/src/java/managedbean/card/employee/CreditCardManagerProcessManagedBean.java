@@ -122,6 +122,7 @@ public class CreditCardManagerProcessManagedBean implements Serializable {
         cc = creditCardSessionLocal.getCardByCardId(creditCardId);
         customer = cc.getCustomerBasic();
         ca = customer.getCustomerAdvanced();
+        customerIdentificationNum = customer.getCustomerIdentificationNum();
         System.out.println("@@@@@@@@@@@@IC num " + customer.getCustomerIdentificationNum());
 
 //        docs = cc.getUploads();
@@ -142,8 +143,10 @@ public class CreditCardManagerProcessManagedBean implements Serializable {
 
     public void approveRequest() throws IOException {
         creditCardSessionLocal.approveRequest(cc.getCardId(), creditLimit);
-
-        if (!cRMCustomerSessionBeanLocal.hasOnlineBankingAcc(cc.getCustomerBasic().getCustomerBasicId())) {
+        
+        System.out.println("!!!!!!!!customer id "+ customer.getCustomerBasicId());
+        System.out.println("!!!!!!!!!csutomer has online banking acc or not "+ cRMCustomerSessionBeanLocal.hasOnlineBankingAcc(customer.getCustomerBasicId()));
+        if (!cRMCustomerSessionBeanLocal.hasOnlineBankingAcc(customer.getCustomerBasicId())) {
             customerAdminSessionBeanLocal.createOnlineBankingAccount(cc.getCustomerBasic().getCustomerBasicId());
         }
 
@@ -151,10 +154,10 @@ public class CreditCardManagerProcessManagedBean implements Serializable {
         Date receivedDate = cal.getTime();
         
         String subject = "Your "+cc.getCreditCardType().getCreditCardTypeName()+" has been approved.";
-        String messageContent = "Your "+cc.getCreditCardType().getCreditCardTypeName()+ " has been approved by one of our card managers. \n"
-                + "Please activate your credit card in 15 days. \n"
-                + "https://localhost:8181/RetailBankingSystem-war/web/onlineBanking/card/creditCard/customerActivateCreditCard.xhtml \n"
-                + "Thank you. \n";
+        String messageContent = "<br/><br/>Your "+cc.getCreditCardType().getCreditCardTypeName()+ " has been approved by one of our card managers. <br/><br/>"
+                + "Please activate your credit card in 15 days. <br/><br/>"
+                + "<a href=\"https://localhost:8181/RetailBankingSystem-war/web/onlineBanking/card/creditCard/customerActivateCreditCard.xhtml\">ACTIVATE HERE</a> <br/><br/>"
+                + "Thank you. <br/>";
 
         messageSessionBeanLocal.sendMessage("Merlion Bank", "Credit Card", subject, receivedDate.toString(),
                 messageContent, customer.getCustomerBasicId());
@@ -226,6 +229,7 @@ public class CreditCardManagerProcessManagedBean implements Serializable {
     }
 
     public String getCustomerIdentificationNum() {
+        
         return customer.getCustomerIdentificationNum();
     }
 

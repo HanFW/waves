@@ -196,16 +196,34 @@ public class PublicCreditCardApplicationManagedBean implements Serializable {
 
     public void identificationUpload(FileUploadEvent event) throws FileNotFoundException, IOException {
         this.file = event.getFile();
+
         if (file != null) {
+            String newFilePath = System.getProperty("user.dir").replace("config", "docroot") + System.getProperty("file.separator");
+
             String filename = customerIdentificationNum + ".pdf";
-            InputStream input = file.getInputstream();
-            OutputStream output = new FileOutputStream(new File("/Users/aaa/Desktop/ID", filename));
-            try {
-                IOUtils.copy(input, output);
-            } finally {
-                IOUtils.closeQuietly(input);
-                IOUtils.closeQuietly(output);
+            File newFile = new File(newFilePath, filename);
+            FileOutputStream fileOutputStream = new FileOutputStream(newFile);
+
+            int a;
+            int BUFFER_SIZE = 8192;
+            byte[] buffer = new byte[BUFFER_SIZE];
+
+            InputStream inputStream = file.getInputstream();
+
+            while (true) {
+                a = inputStream.read(buffer);
+
+                if (a < 0) {
+                    break;
+                }
+
+                fileOutputStream.write(buffer, 0, a);
+                fileOutputStream.flush();
             }
+
+            fileOutputStream.close();
+            inputStream.close();
+
             uploads.replace("identification", true);
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, file.getFileName() + " uploaded successfully.", "");
             FacesContext.getCurrentInstance().addMessage("identificationUpload", message);
@@ -217,17 +235,34 @@ public class PublicCreditCardApplicationManagedBean implements Serializable {
 
     public void incomeUpload(FileUploadEvent event) throws FileNotFoundException, IOException {
         this.file = event.getFile();
-        System.out.println(file.getFileName());
+
         if (file != null) {
+            String newFilePath = System.getProperty("user.dir").replace("config", "docroot") + System.getProperty("file.separator");
+
             String filename = customerIdentificationNum + "-income.pdf";
-            InputStream input = file.getInputstream();
-            OutputStream output = new FileOutputStream(new File("/Users/aaa/Desktop/supportingDoc", filename));
-            try {
-                IOUtils.copy(input, output);
-            } finally {
-                IOUtils.closeQuietly(input);
-                IOUtils.closeQuietly(output);
+            File newFile = new File(newFilePath, filename);
+            FileOutputStream fileOutputStream = new FileOutputStream(newFile);
+
+            int a;
+            int BUFFER_SIZE = 8192;
+            byte[] buffer = new byte[BUFFER_SIZE];
+
+            InputStream inputStream = file.getInputstream();
+
+            while (true) {
+                a = inputStream.read(buffer);
+
+                if (a < 0) {
+                    break;
+                }
+
+                fileOutputStream.write(buffer, 0, a);
+                fileOutputStream.flush();
             }
+
+            fileOutputStream.close();
+            inputStream.close();
+
             uploads.replace("income", true);
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, file.getFileName() + " uploaded successfully.", "");
             FacesContext.getCurrentInstance().addMessage("incomeUpload", message);
@@ -239,16 +274,34 @@ public class PublicCreditCardApplicationManagedBean implements Serializable {
 
     public void workPassUpload(FileUploadEvent event) throws FileNotFoundException, IOException {
         this.file = event.getFile();
+
         if (file != null) {
+            String newFilePath = System.getProperty("user.dir").replace("config", "docroot") + System.getProperty("file.separator");
+
             String filename = customerIdentificationNum + "-work_pass.pdf";
-            InputStream input = file.getInputstream();
-            OutputStream output = new FileOutputStream(new File("/Users/aaa/Desktop/supportingDoc", filename));
-            try {
-                IOUtils.copy(input, output);
-            } finally {
-                IOUtils.closeQuietly(input);
-                IOUtils.closeQuietly(output);
+            File newFile = new File(newFilePath, filename);
+            FileOutputStream fileOutputStream = new FileOutputStream(newFile);
+
+            int a;
+            int BUFFER_SIZE = 8192;
+            byte[] buffer = new byte[BUFFER_SIZE];
+
+            InputStream inputStream = file.getInputstream();
+
+            while (true) {
+                a = inputStream.read(buffer);
+
+                if (a < 0) {
+                    break;
+                }
+
+                fileOutputStream.write(buffer, 0, a);
+                fileOutputStream.flush();
             }
+
+            fileOutputStream.close();
+            inputStream.close();
+
             uploads.replace("workpass", true);
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, file.getFileName() + " uploaded successfully.", "");
             FacesContext.getCurrentInstance().addMessage("workPassUpload", message);

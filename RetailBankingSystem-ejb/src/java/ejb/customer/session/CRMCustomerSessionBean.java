@@ -578,10 +578,14 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
     @Override
     public boolean hasOnlineBankingAcc(Long customerBasicId){
         CustomerBasic customer = entityManager.find(CustomerBasic.class, customerBasicId);
-        if (customer.getCustomerOnlineBankingAccountNum().isEmpty()){
+        if (customer.getCustomerOnlineBankingAccountNum() == null){
+            System.out.println("!!!!!!!!!!has online banking FALSE");
             return false;
+            
         }else{
+            System.out.println("!!!!!!!!!!has online banking TRUE");
             return true;
+            
         }
     }
 }

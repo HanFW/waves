@@ -8,6 +8,7 @@ package ejb.card.session;
 import ejb.card.entity.CreditCard;
 import ejb.card.entity.PrincipalCard;
 import ejb.card.entity.SupplementaryCard;
+import ejb.customer.entity.CustomerBasic;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -41,5 +42,6 @@ public interface CreditCardSessionBeanLocal {
     public SupplementaryCard getSupplementaryCardById(Long supplementaryCardId);
     public void approveSupplementary (Long supplementaryCardId);
     public void rejectSupplementary (Long supplementaryCardId);
+    public List<SupplementaryCard> getAllSupplementaryCardByCustomer(CustomerBasic customer);
     
 }

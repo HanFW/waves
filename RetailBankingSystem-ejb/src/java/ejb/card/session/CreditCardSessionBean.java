@@ -263,6 +263,7 @@ public class CreditCardSessionBean implements CreditCardSessionBeanLocal {
     public List<String> getAllActivatedCreditCards(Long customerId) {
         List<String> creditCardNames = new ArrayList();
         CustomerBasic customer = em.find(CustomerBasic.class, customerId);
+        em.refresh(customer);
 
         int size = customer.getCreditCard().size();
 
@@ -281,6 +282,7 @@ public class CreditCardSessionBean implements CreditCardSessionBeanLocal {
     public List<String> getAllNonActivatedCreditCards(Long customerId) {
         List<String> creditCardNames = new ArrayList();
         CustomerBasic customer = em.find(CustomerBasic.class, customerId);
+        em.refresh(customer);
 
         int size = customer.getCreditCard().size();
 
@@ -298,8 +300,17 @@ public class CreditCardSessionBean implements CreditCardSessionBeanLocal {
     @Override
     public SupplementaryCard getSupplementaryCardById(Long supplementaryCardId){
         SupplementaryCard sc = em.find(SupplementaryCard.class, supplementaryCardId);
+        em.refresh(sc);
 
         return sc;
+    }
+    
+    @Override
+    public List<SupplementaryCard> getAllSupplementaryCardByCustomer(CustomerBasic customer){
+        Query query = em.createQuery("SELECT s FROM SupplementaryCard s WHERE s.customerBasic = :customer");
+        query.setParameter("customer", customer);
+        
+        return query.getResultList();
     }
 
     @Override
@@ -322,6 +333,7 @@ public class CreditCardSessionBean implements CreditCardSessionBeanLocal {
     public List<String> getAllPlatinumCards(Long customerId) {
         List<String> creditCardNames = new ArrayList();
         CustomerBasic customer = em.find(CustomerBasic.class, customerId);
+        em.refresh(customer);
 
         Query query = em.createQuery("SELECT p FROM CreditCard p WHERE p.creditCardType.creditCardTypeId = :typeId AND p.customerBasic.customerBasicId =:customerBasicId AND p.cardType =:cardType");
         query.setParameter("typeId", 3);

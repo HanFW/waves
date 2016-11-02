@@ -48,14 +48,13 @@ public class CustomerAddSupplementaryManagedBean {
     private String identificationNum;
     private Date dateOfBirth;
     private String relationship;
-    
-        //documents
+
+    //documents
     private UploadedFile file;
     private HashMap uploads = new HashMap();
 
     public CustomerAddSupplementaryManagedBean() {
     }
-    
 
     public void addSupplementaryCard() {
         FacesContext context = FacesContext.getCurrentInstance();
@@ -72,32 +71,49 @@ public class CustomerAddSupplementaryManagedBean {
             System.out.println("@@@@@@@@@@@@supplementary age " + getAge(dateOfBirth));
             message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Supplementary card holder must be at least 18 years old", null);
             context.addMessage(null, message);
-        } else if(pc.getSupplementaryCards().size()>=2){
+        } else if (pc.getSupplementaryCards().size() >= 2) {
             message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "A Merlion Platinum Card can only have 2 supplementary cards. You have reached the maximum limit", null);
             context.addMessage(null, message);
-        }else {
+        } else {
             String dob = changeDateFormat(dateOfBirth);
             System.out.println("@@@@@@@@@@@@@@@@cad holder name" + cardHolderName + "@@@@@@@ID num " + identificationNum);
-            
+
             creditCardSessionBeanLocal.addSupplementaryCard(pc.getCardId(), cardHolderName, dob, relationship, identificationNum);
             message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Supplementary card added successfully!", null);
             context.addMessage(null, message);
         }
     }
-    
-    
+
     public void identificationUpload(FileUploadEvent event) throws FileNotFoundException, IOException {
         this.file = event.getFile();
+
         if (file != null) {
-            String filename = "Supplementary-" + identificationNum + ".pdf";
-            InputStream input = file.getInputstream();
-            OutputStream output = new FileOutputStream(new File("/Users/aaa/Desktop/ID", filename));
-            try {
-                IOUtils.copy(input, output);
-            } finally {
-                IOUtils.closeQuietly(input);
-                IOUtils.closeQuietly(output);
+            String newFilePath = System.getProperty("user.dir").replace("config", "docroot") + System.getProperty("file.separator");
+            
+            String filename = "Supplementary-" + identificationNum + ".pdf";            
+            File newFile = new File(newFilePath, filename);
+            FileOutputStream fileOutputStream = new FileOutputStream(newFile);
+
+            int a;
+            int BUFFER_SIZE = 8192;
+            byte[] buffer = new byte[BUFFER_SIZE];
+
+            InputStream inputStream = file.getInputstream();
+
+            while (true) {
+                a = inputStream.read(buffer);
+
+                if (a < 0) {
+                    break;
+                }
+
+                fileOutputStream.write(buffer, 0, a);
+                fileOutputStream.flush();
             }
+
+            fileOutputStream.close();
+            inputStream.close();
+
             uploads.replace("identification", true);
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, file.getFileName() + " uploaded successfully.", "");
             FacesContext.getCurrentInstance().addMessage("identificationUpload", message);
@@ -106,7 +122,7 @@ public class CustomerAddSupplementaryManagedBean {
             FacesContext.getCurrentInstance().addMessage("identificationUpload", message);
         }
     }
-
+    
 
     private int getAge(Date customerDateOfBirth) {
         Date now = new Date();
@@ -123,20 +139,20 @@ public class CustomerAddSupplementaryManagedBean {
         }
         return yearDif;
     }
-    
+
     private String changeDateFormat(Date inputDate) {
         String dateString = inputDate.toString();
         String[] dateSplit = dateString.split(" ");
         String outputDate = dateSplit[2] + "/" + dateSplit[1] + "/" + dateSplit[5];
         return outputDate;
     }
-    
-    public List<String> getAllPrincipalCards(){
+
+    public List<String> getAllPrincipalCards() {
         List<String> principalCards = creditCardSessionBeanLocal.getAllPlatinumCards(getCustomerViaSessionMap().getCustomerBasicId());
-        
-        System.out.println("#################drop down menu contents "+ principalCards);
+
+        System.out.println("#################drop down menu contents " + principalCards);
         return principalCards;
-     
+
     }
 
     public String getCardHolderName() {

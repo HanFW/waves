@@ -69,6 +69,18 @@ public class CreditCardManagementSessionBean implements CreditCardManagementSess
     }
     
     @Override
+    public void cancelSupplementaryCard (Long cardId){
+        SupplementaryCard supplementaryCard = em.find(SupplementaryCard.class, cardId);
+        
+        CreditCardType creditCardType = supplementaryCard.getCreditCardType();
+
+        creditCardType.removeCreditCard(supplementaryCard);
+
+        em.remove(supplementaryCard);
+        System.out.println("CreditCardManagementSessionBean: Supplementary card has been removed from database");
+    }
+    
+    @Override
     public void cancelCreditCardAfterReplacement(Long creditCardId) {
         CreditCard findCreditCard = em.find(CreditCard.class, creditCardId);
 

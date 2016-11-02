@@ -101,10 +101,10 @@ public class CreditCardManagerSupplementaryManagedBean implements Serializable{
         Date receivedDate = cal.getTime();
         
         String subject = "Your Supplementary card for "+sc.getCreditCardType().getCreditCardTypeName()+" has been approved.";
-        String messageContent = "Your Supplementary card for "+sc.getCreditCardType().getCreditCardTypeName()+ " has been approved by one of our card managers. \n"
-                + "Please activate your credit card in 15 days. \n"
-                + "https://localhost:8181/RetailBankingSystem-war/web/onlineBanking/card/creditCard/customerActivateCreditCard.xhtml \n"
-                + "Thank you. \n";
+        String messageContent = "<br/><br/>Your Supplementary card for "+sc.getCreditCardType().getCreditCardTypeName()+ " has been approved by one of our card managers. <br/><br/>"
+                + "Please activate your credit card in 15 days. <br/><br/>"
+                + "<a href=\"https://localhost:8181/RetailBankingSystem-war/web/onlineBanking/card/creditCard/customerActivateCreditCard.xhtml\">ACTIVATE HERE</a> <br/><br/>"
+                + "Thank you. <br/>";
 
         messageSessionBeanLocal.sendMessage("Merlion Bank", "Supplementary Card", subject, receivedDate.toString(),
                 messageContent, customer.getCustomerBasicId());
