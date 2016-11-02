@@ -7,6 +7,8 @@ package ejb.card.session;
 
 import ejb.card.entity.CreditCard;
 import ejb.card.entity.DebitCard;
+import ejb.card.entity.PrincipalCard;
+import ejb.card.entity.SupplementaryCard;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import java.security.MessageDigest;
@@ -33,8 +35,8 @@ public class MerlionBankAuthorizeTransactionSessionBean implements MerlionBankAu
 
     @PersistenceContext
     private EntityManager em;
-    
-    @EJB 
+
+    @EJB
     private BankAccountSessionBeanLocal bankAccountSessionBeanLocal;
 
     @Override
@@ -64,7 +66,7 @@ public class MerlionBankAuthorizeTransactionSessionBean implements MerlionBankAu
                         String hashedPwd = md5Hashing(cardPwd + cardNum.substring(0, 3));
                         System.out.println("hashed pwd: " + hashedPwd);
                         if (!hashedPwd.equals(findDebitCard.getDebitCardPwd())) {
-                            System.out.println("test test card pwd is wrong");                           
+                            System.out.println("test test card pwd is wrong");
                             return "not authorized";
                         } else {
                             BankAccount depositAccount = findDebitCard.getBankAccount();
@@ -105,8 +107,27 @@ public class MerlionBankAuthorizeTransactionSessionBean implements MerlionBankAu
                     System.out.println("card not activated");
                     return "not authorized";
                 } else {
-                    Double creditLimit = Double.valueOf(findCreditCard.getCreditLimit());
-                    if (transactionAmt > creditLimit) {
+                    String creditCardType = findCreditCard.getCardType();
+                    double creditLimit=0.0;
+                    double outstandingBalance=0.0;
+                    
+                    if (creditCardType.equals("SupplementaryCard")) {
+                        Query q = em.createQuery("SELECT s FROM SupplementaryCard s WHERE s.cardNum=:cardNum");
+                        q.setParameter("cardNum", cardNum);
+                        SupplementaryCard card = (SupplementaryCard) q.getSingleResult();
+                        creditLimit = card.getPrincipalCard().getCreditLimit();
+                        outstandingBalance=card.getPrincipalCard().getOutstandingBalance();                       
+                       
+                    }else{
+                        Query q2=em.createQuery("select p from PrincipalCard p where p.cardNum=:cardNum");
+                        q2.setParameter("cardNum", cardNum);
+                        PrincipalCard card2=(PrincipalCard) q2.getSingleResult();
+                        creditLimit = card2.getCreditLimit();
+                        outstandingBalance = card2.getOutstandingBalance();
+                        
+                    }
+                    
+                    if (transactionAmt > creditLimit || transactionAmt > (creditLimit - outstandingBalance)) {
                         System.out.println("credit limit insufficient");
                         return "not authorized";
                     } else {
@@ -136,9 +157,5 @@ public class MerlionBankAuthorizeTransactionSessionBean implements MerlionBankAu
         ws.client.merlionTransactionAuthorization.TransactionAuthorizationWebService port = service.getTransactionAuthorizationWebServicePort();
         return port.getTransactionToBeAuthorizedById(id);
     }
-   
-    
-    
-
 
 }

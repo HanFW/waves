@@ -6,26 +6,26 @@
 package managedbean.card.customer;
 
 import ejb.card.session.CreditCardSessionBeanLocal;
+import ejb.customer.entity.CustomerBasic;
 import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.faces.view.ViewScoped;
 import javax.inject.Named;
-import org.apache.commons.io.IOUtils;
+import javax.faces.view.ViewScoped;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.FlowEvent;
 import org.primefaces.model.UploadedFile;
@@ -34,15 +34,16 @@ import org.primefaces.model.UploadedFile;
  *
  * @author aaa
  */
-@Named(value = "publicCreditCardApplicationManagedBean")
+@Named(value = "customerCreditCardApplicationManagedBean")
 @ViewScoped
-public class PublicCreditCardApplicationManagedBean implements Serializable {
+public class CustomerCreditCardApplicationManagedBean implements Serializable {
 
     @EJB
-    private CRMCustomerSessionBeanLocal cRMCustomerSessionBeanLocal;
+    private CRMCustomerSessionBeanLocal customerSessionBeanLocal;
 
     @EJB
     private CreditCardSessionBeanLocal creditCardSessionLocal;
+
     //basic information
     private String customerSalutation;
     private String customerSalutationOthers;
@@ -117,47 +118,31 @@ public class PublicCreditCardApplicationManagedBean implements Serializable {
     private UploadedFile file;
     private HashMap uploads = new HashMap();
 
-    public PublicCreditCardApplicationManagedBean() {
+
+    public CustomerCreditCardApplicationManagedBean() {
         uploads.put("identification", false);
         uploads.put("income", false);
-        uploads.put("workpass", false);
+        uploads.put("workpass", true);
+    }
+
+    @PostConstruct
+    public void init() {
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        customerIdentificationNum = ec.getSessionMap().get("customerIdentificationNum").toString();
+        CustomerBasic customer = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum);
+        customerNationality = customer.getCustomerNationality();
+
+        showNationalityPanel();
     }
 
     public String onFlowProcess(FlowEvent event) {
         FacesContext context = FacesContext.getCurrentInstance();
         FacesMessage message = null;
 
-        if (event.getOldStep().equals("basic")) {
-            if (customerNationality.equals("Singapore")) {
-                customerIdentificationNum = sgId;
-            } else if (customerIsPR.equals("Yes")) {
-                customerIdentificationNum = prId;
-            } else {
-                customerIdentificationNum = passportId;
-            }
-
-            if (getAge(customerDateOfBirth) < 21) {
-                message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Credit card applicant must be at least 21 years old", null);
-                context.addMessage("customerDateOfBirth", message);
-                return event.getOldStep();
-            }
-            if (cRMCustomerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum).getCustomerName() != null) {
-                message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "You are an existing customer. For your convenience, please log in to your iBanking account to apply credit card. Thank you!", null);
-                context.addMessage("customerName", message);
-                return event.getOldStep();
-            }
-        }
-
         if (event.getOldStep().equals("employment")) {
             if (customerNationality.equals("Singapore")) {
                 if (customerMonthlyFixedIncome.doubleValue() * 12 < 30000) {
                     message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Singaporean must earn at least $30,000 annually to apply credit card", null);
-                    context.addMessage(null, message);
-                    return event.getOldStep();
-                }
-            } else if (customerIsPR.equals("Yes")) {
-                if (customerMonthlyFixedIncome.doubleValue() * 12 < 30000) {
-                    message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Singapore PR must earn at least $30,000 annually to apply credit card", null);
                     context.addMessage(null, message);
                     return event.getOldStep();
                 }
@@ -196,10 +181,13 @@ public class PublicCreditCardApplicationManagedBean implements Serializable {
 
     public void identificationUpload(FileUploadEvent event) throws FileNotFoundException, IOException {
         this.file = event.getFile();
-
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        CustomerBasic customer = (CustomerBasic) ec.getSessionMap().get("customer");
+        customerIdentificationNum = customer.getCustomerIdentificationNum();
         if (file != null) {
             String newFilePath = System.getProperty("user.dir").replace("config", "docroot") + System.getProperty("file.separator");
 
+            System.out.println("@@@@@@@@@@@@@@@@@@ID num " + customerIdentificationNum);
             String filename = customerIdentificationNum + ".pdf";
             File newFile = new File(newFilePath, filename);
             FileOutputStream fileOutputStream = new FileOutputStream(newFile);
@@ -235,7 +223,9 @@ public class PublicCreditCardApplicationManagedBean implements Serializable {
 
     public void incomeUpload(FileUploadEvent event) throws FileNotFoundException, IOException {
         this.file = event.getFile();
-
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        CustomerBasic customer = (CustomerBasic) ec.getSessionMap().get("customer");
+        customerIdentificationNum = customer.getCustomerIdentificationNum();
         if (file != null) {
             String newFilePath = System.getProperty("user.dir").replace("config", "docroot") + System.getProperty("file.separator");
 
@@ -274,7 +264,9 @@ public class PublicCreditCardApplicationManagedBean implements Serializable {
 
     public void workPassUpload(FileUploadEvent event) throws FileNotFoundException, IOException {
         this.file = event.getFile();
-
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        CustomerBasic customer = (CustomerBasic) ec.getSessionMap().get("customer");
+        customerIdentificationNum = customer.getCustomerIdentificationNum();
         if (file != null) {
             String newFilePath = System.getProperty("user.dir").replace("config", "docroot") + System.getProperty("file.separator");
 
@@ -360,13 +352,11 @@ public class PublicCreditCardApplicationManagedBean implements Serializable {
             nationalityOthersPanelVisible = false;
             nricPanelVisible = false;
             passportPanelVisible = false;
-            uploads.replace("workpass", true);
         } else {
             nationalityOthersPanelVisible = true;
             nationalitySGPanelVisible = false;
             nricPanelVisible = false;
-            passportPanelVisible = false;
-            uploads.replace("workpass", false);
+            passportPanelVisible = true;
         }
     }
 
@@ -830,8 +820,8 @@ public class PublicCreditCardApplicationManagedBean implements Serializable {
         this.employmentPanelVisible = employmentPanelVisible;
     }
 
-    public void addCreditCardApplication() throws IOException {
-        System.out.println("====== creditcard/publicCreditCardApplicationManagedBean: addCreditCardApplication() ======");
+    public void addExistingCustomerCreditCardApplication() throws IOException {
+        System.out.println("====== creditcard/publicCreditCardApplicationManagedBean: addExistingCustomerCreditCardApplication() ======");
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         customerSignature = ec.getSessionMap().get("customerSignature").toString();
         if (customerSignature.equals("") || !agreement) {
@@ -842,21 +832,9 @@ public class PublicCreditCardApplicationManagedBean implements Serializable {
                 FacesContext.getCurrentInstance().addMessage("agreement", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Please agree to terms to proceed", "Failed!"));
             }
         } else {
-            //create CustomerBasic
-            if (customerSalutation.equals("Others")) {
-                customerSalutation = customerSalutationOthers;
-            }
-
-            String dateOfBirth = changeDateFormat(customerDateOfBirth);
-            String customerAddress = customerStreetName + ", " + customerBlockNum + ", " + customerUnitNum + ", " + customerPostal;
-            Long newCustomerBasicId = cRMCustomerSessionBeanLocal.addNewCustomerBasic(customerName,
-                    customerSalutation, customerIdentificationNum.toUpperCase(),
-                    customerGender, customerEmail, customerMobile, dateOfBirth,
-                    customerNationality, customerCountryOfResidence, customerRace,
-                    customerMaritalStatus, null, customerCompanyName,
-                    customerAddress, customerPostal, null, null, customerSignature.getBytes(), null);
-
-            //create CustomerAdvanced
+            CustomerBasic customer = (CustomerBasic) ec.getSessionMap().get("customer");
+            Long newCustomerBasicId = customer.getCustomerBasicId();
+            Long newCustomerAdvancedId;
             if (customerEmploymentStatus.equals("Employee") || customerEmploymentStatus.equals("Self-Employed")) {
                 if (customerIndustryType.equals("Others")) {
                     customerIndustryType = customerIndustryTypeOthers;
@@ -865,22 +843,39 @@ public class PublicCreditCardApplicationManagedBean implements Serializable {
                     customerCurrentPosition = customerCurrentPositionOthers;
                 }
             }
+            if (customer.getCustomerAdvanced() == null) {
+                //create CustomerAdvanced
 
-            Long newCustomerAdvancedId;
-            if (customerEmploymentStatus.equals("Unemployed")) {
-                newCustomerAdvancedId = cRMCustomerSessionBeanLocal.addNewCustomerAdvanced(customerNumOfDependents, customerEducation, customerResidentialStatus,
-                        customerLengthOfResidence, null, 0, customerEmploymentStatus,
-                        customerMonthlyFixedIncome.doubleValue(), customerResidentialType, null,
-                        null, null, null,
-                        null, 0, 0,
-                        null);
+                if (customerEmploymentStatus.equals("Unemployed")) {
+                    newCustomerAdvancedId = customerSessionBeanLocal.addNewCustomerAdvanced(customerNumOfDependents, customerEducation, customerResidentialStatus,
+                            customerLengthOfResidence, null, 0, customerEmploymentStatus,
+                            customerMonthlyFixedIncome.doubleValue(), customerResidentialType, null,
+                            null, null, null,
+                            null, 0, 0,
+                            null);
+                } else {
+                    newCustomerAdvancedId = customerSessionBeanLocal.addNewCustomerAdvanced(customerNumOfDependents, customerEducation, customerResidentialStatus,
+                            customerLengthOfResidence, customerIndustryType, customerLengthOfCurrentJob, customerEmploymentStatus,
+                            customerMonthlyFixedIncome.doubleValue(), customerResidentialType, customerCompanyAddress,
+                            customerCompanyPostal, customerCurrentPosition, customerCurrentJobTitle,
+                            null, 0, 0,
+                            null);
+                }
             } else {
-                newCustomerAdvancedId = cRMCustomerSessionBeanLocal.addNewCustomerAdvanced(customerNumOfDependents, customerEducation, customerResidentialStatus,
-                        customerLengthOfResidence, customerIndustryType, customerLengthOfCurrentJob, customerEmploymentStatus,
-                        customerMonthlyFixedIncome.doubleValue(), customerResidentialType, customerCompanyAddress,
-                        customerCompanyPostal, customerCurrentPosition, customerCurrentJobTitle,
-                        null, 0, 0,
-                        null);
+                if (customerEmploymentStatus.equals("Unemployed")) {
+                    newCustomerAdvancedId = customerSessionBeanLocal.updateCustomerAdvanced(customer.getCustomerIdentificationNum(), customerNumOfDependents,
+                            customerEducation, customerResidentialStatus, customerLengthOfResidence, null, 0,
+                            customerEmploymentStatus, customerMonthlyFixedIncome.doubleValue(), customerResidentialType, null, null,
+                            null, null, null, 0, 0.0,
+                            null);
+                } else {
+                    newCustomerAdvancedId = customerSessionBeanLocal.updateCustomerAdvanced(customer.getCustomerIdentificationNum(), customerNumOfDependents,
+                            customerEducation, customerResidentialStatus, customerLengthOfResidence, customerIndustryType, customerLengthOfCurrentJob,
+                            customerEmploymentStatus, customerMonthlyFixedIncome.doubleValue(), customerResidentialType, customerCompanyAddress, customerCompanyPostal,
+                            customerCurrentPosition, customerCurrentJobTitle, null, 0, 0.0,
+                            null);
+                }
+
             }
 
             creditCardTypeId = (Long) ec.getSessionMap().get("cardTypeId");

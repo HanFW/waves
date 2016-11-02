@@ -228,6 +228,7 @@ public class EmployeeCancelCardDoneManagedBean {
 
     public void setSecurityCode(String securityCode) {
         this.securityCode = securityCode;
+        System.out.println("set SecurityCode: "+securityCode);
     }
 
     public boolean isCreditPanelVisible() {

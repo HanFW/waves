@@ -7,6 +7,8 @@ package ejb.ws.session;
 
 import ejb.card.entity.CreditCard;
 import ejb.card.entity.DebitCard;
+import ejb.card.entity.PrincipalCard;
+import ejb.card.entity.SupplementaryCard;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import java.security.MessageDigest;
@@ -76,14 +78,14 @@ public class MerlionTransactionAuthorizationWebService {
                             BankAccount depositAccount = findDebitCard.getBankAccount();
                             Double accountBalance = Double.valueOf(depositAccount.getTotalBankAccountBalance());
                             double availableTransactionBalance = findDebitCard.getAvailableTransactionBalance();
-                            if (transactionAmt > accountBalance || transactionAmt >availableTransactionBalance ) {
+                            if (transactionAmt > accountBalance || transactionAmt > availableTransactionBalance) {
                                 System.out.println("depoist account balance insufficient or transaction exceeds daily transaction limit");
                                 return "not authorized";
                             } else {
-                                double newAvailableTransactionBalance = availableTransactionBalance-transactionAmt;
+                                double newAvailableTransactionBalance = availableTransactionBalance - transactionAmt;
                                 findDebitCard.setAvailableTransactionBalance(newAvailableTransactionBalance);
                                 em.flush();
-                                
+
                                 if (findDebitCard.getDebitCardType().getCardNetwork().equals("Visa")) {
 //                                    bankAccountSessionBeanLocal.updateDepositAccountAvailableBalance(cardNum, transactionAmt);
 //                                    em.detach(findDebitCard);
@@ -121,12 +123,44 @@ public class MerlionTransactionAuthorizationWebService {
                     System.out.println("card not activated");
                     return "not authorized";
                 } else {
-                    Double creditLimit = Double.valueOf(findCreditCard.getCreditLimit());
-                    if (transactionAmt > creditLimit) {
+                    String creditCardType = findCreditCard.getCardType();
+                    double creditLimit = 0.0;
+                    double outstandingBalance = 0.0;
+                    double newOutstandingBalance = 0.0;
+
+                    if (creditCardType.equals("SupplementaryCard")) {
+                        Query q = em.createQuery("SELECT s FROM SupplementaryCard s WHERE s.cardNum=:cardNum");
+                        q.setParameter("cardNum", cardNum);
+                        SupplementaryCard card = (SupplementaryCard) q.getSingleResult();
+                        creditLimit = card.getPrincipalCard().getCreditLimit();
+                        outstandingBalance = card.getPrincipalCard().getOutstandingBalance();
+                        newOutstandingBalance = outstandingBalance + transactionAmt;
+
+                        if (transactionAmt <= creditLimit || transactionAmt <= (creditLimit - outstandingBalance)) {
+                            card.getPrincipalCard().setOutstandingBalance(newOutstandingBalance);
+                            em.flush();
+                        }
+
+                    } else {
+                        Query q2 = em.createQuery("select p from PrincipalCard p where p.cardNum=:cardNum");
+                        q2.setParameter("cardNum", cardNum);
+                        PrincipalCard card2 = (PrincipalCard) q2.getSingleResult();
+                        creditLimit = card2.getCreditLimit();
+                        outstandingBalance = card2.getOutstandingBalance();
+                        newOutstandingBalance = outstandingBalance + transactionAmt;
+
+                        if (transactionAmt <= creditLimit || transactionAmt <= (creditLimit - outstandingBalance)) {
+                            card2.setOutstandingBalance(newOutstandingBalance);
+                            em.flush();
+                        }
+
+                    }//determine credit card type and update outstandingBalance
+
+                    if (transactionAmt > creditLimit || transactionAmt > (creditLimit - outstandingBalance)) {
                         System.out.println("credit limit insufficient");
                         return "not authorized";
                     } else {
-//                        createNewVisaClearingRecord(transactionAmt, "Watsons", transaction.getTransactionTime());
+
                         if (findCreditCard.getCreditCardType().getCardNetwork().equals("Visa")) {
                             transaction.setTransactionStatus("authorized");
                             return "authorized-Visa";

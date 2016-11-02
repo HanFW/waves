@@ -7,6 +7,7 @@ package ejb.card.session;
 
 import ejb.card.entity.CreditCard;
 import ejb.card.entity.CreditCardType;
+import ejb.card.entity.PrincipalCard;
 import ejb.card.entity.SupplementaryCard;
 import ejb.customer.entity.CustomerBasic;
 import java.security.MessageDigest;
@@ -41,7 +42,7 @@ public class CreditCardManagementSessionBean implements CreditCardManagementSess
         if (getCardByCardNum(creditCardNum) == null) {
             return "credit card not exist";
         } else {
-            CreditCard findCreditCard = getCardByCardNum(creditCardNum);
+            PrincipalCard findCreditCard = getPrincipalByCardNum(creditCardNum);
             System.out.println("##############outstanding limit" + findCreditCard.getOutstandingBalance());
 
             //check if pwd matches
@@ -55,7 +56,7 @@ public class CreditCardManagementSessionBean implements CreditCardManagementSess
                     return "credit limit unpaid";
                 } else {
                     findCreditCard.setStatus("cancel");
-                    
+                    em.flush();
                     return "success";
                 }
             } catch (NoSuchAlgorithmException ex) {
@@ -65,6 +66,18 @@ public class CreditCardManagementSessionBean implements CreditCardManagementSess
         }
         return null;
 
+    }
+    
+    @Override
+    public void cancelSupplementaryCard (Long cardId){
+        SupplementaryCard supplementaryCard = em.find(SupplementaryCard.class, cardId);
+        
+        CreditCardType creditCardType = supplementaryCard.getCreditCardType();
+
+        creditCardType.removeCreditCard(supplementaryCard);
+
+        em.remove(supplementaryCard);
+        System.out.println("CreditCardManagementSessionBean: Supplementary card has been removed from database");
     }
     
     @Override
@@ -86,7 +99,7 @@ public class CreditCardManagementSessionBean implements CreditCardManagementSess
         if (getCardByCardNum(creditCardNum) == null) {
             return "credit card not exist";
         } else {
-            CreditCard findCreditCard = getCardByCardNum(creditCardNum);
+            PrincipalCard findCreditCard = getPrincipalByCardNum(creditCardNum);
             System.out.println("!!!!!!!!!!!!!!credit card" + findCreditCard.getCardNum());
             System.out.println("!!!!!!!!!!!!!!credit card holder id" + findCreditCard.getCustomerBasic().getCustomerIdentificationNum());
 
@@ -101,7 +114,7 @@ public class CreditCardManagementSessionBean implements CreditCardManagementSess
                 double limit = findCreditCard.getCreditLimit();
                 String expDate = findCreditCard.getCardExpiryDate();
                 int remainingMonths = findCreditCard.getRemainingExpirationMonths();
-                List<SupplementaryCard> supplCards = findCreditCard.getSupplementaryCard();
+                List<SupplementaryCard> supplCards = findCreditCard.getSupplementaryCards();
 
 //                CustomerBasic cb = findCreditCard.getCustomerBasic();
 //                CreditCardType cct = findCreditCard.getCreditCardType();
@@ -110,6 +123,7 @@ public class CreditCardManagementSessionBean implements CreditCardManagementSess
 //                cct.removeCreditCard(findCreditCard);
                 System.out.println(findCreditCard);
                 em.remove(findCreditCard);
+                em.flush();
                 System.out.println("!!!!!!!after delete card" + findCreditCard);
 
                 System.out.println("!!!!!!!!!!!!!!!!!!management session bean ccct ID" + creditCardTypeId);
@@ -124,7 +138,7 @@ public class CreditCardManagementSessionBean implements CreditCardManagementSess
     @Override
     public void replaceDamagedCreditCard(String creditCardNum) {
 
-        CreditCard findCreditCard = getCardByCardNum(creditCardNum);
+        PrincipalCard findCreditCard = getPrincipalByCardNum(creditCardNum);
 
         Long cbId = findCreditCard.getCustomerBasic().getCustomerBasicId();
         Long caId = findCreditCard.getCustomerBasic().getCustomerAdvanced().getCustomerAdvancedId();
@@ -134,7 +148,7 @@ public class CreditCardManagementSessionBean implements CreditCardManagementSess
         CreditCardType cardTypeName = findCreditCard.getCreditCardType();
         double limit = findCreditCard.getCreditLimit();
         int remainingMonths = findCreditCard.getRemainingExpirationMonths();
-        List<SupplementaryCard> supplCards = findCreditCard.getSupplementaryCard();
+        List<SupplementaryCard> supplCards = findCreditCard.getSupplementaryCards();
         Long predecessorId = findCreditCard.getCardId();
 
         creditCardSessionBeanLocal.createNewCardAfterDamage(cbId, caId, creditCardTypeId, cardHolderName, limit, expDate, remainingMonths, supplCards, predecessorId);
@@ -193,6 +207,19 @@ public class CreditCardManagementSessionBean implements CreditCardManagementSess
             return null;
         } else {
             CreditCard findCreditCard = (CreditCard) query.getResultList().get(0);
+            return findCreditCard;
+        }
+    }
+    
+    @Override
+    public PrincipalCard getPrincipalByCardNum (String cardNum) {
+        Query query = em.createQuery("SELECT p FROM PrincipalCard p WHERE p.cardNum = :cardNum");
+        query.setParameter("cardNum", cardNum);
+
+        if (query.getResultList().isEmpty()) {
+            return null;
+        } else {
+            PrincipalCard findCreditCard = (PrincipalCard) query.getResultList().get(0);
             return findCreditCard;
         }
     }

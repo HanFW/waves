@@ -43,7 +43,7 @@ public class CustomerOnlineRiskToleranceTestManagedBean implements Serializable 
     private PieChartModel pieModel3;
 
     @EJB
-    CreateCustomerRiskProfileSessionBeanLocal createCustomerRiskProfileSessionBeanLocal;
+    private CreateCustomerRiskProfileSessionBeanLocal createCustomerRiskProfileSessionBeanLocal;
 
     public CustomerOnlineRiskToleranceTestManagedBean() {
     }

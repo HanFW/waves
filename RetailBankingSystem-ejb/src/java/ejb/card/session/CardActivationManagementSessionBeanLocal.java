@@ -14,4 +14,5 @@ import javax.ejb.Local;
 @Local
 public interface CardActivationManagementSessionBeanLocal {
     public void handleCardActivation();
+    public void handleCreditCardActivation();
 }
