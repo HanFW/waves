@@ -21,7 +21,7 @@ public class OnHoldRecord implements Serializable {
     private String debitOrCreditBankName;
     private String debitOrCreditBankAccountNum;
     private String paymentMethod;
-    private Long chequeId;
+    private String chequeNum;
 
     public Long getOnHoldRecordId() {
         return onHoldRecordId;
@@ -95,14 +95,14 @@ public class OnHoldRecord implements Serializable {
         this.paymentMethod = paymentMethod;
     }
 
-    public Long getChequeId() {
-        return chequeId;
+    public String getChequeNum() {
+        return chequeNum;
     }
 
-    public void setChequeId(Long chequeId) {
-        this.chequeId = chequeId;
+    public void setChequeNum(String chequeNum) {
+        this.chequeNum = chequeNum;
     }
-
+    
     @Override
     public int hashCode() {
         int hash = 0;

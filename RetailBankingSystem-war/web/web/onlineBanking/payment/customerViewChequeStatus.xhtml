@@ -20,11 +20,41 @@
 
             <br/>
             <br/>
+            <p:outputLabel value="View Issued Cheque Status"/>
+            <br/>
+            <br/>
+            <p:dataTable var="issuedCheque" value="#{viewChequeStatusManagedBean.issuedCheque}" 
+                         reflow="true" paginator="true" rows="10" emptyMessage="No Recipient">
+
+                <p:column headerText="Cheque Number" >
+                    <h:outputText value="#{issuedCheque.chequeNum}" /> 
+                </p:column>
+
+                <p:column headerText="Transaction Date" >
+                    <h:outputText value="#{issuedCheque.transactionDate}" /> 
+                </p:column>
+
+                <p:column headerText="Transaction Amount(S$)" >
+                    <h:outputText value="#{issuedCheque.transactionAmt}" /> 
+                </p:column>
+
+                <p:column headerText="Cheque Status" >
+                    <h:outputText value="#{issuedCheque.issuedChequeStatus}" /> 
+                </p:column>
+
+            </p:dataTable>
+            <br/>
+            <br/>
             <p:outputLabel value="View Received Cheque Status"/>
             <br/>
             <br/>
             <p:dataTable var="receivedCheque" value="#{viewChequeStatusManagedBean.receivedCheque}" 
                          reflow="true" paginator="true" rows="10" emptyMessage="No Recipient">
+
+                <p:column headerText="Cheque Number" >
+                    <h:outputText value="#{receivedCheque.chequeNum}" /> 
+                </p:column>
+
                 <p:column headerText="Transaction Date" >
                     <h:outputText value="#{receivedCheque.transactionDate}" /> 
                 </p:column>

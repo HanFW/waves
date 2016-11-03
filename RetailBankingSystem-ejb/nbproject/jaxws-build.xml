@@ -44,23 +44,6 @@
             <classpath path="${j2ee.platform.wsimport.classpath}"/>
         </taskdef>
     </target>
-    <target name="wsimport-client-OtherBanksWebService" depends="wsimport-init">
-        <mkdir dir="${build.generated.dir}/jax-wsCache/OtherBanksWebService"/>
-        <property name="wsdl-OtherBanksWebService" location="${meta.inf}/xml-resources/web-service-references/OtherBanksWebService/wsdl/localhost_8080/OtherBanksWebService/OtherBanksWebService.wsdl"/>
-        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/OtherBanksWebService" destdir="${build.generated.dir}/jax-wsCache/OtherBanksWebService" wsdl="${wsdl-OtherBanksWebService}" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" fork="false" wsdlLocation="http://localhost:8080/OtherBanksWebService/OtherBanksWebService?wsdl" xnocompile="true" xendorsed="true" package="ws.client.otherbanks">
-            <depends file="${wsdl-OtherBanksWebService}"/>
-            <produces dir="${build.generated.dir}/jax-wsCache/OtherBanksWebService"/>
-        </wsimport>
-        <copy todir="${build.generated.sources.dir}/jax-ws">
-            <fileset dir="${build.generated.dir}/jax-wsCache/OtherBanksWebService">
-                <include name="**/*.java"/>
-            </fileset>
-        </copy>
-    </target>
-    <target name="wsimport-client-clean-OtherBanksWebService" depends="-init-project">
-        <delete dir="${build.generated.dir}/jax-wsCache/OtherBanksWebService"/>
-        <delete dir="${build.generated.sources.dir}/jax-ws/ws/client/otherbanks"/>
-    </target>
     <target name="wsimport-client-SACHWebService" depends="wsimport-init">
         <mkdir dir="${build.generated.dir}/jax-wsCache/SACHWebService"/>
         <property name="wsdl-SACHWebService" location="${meta.inf}/xml-resources/web-service-references/SACHWebService/wsdl/localhost_8080/SACHWebService/SACHWebService.wsdl"/>
@@ -146,5 +129,22 @@
         <delete dir="${build.generated.dir}/jax-wsCache/BillWebService"/>
         <delete dir="${build.generated.sources.dir}/jax-ws/ws/client/bill"/>
     </target>
-    <target name="wsimport-client-generate" depends="wsimport-client-OtherBanksWebService, wsimport-client-SACHWebService, wsimport-client-MEPSWebService, wsimport-client-SWIFTWebService, wsimport-client-CHIPSWebService, wsimport-client-BillWebService"/>
+    <target name="wsimport-client-OtherBanksWebService" depends="wsimport-init">
+        <mkdir dir="${build.generated.dir}/jax-wsCache/OtherBanksWebService"/>
+        <property name="wsdl-OtherBanksWebService" location="${meta.inf}/xml-resources/web-service-references/OtherBanksWebService/wsdl/localhost_8080/OtherBanksWebService/OtherBanksWebService.wsdl"/>
+        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/OtherBanksWebService" destdir="${build.generated.dir}/jax-wsCache/OtherBanksWebService" wsdl="${wsdl-OtherBanksWebService}" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" fork="false" wsdlLocation="http://localhost:8080/OtherBanksWebService/OtherBanksWebService?wsdl" xnocompile="true" xendorsed="true" package="ws.client.otherbanks">
+            <depends file="${wsdl-OtherBanksWebService}"/>
+            <produces dir="${build.generated.dir}/jax-wsCache/OtherBanksWebService"/>
+        </wsimport>
+        <copy todir="${build.generated.sources.dir}/jax-ws">
+            <fileset dir="${build.generated.dir}/jax-wsCache/OtherBanksWebService">
+                <include name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="wsimport-client-clean-OtherBanksWebService" depends="-init-project">
+        <delete dir="${build.generated.dir}/jax-wsCache/OtherBanksWebService"/>
+        <delete dir="${build.generated.sources.dir}/jax-ws/ws/client/otherbanks"/>
+    </target>
+    <target name="wsimport-client-generate" depends="wsimport-client-SACHWebService, wsimport-client-MEPSWebService, wsimport-client-SWIFTWebService, wsimport-client-CHIPSWebService, wsimport-client-BillWebService, wsimport-client-OtherBanksWebService"/>
 </project>
