@@ -14,8 +14,16 @@
 
                 <p:panel id="panel">
                     <br/>
-                    <p:chart type="line" model="#{employeeViewDashboardManagedBean.lineModel}" 
+                    <p:chart type="line" model="#{employeeViewDashboardManagedBean.acqAttLineModel}" 
                              style="height:400px;"/>
+                    <br/>
+                    <br/>
+                    <p:chart type="line" model="#{employeeViewDashboardManagedBean.netAcqAttLineModel}" 
+                             style="height:400px;"/>
+                    <br/>
+                    <br/>
+                    <p:chart type="pie" model="#{employeeViewDashboardManagedBean.accountClosureReasonPieModel}" 
+                             style="width:750px;height:350px" />
                 </p:panel>
             </div>
         </h:form>
