@@ -172,13 +172,12 @@ public class NonStandingGIROTransferDoneManagedBean implements Serializable {
 
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
-        GIRO giro = gIROSessionBeanLocal.retrieveGIROById(giroId);
         NonStandingGIRO nonStandingGiro = nonStandingGIROSessionBeanLocal.retrieveNonStandingGIROById(giroId);
 
         if (nonStandingGiro.getNonStandingStatus().equals("Incompleted")) {
             
-            String billingOrganizationName = giro.getBillingOrganizationName();
-            String bankAccountNum = giro.getBankAccountNum();
+            String billingOrganizationName = nonStandingGiro.getBillingOrganizationName();
+            String bankAccountNum = nonStandingGiro.getBankAccountNum();
 
             BankAccount bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountByNum(bankAccountNum);
 
@@ -216,7 +215,6 @@ public class NonStandingGIROTransferDoneManagedBean implements Serializable {
                 
                 sachNonStandingGIROTransferMTD(bankAccount.getBankAccountNum(), billOrgBankAccountNum, paymentAmt);
 
-                System.out.println("hello");
                 nonStandingGIROSessionBeanLocal.updatePaymentAmt(giroId, paymentAmt.toString());
 
                 OtherBankAccount dbsBankAccount = retrieveBankAccountByNum(billOrg.getBankAccountNum());

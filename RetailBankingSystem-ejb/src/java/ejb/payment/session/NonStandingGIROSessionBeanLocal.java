@@ -30,4 +30,10 @@ public interface NonStandingGIROSessionBeanLocal {
     public void updateNonStandingStatus(Long giroId, String paymentFrequency);
 
     public void updateButtonRender(Long giroId);
+
+    public void dailyRecurrentRegularGIROTransfer();
+
+    public void monthlyRecurrentRegularGIROTransfer();
+
+    public void weeklyRecurrentRegularGIROTransfer();
 }
