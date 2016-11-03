@@ -48,7 +48,7 @@ public class EmployeeViewDashboardManagedBean {
         Axis yAxis = lineModel.getAxis(AxisType.Y);
         yAxis.setLabel("Rate");
         yAxis.setMin(0);
-        yAxis.setMax(1);
+        yAxis.setMax(0.1);
 
     }
 
@@ -89,6 +89,36 @@ public class EmployeeViewDashboardManagedBean {
             acquisition.set("2016.06", junAcqRate.getRateValue());
         }
 
+        Rate julAcqRate = rateSessionBeanLocal.retrieveAcquisitionRateByDate(7);
+        if (julAcqRate.getRateId() != null) {
+            acquisition.set("2016.07", julAcqRate.getRateValue());
+        }
+
+        Rate augAcqRate = rateSessionBeanLocal.retrieveAcquisitionRateByDate(8);
+        if (augAcqRate.getRateId() != null) {
+            acquisition.set("2016.08", augAcqRate.getRateValue());
+        }
+
+        Rate sepAcqRate = rateSessionBeanLocal.retrieveAcquisitionRateByDate(9);
+        if (sepAcqRate.getRateId() != null) {
+            acquisition.set("2016.09", sepAcqRate.getRateValue());
+        }
+
+        Rate octAcqRate = rateSessionBeanLocal.retrieveAcquisitionRateByDate(10);
+        if (octAcqRate.getRateId() != null) {
+            acquisition.set("2016.10", octAcqRate.getRateValue());
+        }
+
+        Rate novAcqRate = rateSessionBeanLocal.retrieveAcquisitionRateByDate(11);
+        if (novAcqRate.getRateId() != null) {
+            acquisition.set("2016.11", novAcqRate.getRateValue());
+        }
+
+        Rate decAcqRate = rateSessionBeanLocal.retrieveAcquisitionRateByDate(12);
+        if (decAcqRate.getRateId() != null) {
+            acquisition.set("2016.12", decAcqRate.getRateValue());
+        }
+
         ChartSeries attrition = new ChartSeries();
         attrition.setLabel("Attrition Rate");
 
@@ -120,6 +150,36 @@ public class EmployeeViewDashboardManagedBean {
         Rate junAttRate = rateSessionBeanLocal.retrieveAttritionRateByDate(6);
         if (junAttRate.getRateId() != null) {
             attrition.set("2016.06", junAttRate.getRateValue());
+        }
+
+        Rate julAttRate = rateSessionBeanLocal.retrieveAttritionRateByDate(7);
+        if (julAttRate.getRateId() != null) {
+            attrition.set("2016.07", julAttRate.getRateValue());
+        }
+
+        Rate augAttRate = rateSessionBeanLocal.retrieveAttritionRateByDate(8);
+        if (augAttRate.getRateId() != null) {
+            attrition.set("2016.08", augAttRate.getRateValue());
+        }
+
+        Rate sepAttRate = rateSessionBeanLocal.retrieveAttritionRateByDate(9);
+        if (sepAttRate.getRateId() != null) {
+            attrition.set("2016.09", sepAttRate.getRateValue());
+        }
+
+        Rate octAttRate = rateSessionBeanLocal.retrieveAttritionRateByDate(10);
+        if (octAttRate.getRateId() != null) {
+            attrition.set("2016.10", octAttRate.getRateValue());
+        }
+
+        Rate novAttRate = rateSessionBeanLocal.retrieveAttritionRateByDate(11);
+        if (novAttRate.getRateId() != null) {
+            attrition.set("2016.11", novAttRate.getRateValue());
+        }
+
+        Rate decAttRate = rateSessionBeanLocal.retrieveAttritionRateByDate(12);
+        if (decAttRate.getRateId() != null) {
+            attrition.set("2016.12", decAttRate.getRateValue());
         }
 
         model.addSeries(acquisition);

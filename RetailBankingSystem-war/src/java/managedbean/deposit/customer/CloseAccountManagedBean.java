@@ -1,5 +1,6 @@
 package managedbean.deposit.customer;
 
+import ejb.bi.session.DepositAccountClosureSessionBeanLocal;
 import ejb.customer.entity.CustomerBasic;
 import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import ejb.deposit.entity.BankAccount;
@@ -7,6 +8,7 @@ import ejb.deposit.session.BankAccountSessionBeanLocal;
 import ejb.deposit.session.InterestSessionBeanLocal;
 import ejb.infrastructure.session.LoggingSessionBeanLocal;
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +24,9 @@ import javax.faces.context.FacesContext;
 @RequestScoped
 
 public class CloseAccountManagedBean {
+
+    @EJB
+    private DepositAccountClosureSessionBeanLocal depositAccountClosureSessionBeanLocal;
 
     @EJB
     private InterestSessionBeanLocal interestSessionBeanLocal;
@@ -45,6 +50,7 @@ public class CloseAccountManagedBean {
     private String customerName;
     private Long interestId;
     private boolean checkOnlyOneAccount;
+    private String reasonOfAccountClosure;
 
     private Map<String, String> myBankAccounts = new HashMap<String, String>();
 
@@ -146,6 +152,14 @@ public class CloseAccountManagedBean {
         this.checkOnlyOneAccount = checkOnlyOneAccount;
     }
 
+    public String getReasonOfAccountClosure() {
+        return reasonOfAccountClosure;
+    }
+
+    public void setReasonOfAccountClosure(String reasonOfAccountClosure) {
+        this.reasonOfAccountClosure = reasonOfAccountClosure;
+    }
+
     public void deleteAccount() throws IOException {
 
         System.out.println("=");
@@ -163,6 +177,10 @@ public class CloseAccountManagedBean {
             if (!bankAccount.getAvailableBankAccountBalance().equals("0.0")) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Please withdraw all your money.", "Failed!"));
             } else {
+
+                Calendar cal = Calendar.getInstance();
+                Long newDepositAccountClosureId = depositAccountClosureSessionBeanLocal.addNewDepositAccountClosure(reasonOfAccountClosure,
+                        cal.getTimeInMillis(), cal.getTime().toString());
 
                 interestId = bankAccount.getInterest().getInterestId();
                 bankAccountSessionLocal.deleteAccount(bankAccountNum);
@@ -182,6 +200,10 @@ public class CloseAccountManagedBean {
             if (!bankAccount.getAvailableBankAccountBalance().equals("0.0")) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Please withdraw all your money.", "Failed!"));
             } else {
+
+                Calendar cal = Calendar.getInstance();
+                Long newDepositAccountClosureId = depositAccountClosureSessionBeanLocal.addNewDepositAccountClosure(reasonOfAccountClosure,
+                        cal.getTimeInMillis(), cal.getTime().toString());
 
                 interestId = bankAccount.getInterest().getInterestId();
                 customerSessionBeanLocal.deleteCustomerBasic(customerBasic.getCustomerIdentificationNum());

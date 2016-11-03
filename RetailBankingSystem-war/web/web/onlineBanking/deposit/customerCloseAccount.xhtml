@@ -14,10 +14,10 @@
                 <p:outputLabel value="Welcome "/>
                 <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
             </p:panel>
-            
+
             <p:panel id="panel"> 
                 <div align="center">
-                    
+
                     <h:panelGrid columns="1" styleClass="ui-panelgrid-blank form-group ui-lg-4" >
                         <p:messages globalOnly="true"/>
 
@@ -27,9 +27,21 @@
                             <f:selectItems value="#{closeAccountManagedBean.myBankAccounts}" />
                         </p:selectOneMenu>
                         <p:message for="bankAccountNum" />
-                        
+
+                        <p:outputLabel style="font-weight: bold" value="Why you close your deposit account?" />
+                        <p:selectOneRadio id="reasonOfAccountClosure" value="#{closeAccountManagedBean.reasonOfAccountClosure}"
+                                          required="true" requiredMessage="Required Field" layout="pageDirection">
+                            <f:selectItem itemLabel="Low Interest Rate" itemValue="Interest"/>
+                            <f:selectItem itemLabel="High Service Charge for Transaction" itemValue="Service Charge" />
+                            <f:selectItem itemLabel="Unsatisfied Customer Service" itemValue="Customer Service" />
+                            <f:selectItem itemLabel="I don't need deposit account anymore" itemValue="Dont Need" />
+                            <f:selectItem itemLabel="I have applied for another deposit account" itemValue="Applied Another" />
+                            <f:selectItem itemLabel="Other Reasons" itemValue="Other Reasons" />
+                        </p:selectOneRadio>
+                        <p:message for="reasonOfAccountClosure" />
+
                     </h:panelGrid>
-                    
+
                     <h:panelGrid columns="2" class="ui-lg-4">
                         <p:commandButton id="cancelBtn" action="/web/onlineBanking/deposit/customerDepositIndex.xhtml" value="Cancel" update="panel" immediate = "true">
                             <p:confirm message="Are you sure?" />

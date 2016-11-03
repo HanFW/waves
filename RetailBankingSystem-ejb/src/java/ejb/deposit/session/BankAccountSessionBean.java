@@ -564,11 +564,6 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
         bankAccount.getInterest().setMonthlyInterest("0");
     }
 
-    private String md5Hashing(String stringToHash) throws NoSuchAlgorithmException {
-        MessageDigest md = MessageDigest.getInstance("MD5");
-        return Arrays.toString(md.digest(stringToHash.getBytes()));
-    }
-
     private String checkInterestRate(String fixedDepositPeriodDay) {
 
         Double interestRate = 0.0;
