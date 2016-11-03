@@ -195,9 +195,10 @@ public class RateSessionBean implements RateSessionBeanLocal {
         Long endTime = cal.getTimeInMillis();
         Long startTime = endTime - 100010;
 
-        Query queryOpenAccount = entityManager.createQuery("SELECT b FROM BankAccount b WHERE b.currentTimeMilis >= :startTime And b.currentTimeMilis<=:endTime");
+        Query queryOpenAccount = entityManager.createQuery("SELECT b FROM BankAccount b WHERE b.currentTimeMilis >= :startTime And b.currentTimeMilis<=:endTime And b.bankAccountStatus=:bankAccountStatus");
         queryOpenAccount.setParameter("startTime", startTime);
         queryOpenAccount.setParameter("endTime", endTime);
+        queryOpenAccount.setParameter("bankAccountStatus", "Active");
         List<BankAccount> bankAccounts = queryOpenAccount.getResultList();
 
         Query queryCloseAccount = entityManager.createQuery("SELECT d FROM DepositAccountClosure d WHERE d.currentTimeMilis >= :startTime And d.currentTimeMilis<=:endTime");
