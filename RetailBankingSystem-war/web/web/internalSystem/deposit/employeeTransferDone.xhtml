@@ -10,7 +10,7 @@
     <ui:define name="content">
         <h:form id="formMain">
             <div align="center">
-<!--                <h:outputText value="You have logged in as: Counter Teller"/>-->
+                <!--                <h:outputText value="You have logged in as: Counter Teller"/>-->
                 <br/>
                 <p:panel id="panel" header="Fund Transfer"> 
                     <p:messages />
@@ -25,9 +25,11 @@
                                 <p:outputLabel for="transferFromAccount" style="font-weight: bold" value="Account: " />
                             </p:column>
                             <p:column>
-                                <p:inputText required="true" label="Amount" requiredMessage="Required Field" id="transferFromAccount"
-                                             value="#{employeeTransferDoneManagedBean.fromAccount}" converterMessage="Invalid input">
-                                </p:inputText>
+                                <p:selectOneMenu id="transferFromAccount" value="#{employeeTransferDoneManagedBean.fromBankAccountNumWithType}" 
+                                                 effect="fold" editable="false">
+                                    <f:selectItem itemLabel="Please Select One" itemValue=""/> 
+                                    <f:selectItems value="#{employeeTransferDoneManagedBean.fromAccounts}" />
+                                </p:selectOneMenu>
                             </p:column>
                             <p:column>
                                 <p:message for="transferFromAccount" />

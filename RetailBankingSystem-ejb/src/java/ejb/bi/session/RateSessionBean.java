@@ -25,15 +25,17 @@ public class RateSessionBean implements RateSessionBeanLocal {
     private EntityManager entityManager;
 
     @Override
-    public Long addNewRate(Double rateValue, Integer updateDate, String rateType,
-            String rateStatus) {
+    public Long addNewRate(Double rateValue, String rateType, String rateStatus,
+            Integer updateYear, Integer updateMonth, String currentYear) {
 
         Rate rate = new Rate();
 
+        rate.setCurrentYear(currentYear);
+        rate.setRateStatus(rateStatus);
         rate.setRateType(rateType);
         rate.setRateValue(rateValue);
-        rate.setUpdateDate(updateDate);
-        rate.setRateStatus(rateStatus);
+        rate.setUpdateMonth(updateMonth);
+        rate.setUpdateYear(updateYear);
 
         entityManager.persist(rate);
         entityManager.flush();
@@ -42,13 +44,14 @@ public class RateSessionBean implements RateSessionBeanLocal {
     }
 
     @Override
-    public Rate retrieveAcquisitionRateByDate(Integer updateDate) {
+    public Rate retrieveAcquisitionRateByMonth(Integer updateMonth) {
         Rate rate = new Rate();
 
         try {
-            Query query = entityManager.createQuery("Select r From Rate r Where r.updateDate=:updateDate And r.rateType=:rateType");
-            query.setParameter("updateDate", updateDate);
+            Query query = entityManager.createQuery("Select r From Rate r Where r.updateMonth=:updateMonth And r.rateType=:rateType And r.currentYear=:currentYear");
+            query.setParameter("updateMonth", updateMonth);
             query.setParameter("rateType", "Acquisition");
+            query.setParameter("currentYear", "Yes");
 
             if (query.getResultList().isEmpty()) {
                 return new Rate();
@@ -66,13 +69,14 @@ public class RateSessionBean implements RateSessionBeanLocal {
     }
 
     @Override
-    public Rate retrieveAttritionRateByDate(Integer updateDate) {
+    public Rate retrieveAttritionRateByMonth(Integer updateMonth) {
         Rate rate = new Rate();
 
         try {
-            Query query = entityManager.createQuery("Select r From Rate r Where r.updateDate=:updateDate And r.rateType=:rateType");
-            query.setParameter("updateDate", updateDate);
+            Query query = entityManager.createQuery("Select r From Rate r Where r.updateMonth=:updateMonth And r.rateType=:rateType And r.currentYear=:currentYear");
+            query.setParameter("updateMonth", updateMonth);
             query.setParameter("rateType", "Attrition");
+            query.setParameter("currentYear", "Yes");
 
             if (query.getResultList().isEmpty()) {
                 return new Rate();
@@ -90,7 +94,7 @@ public class RateSessionBean implements RateSessionBeanLocal {
     }
 
     @Override
-    public Rate retrieveAcquisitionRateByDate(Long rateId) {
+    public Rate retrieveAcquisitionRateById(Long rateId) {
         Rate rate = new Rate();
 
         try {
@@ -179,17 +183,59 @@ public class RateSessionBean implements RateSessionBeanLocal {
     }
 
     @Override
+    public List<Rate> getCurrentYearAcqRate() {
+        Query query = entityManager.createQuery("SELECT r FROM Rate r Where r.rateType=:rateType And r.currentYear=:currentYear");
+        query.setParameter("rateType", "Acquisition");
+        query.setParameter("currentYear", "Yes");
+
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Rate> getCurrentYearAttRate() {
+        Query query = entityManager.createQuery("SELECT r FROM Rate r Where r.rateType=:rateType And r.currentYear=:currentYear");
+        query.setParameter("rateType", "Attrition");
+        query.setParameter("currentYear", "Yes");
+
+        return query.getResultList();
+    }
+
+    @Override
     public void monthlyDashboardRate() {
 
         DecimalFormat df = new DecimalFormat("#.000000");
+        Integer acqUpdateYear = 0;
+        Integer attUpdateYear = 0;
 
         Rate acqRate = getAcqRate();
-        Integer acqUpdateDate = acqRate.getUpdateDate();
+        Integer acqUpdateMonth = acqRate.getUpdateMonth();
+        acqUpdateYear = acqRate.getUpdateYear();
         acqRate.setRateStatus("Done");
 
+        if (acqUpdateMonth == 12) {
+            acqUpdateYear = acqRate.getUpdateYear() + 1;
+            acqUpdateMonth = 0;
+            List<Rate> acqRates = getCurrentYearAcqRate();
+
+            for (int i = 0; i < acqRates.size(); i++) {
+                acqRates.get(i).setCurrentYear("No");
+            }
+        }
+
         Rate attRate = getAttRate();
-        Integer attUpdateDate = attRate.getUpdateDate();
+        Integer attUpdateMonth = attRate.getUpdateMonth();
+        attUpdateYear = attRate.getUpdateYear();
         attRate.setRateStatus("Done");
+
+        if (attUpdateMonth == 12) {
+            attUpdateYear = attRate.getUpdateYear() + 1;
+            attUpdateMonth = 0;
+            List<Rate> attRates = getCurrentYearAttRate();
+
+            for (int i = 0; i < attRates.size(); i++) {
+                attRates.get(i).setCurrentYear("No");
+            }
+        }
 
         Calendar cal = Calendar.getInstance();
         Long endTime = cal.getTimeInMillis();
@@ -206,22 +252,35 @@ public class RateSessionBean implements RateSessionBeanLocal {
         queryCloseAccount.setParameter("endTime", endTime);
         List<DepositAccountClosure> depositAccountClosures = queryCloseAccount.getResultList();
 
-        NumOfExistingCustomer numOfCustomer = numOfExistingCustomerSessionBeanLocal.retrieveNumOfExistingCustomerByDate(acqUpdateDate);
+        NumOfExistingCustomer numOfCustomer = numOfExistingCustomerSessionBeanLocal.retrieveNumOfExistingCustomerByDate(acqUpdateMonth);
         String numberOfCustomer = numOfCustomer.getNumOfExistingCustomer();
 
         Integer newNumOfExistingCustomer = Integer.valueOf(numberOfCustomer) + bankAccounts.size() - depositAccountClosures.size();
-        Integer currentAcqUpdateDate = acqUpdateDate + 1;
-        Integer currentAttUpdateDate = attUpdateDate + 1;
+        Integer currentAcqUpdateMonth = acqUpdateMonth + 1;
+        Integer currentAttUpdateMonth = attUpdateMonth + 1;
 
         String acqRateValue = df.format(bankAccounts.size() / Double.valueOf(numberOfCustomer));
         String attRateValue = df.format(depositAccountClosures.size() / Double.valueOf(numberOfCustomer));
 
-        Long newAcqRateId = addNewRate(Double.valueOf(acqRateValue), currentAcqUpdateDate, "Acquisition",
-                "New");
-        Long newAttRateId = addNewRate(Double.valueOf(attRateValue), currentAttUpdateDate, "Attrition",
-                "New");
+        Long newAcqRateId = addNewRate(Double.valueOf(acqRateValue), "Acquisition",
+                "New", acqUpdateYear, currentAcqUpdateMonth, "Yes");
+        Long newAttRateId = addNewRate(Double.valueOf(attRateValue), "Attrition",
+                "New", attUpdateYear, currentAttUpdateMonth, "Yes");
         Long newNumOfExistingCustomerId = numOfExistingCustomerSessionBeanLocal.addNewNumOfExistingCustomer(
-                newNumOfExistingCustomer.toString(), currentAcqUpdateDate);
+                newNumOfExistingCustomer.toString(), currentAcqUpdateMonth);
 
+    }
+
+    @Override
+    public void generateMonthlyAccountClosureReason() {
+
+        Calendar cal = Calendar.getInstance();
+        Long endTime = cal.getTimeInMillis();
+        Long startTime = endTime - 100010;
+
+        Query queryCloseAccount = entityManager.createQuery("SELECT d FROM DepositAccountClosure d WHERE d.currentTimeMilis >= :startTime And d.currentTimeMilis<=:endTime");
+        queryCloseAccount.setParameter("startTime", startTime);
+        queryCloseAccount.setParameter("endTime", endTime);
+        List<DepositAccountClosure> depositAccountClosures = queryCloseAccount.getResultList();
     }
 }

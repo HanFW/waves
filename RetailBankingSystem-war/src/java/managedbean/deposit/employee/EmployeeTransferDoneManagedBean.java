@@ -1,9 +1,15 @@
 package managedbean.deposit.employee;
 
+import ejb.customer.entity.CustomerBasic;
+import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import ejb.deposit.session.TransactionSessionBeanLocal;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
@@ -15,6 +21,9 @@ import javax.faces.context.FacesContext;
 @RequestScoped
 
 public class EmployeeTransferDoneManagedBean {
+
+    @EJB
+    private CRMCustomerSessionBeanLocal customerSessionBeanLocal;
 
     @EJB
     private TransactionSessionBeanLocal transactionSessionBeanLocal;
@@ -36,9 +45,27 @@ public class EmployeeTransferDoneManagedBean {
     private String statusMessage;
     private String customerIdentificationNum;
 
+    private Map<String, String> fromAccounts = new HashMap<String, String>();
+
     private ExternalContext ec;
 
     public EmployeeTransferDoneManagedBean() {
+    }
+
+    @PostConstruct
+    public void init() {
+        
+        ec = FacesContext.getCurrentInstance().getExternalContext();
+
+        customerIdentificationNum = ec.getSessionMap().get("customerIdentificationNum").toString();
+        CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum);
+
+        List<BankAccount> bankAccounts = bankAccountSessionBeanLocal.retrieveBankAccountByCusIC(customerBasic.getCustomerIdentificationNum());
+        fromAccounts = new HashMap<String, String>();
+
+        for (int i = 0; i < bankAccounts.size(); i++) {
+            fromAccounts.put(bankAccounts.get(i).getBankAccountType() + "-" + bankAccounts.get(i).getBankAccountNum(), bankAccounts.get(i).getBankAccountType() + "-" + bankAccounts.get(i).getBankAccountNum());
+        }
     }
 
     public String getFromAccount() {
@@ -135,6 +162,14 @@ public class EmployeeTransferDoneManagedBean {
 
     public void setFromAccountTotalBalance(String fromAccountTotalBalance) {
         this.fromAccountTotalBalance = fromAccountTotalBalance;
+    }
+
+    public Map<String, String> getFromAccounts() {
+        return fromAccounts;
+    }
+
+    public void setFromAccounts(Map<String, String> fromAccounts) {
+        this.fromAccounts = fromAccounts;
     }
 
     public void transfer() throws IOException {
