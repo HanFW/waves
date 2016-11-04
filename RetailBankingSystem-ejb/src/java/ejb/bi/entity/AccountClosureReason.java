@@ -17,6 +17,7 @@ public class AccountClosureReason implements Serializable {
     private Integer updateMonth;
     private Integer updateYear;
     private String accountClosureReasonStatus;
+    private String currentYear;
 
     public Long getAccountClosureReasonId() {
         return accountClosureReasonId;
@@ -64,6 +65,14 @@ public class AccountClosureReason implements Serializable {
 
     public void setAccountClosureReasonStatus(String accountClosureReasonStatus) {
         this.accountClosureReasonStatus = accountClosureReasonStatus;
+    }
+
+    public String getCurrentYear() {
+        return currentYear;
+    }
+
+    public void setCurrentYear(String currentYear) {
+        this.currentYear = currentYear;
     }
 
     @Override

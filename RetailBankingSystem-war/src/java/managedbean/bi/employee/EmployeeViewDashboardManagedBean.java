@@ -1,6 +1,8 @@
 package managedbean.bi.employee;
 
+import ejb.bi.entity.AccountClosureReason;
 import ejb.bi.entity.Rate;
+import ejb.bi.session.AccountClosureReasonSessionBeanLocal;
 import ejb.bi.session.RateSessionBeanLocal;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -18,6 +20,9 @@ import org.primefaces.model.chart.PieChartModel;
 @RequestScoped
 
 public class EmployeeViewDashboardManagedBean {
+
+    @EJB
+    private AccountClosureReasonSessionBeanLocal accountClosureReasonSessionBeanLocal;
 
     @EJB
     private RateSessionBeanLocal rateSessionBeanLocal;
@@ -103,12 +108,19 @@ public class EmployeeViewDashboardManagedBean {
 
         accountClosureReasonPieModel = new PieChartModel();
 
-        accountClosureReasonPieModel.set("Low interest rate", 540);
-        accountClosureReasonPieModel.set("High service charge for transaction", 325);
-        accountClosureReasonPieModel.set("Unsatisfied customer service", 702);
-        accountClosureReasonPieModel.set("I do not need deposit account anymore", 421);
-        accountClosureReasonPieModel.set("I have applied for another deposit account", 421);
-        accountClosureReasonPieModel.set("Others", 421);
+        AccountClosureReason interest = accountClosureReasonSessionBeanLocal.retrieveAccountClosureReasonByName("Interest");
+        AccountClosureReason serviceCharge = accountClosureReasonSessionBeanLocal.retrieveAccountClosureReasonByName("Service Charge");
+        AccountClosureReason customerService = accountClosureReasonSessionBeanLocal.retrieveAccountClosureReasonByName("Customer Service");
+        AccountClosureReason dontNeed = accountClosureReasonSessionBeanLocal.retrieveAccountClosureReasonByName("Dont Need");
+        AccountClosureReason appliedAnother = accountClosureReasonSessionBeanLocal.retrieveAccountClosureReasonByName("Applied Another");
+        AccountClosureReason others = accountClosureReasonSessionBeanLocal.retrieveAccountClosureReasonByName("Other Reasons");
+
+        accountClosureReasonPieModel.set("Low interest rate", Double.valueOf(interest.getRateValue()));
+        accountClosureReasonPieModel.set("High service charge for transaction", Double.valueOf(serviceCharge.getRateValue()));
+        accountClosureReasonPieModel.set("Unsatisfied customer service", Double.valueOf(customerService.getRateValue()));
+        accountClosureReasonPieModel.set("I do not need deposit account anymore", Double.valueOf(dontNeed.getRateValue()));
+        accountClosureReasonPieModel.set("I have applied for another deposit account", Double.valueOf(appliedAnother.getRateValue()));
+        accountClosureReasonPieModel.set("Others", Double.valueOf(others.getRateValue()));
 
         accountClosureReasonPieModel.setTitle("Deposit Account Closure Reasons");
         accountClosureReasonPieModel.setLegendPosition("w");
@@ -124,7 +136,7 @@ public class EmployeeViewDashboardManagedBean {
         acquisition.setLabel("Acquisition Rate");
 
         List<Rate> acqRates = rateSessionBeanLocal.getCurrentYearAcqRate();
-       
+
         int i;
         for (i = 0; i < acqRates.size(); i++) {
             Integer updateMonth = acqRates.get(i).getUpdateMonth();
@@ -141,7 +153,7 @@ public class EmployeeViewDashboardManagedBean {
         attrition.setLabel("Attrition Rate");
 
         List<Rate> attRates = rateSessionBeanLocal.getCurrentYearAttRate();
-        
+
         int j;
         for (j = 0; j < attRates.size(); j++) {
             Integer updateMonth = attRates.get(j).getUpdateMonth();
@@ -169,7 +181,7 @@ public class EmployeeViewDashboardManagedBean {
 
         List<Rate> acqRates = rateSessionBeanLocal.getCurrentYearAcqRate();
         List<Rate> attRates = rateSessionBeanLocal.getCurrentYearAttRate();
-        
+
         int i;
         for (i = 0; i < attRates.size(); i++) {
             Integer updateMonth = attRates.get(i).getUpdateMonth();

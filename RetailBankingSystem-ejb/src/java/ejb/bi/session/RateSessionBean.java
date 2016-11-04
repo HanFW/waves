@@ -1,5 +1,6 @@
 package ejb.bi.session;
 
+import ejb.bi.entity.AccountClosureReason;
 import ejb.bi.entity.DepositAccountClosure;
 import ejb.bi.entity.NumOfExistingCustomer;
 import ejb.bi.entity.Rate;
@@ -17,6 +18,9 @@ import javax.persistence.Query;
 
 @Stateless
 public class RateSessionBean implements RateSessionBeanLocal {
+
+    @EJB
+    private AccountClosureReasonSessionBeanLocal accountClosureReasonSessionBeanLocal;
 
     @EJB
     private NumOfExistingCustomerSessionBeanLocal numOfExistingCustomerSessionBeanLocal;
@@ -204,6 +208,7 @@ public class RateSessionBean implements RateSessionBeanLocal {
     public void monthlyDashboardRate() {
 
         DecimalFormat df = new DecimalFormat("#.000000");
+
         Integer acqUpdateYear = 0;
         Integer attUpdateYear = 0;
 
@@ -274,6 +279,23 @@ public class RateSessionBean implements RateSessionBeanLocal {
     @Override
     public void generateMonthlyAccountClosureReason() {
 
+        DecimalFormat df = new DecimalFormat("#.000000");
+
+        AccountClosureReason accountClosureReason = accountClosureReasonSessionBeanLocal.getNewInterestAccountClosureReason();
+        Integer updateMonth = accountClosureReason.getUpdateMonth();
+        Integer updateYear = accountClosureReason.getUpdateYear();
+        accountClosureReason.setAccountClosureReasonStatus("Done");
+
+        if (updateMonth == 12) {
+            updateYear = accountClosureReason.getUpdateYear() + 1;
+            updateMonth = 0;
+        }
+
+        List<AccountClosureReason> accountClosureReasons = accountClosureReasonSessionBeanLocal.getCurrentYearAccountClosureReason();
+        for (int i = 0; i < accountClosureReasons.size(); i++) {
+            accountClosureReasons.get(i).setCurrentYear("No");
+        }
+
         Calendar cal = Calendar.getInstance();
         Long endTime = cal.getTimeInMillis();
         Long startTime = endTime - 100010;
@@ -282,5 +304,53 @@ public class RateSessionBean implements RateSessionBeanLocal {
         queryCloseAccount.setParameter("startTime", startTime);
         queryCloseAccount.setParameter("endTime", endTime);
         List<DepositAccountClosure> depositAccountClosures = queryCloseAccount.getResultList();
+
+        Integer numOfCustomerCloseAccount = depositAccountClosures.size();
+        Integer countInterest = 0;
+        Integer countServiceCharge = 0;
+        Integer countCustomerService = 0;
+        Integer countDontNeed = 0;
+        Integer countAppliedAnother = 0;
+        Integer countOtherReasons = 0;
+
+        for (int i = 0; i < depositAccountClosures.size(); i++) {
+            String eachAccountClosureReason = depositAccountClosures.get(i).getAccountClosureReason();
+
+            if (eachAccountClosureReason.equals("Interest")) {
+                countInterest++;
+            } else if (eachAccountClosureReason.equals("Service Charge")) {
+                countServiceCharge++;
+            } else if (eachAccountClosureReason.equals("Customer Service")) {
+                countCustomerService++;
+            } else if (eachAccountClosureReason.equals("Dont Need")) {
+                countDontNeed++;
+            } else if (eachAccountClosureReason.equals("Applied Another")) {
+                countAppliedAnother++;
+            } else if (eachAccountClosureReason.equals("Other Reasons")) {
+                countOtherReasons++;
+            }
+        }
+
+        String rateInterest = df.format(countInterest / numOfCustomerCloseAccount);
+        String rateServiceCharge = df.format(countServiceCharge / numOfCustomerCloseAccount);
+        String rateCustomerService = df.format(countCustomerService / numOfCustomerCloseAccount);
+        String rateDontNeed = df.format(countDontNeed / numOfCustomerCloseAccount);
+        String rateAppliedAnother = df.format(countAppliedAnother / numOfCustomerCloseAccount);
+        String rateOtherReasons = df.format(countOtherReasons / numOfCustomerCloseAccount);
+
+        Integer currentUpdateMonth = updateMonth + 1;
+
+        Long reasonInterestId = accountClosureReasonSessionBeanLocal.addNewAccountClosureReason(rateInterest,
+                "Interest", currentUpdateMonth, updateYear, "New", "Yes");
+        Long reasonServiceChargeId = accountClosureReasonSessionBeanLocal.addNewAccountClosureReason(rateServiceCharge,
+                "Service Charge", currentUpdateMonth, updateYear, "New", "Yes");
+        Long reasonCustomerService = accountClosureReasonSessionBeanLocal.addNewAccountClosureReason(rateCustomerService,
+                "Customer Service", currentUpdateMonth, updateYear, "New", "Yes");
+        Long reasonDontNeed = accountClosureReasonSessionBeanLocal.addNewAccountClosureReason(rateDontNeed,
+                "Dont Need", currentUpdateMonth, updateYear, "New", "Yes");
+        Long reasonAppliedAnother = accountClosureReasonSessionBeanLocal.addNewAccountClosureReason(rateAppliedAnother,
+                "Applied Another", currentUpdateMonth, updateYear, "New", "Yes");
+        Long reasonOtherReasons = accountClosureReasonSessionBeanLocal.addNewAccountClosureReason(rateOtherReasons,
+                "Other Reasons", currentUpdateMonth, updateYear, "New", "Yes");
     }
 }

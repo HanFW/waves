@@ -298,6 +298,7 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
 //        maintainDailyBalance();
 //        nonStandingGIROSessionBeanLocal.monthlyRecurrentPayment();
         rateSessionBeanLocal.monthlyDashboardRate();
+        rateSessionBeanLocal.generateMonthlyAccountClosureReason();
     }
 
     private void handleTimeout_15000ms() {
