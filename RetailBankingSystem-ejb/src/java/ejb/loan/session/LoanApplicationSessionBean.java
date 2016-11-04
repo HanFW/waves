@@ -504,7 +504,7 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
     }
 
     @Override
-    public void startNewLoan(Long applicationId) {
+    public void startNewMortgageLoan(Long applicationId) {
         LoanApplication application = em.find(LoanApplication.class, applicationId);
         application.setApplicationStatus("started");
 
@@ -673,4 +673,29 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
         return guarantorAge;
     }
 
+    @Override
+    public List<CashlineApplication> getCashlineApplications(ArrayList<String> status) {
+        List<CashlineApplication> applications = new ArrayList<CashlineApplication>();
+
+        for (String currentStatus : status) {
+            switch (currentStatus) {
+                case "pending":
+                    Query query1 = em.createQuery("SELECT c FROM CashlineApplication c WHERE c.applicationStatus = :applicationStatus");
+                    query1.setParameter("applicationStatus", "pending");
+                    applications.addAll(query1.getResultList());
+                    break;
+                case "in progress":
+                    Query query2 = em.createQuery("SELECT c FROM CashlineApplication c WHERE c.applicationStatus = :applicationStatus");
+                    query2.setParameter("applicationStatus", "in progress");
+                    applications.addAll(query2.getResultList());
+                    break;
+                case "approved":
+                    Query query3 = em.createQuery("SELECT c FROM CashlineApplication c WHERE c.applicationStatus = :applicationStatus");
+                    query3.setParameter("applicationStatus", "approved");
+                    applications.addAll(query3.getResultList());
+                    break;
+            }
+        }
+        return applications;
+    }
 }

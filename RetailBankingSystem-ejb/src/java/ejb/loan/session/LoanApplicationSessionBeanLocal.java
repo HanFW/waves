@@ -42,7 +42,7 @@ public interface LoanApplicationSessionBeanLocal {
     public void approveMortgageLoanRequest(Long applicationId, double amount, int period, double instalment);
     public void rejectMortgageLoanRequest(Long applicationId);
     public void approveRefinancingLoanRequest(Long applicationId, int period, double instalment);
-    public void startNewLoan(Long applicationId);
+    public void startNewMortgageLoan(Long applicationId);
     public void updateLoanStatus(String status, Long applicationId);
     public List<MortgageLoanApplication> getAllMortgageApplicationsPendingAppraisal();
     public void submitAppraisal(double appraisedValue, Long applicationId);
@@ -59,4 +59,6 @@ public interface LoanApplicationSessionBeanLocal {
             String guarantorCompanyPostal, String guarantorCurrentPosition, String guarantorCurrentJobTitle,
             String guarantorPreviousCompany, int guarantorLengthOfPreviousJob, double guarantorOtherMonthlyIncome,
             String guarantorOtherMonthlyIncomeSource);
+    
+    public List<CashlineApplication> getCashlineApplications(ArrayList<String> status);
 }
