@@ -526,9 +526,9 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal, CRMC
 
         return cb.getCustomerBasicId();
     }
-    
+
     @Override
-    public boolean checkExistingCustomerAdvanced(String customerIdentification){
+    public boolean checkExistingCustomerAdvanced(String customerIdentification) {
         Query query = entityManager.createQuery("Select c From CustomerAdvanced c Where c.customerBasic.customerIdentificationNum=:customerIdentificationNum");
         query.setParameter("customerIdentificationNum", customerIdentification);
 
@@ -539,7 +539,7 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal, CRMC
             return true;
         }
     }
-    
+
     @Override
     public Long updateCustomerAdvanced(String identification, int customerNumOfDependents, String customerEducation, String customerResidentialStatus,
             int customerLengthOfResidence, String customerIndustryType, int customerLengthOfCurrentJob, String customerEmploymentStatus,
@@ -549,9 +549,9 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal, CRMC
             String customerOtherMonthlyIncomeSource) {
         Query query = entityManager.createQuery("Select c From CustomerAdvanced c Where c.customerBasic.customerIdentificationNum=:customerIdentificationNum");
         query.setParameter("customerIdentificationNum", identification);
-        
+
         CustomerAdvanced ca = (CustomerAdvanced) query.getResultList().get(0);
-        
+
         ca.setNumOfDependent(customerNumOfDependents);
         ca.setEducation(customerEducation);
         ca.setResidentialStatus(customerResidentialStatus);
@@ -572,5 +572,19 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal, CRMC
 
         entityManager.flush();
         return ca.getCustomerAdvancedId();
+    }
+    
+    @Override
+    public boolean hasOnlineBankingAcc(Long customerBasicId){
+        CustomerBasic customer = entityManager.find(CustomerBasic.class, customerBasicId);
+        if (customer.getCustomerOnlineBankingAccountNum() == null){
+            System.out.println("!!!!!!!!!!has online banking FALSE");
+            return false;
+            
+        }else{
+            System.out.println("!!!!!!!!!!has online banking TRUE");
+            return true;
+            
+        }
     }
 }

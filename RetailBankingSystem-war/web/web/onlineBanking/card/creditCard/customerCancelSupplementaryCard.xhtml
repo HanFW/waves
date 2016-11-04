@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/onlineBankingTemplate.xhtml"
+                xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
+    <ui:define name="content">
+
+        <h:body>
+            <p:panel>
+                <p:outputLabel value="Welcome "/>
+                <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
+            </p:panel>
+
+
+            <h:form>
+
+                <div align="center">
+
+                    <h1>Cancel Supplementary Card</h1>
+                    <p:panel>
+                        <p:dataTable var="supplementaryCard" value="#{customerCancelSupplementaryManagedBean.allSupplementaryCard}">
+                            <p:column headerText="Card Number">
+                                <h:outputText value="#{supplementaryCard.cardNum}" />
+                            </p:column>
+                            <p:column headerText="Card Type">
+                                <h:outputText value="#{supplementaryCard.creditCardType.creditCardTypeName}" />
+                            </p:column>
+                            <p:column headerText="Principal Card">
+                                <h:outputText value="#{supplementaryCard.principalCard.cardNum}" />
+                            </p:column>
+                            <p:column headerText="Expiry Date">
+                                <h:outputText value="#{supplementaryCard.cardExpiryDate}" />
+                            </p:column>
+                            <p:column>
+                                <p:commandButton value="Cancel" action="#{customerCancelSupplementaryManagedBean.cancelSupplementaryCard(supplementaryCard.cardId)}" update="@form"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:panel>
+                    
+                    <p:panel>
+                        <p:commandButton value="Add a new Supplementary Card" action="#{customerCancelSupplementaryManagedBean.redirectToAddSupplementaryCard}"/>
+                    </p:panel>
+                </div>
+            </h:form>
+
+        </h:body>
+
+    </ui:define>
+</ui:composition>
+
+

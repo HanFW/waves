@@ -13,6 +13,8 @@ import javax.inject.Named;
 public class SignatureViewManagedBean implements Serializable {
 
     private String customerSignature;
+    private String guarantorSignature;
+    private String jointSignature;
 
     public SignatureViewManagedBean() {
     }
@@ -29,4 +31,30 @@ public class SignatureViewManagedBean implements Serializable {
     public void setCustomerSignature(String customerSignature) {
         this.customerSignature = customerSignature;
     }
+
+    public String getGuarantorSignature() {
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        Map<String, Object> sessionMap = externalContext.getSessionMap();
+        sessionMap.put("guarantorSignature", guarantorSignature);
+        
+        return guarantorSignature;
+    }
+
+    public void setGuarantorSignature(String guarantorSignature) {
+        this.guarantorSignature = guarantorSignature;
+    }
+
+    public String getJointSignature() {
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        Map<String, Object> sessionMap = externalContext.getSessionMap();
+        sessionMap.put("jointSignature", jointSignature);
+        
+        return jointSignature;
+    }
+
+    public void setJointSignature(String jointSignature) {
+        this.jointSignature = jointSignature;
+    }
+    
+    
 }

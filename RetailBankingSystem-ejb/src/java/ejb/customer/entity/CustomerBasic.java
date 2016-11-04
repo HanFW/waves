@@ -9,6 +9,8 @@ import ejb.loan.entity.CreditReportBureauScore;
 import ejb.loan.entity.CustomerDebt;
 import ejb.loan.entity.CustomerProperty;
 import ejb.loan.entity.LoanApplication;
+import ejb.loan.entity.MortgageLoanApplication;
+import ejb.loan.entity.RefinancingApplication;
 import ejb.payment.entity.Cheque;
 import ejb.payment.entity.OtherBankPayee;
 import ejb.payment.entity.GIRO;
@@ -22,6 +24,7 @@ import javax.persistence.Id;
 import javax.persistence.CascadeType;
 import javax.persistence.FetchType;
 import java.util.List;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -89,7 +92,7 @@ public class CustomerBasic implements Serializable {
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     private List<CustomerDebt> customerDebt;
     
-    @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER)
     private CustomerProperty customerProperty;
     
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
@@ -103,6 +106,12 @@ public class CustomerBasic implements Serializable {
     
     @OneToOne(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
     private RiskProfile riskProfile;
+    
+    @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
+    private MortgageLoanApplication mortgageLoanApplication;
+    
+    @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
+    private RefinancingApplication refinancingApplication;
     
     public void addLoanApplication(LoanApplication newApplication){
         loanApplication.add(newApplication);
@@ -453,6 +462,22 @@ public class CustomerBasic implements Serializable {
 
     public void setCashlineApplication(List<CashlineApplication> cashlineApplication) {
         this.cashlineApplication = cashlineApplication;
+    }
+
+    public MortgageLoanApplication getMortgageLoanApplication() {
+        return mortgageLoanApplication;
+    }
+
+    public void setMortgageLoanApplication(MortgageLoanApplication mortgageLoanApplication) {
+        this.mortgageLoanApplication = mortgageLoanApplication;
+    }
+
+    public RefinancingApplication getRefinancingApplication() {
+        return refinancingApplication;
+    }
+
+    public void setRefinancingApplication(RefinancingApplication refinancingApplication) {
+        this.refinancingApplication = refinancingApplication;
     }
     
     

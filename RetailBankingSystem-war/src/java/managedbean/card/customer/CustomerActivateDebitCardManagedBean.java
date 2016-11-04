@@ -22,7 +22,6 @@ import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import org.jboss.aerogear.security.otp.Totp;
 import org.jboss.aerogear.security.otp.api.Clock;
-import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -205,7 +204,7 @@ public class CustomerActivateDebitCardManagedBean implements Serializable {
         if (debitCards.isEmpty()) {
 
             customer = getCustomerViaSessionMap();
-            Long id=customer.getCustomerBasicId();
+            Long id = customer.getCustomerBasicId();
             debitCards = debitCardSessionBeanLocal.getAllNonActivatedDebitCards(id);
 
         }

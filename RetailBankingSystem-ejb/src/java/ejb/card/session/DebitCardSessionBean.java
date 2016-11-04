@@ -9,10 +9,8 @@ import ejb.card.entity.DebitCard;
 import ejb.card.entity.DebitCardType;
 import ejb.customer.entity.CustomerBasic;
 import ejb.deposit.entity.BankAccount;
-import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -31,11 +29,6 @@ import javax.persistence.Query;
  */
 @Stateless
 public class DebitCardSessionBean implements DebitCardSessionBeanLocal {
-
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method")
-    @EJB
-    private DebitCardSessionBeanLocal debitCardSessionBeanLocal;
 
     @EJB
     private DebitCardManagementSessionBeanLocal debitCardManagementSessionBeanLocal;

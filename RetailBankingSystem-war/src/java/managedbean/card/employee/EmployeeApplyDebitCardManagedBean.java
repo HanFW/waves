@@ -85,12 +85,11 @@ public class EmployeeApplyDebitCardManagedBean {
             } else if (!dateOfBirth.equals(customerDateOfBirthString)) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Customer Date of Birth is Wrong.", "Failed!"));
             } else {
-                
+
                 Map<String, Object> sessionMap = ec.getSessionMap();
                 sessionMap.put("customerIdentificationNum", customerIdentificationNum);
-                ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/card/debitCard/employeeApplyDebitCard.xhtml?faces-redirect=true");
+                ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/card/creditCard/employeeChooseCreditCard.xhtml?faces-redirect=true");
             }
         }
     }
-
 }

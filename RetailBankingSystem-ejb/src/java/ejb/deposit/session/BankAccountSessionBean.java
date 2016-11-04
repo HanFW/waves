@@ -202,7 +202,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
             String bankAccountType, String totalBankAccountBalance, String availableBankAccountBalance,
             String transferDailyLimit, String transferBalance, String bankAccountStatus, String bankAccountMinSaving,
             String bankAccountDepositPeriod, String currentFixedDepositPeriod,
-            String fixedDepositStatus, Double statementDateDouble,
+            String fixedDepositStatus, Double statementDateDouble, Long currentTimeMilis,
             Long customerBasicId, Long interestId) {
 
         System.out.println("*");
@@ -221,6 +221,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
         bankAccount.setCurrentFixedDepositPeriod(currentFixedDepositPeriod);
         bankAccount.setFixedDepositStatus(fixedDepositStatus);
         bankAccount.setStatementDateDouble(statementDateDouble);
+        bankAccount.setCurrentTimeMilis(currentTimeMilis);
         bankAccount.setCustomerBasic(retrieveCustomerBasicById(customerBasicId));
         bankAccount.setInterest(interestSessionLocal.retrieveInterestById(interestId));
 
@@ -563,11 +564,6 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
         bankAccount.getInterest().setMonthlyInterest("0");
     }
 
-    private String md5Hashing(String stringToHash) throws NoSuchAlgorithmException {
-        MessageDigest md = MessageDigest.getInstance("MD5");
-        return Arrays.toString(md.digest(stringToHash.getBytes()));
-    }
-
     private String checkInterestRate(String fixedDepositPeriodDay) {
 
         Double interestRate = 0.0;
@@ -683,7 +679,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
             String totalBankAccountBalance, String availableBankAccountBalance, String transferDailyLimit,
             String transferBalance, String bankAccountStatus, String bankAccountMinSaving,
             String bankAccountDepositPeriod, String currentFixedDepositPeriod,
-            String fixedDepositStatus, Double statementDateDouble,
+            String fixedDepositStatus, Double statementDateDouble, Long currentTimeMilis,
             Long customerBasicId, Long interestId) {
 
         BankAccount bankAccount = new BankAccount();
@@ -700,6 +696,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
         bankAccount.setCurrentFixedDepositPeriod(currentFixedDepositPeriod);
         bankAccount.setFixedDepositStatus(fixedDepositStatus);
         bankAccount.setStatementDateDouble(statementDateDouble);
+        bankAccount.setCurrentTimeMilis(currentTimeMilis);
         bankAccount.setCustomerBasic(retrieveCustomerBasicById(customerBasicId));
         bankAccount.setInterest(interestSessionLocal.retrieveInterestById(interestId));
 

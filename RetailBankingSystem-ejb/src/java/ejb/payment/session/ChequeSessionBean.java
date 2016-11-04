@@ -16,7 +16,7 @@ public class ChequeSessionBean implements ChequeSessionBeanLocal {
     private EntityManager entityManager;
 
     @Override
-    public Cheque retrieveGIROById(Long chequeId) {
+    public Cheque retrieveChequeById(Long chequeId) {
         Cheque cheque = new Cheque();
 
         try {

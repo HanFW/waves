@@ -21,5 +21,5 @@ public class EmployeeCancelCardDoneManagedBean {
      */
     public EmployeeCancelCardDoneManagedBean() {
     }
-    
+
 }

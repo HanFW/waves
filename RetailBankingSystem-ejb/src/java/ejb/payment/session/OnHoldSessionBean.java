@@ -61,8 +61,8 @@ public class OnHoldSessionBean implements OnHoldSessionBeanLocal {
     }
     
     @Override
-    public void updateOnHoldChequeId(Long onHoldRecordId,Long chequeId) {
+    public void updateOnHoldChequeNum(Long onHoldRecordId,String chequeNum) {
         OnHoldRecord onHoldRecord = retrieveOnHoldRecordById(onHoldRecordId);
-        onHoldRecord.setChequeId(chequeId);
+        onHoldRecord.setChequeNum(chequeNum);
     }
 }

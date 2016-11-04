@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
-    <system systemId="http://localhost:8080/OtherBanksWebService/OtherBanksWebService?wsdl" uri="wsdl/localhost_8080/OtherBanksWebService/OtherBanksWebService.wsdl"/>
-    <system systemId="http://localhost:8080/OtherBanksWebService/OtherBanksWebService?xsd=1" uri="wsdl/localhost_8080/OtherBanksWebService/OtherBanksWebService.xsd_1.xsd"/>
     <system systemId="http://localhost:8080/SACHWebService/SACHWebService?wsdl" uri="wsdl/localhost_8080/SACHWebService/SACHWebService.wsdl"/>
     <system systemId="http://localhost:8080/SACHWebService/SACHWebService?xsd=1" uri="wsdl/localhost_8080/SACHWebService/SACHWebService.xsd_1.xsd"/>
     <system systemId="http://localhost:8080/MEPSWebService/MEPSWebService?wsdl" uri="wsdl/localhost_8080/MEPSWebService/MEPSWebService.wsdl"/>
@@ -14,4 +12,6 @@
     <system systemId="http://localhost:8080/SWIFTWebService/SWIFTWebService?xsd=1" uri="wsdl/localhost_8080/SWIFTWebService/SWIFTWebService.xsd_1.xsd"/>
     <system systemId="http://localhost:8080/CHIPSWebService/CHIPSWebService?wsdl" uri="wsdl/localhost_8080/CHIPSWebService/CHIPSWebService.wsdl"/>
     <system systemId="http://localhost:8080/CHIPSWebService/CHIPSWebService?xsd=1" uri="wsdl/localhost_8080/CHIPSWebService/CHIPSWebService.xsd_1.xsd"/>
+    <system systemId="http://localhost:8080/OtherBanksWebService/OtherBanksWebService?wsdl" uri="wsdl/localhost_8080/OtherBanksWebService/OtherBanksWebService.wsdl"/>
+    <system systemId="http://localhost:8080/OtherBanksWebService/OtherBanksWebService?xsd=1" uri="wsdl/localhost_8080/OtherBanksWebService/OtherBanksWebService.xsd_1.xsd"/>
 </catalog>

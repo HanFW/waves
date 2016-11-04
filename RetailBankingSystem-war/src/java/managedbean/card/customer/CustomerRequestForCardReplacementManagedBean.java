@@ -70,21 +70,22 @@ public class CustomerRequestForCardReplacementManagedBean implements Serializabl
         if (cardType.equals("debit")) {
             requestForDebitCardReplacement();
         }
-        if(cardType.equals("credit")){
-            
+        if (cardType.equals("credit")) {
+
         }
     }
-    
+
     public void showCards() {
-        if(cardType.equals("credit")){
+        if (cardType.equals("credit")) {
             creditPanelVisible = true;
             debitPanelVisible = false;
         }
-        if(cardType.equals("debit")) {
+        if (cardType.equals("debit")) {
             creditPanelVisible = false;
             debitPanelVisible = true;
         }
     }
+
     public void requestForDebitCardReplacement() {
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext ec = context.getExternalContext();
@@ -118,7 +119,7 @@ public class CustomerRequestForCardReplacementManagedBean implements Serializabl
                 break;
         }
     }
-    
+
 //    public void requestForCreditCardReplacement() {
 //        FacesContext context = FacesContext.getCurrentInstance();
 //        ExternalContext ec = context.getExternalContext();
@@ -151,7 +152,6 @@ public class CustomerRequestForCardReplacementManagedBean implements Serializabl
 //                break;
 //        }
 //    }
-
     public String getCardType() {
         return cardType;
     }

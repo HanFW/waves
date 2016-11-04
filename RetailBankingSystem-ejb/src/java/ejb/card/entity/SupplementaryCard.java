@@ -9,9 +9,6 @@ import java.io.Serializable;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 /**
@@ -19,21 +16,51 @@ import javax.persistence.ManyToOne;
  * @author aaa
  */
 @Entity
-public class SupplementaryCard extends Card implements Serializable {
+public class SupplementaryCard extends CreditCard implements Serializable {
     private static final long serialVersionUID = 1L;
     
+    private String relationship;
+    private String dateOfBirth;
+    private String identificationNum;
+    
     @ManyToOne(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER)
-    private CreditCard creditCard;
+    private PrincipalCard principalCard;
+
+    public PrincipalCard getPrincipalCard() {
+        return principalCard;
+    }
+
+    public void setPrincipalCard(PrincipalCard principalCard) {
+        this.principalCard = principalCard;
+    }
+
+    public String getRelationship() {
+        return relationship;
+    }
+
+    public void setRelationship(String relationship) {
+        this.relationship = relationship;
+    }
+
+    public String getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public String getIdentificationNum() {
+        return identificationNum;
+    }
+
+    public void setIdentificationNum(String identificationNum) {
+        this.identificationNum = identificationNum;
+    }
     
 
 
-    public CreditCard getCreditCard() {
-        return creditCard;
-    }
 
-    public void setCreditCard(CreditCard creditCard) {
-        this.creditCard = creditCard;
-    }
 
     
 }

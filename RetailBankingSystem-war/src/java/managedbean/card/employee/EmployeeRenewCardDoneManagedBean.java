@@ -32,7 +32,7 @@ import javax.faces.event.ActionEvent;
 @RequestScoped
 public class EmployeeRenewCardDoneManagedBean {
 
-   @EJB
+    @EJB
     private DebitCardManagementSessionBeanLocal debitCardManagementSessionBeanLocal;
 
     @EJB
@@ -43,7 +43,7 @@ public class EmployeeRenewCardDoneManagedBean {
 
     @EJB
     private CreditCardSessionBeanLocal creditCardSessionBeanLocal;
-    
+
     @EJB
     private CRMCustomerSessionBeanLocal customerSessionBeanLocal;
 
@@ -60,33 +60,34 @@ public class EmployeeRenewCardDoneManagedBean {
 
     private boolean creditPanelVisible;
     private boolean debitPanelVisible;
-    
+
     private ExternalContext ec;
 
     public EmployeeRenewCardDoneManagedBean() {
     }
-    
+
     public void requestForCardReplacement(ActionEvent event) {
 
         System.out.println("debug: cancel card");
         if (cardType.equals("debit")) {
             requestForDebitCardReplacement();
         }
-        if(cardType.equals("credit")){
-            
+        if (cardType.equals("credit")) {
+
         }
     }
-    
+
     public void showCards() {
-        if(cardType.equals("credit")){
+        if (cardType.equals("credit")) {
             creditPanelVisible = true;
             debitPanelVisible = false;
         }
-        if(cardType.equals("debit")) {
+        if (cardType.equals("debit")) {
             creditPanelVisible = false;
             debitPanelVisible = true;
         }
     }
+
     public void requestForDebitCardReplacement() {
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext ec = context.getExternalContext();
@@ -120,7 +121,7 @@ public class EmployeeRenewCardDoneManagedBean {
                 break;
         }
     }
-    
+
     public String getCardType() {
         return cardType;
     }
@@ -218,5 +219,4 @@ public class EmployeeRenewCardDoneManagedBean {
         return customer;
     }
 
-    
 }

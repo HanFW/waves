@@ -52,7 +52,7 @@ public class CustomerApplyDebitCardManagedBean implements Serializable {
 
     public CustomerApplyDebitCardManagedBean() {
     }
-    
+
 //    public void checkDepositAccountStatus(ActionEvent event) throws IOException{
 //        FacesContext context = FacesContext.getCurrentInstance();
 //        ExternalContext ec = context.getExternalContext();
@@ -66,7 +66,6 @@ public class CustomerApplyDebitCardManagedBean implements Serializable {
 //            ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/card/debitCard/customerApplyDebitCard.xhtml?faces-redirect=true"); 
 //        }
 //    }
-
     public void createDebitCard(ActionEvent event) {
         RequestContext rc = RequestContext.getCurrentInstance();
         rc.execute("PF('applyDebitCardWizard').next();");
@@ -193,7 +192,7 @@ public class CustomerApplyDebitCardManagedBean implements Serializable {
 
     public void setAgreement(boolean agreement) {
         this.agreement = agreement;
-        System.out.println("set agreement "+agreement);
+        System.out.println("set agreement " + agreement);
     }
 
     public String getCardType() {
@@ -205,15 +204,15 @@ public class CustomerApplyDebitCardManagedBean implements Serializable {
     }
 
     public List<String> getDepositAccounts() {
-        System.out.println("test "+depositAccounts);
+        System.out.println("test " + depositAccounts);
         if (depositAccounts.isEmpty()) {
-        customer = getCustomerViaSessionMap();
-        System.out.println("check customer" + customer);
-        List<BankAccount> depositAccountsOfCustomer = customer.getBankAccount();
-        for (int i = 0; i < depositAccountsOfCustomer.size(); i++) {
-            String info = depositAccountsOfCustomer.get(i).getBankAccountType() + "-" + depositAccountsOfCustomer.get(i).getBankAccountNum();
-            depositAccounts.add(i, info);
-        }
+            customer = getCustomerViaSessionMap();
+            System.out.println("check customer" + customer);
+            List<BankAccount> depositAccountsOfCustomer = customer.getBankAccount();
+            for (int i = 0; i < depositAccountsOfCustomer.size(); i++) {
+                String info = depositAccountsOfCustomer.get(i).getBankAccountType() + "-" + depositAccountsOfCustomer.get(i).getBankAccountNum();
+                depositAccounts.add(i, info);
+            }
         }
         return depositAccounts;
     }
