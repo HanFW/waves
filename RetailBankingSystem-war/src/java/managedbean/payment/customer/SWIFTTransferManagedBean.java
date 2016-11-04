@@ -9,6 +9,7 @@ import ejb.payment.session.CurrencySessionBeanLocal;
 import ejb.payment.session.MerlionBankSessionBeanLocal;
 import ejb.payment.session.SWIFTPayeeSessionBeanLocal;
 import java.io.IOException;
+import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -16,15 +17,15 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
-import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Named;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
 @Named(value = "sWIFTTransferManagedBean")
 @RequestScoped
 
-public class SWIFTTransferManagedBean {
+public class SWIFTTransferManagedBean implements Serializable {
 
     @EJB
     private MerlionBankSessionBeanLocal merlionBankSessionBeanLocal;
@@ -52,7 +53,7 @@ public class SWIFTTransferManagedBean {
     private String fromAccountAvailableBalance;
     private String fromAccountTotalBalance;
     private String recipientSWIFTCode;
-
+    private String receivedCountryTransferAmtSGD;
     private String statusMessage;
 
     private ExternalContext ec;
@@ -186,6 +187,13 @@ public class SWIFTTransferManagedBean {
     }
 
     public void setToCurrencyWithDollar(String toCurrencyWithDollar) {
+
+        ec = FacesContext.getCurrentInstance().getExternalContext();
+
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        Map<String, Object> sessionMap = externalContext.getSessionMap();
+        sessionMap.put("toCurrencyWithDollar", toCurrencyWithDollar);
+
         this.toCurrencyWithDollar = toCurrencyWithDollar;
     }
 
@@ -194,6 +202,13 @@ public class SWIFTTransferManagedBean {
     }
 
     public void setReceivedCountryTransferAmt(Double receivedCountryTransferAmt) {
+
+        ec = FacesContext.getCurrentInstance().getExternalContext();
+
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        Map<String, Object> sessionMap = externalContext.getSessionMap();
+        sessionMap.put("receivedCountryTransferAmt", receivedCountryTransferAmt);
+
         this.receivedCountryTransferAmt = receivedCountryTransferAmt;
     }
 
@@ -203,6 +218,31 @@ public class SWIFTTransferManagedBean {
 
     public void setRecipientSWIFTCode(String recipientSWIFTCode) {
         this.recipientSWIFTCode = recipientSWIFTCode;
+    }
+
+    public String getReceivedCountryTransferAmtSGD() {
+        return receivedCountryTransferAmtSGD;
+    }
+
+    public void setReceivedCountryTransferAmtSGD(String receivedCountryTransferAmtSGD) {
+        this.receivedCountryTransferAmtSGD = receivedCountryTransferAmtSGD;
+    }
+
+    public void transferForeignAmountToSGD() {
+
+        DecimalFormat df = new DecimalFormat("#.00");
+
+        toCurrencyWithDollar = ec.getSessionMap().get("toCurrencyWithDollar").toString();
+        receivedCountryTransferAmt = (Double) ec.getSessionMap().get("receivedCountryTransferAmt");
+
+        if (toCurrencyWithDollar != null && receivedCountryTransferAmt != null) {
+            toCurrency = handleCurrencyString(toCurrencyWithDollar);
+            Currency foreignCurrency = currencySessionBeanLocal.retrieveCurrencyByType(toCurrency);
+
+            Double buyingCurrencyRate = Double.valueOf(foreignCurrency.getBuyingRate());
+            Double unit = Double.valueOf(foreignCurrency.getUnit());
+            receivedCountryTransferAmtSGD = df.format(receivedCountryTransferAmt / (buyingCurrencyRate * unit));
+        }
     }
 
     public void swiftTransfer() throws IOException {
@@ -283,5 +323,13 @@ public class SWIFTTransferManagedBean {
         String bankAccountNum = bankAccountNums[1];
 
         return bankAccountNum;
+    }
+
+    public void printCurrency() {
+        System.out.println("Print Currency = " + toCurrencyWithDollar);
+    }
+
+    public void printTransactionAmt() {
+        System.out.println("Print Transaction Amount = " + receivedCountryTransferAmt);
     }
 }

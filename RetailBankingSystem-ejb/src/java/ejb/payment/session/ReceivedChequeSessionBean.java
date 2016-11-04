@@ -25,7 +25,7 @@ public class ReceivedChequeSessionBean implements ReceivedChequeSessionBeanLocal
     @Override
     public Long addNewReceivedCheque(String transactionDate, String transactionAmt,
             String receivedBankAccountNum, String receivedCustomerName, String receivedCustomerMobile,
-            String receivedChequeStatus, Long customerBasicId) {
+            String receivedChequeStatus, String chequeNum, String chequeType, Long customerBasicId) {
 
         ReceivedCheque receivedCheque = new ReceivedCheque();
 
@@ -35,6 +35,8 @@ public class ReceivedChequeSessionBean implements ReceivedChequeSessionBeanLocal
         receivedCheque.setReceivedCustomerName(receivedCustomerName);
         receivedCheque.setTransactionAmt(transactionAmt);
         receivedCheque.setTransactionDate(transactionDate);
+        receivedCheque.setChequeNum(chequeNum);
+        receivedCheque.setChequeType(chequeType);
         receivedCheque.setCustomerBasic(bankAccountSessionBeanLocal.retrieveCustomerBasicById(customerBasicId));
 
         entityManager.persist(receivedCheque);
@@ -46,8 +48,9 @@ public class ReceivedChequeSessionBean implements ReceivedChequeSessionBeanLocal
     @Override
     public List<ReceivedCheque> getAllNewReceivedCheque() {
 
-        Query query = entityManager.createQuery("SELECT r FROM ReceivedCheque r Where r.receivedChequeStatus=:receivedChequeStatus");
+        Query query = entityManager.createQuery("SELECT r FROM ReceivedCheque r Where r.receivedChequeStatus=:receivedChequeStatus And r.chequeType=:chequeType");
         query.setParameter("receivedChequeStatus", "New");
+        query.setParameter("chequeType", "Received");
 
         return query.getResultList();
     }
@@ -57,8 +60,9 @@ public class ReceivedChequeSessionBean implements ReceivedChequeSessionBeanLocal
         ReceivedCheque receivedCheque = new ReceivedCheque();
 
         try {
-            Query query = entityManager.createQuery("Select r From ReceivedCheque r Where r.chequeId=:chequeId");
+            Query query = entityManager.createQuery("Select r From ReceivedCheque r Where r.chequeId=:chequeId And r.chequeType=:chequeType");
             query.setParameter("chequeId", chequeId);
+            query.setParameter("chequeType", "Received");
 
             if (query.getResultList().isEmpty()) {
                 return new ReceivedCheque();
@@ -76,7 +80,31 @@ public class ReceivedChequeSessionBean implements ReceivedChequeSessionBeanLocal
     }
 
     @Override
-    public List<ReceivedCheque> retrieveReceivedChequeByCusId(String customerIdentificationNum) {
+    public ReceivedCheque retrieveReceivedChequeByNum(String chequeNum) {
+        ReceivedCheque receivedCheque = new ReceivedCheque();
+
+        try {
+            Query query = entityManager.createQuery("Select r From ReceivedCheque r Where r.chequeNum=:chequeNum And r.chequeType=:chequeType");
+            query.setParameter("chequeNum", chequeNum);
+            query.setParameter("chequeType", "Received");
+
+            if (query.getResultList().isEmpty()) {
+                return new ReceivedCheque();
+            } else {
+                receivedCheque = (ReceivedCheque) query.getSingleResult();
+            }
+        } catch (EntityNotFoundException enfe) {
+            System.out.println("Entity not found error: " + enfe.getMessage());
+            return new ReceivedCheque();
+        } catch (NonUniqueResultException nure) {
+            System.out.println("Non unique result error: " + nure.getMessage());
+        }
+
+        return receivedCheque;
+    }
+
+    @Override
+    public List<ReceivedCheque> retrieveReceivedChequeByCusIC(String customerIdentificationNum) {
 
         CustomerBasic customerBasic = bankAccountSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum);
 
@@ -84,8 +112,9 @@ public class ReceivedChequeSessionBean implements ReceivedChequeSessionBeanLocal
             return new ArrayList<ReceivedCheque>();
         }
         try {
-            Query query = entityManager.createQuery("Select r From ReceivedCheque r Where r.customerBasic=:customerBasic");
+            Query query = entityManager.createQuery("Select r From ReceivedCheque r Where r.customerBasic=:customerBasic And r.chequeType=:chequeType");
             query.setParameter("customerBasic", customerBasic);
+            query.setParameter("chequeType", "Received");
 
             if (query.getResultList().isEmpty()) {
                 return new ArrayList<ReceivedCheque>();
@@ -99,8 +128,8 @@ public class ReceivedChequeSessionBean implements ReceivedChequeSessionBeanLocal
     }
 
     @Override
-    public void updateReceivedChequeStatus(Long chequeId) {
-        ReceivedCheque receivedCheque = retrieveReceivedChequeById(chequeId);
+    public void updateReceivedChequeStatus(String chequeNum) {
+        ReceivedCheque receivedCheque = retrieveReceivedChequeByNum(chequeNum);
         receivedCheque.setReceivedChequeStatus("Approved");
     }
 }

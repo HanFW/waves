@@ -12,16 +12,19 @@ import javax.persistence.ManyToOne;
 
 @Entity
 public class Cheque implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long chequeId;
     private String transactionDate;
     private String transactionAmt;
+    private String chequeNum;
+    private String chequeType;
 
     @ManyToOne(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER)
     private CustomerBasic customerBasic;
-    
+
     public Long getChequeId() {
         return chequeId;
     }
@@ -53,7 +56,23 @@ public class Cheque implements Serializable {
     public void setCustomerBasic(CustomerBasic customerBasic) {
         this.customerBasic = customerBasic;
     }
-    
+
+    public String getChequeNum() {
+        return chequeNum;
+    }
+
+    public void setChequeNum(String chequeNum) {
+        this.chequeNum = chequeNum;
+    }
+
+    public String getChequeType() {
+        return chequeType;
+    }
+
+    public void setChequeType(String chequeType) {
+        this.chequeType = chequeType;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -78,5 +97,5 @@ public class Cheque implements Serializable {
     public String toString() {
         return "ejb.payment.entity.Cheque[ id=" + chequeId + " ]";
     }
-    
+
 }

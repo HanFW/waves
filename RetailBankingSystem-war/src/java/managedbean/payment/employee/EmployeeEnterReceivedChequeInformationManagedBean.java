@@ -3,6 +3,7 @@ package managedbean.payment.employee;
 import ejb.customer.entity.CustomerBasic;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
+import ejb.payment.entity.ReceivedCheque;
 import ejb.payment.session.ReceivedChequeSessionBeanLocal;
 import java.util.Calendar;
 import javax.ejb.EJB;
@@ -32,6 +33,8 @@ public class EmployeeEnterReceivedChequeInformationManagedBean {
     private String customerMobile;
     private String transactionAmt;
     private String receivedBankAccountNum;
+    private String chequeNum;
+    private String issuedBankAccountNum;
 
     private ExternalContext ec;
 
@@ -70,6 +73,22 @@ public class EmployeeEnterReceivedChequeInformationManagedBean {
         this.receivedBankAccountNum = receivedBankAccountNum;
     }
 
+    public String getChequeNum() {
+        return chequeNum;
+    }
+
+    public void setChequeNum(String chequeNum) {
+        this.chequeNum = chequeNum;
+    }
+
+    public String getIssuedBankAccountNum() {
+        return issuedBankAccountNum;
+    }
+
+    public void setIssuedBankAccountNum(String issuedBankAccountNum) {
+        this.issuedBankAccountNum = issuedBankAccountNum;
+    }
+
     public void submit() {
 
         ec = FacesContext.getCurrentInstance().getExternalContext();
@@ -77,20 +96,19 @@ public class EmployeeEnterReceivedChequeInformationManagedBean {
         Calendar cal = Calendar.getInstance();
         String transactionDate = cal.getTime().toString();
         String receivedChequeStatus = "Pending";
-        
+
         CustomerBasic customerBasic = bankAccountSessionBeanLocal.retrieveCustomerBasicByAccNum(receivedBankAccountNum);
         BankAccount bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountByNum(receivedBankAccountNum);
         String currentAvailableBalance = bankAccount.getAvailableBankAccountBalance();
         Double totalBalance = Double.valueOf(currentAvailableBalance) + Double.valueOf(transactionAmt);
 
-//        bankAccountSessionBeanLocal.updateBankAccountAvailableBalance(receivedBankAccountNum, totalBalance.toString());
-
         Long receivedChequeId = receivedChequeSessionBeanLocal.addNewReceivedCheque(
                 transactionDate, transactionAmt, receivedBankAccountNum, customerName,
-                customerMobile, receivedChequeStatus, customerBasic.getCustomerBasicId());
+                customerMobile, receivedChequeStatus, chequeNum,
+                "Received", customerBasic.getCustomerBasicId());
 
-        
-//        clearMerlionReceivedCheque();
+        ReceivedCheque receivedCheque = receivedChequeSessionBeanLocal.retrieveReceivedChequeByNum(chequeNum);
+        clearMerlionReceivedCheque(receivedCheque.getChequeNum());
 
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Successfully Input Received Cheque Information", ""));
     }
