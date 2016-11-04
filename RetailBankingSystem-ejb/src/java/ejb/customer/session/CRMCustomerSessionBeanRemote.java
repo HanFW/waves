@@ -3,11 +3,10 @@ package ejb.customer.session;
 import ejb.customer.entity.CustomerAdvanced;
 import ejb.customer.entity.CustomerBasic;
 import java.util.List;
-import javax.ejb.Local;
+import javax.ejb.Remote;
 
-@Local
-
-public interface CRMCustomerSessionBeanLocal {
+@Remote
+public interface CRMCustomerSessionBeanRemote {
 
     public CustomerBasic getCustomer(String onlineBankingAccountNum);
 
