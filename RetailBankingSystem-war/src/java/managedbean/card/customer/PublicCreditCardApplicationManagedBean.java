@@ -6,6 +6,7 @@
 package managedbean.card.customer;
 
 import ejb.card.session.CreditCardSessionBeanLocal;
+import ejb.customer.entity.CustomerBasic;
 import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -19,7 +20,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
@@ -791,7 +791,6 @@ public class PublicCreditCardApplicationManagedBean implements Serializable {
             }
         } else {
             //create CustomerBasic
-            String newCustomer = "Yes";
             if (customerSalutation.equals("Others")) {
                 customerSalutation = customerSalutationOthers;
             }
@@ -803,7 +802,7 @@ public class PublicCreditCardApplicationManagedBean implements Serializable {
                     customerGender, customerEmail, customerMobile, dateOfBirth,
                     customerNationality, customerCountryOfResidence, customerRace,
                     customerMaritalStatus, null, customerCompanyName,
-                    customerAddress, customerPostal, null, null, customerSignature.getBytes(), newCustomer);
+                    customerAddress, customerPostal, null, null, customerSignature.getBytes(), null);
 
             //create CustomerAdvanced
             if (customerEmploymentStatus.equals("Employee") || customerEmploymentStatus.equals("Self-Employed")) {
@@ -834,7 +833,87 @@ public class PublicCreditCardApplicationManagedBean implements Serializable {
 
             creditCardTypeId = (Long) ec.getSessionMap().get("cardTypeId");
             System.out.println("##########################customer application type id = " + creditCardTypeId);
-            
+
+            DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+            Date applicationDate1 = new Date();
+            String applicationDate = df.format(applicationDate1);
+            //create credit card application
+            System.out.println("@@@@@@@@@@@@@@@@@@@@basicId = " + newCustomerBasicId);
+            System.out.println("@@@@@@@@@@@@@@@@@@@@adavnceId = " + newCustomerAdvancedId);
+            System.out.println("@@@@@@@@@@@@@@@@@@@@cardtypeId = " + creditCardTypeId);
+            System.out.println("@@@@@@@@@@@@@@@@@@@@holder name = " + cardHolderName);
+            System.out.println("@@@@@@@@@@@@@@@@@@@@has limit = " + hasCreditLimit);
+            System.out.println("@@@@@@@@@@@@@@@@@@@@limit double = " + creditLimit.doubleValue());
+            System.out.println("@@@@@@@@@@@@@@@@@@@@date = " + applicationDate);
+            creditCardSessionLocal.createCreditCard(newCustomerBasicId, newCustomerAdvancedId, creditCardTypeId, cardHolderName, hasCreditLimit, creditLimit.doubleValue(), applicationDate);
+            creditCardTypeName = creditCardSessionLocal.findTypeNameById(creditCardTypeId);
+            ec.getFlash().put("cardTypeName", creditCardTypeName);
+            ec.getFlash().put("customerName", customerName);
+            ec.redirect(ec.getRequestContextPath() + "/web/merlionBank/creditCard/publicCreditCardApplicationDone.xhtml?faces-redirect=true");
+        }
+    }
+
+    public void addExistingCustomerCreditCardApplication() throws IOException {
+        System.out.println("====== creditcard/publicCreditCardApplicationManagedBean: addExistingCustomerCreditCardApplication() ======");
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        customerSignature = ec.getSessionMap().get("customerSignature").toString();
+        if (customerSignature.equals("") || !agreement) {
+            if (customerSignature.equals("")) {
+                FacesContext.getCurrentInstance().addMessage("input", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Please provide your digital signature", "Failed!"));
+            }
+            if (!agreement) {
+                FacesContext.getCurrentInstance().addMessage("agreement", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Please agree to terms to proceed", "Failed!"));
+            }
+        } else {
+            CustomerBasic customer = (CustomerBasic) ec.getSessionMap().get("customer");
+            Long newCustomerBasicId = customer.getCustomerBasicId();
+            Long newCustomerAdvancedId;
+            if (customerEmploymentStatus.equals("Employee") || customerEmploymentStatus.equals("Self-Employed")) {
+                    if (customerIndustryType.equals("Others")) {
+                        customerIndustryType = customerIndustryTypeOthers;
+                    }
+                    if (customerCurrentPosition.equals("Others")) {
+                        customerCurrentPosition = customerCurrentPositionOthers;
+                    }
+                }
+            if (customer.getCustomerAdvanced() == null) {
+                //create CustomerAdvanced
+                             
+                if (customerEmploymentStatus.equals("Unemployed")) {
+                    newCustomerAdvancedId = cRMCustomerSessionBeanLocal.addNewCustomerAdvanced(customerNumOfDependents, customerEducation, customerResidentialStatus,
+                            customerLengthOfResidence, null, 0, customerEmploymentStatus,
+                            customerMonthlyFixedIncome.doubleValue(), customerResidentialType, null,
+                            null, null, null,
+                            null, 0, 0,
+                            null);
+                } else {
+                    newCustomerAdvancedId = cRMCustomerSessionBeanLocal.addNewCustomerAdvanced(customerNumOfDependents, customerEducation, customerResidentialStatus,
+                            customerLengthOfResidence, customerIndustryType, customerLengthOfCurrentJob, customerEmploymentStatus,
+                            customerMonthlyFixedIncome.doubleValue(), customerResidentialType, customerCompanyAddress,
+                            customerCompanyPostal, customerCurrentPosition, customerCurrentJobTitle,
+                            null, 0, 0,
+                            null);
+                }
+            } else {
+                if (customerEmploymentStatus.equals("Unemployed")) {
+                    newCustomerAdvancedId = cRMCustomerSessionBeanLocal.updateCustomerAdvanced(customer.getCustomerIdentificationNum(), customerNumOfDependents, 
+                            customerEducation, customerResidentialStatus, customerLengthOfResidence, customerIndustryType, customerLengthOfCurrentJob, 
+                            customerEmploymentStatus, customerMonthlyFixedIncome.doubleValue(), customerResidentialType, null, null, 
+                            null, null, customerPostal, 0, 0, 
+                            null);
+                }else {
+                    newCustomerAdvancedId = cRMCustomerSessionBeanLocal.updateCustomerAdvanced(customer.getCustomerIdentificationNum(), customerNumOfDependents, 
+                            customerEducation, customerResidentialStatus, customerLengthOfResidence, customerIndustryType, customerLengthOfCurrentJob, 
+                            customerEmploymentStatus, customerMonthlyFixedIncome.doubleValue(), customerResidentialType, customerCompanyAddress, customerCompanyPostal, 
+                            customerCurrentPosition, customerCurrentJobTitle, customerPostal, 0, 0, 
+                            null);
+                }
+                    
+            }
+
+            creditCardTypeId = (Long) ec.getSessionMap().get("cardTypeId");
+            System.out.println("##########################customer application type id = " + creditCardTypeId);
+
             DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
             Date applicationDate1 = new Date();
             String applicationDate = df.format(applicationDate1);

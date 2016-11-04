@@ -8,6 +8,7 @@ package managedbean.loan.employee;
 import ejb.loan.entity.LoanApplication;
 import ejb.loan.session.LoanApplicationSessionBeanLocal;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -27,7 +28,11 @@ public class LoanOfficerViewApplicationsManagedBean {
     @EJB
     private LoanApplicationSessionBeanLocal loanApplicationSessionBeanLocal;
 
-    private List<LoanApplication> loanApplications;
+    private List<LoanApplication> mortgagePurchaseApplications;
+    private List<LoanApplication> mortgageRefinancingApplications;
+    private List<LoanApplication> renovationLoanApplications;
+    private List<LoanApplication> carLoanApplications;
+    private List<LoanApplication> studyLoanApplications;
 
     /**
      * Creates a new instance of LoanOfficerViewLoanApplicationsManagedBean
@@ -37,7 +42,18 @@ public class LoanOfficerViewApplicationsManagedBean {
 
     @PostConstruct
     public void init() {
-        loanApplications = loanApplicationSessionBeanLocal.getAllLoanApplications();
+        ArrayList appStatus = new ArrayList<String>();
+        appStatus.add("in progress");
+        mortgagePurchaseApplications = loanApplicationSessionBeanLocal.getLoanApplications(appStatus, "HDB - New Purchase");
+        mortgagePurchaseApplications.addAll(loanApplicationSessionBeanLocal.getLoanApplications(appStatus, "Private Property - New Purchase"));
+        mortgageRefinancingApplications = loanApplicationSessionBeanLocal.getLoanApplications(appStatus, "HDB - Refinancing");
+        mortgageRefinancingApplications.addAll(loanApplicationSessionBeanLocal.getLoanApplications(appStatus, "Private Property - Refinancing"));
+        appStatus = new ArrayList<String>();
+        appStatus.add("pending");
+        mortgagePurchaseApplications.addAll(loanApplicationSessionBeanLocal.getLoanApplications(appStatus, "HDB - New Purchase"));
+        mortgagePurchaseApplications.addAll(loanApplicationSessionBeanLocal.getLoanApplications(appStatus, "Private Property - New Purchase"));
+        mortgageRefinancingApplications.addAll(loanApplicationSessionBeanLocal.getLoanApplications(appStatus, "HDB - Refinancing"));
+        mortgageRefinancingApplications.addAll(loanApplicationSessionBeanLocal.getLoanApplications(appStatus, "Private Property - Refinancing"));
     }
 
     public void viewApplication(Long loanApplicationId, String loanType) throws IOException {
@@ -45,10 +61,10 @@ public class LoanOfficerViewApplicationsManagedBean {
         loanApplicationSessionBeanLocal.updateLoanStatus("in progress", loanApplicationId);
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         ec.getFlash().put("applicationId", loanApplicationId);
-        if (loanType.equals("HDB - New Purchase")) {
-            ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/loan/loanOfficerProcessMortgagePurchaseApplicaion.xhtml?faces-redirect=true");
-        }else if(loanType.equals("HDB - Refinancing")){
-            ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/loan/loanOfficerProcessMortgageRefinancingApplicaion.xhtml?faces-redirect=true");
+        if (loanType.equals("HDB - New Purchase") || loanType.equals("Private Property - New Purchase")) {
+            ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/loan/loanOfficerProcessMortgagePurchaseApplication.xhtml?faces-redirect=true");
+        }else if(loanType.equals("HDB - Refinancing") || loanType.equals("Private Property - Refinancing")){
+            ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/loan/loanOfficerProcessMortgageRefinancingApplication.xhtml?faces-redirect=true");
         }
     }
 
@@ -60,12 +76,45 @@ public class LoanOfficerViewApplicationsManagedBean {
         this.loanApplicationSessionBeanLocal = loanApplicationSessionBeanLocal;
     }
 
-    public List<LoanApplication> getLoanApplications() {
-        return loanApplications;
+    public List<LoanApplication> getMortgagePurchaseApplications() {
+        return mortgagePurchaseApplications;
     }
 
-    public void setLoanApplications(List<LoanApplication> loanApplications) {
-        this.loanApplications = loanApplications;
+    public void setMortgagePurchaseApplications(List<LoanApplication> mortgagePurchaseApplications) {
+        this.mortgagePurchaseApplications = mortgagePurchaseApplications;
     }
+
+    public List<LoanApplication> getMortgageRefinancingApplications() {
+        return mortgageRefinancingApplications;
+    }
+
+    public void setMortgageRefinancingApplications(List<LoanApplication> mortgageRefinancingApplications) {
+        this.mortgageRefinancingApplications = mortgageRefinancingApplications;
+    }
+
+    public List<LoanApplication> getRenovationLoanApplications() {
+        return renovationLoanApplications;
+    }
+
+    public void setRenovationLoanApplications(List<LoanApplication> renovationLoanApplications) {
+        this.renovationLoanApplications = renovationLoanApplications;
+    }
+
+    public List<LoanApplication> getCarLoanApplications() {
+        return carLoanApplications;
+    }
+
+    public void setCarLoanApplications(List<LoanApplication> carLoanApplications) {
+        this.carLoanApplications = carLoanApplications;
+    }
+
+    public List<LoanApplication> getStudyLoanApplications() {
+        return studyLoanApplications;
+    }
+
+    public void setStudyLoanApplications(List<LoanApplication> studyLoanApplications) {
+        this.studyLoanApplications = studyLoanApplications;
+    }
+
 
 }

@@ -36,7 +36,7 @@ public class DebitCardSessionBean implements DebitCardSessionBeanLocal {
     // "Insert Code > Add Business Method")
     @EJB
     private DebitCardSessionBeanLocal debitCardSessionBeanLocal;
-    
+
     @EJB
     private DebitCardManagementSessionBeanLocal debitCardManagementSessionBeanLocal;
 
@@ -80,12 +80,96 @@ public class DebitCardSessionBean implements DebitCardSessionBeanLocal {
         debitCard.setCardExpiryDate(debitCardExpiryDate);
 
         debitCard.setRemainingExpirationMonths(60);
-        
+
         debitCard.setRemainingActivationDays(15);
 
         debitCard.setStatus("not activated");
 
         debitCard.setTransactionLimit(500);
+
+        em.persist(debitCard);
+        depositAccount.addDebitCard(debitCard);
+
+    }
+
+    @Override
+    public void replaceDebitCard(String bankAccountNum, String cardHolderName, String expDate, int remainingMonths, int transactionLimit, String cardTypeName, Long predecessorId) {
+        DebitCard debitCard = new DebitCard();
+        debitCard.setCardHolderName(cardHolderName);
+
+        BankAccount depositAccount = findDepositAccountByAccountNum(bankAccountNum);
+        debitCard.setBankAccount(depositAccount);
+
+        DebitCardType debitCardType = findCardTypeByTypeName(cardTypeName);
+        debitCard.setDebitCardType(debitCardType);
+
+        String cardNum = generateCardNum();
+        debitCard.setCardNum(cardNum);
+
+        String debitCardSecurityCode = generateCardSecurityCode();
+        try {
+            System.out.println("debug cardNum:" + cardNum);
+            System.out.println("debug csc initial:" + debitCardSecurityCode);
+            String hashedDebitCardSecurityCode = md5Hashing(debitCardSecurityCode + cardNum.substring(0, 3));
+            System.out.println("debug:" + hashedDebitCardSecurityCode);
+            debitCard.setCardSecurityCode(hashedDebitCardSecurityCode);
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(DebitCardSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+//        String[] applicationDateToString = changeDateFormat(applicationDate);
+        debitCard.setCardExpiryDate(expDate);
+
+        debitCard.setRemainingExpirationMonths(remainingMonths);
+
+        debitCard.setRemainingActivationDays(15);
+
+        debitCard.setStatus("not activated");
+
+        debitCard.setTransactionLimit(transactionLimit);
+
+        debitCard.setPredecessor(predecessorId);
+
+        em.persist(debitCard);
+        depositAccount.addDebitCard(debitCard);
+
+    }
+
+    @Override
+    public void lostDebitCardRecreate(String bankAccountNum, String cardHolderName, String expDate, int remainingMonths, int transactionLimit, String cardTypeName) {
+        DebitCard debitCard = new DebitCard();
+        debitCard.setCardHolderName(cardHolderName);
+
+        BankAccount depositAccount = findDepositAccountByAccountNum(bankAccountNum);
+        debitCard.setBankAccount(depositAccount);
+
+        DebitCardType debitCardType = findCardTypeByTypeName(cardTypeName);
+        debitCard.setDebitCardType(debitCardType);
+
+        String cardNum = generateCardNum();
+        debitCard.setCardNum(cardNum);
+
+        String debitCardSecurityCode = generateCardSecurityCode();
+        try {
+            System.out.println("debug cardNum:" + cardNum);
+            System.out.println("debug csc initial:" + debitCardSecurityCode);
+            String hashedDebitCardSecurityCode = md5Hashing(debitCardSecurityCode + cardNum.substring(0, 3));
+            System.out.println("debug:" + hashedDebitCardSecurityCode);
+            debitCard.setCardSecurityCode(hashedDebitCardSecurityCode);
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(DebitCardSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+//        String[] applicationDateToString = changeDateFormat(applicationDate);
+        debitCard.setCardExpiryDate(expDate);
+
+        debitCard.setRemainingExpirationMonths(remainingMonths);
+
+        debitCard.setRemainingActivationDays(15);
+
+        debitCard.setStatus("not activated");
+
+        debitCard.setTransactionLimit(transactionLimit);
 
         em.persist(debitCard);
         depositAccount.addDebitCard(debitCard);
@@ -129,7 +213,7 @@ public class DebitCardSessionBean implements DebitCardSessionBeanLocal {
         debitCard.setCardExpiryDate(debitCardExpiryDate);
 
         debitCard.setRemainingExpirationMonths(60);
-        
+
         debitCard.setRemainingActivationDays(15);
 
         debitCard.setStatus("not activated");
@@ -141,7 +225,7 @@ public class DebitCardSessionBean implements DebitCardSessionBeanLocal {
         em.persist(debitCard);
         depositAccount.addDebitCard(debitCard);
         debitCardType.addDebitCard(debitCard);
-      
+
     }
 
     @Override
@@ -165,8 +249,8 @@ public class DebitCardSessionBean implements DebitCardSessionBeanLocal {
                         return "csc not match";
                     } else {
                         findDebitCard.setStatus("activated");
-                        if(findDebitCard.getPredecessor()!=null){
-                            Long predecessorId=findDebitCard.getPredecessor();
+                        if (findDebitCard.getPredecessor() != null) {
+                            Long predecessorId = findDebitCard.getPredecessor();
                             debitCardManagementSessionBeanLocal.CancelDebitCardAfterReplacement(predecessorId);
                             findDebitCard.setPredecessor(null);
                         }//if the card has a predecessor, then delete the predecessor from database

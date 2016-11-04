@@ -10,6 +10,7 @@ import ejb.card.session.CreditCardSessionBeanLocal;
 import ejb.card.session.DebitCardManagementSessionBeanLocal;
 import ejb.card.session.DebitCardSessionBeanLocal;
 import ejb.customer.entity.CustomerBasic;
+import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -46,6 +47,9 @@ public class CustomerReportLossManagedBean implements Serializable {
 
     @EJB
     private CreditCardSessionBeanLocal creditCardSessionBeanLocal;
+    
+    @EJB
+    private CRMCustomerSessionBeanLocal cRMCustomerSession;
 
     private String cardType;
     private String debitCardPwd;
@@ -127,7 +131,8 @@ public class CustomerReportLossManagedBean implements Serializable {
 
         String[] creditCardInfo = selectedCreditCard.split("-");
         String creditCardNum = creditCardInfo[2];
-
+//        Long newCustomerId = creditCardSessionBeanLocal.getCardByCardNum(creditCardNum).getCustomerBasic().getCustomerBasicId();
+//        System.out.println("!!!!!!!!!!!!!!!!!customer id "+ newCustomerId);
         System.out.println("debug: ReportCreditCardLoss- credit card num " + creditCardNum);
         System.out.println("debug: ReportCreditCardLoss- ID Num " + identificationNum);
         String result = creditCardManagementSessionBeanLocal.reportCreditCardLoss(creditCardNum, identificationNum);
@@ -136,6 +141,9 @@ public class CustomerReportLossManagedBean implements Serializable {
             case "success":
                 message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Your card has been suceesfully reported as loss, we will send a new card to your mailing address in 2-3 working days", null);
                 context.addMessage(null, message);
+//                CustomerBasic newCustomer = cRMCustomerSession.getCustomerBasicById(newCustomerId);
+//                System.out.println("!!!!!!!!!!!!!!!!!customer  "+ newCustomer);
+//                ec.getSessionMap().replace("customer", newCustomer);
                 System.out.println("credit card report loss");
                 break;
             case "credit card not exist":

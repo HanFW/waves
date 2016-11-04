@@ -17,12 +17,10 @@ public class GIRO implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long giroId;
-    private String billingOrganizationName;
-    private String billReference;
     private String bankAccountNum;
     private String bankAccountNumWithType;
     private String giroType;
-
+    
     @ManyToOne(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER)
     private CustomerBasic customerBasic;
     
@@ -32,22 +30,6 @@ public class GIRO implements Serializable {
 
     public void setGiroId(Long giroId) {
         this.giroId = giroId;
-    }
-
-    public String getBillingOrganizationName() {
-        return billingOrganizationName;
-    }
-
-    public void setBillingOrganizationName(String billingOrganizationName) {
-        this.billingOrganizationName = billingOrganizationName;
-    }
-
-    public String getBillReference() {
-        return billReference;
-    }
-
-    public void setBillReference(String billReference) {
-        this.billReference = billReference;
     }
 
     public String getBankAccountNum() {

@@ -44,8 +44,11 @@
                             <h:outputText style="font-weight: bold" value="Account Number: "/>
                             <h:outputText value="#{fastTransferDoneManagedBean.fromBankAccountNumWithType}"/>
                             <br/>
-                            <h:outputText style="font-weight: bold" value="Lastest Account Balance: "/>
-                            <h:outputText value="#{fastTransferDoneManagedBean.fromBankAccountBalance}"/>
+                            <h:outputText style="font-weight: bold" value="Lastest Available Balance: "/>
+                            <h:outputText value="#{fastTransferDoneManagedBean.fromAccountAvailableBalance}"/>
+                            <br/>
+                            <h:outputText style="font-weight: bold" value="Lastest Total Balance: "/>
+                            <h:outputText value="#{fastTransferDoneManagedBean.fromAccountTotalBalance}"/>
                             <br/>
                             <br/>
                             <h:outputText value="To" style="font-size: 24px" />

@@ -36,7 +36,15 @@ public class LoanInterestSessionBean implements LoanInterestSessionBeanLocal {
             LoanPayableAccount payableAccount = account.getLoanPayableAccount();
             LoanApplication loanApplicaiton = payableAccount.getLoanApplication();
             String interestPackage = loanApplicaiton.getLoanInterestPackage().getPackageName();
+            double fees = account.getFees();
+            double overdueBalance = account.getOverdueBalance();
             double instalment;
+            
+            if(account.getAccountBalance() > 0){
+                double newOverdue = account.getAccountBalance();
+                double totalOverdue = (newOverdue + overdueBalance) * 1.05;
+                account.setOverdueBalance(totalOverdue);
+            }
 
             if (interestPackage.equals("HDB-Fixed")) {
                 if (account.getRepaymentMonths() == 0) {
@@ -45,18 +53,21 @@ public class LoanInterestSessionBean implements LoanInterestSessionBeanLocal {
                     double period = loanApplicaiton.getPeriodSuggested();
                     instalment = (rate / 12 * principle) / (1 - Math.pow((1 + rate / 12), -period));
                     account.setInstalment(instalment);
+                    account.setAccountBalance(instalment + fees + overdueBalance);
                 } else if (account.getRepaymentMonths() < 36) {
                     double rate = 1.8;
                     double principle = payableAccount.getInitialAmount();
                     double period = loanApplicaiton.getPeriodSuggested();
                     instalment = (rate / 12 * principle) / (1 - Math.pow((1 + rate / 12), -period));
                     account.setInstalment(instalment);
+                    account.setAccountBalance(instalment + fees + overdueBalance);
                 } else {
                     double rate = loanApplicaiton.getLoanInterestPackage().getInterestRate() + 1.2;
                     double principle = payableAccount.getInitialAmount();
                     double period = loanApplicaiton.getPeriodSuggested();
                     instalment = (rate / 12 * principle) / (1 - Math.pow((1 + rate / 12), -period));
                     account.setInstalment(instalment);
+                    account.setAccountBalance(instalment + fees + overdueBalance);
                 }
             } else if (interestPackage.equals("HDB-Floating")) {
                 double rate = loanApplicaiton.getLoanInterestPackage().getInterestRate() + 1.3;
@@ -64,8 +75,11 @@ public class LoanInterestSessionBean implements LoanInterestSessionBeanLocal {
                 double period = loanApplicaiton.getPeriodSuggested();
                 instalment = (rate / 12 * principle) / (1 - Math.pow((1 + rate / 12), -period));
                 account.setInstalment(instalment);
+                account.setAccountBalance(instalment + fees + overdueBalance);
             }
+            account.setRepaymentMonths(account.getRepaymentMonths()+1);
         }
+        
         
         em.flush();
     }

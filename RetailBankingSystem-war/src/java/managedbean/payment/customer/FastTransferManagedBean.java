@@ -4,8 +4,8 @@ import ejb.customer.entity.CustomerBasic;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import ejb.deposit.session.TransactionSessionBeanLocal;
-import ejb.payment.session.FastPayeeSessionBeanLocal;
-import ejb.payment.entity.FastPayee;
+import ejb.payment.session.OtherBankPayeeSessionBeanLocal;
+import ejb.payment.entity.OtherBankPayee;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -19,33 +19,33 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.xml.ws.WebServiceRef;
-//import ws.client.otherbanks.OtherBankAccount;
-//import ws.client.otherbanks.OtherBanksWebService_Service;
-//import ws.client.sach.SACHWebService_Service;
+import ws.client.otherbanks.OtherBankAccount;
+import ws.client.otherbanks.OtherBanksWebService_Service;
+import ws.client.sach.SACHWebService_Service;
 
 @Named(value = "fastTransferManagedBean")
 @RequestScoped
 
 public class FastTransferManagedBean {
 
-//    @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_8080/OtherBanksWebService/OtherBanksWebService.wsdl")
-//    private OtherBanksWebService_Service service_otherBanks;
-//
-//    @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_8080/SACHWebService/SACHWebService.wsdl")
-//    private SACHWebService_Service service_sach;
+    @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_8080/OtherBanksWebService/OtherBanksWebService.wsdl")
+    private OtherBanksWebService_Service service_otherBanks;
+
+    @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_8080/SACHWebService/SACHWebService.wsdl")
+    private SACHWebService_Service service_sach;
 
     @EJB
     private TransactionSessionBeanLocal transactionSessionBeanLocal;
 
     @EJB
-    private FastPayeeSessionBeanLocal fastPayeeSessionBeanLocal;
+    private OtherBankPayeeSessionBeanLocal otherBankPayeeSessionBeanLocal;
 
     @EJB
     private BankAccountSessionBeanLocal bankAccountSessionBeanLocal;
 
     private String toBankAccountNumWithType;
     private String toCurrency;
-    private Map<String, String> customerFastPayee = new HashMap<String, String>();
+    private Map<String, String> customerOtherBankPayee = new HashMap<String, String>();
     private Map<String, String> fromAccounts = new HashMap<String, String>();
     private String fromBankAccountNumWithType;
     private String fromCurrency;
@@ -72,15 +72,15 @@ public class FastTransferManagedBean {
 
             List<BankAccount> bankAccounts = bankAccountSessionBeanLocal.retrieveBankAccountByCusIC(customerBasic.getCustomerIdentificationNum());
             fromAccounts = new HashMap<String, String>();
-            customerFastPayee = new HashMap<String, String>();
-            List<FastPayee> fastPayees = fastPayeeSessionBeanLocal.retrieveFastPayeeByCusId(customerBasic.getCustomerBasicId());
+            customerOtherBankPayee = new HashMap<String, String>();
+            List<OtherBankPayee> otherBankPayees = otherBankPayeeSessionBeanLocal.retrieveOtherBankPayeeByCusId(customerBasic.getCustomerBasicId());
 
             for (int i = 0; i < bankAccounts.size(); i++) {
                 fromAccounts.put(bankAccounts.get(i).getBankAccountType() + "-" + bankAccounts.get(i).getBankAccountNum(), bankAccounts.get(i).getBankAccountType() + "-" + bankAccounts.get(i).getBankAccountNum());
             }
 
-            for (int j = 0; j < fastPayees.size(); j++) {
-                customerFastPayee.put(fastPayees.get(j).getFastPayeeAccountType() + "-" + fastPayees.get(j).getFastPayeeAccountNum() + "-" + fastPayees.get(j).getFastPayeeName(), fastPayees.get(j).getFastPayeeAccountType() + "-" + fastPayees.get(j).getFastPayeeAccountNum() + "-" + fastPayees.get(j).getFastPayeeName());
+            for (int j = 0; j < otherBankPayees.size(); j++) {
+                customerOtherBankPayee.put(otherBankPayees.get(j).getPayeeAccountType() + "-" + otherBankPayees.get(j).getPayeeAccountNum() + "-" + otherBankPayees.get(j).getOtherBankPayeeName(), otherBankPayees.get(j).getPayeeAccountType() + "-" + otherBankPayees.get(j).getPayeeAccountNum() + "-" + otherBankPayees.get(j).getOtherBankPayeeName());
             }
         }
     }
@@ -99,14 +99,6 @@ public class FastTransferManagedBean {
 
     public void setToCurrency(String toCurrency) {
         this.toCurrency = toCurrency;
-    }
-
-    public Map<String, String> getCustomerFastPayee() {
-        return customerFastPayee;
-    }
-
-    public void setCustomerFastPayee(Map<String, String> customerFastPayee) {
-        this.customerFastPayee = customerFastPayee;
     }
 
     public Map<String, String> getFromAccounts() {
@@ -181,6 +173,14 @@ public class FastTransferManagedBean {
         this.fromAccountTotalBalance = fromAccountTotalBalance;
     }
 
+    public Map<String, String> getCustomerOtherBankPayee() {
+        return customerOtherBankPayee;
+    }
+
+    public void setCustomerOtherBankPayee(Map<String, String> customerOtherBankPayee) {
+        this.customerOtherBankPayee = customerOtherBankPayee;
+    }
+
     public void fastTransfer() throws IOException {
 
         ec = FacesContext.getCurrentInstance().getExternalContext();
@@ -191,7 +191,7 @@ public class FastTransferManagedBean {
         toBankAccount = handleAccountString(toBankAccountNumWithType);
 
         BankAccount merlionBankAccountFrom = bankAccountSessionBeanLocal.retrieveBankAccountByNum(fromBankAccount);
-//        OtherBankAccount otherBankAccountTo = retrieveBankAccountByNum(toBankAccount);
+        OtherBankAccount otherBankAccountTo = retrieveBankAccountByNum(toBankAccount);
 
         Double diffAmt = Double.valueOf(merlionBankAccountFrom.getAvailableBankAccountBalance()) - transferAmt;
         if (diffAmt >= 0) {
@@ -202,20 +202,19 @@ public class FastTransferManagedBean {
 
             Calendar cal = Calendar.getInstance();
             String transactionCode = "ICT";
-//            String transactionRef = "Transfer to " + otherBankAccountTo.getOtherBankAccountType() + "-" + otherBankAccountTo.getOtherBankAccountNum();
-//            Long transactionDateMilis = cal.getTimeInMillis();
-//
-//            Long transactionId = transactionSessionBeanLocal.addNewTransaction(cal.getTime().toString(), transactionCode, transactionRef,
-//                    transferAmt.toString(), " ", transactionDateMilis, merlionBankAccountFrom.getBankAccountId());
+            String transactionRef = "Transfer to " + otherBankAccountTo.getOtherBankAccountType() + "-" + otherBankAccountTo.getOtherBankAccountNum();
+            Long transactionDateMilis = cal.getTimeInMillis();
 
-//            sachTransferMTD(fromBankAccount, toBankAccount, transferAmt);
+            Long transactionId = transactionSessionBeanLocal.addNewTransaction(cal.getTime().toString(), transactionCode, transactionRef,
+                    transferAmt.toString(), " ", transactionDateMilis, merlionBankAccountFrom.getBankAccountId());
+
+            sachTransferMTD(fromBankAccount, toBankAccount, transferAmt);
 
             statusMessage = "Your transaction has been completed.";
             fromAccountAvailableBalance = currentAvailableBalance.toString();
             fromAccountTotalBalance = currentTotalBalance.toString();
 
             ec.getFlash().put("statusMessage", statusMessage);
-//            ec.getFlash().put("transactionId", transactionId);
             ec.getFlash().put("toBankAccountNumWithType", toBankAccountNumWithType);
             ec.getFlash().put("fromBankAccountNumWithType", fromBankAccountNumWithType);
             ec.getFlash().put("transferAmt", transferAmt);
@@ -238,17 +237,17 @@ public class FastTransferManagedBean {
         return bankAccountNum;
     }
 
-//    private void sachTransferMTD(java.lang.String fromBankAccountNum, java.lang.String toBankAccountNum, java.lang.Double transferAmt) {
-//        // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
-//        // If the calling of port operations may lead to race condition some synchronization is required.
-//        ws.client.sach.SACHWebService port = service_sach.getSACHWebServicePort();
-//        port.sachTransferMTD(fromBankAccountNum, toBankAccountNum, transferAmt);
-//    }
-//
-//    private OtherBankAccount retrieveBankAccountByNum(java.lang.String otherBankAccountNum) {
-//        // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
-//        // If the calling of port operations may lead to race condition some synchronization is required.
-//        ws.client.otherbanks.OtherBanksWebService port = service_otherBanks.getOtherBanksWebServicePort();
-//        return port.retrieveBankAccountByNum(otherBankAccountNum);
-//    }
+    private void sachTransferMTD(java.lang.String fromBankAccountNum, java.lang.String toBankAccountNum, java.lang.Double transferAmt) {
+        // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
+        // If the calling of port operations may lead to race condition some synchronization is required.
+        ws.client.sach.SACHWebService port = service_sach.getSACHWebServicePort();
+        port.sachTransferMTD(fromBankAccountNum, toBankAccountNum, transferAmt);
+    }
+
+    private OtherBankAccount retrieveBankAccountByNum(java.lang.String otherBankAccountNum) {
+        // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
+        // If the calling of port operations may lead to race condition some synchronization is required.
+        ws.client.otherbanks.OtherBanksWebService port = service_otherBanks.getOtherBanksWebServicePort();
+        return port.retrieveBankAccountByNum(otherBankAccountNum);
+    }
 }

@@ -48,8 +48,8 @@ public class StandingGIROSessionBean implements StandingGIROSessionBeanLocal {
         standingGiro.setGiroType(giroType);
         standingGiro.setCustomerBasic(bankAccountSessionBeanLocal.retrieveCustomerBasicById(customerBasicId));
 
-        System.out.println("*******session bean" + billingOrganizationName);
-        addNewBill(customerName, customerMobile, billReference, billingOrganizationName, "Merlion", bankAccountNum);
+        addNewBill(customerName, customerMobile, billReference, billingOrganizationName,
+                "Merlion", bankAccountNum, paymemtLimit);
 
         entityManager.persist(standingGiro);
         entityManager.flush();
@@ -59,6 +59,7 @@ public class StandingGIROSessionBean implements StandingGIROSessionBeanLocal {
 
     @Override
     public String deleteStandingGIRO(Long giroId) {
+
         GIRO standingGiro = gIROSessionBeanLocal.retrieveGIROById(giroId);
 
         entityManager.remove(standingGiro);
@@ -91,11 +92,10 @@ public class StandingGIROSessionBean implements StandingGIROSessionBeanLocal {
         }
     }
 
-    private Long addNewBill(java.lang.String customerName, java.lang.String customerMobile, java.lang.String billReference, java.lang.String billingOrganizationName, java.lang.String debitBank, java.lang.String debitBankAccountNum) {
+    private Long addNewBill(java.lang.String customerName, java.lang.String customerMobile, java.lang.String billReference, java.lang.String billingOrganizationName, java.lang.String debitBank, java.lang.String debitBankAccountNum, java.lang.String paymentLimit) {
         // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
         // If the calling of port operations may lead to race condition some synchronization is required.
         ws.client.bill.BillWebService port = service_bill.getBillWebServicePort();
-        return port.addNewBill(customerName, customerMobile, billReference,
-                billingOrganizationName, debitBank, debitBankAccountNum);
+        return port.addNewBill(customerName, customerMobile, billReference, billingOrganizationName, debitBank, debitBankAccountNum, paymentLimit);
     }
 }

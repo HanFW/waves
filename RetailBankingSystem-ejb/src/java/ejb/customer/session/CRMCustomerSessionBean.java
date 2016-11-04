@@ -78,7 +78,7 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal, CRMC
 
         entityManager.persist(customerBasic);
         entityManager.flush();
-        
+
         return customerBasic.getCustomerBasicId();
 
     }
@@ -191,7 +191,9 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal, CRMC
     }
 
     @Override
-    public String updateCustomerBasicProfile(String customerOnlineBankingAccountNum, String customerNationality, String customerCountryOfResidence, String customerMaritalStatus, String customerOccupation, String customerCompany, String customerEmail, String customerMobile, String customerAddress, String customerPostal) {
+    public String updateCustomerBasicProfile(String customerOnlineBankingAccountNum, String customerNationality, String customerCountryOfResidence,
+            String customerMaritalStatus, String customerOccupation, String customerCompany,
+            String customerEmail, String customerMobile, String customerAddress, String customerPostal) {
 
         Query query = entityManager.createQuery("SELECT cb FROM CustomerBasic cb WHERE cb.customerOnlineBankingAccountNum = :customerOnlineBankingAccountNum");
         query.setParameter("customerOnlineBankingAccountNum", customerOnlineBankingAccountNum);
@@ -234,7 +236,7 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal, CRMC
 //            ca.setNumOfDependent(numOfDependent);
 //            ca.setResidentialStatus(residentialStatus);
 //            ca.setYearInResidence(yearInResidence);
-            
+
             entityManager.flush();
 
             return "Update Successful";
@@ -429,38 +431,126 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal, CRMC
 
         return customerAge;
     }
-    
+
     @Override
     public List<CustomerBasic> getAllNewCustomer() {
         Query query = entityManager.createQuery("SELECT c FROM CustomerBasic c Where c.newCustomer=:newCustomer");
         query.setParameter("newCustomer", "Yes");
-        
+
         return query.getResultList();
     }
-    
+
     @Override
-    public void updateCustomerMobile(Long customerId,String customerMobile){
+    public void updateCustomerMobile(Long customerId, String customerMobile) {
         CustomerBasic customer = entityManager.find(CustomerBasic.class, customerId);
         customer.setCustomerMobile(customerMobile);
         entityManager.flush();
     }
-    
+
     @Override
-    public CustomerBasic getCustomerBasicById(Long customerId){
+    public CustomerBasic getCustomerBasicById(Long customerId) {
         CustomerBasic customer = entityManager.find(CustomerBasic.class, customerId);
         return customer;
     }
+
+    @Override
+    public Long addNewCustomerAdvanced(int customerNumOfDependents, String customerEducation, String customerResidentialStatus,
+            int customerLengthOfResidence, String customerIndustryType, int customerLengthOfCurrentJob, String customerEmploymentStatus,
+            double customerMonthlyFixedIncome, String customerResidentialType, String customerCompanyAddress,
+            String customerCompanyPostal, String customerCurrentPosition, String customerCurrentJobTitle,
+            String customerPreviousCompany, int customerLengthOfPreviousJob, double customerOtherMonthlyIncome,
+            String customerOtherMonthlyIncomeSource) {
+        System.out.println("****** customer/CRMCustomerSessionBean: addNewCustomerAdvanced() ******");
+
+        CustomerAdvanced ca = new CustomerAdvanced();
+
+        ca.setNumOfDependent(customerNumOfDependents);
+        ca.setEducation(customerEducation);
+        ca.setResidentialStatus(customerResidentialStatus);
+        ca.setYearInResidence(customerLengthOfResidence);
+        ca.setIndustryType(customerIndustryType);
+        ca.setLengthOfCurrentJob(customerLengthOfCurrentJob);
+        ca.setEmploymentStatus(customerEmploymentStatus);
+        ca.setMonthlyFixedIncome(customerMonthlyFixedIncome);
+        ca.setResidentialType(customerResidentialType);
+        ca.setCompanyAddress(customerCompanyAddress);
+        ca.setCompanyPostal(customerCompanyPostal);
+        ca.setCurrentPosition(customerCurrentPosition);
+        ca.setCurrentJobTitle(customerCurrentJobTitle);
+        ca.setPreviousCompanyName(customerPreviousCompany);
+        ca.setLengthOfPreviousJob(customerLengthOfPreviousJob);
+        ca.setOtherMonthlyIncome(customerOtherMonthlyIncome);
+        ca.setOtherMonthlyIncomeSource(customerOtherMonthlyIncomeSource);
+
+        entityManager.persist(ca);
+        entityManager.flush();
+        return ca.getCustomerAdvancedId();
+    }
+
+    @Override
+    public boolean checkExistingCustomerByIdentification(String identificationNum) {
+        Query query = entityManager.createQuery("Select c From CustomerBasic c Where c.customerIdentificationNum=:customerIdentificationNum");
+        query.setParameter("customerIdentificationNum", identificationNum);
+
+        List resultList = query.getResultList();
+        if (resultList.isEmpty()) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    @Override
+    public Long updateCustomerBasic(String customerIdentificationNum, String customerEmail, String customerMobile,
+            String customerNationality, String customerCountryOfResidence,
+            String customerMaritalStatus, String customerOccupation, String customerCompany,
+            String customerAddress, String customerPostal) {
+        Query query = entityManager.createQuery("Select c From CustomerBasic c Where c.customerIdentificationNum=:customerIdentificationNum");
+        query.setParameter("customerIdentificationNum", customerIdentificationNum);
+
+        CustomerBasic cb;
+
+        List resultList = query.getResultList();
+        cb = (CustomerBasic) resultList.get(0);
+
+        cb.setCustomerNationality(customerNationality);
+        cb.setCustomerCountryOfResidence(customerCountryOfResidence);
+        cb.setCustomerMaritalStatus(customerMaritalStatus);
+        cb.setCustomerCompany(customerCompany);
+        cb.setCustomerOccupation(customerOccupation);
+        cb.setCustomerMobile(customerMobile);
+        cb.setCustomerEmail(customerEmail);
+        cb.setCustomerAddress(customerAddress);
+        cb.setCustomerPostal(customerPostal);
+        entityManager.flush();
+
+        return cb.getCustomerBasicId();
+    }
     
     @Override
-    public Long addNewCustomerAdvanced(int customerNumOfDependents, String customerEducation, String customerResidentialStatus, 
+    public boolean checkExistingCustomerAdvanced(String customerIdentification){
+        Query query = entityManager.createQuery("Select c From CustomerAdvanced c Where c.customerBasic.customerIdentificationNum=:customerIdentificationNum");
+        query.setParameter("customerIdentificationNum", customerIdentification);
+
+        List resultList = query.getResultList();
+        if (resultList.isEmpty()) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+    
+    @Override
+    public Long updateCustomerAdvanced(String identification, int customerNumOfDependents, String customerEducation, String customerResidentialStatus,
             int customerLengthOfResidence, String customerIndustryType, int customerLengthOfCurrentJob, String customerEmploymentStatus,
-            double customerMonthlyFixedIncome, String customerResidentialType, String customerCompanyAddress, 
-            String customerCompanyPostal, String customerCurrentPosition, String customerCurrentJobTitle, 
-            String customerPreviousCompany, int customerLengthOfPreviousJob, double customerOtherMonthlyIncome, 
-            String customerOtherMonthlyIncomeSource){
-        System.out.println("****** customer/CRMCustomerSessionBean: addNewCustomerAdvanced() ******");
+            double customerMonthlyFixedIncome, String customerResidentialType, String customerCompanyAddress,
+            String customerCompanyPostal, String customerCurrentPosition, String customerCurrentJobTitle,
+            String customerPreviousCompany, int customerLengthOfPreviousJob, double customerOtherMonthlyIncome,
+            String customerOtherMonthlyIncomeSource) {
+        Query query = entityManager.createQuery("Select c From CustomerAdvanced c Where c.customerBasic.customerIdentificationNum=:customerIdentificationNum");
+        query.setParameter("customerIdentificationNum", identification);
         
-        CustomerAdvanced ca = new CustomerAdvanced();
+        CustomerAdvanced ca = (CustomerAdvanced) query.getResultList().get(0);
         
         ca.setNumOfDependent(customerNumOfDependents);
         ca.setEducation(customerEducation);
@@ -479,8 +569,7 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal, CRMC
         ca.setLengthOfPreviousJob(customerLengthOfPreviousJob);
         ca.setOtherMonthlyIncome(customerOtherMonthlyIncome);
         ca.setOtherMonthlyIncomeSource(customerOtherMonthlyIncomeSource);
-                
-        entityManager.persist(ca);
+
         entityManager.flush();
         return ca.getCustomerAdvancedId();
     }

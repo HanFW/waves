@@ -12,9 +12,11 @@ public class Currency implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long currencyId;
-    private String currencyRate;
     private String currencyType;
+    private String buyingRate;
+    private String sellingRate;
     private String updateDate;
+    private String unit;
 
     public Long getCurrencyId() {
         return currencyId;
@@ -24,12 +26,28 @@ public class Currency implements Serializable {
         this.currencyId = currencyId;
     }
 
-    public String getCurrencyRate() {
-        return currencyRate;
+    public String getUpdateDate() {
+        return updateDate;
     }
 
-    public void setCurrencyRate(String currencyRate) {
-        this.currencyRate = currencyRate;
+    public void setUpdateDate(String updateDate) {
+        this.updateDate = updateDate;
+    }
+
+    public String getBuyingRate() {
+        return buyingRate;
+    }
+
+    public void setBuyingRate(String buyingRate) {
+        this.buyingRate = buyingRate;
+    }
+
+    public String getSellingRate() {
+        return sellingRate;
+    }
+
+    public void setSellingRate(String sellingRate) {
+        this.sellingRate = sellingRate;
     }
 
     public String getCurrencyType() {
@@ -40,12 +58,12 @@ public class Currency implements Serializable {
         this.currencyType = currencyType;
     }
 
-    public String getUpdateDate() {
-        return updateDate;
+    public String getUnit() {
+        return unit;
     }
 
-    public void setUpdateDate(String updateDate) {
-        this.updateDate = updateDate;
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
     
     @Override

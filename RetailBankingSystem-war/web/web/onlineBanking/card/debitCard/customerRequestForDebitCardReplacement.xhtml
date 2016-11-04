@@ -45,13 +45,13 @@
                         <p:panel id="debitPanel" visible="#{customerRequestForCardReplacementManagedBean.debitPanelVisible}">
                             <h:panelGrid columns="2" class="ui-lg-4">
                                 <p:outputLabel value="Debit Card:"/>
-                                <p:selectOneMenu id="selectDebitCard" required="true" requiredMessage="Please select a debit card" style="text-align:left" value="#{customerRequestForCardReplacementManagedBean.selectedDebitCard}">
+                                <p:selectOneMenu id="selectDebitCard" required="#{customerRequestForCardReplacementManagedBean.debitPanelVisible}" requiredMessage="Please select a debit card" style="text-align:left" value="#{customerRequestForCardReplacementManagedBean.selectedDebitCard}">
                                     <f:selectItem itemLabel="Please select..." itemValue=""/>
                                     <f:selectItems value="#{customerRequestForCardReplacementManagedBean.debitCards}"/> 
                                 </p:selectOneMenu>
 
                                 <p:outputLabel value="Card Password:" />
-                                <p:inputText validatorMessage="Card password is 6-digit" required="true" requiredMessage="Please input your card password" id="cardPwd" value="#{customerRequestForCardReplacementManagedBean.debitCardPwd}">
+                                <p:inputText validatorMessage="Card password is 6-digit" required="#{customerRequestForCardReplacementManagedBean.debitPanelVisible}" requiredMessage="Please input your card password" id="cardPwd" value="#{customerRequestForCardReplacementManagedBean.debitCardPwd}">
                                     <f:validateLength minimum="6" maximum="6" /> 
                                 </p:inputText>                      
                             </h:panelGrid>

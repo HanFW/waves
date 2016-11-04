@@ -15,4 +15,6 @@ import javax.ejb.Local;
 public interface CreditCardManagementSessionBeanLocal {
     public void cancelCreditCardAfterReplacement(Long creditCardId);
     public String reportCreditCardLoss(String creditCardNum, String identificationNum);
+    public void replaceDamagedCreditCard(String creditCardNum);
+    public String cancelCreditCard(String creditCardNum, String securityCode);
 }

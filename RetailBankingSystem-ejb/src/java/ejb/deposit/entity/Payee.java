@@ -18,10 +18,10 @@ public class Payee implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long payeeId;
-    private String payeeName;
     private String payeeAccountNum;
     private String payeeAccountType;
     private String lastTransactionDate;
+    private String payeeType;
 
     @ManyToOne(cascade={CascadeType.PERSIST},fetch=FetchType.EAGER)
     private CustomerBasic customerBasic;
@@ -32,14 +32,6 @@ public class Payee implements Serializable {
 
     public void setPayeeId(Long payeeId) {
         this.payeeId = payeeId;
-    }
-
-    public String getPayeeName() {
-        return payeeName;
-    }
-
-    public void setPayeeName(String payeeName) {
-        this.payeeName = payeeName;
     }
 
     public String getPayeeAccountNum() {
@@ -72,6 +64,14 @@ public class Payee implements Serializable {
 
     public void setCustomerBasic(CustomerBasic customerBasic) {
         this.customerBasic = customerBasic;
+    }
+
+    public String getPayeeType() {
+        return payeeType;
+    }
+
+    public void setPayeeType(String payeeType) {
+        this.payeeType = payeeType;
     }
 
     @Override

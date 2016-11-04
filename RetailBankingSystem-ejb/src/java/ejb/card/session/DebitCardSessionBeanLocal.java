@@ -18,6 +18,10 @@ import javax.ejb.Local;
 public interface DebitCardSessionBeanLocal {
     public void createDebitCard(String bankAccountNum,String cardHolderName, String applicationDate,String cardTypeName);
     
+    public void replaceDebitCard(String bankAccountNum, String cardHolderName, String expDate, int remainingMonths, int transactionLimit, String cardTypeName, Long predecessorId);
+    
+    public void lostDebitCardRecreate(String bankAccountNum, String cardHolderName, String expDate, int remainingMonths, int transactionLimit, String cardTypeName);
+    
     public void issueDebitCardForCardReplacement(String bankAccountNum,String cardHolderName, String applicationDate,String cardTypeName, Long predecessorId);
     
     public String checkDebitCardTypeForDepositAccount(String bankAccountNum, String cardTypeName);

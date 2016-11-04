@@ -32,11 +32,14 @@ import javax.faces.view.ViewScoped;
  *
  * @author hanfengwei
  */
-@Named(value = "loanOfficerProcessApplicationManagedBean")
+@Named(value = "loanOfficerProcessMortgagePurchaseApplicationManagedBean")
 @ViewScoped
 public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements Serializable{
     @EJB
     private LoanApplicationSessionBeanLocal loanApplicationSessionBeanLocal;
+    
+    private Long applicationId;
+    
     private MortgageLoanApplication ma;
     private CustomerBasic customer;
     private CustomerAdvanced ca;
@@ -146,12 +149,17 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     @PostConstruct
     public void init(){
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-        Long applicationId = (Long) ec.getFlash().get("applicationId"); 
+        applicationId = (Long) ec.getFlash().get("applicationId"); 
+        
         ma = loanApplicationSessionBeanLocal.getMortgageLoanApplicationById(applicationId);
+        
         customer = ma.getCustomerBasic();
         ca = customer.getCustomerAdvanced();
         debts = customer.getCustomerDebt();
         property = customer.getCustomerProperty();
+        cr = customer.getBureauScore();
+        accountStatus = loanApplicationSessionBeanLocal.getAccountStatusByBureauScoreId(cr.getId());
+        defaultRecords = cr.getDefaultRecords();
         
         customerSalutation = customer.getCustomerSalutation();
         customerName = customer.getCustomerName();
@@ -218,9 +226,7 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
         
         applicationDate = ma.getApplicationDate();
         
-        cr = customer.getBureauScore();
-        accountStatus = cr.getAccountStatus();
-        defaultRecords = cr.getDefaultRecords();
+        
         bureauScore = cr.getBureauScore();
         riskGrade = cr.getRiskGrade();
         probabilityOfDefault = cr.getProbabilityOfDefault();
@@ -247,8 +253,10 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
         ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/loan/loanOfficerViewApplications.xhtml?faces-redirect=true");    
     }
     
-    private void calculateInstalment(){
+    public void calculateInstalment(){
         instalmentSuggested = (0.035/12*amountGranted) / (1 - Math.pow((1+0.035/12),-periodSuggested*12));
+        DecimalFormat df = new DecimalFormat("0.00");
+        instalmentSuggested = Double.valueOf(df.format(instalmentSuggested));
     }
 
     public LoanApplicationSessionBeanLocal getLoanApplicationSessionBeanLocal() {
@@ -259,20 +267,20 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
         this.loanApplicationSessionBeanLocal = loanApplicationSessionBeanLocal;
     }
 
-    public HashMap getDocs() {
-        return docs;
+    public Long getApplicationId() {
+        return applicationId;
     }
 
-    public void setDocs(HashMap docs) {
-        this.docs = docs;
+    public void setApplicationId(Long applicationId) {
+        this.applicationId = applicationId;
     }
 
-    public MortgageLoanApplication getApplication() {
+    public MortgageLoanApplication getMa() {
         return ma;
     }
 
-    public void setApplication(MortgageLoanApplication application) {
-        this.ma = application;
+    public void setMa(MortgageLoanApplication ma) {
+        this.ma = ma;
     }
 
     public CustomerBasic getCustomer() {
@@ -283,12 +291,12 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
         this.customer = customer;
     }
 
-    public CustomerAdvanced getCustomerAdvanced() {
+    public CustomerAdvanced getCa() {
         return ca;
     }
 
-    public void setCustomerAdvanced(CustomerAdvanced customerAdvanced) {
-        this.ca = customerAdvanced;
+    public void setCa(CustomerAdvanced ca) {
+        this.ca = ca;
     }
 
     public List<CustomerDebt> getDebts() {
@@ -307,22 +315,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
         this.property = property;
     }
 
-    public MortgageLoanApplication getMa() {
-        return ma;
-    }
-
-    public void setMa(MortgageLoanApplication ma) {
-        this.ma = ma;
-    }
-
-    public CustomerAdvanced getCa() {
-        return ca;
-    }
-
-    public void setCa(CustomerAdvanced ca) {
-        this.ca = ca;
-    }
-
     public Date getApplicationDate() {
         return applicationDate;
     }
@@ -337,7 +329,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
 
     public void setAmountGranted(double amountGranted) {
         this.amountGranted = amountGranted;
-        this.calculateInstalment();
     }
 
     public int getPeriodSuggested() {
@@ -346,12 +337,10 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
 
     public void setPeriodSuggested(int periodSuggested) {
         this.periodSuggested = periodSuggested;
-        this.calculateInstalment();
     }
 
-    public String getInstalmentSuggested() {
-        DecimalFormat df = new DecimalFormat("0");
-        return df.format(instalmentSuggested);
+    public double getInstalmentSuggested() {
+        return instalmentSuggested;
     }
 
     public void setInstalmentSuggested(double instalmentSuggested) {
@@ -838,6 +827,14 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
         this.customerInterestPackage = customerInterestPackage;
     }
 
+    public HashMap getDocs() {
+        return docs;
+    }
+
+    public void setDocs(HashMap docs) {
+        this.docs = docs;
+    }
+
     public CreditReportBureauScore getCr() {
         return cr;
     }
@@ -902,22 +899,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
         this.maxInterval = maxInterval;
     }
 
-    public double[] getSuggestedInterval() {
-        return suggestedInterval;
-    }
-
-    public void setSuggestedInterval(double[] suggestedInterval) {
-        this.suggestedInterval = suggestedInterval;
-    }
-
-    public double getRiskRatio() {
-        return riskRatio;
-    }
-
-    public void setRiskRatio(double riskRatio) {
-        this.riskRatio = riskRatio;
-    }
-
     public double getMaxMin() {
         return maxMin;
     }
@@ -932,6 +913,14 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
 
     public void setMaxMax(double maxMax) {
         this.maxMax = maxMax;
+    }
+
+    public double[] getSuggestedInterval() {
+        return suggestedInterval;
+    }
+
+    public void setSuggestedInterval(double[] suggestedInterval) {
+        this.suggestedInterval = suggestedInterval;
     }
 
     public double getSuggestedMin() {
@@ -949,4 +938,13 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     public void setSuggestedMax(double suggestedMax) {
         this.suggestedMax = suggestedMax;
     }
+
+    public double getRiskRatio() {
+        return riskRatio;
+    }
+
+    public void setRiskRatio(double riskRatio) {
+        this.riskRatio = riskRatio;
+    }
+
 }

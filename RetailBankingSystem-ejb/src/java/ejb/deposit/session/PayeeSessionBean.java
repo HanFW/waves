@@ -1,6 +1,5 @@
 package ejb.deposit.session;
 
-import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import ejb.customer.entity.CustomerBasic;
 import ejb.deposit.entity.Payee;
 import java.util.ArrayList;
@@ -20,32 +19,10 @@ import javax.persistence.NonUniqueResultException;
 public class PayeeSessionBean implements PayeeSessionBeanLocal {
 
     @EJB
-    private CRMCustomerSessionBeanLocal customerSessionBeanLocal;
-
-    @EJB
     private BankAccountSessionBeanLocal bankAccountSessionLocal;
 
     @PersistenceContext
     private EntityManager entityManager;
-
-    @Override
-    public Long addNewPayee(String payeeName, String payeeAccountNum, String payeeAccountType,
-            String lastTransactionDate, Long customerBasicId) {
-        System.out.println("*");
-        System.out.println("****** deposit/PayeeSessionBean: addNewPayee() ******");
-        Payee payee = new Payee();
-
-        payee.setPayeeName(payeeName);
-        payee.setPayeeAccountNum(payeeAccountNum);
-        payee.setPayeeAccountType(payeeAccountType);
-        payee.setLastTransactionDate(lastTransactionDate);
-        payee.setCustomerBasic(bankAccountSessionLocal.retrieveCustomerBasicById(customerBasicId));
-
-        entityManager.persist(payee);
-        entityManager.flush();
-
-        return payee.getPayeeId();
-    }
 
     @Override
     public String deletePayee(String payeeAccountNum) {
@@ -81,33 +58,6 @@ public class PayeeSessionBean implements PayeeSessionBeanLocal {
             return new Payee();
         } catch (NonUniqueResultException nure) {
             System.out.println("****** deposit/PayeeSessionBean: retrievePayeeById(): Non unique result error: " + nure.getMessage());
-        }
-
-        return payee;
-    }
-
-    @Override
-    public Payee retrievePayeeByName(String payeeName) {
-        System.out.println("*");
-        System.out.println("****** deposit/PayeeSessionBean: retrievePayeeByName() ******");
-        Payee payee = new Payee();
-
-        try {
-            Query query = entityManager.createQuery("Select p From Payee p Where p.payeeName=:payeeName");
-            query.setParameter("payeeName", payeeName);
-
-            if (query.getResultList().isEmpty()) {
-                System.out.println("****** deposit/PayeeSessionBean: retrievePayeeByName(): invalid payee name: no result found, return new payee");
-                return new Payee();
-            } else {
-                System.out.println("****** deposit/PayeeSessionBean: retrievePayeeByName(): valid payee name: return payee");
-                payee = (Payee) query.getResultList().get(0);
-            }
-        } catch (EntityNotFoundException enfe) {
-            System.out.println("****** deposit/PayeeSessionBean: retrievePayeeByName(): Entity not found error: " + enfe.getMessage());
-            return new Payee();
-        } catch (NonUniqueResultException nure) {
-            System.out.println("****** deposit/PayeeSessionBean: retrievePayeeByName(): Non unique result error: " + nure.getMessage());
         }
 
         return payee;

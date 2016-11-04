@@ -7,17 +7,21 @@ package ejb.loan.session;
 
 import ejb.customer.entity.CustomerAdvanced;
 import ejb.customer.entity.CustomerBasic;
+import ejb.loan.entity.CarLoanApplication;
+import ejb.loan.entity.CashlineApplication;
 import ejb.loan.entity.CreditReportAccountStatus;
 import ejb.loan.entity.CreditReportBureauScore;
 import ejb.loan.entity.CreditReportDefaultRecords;
 import ejb.loan.entity.CustomerDebt;
 import ejb.loan.entity.CustomerProperty;
+import ejb.loan.entity.EducationLoanApplication;
 import ejb.loan.entity.LoanApplication;
 import ejb.loan.entity.LoanInterestPackage;
 import ejb.loan.entity.LoanPayableAccount;
 import ejb.loan.entity.LoanRepaymentAccount;
 import ejb.loan.entity.MortgageLoanApplication;
 import ejb.loan.entity.RefinancingApplication;
+import ejb.loan.entity.RenovationLoanApplication;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -38,7 +42,7 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
     private EntityManager em;
 
     @Override
-    public void submitLoanApplication(Long customerBasicId, Long customerAdvancedId, ArrayList<CustomerDebt> debts,
+    public void submitLoanApplication(boolean isExistingCustomer, boolean hasCustomerAdvanced, Long customerBasicId, Long customerAdvancedId, ArrayList<CustomerDebt> debts,
             CustomerProperty cp, MortgageLoanApplication mortgage, RefinancingApplication refinancing, String loanType, String interestPackage) {
         System.out.println("****** loan/LoanApplicationSessionBean: submitLoanApplication() ******");
         CustomerBasic cb = em.find(CustomerBasic.class, customerBasicId);
@@ -51,14 +55,16 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
         cb.setCustomerProperty(cp);
 
         //set on both side (1-1 bi)
-        CustomerAdvanced ca = em.find(CustomerAdvanced.class, customerAdvancedId);
-        cb.setCustomerAdvanced(ca);
-        ca.setCustomerBasic(cb);
+        if (!hasCustomerAdvanced) {
+            CustomerAdvanced ca = em.find(CustomerAdvanced.class, customerAdvancedId);
+            cb.setCustomerAdvanced(ca);
+            ca.setCustomerBasic(cb);
+        }
 
         Query query = em.createQuery("SELECT p FROM LoanInterestPackage p WHERE p.packageName = :packageName");
         query.setParameter("packageName", interestPackage);
         List resultList = query.getResultList();
-        
+
         if (!resultList.isEmpty()) {
             LoanInterestPackage pkg = (LoanInterestPackage) resultList.get(0);
             System.out.println("****** loan/LoanApplicationSessionBean: submitLoanApplication(): interest package: " + pkg.getPackageName());
@@ -74,7 +80,7 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
                 refinancing.setLoanInterestPackage(pkg);
                 pkg.addLoanApplication(refinancing);
             }
-        }else{
+        } else {
             System.out.println("****** loan/LoanApplicationSessionBean: submitLoanApplication(): no interest package found");
             if (loanType.equals("purchase")) {
                 mortgage.setCustomerBasic(cb);
@@ -86,6 +92,108 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
         }
 
         em.flush();
+    }
+    
+    @Override
+    public void submitCashlineApplication(boolean isExistingCustomer, boolean hasCustomerAdvanced, CashlineApplication cashline, Long newCustomerBasicId, Long newCustomerAdvancedId){
+        System.out.println("****** loan/LoanApplicationSessionBean: submitCashlineApplication() ******");
+        CustomerBasic cb = em.find(CustomerBasic.class, newCustomerBasicId);
+
+        //set on both side (1-1 bi)
+        if (!hasCustomerAdvanced) {
+            CustomerAdvanced ca = em.find(CustomerAdvanced.class, newCustomerAdvancedId);
+            cb.setCustomerAdvanced(ca);
+            ca.setCustomerBasic(cb);
+        }
+
+        Query query = em.createQuery("SELECT p FROM LoanInterestPackage p WHERE p.packageName = :packageName");
+        query.setParameter("packageName", "Cashline");
+        List resultList = query.getResultList();
+
+        if (!resultList.isEmpty()) {
+            LoanInterestPackage pkg = (LoanInterestPackage) resultList.get(0);
+            System.out.println("****** loan/LoanApplicationSessionBean: submitCashlineApplication(): interest package: " + pkg.getPackageName());
+            //set on both side
+            cashline.setCustomerBasic(cb);
+            cb.addCashlineApplication(cashline);
+            cashline.setLoanInterestPackage(pkg);
+            pkg.addCashlineApplication(cashline);
+        } else {
+            System.out.println("****** loan/LoanApplicationSessionBean: submitCashlineApplication(): no interest package found");
+            cashline.setCustomerBasic(cb);
+            cb.addCashlineApplication(cashline);
+        }
+
+        em.flush();
+    }
+    
+    @Override
+    public void submitEducationLoanApplication(boolean isExistingCustomer, boolean hasCustomerAdvanced, EducationLoanApplication application, Long newCustomerBasicId, Long newCustomerAdvancedId){
+        System.out.println("****** loan/LoanApplicationSessionBean: submitEducationLoanApplication() ******");
+        CustomerBasic cb = em.find(CustomerBasic.class, newCustomerBasicId);
+
+        //set on both side (1-1 bi)
+        if (!hasCustomerAdvanced) {
+            CustomerAdvanced ca = em.find(CustomerAdvanced.class, newCustomerAdvancedId);
+            cb.setCustomerAdvanced(ca);
+            ca.setCustomerBasic(cb);
+        }
+
+        Query query = em.createQuery("SELECT p FROM LoanInterestPackage p WHERE p.packageName = :packageName");
+        query.setParameter("packageName", "Education Loan");
+        List resultList = query.getResultList();
+
+        if (!resultList.isEmpty()) {
+            LoanInterestPackage pkg = (LoanInterestPackage) resultList.get(0);
+            System.out.println("****** loan/LoanApplicationSessionBean: submitEducationLoanApplication(): interest package: " + pkg.getPackageName());
+            application.setCustomerBasic(cb);
+            cb.addLoanApplication(application);
+            application.setLoanInterestPackage(pkg);
+            pkg.addLoanApplication(application);
+        } else {
+            System.out.println("****** loan/LoanApplicationSessionBean: submitEducationLoanApplication(): no interest package found");
+            application.setCustomerBasic(cb);
+            cb.addLoanApplication(application);
+        }
+
+        em.flush();
+    }
+    
+    @Override
+    public void submitCarLoanApplication(boolean isExistingCustomer, boolean hasCustomerAdvanced, CarLoanApplication application, Long newCustomerBasicId, Long newCustomerAdvancedId){
+        System.out.println("****** loan/LoanApplicationSessionBean: submitCarLoanApplication() ******");
+        CustomerBasic cb = em.find(CustomerBasic.class, newCustomerBasicId);
+
+        //set on both side (1-1 bi)
+        if (!hasCustomerAdvanced) {
+            CustomerAdvanced ca = em.find(CustomerAdvanced.class, newCustomerAdvancedId);
+            cb.setCustomerAdvanced(ca);
+            ca.setCustomerBasic(cb);
+        }
+
+        Query query = em.createQuery("SELECT p FROM LoanInterestPackage p WHERE p.packageName = :packageName");
+        query.setParameter("packageName", "Car Loan");
+        List resultList = query.getResultList();
+
+        if (!resultList.isEmpty()) {
+            LoanInterestPackage pkg = (LoanInterestPackage) resultList.get(0);
+            System.out.println("****** loan/LoanApplicationSessionBean: submitCarLoanApplication(): interest package: " + pkg.getPackageName());
+            application.setCustomerBasic(cb);
+            cb.addLoanApplication(application);
+            application.setLoanInterestPackage(pkg);
+            pkg.addLoanApplication(application);
+        } else {
+            System.out.println("****** loan/LoanApplicationSessionBean: submitCarLoanApplication(): no interest package found");
+            application.setCustomerBasic(cb);
+            cb.addLoanApplication(application);
+        }
+
+        em.flush();
+    }
+    
+    @Override
+    public void submitRenovationLoanApplication(boolean isExistingCustomer, boolean hasCustomerAdvanced, RenovationLoanApplication application, MortgageLoanApplication mortgage, Long newCustomerBasicId, Long newCustomerAdvancedId){
+        
     }
 
     @Override
@@ -102,11 +210,132 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
     }
 
     @Override
-    public List<LoanApplication> getAllLoanApplications() {
-        Query query = em.createQuery("SELECT la FROM LoanApplication la WHERE la.applicationStatus = :applicationStatus1 OR la.applicationStatus = :applicationStatus2");
-        query.setParameter("applicationStatus1", "pending");
-        query.setParameter("applicationStatus2", "in progress");
-        return query.getResultList();
+    public List<LoanApplication> getLoanApplications(ArrayList<String> loans, String loanType) {
+        List<LoanApplication> applications = new ArrayList<LoanApplication>();
+
+        if (loanType.equals("all")) {
+            for (String loan : loans) {
+                switch (loan) {
+                    case "waiting for valuation":
+                        Query query1 = em.createQuery("SELECT ma FROM LoanApplication ma WHERE ma.applicationStatus = :applicationStatus");
+                        query1.setParameter("applicationStatus", "waiting for valuation");
+                        applications.addAll(query1.getResultList());
+                        break;
+                    case "pending":
+                        Query query2 = em.createQuery("SELECT ma FROM LoanApplication ma WHERE ma.applicationStatus = :applicationStatus");
+                        query2.setParameter("applicationStatus", "pending");
+                        applications.addAll(query2.getResultList());
+                        break;
+                    case "in progress":
+                        Query query3 = em.createQuery("SELECT ma FROM LoanApplication ma WHERE ma.applicationStatus = :applicationStatus");
+                        query3.setParameter("applicationStatus", "in progress");
+                        applications.addAll(query3.getResultList());
+                        break;
+                    case "approved":
+                        Query query4 = em.createQuery("SELECT ma FROM LoanApplication ma WHERE ma.applicationStatus = :applicationStatus");
+                        query4.setParameter("applicationStatus", "approved");
+                        applications.addAll(query4.getResultList());
+                        break;
+                    case "started":
+                        Query query5 = em.createQuery("SELECT ma FROM LoanApplication ma WHERE ma.applicationStatus = :applicationStatus");
+                        query5.setParameter("applicationStatus", "started");
+                        applications.addAll(query5.getResultList());
+                        break;
+                }
+            }
+        }else if(loanType.equals("mortgage")){
+            for (String loan : loans) {
+                switch (loan) {
+                    case "waiting for valuation":
+                        Query query1 = em.createQuery("SELECT ma FROM LoanApplication ma WHERE ma.applicationStatus = :applicationStatus "
+                                + "AND (ma.loanType =:loanType1 OR ma.loanType =:loanType2 OR ma.loanType =:loanType3 OR ma.loanType =:loanType4)");
+                        query1.setParameter("applicationStatus", "waiting for valuation");
+                        query1.setParameter("loanType1", "HDB - New Purchase");
+                        query1.setParameter("loanType2", "HDB - Refinancing");
+                        query1.setParameter("loanType3", "Private Property - New Purchase");
+                        query1.setParameter("loanType4", "Private Property - Refinancing");
+                        applications.addAll(query1.getResultList());
+                        break;
+                    case "pending":
+                        Query query2 = em.createQuery("SELECT ma FROM LoanApplication ma WHERE ma.applicationStatus = :applicationStatus "
+                                + "AND (ma.loanType =:loanType1 OR ma.loanType =:loanType2 OR ma.loanType =:loanType3 OR ma.loanType =:loanType4)");
+                        query2.setParameter("applicationStatus", "pending");
+                        query2.setParameter("loanType1", "HDB - New Purchase");
+                        query2.setParameter("loanType2", "HDB - Refinancing");
+                        query2.setParameter("loanType3", "Private Property - New Purchase");
+                        query2.setParameter("loanType4", "Private Property - Refinancing");
+                        applications.addAll(query2.getResultList());
+                        break;
+                    case "in progress":
+                        Query query3 = em.createQuery("SELECT ma FROM LoanApplication ma WHERE ma.applicationStatus = :applicationStatus "
+                                + "AND (ma.loanType =:loanType1 OR ma.loanType =:loanType2 OR ma.loanType =:loanType3 OR ma.loanType =:loanType4)");
+                        query3.setParameter("applicationStatus", "in progress");
+                        query3.setParameter("loanType1", "HDB - New Purchase");
+                        query3.setParameter("loanType2", "HDB - Refinancing");
+                        query3.setParameter("loanType3", "Private Property - New Purchase");
+                        query3.setParameter("loanType4", "Private Property - Refinancing");
+                        applications.addAll(query3.getResultList());
+                        break;
+                    case "approved":
+                        Query query4 = em.createQuery("SELECT ma FROM LoanApplication ma WHERE ma.applicationStatus = :applicationStatus "
+                                + "AND (ma.loanType =:loanType1 OR ma.loanType =:loanType2 OR ma.loanType =:loanType3 OR ma.loanType =:loanType4)");
+                        query4.setParameter("applicationStatus", "approved");
+                        query4.setParameter("loanType1", "HDB - New Purchase");
+                        query4.setParameter("loanType2", "HDB - Refinancing");
+                        query4.setParameter("loanType3", "Private Property - New Purchase");
+                        query4.setParameter("loanType4", "Private Property - Refinancing");
+                        applications.addAll(query4.getResultList());
+                        break;
+                    case "started":
+                        Query query5 = em.createQuery("SELECT ma FROM LoanApplication ma WHERE ma.applicationStatus = :applicationStatus "
+                                + "AND (ma.loanType =:loanType1 OR ma.loanType =:loanType2 OR ma.loanType =:loanType3 OR ma.loanType =:loanType4)");
+                        query5.setParameter("applicationStatus", "started");
+                        query5.setParameter("loanType1", "HDB - New Purchase");
+                        query5.setParameter("loanType2", "HDB - Refinancing");
+                        query5.setParameter("loanType3", "Private Property - New Purchase");
+                        query5.setParameter("loanType4", "Private Property - Refinancing");
+                        applications.addAll(query5.getResultList());
+                        break;
+                }
+            }
+        }else{
+            for (String loan : loans) {
+                switch (loan) {
+                    case "waiting for valuation":
+                        Query query1 = em.createQuery("SELECT ma FROM LoanApplication ma WHERE ma.applicationStatus = :applicationStatus AND ma.loanType =:loanType");
+                        query1.setParameter("applicationStatus", "waiting for valuation");
+                        query1.setParameter("loanType", loanType);
+                        applications.addAll(query1.getResultList());
+                        break;
+                    case "pending":
+                        Query query2 = em.createQuery("SELECT ma FROM LoanApplication ma WHERE ma.applicationStatus = :applicationStatus AND ma.loanType =:loanType");
+                        query2.setParameter("applicationStatus", "pending");
+                        query2.setParameter("loanType", loanType);
+                        applications.addAll(query2.getResultList());
+                        break;
+                    case "in progress":
+                        Query query3 = em.createQuery("SELECT ma FROM LoanApplication ma WHERE ma.applicationStatus = :applicationStatus AND ma.loanType =:loanType");
+                        query3.setParameter("applicationStatus", "in progress");
+                        query3.setParameter("loanType", loanType);
+                        applications.addAll(query3.getResultList());
+                        break;
+                    case "approved":
+                        Query query4 = em.createQuery("SELECT ma FROM LoanApplication ma WHERE ma.applicationStatus = :applicationStatus AND ma.loanType =:loanType");
+                        query4.setParameter("applicationStatus", "approved");
+                        query4.setParameter("loanType", loanType);
+                        applications.addAll(query4.getResultList());
+                        break;
+                    case "started":
+                        Query query5 = em.createQuery("SELECT ma FROM LoanApplication ma WHERE ma.applicationStatus = :applicationStatus AND ma.loanType =:loanType");
+                        query5.setParameter("applicationStatus", "started");
+                        query5.setParameter("loanType", loanType);
+                        applications.addAll(query5.getResultList());
+                        break;
+                }
+            }
+        }
+
+        return applications;
     }
 
     @Override
@@ -124,141 +353,135 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
     }
 
     @Override
-    public LoanApplication getLoanApplicationById(Long applicationId) {
-        System.out.println("****** loan/LoanApplicationSessionBean: getLoanApplicationById() ******");
-        LoanApplication application = em.find(LoanApplication.class, applicationId);
-        return application;
-    }
-    
-    @Override
-    public double[] getMortgagePurchaseLoanMaxInterval(){
+    public double[] getMortgagePurchaseLoanMaxInterval() {
         System.out.println("****** loan/LoanApplicationSessionBean: getMortgagePurchaseLoanMaxInterval() ******");
         double[] maxInterval = new double[2];
         maxInterval[0] = 460000;
         maxInterval[1] = 510000;
         return maxInterval;
     }
-    
+
     @Override
-    public double getMortgagePurchaseLoanRiskRatio(){
+    public double getMortgagePurchaseLoanRiskRatio() {
         System.out.println("****** loan/LoanApplicationSessionBean: getMortgagePurchaseLoanRiskRatio() ******");
         double ratio = 0;
         return ratio;
     }
-    
+
     @Override
-    public double[] getMortgagePurchaseLoanSuggestedInterval(){
+    public double[] getMortgagePurchaseLoanSuggestedInterval() {
         System.out.println("****** loan/LoanApplicationSessionBean: getMortgagePurchaseLoanSuggestedInterval() ******");
         double[] interval = new double[2];
         interval[0] = 460000;
         interval[1] = 510000;
         return interval;
     }
-    
+
     @Override
-    public void approveMortgageLoanRequest(Long applicationId, double amount, int period, double instalment){
+    public void approveMortgageLoanRequest(Long applicationId, double amount, int period, double instalment) {
         System.out.println("****** loan/LoanApplicationSessionBean: approveMortgageLoanRequest() ******");
         LoanApplication application = em.find(LoanApplication.class, applicationId);
         application.setAmountGranted(amount);
-        application.setPeriodSuggested(period*12);
+        application.setPeriodSuggested(period * 12);
         application.setInstalment(instalment);
         application.setApplicationStatus("approved");
         application.setFinalActionDate(new Date());
         em.flush();
     }
-    
+
     @Override
-    public void rejectMortgageLoanRequest(Long applicationId){
+    public void rejectMortgageLoanRequest(Long applicationId) {
         System.out.println("****** loan/LoanApplicationSessionBean: rejectMortgageLoanRequest() ******");
         LoanApplication application = em.find(LoanApplication.class, applicationId);
         CustomerBasic customer = application.getCustomerBasic();
         CustomerAdvanced ca = customer.getCustomerAdvanced();
         CustomerProperty property = customer.getCustomerProperty();
-        
+
         CreditReportBureauScore report = customer.getBureauScore();
-        for(CustomerDebt debt: customer.getCustomerDebt()){
+        for (CustomerDebt debt : customer.getCustomerDebt()) {
             em.remove(debt);
         }
-        for(CreditReportAccountStatus as: report.getAccountStatus()){
+        for (CreditReportAccountStatus as : report.getAccountStatus()) {
             em.remove(as);
         }
-        for(CreditReportDefaultRecords dr: report.getDefaultRecords()){
+        for (CreditReportDefaultRecords dr : report.getDefaultRecords()) {
             em.remove(dr);
         }
         em.remove(report);
-        
+
         em.remove(application);
         em.remove(property);
         em.remove(ca);
         em.remove(customer);
         em.flush();
     }
-    
+
     @Override
-    public void approveRefinancingLoanRequest(Long applicationId, int period, double instalment){
-        
+    public void approveRefinancingLoanRequest(Long applicationId, int period, double instalment) {
+        System.out.println("****** loan/LoanApplicationSessionBean: approveRefinancingLoanRequest() ******");
+        LoanApplication application = em.find(LoanApplication.class, applicationId);
+        application.setPeriodSuggested(period * 12);
+        application.setInstalment(instalment);
+        application.setApplicationStatus("approved");
+        application.setFinalActionDate(new Date());
+        em.flush();
     }
-    
+
     @Override
-    public void rejectRefinancingLoanRequest(Long applicationId){
-        
-    }
-    
-    @Override
-    public List<LoanApplication> getAllApprovedLoans(){
-        Query query = em.createQuery("SELECT la FROM LoanApplication la WHERE la.applicationStatus = :applicationStatus");
-        query.setParameter("applicationStatus", "approved");
-        return query.getResultList();
-    }
-    
-    @Override
-    public List<LoanApplication> getAllStartedLoans(){
-        Query query = em.createQuery("SELECT la FROM LoanApplication la WHERE la.applicationStatus = :applicationStatus");
-        query.setParameter("applicationStatus", "started");
-        return query.getResultList();
-    }
-    
-    @Override
-    public List<LoanApplication> getAllInProgressLoans(){
-        Query query = em.createQuery("SELECT la FROM LoanApplication la WHERE la.applicationStatus = :applicationStatus");
-        query.setParameter("applicationStatus", "in progress");
-        return query.getResultList();
-    }
-    
-    @Override
-    public void startNewLoan(Long applicationId){
+    public void startNewLoan(Long applicationId) {
         LoanApplication application = em.find(LoanApplication.class, applicationId);
         application.setApplicationStatus("started");
-        
+
         LoanPayableAccount loanPayableAccount = new LoanPayableAccount();
         LoanRepaymentAccount loanRepaymentAccount = new LoanRepaymentAccount();
-        
+
         application.setLoanPayableAccount(loanPayableAccount);
         loanPayableAccount.setLoanApplication(application);
-        
+
         loanPayableAccount.setLoanRepaymentAccount(loanRepaymentAccount);
         loanRepaymentAccount.setLoanPayableAccount(loanPayableAccount);
-        
+
         em.flush();
-        
+
         DecimalFormat df = new DecimalFormat("000000");
-        
+
         loanPayableAccount.setAccountNumber("6000" + df.format(loanPayableAccount.getId()));
         loanPayableAccount.setInitialAmount(application.getAmountGranted());
         loanPayableAccount.setAccountBalance(application.getAmountGranted());
         loanPayableAccount.setStartDate(new Date());
         loanPayableAccount.setAccountStatus("started");
         loanPayableAccount.setOverdueBalance(0);
-        
+
         loanRepaymentAccount.setAccountNumber("7000" + df.format(loanRepaymentAccount.getId()));
-        
+
         em.flush();
     }
-    
+
     @Override
-    public void updateLoanStatus(String status, Long applicationId){
+    public void updateLoanStatus(String status, Long applicationId) {
         LoanApplication application = em.find(LoanApplication.class, applicationId);
         application.setApplicationStatus(status);
         em.flush();
     }
+
+    @Override
+    public List<MortgageLoanApplication> getAllMortgageApplicationsPendingAppraisal() {
+        Query query = em.createQuery("SELECT ma FROM MortgageLoanApplication ma WHERE ma.applicationStatus = :applicationStatus");
+        query.setParameter("applicationStatus", "waiting for valuation");
+        return query.getResultList();
+    }
+
+    @Override
+    public void submitAppraisal(double appraisedValue, Long applicationId) {
+        System.out.println("****** loan/LoanApplicationSessionBean: submitAppraisal() ******");
+        MortgageLoanApplication application = em.find(MortgageLoanApplication.class, applicationId);
+        application.setApplicationStatus("pending");
+    }
+    
+    @Override
+    public List<CreditReportAccountStatus> getAccountStatusByBureauScoreId(Long id){
+        CreditReportBureauScore report = em.find(CreditReportBureauScore.class, id);
+        return report.getAccountStatus();
+    }
+
 }

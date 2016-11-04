@@ -17,6 +17,8 @@ public interface DebitCardManagementSessionBeanLocal {
     
     public void CancelDebitCardAfterReplacement(Long debitCardId);
     
+    public void replaceDamagedDebitCard(String debitCardNum);
+    
     public String reportDebitCardLoss(String debitCardNum, String debitCardPwd, String reportLossTime);
     
     public String requestForDebitCardReplacement(String debitCardNum, String debitCardPWd, String requestForReplacementTime);

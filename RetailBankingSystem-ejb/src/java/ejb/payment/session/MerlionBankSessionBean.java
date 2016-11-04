@@ -4,34 +4,27 @@ import ejb.customer.entity.CustomerBasic;
 import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
-import ejb.deposit.session.TransactionSessionBeanLocal;
 import ejb.infrastructure.session.CustomerAdminSessionBeanLocal;
 import ejb.infrastructure.session.CustomerEmailSessionBeanLocal;
-import ejb.payment.entity.OnHoldRecord;
-import java.util.Calendar;
+import java.text.DecimalFormat;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.xml.ws.WebServiceRef;
-import ws.client.otherbanks.OtherBankAccount;
-import ws.client.otherbanks.OtherBanksWebService_Service;
+import ws.client.chips.CHIPSWebService_Service;
+import ws.client.swift.SWIFTWebService_Service;
 
 @Stateless
 public class MerlionBankSessionBean implements MerlionBankSessionBeanLocal {
 
-    @EJB
-    private ReceivedChequeSessionBeanLocal receivedChequeSessionBeanLocal;
+    @WebServiceRef(wsdlLocation = "META-INF/wsdl/localhost_8080/CHIPSWebService/CHIPSWebService.wsdl")
+    private CHIPSWebService_Service service_chips;
 
-    @EJB
-    private TransactionSessionBeanLocal transactionSessionBeanLocal;
-
-    @WebServiceRef(wsdlLocation = "META-INF/wsdl/localhost_8080/OtherBanksWebService/OtherBanksWebService.wsdl")
-    private OtherBanksWebService_Service service_otherBank;
+    @WebServiceRef(wsdlLocation = "META-INF/wsdl/localhost_8080/SWIFTWebService/SWIFTWebService.wsdl")
+    private SWIFTWebService_Service service_swift;
 
     @EJB
     private BankAccountSessionBeanLocal bankAccountSessionBeanLocal;
@@ -88,10 +81,32 @@ public class MerlionBankSessionBean implements MerlionBankSessionBeanLocal {
         customerEmailSessionBeanLocal.sendEmail(customerBasic, "rejectOpenAccount", emailActions);
     }
 
-    private OtherBankAccount retrieveBankAccountByNum(java.lang.String otherBankAccountNum) {
+    @Override
+    public void sendSWIFTMessage(String swiftMessage, String transactionDate, String swiftCodeA,
+            String swiftCodeB, String organizationA, String organizationB, String countryA,
+            String countryB, String paymentAmt, String transferedBankAccountNum) {
+
+        DecimalFormat df = new DecimalFormat("#.00");
+
+        Double paymentAmtDouble = Double.valueOf(paymentAmt);
+        Long newSwiftId = addNewSWIFT(swiftMessage, transactionDate, swiftCodeA, swiftCodeB,
+                organizationA, organizationB, countryA, countryB, df.format(paymentAmtDouble),
+                transferedBankAccountNum);
+
+        clearSWIFTTransferMTK(newSwiftId);
+    }
+
+    private void clearSWIFTTransferMTK(java.lang.Long swiftId) {
         // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
         // If the calling of port operations may lead to race condition some synchronization is required.
-        ws.client.otherbanks.OtherBanksWebService port = service_otherBank.getOtherBanksWebServicePort();
-        return port.retrieveBankAccountByNum(otherBankAccountNum);
+        ws.client.chips.CHIPSWebService port = service_chips.getCHIPSWebServicePort();
+        port.clearSWIFTTransferMTK(swiftId);
+    }
+
+    private Long addNewSWIFT(java.lang.String swiftMessage, java.lang.String transactionDate, java.lang.String swiftCodeA, java.lang.String swiftCodeB, java.lang.String organizationA, java.lang.String organizationB, java.lang.String countryA, java.lang.String countryB, java.lang.String paymentAmt, java.lang.String transferedBankAccountNum) {
+        // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
+        // If the calling of port operations may lead to race condition some synchronization is required.
+        ws.client.swift.SWIFTWebService port = service_swift.getSWIFTWebServicePort();
+        return port.addNewSWIFT(swiftMessage, transactionDate, swiftCodeA, swiftCodeB, organizationA, organizationB, countryA, countryB, paymentAmt, transferedBankAccountNum);
     }
 }

@@ -715,14 +715,19 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
 
     @Override
     public void updateBankAccountAvailableBalance(String bankAccountNum, String availableBankAccountBalance) {
-        BankAccount bankAccount = retrieveBankAccountByNum(bankAccountNum);
 
+        DecimalFormat df = new DecimalFormat("#.00");
+
+        BankAccount bankAccount = retrieveBankAccountByNum(bankAccountNum);
         bankAccount.setAvailableBankAccountBalance(availableBankAccountBalance);
     }
 
     @Override
     public void updateBankAccountBalance(String bankAccountNum, String availableBankAccountBalance,
             String totalBankAccountBalance) {
+
+        DecimalFormat df = new DecimalFormat("#.00");
+
         BankAccount bankAccount = retrieveBankAccountByNum(bankAccountNum);
 
         bankAccount.setAvailableBankAccountBalance(availableBankAccountBalance);

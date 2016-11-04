@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/onlineBankingTemplate.xhtml"
+                xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
+
+    <ui:define name="content">
+        <h:form>
+            <p:panel>
+                <p:outputLabel value="Welcome "/>
+                <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
+            </p:panel>
+
+            <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+
+                <p:panel>
+
+                    <p:messages globalOnly="true"/>
+
+                    <h:outputText style="font-weight: bold" value="Status Message: " />
+                    <h:outputText value="#{addOtherBankPayeeDoneManagedBean.statusMessage}" />
+                    <br/>
+                    <h:outputText style="font-weight: bold" value="New Recipient Id: "/>
+                    <h:outputText value="#{addOtherBankPayeeDoneManagedBean.otherBankPayeeId}"/>
+                    <br/>
+                    <h:outputText style="font-weight: bold" value="Recipient's Name: "/>
+                    <h:outputText value="#{addOtherBankPayeeDoneManagedBean.payeeName}"/>
+                    <br/>
+                    <h:outputText style="font-weight: bold" value="Recipient's Account Number: "/>
+                    <h:outputText value="#{addOtherBankPayeeDoneManagedBean.payeeAccountNum}"/>
+                    <br/>
+                    <h:outputText style="font-weight: bold" value="Recipient's Account Type: "/>
+                    <h:outputText value="#{addOtherBankPayeeDoneManagedBean.payeeAccountType}"/>
+
+                </p:panel>
+            </p:panelGrid>
+            
+        </h:form>
+        <ezcomp:CCTimeout/>
+    </ui:define>
+</ui:composition>
+
