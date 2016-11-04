@@ -91,18 +91,22 @@ public class CustomerEmailSessionBean implements CustomerEmailSessionBeanLocal {
                 emailText += "Your " + actions.get("loanType") + " loan application has been submitted successfully. \n";
                 emailText += "Mortgage loan application usually takes a few weeks to process. We will contact you via email once we have finished processing your request.\n";
                 emailText += "Thank you for your cooperation. \n";
+                break;
             case "cashlineApplication":
                 emailText += "Your Cashline application has been submitted successfully. \n";
                 emailText += "Cashline application usually takes a few weeks to process. We will contact you via email once we have finished processing your request.\n";
                 emailText += "Thank you for your cooperation. \n";
+                break;
             case "educationLoanApplication":
                 emailText += "Your Education Loan application has been submitted successfully. \n";
                 emailText += "Education Loan application usually takes a few weeks to process. We will contact you via email once we have finished processing your request.\n";
                 emailText += "Thank you for your cooperation. \n";
+                break;
             case "renovationLoanApplication":
                 emailText += "Your Renovation Loan application has been submitted successfully. \n";
                 emailText += "Renovation Loan application usually takes a few weeks to process. We will contact you via email once we have finished processing your request.\n";
                 emailText += "Thank you for your cooperation. \n";
+                break;
         }
 
         try {
