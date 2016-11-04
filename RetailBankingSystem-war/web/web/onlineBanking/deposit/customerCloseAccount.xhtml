@@ -20,10 +20,38 @@
 
                     <h:panelGrid columns="1" styleClass="ui-panelgrid-blank form-group ui-lg-4" >
                         <p:messages globalOnly="true"/>
+                        <br/>
+                        <p:outputLabel value="To: Merlion Bank Ltd" />
+                        <br/>
+                        <p:outputLabel value="I/We authorise you to close my/our following account with immediate effect:" />
+                        <br/>
+                        <p:outputLabel value="Personal Information" style="font-weight: bold;font-size: 24px"/>
+                        <br/>
+                    </h:panelGrid>
 
+                    <h:panelGrid columns="2" styleClass="ui-panelgrid-blank form-group ui-lg-4" >
+                        <p:outputLabel value="Customer Name: " />
+                        <p:outputLabel value="#{closeAccountManagedBean.customerName}" />
+
+                        <p:outputLabel value="NRIC/PP No(s): " />
+                        <p:outputLabel value="#{closeAccountManagedBean.customerIdentificationNum}" />
+
+                        <p:outputLabel value="Contact Number: " />
+                        <p:outputLabel value="#{closeAccountManagedBean.customerMobile}" />
+
+                        <p:outputLabel value="Address: " />
+                        <p:outputLabel value="#{closeAccountManagedBean.customerAddress}" />
+                    </h:panelGrid>
+
+                    <h:panelGrid columns="1" styleClass="ui-panelgrid-blank form-group ui-lg-4" >
+
+                        <p:outputLabel value="Account Closure Information" style="font-weight: bold;font-size: 24px"/>
+                        <br/>
                         <p:outputLabel for="bankAccountNum" value="Choose the Account You Want to Delete:" style="font-weight: bold"/>
-                        <p:selectOneMenu id="bankAccountNum" value="#{closeAccountManagedBean.bankAccountNumWithType}" effect="fold" editable="true"
+                        <p:selectOneMenu id="bankAccountNum" value="#{closeAccountManagedBean.bankAccountNumWithType}" 
+                                         effect="fold" editable="false"
                                          required="true" requiredMessage="Required Field">
+                            <f:selectItem itemLabel="Please Select One" itemValue="" />
                             <f:selectItems value="#{closeAccountManagedBean.myBankAccounts}" />
                         </p:selectOneMenu>
                         <p:message for="bankAccountNum" />
@@ -40,6 +68,38 @@
                         </p:selectOneRadio>
                         <p:message for="reasonOfAccountClosure" />
 
+                        <p:outputLabel value="GIRO" style="font-weight: bold"/>
+                        <p:outputLabel value="I/We hereby authorise Merlion Bank to terminate all my/our existing GIRO arrangements from the date of this request and I/we will make the
+                                       necessary arrangement for the subsequent payments." />
+                        <br/>
+                        <p:outputLabel value="Overdraft (OD) Facility" style="font-weight: bold"/>
+                        <p:outputLabel value="I/We hereby authorise Merlion Bank to terminate my/our Overdraft (OD) facility from the date of this request." />
+                        <br/>
+                        <p:outputLabel value="Other Facility and Services" style="font-weight: bold"/>
+                        <p:outputLabel value="I/We hereby authorise Merlion Bank to terminate any facilities and/or services which are not mentioned above for this account from the date
+                                       of this request." />
+
+                        <br/>
+                        <p:outputLabel value="Please provide your signature" style="font-weight: bold"/>
+                        <p:signature id="input" style="width:300px;height:200px" widgetVar="sig" value="#{signatureViewManagedBean.customerSignature}" 
+                                     guideline="true"/>
+
+                        <p:commandButton process="@this input output" value="Submit" icon="ui-icon-check" update="output"/>
+                        <p:commandButton process="@this input output" value="Clear" icon="ui-icon-close" type="button" onclick="PF('sig').clear()"/>
+
+                        <p:outputPanel id="output">
+                            <h:outputText rendered="#{not empty signatureViewManagedBean.customerSignature}" style="font-size:20px;display:block" value="Your Signature" />
+                            <p:signature style="width:300px;height:200px;" value="#{signatureViewManagedBean.customerSignature}" readonly="true"
+                                         rendered="#{not empty signatureViewManagedBean.customerSignature}" backgroundColor="#eaeaea" color="#03a9f4"/>
+                        </p:outputPanel>
+                    </h:panelGrid>
+
+                    <h:panelGrid columns="2" class="ui-lg-6">  
+                        <p:selectBooleanCheckbox id = "agreement" value="#{closeAccountManagedBean.agreement}" 
+                                                 style="margin-top:5px"/>
+                        <h:outputText value="I have read and agree to the terms of Customer Declaration and Confirmation." />
+                        <br/>
+                        <h:outputText value="I have also read and agree to the Terms and Conditions Governing Personal Data Protection Act 2012."/>
                     </h:panelGrid>
 
                     <h:panelGrid columns="2" class="ui-lg-4">
