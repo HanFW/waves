@@ -1,5 +1,6 @@
 package ejb.common.util;
 
+import ejb.bi.session.RateSessionBeanLocal;
 import ejb.card.session.CardActivationManagementSessionBeanLocal;
 import ejb.card.session.CreditCardExpirationManagementSessionBeanLocal;
 import ejb.card.session.DebitCardExpirationManagementSessionBeanLocal;
@@ -24,13 +25,16 @@ import ws.client.meps.MEPSWebService_Service;
 @Stateless
 @LocalBean
 public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
-    
+
+    @EJB
+    private RateSessionBeanLocal rateSessionBeanLocal;
+
     @WebServiceRef(wsdlLocation = "META-INF/wsdl/localhost_8080/MEPSWebService/MEPSWebService.wsdl")
     private MEPSWebService_Service service;
-    
+
     @EJB
     private LoanInterestSessionBeanLocal loanInterestSessionBeanLocal;
-    
+
     @EJB
     private StatementSessionBeanLocal statementSessionBeanLocal;
 
@@ -42,7 +46,7 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
 
     @EJB
     private DebitCardExpirationManagementSessionBeanLocal debitCardExpirationManagementSessionBeanLocal;
-    
+
     @EJB
     private CreditCardExpirationManagementSessionBeanLocal creditCardExpirationManagementSessionBeanLocal;
 
@@ -60,7 +64,7 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
     private final String TIMER_NAME_15000MS = "EJB-TIMER-15000MS";
     private final int TIMER_DURATION_15000MS = 15000;
     private final String TIMER_NAME_300000MS = "EJB-TIMER-300000MS";
-    private final int TIMER_DURATION_300000MS = 300100;
+    private final int TIMER_DURATION_300000MS = 100010;
     private final String TIMER_NAME_70000MS = "EJB-TIMER-70000MS";
     private final int TIMER_DURATION_70000MS = 70000;
     private final String TIMER_NAME_5000MS = "EJB-TIMER-5000MS";
@@ -69,7 +73,6 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
     private final int TIMER_DURATION_2000MS = 20000;
     private final String TIMER_NAME_30000MS = "EJB-TIMER-30000MS";
     private final int TIMER_DURATION_30000MS = 30000;
-    
 
     public EjbTimerSessionBean() {
 
@@ -128,7 +131,7 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
         System.out.println("{***2000MS Timer created" + String.valueOf(timer2000ms.getTimeRemaining()) + ","
                 + timer2000ms.getInfo().toString());
     }
-    
+
     @Override
     public void createTimer30000MS() {
         TimerService timerService = ctx.getTimerService();
@@ -243,7 +246,7 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
             }
         }
     }
-    
+
     @Override
     public void cancelTimer30000MS() {
         TimerService timerService = ctx.getTimerService();
@@ -290,10 +293,11 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
     private void handleTimeout_300000ms() {
         System.out.println("*** 300000MS Timer timeout");
 
-        bankAccountSessionLocal.interestCrediting();
-        statementSessionBeanLocal.generateStatement();
-        maintainDailyBalance();
-        nonStandingGIROSessionBeanLocal.monthlyRecurrentPayment();
+//        bankAccountSessionLocal.interestCrediting();
+//        statementSessionBeanLocal.generateStatement();
+//        maintainDailyBalance();
+//        nonStandingGIROSessionBeanLocal.monthlyRecurrentPayment();
+        rateSessionBeanLocal.monthlyDashboardRate();
     }
 
     private void handleTimeout_15000ms() {
@@ -320,12 +324,13 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
         System.out.println("*** 2000MS Timer timeout");
 
         cardActivationManagementSessionBeanLocal.handleCardActivation();
+        cardActivationManagementSessionBeanLocal.handleCreditCardActivation();
 
     }
-    
+
     private void handleTimeout_30000ms() {
         System.out.println("*** 30000MS Timer timeout");
-        
+
         loanInterestSessionBeanLocal.calculateInstalment();
     }
 
@@ -336,5 +341,4 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
         port.maintainDailyBalance();
     }
 
-  
 }

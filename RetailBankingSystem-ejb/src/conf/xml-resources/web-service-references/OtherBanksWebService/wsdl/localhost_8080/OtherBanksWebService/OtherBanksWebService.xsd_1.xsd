@@ -44,6 +44,7 @@
 <xs:complexType name="otherBankCheque">
 <xs:sequence>
 <xs:element name="chequeId" type="xs:long" minOccurs="0"/>
+<xs:element name="chequeNum" type="xs:string" minOccurs="0"/>
 <xs:element name="issuedBankAccountNum" type="xs:string" minOccurs="0"/>
 <xs:element name="otherBankAccount" type="tns:otherBankAccount" minOccurs="0"/>
 <xs:element name="receivedBankAccountNum" type="xs:string" minOccurs="0"/>

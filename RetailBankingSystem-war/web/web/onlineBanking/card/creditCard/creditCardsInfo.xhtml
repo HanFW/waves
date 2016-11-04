@@ -1,0 +1,117 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/onlineBankingTemplate.xhtml"
+                xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
+    <ui:define name="content">
+
+        <h:body>
+            <p:panel>
+                <p:outputLabel value="Welcome "/>
+                <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
+            </p:panel>
+
+            <div align="center">
+                <h:form>
+
+                    <p:outputLabel value="Merlion Credit Cards" style="font-weight: bold;font-size:32px"/>
+                    <br/>
+                    <br/>
+
+                    <p:panelGrid>                            
+                        <p:row>
+                            <p:column colspan="2"> </p:column>
+                            <p:column colspan="2" style="font-weight: bold">Merlion Fairprice Card - Visa</p:column>
+                            <p:column colspan="2" style="font-weight: bold">Merlion Tangs Card - MasterCard</p:column>
+                            <p:column colspan="2" style="font-weight: bold">Merlion Platinum Card - Visa</p:column>          
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="2" style="font-weight: bold">Card Cover </p:column>
+                            <p:column colspan="2">
+                                <p:graphicImage name="fairprice.png" library="cardCover" style="width:200px;height:110px"/>
+                            </p:column>
+                            <p:column colspan="2">
+                                <p:graphicImage name="tangs.png" library="cardCover" style="width:200px;height:110px"/>
+                            </p:column>
+                            <p:column colspan="2">
+                                <p:graphicImage name="platinum.png" library="cardCover" style="width:200px;height:110px"/>
+                            </p:column>         
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="2" style="font-weight: bold">Rebate </p:column>
+                            <p:column colspan="2">10% off at any Fairprice supermarket</p:column>
+                            <p:column colspan="2">10% off at any Tangs department store</p:column>
+                            <p:column colspan="2">10% off at any Golden Village theatre</p:column>          
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="2" style="font-weight: bold">Supplementary Card </p:column>
+                            <p:column colspan="2">N.A.</p:column>
+                            <p:column colspan="2">N.A.</p:column>
+                            <p:column colspan="2">Max. 2 supplementary cards</p:column>          
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="2" style="font-weight: bold">Annual Fee </p:column>
+                            <p:column colspan="2">$50</p:column>
+                            <p:column colspan="2">$50</p:column>
+                            <p:column colspan="2">Free for principle card. $80 for each supplementary card p.a. (1st year annual fee waived)</p:column>          
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="2" style="font-weight: bold">Late Payment Charge^ </p:column>
+                            <p:column colspan="2">$80</p:column>
+                            <p:column colspan="2">$80</p:column>
+                            <p:column colspan="2">$80</p:column>          
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="2" style="font-weight: bold">Interest Charge </p:column>
+                            <p:column colspan="2">25.5% p.a.</p:column>
+                            <p:column colspan="2">25.5% p.a.</p:column>
+                            <p:column colspan="2">25.5% p.a.</p:column>          
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="2" style="font-weight: bold">Minimum Sum </p:column>
+                            <p:column colspan="2">3% of outstanding balance or $50, whichever is higher</p:column>
+                            <p:column colspan="2">3% of outstanding balance or $50, whichever is higher</p:column>
+                            <p:column colspan="2">5% of outstanding balance or $50, whichever is higher</p:column>          
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="2" style="font-weight: bold">Replacement Charge </p:column>
+                            <p:column colspan="2">$20 per card</p:column>
+                            <p:column colspan="2">$20 per card</p:column>
+                            <p:column colspan="2">$20 per card</p:column>          
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="2" style="font-weight: bold"> </p:column>
+                            <p:column colspan="2"> 
+                                <p:commandButton value="Apply for this card" actionListener="#{publicCreditCardsInfoManagedBean.redirectToApplication(1)}" ajax="false" >
+
+                                </p:commandButton>
+                            </p:column>
+                            <p:column colspan="2"> 
+                                <p:commandButton value="Apply for this card" actionListener="#{publicCreditCardsInfoManagedBean.redirectToApplication(2)}" ajax="false" update="@form">
+
+                                </p:commandButton>
+                            </p:column>
+                            <p:column colspan="2"> 
+                                <p:commandButton value="Apply for this card" actionListener="#{publicCreditCardsInfoManagedBean.redirectToApplication(3)}" ajax="false" update="@form">
+
+                                </p:commandButton>
+                            </p:column>          
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="8">^Late Payment Charge is levied if (i) full payment of the outstanding balance 
+                                (where the outstanding balance is S$50 or less) is not received by the payment due date; 
+                                or (ii) if the minimum payment (where the outstanding balance exceeds S$50) specified in the statement 
+                                is not received by the payment due date.</p:column>
+                        </p:row>
+                    </p:panelGrid>
+
+                </h:form>
+            </div>
+        </h:body>
+    </ui:define>
+</ui:composition>
+

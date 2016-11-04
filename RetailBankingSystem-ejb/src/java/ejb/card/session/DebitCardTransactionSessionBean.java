@@ -6,7 +6,6 @@
 package ejb.card.session;
 
 import ejb.card.entity.DebitCard;
-import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -18,9 +17,7 @@ import javax.persistence.Query;
  */
 @Stateless
 public class DebitCardTransactionSessionBean implements DebitCardTransactionSessionBeanLocal {
-
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method")   
+    
     @PersistenceContext
     private EntityManager em;
 
@@ -44,7 +41,7 @@ public class DebitCardTransactionSessionBean implements DebitCardTransactionSess
 
         DebitCard findDebitCard = getCardByCardNum(debitCardNum);
         int transactionLimit = findDebitCard.getTransactionLimit();
-        
+
         return transactionLimit;
     }
 

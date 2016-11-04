@@ -276,12 +276,7 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
 
         return fromTransactionId;
     }
-
-    private String md5Hashing(String stringToHash) throws NoSuchAlgorithmException {
-        MessageDigest md = MessageDigest.getInstance("MD5");
-        return Arrays.toString(md.digest(stringToHash.getBytes()));
-    }
-
+    
     @Override
     public String checkAccountActivation(String bankAccountNum, String initialDepositAmount) {
         System.out.println("*");
@@ -291,33 +286,33 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
 
         if (bankAccountType.equals("Bonus Savings Account")) {
             if (Double.valueOf(initialDepositAmount) < 3000) {
-                return "Initial deposit amount is insufficient.";
+                return "Insufficient";
             } else {
                 bankAccount.setBankAccountStatus("Active");
             }
         } else if (bankAccountType.equals("Basic Savings Account")) {
             if (Double.valueOf(initialDepositAmount) < 1) {
-                return "Initial deposit amount is insufficient.";
+                return "Insufficient";
             } else {
                 bankAccount.setBankAccountStatus("Active");
             }
         } else if (bankAccountType.equals("Fixed Deposit Account")) {
 
             if (bankAccount.getBankAccountDepositPeriod().equals("None")) {
-                return "Please declare your deposit period";
+                return "Declare";
             } else {
 
                 if (Double.valueOf(initialDepositAmount) < 1000) {
-                    return "Initial deposit amount is insufficient.";
+                    return "Insufficient";
                 } else if (Double.valueOf(initialDepositAmount) > 999999) {
-                    return "Please contact us at 800 820 8820 or visit our branch.";
+                    return "Contact";
                 } else {
                     bankAccount.setBankAccountStatus("Active");
                 }
             }
         }
 
-        return "Activated successfully.";
+        return "Activated";
     }
 
     @Override

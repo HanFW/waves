@@ -39,8 +39,8 @@ public class LoanInterestSessionBean implements LoanInterestSessionBeanLocal {
             double fees = account.getFees();
             double overdueBalance = account.getOverdueBalance();
             double instalment;
-            
-            if(account.getAccountBalance() > 0){
+
+            if (account.getAccountBalance() > 0) {
                 double newOverdue = account.getAccountBalance();
                 double totalOverdue = (newOverdue + overdueBalance) * 1.05;
                 account.setOverdueBalance(totalOverdue);
@@ -77,10 +77,9 @@ public class LoanInterestSessionBean implements LoanInterestSessionBeanLocal {
                 account.setInstalment(instalment);
                 account.setAccountBalance(instalment + fees + overdueBalance);
             }
-            account.setRepaymentMonths(account.getRepaymentMonths()+1);
+            account.setRepaymentMonths(account.getRepaymentMonths() + 1);
         }
-        
-        
+
         em.flush();
     }
 }

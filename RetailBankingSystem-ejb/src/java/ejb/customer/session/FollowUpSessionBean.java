@@ -37,7 +37,7 @@ public class FollowUpSessionBean implements FollowUpSessionBeanLocal {
     }
 
     @Override
-    public String deleteFollowUp (Long followUpId) {
+    public String deleteFollowUp(Long followUpId) {
         FollowUp followUp = retrieveFollowUpById(followUpId);
 
         entityManager.remove(followUp);

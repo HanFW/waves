@@ -24,11 +24,6 @@ import javax.persistence.Query;
 @Stateless
 public class DebitCardPasswordSessionBean implements DebitCardPasswordSessionBeanLocal {
 
-    // Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Business Method")
-    @EJB
-    private DebitCardPasswordSessionBeanLocal debitCardPasswordSessionBeanLocal;
-
     @PersistenceContext
     private EntityManager em;
 
@@ -45,23 +40,23 @@ public class DebitCardPasswordSessionBean implements DebitCardPasswordSessionBea
         }
 
     }
-    
+
     //customer changes debit card pwd
     @Override
-    public String changePassword(String currentDebitCardPwd, String debitCardPwd, String debitCardNum){
+    public String changePassword(String currentDebitCardPwd, String debitCardPwd, String debitCardNum) {
         DebitCard findDebitCard = getCardByCardNum(debitCardNum);
-        
-        try{
-        String hashedCurrentPwd =md5Hashing(currentDebitCardPwd + findDebitCard.getCardNum().substring(0, 3));
-        if(!hashedCurrentPwd.equals(findDebitCard.getDebitCardPwd()))
-            return "wrong current pwd";
-        else{
-            String hashedPwd = md5Hashing(debitCardPwd + findDebitCard.getCardNum().substring(0, 3));
-            findDebitCard.setDebitCardPwd(hashedPwd);
-            em.flush();
-            return "success";
-        }
-        }catch(NoSuchAlgorithmException ex) {
+
+        try {
+            String hashedCurrentPwd = md5Hashing(currentDebitCardPwd + findDebitCard.getCardNum().substring(0, 3));
+            if (!hashedCurrentPwd.equals(findDebitCard.getDebitCardPwd())) {
+                return "wrong current pwd";
+            } else {
+                String hashedPwd = md5Hashing(debitCardPwd + findDebitCard.getCardNum().substring(0, 3));
+                findDebitCard.setDebitCardPwd(hashedPwd);
+                em.flush();
+                return "success";
+            }
+        } catch (NoSuchAlgorithmException ex) {
             Logger.getLogger(DebitCardPasswordSessionBean.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;

@@ -290,7 +290,7 @@ public class TransferManagedBean {
 
                     activationCheck = transactionSessionLocal.checkAccountActivation(bankAccountTo.getBankAccountNum(), transferAmt.toString());
 
-                    if (activationCheck.equals("Initial deposit amount is insufficient.")) {
+                    if (activationCheck.equals("Insufficient")) {
                         if (bankAccountTo.getBankAccountType().equals("Bonus Savings Account")) {
                             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Dear customer, minimum initial deposit amount is S$3000", "Failed"));
                         } else if (bankAccountTo.getBankAccountType().equals("Basic Savings Account")) {
@@ -298,11 +298,12 @@ public class TransferManagedBean {
                         } else if (bankAccountTo.getBankAccountType().equals("Fixed Deposit Account")) {
                             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Dear customer, minimum initial deposit amount is S$1000", "Failed"));
                         }
-                    } else if (activationCheck.equals("Please contact us at 800 820 8820 or visit our branch.")) {
+                    } else if (activationCheck.equals("Contact")) {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Please contact us at 800 820 8820 or visit our branch.", "Failed"));
-                    } else if (activationCheck.equals("Please declare your deposit period")) {
+                    } else if (activationCheck.equals("Declare")) {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Please declare your fixed deposit period first.", "Failed"));
-                    } else if (activationCheck.equals("Activate successfully.")) {
+                    } else if (activationCheck.equals("Activated")) {
+
                         Double diffAmt = Double.valueOf(bankAccountFrom.getAvailableBankAccountBalance()) - transferAmt;
 
                         if (diffAmt >= 0) {
@@ -403,7 +404,7 @@ public class TransferManagedBean {
 
                     activationCheck = transactionSessionLocal.checkAccountActivation(bankAccountTo.getBankAccountNum(), transferAmt.toString());
 
-                    if (activationCheck.equals("Initial deposit amount is insufficient.")) {
+                    if (activationCheck.equals("Insufficient")) {
                         if (bankAccountTo.getBankAccountType().equals("Bonus Savings Account")) {
                             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Dear customer, minimum initial deposit amount is S$3000", "Failed"));
                         } else if (bankAccountTo.getBankAccountType().equals("Basic Savings Account")) {
@@ -411,11 +412,11 @@ public class TransferManagedBean {
                         } else if (bankAccountTo.getBankAccountType().equals("Fixed Deposit Account")) {
                             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Dear customer, minimum initial deposit amount is S$1000", "Failed"));
                         }
-                    } else if (activationCheck.equals("Please contact us at 800 820 8820 or visit our branch.")) {
+                    } else if (activationCheck.equals("Contact")) {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Please contact us at 800 820 8820 or visit our branch.", "Failed"));
-                    } else if (activationCheck.equals("Please declare your deposit period")) {
+                    } else if (activationCheck.equals("Declare")) {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Please declare your fixed deposit period first.", "Failed"));
-                    } else if (activationCheck.equals("Activated successfully.")) {
+                    } else if (activationCheck.equals("Activated")) {
                         Double diffAmt = Double.valueOf(bankAccountFrom.getAvailableBankAccountBalance()) - transferAmt;
 
                         if (diffAmt >= 0) {
@@ -519,7 +520,7 @@ public class TransferManagedBean {
 
                     activationCheck = transactionSessionLocal.checkAccountActivation(bankAccountTo.getBankAccountNum(), transferAmt.toString());
 
-                    if (activationCheck.equals("Initial deposit amount is insufficient.")) {
+                    if (activationCheck.equals("Insufficient")) {
                         if (bankAccountTo.getBankAccountType().equals("Bonus Savings Account")) {
                             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Dear customer, minimum initial deposit amount is S$3000", "Failed"));
                         } else if (bankAccountTo.getBankAccountType().equals("Basic Savings Account")) {
@@ -527,11 +528,11 @@ public class TransferManagedBean {
                         } else if (bankAccountTo.getBankAccountType().equals("Fixed Deposit Account")) {
                             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed!Dear customer, minimum initial deposit amount is S$1000", "Failed"));
                         }
-                    } else if (activationCheck.equals("Please contact us at 800 820 8820 or visit our branch.")) {
+                    } else if (activationCheck.equals("Contact")) {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed!Please contact us at 800 820 8820 or visit our branch.", "Failed"));
-                    } else if (activationCheck.equals("Please declare your deposit period")) {
+                    } else if (activationCheck.equals("Declare")) {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed!Please declare your fixed deposit period first.", "Failed"));
-                    } else if (activationCheck.equals("Activated successfully.")) {
+                    } else if (activationCheck.equals("Activated")) {
 
                         Double diffAmt = Double.valueOf(bankAccountFrom.getAvailableBankAccountBalance()) - transferAmt;
 
