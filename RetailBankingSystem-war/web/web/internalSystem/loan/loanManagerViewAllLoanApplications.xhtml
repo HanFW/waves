@@ -13,7 +13,7 @@
                 <p:tab title="Mortgage Loan">
                     <p:tabView>
                         <p:tab title="Waiting for Appraisal">
-                            <p:dataTable var="mortgage1" value="#{loanManagerStartNewLoanManagedBean.appraisalApplications}">
+                            <p:dataTable var="mortgage1" value="#{loanManagerViewAllLoanApplicationsManagedBean.appraisalApplications}">
                                 <p:column headerText="Loan ID" filterBy="#{mortgage1.loanApplicationId}" filterMatchMode="contains">
                                     <h:outputText value="#{mortgage1.loanApplicationId}" />
                                 </p:column>
@@ -32,13 +32,10 @@
                                 <p:column headerText="Status">
                                     <h:outputText value="#{mortgage1.applicationStatus}" />
                                 </p:column>
-                                <p:column headerText="View">
-                                    <p:commandButton value="View" update="@form"/>
-                                </p:column>
                             </p:dataTable>
                         </p:tab>
                         <p:tab title="Pending">
-                            <p:dataTable var="mortgage2" value="#{loanManagerStartNewLoanManagedBean.pendingMortgageApplications}">
+                            <p:dataTable var="mortgage2" value="#{loanManagerViewAllLoanApplicationsManagedBean.pendingMortgageApplications}">
                                 <p:column headerText="Loan ID" filterBy="#{mortgage2.loanApplicationId}" filterMatchMode="contains">
                                     <h:outputText value="#{mortgage2.loanApplicationId}" />
                                 </p:column>
@@ -57,14 +54,11 @@
                                 <p:column headerText="Status">
                                     <h:outputText value="#{mortgage2.applicationStatus}" />
                                 </p:column>
-                                <p:column headerText="View">
-                                    <p:commandButton value="View" update="@form"/>
-                                </p:column>
                             </p:dataTable>
                         </p:tab>
                         <p:tab title="In Progress">
                             <p:messages autoUpdate="true"/>
-                            <p:dataTable var="mortgage3" value="#{loanManagerStartNewLoanManagedBean.inprogressMortgageApplications}">
+                            <p:dataTable var="mortgage3" value="#{loanManagerViewAllLoanApplicationsManagedBean.inprogressMortgageApplications}">
                                 <p:column headerText="Loan ID" filterBy="#{mortgage3.loanApplicationId}" filterMatchMode="contains">
                                     <h:outputText value="#{mortgage3.loanApplicationId}" />
                                 </p:column>
@@ -83,13 +77,10 @@
                                 <p:column headerText="Status">
                                     <h:outputText value="#{mortgage3.applicationStatus}" />
                                 </p:column>
-                                <p:column headerText="View">
-                                    <p:commandButton value="View"/>
-                                </p:column>
                             </p:dataTable>
                         </p:tab>
                         <p:tab title="Approved">
-                            <p:dataTable var="mortgage4" value="#{loanManagerStartNewLoanManagedBean.approvedMortgageApplications}">
+                            <p:dataTable var="mortgage4" value="#{loanManagerViewAllLoanApplicationsManagedBean.approvedMortgageApplications}">
                                 <p:column headerText="Loan ID">
                                     <h:outputText value="#{mortgage4.loanApplicationId}" />
                                 </p:column>
@@ -110,9 +101,6 @@
                                 </p:column>
                                 <p:column headerText="Status">
                                     <h:outputText value="#{mortgage4.applicationStatus}" />
-                                </p:column>
-                                <p:column headerText="View">
-                                    <p:commandButton value="View"/>
                                 </p:column>
                             </p:dataTable>
                         </p:tab>

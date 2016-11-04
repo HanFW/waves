@@ -21,7 +21,7 @@ import javax.faces.view.ViewScoped;
  *
  * @author hanfengwei
  */
-@Named(value = "loanManagerStartNewLoanManagedBean")
+@Named(value = "loanManagerViewAllLoanApplicationsManagedBean")
 @ViewScoped
 public class LoanManagerViewAllLoanApplicationsManagedBean implements Serializable{
     @EJB
