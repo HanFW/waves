@@ -28,6 +28,9 @@ public class Card implements Serializable {
     private String cardExpiryDate;
     private String cardSecurityCode;
     private String status;
+    
+    //differentiate credit principle and supplementary card
+    private String cardType;
     private int remainingExpirationMonths;
     private int remainingActivationDays;
     private Long predecessor;
@@ -102,6 +105,14 @@ public class Card implements Serializable {
 
     public void setRemainingActivationDays(int remainingActivationDays) {
         this.remainingActivationDays = remainingActivationDays;
+    }
+
+    public String getCardType() {
+        return cardType;
+    }
+
+    public void setCardType(String cardType) {
+        this.cardType = cardType;
     }
 
     @Override
