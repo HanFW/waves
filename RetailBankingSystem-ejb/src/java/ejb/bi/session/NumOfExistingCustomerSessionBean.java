@@ -15,12 +15,15 @@ public class NumOfExistingCustomerSessionBean implements NumOfExistingCustomerSe
     private EntityManager entityManager;
 
     @Override
-    public Long addNewNumOfExistingCustomer(String numOfExistingCustomer, Integer updateDate) {
+    public Long addNewNumOfExistingCustomer(String numOfExistingCustomer, Integer updateDate,
+            String numOfOpeningAccounts, String numOfClosingAccounts) {
 
         NumOfExistingCustomer numOfCustomer = new NumOfExistingCustomer();
 
         numOfCustomer.setNumOfExistingCustomer(numOfExistingCustomer);
         numOfCustomer.setUpdateDate(updateDate);
+        numOfCustomer.setNumOfOpeningAccounts(numOfOpeningAccounts);
+        numOfCustomer.setNumOfClosingAccounts(numOfClosingAccounts);
 
         entityManager.persist(numOfCustomer);
         entityManager.flush();

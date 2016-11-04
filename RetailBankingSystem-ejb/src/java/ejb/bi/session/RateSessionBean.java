@@ -271,8 +271,12 @@ public class RateSessionBean implements RateSessionBeanLocal {
                 "New", acqUpdateYear, currentAcqUpdateMonth, "Yes");
         Long newAttRateId = addNewRate(Double.valueOf(attRateValue), "Attrition",
                 "New", attUpdateYear, currentAttUpdateMonth, "Yes");
+
+        Integer numOfOpeningAccounts = bankAccounts.size();
+        Integer numOfClosingAccounts = depositAccountClosures.size();
         Long newNumOfExistingCustomerId = numOfExistingCustomerSessionBeanLocal.addNewNumOfExistingCustomer(
-                newNumOfExistingCustomer.toString(), currentAcqUpdateMonth);
+                newNumOfExistingCustomer.toString(), currentAcqUpdateMonth, numOfOpeningAccounts.toString(),
+                numOfClosingAccounts.toString());
 
     }
 

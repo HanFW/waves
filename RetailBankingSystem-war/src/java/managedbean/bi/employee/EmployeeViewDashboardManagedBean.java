@@ -11,6 +11,7 @@ import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
+import org.primefaces.model.chart.BarChartModel;
 import org.primefaces.model.chart.CategoryAxis;
 import org.primefaces.model.chart.ChartSeries;
 import org.primefaces.model.chart.LineChartModel;
@@ -30,6 +31,8 @@ public class EmployeeViewDashboardManagedBean {
     private LineChartModel acqAttLineModel;
     private LineChartModel netAcqAttLineModel;
     private PieChartModel accountClosureReasonPieModel;
+    private BarChartModel barModel;
+
     private String updateDate;
 
     public EmployeeViewDashboardManagedBean() {
@@ -39,6 +42,7 @@ public class EmployeeViewDashboardManagedBean {
     public void init() {
         createLineModels();
         createPieModels();
+        createBarModel();
     }
 
     public LineChartModel getAcqAttLineModel() {
@@ -74,6 +78,14 @@ public class EmployeeViewDashboardManagedBean {
 
     public void setUpdateDate(String updateDate) {
         this.updateDate = updateDate;
+    }
+
+    public BarChartModel getBarModel() {
+        return barModel;
+    }
+
+    public void setBarModel(BarChartModel barModel) {
+        this.barModel = barModel;
     }
 
     private void createLineModels() {
@@ -195,6 +207,46 @@ public class EmployeeViewDashboardManagedBean {
         }
 
         model.addSeries(netRate);
+
+        return model;
+    }
+
+    private void createBarModel() {
+        barModel = initBarModel();
+
+        barModel.setTitle("Number of Closing/Openning Accounts");
+        barModel.setLegendPosition("ne");
+
+        Axis xAxis = barModel.getAxis(AxisType.X);
+        xAxis.setLabel("Date");
+
+        Axis yAxis = barModel.getAxis(AxisType.Y);
+        yAxis.setLabel("Numbers");
+        yAxis.setMin(0);
+        yAxis.setMax(30);
+    }
+
+    private BarChartModel initBarModel() {
+        BarChartModel model = new BarChartModel();
+
+        ChartSeries boys = new ChartSeries();
+        boys.setLabel("Number of Opening Accounts");
+        boys.set("2004", 120);
+        boys.set("2005", 100);
+        boys.set("2006", 44);
+        boys.set("2007", 150);
+        boys.set("2008", 25);
+
+        ChartSeries girls = new ChartSeries();
+        girls.setLabel("Number of Closing Accounts");
+        girls.set("2004", 52);
+        girls.set("2005", 60);
+        girls.set("2006", 110);
+        girls.set("2007", 135);
+        girls.set("2008", 120);
+
+        model.addSeries(boys);
+        model.addSeries(girls);
 
         return model;
     }

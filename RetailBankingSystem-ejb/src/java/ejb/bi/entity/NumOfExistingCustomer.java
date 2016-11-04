@@ -15,6 +15,8 @@ public class NumOfExistingCustomer implements Serializable {
     private Long numOfExistingCustomerId;
     private String numOfExistingCustomer;
     private Integer updateDate;
+    private String numOfOpeningAccounts;
+    private String numOfClosingAccounts;
 
     public Long getNumOfExistingCustomerId() {
         return numOfExistingCustomerId;
@@ -38,6 +40,22 @@ public class NumOfExistingCustomer implements Serializable {
 
     public void setUpdateDate(Integer updateDate) {
         this.updateDate = updateDate;
+    }
+
+    public String getNumOfOpeningAccounts() {
+        return numOfOpeningAccounts;
+    }
+
+    public void setNumOfOpeningAccounts(String numOfOpeningAccounts) {
+        this.numOfOpeningAccounts = numOfOpeningAccounts;
+    }
+
+    public String getNumOfClosingAccounts() {
+        return numOfClosingAccounts;
+    }
+
+    public void setNumOfClosingAccounts(String numOfClosingAccounts) {
+        this.numOfClosingAccounts = numOfClosingAccounts;
     }
 
     @Override
