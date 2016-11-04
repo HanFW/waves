@@ -5,7 +5,8 @@
  */
 package managedbean.card.employee;
 
-import ejb.card.entity.CreditCard;
+import ejb.card.entity.PrincipalCard;
+import ejb.card.entity.SupplementaryCard;
 import ejb.card.session.CreditCardSessionBeanLocal;
 import java.io.IOException;
 import java.util.List;
@@ -29,14 +30,16 @@ public class CreditCardManagerViewManagedBean {
     /**
      * Creates a new instance of CreditCardManagerViewManagedBean
      */
-    private List<CreditCard> creditCards;
+    private List<PrincipalCard> principalCards;
+    private List<SupplementaryCard> supplementaryCards;
 
     public CreditCardManagerViewManagedBean() {
     }
 
     @PostConstruct
     public void init() {
-        creditCards = creditCardSessionLocal.getAllPendingCreditCards();
+        principalCards = creditCardSessionLocal.getAllPendingCreditCards();
+        supplementaryCards = creditCardSessionLocal.getAllPendingSupplementaryCards();
     }
 
     public void viewApplication(Long creditCardId) throws IOException {
@@ -46,13 +49,30 @@ public class CreditCardManagerViewManagedBean {
 
         ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/card/creditCard/creditCardManagerProcessApplication.xhtml?faces-redirect=true");
     }
+    
+    public void viewSupplementaryApplication (Long supplementaryCardId) throws IOException{
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        ec.getFlash().put("supplementaryCardId", supplementaryCardId);
 
-    public List<CreditCard> getCreditCards() {
-        return creditCards;
+        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/card/creditCard/creditCardManagerProcessSupplementaryApplication.xhtml?faces-redirect=true");
     }
 
-    public void setCreditCards(List<CreditCard> creditCards) {
-        this.creditCards = creditCards;
+    public List<PrincipalCard> getPrincipalCards() {
+        return principalCards;
     }
+
+    public void setPrincipalCards(List<PrincipalCard> principalCards) {
+        this.principalCards = principalCards;
+    }
+
+    public List<SupplementaryCard> getSupplementaryCards() {
+        return supplementaryCards;
+    }
+
+    public void setSupplementaryCards(List<SupplementaryCard> supplementaryCards) {
+        this.supplementaryCards = supplementaryCards;
+    }
+
+    
 
 }

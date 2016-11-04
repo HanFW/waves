@@ -9,11 +9,16 @@ import ejb.card.entity.CreditCard;
 import ejb.card.session.CreditCardSessionBeanLocal;
 import ejb.customer.entity.CustomerAdvanced;
 import ejb.customer.entity.CustomerBasic;
+import ejb.customer.session.CRMCustomerSessionBeanLocal;
+import ejb.infrastructure.session.CustomerAdminSessionBeanLocal;
+import ejb.infrastructure.session.MessageSessionBeanLocal;
 import ejb.loan.entity.CreditReportAccountStatus;
 import ejb.loan.entity.CreditReportBureauScore;
 import ejb.loan.entity.CreditReportDefaultRecords;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -33,6 +38,15 @@ public class CreditCardManagerProcessManagedBean implements Serializable {
 
     @EJB
     private CreditCardSessionBeanLocal creditCardSessionLocal;
+
+    @EJB
+    private CustomerAdminSessionBeanLocal customerAdminSessionBeanLocal;
+
+    @EJB
+    private CRMCustomerSessionBeanLocal cRMCustomerSessionBeanLocal;
+    
+    @EJB
+    private MessageSessionBeanLocal messageSessionBeanLocal;
 
     private CustomerBasic customer;
     private CustomerAdvanced ca;
@@ -108,6 +122,7 @@ public class CreditCardManagerProcessManagedBean implements Serializable {
         cc = creditCardSessionLocal.getCardByCardId(creditCardId);
         customer = cc.getCustomerBasic();
         ca = customer.getCustomerAdvanced();
+        customerIdentificationNum = customer.getCustomerIdentificationNum();
         System.out.println("@@@@@@@@@@@@IC num " + customer.getCustomerIdentificationNum());
 
 //        docs = cc.getUploads();
@@ -128,6 +143,25 @@ public class CreditCardManagerProcessManagedBean implements Serializable {
 
     public void approveRequest() throws IOException {
         creditCardSessionLocal.approveRequest(cc.getCardId(), creditLimit);
+        
+        System.out.println("!!!!!!!!customer id "+ customer.getCustomerBasicId());
+        System.out.println("!!!!!!!!!csutomer has online banking acc or not "+ cRMCustomerSessionBeanLocal.hasOnlineBankingAcc(customer.getCustomerBasicId()));
+        if (!cRMCustomerSessionBeanLocal.hasOnlineBankingAcc(customer.getCustomerBasicId())) {
+            customerAdminSessionBeanLocal.createOnlineBankingAccount(cc.getCustomerBasic().getCustomerBasicId());
+        }
+
+        Calendar cal = Calendar.getInstance();
+        Date receivedDate = cal.getTime();
+        
+        String subject = "Your "+cc.getCreditCardType().getCreditCardTypeName()+" has been approved.";
+        String messageContent = "<br/><br/>Your "+cc.getCreditCardType().getCreditCardTypeName()+ " has been approved by one of our card managers. <br/><br/>"
+                + "Please activate your credit card in 15 days. <br/><br/>"
+                + "<a href=\"https://localhost:8181/RetailBankingSystem-war/web/onlineBanking/card/creditCard/customerActivateCreditCard.xhtml\">ACTIVATE HERE</a> <br/><br/>"
+                + "Thank you. <br/>";
+
+        messageSessionBeanLocal.sendMessage("Merlion Bank", "Credit Card", subject, receivedDate.toString(),
+                messageContent, customer.getCustomerBasicId());
+
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/card/creditCard/creditCardManagerViewApplication.xhtml?faces-redirect=true");
     }
@@ -195,6 +229,7 @@ public class CreditCardManagerProcessManagedBean implements Serializable {
     }
 
     public String getCustomerIdentificationNum() {
+        
         return customer.getCustomerIdentificationNum();
     }
 

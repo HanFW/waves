@@ -1,11 +1,13 @@
 package ejb.ws.session;
 
+import ejb.customer.entity.CustomerBasic;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import ejb.deposit.session.TransactionSessionBeanLocal;
 import ejb.payment.entity.Cheque;
 import ejb.payment.entity.OnHoldRecord;
 import ejb.payment.entity.ReceivedCheque;
+import ejb.payment.session.IssuedChequeSessionBeanLocal;
 import ejb.payment.session.ReceivedChequeSessionBeanLocal;
 import java.text.DecimalFormat;
 import java.util.Calendar;
@@ -28,6 +30,9 @@ import ws.client.otherbanks.OtherBanksWebService_Service;
 @Stateless()
 
 public class MerlionBankWebService {
+
+    @EJB
+    private IssuedChequeSessionBeanLocal issuedChequeSessionBeanLocal;
 
     @EJB
     private ReceivedChequeSessionBeanLocal receivedChequeSessionBeanLocal;
@@ -112,6 +117,11 @@ public class MerlionBankWebService {
 
             if (debitOrCredit.equals("Debit") && debitOrCreditBankName.equals("DBS")) {
 
+                if (onHoldRecord.getPaymentMethod().equals("Cheque")) {
+                    String chequeNum = onHoldRecord.getChequeNum();
+                    issuedChequeSessionBeanLocal.updateIssuedChequeStatus(chequeNum);
+                }
+
                 if (paymentAmt != null) {
 
                     Double totalBalance = Double.valueOf(currenttTotalBalance) - Double.valueOf(paymentAmt);
@@ -150,8 +160,8 @@ public class MerlionBankWebService {
             } else if (debitOrCredit.equals("Credit") && debitOrCreditBankName.equals("DBS")) {
 
                 if (onHoldRecord.getPaymentMethod().equals("Cheque")) {
-                    Long chequeId = onHoldRecord.getChequeId();
-                    receivedChequeSessionBeanLocal.updateReceivedChequeStatus(chequeId);
+                    String chequeNum = onHoldRecord.getChequeNum();
+                    receivedChequeSessionBeanLocal.updateReceivedChequeStatus(chequeNum);
                 }
 
                 Double totalBalance = Double.valueOf(currenttTotalBalance) + Double.valueOf(paymentAmt);
@@ -203,13 +213,6 @@ public class MerlionBankWebService {
 
             }
         }
-    }
-
-    private OtherBankAccount retrieveBankAccountByNum_other(java.lang.String otherBankAccountNum) {
-        // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
-        // If the calling of port operations may lead to race condition some synchronization is required.
-        ws.client.otherbanks.OtherBanksWebService port = service_otherBank.getOtherBanksWebServicePort();
-        return port.retrieveBankAccountByNum(otherBankAccountNum);
     }
 
     @WebMethod(operationName = "addNewRecord")
@@ -326,12 +329,12 @@ public class MerlionBankWebService {
         return onHoldRecord;
     }
 
-    @WebMethod(operationName = "updateOnHoldChequeId")
+    @WebMethod(operationName = "updateOnHoldChequeNum")
 //    @Oneway
-    public void updateOnHoldChequeId(@WebParam(name = "onHoldRecordId") Long onHoldRecordId,
-            @WebParam(name = "chequeId") Long chequeId) {
+    public void updateOnHoldChequeNum(@WebParam(name = "onHoldRecordId") Long onHoldRecordId,
+            @WebParam(name = "chequeNum") String chequeNum) {
         OnHoldRecord onHoldRecord = retrieveOnHoldRecordById(onHoldRecordId);
-        onHoldRecord.setChequeId(chequeId);
+        onHoldRecord.setChequeNum(chequeNum);
     }
 
     @WebMethod(operationName = "updateReceivedChequeStatus")
@@ -339,5 +342,52 @@ public class MerlionBankWebService {
     public void updateReceivedChequeStatus(@WebParam(name = "chequeId") Long chequeId) {
         ReceivedCheque receivedCheque = retrieveReceivedChequeById(chequeId);
         receivedCheque.setReceivedChequeStatus("Approved");
+    }
+
+    @WebMethod(operationName = "receiveChequeInformationFromSACH")
+//    @Oneway
+    public void receiveChequeInformationFromSACH(@WebParam(name = "chequeNum") String chequeNum,
+            @WebParam(name = "transactionAmt") String transactionAmt,
+            @WebParam(name = "bankAccountNum") String bankAccountNum) {
+
+        CustomerBasic customerBasic = bankAccountSessionBeanLocal.retrieveCustomerBasicByAccNum(bankAccountNum);
+        Calendar cal = Calendar.getInstance();
+
+        Long newIssuedChequeId = issuedChequeSessionBeanLocal.addNewIssuedCheque(cal.getTime().toString(), transactionAmt,
+                chequeNum, "Pending", "Issued", customerBasic.getCustomerBasicId());
+    }
+
+    private OtherBankAccount retrieveBankAccountByNum_other(java.lang.String otherBankAccountNum) {
+        // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
+        // If the calling of port operations may lead to race condition some synchronization is required.
+        ws.client.otherbanks.OtherBanksWebService port = service_otherBank.getOtherBanksWebServicePort();
+        return port.retrieveBankAccountByNum(otherBankAccountNum);
+    }
+
+    @WebMethod(operationName = "retrieveReceivedChequeByNum")
+    public ReceivedCheque retrieveReceivedChequeByNum(@WebParam(name = "chequeNum") String chequeNum) {
+        ReceivedCheque receivedCheque = new ReceivedCheque();
+
+        try {
+            Query query = entityManager.createQuery("Select r From ReceivedCheque r Where r.chequeNum=:chequeNum And r.chequeType=:chequeType");
+            query.setParameter("chequeNum", chequeNum);
+            query.setParameter("chequeType", "Received");
+
+            if (query.getResultList().isEmpty()) {
+                return new ReceivedCheque();
+            } else {
+                receivedCheque = (ReceivedCheque) query.getSingleResult();
+            }
+        } catch (EntityNotFoundException enfe) {
+            System.out.println("Entity not found error: " + enfe.getMessage());
+            return new ReceivedCheque();
+        } catch (NonUniqueResultException nure) {
+            System.out.println("Non unique result error: " + nure.getMessage());
+        }
+
+        entityManager.detach(receivedCheque);
+        receivedCheque.setCustomerBasic(null);
+        
+        return receivedCheque;
     }
 }

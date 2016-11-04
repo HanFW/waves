@@ -184,7 +184,7 @@ public class PublicCarLoanApplicationManagedBean implements Serializable {
 
         //create education loan application
         CarLoanApplication application = new CarLoanApplication();
-        application.create(170000, 5, "Yes", "Jaguar", "Prestige", "1GKDM19X84B502016", 177999, 2015);
+        application.create(170000, 5, "Yes", "Employee","Jaguar", "Prestige", "1GKDM19X84B502016", 177999, 2015);
         loanApplicationSessionBeanLocal.submitCarLoanApplication(isExistingCustomer, hasCustomerAdvanced, application, newCustomerBasicId, newCustomerAdvancedId);
         
         //second customer
@@ -221,7 +221,7 @@ public class PublicCarLoanApplicationManagedBean implements Serializable {
 
         //create education loan application
         application = new CarLoanApplication();
-        application.create(170000, 5, "Yes", "Jaguar", "Prestige", "1GKDM19X84B502016", 177999, 2015);
+        application.create(170000, 5, "Employee", "Yes", "Jaguar", "Prestige", "1GKDM19X84B502016", 177999, 2015);
         loanApplicationSessionBeanLocal.submitCarLoanApplication(isExistingCustomer, hasCustomerAdvanced, application, newCustomerBasicId, newCustomerAdvancedId);
         
         ec.getFlash().put("amountRequired", BigDecimal.valueOf(170000));
@@ -297,21 +297,21 @@ public class PublicCarLoanApplicationManagedBean implements Serializable {
                     newCustomerAdvancedId = cRMCustomerSessionBeanLocal.updateCustomerAdvanced(customerIdentificationNum, customerNumOfDependents,
                             customerEducation, customerResidentialStatus, customerLengthOfResidence, customerIndustryType, customerLengthOfCurrentJob,
                             customerEmploymentStatus, customerMonthlyFixedIncome.doubleValue(), customerResidentialType, customerCompanyAddress,
-                            customerCompanyPostal, customerCurrentPosition, customerCurrentJobTitle, null,
-                            0, customerOtherMonthlyIncome.doubleValue(), customerOtherMonthlyIncomeSource);
+                            customerCompanyPostal, customerCurrentPosition, customerCurrentJobTitle, customerPreviousCompany,
+                            customerLengthOfPreviousJob, customerOtherMonthlyIncome.doubleValue(), customerOtherMonthlyIncomeSource);
                 } else {
                     newCustomerAdvancedId = cRMCustomerSessionBeanLocal.addNewCustomerAdvanced(customerNumOfDependents, customerEducation, customerResidentialStatus,
                             customerLengthOfResidence, customerIndustryType, customerLengthOfCurrentJob, customerEmploymentStatus,
                             customerMonthlyFixedIncome.doubleValue(), customerResidentialType, customerCompanyAddress,
                             customerCompanyPostal, customerCurrentPosition, customerCurrentJobTitle,
-                            null, 0, customerOtherMonthlyIncome.doubleValue(),
+                            customerPreviousCompany, customerLengthOfPreviousJob, customerOtherMonthlyIncome.doubleValue(),
                             customerOtherMonthlyIncomeSource);
                 }
             }
 
             //create education loan application
             CarLoanApplication application = new CarLoanApplication();
-            application.create(customerLoanAmountRequired.doubleValue(), customerLoanTenure, isNewCar, customerCarMake, customerCarModel, customerChassis, customerCarPurchasePrice.doubleValue(), customerCarYearOfManufacture);
+            application.create(customerLoanAmountRequired.doubleValue(), customerLoanTenure, customerEmploymentStatus, isNewCar, customerCarMake, customerCarModel, customerChassis, customerCarPurchasePrice.doubleValue(), customerCarYearOfManufacture);
             loanApplicationSessionBeanLocal.submitCarLoanApplication(isExistingCustomer, hasCustomerAdvanced, application, newCustomerBasicId, newCustomerAdvancedId);
             customerEmailSessionBeanLocal.sendEmail(cRMCustomerSessionBeanLocal.getCustomerBasicById(newCustomerBasicId), "educationLoanApplication", null);
             ec.getFlash().put("amountRequired", customerLoanAmountRequired);

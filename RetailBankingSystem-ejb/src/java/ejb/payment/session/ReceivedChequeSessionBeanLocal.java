@@ -9,10 +9,15 @@ public interface ReceivedChequeSessionBeanLocal {
 
     public Long addNewReceivedCheque(String transactionDate, String transactionAmt,
             String receivedBankAccountNum, String receivedCustomerName, String receivedCustomerMobile,
-            String receivedChequeStatus, Long customerBasicId);
-    public List<ReceivedCheque> getAllNewReceivedCheque();
-    public ReceivedCheque retrieveReceivedChequeById(Long chequeId);
-    public List<ReceivedCheque> retrieveReceivedChequeByCusId(String customerIdentificationNum);
-    public void updateReceivedChequeStatus(Long chequeId);
-}
+            String receivedChequeStatus, String chequeNum, String chequeType, Long customerBasicId);
 
+    public List<ReceivedCheque> getAllNewReceivedCheque();
+
+    public ReceivedCheque retrieveReceivedChequeById(Long chequeId);
+
+    public List<ReceivedCheque> retrieveReceivedChequeByCusIC(String customerIdentificationNum);
+
+    public void updateReceivedChequeStatus(String chequeNum);
+
+    public ReceivedCheque retrieveReceivedChequeByNum(String chequeNum);
+}
