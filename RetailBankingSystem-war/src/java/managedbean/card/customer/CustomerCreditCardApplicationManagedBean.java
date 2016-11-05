@@ -118,7 +118,6 @@ public class CustomerCreditCardApplicationManagedBean implements Serializable {
     private UploadedFile file;
     private HashMap uploads = new HashMap();
 
-
     public CustomerCreditCardApplicationManagedBean() {
         uploads.put("identification", false);
         uploads.put("income", false);
@@ -128,10 +127,12 @@ public class CustomerCreditCardApplicationManagedBean implements Serializable {
     @PostConstruct
     public void init() {
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-        customerIdentificationNum = ec.getSessionMap().get("customerIdentificationNum").toString();
-        CustomerBasic customer = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum);
+//        customerIdentificationNum = ec.getSessionMap().get("customerIdentificationNum").toString();
+//        CustomerBasic customer = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum);
+//        customerNationality = customer.getCustomerNationality();
+        CustomerBasic customer = (CustomerBasic) ec.getSessionMap().get("customer");
+        customerIdentificationNum = customer.getCustomerIdentificationNum();
         customerNationality = customer.getCustomerNationality();
-
         showNationalityPanel();
     }
 
