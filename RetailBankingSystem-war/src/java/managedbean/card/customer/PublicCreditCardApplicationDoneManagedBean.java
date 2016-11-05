@@ -18,16 +18,16 @@ import javax.faces.context.FacesContext;
  */
 @Named(value = "publicCreditCardApplicationDoneManagedBean")
 @RequestScoped
-public class PublicCreditCardApplicationDoneManagedBean implements Serializable{
+public class PublicCreditCardApplicationDoneManagedBean implements Serializable {
 
     private String creditCardTypeName;
     private String customerName;
-    
+
     public PublicCreditCardApplicationDoneManagedBean() {
     }
-    
+
     @PostConstruct
-    public void init(){
+    public void init() {
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         creditCardTypeName = (String) ec.getFlash().get("cardTypeName");
         customerName = (String) ec.getFlash().get("customerName");
@@ -48,8 +48,5 @@ public class PublicCreditCardApplicationDoneManagedBean implements Serializable{
     public void setCustomerName(String customerName) {
         this.customerName = customerName;
     }
-    
-    
-    
-    
+
 }

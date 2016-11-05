@@ -22,6 +22,8 @@ import ejb.deposit.session.BankAccountSessionBeanLocal;
 import ejb.deposit.session.InterestSessionBeanLocal;
 import ejb.infrastructure.session.LoggingSessionBeanLocal;
 import ejb.infrastructure.session.MessageSessionBeanLocal;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.Calendar;
 import javax.faces.view.ViewScoped;
 import org.apache.commons.io.IOUtils;
@@ -619,6 +621,39 @@ public class AccountManagedBean implements Serializable {
     }
 
     public String onFlowProcess(FlowEvent event) {
+        ec = FacesContext.getCurrentInstance().getExternalContext();
+
+        if (customerDateOfBirth != null) {
+            dateOfBirth = bankAccountSessionLocal.changeDateFormat(customerDateOfBirth);
+            String customerAge = getAge(dateOfBirth);
+            Double customerAgeDouble = Double.valueOf(customerAge);
+
+            if (customerAgeDouble < 16) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Eligibility of openning account is 16 years old and above.", "Failed!"));
+                return event.getOldStep();
+            } else {
+                return event.getNewStep();
+            }
+        }
+
+        if (customerNRIC != null) {
+            if (customerNRIC.length() > 9 || customerNRIC.length() < 9) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid NRIC", "Failed!"));
+                return event.getOldStep();
+            } else {
+                return event.getNewStep();
+            }
+        }
+
+        if (customerNRICSG != null) {
+            if (customerNRICSG.length() < 9 || customerNRICSG.length() > 9) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid NRIC", "Failed!"));
+                return event.getOldStep();
+            } else {
+                return event.getNewStep();
+            }
+        }
+
         return event.getNewStep();
     }
 
@@ -846,7 +881,7 @@ public class AccountManagedBean implements Serializable {
         if (file == null) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please upload your identification softcopy", "Failed!"));
         } else {
-            
+
             if ((customerNRIC.length() > 9 || customerNRIC.length() < 9 || customerNRICSG.length() < 9 || customerNRICSG.length() > 9)
                     && (customerPassport == null)) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Invalid NRIC", "Failed!"));
@@ -900,11 +935,14 @@ public class AccountManagedBean implements Serializable {
                                 bankAccountDepositPeriod = "None";
                             }
 
+                            Calendar cal = Calendar.getInstance();
+                            Long currentTimeMilis = cal.getTimeInMillis();
+
                             newAccountId = bankAccountSessionLocal.addNewAccount(bankAccountNum, bankAccountType,
-                                    totalBankAccountBalance, availableBankAccountBalance, transferDailyLimit, 
+                                    totalBankAccountBalance, availableBankAccountBalance, transferDailyLimit,
                                     transferBalance, bankAccountStatus, bankAccountMinSaving,
                                     bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
-                                    statementDateDouble, customerBasicId, newInterestId);
+                                    statementDateDouble, currentTimeMilis, customerBasicId, newInterestId);
 
                             bankAccount = bankAccountSessionLocal.retrieveBankAccountById(newAccountId);
                             bankAccountSessionLocal.retrieveBankAccountByCusIC(customerIdentificationNum).add(bankAccount);
@@ -917,7 +955,6 @@ public class AccountManagedBean implements Serializable {
                             loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "open account", "successful", null);
 
                             subject = "Welcome to Merlion Bank";
-                            Calendar cal = Calendar.getInstance();
                             receivedDate = cal.getTime();
                             messageContent = "Welcome to Merlion Bank! Please deposit/transfer sufficient fund to your bank account.\n"
                                     + "For fixed deposit account, please declare your deposit period before activating your account.\n"
@@ -980,10 +1017,13 @@ public class AccountManagedBean implements Serializable {
                                 bankAccountDepositPeriod = "None";
                             }
 
+                            Calendar cal = Calendar.getInstance();
+                            Long currentTimeMilis = cal.getTimeInMillis();
+
                             newAccountId = bankAccountSessionLocal.addNewAccount(bankAccountNum, bankAccountType,
                                     totalBankAccountBalance, availableBankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
                                     bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
-                                    statementDateDouble, newCustomerBasicId, newInterestId);
+                                    statementDateDouble, currentTimeMilis, newCustomerBasicId, newInterestId);
 
                             bankAccount = bankAccountSessionLocal.retrieveBankAccountById(newAccountId);
 
@@ -995,7 +1035,6 @@ public class AccountManagedBean implements Serializable {
                             loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "open account", "successful", null);
 
                             subject = "Welcome to Merlion Bank";
-                            Calendar cal = Calendar.getInstance();
                             receivedDate = cal.getTime();
                             messageContent = "Welcome to Merlion Bank! Please deposit/transfer sufficient fund to your bank account.\n"
                                     + "For fixed deposit account, please declare your deposit period before activating your account.\n"
@@ -1139,21 +1178,22 @@ public class AccountManagedBean implements Serializable {
 //            bankAccountStatus = "Inactive";
 //        }
 
+        Calendar cal = Calendar.getInstance();
+        Long currentTimeMilis = cal.getTimeInMillis();
+
         newAccountId = bankAccountSessionLocal.addNewAccountOneTime(bankAccountNum, bankAccountType,
                 totalBankAccountBalance, availableBankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
                 bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
-                statementDateDouble, newCustomerBasicId, newInterestId);
+                statementDateDouble, currentTimeMilis, newCustomerBasicId, newInterestId);
 
         accountId = bankAccountSessionLocal.addNewAccountOneTime(bankAccountSessionLocal.generateBankAccount(),
-                "Basic Savings Account",
-                totalBankAccountBalance, availableBankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
+                "Basic Savings Account", totalBankAccountBalance, availableBankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
                 bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
-                statementDateDouble, customerBasicId, interestId);
+                statementDateDouble, currentTimeMilis, customerBasicId, interestId);
 
         statusMessage = "New Account Saved Successfully.";
 
         subject = "Welcome to Merlion Bank";
-        Calendar cal = Calendar.getInstance();
         receivedDate = cal.getTime();
         messageContent = "Welcome to Merlion Bank! Please deposit/transfer sufficient fund to your bank account.\n"
                 + "For fixed deposit account, please declare your deposit period before activating your account.\n"
@@ -1171,5 +1211,61 @@ public class AccountManagedBean implements Serializable {
         ec.getFlash().put("bankAccountStatus", bankAccountStatus);
 
         ec.redirect(ec.getRequestContextPath() + "/web/merlionBank/deposit/publicSaveAccountNewCustomer.xhtml?faces-redirect=true");
+    }
+
+    private String getAge(String customerDateOfBirth) {
+        String daystr = customerDateOfBirth.substring(0, 2);
+        String monthstr = customerDateOfBirth.substring(3, 6);
+        String yearstr = customerDateOfBirth.substring(7);
+        int month = 0;
+        int day = Integer.parseInt(daystr);
+        int year = Integer.parseInt(yearstr);
+        String customerAge = "";
+
+        switch (monthstr) {
+            case "Jan":
+                month = 1;
+                break;
+            case "Feb":
+                month = 2;
+                break;
+            case "Mar":
+                month = 3;
+                break;
+            case "Apr":
+                month = 4;
+                break;
+            case "May":
+                month = 5;
+                break;
+            case "Jun":
+                month = 6;
+                break;
+            case "Jul":
+                month = 7;
+                break;
+            case "Aug":
+                month = 8;
+                break;
+            case "Sep":
+                month = 9;
+                break;
+            case "Oct":
+                month = 10;
+                break;
+            case "Nov":
+                month = 11;
+                break;
+            case "Dec":
+                month = 12;
+                break;
+        }
+
+        LocalDate localBirth = LocalDate.of(year, month, day);
+        LocalDate now = LocalDate.now();
+        Period p = Period.between(localBirth, now);
+        customerAge = String.valueOf(p.getYears());
+
+        return customerAge;
     }
 }

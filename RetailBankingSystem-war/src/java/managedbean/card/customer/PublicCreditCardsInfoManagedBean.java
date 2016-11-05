@@ -20,10 +20,9 @@ import javax.faces.context.FacesContext;
  */
 @Named(value = "publicCreditCardsInfoManagedBean")
 @RequestScoped
-public class PublicCreditCardsInfoManagedBean{
+public class PublicCreditCardsInfoManagedBean {
 
     private Long creditCardTypeId;
-    
 
     public PublicCreditCardsInfoManagedBean() {
     }

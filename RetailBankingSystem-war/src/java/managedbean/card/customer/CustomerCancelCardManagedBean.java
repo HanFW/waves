@@ -34,10 +34,10 @@ public class CustomerCancelCardManagedBean implements Serializable {
      */
     @EJB
     private DebitCardManagementSessionBeanLocal debitCardManagementSessionBeanLocal;
-    
+
     @EJB
     private DebitCardSessionBeanLocal debitCardSessionBeanLocal;
-    
+
     @EJB
     private CreditCardManagementSessionBeanLocal creditCardManagementSessionBeanLocal;
 
@@ -50,7 +50,7 @@ public class CustomerCancelCardManagedBean implements Serializable {
     private List<String> debitCards = new ArrayList<String>();
     private String selectedDebitCard;
     private CustomerBasic customer;
-    
+
     private List<String> creditCards = new ArrayList<String>();
     private String selectedCreditCard;
     private String securityCode;
@@ -87,9 +87,9 @@ public class CustomerCancelCardManagedBean implements Serializable {
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext ec = context.getExternalContext();
         FacesMessage message = null;
-        
-        String[] debitCardInfo=selectedDebitCard.split("-");
-        String debitCardNum=debitCardInfo[1];
+
+        String[] debitCardInfo = selectedDebitCard.split("-");
+        String debitCardNum = debitCardInfo[1];
 
         System.out.println("debug:cancelDebitCard- debit card num " + debitCardNum);
         System.out.println("debug: cancelDebitCard- debit card num " + debitCardPwd);
@@ -112,14 +112,14 @@ public class CustomerCancelCardManagedBean implements Serializable {
         }
 
     }
-    
-        private void cancelCreditCard() {
+
+    private void cancelCreditCard() {
         FacesContext context = FacesContext.getCurrentInstance();
         ExternalContext ec = context.getExternalContext();
         FacesMessage message = null;
-        
-        String[] creditCardInfo=selectedCreditCard.split("-");
-        String creditCardNum=creditCardInfo[2];
+
+        String[] creditCardInfo = selectedCreditCard.split("-");
+        String creditCardNum = creditCardInfo[2];
 
         System.out.println("debug:cancelCreditCard- credit card num " + creditCardNum);
         System.out.println("debug: cancelCreditCard- credit card security code " + securityCode);
@@ -170,7 +170,7 @@ public class CustomerCancelCardManagedBean implements Serializable {
         if (debitCards.isEmpty()) {
 
             customer = getCustomerViaSessionMap();
-            Long id=customer.getCustomerBasicId();
+            Long id = customer.getCustomerBasicId();
             debitCards = debitCardSessionBeanLocal.getAllDebitCards(id);
 
         }
@@ -225,8 +225,6 @@ public class CustomerCancelCardManagedBean implements Serializable {
         this.securityCode = securityCode;
     }
 
-
-
     public boolean isCreditPanelVisible() {
         return creditPanelVisible;
     }
@@ -242,7 +240,6 @@ public class CustomerCancelCardManagedBean implements Serializable {
     public void setDebitPanelVisible(boolean debitPanelVisible) {
         this.debitPanelVisible = debitPanelVisible;
     }
-    
 
     public CustomerBasic getCustomerViaSessionMap() {
         FacesContext context = FacesContext.getCurrentInstance();

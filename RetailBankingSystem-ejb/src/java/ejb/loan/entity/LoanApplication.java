@@ -46,7 +46,7 @@ public class LoanApplication implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER)
     private LoanInterestPackage loanInterestPackage;
     
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.REFRESH})
     private CustomerBasic customerBasic;
     
     @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)

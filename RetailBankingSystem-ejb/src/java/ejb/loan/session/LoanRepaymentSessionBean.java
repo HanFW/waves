@@ -33,19 +33,19 @@ public class LoanRepaymentSessionBean implements LoanRepaymentSessionBeanLocal {
         BankAccount deposit = bankAccountSessionBeanLocal.retrieveBankAccountByNum(depositAccount);
         Double newBalance = Double.valueOf(deposit.getAvailableBankAccountBalance()) - amount;
         deposit.setAvailableBankAccountBalance(newBalance.toString());
-        
+
         LoanRepaymentAccount loanRepaymentAccount = getRepaymentAccountByAccountNum(repaymentAccount);
-        loanRepaymentAccount.setAccountBalance(loanRepaymentAccount.getAccountBalance()-amount);
+        loanRepaymentAccount.setAccountBalance(loanRepaymentAccount.getAccountBalance() - amount);
         LoanPayableAccount loanPayableAccount = loanRepaymentAccount.getLoanPayableAccount();
-        loanPayableAccount.setAccountBalance(loanPayableAccount.getAccountBalance()-amount);
-        
+        loanPayableAccount.setAccountBalance(loanPayableAccount.getAccountBalance() - amount);
+
         em.flush();
     }
 
     private LoanRepaymentAccount getRepaymentAccountByAccountNum(String accountNum) {
         Query query = em.createQuery("Select a From LoanRepaymentAccount a Where a.accountNumber=:accountNum");
         query.setParameter("accountNum", accountNum);
-        
+
         List resultList = query.getResultList();
         return (LoanRepaymentAccount) resultList.get(0);
     }

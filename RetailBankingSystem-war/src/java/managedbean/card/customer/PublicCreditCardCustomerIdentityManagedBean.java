@@ -8,7 +8,6 @@ package managedbean.card.customer;
 import ejb.card.session.CreditCardSessionBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.context.ExternalContext;
@@ -21,7 +20,7 @@ import javax.faces.view.ViewScoped;
  */
 @Named(value = "publicCreditCardCustomerIdentityManagedBean")
 @ViewScoped
-public class PublicCreditCardCustomerIdentityManagedBean implements Serializable{
+public class PublicCreditCardCustomerIdentityManagedBean implements Serializable {
 
     private String hasMerlionAcc;
     private boolean existingCustomerVisible;
@@ -31,8 +30,6 @@ public class PublicCreditCardCustomerIdentityManagedBean implements Serializable
 
     @EJB
     private CreditCardSessionBeanLocal creditCardSessionLocal;
-    
-
 
     public PublicCreditCardCustomerIdentityManagedBean() {
     }
@@ -45,11 +42,11 @@ public class PublicCreditCardCustomerIdentityManagedBean implements Serializable
             newCustomerVisible = true;
         }
     }
-    
+
     public void redirectToApplication() throws IOException {
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
 //        cardTypeId = (Long) ec.getSessionMap().get("cardTypeId");
-        
+
 //        System.out.println("%%%%%%%%%%%%customer identity type id = " + cardTypeId);
 //        ec.getFlash().keep("cardTypeId");
 //        ec.getFlash().put("creditCardTypeId", cardTypeId);

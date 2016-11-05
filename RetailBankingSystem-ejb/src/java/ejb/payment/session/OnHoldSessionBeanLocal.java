@@ -10,6 +10,8 @@ public interface OnHoldSessionBeanLocal {
             String debitOrCredit, String paymentAmt, String onHoldStatus,
             String debitOrCreditBankName, String debitOrCreditBankAccountNum,
             String paymentMethod);
+
     public OnHoldRecord retrieveOnHoldRecordById(Long onHoldRecordId);
-    public void updateOnHoldChequeId(Long onHoldRecordId,Long chequeId);
+
+    public void updateOnHoldChequeNum(Long onHoldRecordId, String chequeNum);
 }

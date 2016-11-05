@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/onlineBankingTemplate.xhtml"
+                xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
+
+
+    <ui:define name="content">
+
+        <h:form>             
+            <p:panel>
+                <p:outputLabel value="Welcome "/>
+                <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
+            </p:panel>
+
+            <div align="center">
+                <h1>#{customerViewLoanManagedBean.loanType} #{customerViewLoanManagedBean.loanAccountNumber}</h1>
+            </div>
+
+            <div align="center">
+                <p:panel header="Repayment">
+                    <p:panelGrid columns="8">
+                        <p:outputLabel style="font-weight: bold;" value="Instalment "/>
+                        <h:outputText value="#{customerViewLoanManagedBean.instalment}"/>
+
+                        <p:outputLabel style="font-weight: bold;" value="Fees: "/>
+                        <h:outputText value="#{customerViewLoanManagedBean.fees}"/>
+
+                        <p:outputLabel style="font-weight: bold;" value="Overdue Balance: "/>
+                        <h:outputText value="#{customerViewLoanManagedBean.overdueBalance}"/>
+
+                        <p:menuButton value="Make Payment">
+                            <p:menuitem value="Via Merlion Bank Account" action="#{customerViewLoanManagedBean.makeRepaymentByMerlionBankAccount}"/>
+                            <p:menuitem value="Via Other Bank Account"/>
+                            <p:menuitem value="Via GIRO"/>
+                        </p:menuButton>
+                    </p:panelGrid>
+                </p:panel>
+            </div>
+
+
+        </h:form>
+        <ezcomp:CCTimeout/>
+    </ui:define>
+</ui:composition>
+

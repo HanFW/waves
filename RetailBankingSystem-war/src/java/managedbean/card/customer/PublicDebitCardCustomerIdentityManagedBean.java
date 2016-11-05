@@ -19,15 +19,13 @@ public class PublicDebitCardCustomerIdentityManagedBean {
     /**
      * Creates a new instance of PublicDebitCardCustomerIdentityManagedBean
      */
-
-    
     private String hasMerlionAcc;
     private boolean existingCustomerVisible;
     private boolean newCustomerVisible;
 
     public PublicDebitCardCustomerIdentityManagedBean() {
     }
-    
+
     public void showPanel() {
         if (hasMerlionAcc.equals("Yes")) {
             existingCustomerVisible = true;
@@ -59,8 +57,6 @@ public class PublicDebitCardCustomerIdentityManagedBean {
 
     public void setNewCustomerVisible(boolean newCustomerVisible) {
         this.newCustomerVisible = newCustomerVisible;
-    }  
-    
+    }
+
 }
-
-

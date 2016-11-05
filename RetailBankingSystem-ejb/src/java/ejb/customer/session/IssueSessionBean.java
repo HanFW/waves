@@ -1,6 +1,5 @@
 package ejb.customer.session;
 
-import ejb.customer.entity.EnquiryCase;
 import ejb.customer.entity.Issue;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -12,9 +11,6 @@ import javax.persistence.Query;
 
 @Stateless
 public class IssueSessionBean implements IssueSessionBeanLocal {
-
-    @EJB
-    private FollowUpSessionBeanLocal followUpSessionBeanLocal;
 
     @EJB
     private EnquirySessionBeanLocal enquirySessionBeanLocal;

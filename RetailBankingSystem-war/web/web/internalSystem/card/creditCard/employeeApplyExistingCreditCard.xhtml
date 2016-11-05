@@ -1,0 +1,343 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/internalSystemTemplate.xhtml">
+
+    <ui:define name="content">  
+        <h:form>
+            <div align="center">
+                <p:wizard widgetVar ="creditcardWizard" flowListener="#{employeeApplyExistingCreditCardManagedBean.onFlowProcess}" showNavBar="false">
+
+                    <p:tab id="personal">
+                        <h:panelGrid columns="1">
+                            <p:steps activeIndex="0">
+                                <p:menuitem value="Personal Details" />
+                                <p:menuitem value="Employment Details" />
+                                <p:menuitem value="Credit Card Request" />
+                                <p:menuitem value="Supporting Documents"/>
+                                <p:menuitem value="Confirmation"/>
+                            </p:steps>
+                        </h:panelGrid>
+
+                        <div align="center">
+                            <h:panelGrid columns="1" class="ui-lg-4">  
+                                <p:outputLabel for="customerEducation" style="font-weight: bold" value="Highest Education: "/>
+                                <p:selectOneMenu id="customerEducation" value="#{employeeApplyExistingCreditCardManagedBean.customerEducation}"
+                                                 required="true" requiredMessage="Required Field">
+                                    <f:selectItem itemLabel="Please Select" itemValue="" />
+                                    <f:selectItem itemLabel="Primary" itemValue="Primary" />
+                                    <f:selectItem itemLabel="Secondary" itemValue="Secondary" />
+                                    <f:selectItem itemLabel="Diploma/Pre-University" itemValue="Diploma" />
+                                    <f:selectItem itemLabel="Degree" itemValue="Degree" />
+                                    <f:selectItem itemLabel="Post-Graduate" itemValue="Post-Graduate"/>
+                                </p:selectOneMenu>
+                                <p:message for="customerEducation"/>
+
+                                <p:outputLabel for="customerNumOfDepedents" style="font-weight: bold" value="Number of Dependents: "/>
+                                <p:selectOneMenu id="customerNumOfDepedents" value="#{employeeApplyExistingCreditCardManagedBean.customerNumOfDependents}"
+                                                 required="true" requiredMessage="Required Field" >
+                                    <f:selectItem itemLabel="Please Select" itemValue="" />
+                                    <f:selectItem itemLabel="0" itemValue="0" />
+                                    <f:selectItem itemLabel="1" itemValue="1" />
+                                    <f:selectItem itemLabel="2" itemValue="2" />
+                                    <f:selectItem itemLabel="3" itemValue="3" />
+                                    <f:selectItem itemLabel="4" itemValue="4" />
+                                    <f:selectItem itemLabel="5" itemValue="5" />
+                                    <f:selectItem itemLabel="6" itemValue="6" />
+                                    <f:selectItem itemLabel="7" itemValue="7" />
+                                    <f:selectItem itemLabel="8" itemValue="8" />
+                                    <f:selectItem itemLabel="9" itemValue="9" />
+                                    <f:selectItem itemLabel="10" itemValue="10" />
+                                </p:selectOneMenu>
+                                <p:message for="customerNumOfDepedents"/>
+
+                                <p:outputLabel for="customerResidentialStatus" style="font-weight: bold" value="Residential Ownership: "/>
+                                <p:selectOneMenu id="customerResidentialStatus" value="#{employeeApplyExistingCreditCardManagedBean.customerResidentialStatus}"
+                                                 required="true" requiredMessage="Required Field">
+                                    <f:selectItem itemLabel="Please Select" itemValue="" />
+                                    <f:selectItem itemLabel="Fully owned" itemValue="Owned" />
+                                    <f:selectItem itemLabel="Mortgaged" itemValue="Mortgaged" />
+                                    <f:selectItem itemLabel="Rented" itemValue="Rented" />
+                                    <f:selectItem itemLabel="Parents'" itemValue="Parents'" />
+                                    <f:selectItem itemLabel="Employer's" itemValue="Employer's" />
+                                </p:selectOneMenu>
+                                <p:message for="customerResidentialStatus"/>
+
+                                <p:outputLabel for="customerResidentialType" style="font-weight: bold" value="Residential Type: "/>
+                                <p:selectOneMenu id="customerResidentialType" value="#{employeeApplyExistingCreditCardManagedBean.customerResidentialType}"
+                                                 required="true" requiredMessage="Required Field">
+                                    <f:selectItem itemLabel="Please Select" itemValue="" />
+                                    <f:selectItem itemLabel="HDB" itemValue="HDB" />
+                                    <f:selectItem itemLabel="Condominium/Apartment" itemValue="Condominium/Apartment" />
+                                    <f:selectItem itemLabel="Landed Properties" itemValue="Landed Properties" />
+                                </p:selectOneMenu>
+                                <p:message for="customerResidentialType"/>
+
+                                <p:outputLabel for="customerLengthOfResidence" style="font-weight: bold" value="Years of Stay in Residence: "/>
+                                <p:inputText id="customerLengthOfResidence" value="#{employeeApplyExistingCreditCardManagedBean.customerLengthOfResidence}"
+                                             required="true" requiredMessage="Required Field" validatorMessage="Please enter a valid number between 0-100" converterMessage="Please enter a valid number">
+                                    <f:validateLongRange minimum="0" maximum="100"/>
+                                    <f:convertNumber integerOnly="true"/>
+                                </p:inputText>
+                                <p:message for="customerLengthOfResidence"/>
+                            </h:panelGrid>
+
+                            <h:panelGrid columns="2" class="ui-lg-4"> 
+                                <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('creditcardWizard').back();"/>
+                                <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('creditcardWizard').next();"/>
+                            </h:panelGrid>
+                        </div>
+                    </p:tab>
+
+                    <p:tab id="employment">
+                        <h:panelGrid columns="1">
+                            <p:steps activeIndex="1">
+                                <p:menuitem value="Personal Details" />
+                                <p:menuitem value="Employment Details" />
+                                <p:menuitem value="Credit Card Request" />
+                                <p:menuitem value="Supporting Documents"/>
+                                <p:menuitem value="Confirmation"/>
+                            </p:steps>
+                        </h:panelGrid>
+
+                        <div align="center">
+                            <h:panelGrid columns="1" class="ui-lg-4">  
+
+                                <p:outputLabel for="customerEmploymentStatus" style="font-weight: bold" value="Employment Status: "/>
+                                <p:selectOneMenu id="customerEmploymentStatus" value="#{employeeApplyExistingCreditCardManagedBean.customerEmploymentStatus}"
+                                                 required="true" requiredMessage="Required Field">
+                                    <f:selectItem itemLabel="Please Select" itemValue="" />
+                                    <f:selectItem itemLabel="Employee" itemValue="Employee" />
+                                    <f:selectItem itemLabel="Self-Employed" itemValue="Self-Employed" />
+                                    <f:selectItem itemLabel="Unemployed" itemValue="Unemployed" />
+                                    <p:ajax event="change" update="panelCustomerEmployment" listener="#{employeeApplyExistingCreditCardManagedBean.changeEmployeeStatus}"/>
+                                </p:selectOneMenu>
+
+                                <p:message for="customerEmploymentStatus"/>
+
+                                <p:panel style="border: none;" id="panelCustomerEmployment" visible="#{employeeApplyExistingCreditCardManagedBean.employmentPanelVisible}">
+                                    <p:outputLabel for="customerCompanyName" style="font-weight: bold" value="Company Name: "/>
+                                    <p:inputText id="customerCompanyName" value="#{employeeApplyExistingCreditCardManagedBean.customerCompanyName}"
+                                                 required="#{employeeApplyExistingCreditCardManagedBean.employmentPanelVisible}" requiredMessage="Required Field"/>
+                                    <p:message for="customerCompanyName"/>
+
+                                    <p:outputLabel for="customerCompanyAddress" style="font-weight: bold" value="Company Address: "/>
+                                    <p:inputText id="customerCompanyAddress" value="#{employeeApplyExistingCreditCardManagedBean.customerCompanyAddress}"
+                                                 required="#{employeeApplyExistingCreditCardManagedBean.employmentPanelVisible}" requiredMessage="Required Field"/>
+                                    <p:message for="customerCompanyAddress"/>
+
+                                    <p:outputLabel for="customerCompanyPostal" style="font-weight: bold" value="Company Postal Code: "/>
+                                    <p:inputText id="customerCompanyPostal" value="#{employeeApplyExistingCreditCardManagedBean.customerCompanyPostal}"
+                                                 required="#{employeeApplyExistingCreditCardManagedBean.employmentPanelVisible}" requiredMessage="Required Field" validatorMessage="Invalid postal code">
+                                        <!--<f:validateDoubleRange minimum="100000" maximum="999999" />-->
+                                    </p:inputText>
+                                    <p:message for="customerCompanyPostal"/>
+
+                                    <p:outputLabel for="customerIndustryType" style="font-weight: bold" value="Company Industry Type: "/>
+                                    <p:selectOneMenu id="customerIndustryType" value="#{employeeApplyExistingCreditCardManagedBean.customerIndustryType}"
+                                                     required="#{employeeApplyExistingCreditCardManagedBean.employmentPanelVisible}" requiredMessage="Required Field">
+                                        <f:selectItem itemLabel="Please Select" itemValue="" />
+                                        <f:selectItem itemLabel="Banking/Finance" itemValue="Banking/Finance" />
+                                        <f:selectItem itemLabel="Building/Construction" itemValue="Building/Construction" />
+                                        <f:selectItem itemLabel="Government" itemValue="Government" />
+                                        <f:selectItem itemLabel="IT/Communications" itemValue="IT/Communications" />
+                                        <f:selectItem itemLabel="Manufacturing" itemValue="Manufacturing" />
+                                        <f:selectItem itemLabel="Retail/F&amp;B" itemValue="Retail/F&amp;B" />
+                                        <f:selectItem itemLabel="Travel/Hospitality" itemValue="Travel/Hospitality" />
+                                        <f:selectItem itemLabel="Shipping/Transport" itemValue="Shipping/Transport" />
+                                        <f:selectItem itemLabel="Entertainment" itemValue="Entertainment" />
+                                        <f:selectItem itemLabel="Others" itemValue="Others" />
+                                        <p:ajax partialSubmit="true" event="change" update="panelCustomerIndustryType" listener="#{employeeApplyExistingCreditCardManagedBean.showIndustryTypePanel}"/>
+                                    </p:selectOneMenu>
+                                    <p:message for="customerIndustryType"/>
+                                    <p:panel style="border: none;" id="panelCustomerIndustryType" visible="#{employeeApplyExistingCreditCardManagedBean.industryTypePanelVisible}">
+                                        <p:inputText id="customerIndustryTypeOthers" requiredMessage="Required Field" 
+                                                     value="#{employeeApplyExistingCreditCardManagedBean.customerIndustryTypeOthers}" required="#{employeeApplyExistingCreditCardManagedBean.industryTypePanelVisible}"/>
+                                        <p:message for="customerIndustryTypeOthers"/>
+                                    </p:panel>
+
+                                    <p:outputLabel for="customerCurrentPosition" style="font-weight: bold" value="Current Position: "/>
+                                    <p:selectOneMenu id="customerCurrentPosition" value="#{employeeApplyExistingCreditCardManagedBean.customerCurrentPosition}"
+                                                     required="#{employeeApplyExistingCreditCardManagedBean.employmentPanelVisible}" requiredMessage="Required Field">
+                                        <f:selectItem itemLabel="Please Select" itemValue="" />
+                                        <f:selectItem itemLabel="Senior Management" itemValue="Senior Management" />
+                                        <f:selectItem itemLabel="Professional" itemValue="Professional" />
+                                        <f:selectItem itemLabel="Middle Management" itemValue="Middle Management" />
+                                        <f:selectItem itemLabel="Executive" itemValue="Executive" />
+                                        <f:selectItem itemLabel="Skilled Trades/Clerica" itemValue="Skilled Trades/Clerica" />
+                                        <f:selectItem itemLabel="Others" itemValue="Others" />
+                                        <p:ajax event="change" update="panelCustomerCurrentPosition" listener="#{employeeApplyExistingCreditCardManagedBean.showCurrentPositionPanel}"/>
+                                    </p:selectOneMenu>
+                                    <p:message for="customerCurrentPosition"/>
+                                    <p:panel style="border: none;" id="panelCustomerCurrentPosition" visible="#{employeeApplyExistingCreditCardManagedBean.currentPositionPanelVisible}">
+                                        <p:inputText id="customerCurrentPositionOthers" requiredMessage="Required Field" 
+                                                     value="#{employeeApplyExistingCreditCardManagedBean.customerCurrentPositionOthers}" required="#{employeeApplyExistingCreditCardManagedBean.currentPositionPanelVisible}"/>  
+                                        <p:message for="customerCurrentPositionOthers"/>
+                                    </p:panel>
+
+                                    <p:outputLabel for="customerCurrentJobTitle" style="font-weight: bold" value="Current Job Title: "/>
+                                    <p:inputText id="customerCurrentJobTitle" value="#{employeeApplyExistingCreditCardManagedBean.customerCurrentJobTitle}"
+                                                 required="#{employeeApplyExistingCreditCardManagedBean.employmentPanelVisible}" requiredMessage="Required Field"/>
+                                    <p:message for="customerCurrentJobTitle"/>
+
+                                    <p:outputLabel for="customerLengthOfCurrentJob" style="font-weight: bold" value="Years of Current Employment/Business: "/>
+                                    <p:inputText id="customerLengthOfCurrentJob" value="#{employeeApplyExistingCreditCardManagedBean.customerLengthOfCurrentJob}"
+                                                 required="#{employeeApplyExistingCreditCardManagedBean.employmentPanelVisible}" requiredMessage="Required Field" validatorMessage="Please enter a valid number between 0-100" converterMessage="Please enter a valid number">
+                                        <f:validateLongRange minimum="0" maximum="100"/>
+                                        <f:convertNumber integerOnly="true"/>
+                                    </p:inputText>
+                                    <p:message for="customerLengthOfCurrentJob"/>
+                                </p:panel>
+
+                                <p:messages globalOnly="true"/>
+                                <p:outputLabel for="customerMonthlyFixedIncome" style="font-weight: bold" value="Monthly Fixed Income(SGD): "/>
+                                <p:inputText id="customerMonthlyFixedIncome" value="#{employeeApplyExistingCreditCardManagedBean.customerMonthlyFixedIncome}"
+                                             required="true" requiredMessage="Required Field" converterMessage="Please enter a valid number">
+                                </p:inputText>
+                                <p:message for="customerMonthlyFixedIncome"/>
+
+
+                            </h:panelGrid>
+
+                            <h:panelGrid columns="2" class="ui-lg-4"> 
+                                <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('creditcardWizard').back()"/>
+                                <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('creditcardWizard').next();"/>
+                            </h:panelGrid>
+                        </div>
+                    </p:tab>
+
+                    <p:tab id="requests">
+                        <h:panelGrid columns="1">
+                            <p:steps activeIndex="2">
+                                <p:menuitem value="Personal Details" />
+                                <p:menuitem value="Employment Details" />
+                                <p:menuitem value="Credit Card Request" />
+                                <p:menuitem value="Supporting Documents"/>
+                                <p:menuitem value="Confirmation"/>
+                            </p:steps>
+                        </h:panelGrid>
+
+                        <div align="center">
+                            <h:panelGrid columns="1" class="ui-lg-4">  
+                                <p:outputLabel for="customerPreferredName" style="font-weight: bold" value="Your preferred name on your card: "/>
+                                <p:inputText id="customerPreferredName" value="#{employeeApplyExistingCreditCardManagedBean.cardHolderName}"
+                                             required="true" requiredMessage="Required Field" validatorMessage="Sorry, the name on your card is limited to 20 characters">
+                                    <f:validateLength maximum="20"/>
+                                </p:inputText>
+                                <p:message for="customerPreferredName"/>
+
+                                <p:outputLabel for="customerPreferredLimit" style="font-weight: bold" value="Do you have a preffered credit limit? "/>
+                                <p:selectOneRadio id="hasCreditLimit" value="#{employeeApplyExistingCreditCardManagedBean.hasCreditLimit}"
+                                                  required="true" requiredMessage="Please indicate your choice">
+                                    <f:selectItem itemLabel="Yes" itemValue="Yes" />
+                                    <f:selectItem itemLabel="No" itemValue="No" />
+                                    <p:ajax event="change" update="panelCreditLimit" listener="#{employeeApplyExistingCreditCardManagedBean.showCreditLimitPanel}"/>
+                                </p:selectOneRadio>
+                                <p:message for="hasCreditLimit"/>
+                                <p:panel style="border: none;" id="panelCreditLimit" visible="#{employeeApplyExistingCreditCardManagedBean.creditLimitPanelVisible}">
+                                    <p:outputLabel value="Tell us your preferred credit limit" style="font-weight: bold"/>
+                                    <p:inputText id="customerPreferredLimit" placeholder="Enter your prefered credit limit here" value="#{employeeApplyExistingCreditCardManagedBean.creditLimit}"
+                                                 required="#{employeeApplyExistingCreditCardManagedBean.creditLimitPanelVisible}" requiredMessage="Required Field" converterMessage="Please enter a valid number" />
+
+                                    <p:message for="customerPreferredLimit"/>
+                                </p:panel>
+                            </h:panelGrid>
+                            <h:panelGrid columns="2" class="ui-lg-4"> 
+                                <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('creditcardWizard').back()" />
+                                <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('creditcardWizard').next();" />
+                            </h:panelGrid>
+                        </div>
+                    </p:tab>
+
+                    <p:tab id="documents">
+                        <h:panelGrid columns="1">
+                            <p:steps activeIndex="3">
+                                <p:menuitem value="Personal Details" />
+                                <p:menuitem value="Employment Details" />
+                                <p:menuitem value="Credit Card Request" />
+                                <p:menuitem value="Supporting Documents"/>
+                                <p:menuitem value="Confirmation"/>
+                            </p:steps>
+                        </h:panelGrid>
+                        <div align="center">
+                            <h:panelGrid columns="1" class="ui-lg-6">  
+                                <p:messages globalOnly="true"/>
+                                <p:outputLabel value="Please upload all the files in PDF format"/>
+                                <p:panel>
+                                    <p:outputLabel value="Please upload photocopy of your NRIC/Passport:"/>
+                                    <p:outputLabel value="(Please upload all photocopies in one single PDF file)"/>
+                                    <p:messages id="identificationUploadMessage" for="identificationUpload"/>
+                                    <p:fileUpload id="identificationUpload" update="identificationUploadMessage" fileUploadListener="#{employeeApplyExistingCreditCardManagedBean.identificationUpload}"
+                                                  mode="advanced" skinSimple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(pdf)$/" multiple="false"/>
+                                </p:panel>
+
+                                <p:panel>
+                                    <p:outputLabel value="Please upload proof of income:"/>
+                                    <p:outputLabel value="(Please upload all photocopies in one single PDF file)"/>
+                                    <p:messages id="incomeUploadMessage" for="incomeUpload"/>
+                                    <p:fileUpload id="incomeUpload" update="incomeUploadMessage" fileUploadListener="#{employeeApplyExistingCreditCardManagedBean.incomeUpload}"
+                                                  mode="advanced" skinSimple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(pdf)$/" multiple="false"/>
+                                </p:panel>
+
+                                <p:panel visible="#{employeeApplyExistingCreditCardManagedBean.passportPanelVisible}">
+                                    <p:outputLabel value="Please upload photocopy of your employment pass (if you are not a PR):"/>
+                                    <p:outputLabel value="(Please upload all photocopies in one single PDF file)"/>
+                                    <p:messages id="workPassUploadMessage" for="workPassUpload"/>
+                                    <p:fileUpload id="workPassUpload" update="workPassUploadMessage" fileUploadListener="#{employeeApplyExistingCreditCardManagedBean.workPassUpload}"
+                                                  mode="advanced" skinSimple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(pdf)$/" multiple="false"/>
+                                </p:panel> 
+
+                            </h:panelGrid>
+                            <h:panelGrid columns="2" class="ui-lg-4"> 
+                                <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('creditcardWizard').back()" />
+                                <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('creditcardWizard').next();" />
+                            </h:panelGrid>
+                        </div>
+                    </p:tab>
+                    <p:tab id="confirmation">
+                        <h:panelGrid columns="1">
+                            <p:steps activeIndex="4">
+                                <p:menuitem value="Personal Details" />
+                                <p:menuitem value="Employment Details" />
+                                <p:menuitem value="Credit Card Request" />
+                                <p:menuitem value="Supporting Documents"/>
+                                <p:menuitem value="Confirmation"/>
+                            </p:steps>
+                        </h:panelGrid>
+
+                        <div align="center">
+                            <h:panelGrid columns="1" class="ui-lg-6">  
+                                <p:messages id="agreementMessages" for="agreement"/>
+                                <p:message for="agreement"/>
+                                <p:selectBooleanCheckbox id = "agreement" value="#{employeeApplyExistingCreditCardManagedBean.agreement}" 
+                                                         style="margin-top:5px"/>
+                                <h:outputText value="I have read and agree to the terms of Customer Declaration and Confirmation." />
+                                <p:message for="captcha"/>
+                                <p:captcha id="captcha"/>
+                                <p:outputLabel value="Please provide your signature" />
+                                <br/>
+                                <p:messages id="signatureMessages" for="input"/>
+                                <p:signature id="input" style="width:300px;height:200px" widgetVar="sig" value="#{signatureViewManagedBean.customerSignature}" 
+                                             guideline="true"/>
+                                <p:commandButton process="@this input output" value="Submit" icon="ui-icon-check" update="output"/>
+                                <p:commandButton process="@this input output" value="Clear" icon="ui-icon-close" type="button" onclick="PF('sig').clear()"/>
+                                <p:outputPanel id="output">
+                                    <h:outputText rendered="#{not empty signatureViewManagedBean.customerSignature}" style="font-size:20px;display:block" value="Your Signature" />
+                                    <p:signature style="width:300px;height:200px;" value="#{signatureViewManagedBean.customerSignature}" readonly="true"
+                                                 rendered="#{not empty signatureViewManagedBean.customerSignature}" backgroundColor="#eaeaea" color="#03a9f4"/>
+                                </p:outputPanel>
+                            </h:panelGrid>
+
+                            <h:panelGrid columns="2" class="ui-lg-4"> 
+                                <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('creditcardWizard').back()"/>
+                                <p:commandButton id="saveBtn" value="Submit Application" ajax="false" update="@form" actionListener="#{employeeApplyExistingCreditCardManagedBean.addExistingCustomerCreditCardApplication}"/>                 
+                            </h:panelGrid>
+                        </div>
+                    </p:tab>
+                </p:wizard>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

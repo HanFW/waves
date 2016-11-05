@@ -26,6 +26,9 @@ public class CustomerDebt implements Serializable {
     private String financialInstitution;
     private double totalAmount;
     private double monthlyInstalment;
+    private String collateralDetails;
+    private int remainingTenure;
+    private double currentInterest;
 
     public Long getCustomerDebtId() {
         return customerDebtId;
@@ -66,4 +69,29 @@ public class CustomerDebt implements Serializable {
     public void setMonthlyInstalment(double monthlyInstalment) {
         this.monthlyInstalment = monthlyInstalment;
     }
+
+    public String getCollateralDetails() {
+        return collateralDetails;
+    }
+
+    public void setCollateralDetails(String collateralDetails) {
+        this.collateralDetails = collateralDetails;
+    }
+
+    public int getRemainingTenure() {
+        return remainingTenure;
+    }
+
+    public void setRemainingTenure(int remainingTenure) {
+        this.remainingTenure = remainingTenure;
+    }
+
+    public double getCurrentInterest() {
+        return currentInterest;
+    }
+
+    public void setCurrentInterest(double currentInterest) {
+        this.currentInterest = currentInterest;
+    }
+    
 }

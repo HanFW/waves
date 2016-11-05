@@ -5,5 +5,5 @@ import javax.ejb.Local;
 
 @Local
 public interface ChequeSessionBeanLocal {
-    public Cheque retrieveGIROById(Long chequeId);
+    public Cheque retrieveChequeById(Long chequeId);
 }

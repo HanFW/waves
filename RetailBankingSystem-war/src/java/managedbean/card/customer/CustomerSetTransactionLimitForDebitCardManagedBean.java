@@ -5,11 +5,9 @@
  */
 package managedbean.card.customer;
 
-import ejb.card.entity.DebitCard;
 import ejb.card.session.DebitCardSessionBeanLocal;
 import ejb.card.session.DebitCardTransactionSessionBeanLocal;
 import ejb.customer.entity.CustomerBasic;
-import ejb.deposit.entity.BankAccount;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -36,7 +34,7 @@ public class CustomerSetTransactionLimitForDebitCardManagedBean implements Seria
      */
     @EJB
     private DebitCardTransactionSessionBeanLocal debitCardTransactionSessionBeanLocal;
-    
+
     @EJB
     private DebitCardSessionBeanLocal debitCardSessionBeanLocal;
 
@@ -80,11 +78,11 @@ public class CustomerSetTransactionLimitForDebitCardManagedBean implements Seria
     public List<String> getDebitCards() {
         System.out.println("test " + debitCards);
         if (debitCards.isEmpty()) {
-            
+
             customer = getCustomerViaSessionMap();
-            Long id=customer.getCustomerBasicId();
-            debitCards=debitCardSessionBeanLocal.getAllActivatedDebitCards(id);
-               
+            Long id = customer.getCustomerBasicId();
+            debitCards = debitCardSessionBeanLocal.getAllActivatedDebitCards(id);
+
         }
         return debitCards;
     }

@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
-    <system systemId="http://localhost:8080/OtherBanksWebService/OtherBanksWebService?wsdl" uri="src/conf/xml-resources/web-service-references/OtherBanksWebService/wsdl/localhost_8080/OtherBanksWebService/OtherBanksWebService.wsdl"/>
-    <system systemId="http://localhost:8080/OtherBanksWebService/OtherBanksWebService?xsd=1" uri="src/conf/xml-resources/web-service-references/OtherBanksWebService/wsdl/localhost_8080/OtherBanksWebService/OtherBanksWebService.xsd_1.xsd"/>
     <system systemId="http://localhost:8080/MEPSWebService/MEPSWebService?wsdl" uri="src/conf/xml-resources/web-service-references/MEPSWebService/wsdl/localhost_8080/MEPSWebService/MEPSWebService.wsdl"/>
     <system systemId="http://localhost:8080/MEPSWebService/MEPSWebService?xsd=1" uri="src/conf/xml-resources/web-service-references/MEPSWebService/wsdl/localhost_8080/MEPSWebService/MEPSWebService.xsd_1.xsd"/>
     <system systemId="http://localhost:8080/OnHoldWebService/OnHoldWebService?wsdl" uri="src/conf/xml-resources/web-service-references/OnHoldWebService/wsdl/localhost_8080/OnHoldWebService/OnHoldWebService.wsdl"/>
     <system systemId="http://localhost:8080/OnHoldWebService/OnHoldWebService?xsd=1" uri="src/conf/xml-resources/web-service-references/OnHoldWebService/wsdl/localhost_8080/OnHoldWebService/OnHoldWebService.xsd_1.xsd"/>
-    <system systemId="http://localhost:8080/SACHWebService/SACHWebService?wsdl" uri="src/conf/xml-resources/web-service-references/SACHWebService/wsdl/localhost_8080/SACHWebService/SACHWebService.wsdl"/>
-    <system systemId="http://localhost:8080/SACHWebService/SACHWebService?xsd=1" uri="src/conf/xml-resources/web-service-references/SACHWebService/wsdl/localhost_8080/SACHWebService/SACHWebService.xsd_1.xsd"/>
     <system systemId="http://localhost:8080/CHIPSWebService/CHIPSWebService?wsdl" uri="src/conf/xml-resources/web-service-references/CHIPSWebService/wsdl/localhost_8080/CHIPSWebService/CHIPSWebService.wsdl"/>
     <system systemId="http://localhost:8080/CHIPSWebService/CHIPSWebService?xsd=1" uri="src/conf/xml-resources/web-service-references/CHIPSWebService/wsdl/localhost_8080/CHIPSWebService/CHIPSWebService.xsd_1.xsd"/>
     <system systemId="http://localhost:8080/SWIFTWebService/SWIFTWebService?wsdl" uri="src/conf/xml-resources/web-service-references/SWIFTWebService/wsdl/localhost_8080/SWIFTWebService/SWIFTWebService.wsdl"/>
     <system systemId="http://localhost:8080/SWIFTWebService/SWIFTWebService?xsd=1" uri="src/conf/xml-resources/web-service-references/SWIFTWebService/wsdl/localhost_8080/SWIFTWebService/SWIFTWebService.xsd_1.xsd"/>
     <system systemId="http://localhost:8080/BillWebService/BillWebService?wsdl" uri="src/conf/xml-resources/web-service-references/BillWebService/wsdl/localhost_8080/BillWebService/BillWebService.wsdl"/>
     <system systemId="http://localhost:8080/BillWebService/BillWebService?xsd=1" uri="src/conf/xml-resources/web-service-references/BillWebService/wsdl/localhost_8080/BillWebService/BillWebService.xsd_1.xsd"/>
+    <system systemId="http://localhost:8080/OtherBanksWebService/OtherBanksWebService?wsdl" uri="src/conf/xml-resources/web-service-references/OtherBanksWebService/wsdl/localhost_8080/OtherBanksWebService/OtherBanksWebService.wsdl"/>
+    <system systemId="http://localhost:8080/OtherBanksWebService/OtherBanksWebService?xsd=1" uri="src/conf/xml-resources/web-service-references/OtherBanksWebService/wsdl/localhost_8080/OtherBanksWebService/OtherBanksWebService.xsd_1.xsd"/>
+    <system systemId="http://localhost:8080/SACHWebService/SACHWebService?wsdl" uri="src/conf/xml-resources/web-service-references/SACHWebService/wsdl/localhost_8080/SACHWebService/SACHWebService.wsdl"/>
+    <system systemId="http://localhost:8080/SACHWebService/SACHWebService?xsd=1" uri="src/conf/xml-resources/web-service-references/SACHWebService/wsdl/localhost_8080/SACHWebService/SACHWebService.xsd_1.xsd"/>
     <system systemId="http://localhost:8080/SACHWebService/SACHWebService?wsdl" uri="src/conf/xml-resources/web-service-references/SACHWebService/wsdl/localhost_8080/SACHWebService/SACHWebService.wsdl"/>
     <system systemId="http://localhost:8080/SACHWebService/SACHWebService?xsd=1" uri="src/conf/xml-resources/web-service-references/SACHWebService/wsdl/localhost_8080/SACHWebService/SACHWebService.xsd_1.xsd"/>
     <system systemId="http://localhost:8080/TransactionAuthorizationWebService/TransactionAuthorizationWebService?wsdl" uri="src/conf/xml-resources/web-service-references/TransactionAuthorizationWebService/wsdl/localhost_8080/TransactionAuthorizationWebService/TransactionAuthorizationWebService.wsdl"/>
     <system systemId="http://localhost:8080/TransactionAuthorizationWebService/TransactionAuthorizationWebService?xsd=1" uri="src/conf/xml-resources/web-service-references/TransactionAuthorizationWebService/wsdl/localhost_8080/TransactionAuthorizationWebService/TransactionAuthorizationWebService.xsd_1.xsd"/>
+    <system systemId="http://localhost:8080/OtherBanksWebService/OtherBanksWebService?wsdl" uri="src/conf/xml-resources/web-service-references/OtherBanksWebService/wsdl/localhost_8080/OtherBanksWebService/OtherBanksWebService.wsdl"/>
+    <system systemId="http://localhost:8080/OtherBanksWebService/OtherBanksWebService?xsd=1" uri="src/conf/xml-resources/web-service-references/OtherBanksWebService/wsdl/localhost_8080/OtherBanksWebService/OtherBanksWebService.xsd_1.xsd"/>
 </catalog>
