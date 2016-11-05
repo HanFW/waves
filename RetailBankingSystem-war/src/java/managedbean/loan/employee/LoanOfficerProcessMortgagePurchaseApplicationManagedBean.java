@@ -16,16 +16,11 @@ import ejb.loan.entity.MortgageLoanApplication;
 import ejb.loan.session.LoanApplicationSessionBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
-import java.text.DateFormat;
 import java.text.DecimalFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.context.ExternalContext;
@@ -223,7 +218,7 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
 
         ma = loanApplicationSessionBeanLocal.getMortgageLoanApplicationById(applicationId);
         loanType = ma.getLoanType();
-        
+
         customer = ma.getCustomerBasic();
         ca = customer.getCustomerAdvanced();
         debts = customer.getCustomerDebt();
@@ -362,50 +357,57 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
                 jointAmountOverdue += account.getOverdueBalance();
             }
         }
-        
+
         // decision support
         customerAge = Integer.valueOf(customer.getCustomerAge());
         ltvRatio = loanApplicationSessionBeanLocal.getLTVRatio(customer, joint, ma);
         double mortgagePrice = Math.min(customerPropertyPurchasePrice, appraisedValue);
         ltvPrice = mortgagePrice * ltvRatio / 100;
         riskRatio = loanApplicationSessionBeanLocal.getRiskRatio(customer, joint);
-        
+
         double tenancy = 0;
-        if(ma.getPropertyWithTenancy().equals("yes")){
+        if (ma.getPropertyWithTenancy().equals("yes")) {
             tenancy = ma.getPropertyTenancyIncome();
         }
         maxTDSRInstalment = loanApplicationSessionBeanLocal.getTDSRRemaining(customer, joint) + tenancy;
-        if(loanType.contains("HDB")){
+        if (loanType.contains("HDB")) {
             maxMSRInstalment = loanApplicationSessionBeanLocal.getMSRRemaining(customer, joint) + tenancy;
         }
 
         for (CreditReportAccountStatus account : accountStatus) {
             totalAmountOverdue += account.getOverdueBalance();
         }
-        if(riskRatio > 0.35){
+        if (riskRatio > 0.35) {
             suggestedAction = "Reject";
             maxAmountGranted = 0;
             minTenure = 0;
             maxInstalment = 0;
-        }else{
+        } else {
             suggestedAction = "Approve";
-            maxAmountGranted = ltvPrice * (1-riskRatio);
+            maxAmountGranted = ltvPrice * (1 - riskRatio);
             double grossIncome = loanApplicationSessionBeanLocal.getGrossIncome(customer, joint);
-            if(grossIncome*60 < maxAmountGranted){
+            if (grossIncome * 60 < maxAmountGranted) {
                 maxAmountGranted = grossIncome * 60;
             }
-            if(customerLoanAmountRequired < maxAmountGranted){
+            if (customerLoanAmountRequired < maxAmountGranted) {
                 maxAmountGranted = customerLoanAmountRequired;
             }
-            maxInstalment = Math.min(maxTDSRInstalment, maxMSRInstalment);
+            if (loanType.contains("HDB")) {
+                maxInstalment = Math.min(maxTDSRInstalment, maxMSRInstalment);
+            } else {
+                maxInstalment = maxTDSRInstalment;
+            }
             minTenure = loanApplicationSessionBeanLocal.calculateMortgageTenure(maxAmountGranted, maxInstalment);
-            if(minTenure > 30){
+            if (minTenure > 30) {
                 calculateMaxAmount();
+            }
+            if (minTenure < customerLoanTenure) {
+                minTenure = customerLoanTenure;
             }
         }
     }
-    
-    private void calculateMaxAmount(){
+
+    private void calculateMaxAmount() {
         maxAmountGranted = (0.035 / 12 * maxInstalment) / (1 - Math.pow((1 + 0.035 / 12), -minTenure * 12));
     }
 
