@@ -21,7 +21,6 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -191,21 +190,23 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     private Double jointBureauScore;
     private String jointRiskGrade;
     private Double jointProbabilityOfDefault;
-    
+
     //decision support
     private int customerAge;
     private int jointAge;
     private Double appraisedValue;
-    private double[] suggestedTenure;
-    private double tenureMin;
-    private double tenureMax;
-    private double[] suggestedAmount;
-    private double amountMin;
-    private double amountMax;
     private double riskRatio;
     private int averageAge;
     private int ltvRatio;
     private double ltvPrice;
+    private double maxTDSRInstalment;
+    private double maxMSRInstalment;
+    private double totalAmountOverdue;
+    private double jointAmountOverdue;
+
+    private String suggestedAction;
+    private double maxAmountGranted;
+    private int minTenure;
     private double maxInstalment;
 
     /**
@@ -353,17 +354,20 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
             jointOtherMonthlyIncomeSource = jointCA.getOtherMonthlyIncomeSource();
 
             //Decison support
-            DateFormat df = new SimpleDateFormat("dd/MMM/yyyy");
-            try {
-                customerAge = new Date().getYear() - df.parse(customerDateOfBirth).getYear();
-                jointAge = new Date().getYear() - df.parse(jointDateOfBirth).getYear();
-            } catch (ParseException ex) {
-                Logger.getLogger(LoanOfficerProcessMortgagePurchaseApplicationManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+            customerAge = Integer.valueOf(customer.getCustomerAge());
+            jointAge = Integer.valueOf(joint.getCustomerAge());
+            averageAge = loanApplicationSessionBeanLocal.getApplicantsAverageAge(customer, joint);
+            ltvRatio = loanApplicationSessionBeanLocal.getLTVRatio(customer, joint, ma);
+            double mortgagePrice = Math.max(customerPropertyPurchasePrice, appraisedValue);
+            ltvPrice = mortgagePrice * ltvRatio / 100;
+
+            for (CreditReportAccountStatus account : accountStatus) {
+                totalAmountOverdue += account.getOverdueBalance();
             }
-            riskRatio = loanApplicationSessionBeanLocal.getMortgagePurchaseLoanRiskRatio();
-            suggestedAmount = loanApplicationSessionBeanLocal.getMortgagePurchaseLoanSuggestedInterval();
-            amountMin = suggestedAmount[0];
-            amountMax = suggestedAmount[1];
+
+            for (CreditReportAccountStatus account : jointAccountStatus) {
+                jointAmountOverdue += account.getOverdueBalance();
+            }
         }
     }
 
@@ -391,6 +395,14 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
 
     public void setLoanApplicationSessionBeanLocal(LoanApplicationSessionBeanLocal loanApplicationSessionBeanLocal) {
         this.loanApplicationSessionBeanLocal = loanApplicationSessionBeanLocal;
+    }
+
+    public double getTotalAmountOverdue() {
+        return totalAmountOverdue;
+    }
+
+    public void setTotalAmountOverdue(double totalAmountOverdue) {
+        this.totalAmountOverdue = totalAmountOverdue;
     }
 
     public int getCustomerAge() {
@@ -425,12 +437,36 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
         this.ma = ma;
     }
 
+    public double getJointAmountOverdue() {
+        return jointAmountOverdue;
+    }
+
+    public void setJointAmountOverdue(double jointAmountOverdue) {
+        this.jointAmountOverdue = jointAmountOverdue;
+    }
+
+    public double getMaxMSRInstalment() {
+        return maxMSRInstalment;
+    }
+
+    public void setMaxMSRInstalment(double maxMSRInstalment) {
+        this.maxMSRInstalment = maxMSRInstalment;
+    }
+
     public CustomerBasic getCustomer() {
         return customer;
     }
 
     public void setCustomer(CustomerBasic customer) {
         this.customer = customer;
+    }
+
+    public String getSuggestedAction() {
+        return suggestedAction;
+    }
+
+    public void setSuggestedAction(String suggestedAction) {
+        this.suggestedAction = suggestedAction;
     }
 
     public CustomerAdvanced getCa() {
@@ -1393,54 +1429,6 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
         this.noJoint = noJoint;
     }
 
-    public double[] getSuggestedTenure() {
-        return suggestedTenure;
-    }
-
-    public void setSuggestedTenure(double[] suggestedTenure) {
-        this.suggestedTenure = suggestedTenure;
-    }
-
-    public double getTenureMin() {
-        return tenureMin;
-    }
-
-    public void setTenureMin(double tenureMin) {
-        this.tenureMin = tenureMin;
-    }
-
-    public double getTenureMax() {
-        return tenureMax;
-    }
-
-    public void setTenureMax(double tenureMax) {
-        this.tenureMax = tenureMax;
-    }
-
-    public double[] getSuggestedAmount() {
-        return suggestedAmount;
-    }
-
-    public void setSuggestedAmount(double[] suggestedAmount) {
-        this.suggestedAmount = suggestedAmount;
-    }
-
-    public double getAmountMin() {
-        return amountMin;
-    }
-
-    public void setAmountMin(double amountMin) {
-        this.amountMin = amountMin;
-    }
-
-    public double getAmountMax() {
-        return amountMax;
-    }
-
-    public void setAmountMax(double amountMax) {
-        this.amountMax = amountMax;
-    }
-
     public int getAverageAge() {
         return averageAge;
     }
@@ -1471,6 +1459,30 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
 
     public void setMaxInstalment(double maxInstalment) {
         this.maxInstalment = maxInstalment;
+    }
+
+    public double getMaxTDSRInstalment() {
+        return maxTDSRInstalment;
+    }
+
+    public void setMaxTDSRInstalment(double maxTDSRInstalment) {
+        this.maxTDSRInstalment = maxTDSRInstalment;
+    }
+
+    public double getMaxAmountGranted() {
+        return maxAmountGranted;
+    }
+
+    public void setMaxAmountGranted(double maxAmountGranted) {
+        this.maxAmountGranted = maxAmountGranted;
+    }
+
+    public int getMinTenure() {
+        return minTenure;
+    }
+
+    public void setMinTenure(int minTenure) {
+        this.minTenure = minTenure;
     }
 
 }

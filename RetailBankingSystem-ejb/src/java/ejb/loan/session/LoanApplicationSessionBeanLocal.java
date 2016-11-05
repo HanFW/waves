@@ -5,6 +5,7 @@
  */
 package ejb.loan.session;
 
+import ejb.customer.entity.CustomerBasic;
 import ejb.loan.entity.CarLoanApplication;
 import ejb.loan.entity.CashlineApplication;
 import ejb.loan.entity.CreditReportAccountStatus;
@@ -36,9 +37,6 @@ public interface LoanApplicationSessionBeanLocal {
     public List<LoanApplication> getLoanApplications(ArrayList<String> loans, String loanType);
     public MortgageLoanApplication getMortgageLoanApplicationById(Long applicationId);
     public RefinancingApplication getRefinancingApplicationById(Long applicationId);
-    public double[] getMortgagePurchaseLoanMaxInterval();
-    public double getMortgagePurchaseLoanRiskRatio();
-    public double[] getMortgagePurchaseLoanSuggestedInterval();
     public void approveMortgageLoanRequest(Long applicationId, double amount, int period, double instalment);
     public void rejectMortgageLoanRequest(Long applicationId);
     public void approveRefinancingLoanRequest(Long applicationId, int period, double instalment);
@@ -61,4 +59,7 @@ public interface LoanApplicationSessionBeanLocal {
             String guarantorOtherMonthlyIncomeSource);
     
     public List<CashlineApplication> getCashlineApplications(ArrayList<String> status);
+    
+    public int getApplicantsAverageAge(CustomerBasic customer, CustomerBasic joint);
+    public int getLTVRatio(CustomerBasic customer, CustomerBasic joint, LoanApplication application);
 }

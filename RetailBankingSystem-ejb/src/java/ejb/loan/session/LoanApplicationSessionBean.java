@@ -429,31 +429,6 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
     }
 
     @Override
-    public double[] getMortgagePurchaseLoanMaxInterval() {
-        System.out.println("****** loan/LoanApplicationSessionBean: getMortgagePurchaseLoanMaxInterval() ******");
-        double[] maxInterval = new double[2];
-        maxInterval[0] = 460000;
-        maxInterval[1] = 510000;
-        return maxInterval;
-    }
-
-    @Override
-    public double getMortgagePurchaseLoanRiskRatio() {
-        System.out.println("****** loan/LoanApplicationSessionBean: getMortgagePurchaseLoanRiskRatio() ******");
-        double ratio = 0;
-        return ratio;
-    }
-
-    @Override
-    public double[] getMortgagePurchaseLoanSuggestedInterval() {
-        System.out.println("****** loan/LoanApplicationSessionBean: getMortgagePurchaseLoanSuggestedInterval() ******");
-        double[] interval = new double[2];
-        interval[0] = 460000;
-        interval[1] = 510000;
-        return interval;
-    }
-
-    @Override
     public void approveMortgageLoanRequest(Long applicationId, double amount, int period, double instalment) {
         System.out.println("****** loan/LoanApplicationSessionBean: approveMortgageLoanRequest() ******");
         LoanApplication application = em.find(LoanApplication.class, applicationId);
@@ -551,6 +526,7 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
     public void submitAppraisal(double appraisedValue, Long applicationId) {
         System.out.println("****** loan/LoanApplicationSessionBean: submitAppraisal() ******");
         MortgageLoanApplication application = em.find(MortgageLoanApplication.class, applicationId);
+        application.setPropertyAppraisedValue(appraisedValue);
         application.setApplicationStatus("pending");
     }
 
@@ -697,5 +673,68 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
             }
         }
         return applications;
+    }
+
+    @Override
+    public int getApplicantsAverageAge(CustomerBasic customer, CustomerBasic joint) {
+        int averageAge = 0;
+        double customerIncome = customer.getCustomerAdvanced().getMonthlyFixedIncome()
+                + customer.getCustomerAdvanced().getOtherMonthlyIncome() * 0.7;
+
+        double jointIncome = joint.getCustomerAdvanced().getMonthlyFixedIncome()
+                + joint.getCustomerAdvanced().getOtherMonthlyIncome() * 0.7;
+
+        double totalIncome = customerIncome + jointIncome;
+
+        int customerAge = Integer.parseInt(customer.getCustomerAge());
+        int jointAge = Integer.parseInt(joint.getCustomerAge());
+        Double age = customerAge * customerIncome / totalIncome + jointAge * jointIncome / totalIncome;
+
+        averageAge = age.intValue();
+        return averageAge;
+    }
+
+    @Override
+    public int getLTVRatio(CustomerBasic customer, CustomerBasic joint, LoanApplication application) {
+        int numOfMortgage = getAllMortgageDebts(customer, joint).size();
+
+        System.out.println("****** loan/LoanApplicationSessionBean: getLTVRatio(): Number of mortgages: " + numOfMortgage);
+
+        if (numOfMortgage == 0) {
+            return 80;
+        } else if (numOfMortgage == 1) {
+            return 50;
+        } else {
+            return 20;
+        }
+    }
+
+    private List<CustomerDebt> getAllMortgageDebts(CustomerBasic customer, CustomerBasic joint) {
+        List<CustomerDebt> accountStatus = customer.getCustomerDebt();
+        List<CustomerDebt> customerMortgage = new ArrayList<CustomerDebt>();
+        List<CustomerDebt> allMortgage = new ArrayList<CustomerDebt>();
+
+        for (CustomerDebt account : accountStatus) {
+            if (account.getFacilityType().equals("mortgage")) {
+                customerMortgage.add(account);
+            }
+        }
+        allMortgage.addAll(customerMortgage);
+
+        if (joint != null) {
+            List<CustomerDebt> jointAccountStatus = joint.getCustomerDebt();
+            for (CustomerDebt account : jointAccountStatus) {
+                if (account.getFacilityType().equals("mortgage")) {
+                    allMortgage.add(account);
+                    for (CustomerDebt customerAccount : customerMortgage) {
+                        if (account.getCollateralDetails().equals(customerAccount.getCollateralDetails())) {
+                            allMortgage.remove(account);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        return allMortgage;
     }
 }
