@@ -45,6 +45,7 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     private LoanApplicationSessionBeanLocal loanApplicationSessionBeanLocal;
 
     private Long applicationId;
+    private String loanType;
 
     private MortgageLoanApplication ma;
     private CustomerBasic customer;
@@ -221,7 +222,8 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
         applicationId = (Long) ec.getFlash().get("applicationId");
 
         ma = loanApplicationSessionBeanLocal.getMortgageLoanApplicationById(applicationId);
-
+        loanType = ma.getLoanType();
+        
         customer = ma.getCustomerBasic();
         ca = customer.getCustomerAdvanced();
         debts = customer.getCustomerDebt();
@@ -354,21 +356,57 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
             jointOtherMonthlyIncomeSource = jointCA.getOtherMonthlyIncomeSource();
 
             //Decison support
-            customerAge = Integer.valueOf(customer.getCustomerAge());
             jointAge = Integer.valueOf(joint.getCustomerAge());
             averageAge = loanApplicationSessionBeanLocal.getApplicantsAverageAge(customer, joint);
-            ltvRatio = loanApplicationSessionBeanLocal.getLTVRatio(customer, joint, ma);
-            double mortgagePrice = Math.max(customerPropertyPurchasePrice, appraisedValue);
-            ltvPrice = mortgagePrice * ltvRatio / 100;
-
-            for (CreditReportAccountStatus account : accountStatus) {
-                totalAmountOverdue += account.getOverdueBalance();
-            }
-
             for (CreditReportAccountStatus account : jointAccountStatus) {
                 jointAmountOverdue += account.getOverdueBalance();
             }
         }
+        
+        // decision support
+        customerAge = Integer.valueOf(customer.getCustomerAge());
+        ltvRatio = loanApplicationSessionBeanLocal.getLTVRatio(customer, joint, ma);
+        double mortgagePrice = Math.min(customerPropertyPurchasePrice, appraisedValue);
+        ltvPrice = mortgagePrice * ltvRatio / 100;
+        riskRatio = loanApplicationSessionBeanLocal.getRiskRatio(customer, joint);
+        
+        double tenancy = 0;
+        if(ma.getPropertyWithTenancy().equals("yes")){
+            tenancy = ma.getPropertyTenancyIncome();
+        }
+        maxTDSRInstalment = loanApplicationSessionBeanLocal.getTDSRRemaining(customer, joint) + tenancy;
+        if(loanType.contains("HDB")){
+            maxMSRInstalment = loanApplicationSessionBeanLocal.getMSRRemaining(customer, joint) + tenancy;
+        }
+
+        for (CreditReportAccountStatus account : accountStatus) {
+            totalAmountOverdue += account.getOverdueBalance();
+        }
+        if(riskRatio > 0.35){
+            suggestedAction = "Reject";
+            maxAmountGranted = 0;
+            minTenure = 0;
+            maxInstalment = 0;
+        }else{
+            suggestedAction = "Approve";
+            maxAmountGranted = ltvPrice * (1-riskRatio);
+            double grossIncome = loanApplicationSessionBeanLocal.getGrossIncome(customer, joint);
+            if(grossIncome*60 < maxAmountGranted){
+                maxAmountGranted = grossIncome * 60;
+            }
+            if(customerLoanAmountRequired < maxAmountGranted){
+                maxAmountGranted = customerLoanAmountRequired;
+            }
+            maxInstalment = Math.min(maxTDSRInstalment, maxMSRInstalment);
+            minTenure = loanApplicationSessionBeanLocal.calculateMortgageTenure(maxAmountGranted, maxInstalment);
+            if(minTenure > 30){
+                calculateMaxAmount();
+            }
+        }
+    }
+    
+    private void calculateMaxAmount(){
+        maxAmountGranted = (0.035 / 12 * maxInstalment) / (1 - Math.pow((1 + 0.035 / 12), -minTenure * 12));
     }
 
     public void approveLoanRequest() throws IOException {
@@ -395,6 +433,14 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
 
     public void setLoanApplicationSessionBeanLocal(LoanApplicationSessionBeanLocal loanApplicationSessionBeanLocal) {
         this.loanApplicationSessionBeanLocal = loanApplicationSessionBeanLocal;
+    }
+
+    public String getLoanType() {
+        return loanType;
+    }
+
+    public void setLoanType(String loanType) {
+        this.loanType = loanType;
     }
 
     public double getTotalAmountOverdue() {

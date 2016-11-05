@@ -737,4 +737,123 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
         }
         return allMortgage;
     }
+
+    @Override
+    public int getTDSRRemaining(CustomerBasic customer, CustomerBasic joint) {
+        double totalInstalment = 0;
+        List<CustomerDebt> allDebts = getAllCustomerDebts(customer, joint);
+        for (CustomerDebt debt : allDebts) {
+            totalInstalment += debt.getMonthlyInstalment();
+        }
+
+        double totalIncome = getGrossIncome(customer, joint);
+
+        Double remaining = totalIncome * 0.6 - totalInstalment;
+
+        return remaining.intValue();
+    }
+
+    private List<CustomerDebt> getAllCustomerDebts(CustomerBasic customer, CustomerBasic joint) {
+        List<CustomerDebt> allDebts = customer.getCustomerDebt();
+        List<CustomerDebt> customerDebts = customer.getCustomerDebt();
+
+        if (joint != null) {
+            List<CustomerDebt> jointDebts = joint.getCustomerDebt();
+            for (CustomerDebt account : jointDebts) {
+                allDebts.add(account);
+                for (CustomerDebt customerAccount : customerDebts) {
+                    if (account.getCollateralDetails().equals(customerAccount.getCollateralDetails())) {
+                        allDebts.remove(account);
+                        break;
+                    }
+                }
+            }
+        }
+        return allDebts;
+    }
+
+    @Override
+    public int getMSRRemaining(CustomerBasic customer, CustomerBasic joint) {
+        double totalInstalment = 0;
+        List<CustomerDebt> allMortgage = getAllMortgageDebts(customer, joint);
+        for (CustomerDebt debt : allMortgage) {
+            totalInstalment += debt.getMonthlyInstalment();
+        }
+        double totalIncome = getGrossIncome(customer, joint);
+
+        Double remaining = totalIncome * 0.3 - totalInstalment;
+
+        return remaining.intValue();
+    }
+
+    @Override
+    public double getGrossIncome(CustomerBasic customer, CustomerBasic joint) {
+        double customerIncome = customer.getCustomerAdvanced().getMonthlyFixedIncome()
+                + customer.getCustomerAdvanced().getOtherMonthlyIncome() * 0.7;
+
+        double jointIncome = 0;
+        if (joint != null) {
+            jointIncome = joint.getCustomerAdvanced().getMonthlyFixedIncome()
+                    + joint.getCustomerAdvanced().getOtherMonthlyIncome() * 0.7;
+        }
+
+        double totalIncome = customerIncome + jointIncome;
+
+        return totalIncome;
+    }
+
+    @Override
+    public double getRiskRatio(CustomerBasic customer, CustomerBasic joint) {
+        double customerRisk = 0;
+        double jointRisk = 0;
+
+        //applicant 1 risk
+        CreditReportBureauScore customerBureauScore = customer.getBureauScore();
+        CustomerAdvanced ca = customer.getCustomerAdvanced();
+        customerRisk = customerBureauScore.getProbabilityOfDefault();
+        if (customer.getCustomerMaritalStatus().equals("Married")) {
+            customerRisk += 0.01;
+        }
+        customerRisk += ca.getNumOfDependent() * 0.03;
+        if (ca.getResidentialStatus().equals("Rented")) {
+            customerRisk += 0.07;
+        }
+        if (ca.getEmploymentStatus().equals("Self-Employed") && ca.getLengthOfCurrentJob() < 3) {
+            customerRisk += 0.03;
+        }
+        if (ca.getLengthOfCurrentJob() < 3 && ca.getLengthOfPreviousJob() < 3) {
+            customerRisk += 0.02;
+        }
+
+        //joint applicant risk
+        if (joint != null) {
+            CreditReportBureauScore jointBureauScore = joint.getBureauScore();
+            CustomerAdvanced jointCA = joint.getCustomerAdvanced();
+            jointRisk = jointBureauScore.getProbabilityOfDefault();
+            if (joint.getCustomerMaritalStatus().equals("Married")) {
+                jointRisk += 0.01;
+            }
+            jointRisk += jointCA.getNumOfDependent() * 0.03;
+            if (jointCA.getResidentialStatus().equals("Rented")) {
+                jointRisk += 0.05;
+            }
+            if (jointCA.getEmploymentStatus().equals("Self-Employed") && jointCA.getLengthOfCurrentJob() < 3) {
+                jointRisk += 0.02;
+            }
+            if (jointCA.getLengthOfCurrentJob() < 3 && jointCA.getLengthOfPreviousJob() < 3) {
+                jointRisk += 0.01;
+            }
+        }
+        
+        DecimalFormat df = new DecimalFormat("0.00");
+        String risk = df.format(Math.max(customerRisk, jointRisk));
+        
+        return Double.parseDouble(risk);
+    }
+    
+    @Override
+    public int calculateMortgageTenure(double amount, double instalment){
+        Double tenure = Math.log(1- 0.035/12*amount/instalment) / Math.log(1+0.035/12) * -1 / 12;
+        return tenure.intValue()+1;
+    }
 }
