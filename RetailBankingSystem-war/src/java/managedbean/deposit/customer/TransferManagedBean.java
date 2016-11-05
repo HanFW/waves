@@ -1,5 +1,6 @@
 package managedbean.deposit.customer;
 
+import ejb.bi.session.DepositAccountOpenSessionBeanLocal;
 import ejb.deposit.entity.BankAccount;
 import ejb.customer.entity.CustomerBasic;
 import ejb.deposit.entity.RegularPayee;
@@ -19,11 +20,15 @@ import ejb.deposit.session.PayeeSessionBeanLocal;
 import ejb.deposit.session.RegularPayeeSessionBeanLocal;
 import ejb.deposit.session.TransactionSessionBeanLocal;
 import ejb.infrastructure.session.LoggingSessionBeanLocal;
+import java.util.Calendar;
 
 @Named(value = "transferManagedBean")
 @RequestScoped
 
 public class TransferManagedBean {
+
+    @EJB
+    private DepositAccountOpenSessionBeanLocal depositAccountOpenSessionBeanLocal;
 
     @EJB
     private RegularPayeeSessionBeanLocal regularPayeeSessionBeanLocal;
@@ -315,6 +320,9 @@ public class TransferManagedBean {
                             statusMessage = "Your transaction has been completed.";
                             loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "transfer to my account", "successful", null);
 
+                            Calendar cal = Calendar.getInstance();
+                            depositAccountOpenSessionBeanLocal.addNewDepositAccountOpen(cal.getTimeInMillis(), cal.getTime().toString());
+
                             Double fromAccountAvailableBalanceDouble = currentAvailableBalance - transferAmt;
                             Double fromAccountTotalBalanceDouble = currentTotalBalance - transferAmt;
 
@@ -430,6 +438,9 @@ public class TransferManagedBean {
                             statusMessage = "Your transaction has been completed.";
                             loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "transfer to other account", "successful", null);
 
+                            Calendar cal = Calendar.getInstance();
+                            depositAccountOpenSessionBeanLocal.addNewDepositAccountOpen(cal.getTimeInMillis(), cal.getTime().toString());
+
                             Double fromAccountAvailableBalanceDouble = currentAvailableBalance - transferAmt;
                             Double fromAccountTotalBalanceDouble = currentTotalBalance - transferAmt;
 
@@ -544,6 +555,9 @@ public class TransferManagedBean {
                             newTransactionId = transactionSessionBeanLocal.fundTransfer(fromAccount, toAccount, transferAmt.toString());
                             statusMessage = "Your transaction has been completed.";
                             loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "one time transfer", "successful", null);
+
+                            Calendar cal = Calendar.getInstance();
+                            depositAccountOpenSessionBeanLocal.addNewDepositAccountOpen(cal.getTimeInMillis(), cal.getTime().toString());
 
                             Double fromAccountAvailableBalanceDouble = currentAvailableBalance - transferAmt;
                             Double fromAccountTotalBalanceDouble = currentTotalBalance - transferAmt;

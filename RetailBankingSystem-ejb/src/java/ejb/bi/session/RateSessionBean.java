@@ -2,9 +2,9 @@ package ejb.bi.session;
 
 import ejb.bi.entity.AccountClosureReason;
 import ejb.bi.entity.DepositAccountClosure;
+import ejb.bi.entity.DepositAccountOpen;
 import ejb.bi.entity.NumOfExistingCustomer;
 import ejb.bi.entity.Rate;
-import ejb.deposit.entity.BankAccount;
 import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.List;
@@ -207,7 +207,7 @@ public class RateSessionBean implements RateSessionBeanLocal {
     @Override
     public void monthlyDashboardRate() {
 
-        DecimalFormat df = new DecimalFormat("#.000000");
+        DecimalFormat df = new DecimalFormat("#.0000000");
 
         Integer acqUpdateYear = 0;
         Integer attUpdateYear = 0;
@@ -232,13 +232,18 @@ public class RateSessionBean implements RateSessionBeanLocal {
         attUpdateYear = attRate.getUpdateYear();
         attRate.setRateStatus("Done");
 
+        NumOfExistingCustomer numOfExistingCustomer = numOfExistingCustomerSessionBeanLocal.getNumOfExistingCustomer();
+        numOfExistingCustomer.setStatus("Done");
+
         if (attUpdateMonth == 12) {
             attUpdateYear = attRate.getUpdateYear() + 1;
             attUpdateMonth = 0;
             List<Rate> attRates = getCurrentYearAttRate();
+            List<NumOfExistingCustomer> numOfExistingCustomers = numOfExistingCustomerSessionBeanLocal.getCurrentYearNumOfExistingCustomer();
 
             for (int i = 0; i < attRates.size(); i++) {
                 attRates.get(i).setCurrentYear("No");
+                numOfExistingCustomers.get(i).setCurrentYear("No");
             }
         }
 
@@ -246,25 +251,36 @@ public class RateSessionBean implements RateSessionBeanLocal {
         Long endTime = cal.getTimeInMillis();
         Long startTime = endTime - 100010;
 
-        Query queryOpenAccount = entityManager.createQuery("SELECT b FROM BankAccount b WHERE b.currentTimeMilis >= :startTime And b.currentTimeMilis<=:endTime And b.bankAccountStatus=:bankAccountStatus");
+        Query queryOpenAccount = entityManager.createQuery("SELECT d FROM DepositAccountOpen d WHERE d.currentTimeMilis >= :startTime And d.currentTimeMilis<=:endTime");
         queryOpenAccount.setParameter("startTime", startTime);
         queryOpenAccount.setParameter("endTime", endTime);
-        queryOpenAccount.setParameter("bankAccountStatus", "Active");
-        List<BankAccount> bankAccounts = queryOpenAccount.getResultList();
+
+        List<DepositAccountOpen> DepositAccountOpens = queryOpenAccount.getResultList();
 
         Query queryCloseAccount = entityManager.createQuery("SELECT d FROM DepositAccountClosure d WHERE d.currentTimeMilis >= :startTime And d.currentTimeMilis<=:endTime");
         queryCloseAccount.setParameter("startTime", startTime);
         queryCloseAccount.setParameter("endTime", endTime);
         List<DepositAccountClosure> depositAccountClosures = queryCloseAccount.getResultList();
 
-        NumOfExistingCustomer numOfCustomer = numOfExistingCustomerSessionBeanLocal.retrieveNumOfExistingCustomerByDate(acqUpdateMonth);
+        NumOfExistingCustomer numOfCustomer = numOfExistingCustomerSessionBeanLocal.retrieveNumOfExistingCustomerByMonth(acqUpdateMonth);
         String numberOfCustomer = numOfCustomer.getNumOfExistingCustomer();
 
-        Integer newNumOfExistingCustomer = Integer.valueOf(numberOfCustomer) + bankAccounts.size() - depositAccountClosures.size();
+        Integer numberOfOpenAccounts = DepositAccountOpens.size();
+        Integer numberOfCloseAccounts = depositAccountClosures.size();
+
+        if (DepositAccountOpens.isEmpty()) {
+            numberOfOpenAccounts = 0;
+        }
+
+        if (depositAccountClosures.isEmpty()) {
+            numberOfCloseAccounts = 0;
+        }
+
+        Integer newNumOfExistingCustomer = Integer.valueOf(numberOfCustomer) + numberOfOpenAccounts - numberOfCloseAccounts;
         Integer currentAcqUpdateMonth = acqUpdateMonth + 1;
         Integer currentAttUpdateMonth = attUpdateMonth + 1;
 
-        String acqRateValue = df.format(bankAccounts.size() / Double.valueOf(numberOfCustomer));
+        String acqRateValue = df.format(DepositAccountOpens.size() / Double.valueOf(numberOfCustomer));
         String attRateValue = df.format(depositAccountClosures.size() / Double.valueOf(numberOfCustomer));
 
         Long newAcqRateId = addNewRate(Double.valueOf(acqRateValue), "Acquisition",
@@ -272,12 +288,12 @@ public class RateSessionBean implements RateSessionBeanLocal {
         Long newAttRateId = addNewRate(Double.valueOf(attRateValue), "Attrition",
                 "New", attUpdateYear, currentAttUpdateMonth, "Yes");
 
-        Integer numOfOpeningAccounts = bankAccounts.size();
+        Integer numOfOpeningAccounts = DepositAccountOpens.size();
         Integer numOfClosingAccounts = depositAccountClosures.size();
-        Long newNumOfExistingCustomerId = numOfExistingCustomerSessionBeanLocal.addNewNumOfExistingCustomer(
-                newNumOfExistingCustomer.toString(), currentAcqUpdateMonth, numOfOpeningAccounts.toString(),
-                numOfClosingAccounts.toString());
 
+        Long newNumOfExistingCustomerId = numOfExistingCustomerSessionBeanLocal.addNewNumOfExistingCustomer(
+                newNumOfExistingCustomer.toString(), numOfOpeningAccounts.toString(),
+                numOfClosingAccounts.toString(), currentAcqUpdateMonth, attUpdateYear, "New", "Yes");
     }
 
     @Override
@@ -285,19 +301,30 @@ public class RateSessionBean implements RateSessionBeanLocal {
 
         DecimalFormat df = new DecimalFormat("#.000000");
 
-        AccountClosureReason accountClosureReason = accountClosureReasonSessionBeanLocal.getNewInterestAccountClosureReason();
-        Integer updateMonth = accountClosureReason.getUpdateMonth();
-        Integer updateYear = accountClosureReason.getUpdateYear();
-        accountClosureReason.setAccountClosureReasonStatus("Done");
+        AccountClosureReason interestAccountClosureReason = accountClosureReasonSessionBeanLocal.getNewInterestAccountClosureReason();
+        AccountClosureReason serviceChargeAccountClosureReason = accountClosureReasonSessionBeanLocal.getNewServiceChargeAccountClosureReason();
+        AccountClosureReason customerServiceAccountClosureReason = accountClosureReasonSessionBeanLocal.getNewCustomerServiceAccountClosureReason();
+        AccountClosureReason dontNeedAccountClosureReason = accountClosureReasonSessionBeanLocal.getNewDontNeedAccountClosureReason();
+        AccountClosureReason appliedAnotherAccountClosureReason = accountClosureReasonSessionBeanLocal.getNewAppliedAnotherAccountClosureReason();
+        AccountClosureReason otherReasonsAccountClosureReason = accountClosureReasonSessionBeanLocal.getNewOtherReasonsAccountClosureReason();
+
+        Integer updateMonth = interestAccountClosureReason.getUpdateMonth();
+        Integer updateYear = interestAccountClosureReason.getUpdateYear();
+        interestAccountClosureReason.setAccountClosureReasonStatus("Done");
+        serviceChargeAccountClosureReason.setAccountClosureReasonStatus("Done");
+        customerServiceAccountClosureReason.setAccountClosureReasonStatus("Done");
+        dontNeedAccountClosureReason.setAccountClosureReasonStatus("Done");
+        appliedAnotherAccountClosureReason.setAccountClosureReasonStatus("Done");
+        otherReasonsAccountClosureReason.setAccountClosureReasonStatus("Done");
 
         if (updateMonth == 12) {
-            updateYear = accountClosureReason.getUpdateYear() + 1;
+            updateYear = interestAccountClosureReason.getUpdateYear() + 1;
             updateMonth = 0;
-        }
+            List<AccountClosureReason> accountClosureReasons = accountClosureReasonSessionBeanLocal.getCurrentYearAccountClosureReason();
 
-        List<AccountClosureReason> accountClosureReasons = accountClosureReasonSessionBeanLocal.getCurrentYearAccountClosureReason();
-        for (int i = 0; i < accountClosureReasons.size(); i++) {
-            accountClosureReasons.get(i).setCurrentYear("No");
+            for (int i = 0; i < accountClosureReasons.size(); i++) {
+                accountClosureReasons.get(i).setCurrentYear("No");
+            }
         }
 
         Calendar cal = Calendar.getInstance();
@@ -335,12 +362,21 @@ public class RateSessionBean implements RateSessionBeanLocal {
             }
         }
 
-        String rateInterest = df.format(countInterest / numOfCustomerCloseAccount);
-        String rateServiceCharge = df.format(countServiceCharge / numOfCustomerCloseAccount);
-        String rateCustomerService = df.format(countCustomerService / numOfCustomerCloseAccount);
-        String rateDontNeed = df.format(countDontNeed / numOfCustomerCloseAccount);
-        String rateAppliedAnother = df.format(countAppliedAnother / numOfCustomerCloseAccount);
-        String rateOtherReasons = df.format(countOtherReasons / numOfCustomerCloseAccount);
+        String rateInterest = "0";
+        String rateServiceCharge = "0";
+        String rateCustomerService = "0";
+        String rateDontNeed = "0";
+        String rateAppliedAnother = "0";
+        String rateOtherReasons = "0";
+
+        if (numOfCustomerCloseAccount != 0) {
+            rateInterest = df.format(countInterest / numOfCustomerCloseAccount);
+            rateServiceCharge = df.format(countServiceCharge / numOfCustomerCloseAccount);
+            rateCustomerService = df.format(countCustomerService / numOfCustomerCloseAccount);
+            rateDontNeed = df.format(countDontNeed / numOfCustomerCloseAccount);
+            rateAppliedAnother = df.format(countAppliedAnother / numOfCustomerCloseAccount);
+            rateOtherReasons = df.format(countOtherReasons / numOfCustomerCloseAccount);
+        }
 
         Integer currentUpdateMonth = updateMonth + 1;
 

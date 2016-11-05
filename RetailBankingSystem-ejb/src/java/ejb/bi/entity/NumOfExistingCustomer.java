@@ -14,9 +14,12 @@ public class NumOfExistingCustomer implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long numOfExistingCustomerId;
     private String numOfExistingCustomer;
-    private Integer updateDate;
+    private Integer updateMonth;
     private String numOfOpeningAccounts;
     private String numOfClosingAccounts;
+    private Integer updateYear;
+    private String status;
+    private String currentYear;
 
     public Long getNumOfExistingCustomerId() {
         return numOfExistingCustomerId;
@@ -34,14 +37,6 @@ public class NumOfExistingCustomer implements Serializable {
         this.numOfExistingCustomer = numOfExistingCustomer;
     }
 
-    public Integer getUpdateDate() {
-        return updateDate;
-    }
-
-    public void setUpdateDate(Integer updateDate) {
-        this.updateDate = updateDate;
-    }
-
     public String getNumOfOpeningAccounts() {
         return numOfOpeningAccounts;
     }
@@ -56,6 +51,38 @@ public class NumOfExistingCustomer implements Serializable {
 
     public void setNumOfClosingAccounts(String numOfClosingAccounts) {
         this.numOfClosingAccounts = numOfClosingAccounts;
+    }
+
+    public Integer getUpdateMonth() {
+        return updateMonth;
+    }
+
+    public void setUpdateMonth(Integer updateMonth) {
+        this.updateMonth = updateMonth;
+    }
+
+    public Integer getUpdateYear() {
+        return updateYear;
+    }
+
+    public void setUpdateYear(Integer updateYear) {
+        this.updateYear = updateYear;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getCurrentYear() {
+        return currentYear;
+    }
+
+    public void setCurrentYear(String currentYear) {
+        this.currentYear = currentYear;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package managedbean.deposit.employee;
 
+import ejb.bi.session.DepositAccountOpenSessionBeanLocal;
 import ejb.customer.entity.CustomerBasic;
 import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import ejb.deposit.entity.BankAccount;
@@ -13,6 +14,7 @@ import javax.inject.Named;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import ejb.deposit.session.TransactionSessionBeanLocal;
 import ejb.infrastructure.session.LoggingSessionBeanLocal;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +24,9 @@ import javax.annotation.PostConstruct;
 @RequestScoped
 
 public class EmployeeCashManagedBean {
+
+    @EJB
+    private DepositAccountOpenSessionBeanLocal depositAccountOpenSessionBeanLocal;
 
     @EJB
     private CRMCustomerSessionBeanLocal customerSessionBeanLocal;
@@ -192,7 +197,7 @@ public class EmployeeCashManagedBean {
         System.out.println("=");
         System.out.println("====== deposit/EmployeeCashManagedBean: cashDeposit() ======");
         ec = FacesContext.getCurrentInstance().getExternalContext();
-        
+
         depositAccountNum = handleAccountString(depositAccountNumWithType);
         BankAccount bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountByNum(depositAccountNum);
         String activationCheck;
@@ -217,7 +222,7 @@ public class EmployeeCashManagedBean {
 
                 activationCheck = transactionSessionLocal.checkAccountActivation(depositAccountNum, depositAmt.toString());
 
-                if (activationCheck.equals("Initial deposit amount is insufficient.")) {
+                if (activationCheck.equals("Insufficient")) {
                     if (bankAccount.getBankAccountType().equals("Bonus Savings Account")) {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Minimum initial deposit amount is S$3000", "Failed"));
                     } else if (bankAccount.getBankAccountType().equals("Basic Savings Account")) {
@@ -225,11 +230,14 @@ public class EmployeeCashManagedBean {
                     } else if (bankAccount.getBankAccountType().equals("Fixed Deposit Account")) {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Minimum initial deposit amount is S$1000", "Failed"));
                     }
-                } else if (activationCheck.equals("Please declare your deposit period")) {
+                } else if (activationCheck.equals("Declare")) {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Please declare your fixed deposit period first.", "Failed"));
-                } else if (activationCheck.equals("Activated successfully.")) {
+                } else if (activationCheck.equals("Activated")) {
 
                     transactionId = transactionSessionLocal.cashDeposit(depositAccountNum, depositAmt.toString());
+
+                    Calendar cal = Calendar.getInstance();
+                    depositAccountOpenSessionBeanLocal.addNewDepositAccountOpen(cal.getTimeInMillis(), cal.getTime().toString());
 
                     statusMessage = "Cash deposit Successfully!";
                     loggingSessionBeanLocal.createNewLogging("employee", null, "cash deposit", "successful", null);
@@ -249,7 +257,7 @@ public class EmployeeCashManagedBean {
         System.out.println("=");
         System.out.println("====== deposit/CashManagedBean: cashWithdraw() ======");
         ec = FacesContext.getCurrentInstance().getExternalContext();
-        
+
         withdrawAccountNum = handleAccountString(withdrawAccountNumWithType);
         BankAccount bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountByNum(withdrawAccountNum);
 

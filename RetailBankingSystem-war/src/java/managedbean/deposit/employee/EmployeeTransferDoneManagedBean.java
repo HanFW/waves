@@ -1,11 +1,13 @@
 package managedbean.deposit.employee;
 
+import ejb.bi.session.DepositAccountOpenSessionBeanLocal;
 import ejb.customer.entity.CustomerBasic;
 import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import ejb.deposit.session.TransactionSessionBeanLocal;
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +23,9 @@ import javax.faces.context.FacesContext;
 @RequestScoped
 
 public class EmployeeTransferDoneManagedBean {
+
+    @EJB
+    private DepositAccountOpenSessionBeanLocal depositAccountOpenSessionBeanLocal;
 
     @EJB
     private CRMCustomerSessionBeanLocal customerSessionBeanLocal;
@@ -54,7 +59,7 @@ public class EmployeeTransferDoneManagedBean {
 
     @PostConstruct
     public void init() {
-        
+
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
         customerIdentificationNum = ec.getSessionMap().get("customerIdentificationNum").toString();
@@ -197,7 +202,7 @@ public class EmployeeTransferDoneManagedBean {
 
                         activationCheck = transactionSessionBeanLocal.checkAccountActivation(bankAccountTo.getBankAccountNum(), transferAmt.toString());
 
-                        if (activationCheck.equals("Initial deposit amount is insufficient.")) {
+                        if (activationCheck.equals("Insufficient")) {
                             if (bankAccountTo.getBankAccountType().equals("Bonus Savings Account")) {
                                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Minimum initial deposit amount is S$3000", "Failed"));
                             } else if (bankAccountTo.getBankAccountType().equals("Basic Savings Account")) {
@@ -205,11 +210,11 @@ public class EmployeeTransferDoneManagedBean {
                             } else if (bankAccountTo.getBankAccountType().equals("Fixed Deposit Account")) {
                                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed!Minimum initial deposit amount is S$1000", "Failed"));
                             }
-                        } else if (activationCheck.equals("Please contact us at 800 820 8820 or visit our branch.")) {
+                        } else if (activationCheck.equals("Contact")) {
                             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Please contact us at 800 820 8820 or visit our branch.", "Failed"));
-                        } else if (activationCheck.equals("Please declare your deposit period")) {
+                        } else if (activationCheck.equals("Declare")) {
                             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Please declare your fixed deposit period first.", "Failed"));
-                        } else if (activationCheck.equals("Activated successfully.")) {
+                        } else if (activationCheck.equals("Activated")) {
                             Double diffAmt = Double.valueOf(bankAccountFrom.getAvailableBankAccountBalance()) - transferAmt;
 
                             toBankAccountNumWithType = toAccount + "-" + bankAccountTo.getBankAccountType();
@@ -222,6 +227,9 @@ public class EmployeeTransferDoneManagedBean {
 
                                 newTransactionId = transactionSessionBeanLocal.fundTransfer(fromAccount, toAccount, transferAmt.toString());
                                 statusMessage = "Your transaction has been completed.";
+
+                                Calendar cal = Calendar.getInstance();
+                                depositAccountOpenSessionBeanLocal.addNewDepositAccountOpen(cal.getTimeInMillis(), cal.getTime().toString());
 
                                 Double fromAccountAvailableBalanceDouble = currentAvailableBalance - transferAmt;
                                 Double fromAccountTotalBalanceDouble = currentTotalBalance - transferAmt;

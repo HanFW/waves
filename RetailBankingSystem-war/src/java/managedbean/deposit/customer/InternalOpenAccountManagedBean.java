@@ -1,5 +1,6 @@
 package managedbean.deposit.customer;
 
+import ejb.bi.session.DepositAccountOpenSessionBeanLocal;
 import ejb.customer.entity.CustomerBasic;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
@@ -21,7 +22,10 @@ import org.primefaces.event.FlowEvent;
 @Named(value = "internalOpenAccountManagedBean")
 @ViewScoped
 
-public class InternalOpenAccountManagedBean implements Serializable  {
+public class InternalOpenAccountManagedBean implements Serializable {
+
+    @EJB
+    private DepositAccountOpenSessionBeanLocal depositAccountOpenSessionBeanLocal;
 
     @EJB
     private MessageSessionBeanLocal messageSessionBeanLocal;
@@ -373,7 +377,7 @@ public class InternalOpenAccountManagedBean implements Serializable  {
         CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
 
         bankAccountNum = bankAccountSessionBeanLocal.generateBankAccount();
-        System.out.println(agreement);
+        
         if (agreement) {
 
             totalBankAccountBalance = "0.0";
@@ -406,13 +410,17 @@ public class InternalOpenAccountManagedBean implements Serializable  {
 
             Calendar cal = Calendar.getInstance();
             Long currentTimeMilis = cal.getTimeInMillis();
-            
+
             newAccountId = bankAccountSessionBeanLocal.addNewAccount(bankAccountNum, bankAccountType,
                     totalBankAccountBalance, availableBankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
                     bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
                     statementDateDouble, currentTimeMilis, customerBasicId, newInterestId);
 
             bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountById(newAccountId);
+
+            if (bankAccountType.equals("Monthly Savings Account")) {
+                depositAccountOpenSessionBeanLocal.addNewDepositAccountOpen(currentTimeMilis, cal.getTime().toString());
+            }
 
             if (!bankAccountDepositPeriod.equals("None")) {
                 bankAccountSessionBeanLocal.updateDepositPeriod(bankAccountNum, bankAccountDepositPeriod);
@@ -425,7 +433,7 @@ public class InternalOpenAccountManagedBean implements Serializable  {
             messageContent = "Welcome to Merlion Bank! Please deposit/transfer sufficient fund to your bank account.\n"
                     + "For fixed deposit account, please declare your deposit period before activating your account.\n"
                     + "Please contact us at 800 820 8820 or write enquiry after you login.\n";
-            
+
             messageSessionBeanLocal.sendMessage("Merlion Bank", "Service", subject, receivedDate.toString(),
                     messageContent, customerBasicId);
 
@@ -439,7 +447,6 @@ public class InternalOpenAccountManagedBean implements Serializable  {
             ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerSaveAccount.xhtml?faces-redirect=true");
 
         } else {
-            System.out.println("else");
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Please agree to terms.", "Failed!"));
         }
     }

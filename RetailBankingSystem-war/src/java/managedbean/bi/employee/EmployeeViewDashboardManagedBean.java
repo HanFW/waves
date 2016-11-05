@@ -1,8 +1,10 @@
 package managedbean.bi.employee;
 
 import ejb.bi.entity.AccountClosureReason;
+import ejb.bi.entity.NumOfExistingCustomer;
 import ejb.bi.entity.Rate;
 import ejb.bi.session.AccountClosureReasonSessionBeanLocal;
+import ejb.bi.session.NumOfExistingCustomerSessionBeanLocal;
 import ejb.bi.session.RateSessionBeanLocal;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -21,6 +23,9 @@ import org.primefaces.model.chart.PieChartModel;
 @RequestScoped
 
 public class EmployeeViewDashboardManagedBean {
+
+    @EJB
+    private NumOfExistingCustomerSessionBeanLocal numOfExistingCustomerSessionBeanLocal;
 
     @EJB
     private AccountClosureReasonSessionBeanLocal accountClosureReasonSessionBeanLocal;
@@ -229,24 +234,34 @@ public class EmployeeViewDashboardManagedBean {
     private BarChartModel initBarModel() {
         BarChartModel model = new BarChartModel();
 
-        ChartSeries boys = new ChartSeries();
-        boys.setLabel("Number of Opening Accounts");
-        boys.set("2004", 120);
-        boys.set("2005", 100);
-        boys.set("2006", 44);
-        boys.set("2007", 150);
-        boys.set("2008", 25);
+        ChartSeries openAccount = new ChartSeries();
+        openAccount.setLabel("Number of Opening Accounts");
 
-        ChartSeries girls = new ChartSeries();
-        girls.setLabel("Number of Closing Accounts");
-        girls.set("2004", 52);
-        girls.set("2005", 60);
-        girls.set("2006", 110);
-        girls.set("2007", 135);
-        girls.set("2008", 120);
+        ChartSeries closeAccount = new ChartSeries();
+        closeAccount.setLabel("Number of Closing Accounts");
 
-        model.addSeries(boys);
-        model.addSeries(girls);
+        List<NumOfExistingCustomer> numOfExistingCustomers = numOfExistingCustomerSessionBeanLocal.getCurrentYearNumOfExistingCustomer();
+
+        int i;
+        for (i = 0; i < numOfExistingCustomers.size(); i++) {
+
+            Integer updateMonth = numOfExistingCustomers.get(i).getUpdateMonth();
+            Integer updateYear = numOfExistingCustomers.get(i).getUpdateYear();
+
+            String numOfOpeningAccounts = numOfExistingCustomers.get(i).getNumOfOpeningAccounts();
+            String numOfClosingAccounts = numOfExistingCustomers.get(i).getNumOfClosingAccounts();
+            String date = updateYear + "." + updateMonth;
+
+            openAccount.set(date, Integer.valueOf(numOfOpeningAccounts));
+            closeAccount.set(date, Integer.valueOf(numOfClosingAccounts));
+
+            if (i == 11) {
+                i = 0;
+            }
+        }
+
+        model.addSeries(openAccount);
+        model.addSeries(closeAccount);
 
         return model;
     }

@@ -16,4 +16,14 @@ public interface AccountClosureReasonSessionBeanLocal {
     public List<AccountClosureReason> getCurrentYearAccountClosureReason();
 
     public AccountClosureReason retrieveAccountClosureReasonByName(String rateName);
+
+    public AccountClosureReason getNewServiceChargeAccountClosureReason();
+
+    public AccountClosureReason getNewCustomerServiceAccountClosureReason();
+
+    public AccountClosureReason getNewDontNeedAccountClosureReason();
+
+    public AccountClosureReason getNewAppliedAnotherAccountClosureReason();
+
+    public AccountClosureReason getNewOtherReasonsAccountClosureReason();
 }

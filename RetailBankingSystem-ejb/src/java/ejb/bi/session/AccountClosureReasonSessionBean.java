@@ -45,6 +45,51 @@ public class AccountClosureReasonSessionBean implements AccountClosureReasonSess
     }
 
     @Override
+    public AccountClosureReason getNewServiceChargeAccountClosureReason() {
+        Query query = entityManager.createQuery("SELECT a FROM AccountClosureReason a Where a.accountClosureReasonStatus=:accountClosureReasonStatus And a.rateName=:rateName");
+        query.setParameter("accountClosureReasonStatus", "New");
+        query.setParameter("rateName", "Service Charge");
+
+        return (AccountClosureReason) query.getSingleResult();
+    }
+
+    @Override
+    public AccountClosureReason getNewCustomerServiceAccountClosureReason() {
+        Query query = entityManager.createQuery("SELECT a FROM AccountClosureReason a Where a.accountClosureReasonStatus=:accountClosureReasonStatus And a.rateName=:rateName");
+        query.setParameter("accountClosureReasonStatus", "New");
+        query.setParameter("rateName", "Customer Service");
+
+        return (AccountClosureReason) query.getSingleResult();
+    }
+
+    @Override
+    public AccountClosureReason getNewDontNeedAccountClosureReason() {
+        Query query = entityManager.createQuery("SELECT a FROM AccountClosureReason a Where a.accountClosureReasonStatus=:accountClosureReasonStatus And a.rateName=:rateName");
+        query.setParameter("accountClosureReasonStatus", "New");
+        query.setParameter("rateName", "Dont Need");
+
+        return (AccountClosureReason) query.getSingleResult();
+    }
+
+    @Override
+    public AccountClosureReason getNewAppliedAnotherAccountClosureReason() {
+        Query query = entityManager.createQuery("SELECT a FROM AccountClosureReason a Where a.accountClosureReasonStatus=:accountClosureReasonStatus And a.rateName=:rateName");
+        query.setParameter("accountClosureReasonStatus", "New");
+        query.setParameter("rateName", "Applied Another");
+
+        return (AccountClosureReason) query.getSingleResult();
+    }
+
+    @Override
+    public AccountClosureReason getNewOtherReasonsAccountClosureReason() {
+        Query query = entityManager.createQuery("SELECT a FROM AccountClosureReason a Where a.accountClosureReasonStatus=:accountClosureReasonStatus And a.rateName=:rateName");
+        query.setParameter("accountClosureReasonStatus", "New");
+        query.setParameter("rateName", "Other Reasons");
+
+        return (AccountClosureReason) query.getSingleResult();
+    }
+
+    @Override
     public List<AccountClosureReason> getCurrentYearAccountClosureReason() {
         Query query = entityManager.createQuery("SELECT a FROM AccountClosureReason a Where a.currentYear=:currentYear");
         query.setParameter("currentYear", "Yes");
@@ -57,9 +102,10 @@ public class AccountClosureReasonSessionBean implements AccountClosureReasonSess
         AccountClosureReason accountClosureReason = new AccountClosureReason();
 
         try {
-            Query query = entityManager.createQuery("Select a From AccountClosureReason a Where a.rateName=:rateName And a.currentYear=:currentYear");
+            Query query = entityManager.createQuery("Select a From AccountClosureReason a Where a.rateName=:rateName And a.currentYear=:currentYear And a.accountClosureReasonStatus=:accountClosureReasonStatus");
             query.setParameter("rateName", rateName);
             query.setParameter("currentYear", "Yes");
+            query.setParameter("accountClosureReasonStatus", "New");
 
             if (query.getResultList().isEmpty()) {
                 return new AccountClosureReason();
