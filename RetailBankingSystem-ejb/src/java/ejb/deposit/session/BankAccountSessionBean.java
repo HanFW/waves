@@ -751,7 +751,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
 
     @Override
     public void updateDepositAccountTotalBalance(String cardNum, double transactionAmt,String merchantName) {
-        System.out.println("!!!!!!!updateDepositAccountTotalBalance");
+        System.out.println("~~~~~!!!!!!!updateDepositAccountTotalBalance");
         BankAccount account = debitCardSessionBeanLocal.getBankAccountByCardNum(cardNum);
 
         //add new transaction
