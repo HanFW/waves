@@ -705,7 +705,7 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
         } else if (numOfMortgage == 1) {
             return 50;
         } else {
-            return 20;
+            return 40;
         }
     }
 
@@ -816,13 +816,13 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
         }
         customerRisk += ca.getNumOfDependent() * 0.03;
         if (ca.getResidentialStatus().equals("Rented")) {
-            customerRisk += 0.07;
+            customerRisk += 0.05;
         }
         if (ca.getEmploymentStatus().equals("Self-Employed") && ca.getLengthOfCurrentJob() < 3) {
-            customerRisk += 0.03;
+            customerRisk += 0.02;
         }
         if (ca.getLengthOfCurrentJob() < 3 && ca.getLengthOfPreviousJob() < 3) {
-            customerRisk += 0.02;
+            customerRisk += 0.01;
         }
 
         //joint applicant risk
