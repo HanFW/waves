@@ -251,6 +251,9 @@ public class RateSessionBean implements RateSessionBeanLocal {
         Long endTime = cal.getTimeInMillis();
         Long startTime = endTime - 100010;
 
+        Integer currentAcqUpdateMonth = acqUpdateMonth + 1;
+        Integer currentAttUpdateMonth = attUpdateMonth + 1;
+
         Query queryOpenAccount = entityManager.createQuery("SELECT d FROM DepositAccountOpen d WHERE d.currentTimeMilis >= :startTime And d.currentTimeMilis<=:endTime");
         queryOpenAccount.setParameter("startTime", startTime);
         queryOpenAccount.setParameter("endTime", endTime);
@@ -262,7 +265,7 @@ public class RateSessionBean implements RateSessionBeanLocal {
         queryCloseAccount.setParameter("endTime", endTime);
         List<DepositAccountClosure> depositAccountClosures = queryCloseAccount.getResultList();
 
-        NumOfExistingCustomer numOfCustomer = numOfExistingCustomerSessionBeanLocal.retrieveNumOfExistingCustomerByMonth(acqUpdateMonth);
+        NumOfExistingCustomer numOfCustomer = numOfExistingCustomerSessionBeanLocal.retrieveNumOfExistingCustomerByMonth(currentAcqUpdateMonth);
         String numberOfCustomer = numOfCustomer.getNumOfExistingCustomer();
 
         Integer numberOfOpenAccounts = DepositAccountOpens.size();
@@ -277,8 +280,6 @@ public class RateSessionBean implements RateSessionBeanLocal {
         }
 
         Integer newNumOfExistingCustomer = Integer.valueOf(numberOfCustomer) + numberOfOpenAccounts - numberOfCloseAccounts;
-        Integer currentAcqUpdateMonth = acqUpdateMonth + 1;
-        Integer currentAttUpdateMonth = attUpdateMonth + 1;
 
         String acqRateValue = df.format(DepositAccountOpens.size() / Double.valueOf(numberOfCustomer));
         String attRateValue = df.format(depositAccountClosures.size() / Double.valueOf(numberOfCustomer));
