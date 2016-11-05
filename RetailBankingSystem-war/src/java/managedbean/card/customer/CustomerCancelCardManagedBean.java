@@ -171,7 +171,7 @@ public class CustomerCancelCardManagedBean implements Serializable {
 
             customer = getCustomerViaSessionMap();
             Long id = customer.getCustomerBasicId();
-            debitCards = debitCardSessionBeanLocal.getAllDebitCards(id);
+            debitCards = debitCardSessionBeanLocal.getAllActivatedDebitCards(id);
 
         }
         return debitCards;

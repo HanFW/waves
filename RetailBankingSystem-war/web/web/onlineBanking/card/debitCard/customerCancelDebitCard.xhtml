@@ -20,6 +20,7 @@
 
                     <h1>Cancel My Card</h1>
                     <p:messages autoUpdate="true"/>
+                    
                     <h:panelGrid columns="2" class="ui-lg-6"> 
 
                         <p:outputLabel value="Card Type:"/>
@@ -39,7 +40,7 @@
                                 <f:selectItems value="#{customerCancelCardManagedBean.debitCards}"/> 
                             </p:selectOneMenu>
                             <p:outputLabel value="Card Password:" />
-                            <p:inputText  required="#{customerCancelCardManagedBean.debitPanelVisible}" requiredMessage="Please input your card password" id="cardPwd" value="#{customerCancelCardManagedBean.debitCardPwd}">
+                            <p:inputText type="password" required="#{customerCancelCardManagedBean.debitPanelVisible}" requiredMessage="Please input your card password" id="cardPwd" value="#{customerCancelCardManagedBean.debitCardPwd}">
 
                             </p:inputText>
                         </h:panelGrid>

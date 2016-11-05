@@ -37,7 +37,7 @@
                                 <p:ajax event="change" update="creditPanel debitPanel" listener="#{employeeCancelCardDoneManagedBean.showCards}"/>
                             </p:selectOneMenu>
                             <p:outputLabel value="Card Password:" />
-                            <p:inputText  required="#{employeeCancelCardDoneManagedBean.debitPanelVisible}" requiredMessage="Please input your card password" id="cardPwd" value="#{employeeCancelCardDoneManagedBean.debitCardPwd}">
+                            <p:inputText type="password" required="#{employeeCancelCardDoneManagedBean.debitPanelVisible}" requiredMessage="Please input your card password" id="cardPwd" value="#{employeeCancelCardDoneManagedBean.debitCardPwd}">
 
                             </p:inputText>
                         </h:panelGrid>
