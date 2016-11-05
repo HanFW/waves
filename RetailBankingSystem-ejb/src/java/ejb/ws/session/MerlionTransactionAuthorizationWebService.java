@@ -152,7 +152,7 @@ public class MerlionTransactionAuthorizationWebService {
                         outstandingBalance = card2.getOutstandingBalance();
                         newOutstandingBalance = outstandingBalance + transactionAmt;
 
-                        if (transactionAmt <= creditLimit || transactionAmt <= (creditLimit - outstandingBalance)) {
+                        if (transactionAmt <= creditLimit && transactionAmt <= (creditLimit - outstandingBalance)) {
                             card2.setOutstandingBalance(newOutstandingBalance);
                             em.flush();
                         }
