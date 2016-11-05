@@ -16,11 +16,17 @@ import ejb.loan.entity.MortgageLoanApplication;
 import ejb.loan.session.LoanApplicationSessionBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
+import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.context.ExternalContext;
@@ -34,23 +40,24 @@ import javax.faces.view.ViewScoped;
  */
 @Named(value = "loanOfficerProcessMortgagePurchaseApplicationManagedBean")
 @ViewScoped
-public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements Serializable{
+public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements Serializable {
+
     @EJB
     private LoanApplicationSessionBeanLocal loanApplicationSessionBeanLocal;
-    
+
     private Long applicationId;
-    
+
     private MortgageLoanApplication ma;
     private CustomerBasic customer;
     private CustomerAdvanced ca;
     private List<CustomerDebt> debts;
     private CustomerProperty property;
-    
+
     private Date applicationDate;
     private double amountGranted;
     private int periodSuggested;
     private double instalmentSuggested;
-    
+
     //basic information
     private String customerSalutation;
     private String customerName;
@@ -120,9 +127,9 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     private Double customerLoanAmountRequired;
     private Integer customerLoanTenure;
     private String customerInterestPackage;
-    
+
     private HashMap docs;
-    
+
     //credit report
     CreditReportBureauScore cr;
     private List<CreditReportAccountStatus> accountStatus;
@@ -130,29 +137,90 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     private Double bureauScore;
     private String riskGrade;
     private Double probabilityOfDefault;
+
+    //joint applicant
+    private boolean hasJoint;
+    private boolean noJoint;
+    private CustomerBasic joint;
+    private String relationship;
+    private CustomerAdvanced jointCA;
+    private List<CustomerDebt> jointDebts;
+
+    //joint basic information
+    private String jointSalutation;
+    private String jointName;
+    private String jointDateOfBirth;
+    private String jointGender;
+    private String jointNationality;
+    private String jointIdentificationNum;
+    private String jointCountryOfResidence;
+    private String jointRace;
+    private String jointMobile;
+    private String jointEmail;
+
+    //joint personal details
+    private String jointEducation;
+    private String jointMaritalStatus;
+    private Integer jointNumOfDependents;
+    private String jointAddress;
+    private String jointPostal;
+    private String jointResidentialStatus;
+    private String jointResidentialType;
+    private Integer jointLengthOfResidence;
+
+    //joint employment details
+    private String jointEmploymentStatus;
+    private String jointOccupation;
+    private String jointCompanyName;
+    private String jointCompanyAddress;
+    private String jointCompanyPostal;
+    private String jointIndustryType;
+    private String jointCurrentPosition;
+    private String jointCurrentJobTitle;
+    private Integer jointLengthOfCurrentJob;
+    private String jointPreviousCompany;
+    private Integer jointLengthOfPreviousJob;
+    private Double jointMonthlyFixedIncome;
+    private Double jointOtherMonthlyIncome;
+    private String jointOtherMonthlyIncomeSource;
+
+    //joint credit report
+    CreditReportBureauScore jointCR;
+    private List<CreditReportAccountStatus> jointAccountStatus;
+    private List<CreditReportDefaultRecords> jointDefaultRecords;
+    private Double jointBureauScore;
+    private String jointRiskGrade;
+    private Double jointProbabilityOfDefault;
     
+    //decision support
+    private int customerAge;
+    private int jointAge;
     private Double appraisedValue;
-    private double[] maxInterval;
-    private double maxMin;
-    private double maxMax;
-    private double[] suggestedInterval;
-    private double suggestedMin;
-    private double suggestedMax;
-    private double riskRatio;    
-    
+    private double[] suggestedTenure;
+    private double tenureMin;
+    private double tenureMax;
+    private double[] suggestedAmount;
+    private double amountMin;
+    private double amountMax;
+    private double riskRatio;
+    private int averageAge;
+    private int ltvRatio;
+    private double ltvPrice;
+    private double maxInstalment;
+
     /**
      * Creates a new instance of LoanOfficerProcessApplicationManagedBean
      */
     public LoanOfficerProcessMortgagePurchaseApplicationManagedBean() {
     }
-    
+
     @PostConstruct
-    public void init(){
+    public void init() {
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-        applicationId = (Long) ec.getFlash().get("applicationId"); 
-        
+        applicationId = (Long) ec.getFlash().get("applicationId");
+
         ma = loanApplicationSessionBeanLocal.getMortgageLoanApplicationById(applicationId);
-        
+
         customer = ma.getCustomerBasic();
         ca = customer.getCustomerAdvanced();
         debts = customer.getCustomerDebt();
@@ -160,7 +228,11 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
         cr = customer.getBureauScore();
         accountStatus = loanApplicationSessionBeanLocal.getAccountStatusByBureauScoreId(cr.getId());
         defaultRecords = cr.getDefaultRecords();
-        
+
+        bureauScore = cr.getBureauScore();
+        riskGrade = cr.getRiskGrade();
+        probabilityOfDefault = cr.getProbabilityOfDefault();
+
         customerSalutation = customer.getCustomerSalutation();
         customerName = customer.getCustomerName();
         customerDateOfBirth = customer.getCustomerDateOfBirth();
@@ -193,7 +265,7 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
         customerMonthlyFixedIncome = ca.getMonthlyFixedIncome();
         customerOtherMonthlyIncome = ca.getOtherMonthlyIncome();
         customerOtherMonthlyIncomeSource = ca.getOtherMonthlyIncomeSource();
-        
+
         customerPropertyAddress = property.getPropertyAddress();
         customerPropertyPostal = property.getPropertyPostal();
         customerPropertyOwners = property.getPropertyOwners();
@@ -206,7 +278,7 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
         customerPropertyTenureType = property.getPropertyTenureType();
         customerPropertyTenureDuration = property.getPropertyTenureDuration();
         customerPropertyTenureFromYear = property.getPropertyTenureStartYear();
-        
+
         customerPropertyPurchasePrice = ma.getPropertyPurchasePrice();
         customerPropertyDateOfPurchase = ma.getPropertyDateOfPurchase();
         customerPropertySource = ma.getPropertySource();
@@ -223,38 +295,92 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
         customerLoanTenure = ma.getPeriodRequired();
         customerInterestPackage = ma.getLoanInterestPackage().getPackageName();
         docs = ma.getUploads();
-        
+
         applicationDate = ma.getApplicationDate();
-        
-        
-        bureauScore = cr.getBureauScore();
-        riskGrade = cr.getRiskGrade();
-        probabilityOfDefault = cr.getProbabilityOfDefault();
-        
+
         appraisedValue = ma.getPropertyAppraisedValue();
-        maxInterval = loanApplicationSessionBeanLocal.getMortgagePurchaseLoanMaxInterval();
-        maxMin = maxInterval[0];
-        maxMax = maxInterval[1];
-        riskRatio = loanApplicationSessionBeanLocal.getMortgagePurchaseLoanRiskRatio();
-        suggestedInterval = loanApplicationSessionBeanLocal.getMortgagePurchaseLoanSuggestedInterval();
-        suggestedMin = suggestedInterval[0];
-        suggestedMax = suggestedInterval[1];
+
+        //joint applicant        
+        joint = ma.getCustomer();
+        if (joint == null) {
+            hasJoint = false;
+            noJoint = true;
+        } else {
+            hasJoint = true;
+            noJoint = false;
+            relationship = ma.getRelationship();
+            jointCA = joint.getCustomerAdvanced();
+            jointDebts = joint.getCustomerDebt();
+            jointCR = joint.getBureauScore();
+            jointAccountStatus = loanApplicationSessionBeanLocal.getAccountStatusByBureauScoreId(jointCR.getId());
+            jointDefaultRecords = jointCR.getDefaultRecords();
+
+            jointBureauScore = jointCR.getBureauScore();
+            jointRiskGrade = jointCR.getRiskGrade();
+            jointProbabilityOfDefault = jointCR.getProbabilityOfDefault();
+
+            jointSalutation = joint.getCustomerSalutation();
+            jointName = joint.getCustomerName();
+            jointDateOfBirth = joint.getCustomerDateOfBirth();
+            jointGender = joint.getCustomerGender();
+            jointNationality = joint.getCustomerNationality();
+            jointIdentificationNum = joint.getCustomerIdentificationNum();
+            jointCountryOfResidence = joint.getCustomerCountryOfResidence();
+            jointRace = joint.getCustomerRace();
+            jointMobile = joint.getCustomerMobile();
+            jointEmail = joint.getCustomerEmail();
+            jointEducation = jointCA.getEducation();
+            jointMaritalStatus = joint.getCustomerMaritalStatus();
+            jointNumOfDependents = jointCA.getNumOfDependent();
+            jointAddress = joint.getCustomerAddress();
+            jointPostal = joint.getCustomerPostal();
+            jointResidentialStatus = jointCA.getResidentialStatus();
+            jointResidentialType = jointCA.getResidentialType();
+            jointLengthOfResidence = jointCA.getYearInResidence();
+            jointEmploymentStatus = jointCA.getEmploymentStatus();
+            jointOccupation = joint.getCustomerOccupation();
+            jointCompanyName = joint.getCustomerCompany();
+            jointCompanyAddress = jointCA.getCompanyAddress();
+            jointCompanyPostal = jointCA.getCompanyPostal();
+            jointIndustryType = jointCA.getIndustryType();
+            jointCurrentPosition = jointCA.getCurrentPosition();
+            jointCurrentJobTitle = jointCA.getCurrentJobTitle();
+            jointLengthOfCurrentJob = jointCA.getLengthOfCurrentJob();
+            jointPreviousCompany = jointCA.getPreviousCompanyName();
+            jointLengthOfPreviousJob = jointCA.getLengthOfPreviousJob();
+            jointMonthlyFixedIncome = jointCA.getMonthlyFixedIncome();
+            jointOtherMonthlyIncome = jointCA.getOtherMonthlyIncome();
+            jointOtherMonthlyIncomeSource = jointCA.getOtherMonthlyIncomeSource();
+
+            //Decison support
+            DateFormat df = new SimpleDateFormat("dd/MMM/yyyy");
+            try {
+                customerAge = new Date().getYear() - df.parse(customerDateOfBirth).getYear();
+                jointAge = new Date().getYear() - df.parse(jointDateOfBirth).getYear();
+            } catch (ParseException ex) {
+                Logger.getLogger(LoanOfficerProcessMortgagePurchaseApplicationManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            riskRatio = loanApplicationSessionBeanLocal.getMortgagePurchaseLoanRiskRatio();
+            suggestedAmount = loanApplicationSessionBeanLocal.getMortgagePurchaseLoanSuggestedInterval();
+            amountMin = suggestedAmount[0];
+            amountMax = suggestedAmount[1];
+        }
     }
-    
-    public void approveLoanRequest() throws IOException{
+
+    public void approveLoanRequest() throws IOException {
         loanApplicationSessionBeanLocal.approveMortgageLoanRequest(ma.getLoanApplicationId(), amountGranted, periodSuggested, instalmentSuggested);
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/loan/loanOfficerViewApplications.xhtml?faces-redirect=true");
     }
-    
-    public void rejectLoanRequest() throws IOException{
+
+    public void rejectLoanRequest() throws IOException {
         loanApplicationSessionBeanLocal.rejectMortgageLoanRequest(ma.getLoanApplicationId());
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/loan/loanOfficerViewApplications.xhtml?faces-redirect=true");    
+        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/loan/loanOfficerViewApplications.xhtml?faces-redirect=true");
     }
-    
-    public void calculateInstalment(){
-        instalmentSuggested = (0.035/12*amountGranted) / (1 - Math.pow((1+0.035/12),-periodSuggested*12));
+
+    public void calculateInstalment() {
+        instalmentSuggested = (0.035 / 12 * amountGranted) / (1 - Math.pow((1 + 0.035 / 12), -periodSuggested * 12));
         DecimalFormat df = new DecimalFormat("0.00");
         instalmentSuggested = Double.valueOf(df.format(instalmentSuggested));
     }
@@ -265,6 +391,22 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
 
     public void setLoanApplicationSessionBeanLocal(LoanApplicationSessionBeanLocal loanApplicationSessionBeanLocal) {
         this.loanApplicationSessionBeanLocal = loanApplicationSessionBeanLocal;
+    }
+
+    public int getCustomerAge() {
+        return customerAge;
+    }
+
+    public void setCustomerAge(int customerAge) {
+        this.customerAge = customerAge;
+    }
+
+    public int getJointAge() {
+        return jointAge;
+    }
+
+    public void setJointAge(int jointAge) {
+        this.jointAge = jointAge;
     }
 
     public Long getApplicationId() {
@@ -891,60 +1033,444 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
         this.appraisedValue = appraisedValue;
     }
 
-    public double[] getMaxInterval() {
-        return maxInterval;
-    }
-
-    public void setMaxInterval(double[] maxInterval) {
-        this.maxInterval = maxInterval;
-    }
-
-    public double getMaxMin() {
-        return maxMin;
-    }
-
-    public void setMaxMin(double maxMin) {
-        this.maxMin = maxMin;
-    }
-
-    public double getMaxMax() {
-        return maxMax;
-    }
-
-    public void setMaxMax(double maxMax) {
-        this.maxMax = maxMax;
-    }
-
-    public double[] getSuggestedInterval() {
-        return suggestedInterval;
-    }
-
-    public void setSuggestedInterval(double[] suggestedInterval) {
-        this.suggestedInterval = suggestedInterval;
-    }
-
-    public double getSuggestedMin() {
-        return suggestedMin;
-    }
-
-    public void setSuggestedMin(double suggestedMin) {
-        this.suggestedMin = suggestedMin;
-    }
-
-    public double getSuggestedMax() {
-        return suggestedMax;
-    }
-
-    public void setSuggestedMax(double suggestedMax) {
-        this.suggestedMax = suggestedMax;
-    }
-
     public double getRiskRatio() {
         return riskRatio;
     }
 
     public void setRiskRatio(double riskRatio) {
         this.riskRatio = riskRatio;
+    }
+
+    public CustomerBasic getJoint() {
+        return joint;
+    }
+
+    public void setJoint(CustomerBasic joint) {
+        this.joint = joint;
+    }
+
+    public String getRelationship() {
+        return relationship;
+    }
+
+    public void setRelationship(String relationship) {
+        this.relationship = relationship;
+    }
+
+    public CustomerAdvanced getJointCA() {
+        return jointCA;
+    }
+
+    public void setJointCA(CustomerAdvanced jointCA) {
+        this.jointCA = jointCA;
+    }
+
+    public List<CustomerDebt> getJointDebts() {
+        return jointDebts;
+    }
+
+    public void setJointDebts(List<CustomerDebt> jointDebts) {
+        this.jointDebts = jointDebts;
+    }
+
+    public String getJointSalutation() {
+        return jointSalutation;
+    }
+
+    public void setJointSalutation(String jointSalutation) {
+        this.jointSalutation = jointSalutation;
+    }
+
+    public String getJointName() {
+        return jointName;
+    }
+
+    public void setJointName(String jointName) {
+        this.jointName = jointName;
+    }
+
+    public String getJointDateOfBirth() {
+        return jointDateOfBirth;
+    }
+
+    public void setJointDateOfBirth(String jointDateOfBirth) {
+        this.jointDateOfBirth = jointDateOfBirth;
+    }
+
+    public String getJointGender() {
+        return jointGender;
+    }
+
+    public void setJointGender(String jointGender) {
+        this.jointGender = jointGender;
+    }
+
+    public String getJointNationality() {
+        return jointNationality;
+    }
+
+    public void setJointNationality(String jointNationality) {
+        this.jointNationality = jointNationality;
+    }
+
+    public String getJointIdentificationNum() {
+        return jointIdentificationNum;
+    }
+
+    public void setJointIdentificationNum(String jointIdentificationNum) {
+        this.jointIdentificationNum = jointIdentificationNum;
+    }
+
+    public String getJointCountryOfResidence() {
+        return jointCountryOfResidence;
+    }
+
+    public void setJointCountryOfResidence(String jointCountryOfResidence) {
+        this.jointCountryOfResidence = jointCountryOfResidence;
+    }
+
+    public String getJointRace() {
+        return jointRace;
+    }
+
+    public void setJointRace(String jointRace) {
+        this.jointRace = jointRace;
+    }
+
+    public String getJointMobile() {
+        return jointMobile;
+    }
+
+    public void setJointMobile(String jointMobile) {
+        this.jointMobile = jointMobile;
+    }
+
+    public String getJointEmail() {
+        return jointEmail;
+    }
+
+    public void setJointEmail(String jointEmail) {
+        this.jointEmail = jointEmail;
+    }
+
+    public String getJointEducation() {
+        return jointEducation;
+    }
+
+    public void setJointEducation(String jointEducation) {
+        this.jointEducation = jointEducation;
+    }
+
+    public String getJointMaritalStatus() {
+        return jointMaritalStatus;
+    }
+
+    public void setJointMaritalStatus(String jointMaritalStatus) {
+        this.jointMaritalStatus = jointMaritalStatus;
+    }
+
+    public Integer getJointNumOfDependents() {
+        return jointNumOfDependents;
+    }
+
+    public void setJointNumOfDependents(Integer jointNumOfDependents) {
+        this.jointNumOfDependents = jointNumOfDependents;
+    }
+
+    public String getJointAddress() {
+        return jointAddress;
+    }
+
+    public void setJointAddress(String jointAddress) {
+        this.jointAddress = jointAddress;
+    }
+
+    public String getJointPostal() {
+        return jointPostal;
+    }
+
+    public void setJointPostal(String jointPostal) {
+        this.jointPostal = jointPostal;
+    }
+
+    public String getJointResidentialStatus() {
+        return jointResidentialStatus;
+    }
+
+    public void setJointResidentialStatus(String jointResidentialStatus) {
+        this.jointResidentialStatus = jointResidentialStatus;
+    }
+
+    public String getJointResidentialType() {
+        return jointResidentialType;
+    }
+
+    public void setJointResidentialType(String jointResidentialType) {
+        this.jointResidentialType = jointResidentialType;
+    }
+
+    public Integer getJointLengthOfResidence() {
+        return jointLengthOfResidence;
+    }
+
+    public void setJointLengthOfResidence(Integer jointLengthOfResidence) {
+        this.jointLengthOfResidence = jointLengthOfResidence;
+    }
+
+    public String getJointEmploymentStatus() {
+        return jointEmploymentStatus;
+    }
+
+    public void setJointEmploymentStatus(String jointEmploymentStatus) {
+        this.jointEmploymentStatus = jointEmploymentStatus;
+    }
+
+    public String getJointOccupation() {
+        return jointOccupation;
+    }
+
+    public void setJointOccupation(String jointOccupation) {
+        this.jointOccupation = jointOccupation;
+    }
+
+    public String getJointCompanyName() {
+        return jointCompanyName;
+    }
+
+    public void setJointCompanyName(String jointCompanyName) {
+        this.jointCompanyName = jointCompanyName;
+    }
+
+    public String getJointCompanyAddress() {
+        return jointCompanyAddress;
+    }
+
+    public void setJointCompanyAddress(String jointCompanyAddress) {
+        this.jointCompanyAddress = jointCompanyAddress;
+    }
+
+    public String getJointCompanyPostal() {
+        return jointCompanyPostal;
+    }
+
+    public void setJointCompanyPostal(String jointCompanyPostal) {
+        this.jointCompanyPostal = jointCompanyPostal;
+    }
+
+    public String getJointIndustryType() {
+        return jointIndustryType;
+    }
+
+    public void setJointIndustryType(String jointIndustryType) {
+        this.jointIndustryType = jointIndustryType;
+    }
+
+    public String getJointCurrentPosition() {
+        return jointCurrentPosition;
+    }
+
+    public void setJointCurrentPosition(String jointCurrentPosition) {
+        this.jointCurrentPosition = jointCurrentPosition;
+    }
+
+    public String getJointCurrentJobTitle() {
+        return jointCurrentJobTitle;
+    }
+
+    public void setJointCurrentJobTitle(String jointCurrentJobTitle) {
+        this.jointCurrentJobTitle = jointCurrentJobTitle;
+    }
+
+    public Integer getJointLengthOfCurrentJob() {
+        return jointLengthOfCurrentJob;
+    }
+
+    public void setJointLengthOfCurrentJob(Integer jointLengthOfCurrentJob) {
+        this.jointLengthOfCurrentJob = jointLengthOfCurrentJob;
+    }
+
+    public String getJointPreviousCompany() {
+        return jointPreviousCompany;
+    }
+
+    public void setJointPreviousCompany(String jointPreviousCompany) {
+        this.jointPreviousCompany = jointPreviousCompany;
+    }
+
+    public Integer getJointLengthOfPreviousJob() {
+        return jointLengthOfPreviousJob;
+    }
+
+    public void setJointLengthOfPreviousJob(Integer jointLengthOfPreviousJob) {
+        this.jointLengthOfPreviousJob = jointLengthOfPreviousJob;
+    }
+
+    public Double getJointMonthlyFixedIncome() {
+        return jointMonthlyFixedIncome;
+    }
+
+    public void setJointMonthlyFixedIncome(Double jointMonthlyFixedIncome) {
+        this.jointMonthlyFixedIncome = jointMonthlyFixedIncome;
+    }
+
+    public Double getJointOtherMonthlyIncome() {
+        return jointOtherMonthlyIncome;
+    }
+
+    public void setJointOtherMonthlyIncome(Double jointOtherMonthlyIncome) {
+        this.jointOtherMonthlyIncome = jointOtherMonthlyIncome;
+    }
+
+    public String getJointOtherMonthlyIncomeSource() {
+        return jointOtherMonthlyIncomeSource;
+    }
+
+    public void setJointOtherMonthlyIncomeSource(String jointOtherMonthlyIncomeSource) {
+        this.jointOtherMonthlyIncomeSource = jointOtherMonthlyIncomeSource;
+    }
+
+    public CreditReportBureauScore getJointCR() {
+        return jointCR;
+    }
+
+    public void setJointCR(CreditReportBureauScore jointCR) {
+        this.jointCR = jointCR;
+    }
+
+    public List<CreditReportAccountStatus> getJointAccountStatus() {
+        return jointAccountStatus;
+    }
+
+    public void setJointAccountStatus(List<CreditReportAccountStatus> jointAccountStatus) {
+        this.jointAccountStatus = jointAccountStatus;
+    }
+
+    public List<CreditReportDefaultRecords> getJointDefaultRecords() {
+        return jointDefaultRecords;
+    }
+
+    public void setJointDefaultRecords(List<CreditReportDefaultRecords> jointDefaultRecords) {
+        this.jointDefaultRecords = jointDefaultRecords;
+    }
+
+    public Double getJointBureauScore() {
+        return jointBureauScore;
+    }
+
+    public void setJointBureauScore(Double jointBureauScore) {
+        this.jointBureauScore = jointBureauScore;
+    }
+
+    public String getJointRiskGrade() {
+        return jointRiskGrade;
+    }
+
+    public void setJointRiskGrade(String jointRiskGrade) {
+        this.jointRiskGrade = jointRiskGrade;
+    }
+
+    public Double getJointProbabilityOfDefault() {
+        return jointProbabilityOfDefault;
+    }
+
+    public void setJointProbabilityOfDefault(Double jointProbabilityOfDefault) {
+        this.jointProbabilityOfDefault = jointProbabilityOfDefault;
+    }
+
+    public boolean isHasJoint() {
+        return hasJoint;
+    }
+
+    public void setHasJoint(boolean hasJoint) {
+        this.hasJoint = hasJoint;
+    }
+
+    public boolean isNoJoint() {
+        return noJoint;
+    }
+
+    public void setNoJoint(boolean noJoint) {
+        this.noJoint = noJoint;
+    }
+
+    public double[] getSuggestedTenure() {
+        return suggestedTenure;
+    }
+
+    public void setSuggestedTenure(double[] suggestedTenure) {
+        this.suggestedTenure = suggestedTenure;
+    }
+
+    public double getTenureMin() {
+        return tenureMin;
+    }
+
+    public void setTenureMin(double tenureMin) {
+        this.tenureMin = tenureMin;
+    }
+
+    public double getTenureMax() {
+        return tenureMax;
+    }
+
+    public void setTenureMax(double tenureMax) {
+        this.tenureMax = tenureMax;
+    }
+
+    public double[] getSuggestedAmount() {
+        return suggestedAmount;
+    }
+
+    public void setSuggestedAmount(double[] suggestedAmount) {
+        this.suggestedAmount = suggestedAmount;
+    }
+
+    public double getAmountMin() {
+        return amountMin;
+    }
+
+    public void setAmountMin(double amountMin) {
+        this.amountMin = amountMin;
+    }
+
+    public double getAmountMax() {
+        return amountMax;
+    }
+
+    public void setAmountMax(double amountMax) {
+        this.amountMax = amountMax;
+    }
+
+    public int getAverageAge() {
+        return averageAge;
+    }
+
+    public void setAverageAge(int averageAge) {
+        this.averageAge = averageAge;
+    }
+
+    public int getLtvRatio() {
+        return ltvRatio;
+    }
+
+    public void setLtvRatio(int ltvRatio) {
+        this.ltvRatio = ltvRatio;
+    }
+
+    public double getLtvPrice() {
+        return ltvPrice;
+    }
+
+    public void setLtvPrice(double ltvPrice) {
+        this.ltvPrice = ltvPrice;
+    }
+
+    public double getMaxInstalment() {
+        return maxInstalment;
+    }
+
+    public void setMaxInstalment(double maxInstalment) {
+        this.maxInstalment = maxInstalment;
     }
 
 }

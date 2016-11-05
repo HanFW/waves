@@ -280,13 +280,13 @@ public class PublicMortgageLoanApplicationManagedBean implements Serializable {
         uploads.put("purchaseAgreement", false);
         uploads.put("existingLoan", false);
         uploads.put("cpfWithdrawal", false);
-        uploads.put("evidenceOfSale", false);
         uploads.put("tenancy", false);
         uploads.put("employeeTax", false);
         uploads.put("employeeCPF", false);
         uploads.put("selfEmployedTax", false);
         uploads.put("jointSelfEmployedTax", false);
         uploads.put("jointEmployeeTax", false);
+        uploads.put("relationship", false);
     }
 
     @PostConstruct
@@ -1049,8 +1049,15 @@ public class PublicMortgageLoanApplicationManagedBean implements Serializable {
     }
 
     public void showPanelJointApplicant() {
-        noJointApplicantPanelVisible = hasJointApplicant.equals("No");
-        jointApplicantPanelVisible = hasJointApplicant.equals("Yes");
+        if(hasJointApplicant.equals("No")){
+            noJointApplicantPanelVisible = true;
+            jointApplicantPanelVisible = false;
+            uploads.replace("relationship", true);
+        }else{
+            jointApplicantPanelVisible = true;
+            noJointApplicantPanelVisible = false;
+            uploads.replace("relationship", false);
+        }
     }
 
     public void showJointSalutationPanel() {
@@ -1306,44 +1313,6 @@ public class PublicMortgageLoanApplicationManagedBean implements Serializable {
         }
     }
 
-    public void evidenceOfSaleUpload(FileUploadEvent event) throws FileNotFoundException, IOException {
-        this.file = event.getFile();
-        if (file != null) {
-            String newFilePath = System.getProperty("user.dir").replace("config", "docroot") + System.getProperty("file.separator");
-
-            String filename = customerIdentificationNum + "-evidence_of_sale.pdf";
-            File newFile = new File(newFilePath, filename);
-            FileOutputStream fileOutputStream = new FileOutputStream(newFile);
-
-            int a;
-            int BUFFER_SIZE = 8192;
-            byte[] buffer = new byte[BUFFER_SIZE];
-
-            InputStream inputStream = file.getInputstream();
-
-            while (true) {
-                a = inputStream.read(buffer);
-
-                if (a < 0) {
-                    break;
-                }
-
-                fileOutputStream.write(buffer, 0, a);
-                fileOutputStream.flush();
-            }
-
-            fileOutputStream.close();
-            inputStream.close();
-
-            uploads.replace("evidenceOfSale", true);
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, file.getFileName() + " uploaded successfully.", "");
-            FacesContext.getCurrentInstance().addMessage("evidenceOfSaleUpload", message);
-        } else {
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cannot find the file, please upload again.", "");
-            FacesContext.getCurrentInstance().addMessage("evidenceOfSaleUpload", message);
-        }
-    }
-
     public void tenancyUpload(FileUploadEvent event) throws FileNotFoundException, IOException {
         this.file = event.getFile();
         if (file != null) {
@@ -1579,7 +1548,7 @@ public class PublicMortgageLoanApplicationManagedBean implements Serializable {
         if (file != null) {
             String newFilePath = System.getProperty("user.dir").replace("config", "docroot") + System.getProperty("file.separator");
 
-            String filename = customerIdentificationNum + "-joint_employee_tax.pdf";
+            String filename = jointIdentificationNum + "-employee_tax.pdf";
             File newFile = new File(newFilePath, filename);
             FileOutputStream fileOutputStream = new FileOutputStream(newFile);
 
@@ -1617,7 +1586,7 @@ public class PublicMortgageLoanApplicationManagedBean implements Serializable {
         if (file != null) {
             String newFilePath = System.getProperty("user.dir").replace("config", "docroot") + System.getProperty("file.separator");
 
-            String filename = customerIdentificationNum + "-joint_self-employed_tax.pdf";
+            String filename = jointIdentificationNum + "-self-employed_tax.pdf";
             File newFile = new File(newFilePath, filename);
             FileOutputStream fileOutputStream = new FileOutputStream(newFile);
 

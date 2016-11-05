@@ -83,8 +83,6 @@ public class MortgageLoanApplication extends LoanApplication implements Serializ
             docs.put("tenancy", false);
         }
 
-        docs.put("evidenceOfSale", true);
-
         if (employmentStatus.equals("Self-Employed")) {
             docs.put("selfEmployedTax", true);
             docs.put("employeeTax", false);
@@ -101,6 +99,7 @@ public class MortgageLoanApplication extends LoanApplication implements Serializ
 
         if (hasJoint) {
             docs.put("jointIdentification", true);
+            docs.put("relationship", true);
             if (jointEmploymentStatus.equals("Self-Employed")) {
                 docs.put("jointSelfEmployedTax", true);
                 docs.put("jointEmployeeTax", false);
@@ -108,6 +107,11 @@ public class MortgageLoanApplication extends LoanApplication implements Serializ
                 docs.put("jointSelfEmployedTax", false);
                 docs.put("jointEmployeeTax", true);
             }
+        }else{
+            docs.put("jointIdentification", false);
+            docs.put("relationship", false);
+            docs.put("jointSelfEmployedTax", false);
+            docs.put("jointEmployeeTax", false);
         }
 
         this.setUploads(docs);

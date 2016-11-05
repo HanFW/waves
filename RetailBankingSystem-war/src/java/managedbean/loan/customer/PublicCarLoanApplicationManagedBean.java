@@ -154,7 +154,7 @@ public class PublicCarLoanApplicationManagedBean implements Serializable {
         if (isExistingCustomer) {
             newCustomerBasicId = cRMCustomerSessionBeanLocal.updateCustomerBasic("F11223344", "hanfengwei96@gmail.com", "83114121",
                     "China", "China", "Single", "Student", "AfterYou",
-                    "Lai Qing", "123123");
+                    "address", "123123");
         } else {
             newCustomerBasicId = cRMCustomerSessionBeanLocal.addNewCustomerBasic("Lai Qing",
                     "Ms", "F11223344",
