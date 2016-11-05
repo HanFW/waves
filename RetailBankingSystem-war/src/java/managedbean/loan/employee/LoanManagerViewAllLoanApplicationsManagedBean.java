@@ -48,6 +48,7 @@ public class LoanManagerViewAllLoanApplicationsManagedBean implements Serializab
     private List<CashlineApplication> pendingCashlineApplications;
     private List<CashlineApplication> inprogressCashlineApplications;
     private List<CashlineApplication> approvedCashlineApplications;
+    
 
     /**
      * Creates a new instance of LoanManagerStartNewLoanManagedBean
@@ -108,10 +109,10 @@ public class LoanManagerViewAllLoanApplicationsManagedBean implements Serializab
         pendingCashlineApplications = loanApplicationSessionBeanLocal.getCashlineApplications(status);
         status = new ArrayList<String>();
         status.add("in progress");
-        pendingCashlineApplications = loanApplicationSessionBeanLocal.getCashlineApplications(status);
+        inprogressCashlineApplications = loanApplicationSessionBeanLocal.getCashlineApplications(status);
         status = new ArrayList<String>();
         status.add("approved");
-        pendingCashlineApplications = loanApplicationSessionBeanLocal.getCashlineApplications(status);
+        approvedCashlineApplications = loanApplicationSessionBeanLocal.getCashlineApplications(status);
     }
     
     public void startNewMortgageLoan(Long applicationId){
