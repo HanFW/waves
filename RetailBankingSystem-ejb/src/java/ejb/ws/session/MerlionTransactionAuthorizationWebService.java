@@ -9,10 +9,12 @@ import ejb.card.entity.CreditCard;
 import ejb.card.entity.DebitCard;
 import ejb.card.entity.PrincipalCard;
 import ejb.card.entity.SupplementaryCard;
+import ejb.card.session.DebitCardSessionBeanLocal;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.ejb.EJB;
@@ -43,6 +45,9 @@ public class MerlionTransactionAuthorizationWebService {
 
     @EJB
     private BankAccountSessionBeanLocal bankAccountSessionBeanLocal;
+
+    @EJB
+    private DebitCardSessionBeanLocal debitCardSessionBeanLocal;
 
     @WebMethod(operationName = "checkTransactionAuthorizationById")
     public String checkTransactionAuthorizationById(@WebParam(name = "id") Long id) {
@@ -77,7 +82,9 @@ public class MerlionTransactionAuthorizationWebService {
                         } else {
                             BankAccount depositAccount = findDebitCard.getBankAccount();
                             Double accountBalance = Double.valueOf(depositAccount.getTotalBankAccountBalance());
+                            System.out.println("accountBalance: "+accountBalance);
                             double availableTransactionBalance = findDebitCard.getAvailableTransactionBalance();
+                            System.out.println("availableTransactionBalance: "+availableTransactionBalance);
                             if (transactionAmt > accountBalance || transactionAmt > availableTransactionBalance) {
                                 System.out.println("depoist account balance insufficient or transaction exceeds daily transaction limit");
                                 return "not authorized";
@@ -87,17 +94,11 @@ public class MerlionTransactionAuthorizationWebService {
                                 em.flush();
 
                                 if (findDebitCard.getDebitCardType().getCardNetwork().equals("Visa")) {
-//                                    bankAccountSessionBeanLocal.updateDepositAccountAvailableBalance(cardNum, transactionAmt);
-//                                    em.detach(findDebitCard);
-//                                    findDebitCard.setBankAccount(null);
-//                                    findDebitCard.setDebitCardType(null);
+                                    bankAccountSessionBeanLocal.updateDepositAccountAvailableBalance(cardNum, transactionAmt);
                                     System.out.println("authorized haahhahaa");
                                     return "authorized-Visa";
                                 } else {
-//                                    bankAccountSessionBeanLocal.updateDepositAccountAvailableBalance(cardNum, transactionAmt);
-//                                    em.detach(findDebitCard);
-//                                    findDebitCard.setBankAccount(null);
-//                                    findDebitCard.setDebitCardType(null);
+                                    bankAccountSessionBeanLocal.updateDepositAccountAvailableBalance(cardNum, transactionAmt);
                                     System.out.println("authorized hahahahah");
                                     return "authorized-MasterCard";
                                 }
@@ -202,7 +203,19 @@ public class MerlionTransactionAuthorizationWebService {
     @WebMethod(operationName = "merlionCreditCustomerAccountForTransaction")
     public String merlionCreditCustomerAccountForTransaction() {
         List<TransactionToBeAuthorized> transactions = getAllAuthorizedTransactions();
+        
         System.out.println("getAllAuthorizedTransactions(): " + transactions);
+
+        for (int i = 0; i < transactions.size(); i++) {
+            if (transactions.get(i).getCardType().equals("debit") && transactions.get(i).getDebitBankAccount().equals("no")) {
+                String cardNum=transactions.get(i).getCardNum();
+                System.out.println("debug!!! cardNum"+cardNum);
+                double transactionAmt= transactions.get(i).getTransactionAmt();
+                String merchantName= transactions.get(i).getMerchantName();
+                bankAccountSessionBeanLocal.updateDepositAccountTotalBalance(cardNum, transactionAmt,merchantName);
+            }//debit card authorized transactions
+        }
+        debitCardSessionBeanLocal.updateAllDebitCardsAvailableDailyTransactionBalance();
         return "success";
 
     }

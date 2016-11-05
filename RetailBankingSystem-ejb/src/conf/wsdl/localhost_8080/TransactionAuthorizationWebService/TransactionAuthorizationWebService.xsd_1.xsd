@@ -50,6 +50,7 @@
 <xs:element name="cardPwd" type="xs:string" minOccurs="0"/>
 <xs:element name="cardType" type="xs:string" minOccurs="0"/>
 <xs:element name="customerSignature" type="xs:string" minOccurs="0"/>
+<xs:element name="debitBankAccount" type="xs:string" minOccurs="0"/>
 <xs:element name="merchantName" type="xs:string" minOccurs="0"/>
 <xs:element name="transactionAmt" type="xs:double"/>
 <xs:element name="transactionStatus" type="xs:string" minOccurs="0"/>

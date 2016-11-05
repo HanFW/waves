@@ -495,4 +495,27 @@ public class DebitCardSessionBean implements DebitCardSessionBeanLocal {
 
         return debitCards;
     }
+    
+    @Override
+    public BankAccount getBankAccountByCardNum(String cardNum){
+        DebitCard card = getCardByCardNum(cardNum);
+        return card.getBankAccount();
+    }
+    
+    @Override
+    public void updateAllDebitCardsAvailableDailyTransactionBalance(){
+        List<DebitCard> debitCards = new ArrayList<> ();
+        Query q=em.createQuery("select d from DebitCard d where d.status=:status");
+        q.setParameter("status", "activated");
+        
+        if(!q.getResultList().isEmpty()){
+            debitCards = q.getResultList();
+            
+            for(int i=0;i<debitCards.size();i++){
+                double newAvailableDailyTransactionBalance = debitCards.get(i).getTransactionLimit();
+                debitCards.get(i).setAvailableTransactionBalance(newAvailableDailyTransactionBalance);
+                em.flush();
+            }
+        }
+    }
 }

@@ -10,19 +10,28 @@
     <ui:define name="content">
         <h:form>
             <div align="center">
-                <p:dataTable var="transaction" value="" reflow="true" paginator="true" rows="10">
+                <p:dataTable var="transaction" value="#{merlionBankTransactionAuthorizationManagedBean.transactionList}" reflow="true" paginator="true" rows="10">
 
-                    <p:column headerText="Settlemet Date">
-                        <h:outputText value="" />
+                    <p:column headerText="Transaction Date">
+                        <h:outputText value="#{transaction.transactionTime}" />
                     </p:column>
 
-                    <p:column headerText="Settlement Reference">
-                        <h:outputText value="" />
+                    <p:column headerText="Card Type">
+                        <h:outputText value="#{transaction.cardType}" />
                     </p:column>
 
-                    <p:column headerText="Banks" >
-                        <h:outputText value="" /> 
+                    <p:column headerText="Card No" >
+                        <h:outputText value="#{transaction.cardNum}" /> 
                     </p:column>
+
+                    <p:column headerText="Transaction Amt" >
+                        <h:outputText value="#{transaction.transactionAmt}" /> 
+                    </p:column>
+
+                    <p:column headerText="Authorization Result" >
+                        <h:outputText value="#{merlionBankTransactionAuthorizationManagedBean.checkTransactionAuthorization(transaction.transactionToBeAuthorizedId)}" /> 
+                    </p:column>
+
 
                 </p:dataTable>
             </div>
