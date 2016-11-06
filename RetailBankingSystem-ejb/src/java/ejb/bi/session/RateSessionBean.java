@@ -254,6 +254,15 @@ public class RateSessionBean implements RateSessionBeanLocal {
         Integer currentAcqUpdateMonth = acqUpdateMonth + 1;
         Integer currentAttUpdateMonth = attUpdateMonth + 1;
 
+        NumOfExistingCustomer numOfCustomer = new NumOfExistingCustomer();
+        if (acqUpdateMonth == 0) {
+            Integer updateYear = acqUpdateYear - 1;
+            numOfCustomer = numOfExistingCustomerSessionBeanLocal.retrievePreviousNumOfExistingCustomerByMonth(12, updateYear);
+        } else {
+            numOfCustomer = numOfExistingCustomerSessionBeanLocal.retrieveNumOfExistingCustomerByMonth(currentAcqUpdateMonth - 1);
+        }
+        String numberOfCustomer = numOfCustomer.getNumOfExistingCustomer();
+
         Query queryOpenAccount = entityManager.createQuery("SELECT d FROM DepositAccountOpen d WHERE d.currentTimeMilis >= :startTime And d.currentTimeMilis<=:endTime");
         queryOpenAccount.setParameter("startTime", startTime);
         queryOpenAccount.setParameter("endTime", endTime);
@@ -264,9 +273,6 @@ public class RateSessionBean implements RateSessionBeanLocal {
         queryCloseAccount.setParameter("startTime", startTime);
         queryCloseAccount.setParameter("endTime", endTime);
         List<DepositAccountClosure> depositAccountClosures = queryCloseAccount.getResultList();
-
-        NumOfExistingCustomer numOfCustomer = numOfExistingCustomerSessionBeanLocal.retrieveNumOfExistingCustomerByMonth(currentAcqUpdateMonth);
-        String numberOfCustomer = numOfCustomer.getNumOfExistingCustomer();
 
         Integer numberOfOpenAccounts = DepositAccountOpens.size();
         Integer numberOfCloseAccounts = depositAccountClosures.size();

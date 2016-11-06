@@ -12,8 +12,10 @@ public interface NumOfExistingCustomerSessionBeanLocal {
             String currentYeaar);
 
     public NumOfExistingCustomer retrieveNumOfExistingCustomerByMonth(Integer updateMonth);
-    
+
     public NumOfExistingCustomer getNumOfExistingCustomer();
-    
+
     public List<NumOfExistingCustomer> getCurrentYearNumOfExistingCustomer();
+
+    public NumOfExistingCustomer retrievePreviousNumOfExistingCustomerByMonth(Integer updateMonth, Integer updateYear);
 }
