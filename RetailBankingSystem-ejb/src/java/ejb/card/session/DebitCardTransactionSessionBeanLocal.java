@@ -17,4 +17,5 @@ public interface DebitCardTransactionSessionBeanLocal {
    public void setTransactionLimit(String selectedDebitCard, int newTransactionLimit);  
    
    public int getTransactionLimitByDebitCardNum(String selectedDebitCard);
+   
 }

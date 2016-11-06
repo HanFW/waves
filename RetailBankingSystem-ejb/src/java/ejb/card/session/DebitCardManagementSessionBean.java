@@ -58,6 +58,7 @@ public class DebitCardManagementSessionBean implements DebitCardManagementSessio
 //
 //                    em.remove(findDebitCard);
                     findDebitCard.setStatus("cancel");
+                    em.flush();
                     return "success";
 
                 }
@@ -214,6 +215,7 @@ public class DebitCardManagementSessionBean implements DebitCardManagementSessio
     }
 
     private String md5Hashing(String stringToHash) throws NoSuchAlgorithmException {
+        System.out.println("hashing: "+stringToHash);
         MessageDigest md = MessageDigest.getInstance("MD5");
         return Arrays.toString(md.digest(stringToHash.getBytes()));
     }

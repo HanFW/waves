@@ -449,6 +449,19 @@ public class CreditCardSessionBean implements CreditCardSessionBeanLocal {
             return findCreditCard;
         }
     }
+    
+    @Override
+    public PrincipalCard getPrincipalCardByCardNum(String cardNum){
+        Query query = em.createQuery("SELECT p FROM PrincipalCard p WHERE p.cardNum = :cardNum");
+        query.setParameter("cardNum", cardNum);
+
+        if (query.getResultList().isEmpty()) {
+            return null;
+        } else {
+            PrincipalCard findCreditCard = (PrincipalCard) query.getResultList().get(0);
+            return findCreditCard;
+        }
+    }
 
     @Override
     public CreditCard getCardByCardId(Long cardId) {
@@ -543,6 +556,17 @@ public class CreditCardSessionBean implements CreditCardSessionBeanLocal {
         System.out.println("md5 hashing- string to hash " + stringToHash);
         MessageDigest md = MessageDigest.getInstance("MD5");
         return Arrays.toString(md.digest(stringToHash.getBytes()));
+    }
+    
+    @Override
+    public void updateCreditCardLimit(String creditCardNum, double transactionAmt){
+        PrincipalCard card = getPrincipalCardByCardNum(creditCardNum);
+        double newCreditLimit = card.getCreditLimit()-transactionAmt;
+        card.setCreditLimit(newCreditLimit);
+        double newOutstandingBalance=card.getOutstandingBalance()+transactionAmt;
+        card.setOutstandingBalance(newOutstandingBalance);
+        em.flush();
+        
     }
 
 }

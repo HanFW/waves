@@ -23,42 +23,25 @@
                     <br/>
                     <p:messages autoUpdate="true"/>
 
-                    <div align="center">
-                        <h:panelGrid columns="2" class="ui-lg-4"> 
 
-                            <p:outputLabel value="Card Type:"/>
-                            <p:selectOneRadio required="true" requiredMessage="Please select card type" id="cardType" value="#{employeeRenewCardDoneManagedBean.cardType}">
-                                <f:selectItem itemLabel="Credit Card" itemValue="credit" />
-                                <f:selectItem itemLabel="Debit Card" itemValue="debit" />
-                                <p:ajax event="change" update="creditPanel debitPanel" listener="#{employeeRenewCardDoneManagedBean.showCards}"/>
-                            </p:selectOneRadio>
-                        </h:panelGrid>
+                    <h:panelGrid columns="2" class="ui-lg-4"> 
 
-                        <p:panel id="debitPanel" visible="#{employeeRenewCardDoneManagedBean.debitPanelVisible}">
-                            <h:panelGrid columns="2" class="ui-lg-4">
-                                <p:outputLabel value="Debit Card:"/>
-                                <p:selectOneMenu id="selectDebitCard" required="true" requiredMessage="Please select a debit card" style="text-align:left" value="#{employeeRenewCardDoneManagedBean.selectedDebitCard}">
-                                    <f:selectItem itemLabel="Please select..." itemValue=""/>
-                                    <f:selectItems value="#{employeeRenewCardDoneManagedBean.debitCards}"/> 
-                                </p:selectOneMenu>
+                        <p:outputLabel value="Card Type:"/>
+                        <p:outputLabel value="Debit Card"/>
 
-                                <p:outputLabel value="Card Password:" />
-                                <p:inputText validatorMessage="Card password is 6-digit" required="true" requiredMessage="Please input your card password" id="cardPwd" value="#{employeeRenewCardDoneManagedBean.debitCardPwd}">
-                                    <f:validateLength minimum="6" maximum="6" /> 
-                                </p:inputText>                      
-                            </h:panelGrid>
-                            <p:commandButton value="Confirm" actionListener="#{employeeRenewCardDoneManagedBean.requestForCardReplacement}" style="width:150px"/>
-                        </p:panel>
+                        <p:outputLabel value="Debit Card:"/>
+                        <p:selectOneMenu id="selectDebitCard" required="true" requiredMessage="Please select a debit card" style="text-align:left" value="#{employeeRenewCardDoneManagedBean.selectedDebitCard}">
+                            <f:selectItem itemLabel="Please select..." itemValue=""/>
+                            <f:selectItems value="#{employeeRenewCardDoneManagedBean.debitCards}"/> 
+                        </p:selectOneMenu>
 
-                        <p:panel id="creditPanel" visible="#{employeeRenewCardDoneManagedBean.creditPanelVisible}">
-                            <p:outputLabel value="Credit cards need to go through official verification once it reaches its expiry date."/>
-                            <br/>
-                            <p:outputLabel value="Please click on the button below to apply for a new credit card."/>
-                            <br/>
-                            <br/>
-                            <p:button value="Apply for a new credit card" style="width:auto"/>
-                        </p:panel>
-                    </div>
+                        <p:outputLabel value="Card Password:" />
+                        <p:inputText validatorMessage="Card password is 6-digit" required="true" requiredMessage="Please input your card password" id="cardPwd" value="#{employeeRenewCardDoneManagedBean.debitCardPwd}">
+                            <f:validateLength minimum="6" maximum="6" /> 
+                        </p:inputText>                      
+                    </h:panelGrid>
+                    <p:commandButton value="Confirm" actionListener="#{employeeRenewCardDoneManagedBean.requestForCardReplacement}" style="width:150px"/>
+             
                 </div>
             </h:form>
         </h:body>

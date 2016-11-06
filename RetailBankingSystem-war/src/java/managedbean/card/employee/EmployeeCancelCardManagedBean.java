@@ -9,11 +9,12 @@ import ejb.customer.entity.CustomerBasic;
 import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
 import javax.ejb.EJB;
-import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Named;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -25,7 +26,7 @@ import javax.faces.context.FacesContext;
 @Named(value = "employeeCancelCardManagedBean")
 @RequestScoped
 
-public class EmployeeCancelCardManagedBean {
+public class EmployeeCancelCardManagedBean{
 
     @EJB
     private CRMCustomerSessionBeanLocal customerSessionBeanLocal;
@@ -51,11 +52,13 @@ public class EmployeeCancelCardManagedBean {
     }
 
     public String getCustomerIdentificationNum() {
+         System.out.println("get customer ic "+customerIdentificationNum);
         return customerIdentificationNum;
     }
 
     public void setCustomerIdentificationNum(String customerIdentificationNum) {
         this.customerIdentificationNum = customerIdentificationNum;
+        System.out.println("set customer ic "+customerIdentificationNum);
     }
 
     public Date getCustomerDateOfBirth() {
