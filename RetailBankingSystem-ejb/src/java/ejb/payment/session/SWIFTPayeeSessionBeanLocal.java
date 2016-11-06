@@ -16,4 +16,8 @@ public interface SWIFTPayeeSessionBeanLocal {
     public List<SWIFTPayee> retrieveSWIFTPayeeByCusIC(String customerIdentificationNum);
 
     public SWIFTPayee retrieveSWIFTPayeeByInstitution(String swiftInstitution);
+
+    public SWIFTPayee retrieveSWIFTPayeeByNum(String payeeAccountNum);
+
+    public void updateLastTransactionDate(String payeeAccountNum);
 }

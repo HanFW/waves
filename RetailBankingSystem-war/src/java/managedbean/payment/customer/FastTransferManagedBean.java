@@ -200,6 +200,8 @@ public class FastTransferManagedBean {
             Double currentTotalBalance = Double.valueOf(merlionBankAccountFrom.getTotalBankAccountBalance()) - transferAmt;
             bankAccountSessionBeanLocal.updateBankAccountBalance(fromBankAccount, currentAvailableBalance.toString(), currentTotalBalance.toString());
 
+            otherBankPayeeSessionBeanLocal.updateLastTransactionDate(toBankAccount);
+            
             Calendar cal = Calendar.getInstance();
             String transactionCode = "ICT";
             String transactionRef = "Transfer to " + otherBankAccountTo.getOtherBankAccountType() + "-" + otherBankAccountTo.getOtherBankAccountNum();
