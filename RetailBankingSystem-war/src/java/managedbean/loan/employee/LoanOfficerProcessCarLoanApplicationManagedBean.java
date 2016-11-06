@@ -7,17 +7,17 @@ package managedbean.loan.employee;
 
 import ejb.customer.entity.CustomerAdvanced;
 import ejb.customer.entity.CustomerBasic;
+import ejb.loan.entity.CarLoanApplication;
 import ejb.loan.entity.CreditReportAccountStatus;
 import ejb.loan.entity.CreditReportBureauScore;
 import ejb.loan.entity.CreditReportDefaultRecords;
 import ejb.loan.entity.CustomerDebt;
 import ejb.loan.entity.CustomerProperty;
-import ejb.loan.entity.RenovationLoanApplication;
 import ejb.loan.session.LoanApplicationSessionBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -32,10 +32,9 @@ import javax.faces.view.ViewScoped;
  *
  * @author hanfengwei
  */
-@Named(value = "loanOfficerProcessRenovationLoanApplicationManagedBean")
+@Named(value = "loanOfficerProcessCarLoanApplicationManagedBean")
 @ViewScoped
-public class LoanOfficerProcessRenovationLoanApplicationManagedBean implements Serializable {
-
+public class LoanOfficerProcessCarLoanApplicationManagedBean implements Serializable{
     @EJB
     private LoanApplicationSessionBeanLocal loanApplicationSessionBeanLocal;
 
@@ -43,7 +42,7 @@ public class LoanOfficerProcessRenovationLoanApplicationManagedBean implements S
     private String loanType;
     private CustomerProperty property;
 
-    private RenovationLoanApplication application;
+    private CarLoanApplication application;
     private CustomerBasic customer;
     private CustomerAdvanced ca;
     private List<CustomerDebt> debts;
@@ -88,18 +87,15 @@ public class LoanOfficerProcessRenovationLoanApplicationManagedBean implements S
     private Double customerOtherMonthlyIncome;
     private String customerOtherMonthlyIncomeSource;
 
-    //property details
-    private String customerPropertyAddress;
-    private String customerPropertyPostal;
-    private ArrayList<String> customerPropertyOwners = new ArrayList<String>();
-    private String customerPropertyType;
-
     //loan
     private Double customerLoanAmountRequired;
     private Integer customerLoanTenure;
-    private double customerQuotationPrice;
-    private Date renovationStartDate;
-    private Date renovationEndDate;
+    private String isNewCar;
+    private String customerCarMake;
+    private String customerCarModel;
+    private String customerChassis;
+    private Double customerCarPurchasePrice;
+    private Integer customerCarYearOfManufacture;
 
     //documents
     private HashMap docs;
@@ -113,6 +109,7 @@ public class LoanOfficerProcessRenovationLoanApplicationManagedBean implements S
     private Double probabilityOfDefault;
 
     //decision support
+    private double carOpenMarketValue;
     private String hasExistingMortgageLoan;
     private double riskRatio;
     private double totalAmountOverdue;
@@ -126,22 +123,20 @@ public class LoanOfficerProcessRenovationLoanApplicationManagedBean implements S
     private double amountGranted;
     private int periodSuggested;
     private double instalmentSuggested;
-    
     private double interest;
-
+    
     /**
-     * Creates a new instance of
-     * LoanOfficerProcessRenovationLoanApplicationManagedBean
+     * Creates a new instance of LoanOfficerProcessCarLoanApplicationManagedBean
      */
-    public LoanOfficerProcessRenovationLoanApplicationManagedBean() {
+    public LoanOfficerProcessCarLoanApplicationManagedBean() {
     }
-
+    
     @PostConstruct
     public void init() {
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         applicationId = (Long) ec.getFlash().get("applicationId");
 
-        application = loanApplicationSessionBeanLocal.getRenovationLoanApplicationById(applicationId);
+        application = loanApplicationSessionBeanLocal.getCarLoanApplicationById(applicationId);
         loanType = application.getLoanType();
         interest = application.getLoanInterestPackage().getInterestRate();
 
@@ -191,16 +186,15 @@ public class LoanOfficerProcessRenovationLoanApplicationManagedBean implements S
         customerOtherMonthlyIncome = ca.getOtherMonthlyIncome();
         customerOtherMonthlyIncomeSource = ca.getOtherMonthlyIncomeSource();
 
-        customerPropertyAddress = property.getPropertyAddress();
-        customerPropertyPostal = property.getPropertyPostal();
-        customerPropertyOwners = property.getPropertyOwners();
-        customerPropertyType = property.getPropertyType();
-
         customerLoanAmountRequired = application.getAmountRequired();
         customerLoanTenure = application.getPeriodRequired();
-        customerQuotationPrice = application.getRenovationQuotation();
-        renovationStartDate = application.getRenovationStartDate();
-        renovationEndDate = application.getRenovationEndDate();
+        isNewCar = application.getIsNewCar();
+        customerCarMake = application.getMake();
+        customerCarModel = application.getModel();
+        customerChassis = application.getChassis();
+        customerCarPurchasePrice = application.getPurchasePrice();
+        customerCarYearOfManufacture = application.getYearOfManufacture();
+        carOpenMarketValue = customerCarPurchasePrice;
         
         docs = application.getUploads();
 
@@ -223,24 +217,19 @@ public class LoanOfficerProcessRenovationLoanApplicationManagedBean implements S
         } else {
             suggestedAction = "Approve";
             double grossIncome = customerMonthlyFixedIncome + customerOtherMonthlyIncome * 0.7;
-            maxAllowableAmount = grossIncome * 6;
-            if(maxAllowableAmount > 30000){
-                maxAllowableAmount = 30000;
-            }
+
+            maxAllowableAmount = customerCarPurchasePrice * 0.6;
             if (customerLoanAmountRequired < maxAllowableAmount) {
                 maxAllowableAmount = customerLoanAmountRequired;
             }
-            if(customerQuotationPrice < maxAllowableAmount){
-                maxAllowableAmount = customerQuotationPrice;
-            }
+
             maxAmountGranted = maxAllowableAmount * (1-riskRatio);
-            
             
             maxInstalment = grossIncome * 0.5;
             minTenure = loanApplicationSessionBeanLocal.calculateMortgageTenure(maxAmountGranted, maxInstalment, interest);
-            if (minTenure > 5) {
+            if (minTenure > 7) {
                 calculateMaxAmount();
-                minTenure = 4;
+                minTenure = 6;
             }
             if (minTenure < customerLoanTenure) {
                 minTenure = customerLoanTenure;
@@ -262,7 +251,7 @@ public class LoanOfficerProcessRenovationLoanApplicationManagedBean implements S
     }
     
     private void calculateMaxAmount() {
-        maxAmountGranted = (interest / 12 * maxInstalment) / (1 - Math.pow((1 + interest / 12), -4 * 12));
+        maxAmountGranted = (interest / 12 * maxInstalment) / (1 - Math.pow((1 + interest / 12), -6 * 12));
     }
     
     public void calculateInstalment() {
@@ -295,11 +284,19 @@ public class LoanOfficerProcessRenovationLoanApplicationManagedBean implements S
         this.loanType = loanType;
     }
 
-    public RenovationLoanApplication getApplication() {
+    public CustomerProperty getProperty() {
+        return property;
+    }
+
+    public void setProperty(CustomerProperty property) {
+        this.property = property;
+    }
+
+    public CarLoanApplication getApplication() {
         return application;
     }
 
-    public void setApplication(RenovationLoanApplication application) {
+    public void setApplication(CarLoanApplication application) {
         this.application = application;
     }
 
@@ -591,38 +588,6 @@ public class LoanOfficerProcessRenovationLoanApplicationManagedBean implements S
         this.customerOtherMonthlyIncomeSource = customerOtherMonthlyIncomeSource;
     }
 
-    public String getCustomerPropertyAddress() {
-        return customerPropertyAddress;
-    }
-
-    public void setCustomerPropertyAddress(String customerPropertyAddress) {
-        this.customerPropertyAddress = customerPropertyAddress;
-    }
-
-    public String getCustomerPropertyPostal() {
-        return customerPropertyPostal;
-    }
-
-    public void setCustomerPropertyPostal(String customerPropertyPostal) {
-        this.customerPropertyPostal = customerPropertyPostal;
-    }
-
-    public ArrayList<String> getCustomerPropertyOwners() {
-        return customerPropertyOwners;
-    }
-
-    public void setCustomerPropertyOwners(ArrayList<String> customerPropertyOwners) {
-        this.customerPropertyOwners = customerPropertyOwners;
-    }
-
-    public String getCustomerPropertyType() {
-        return customerPropertyType;
-    }
-
-    public void setCustomerPropertyType(String customerPropertyType) {
-        this.customerPropertyType = customerPropertyType;
-    }
-
     public Double getCustomerLoanAmountRequired() {
         return customerLoanAmountRequired;
     }
@@ -639,28 +604,52 @@ public class LoanOfficerProcessRenovationLoanApplicationManagedBean implements S
         this.customerLoanTenure = customerLoanTenure;
     }
 
-    public double getCustomerQuotationPrice() {
-        return customerQuotationPrice;
+    public String getIsNewCar() {
+        return isNewCar;
     }
 
-    public void setCustomerQuotationPrice(double customerQuotationPrice) {
-        this.customerQuotationPrice = customerQuotationPrice;
+    public void setIsNewCar(String isNewCar) {
+        this.isNewCar = isNewCar;
     }
 
-    public Date getRenovationStartDate() {
-        return renovationStartDate;
+    public String getCustomerCarMake() {
+        return customerCarMake;
     }
 
-    public void setRenovationStartDate(Date renovationStartDate) {
-        this.renovationStartDate = renovationStartDate;
+    public void setCustomerCarMake(String customerCarMake) {
+        this.customerCarMake = customerCarMake;
     }
 
-    public Date getRenovationEndDate() {
-        return renovationEndDate;
+    public String getCustomerCarModel() {
+        return customerCarModel;
     }
 
-    public void setRenovationEndDate(Date renovationEndDate) {
-        this.renovationEndDate = renovationEndDate;
+    public void setCustomerCarModel(String customerCarModel) {
+        this.customerCarModel = customerCarModel;
+    }
+
+    public String getCustomerChassis() {
+        return customerChassis;
+    }
+
+    public void setCustomerChassis(String customerChassis) {
+        this.customerChassis = customerChassis;
+    }
+
+    public Double getCustomerCarPurchasePrice() {
+        return customerCarPurchasePrice;
+    }
+
+    public void setCustomerCarPurchasePrice(Double customerCarPurchasePrice) {
+        this.customerCarPurchasePrice = customerCarPurchasePrice;
+    }
+
+    public Integer getCustomerCarYearOfManufacture() {
+        return customerCarYearOfManufacture;
+    }
+
+    public void setCustomerCarYearOfManufacture(Integer customerCarYearOfManufacture) {
+        this.customerCarYearOfManufacture = customerCarYearOfManufacture;
     }
 
     public HashMap getDocs() {
@@ -717,6 +706,14 @@ public class LoanOfficerProcessRenovationLoanApplicationManagedBean implements S
 
     public void setProbabilityOfDefault(Double probabilityOfDefault) {
         this.probabilityOfDefault = probabilityOfDefault;
+    }
+
+    public String getHasExistingMortgageLoan() {
+        return hasExistingMortgageLoan;
+    }
+
+    public void setHasExistingMortgageLoan(String hasExistingMortgageLoan) {
+        this.hasExistingMortgageLoan = hasExistingMortgageLoan;
     }
 
     public double getRiskRatio() {
@@ -799,12 +796,21 @@ public class LoanOfficerProcessRenovationLoanApplicationManagedBean implements S
         this.instalmentSuggested = instalmentSuggested;
     }
 
-    public String getHasExistingMortgageLoan() {
-        return hasExistingMortgageLoan;
+    public double getInterest() {
+        return interest;
     }
 
-    public void setHasExistingMortgageLoan(String hasExistingMortgageLoan) {
-        this.hasExistingMortgageLoan = hasExistingMortgageLoan;
+    public void setInterest(double interest) {
+        this.interest = interest;
     }
 
+    public double getCarOpenMarketValue() {
+        return carOpenMarketValue;
+    }
+
+    public void setCarOpenMarketValue(double carOpenMarketValue) {
+        this.carOpenMarketValue = carOpenMarketValue;
+    }
+    
+    
 }

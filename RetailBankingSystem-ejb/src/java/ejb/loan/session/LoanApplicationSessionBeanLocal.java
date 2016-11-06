@@ -65,6 +65,8 @@ public interface LoanApplicationSessionBeanLocal {
     public int getMSRRemaining(CustomerBasic customer, CustomerBasic joint);
     public double getRiskRatio(CustomerBasic customer, CustomerBasic joint);
     public double getGrossIncome(CustomerBasic customer, CustomerBasic joint);
-    public int calculateMortgageTenure(double amount, double instalment);
+    public int calculateMortgageTenure(double amount, double instalment, double interest);
     public RenovationLoanApplication getRenovationLoanApplicationById(Long applicationId);
+    public CarLoanApplication getCarLoanApplicationById(Long applicationId);
+    public EducationLoanApplication getEducationLoanApplicationById(Long applicationId);
 }

@@ -442,11 +442,11 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
     @Override
     public void rejectLoanRequest(Long applicationId) {
         LoanApplication application = em.find(LoanApplication.class, applicationId);
-        CustomerBasic customer = application.getCustomerBasic();
-        CustomerProperty property = customer.getCustomerProperty();
-        if (property != null) {
-            em.remove(property);
-        }
+//        CustomerBasic customer = application.getCustomerBasic();
+//        CustomerProperty property = customer.getCustomerProperty();
+//        if (property != null) {
+//            em.remove(property);
+//        }
         em.remove(application);
         em.flush();
     }
@@ -829,14 +829,28 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
     }
 
     @Override
-    public int calculateMortgageTenure(double amount, double instalment) {
-        Double tenure = Math.log(1 - 0.035 / 12 * amount / instalment) / Math.log(1 + 0.035 / 12) * -1 / 12;
+    public int calculateMortgageTenure(double amount, double instalment, double interest) {
+        Double tenure = Math.log(1 - interest / 12 * amount / instalment) / Math.log(1 + interest / 12) * -1 / 12;
         return tenure.intValue() + 1;
     }
 
     @Override
     public RenovationLoanApplication getRenovationLoanApplicationById(Long applicationId) {
         RenovationLoanApplication application = em.find(RenovationLoanApplication.class, applicationId);
+        em.refresh(application);
+        return application;
+    }
+    
+    @Override
+    public CarLoanApplication getCarLoanApplicationById(Long applicationId) {
+        CarLoanApplication application = em.find(CarLoanApplication.class, applicationId);
+        em.refresh(application);
+        return application;
+    }
+    
+    @Override
+    public EducationLoanApplication getEducationLoanApplicationById(Long applicationId) {
+        EducationLoanApplication application = em.find(EducationLoanApplication.class, applicationId);
         em.refresh(application);
         return application;
     }

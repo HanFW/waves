@@ -393,8 +393,8 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
             suggestedAction = "Approve";
             maxAmountGranted = ltvPrice * (1 - riskRatio);
             double grossIncome = loanApplicationSessionBeanLocal.getGrossIncome(customer, joint);
-            if (grossIncome * 60 < maxAmountGranted) {
-                maxAmountGranted = grossIncome * 60;
+            if (grossIncome * 60 * (1 - riskRatio) < maxAmountGranted) {
+                maxAmountGranted = grossIncome * 60 * (1 - riskRatio);
             }
             if (customerLoanAmountRequired < maxAmountGranted) {
                 maxAmountGranted = customerLoanAmountRequired;
@@ -404,9 +404,10 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
             } else {
                 maxInstalment = maxTDSRInstalment;
             }
-            minTenure = loanApplicationSessionBeanLocal.calculateMortgageTenure(maxAmountGranted, maxInstalment);
+            minTenure = loanApplicationSessionBeanLocal.calculateMortgageTenure(maxAmountGranted, maxInstalment, 0.035);
             if (minTenure > 30) {
                 calculateMaxAmount();
+                minTenure = 25;
             }
             if (minTenure < customerLoanTenure) {
                 minTenure = customerLoanTenure;
@@ -415,7 +416,7 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     private void calculateMaxAmount() {
-        maxAmountGranted = (0.035 / 12 * maxInstalment) / (1 - Math.pow((1 + 0.035 / 12), -minTenure * 12));
+        maxAmountGranted = (0.035 / 12 * maxInstalment) / (1 - Math.pow((1 + 0.035 / 12), -25 * 12));
     }
 
     public void approveLoanRequest() throws IOException {

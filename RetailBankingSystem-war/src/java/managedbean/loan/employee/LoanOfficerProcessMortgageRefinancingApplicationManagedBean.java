@@ -369,7 +369,7 @@ public class LoanOfficerProcessMortgageRefinancingApplicationManagedBean impleme
             } else {
                 maxInstalment = maxTDSRInstalment;
             }
-            minTenure = loanApplicationSessionBeanLocal.calculateMortgageTenure(customerOutstandingLoan, maxInstalment);
+            minTenure = loanApplicationSessionBeanLocal.calculateMortgageTenure(customerOutstandingLoan, maxInstalment, 0.035);
             if (minTenure > 30) {
                 suggestedAction = "Reject";
             }
