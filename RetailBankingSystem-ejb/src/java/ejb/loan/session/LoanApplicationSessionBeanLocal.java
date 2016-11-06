@@ -41,6 +41,7 @@ public interface LoanApplicationSessionBeanLocal {
     public void rejectLoanRequest(Long applicationId);
     public void startNewMortgageLoan(Long applicationId);
     public void updateLoanStatus(String status, Long applicationId);
+    public void updateCashlineStatus(String status, Long applicationId);
     public List<MortgageLoanApplication> getAllMortgageApplicationsPendingAppraisal();
     public void submitAppraisal(double appraisedValue, Long applicationId);
     public List<CreditReportAccountStatus> getAccountStatusByBureauScoreId(Long id);

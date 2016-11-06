@@ -136,7 +136,26 @@
                     </p:dataTable>
                 </p:tab>
                 <p:tab title="Cashline">
-
+                    <p:dataTable var="cashlineApplication" value="#{loanOfficerViewLoanApplicationsManagedBean.cashlineApplications}">
+                        <p:column headerText="Applicant">
+                            <h:outputText value="#{cashlineApplication.customerBasic.customerName}" />
+                        </p:column>
+                        <p:column headerText="Type">
+                            <h:outputText value="#{cashlineApplication.loanType}" />
+                        </p:column>
+                        <p:column headerText="Application Time">
+                            <h:outputText value="#{cashlineApplication.applicationDate}" />
+                        </p:column>
+                        <p:column headerText="Amount">
+                            <h:outputText value="#{cashlineApplication.amountRequired}" />
+                        </p:column>
+                        <p:column headerText="Status">
+                            <h:outputText value="#{cashlineApplication.applicationStatus}" />
+                        </p:column>
+                        <p:column>
+                            <p:commandButton value="View" action="#{loanOfficerViewLoanApplicationsManagedBean.viewCashlineApplication(cashlineApplication.id)}"/>
+                        </p:column>
+                    </p:dataTable>
                 </p:tab>
             </p:tabView>
         </h:form>        

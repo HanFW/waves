@@ -5,6 +5,7 @@
  */
 package managedbean.loan.employee;
 
+import ejb.loan.entity.CashlineApplication;
 import ejb.loan.entity.LoanApplication;
 import ejb.loan.session.LoanApplicationSessionBeanLocal;
 import java.io.IOException;
@@ -33,6 +34,7 @@ public class LoanOfficerViewApplicationsManagedBean {
     private List<LoanApplication> renovationLoanApplications;
     private List<LoanApplication> carLoanApplications;
     private List<LoanApplication> studyLoanApplications;
+    private List<CashlineApplication> cashlineApplications;;
 
     /**
      * Creates a new instance of LoanOfficerViewLoanApplicationsManagedBean
@@ -76,6 +78,12 @@ public class LoanOfficerViewApplicationsManagedBean {
         appStatus.add("pending");
         studyLoanApplications.addAll(loanApplicationSessionBeanLocal.getLoanApplications(appStatus, "Education Loan"));
         
+        appStatus = new ArrayList<String>();
+        appStatus.add("in progress");
+        cashlineApplications = loanApplicationSessionBeanLocal.getCashlineApplications(appStatus);
+        appStatus = new ArrayList<String>();
+        appStatus.add("pending");
+        cashlineApplications.addAll(loanApplicationSessionBeanLocal.getCashlineApplications(appStatus));
     }
 
     public void viewApplication(Long loanApplicationId, String loanType) throws IOException {
@@ -94,6 +102,13 @@ public class LoanOfficerViewApplicationsManagedBean {
         }else if(loanType.equals("Education Loan")){
             ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/loan/loanOfficerProcessEducationLoanApplication.xhtml?faces-redirect=true");
         }
+    }
+    
+    public void viewCashlineApplication(Long cashlineId) throws IOException{
+        loanApplicationSessionBeanLocal.updateCashlineStatus("in progress", cashlineId);
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        ec.getFlash().put("applicationId", cashlineId);
+        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/loan/loanOfficerProcessCashlineApplication.xhtml?faces-redirect=true");
     }
 
     public LoanApplicationSessionBeanLocal getLoanApplicationSessionBeanLocal() {
@@ -142,6 +157,14 @@ public class LoanOfficerViewApplicationsManagedBean {
 
     public void setStudyLoanApplications(List<LoanApplication> studyLoanApplications) {
         this.studyLoanApplications = studyLoanApplications;
+    }
+
+    public List<CashlineApplication> getCashlineApplications() {
+        return cashlineApplications;
+    }
+
+    public void setCashlineApplications(List<CashlineApplication> cashlineApplications) {
+        this.cashlineApplications = cashlineApplications;
     }
 
 

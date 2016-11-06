@@ -487,6 +487,13 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
         application.setApplicationStatus(status);
         em.flush();
     }
+    
+    @Override
+    public void updateCashlineStatus(String status, Long applicationId) {
+        CashlineApplication application = em.find(CashlineApplication.class, applicationId);
+        application.setApplicationStatus(status);
+        em.flush();
+    }
 
     @Override
     public List<MortgageLoanApplication> getAllMortgageApplicationsPendingAppraisal() {
