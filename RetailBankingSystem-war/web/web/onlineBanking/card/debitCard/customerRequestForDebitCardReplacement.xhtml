@@ -51,7 +51,7 @@
                                 </p:selectOneMenu>
 
                                 <p:outputLabel value="Card Password:" />
-                                <p:inputText validatorMessage="Card password is 6-digit" required="#{customerRequestForCardReplacementManagedBean.debitPanelVisible}" requiredMessage="Please input your card password" id="cardPwd" value="#{customerRequestForCardReplacementManagedBean.debitCardPwd}">
+                                <p:inputText type="password" validatorMessage="Card password is 6-digit" required="#{customerRequestForCardReplacementManagedBean.debitPanelVisible}" requiredMessage="Please input your card password" id="cardPwd" value="#{customerRequestForCardReplacementManagedBean.debitCardPwd}">
                                     <f:validateLength minimum="6" maximum="6" /> 
                                 </p:inputText>                      
                             </h:panelGrid>

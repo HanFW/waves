@@ -57,13 +57,6 @@
                             <br/>
                             <p:messages autoUpdate="true"/>   
 
-
-                            <!--                                <p:row>
-                                                                <p:column>
-                                                                    <h:outputText style="font-size: 30px" value="Most Popular Cards"/>
-                                                                </p:column>
-                                                            </p:row>
-                            -->
                             <h:panelGrid columns="2" class="ui-lg-6" style="border: none">
 
 
@@ -88,13 +81,12 @@
 
                             <h:panelGrid class="ui-lg-4">
                                 <p:selectOneMenu required="true" requiredMessage="Please select a deposit account" id="depositAccount" value="#{customerApplyDebitCardManagedBean.selectedDepositAccount}">
-                                    <f:selectItem itemLabel="Please Select Depoit Account"/>
+                                    <f:selectItem itemLabel="Please Select Deposit Account"/>
                                     <f:selectItems value="#{customerApplyDebitCardManagedBean.depositAccounts}"/>
                                 </p:selectOneMenu>
                             </h:panelGrid>
                             <p:messages for="depositAccount"/>
 
-                            <!--<h:form>-->
                             <p:dialog  header="Merlion Bank Visa PayWave Debit Card" widgetVar="debitCard1" width="80%" height="400" responsive="true">
                                 <h:outputText value="Annual Fee(Inclusive of GST)"/>
                                 <br/>
@@ -106,9 +98,7 @@
                                 <br/>
                                 <h:outputText value="Conditions: not withdraw more than 3 times at Merlion Bank ATMs across all your Merlion Bank Cards as well as local Merlion Bank branches in the same month." />                              
                             </p:dialog>
-                            <!--</h:form>-->
 
-                            <!--<h:form>-->
                             <p:dialog header="Watsons Merlion Bank Mastercard Debit Card" widgetVar="debitCard2" width="80%" height="400" responsive="true">
                                 <h:outputText value="Annual Fee(Inclusive of GST)"/>
                                 <br/>
@@ -118,9 +108,7 @@
                                 <br/>
                                 <h:outputText value="3% cashback for contactless transactions"/>                                                  
                             </p:dialog>
-                            <!--</h:form>-->
 
-                            <!--<h:form>-->
                             <p:dialog header="Watsons Merlion Bank Mastercard Debit Card" widgetVar="debitCard3" width="80%" height="400" responsive="true">
                                 <h:outputText value="Annual Fee(Inclusive of GST)"/>
                                 <br/>
@@ -130,8 +118,6 @@
                                 <br/>
                                 <h:outputText value="3% cashback for contactless transactions"/>                                                  
                             </p:dialog>
-                            <!--</h:form>-->
-
 
                             <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" actionListener="#{customerApplyDebitCardManagedBean.checkExistingDebitCard}" style="width:200px" />
 
@@ -149,9 +135,9 @@
                                 </p:steps>
                             </h:panelGrid> 
 
-                            <h:panelGrid columns="1" class="ui-lg-6">  
-                                <p:messages globalOnly="true"/>
+                            <p:messages autoUpdate="true"/>
 
+                            <h:panelGrid columns="1" class="ui-lg-6">  
                                 <h1>Personal Details</h1>
                                 <p:row>
                                     <p:outputLabel value="Name: "/>
@@ -160,7 +146,7 @@
 
                                 <p:row>
                                     <p:outputLabel value="Name to appear on Card: "/>
-                                    <p:inputText value="#{customerApplyDebitCardManagedBean.cardHolderName}"/>
+                                    <p:inputText id="cardHolderName" required="true" requiredMessage="Please sepcify card holder name" value="#{customerApplyDebitCardManagedBean.cardHolderName}"/>
                                 </p:row>
 
                                 <p:row>
@@ -257,7 +243,7 @@
                                 </p:row>
 
                                 <p:row>
-                                    <p:outputLabel style="font-weight: bold" value="Depost Account for Selected Card: "/>
+                                    <p:outputLabel style="font-weight: bold" value="Deposit Account for Selected Card: "/>
                                     <p:outputLabel value="#{customerApplyDebitCardManagedBean.selectedDepositAccount}"/>
                                 </p:row>
 

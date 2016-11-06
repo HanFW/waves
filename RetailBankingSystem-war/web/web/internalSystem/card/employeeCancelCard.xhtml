@@ -13,7 +13,7 @@
             <h:form>
                 <div align="center">
 
-                    <p:messages autoUpdate="true"/>
+                    <p:messages id="message" showDetail="false"/>
 
                     <h1>Cancel My Card</h1>
 
@@ -37,7 +37,7 @@
                                 <p:ajax event="change" update="creditPanel debitPanel" listener="#{employeeCancelCardDoneManagedBean.showCards}"/>
                             </p:selectOneMenu>
                             <p:outputLabel value="Card Password:" />
-                            <p:inputText  required="#{employeeCancelCardDoneManagedBean.debitPanelVisible}" requiredMessage="Please input your card password" id="cardPwd" value="#{employeeCancelCardDoneManagedBean.debitCardPwd}">
+                            <p:inputText type="password" required="#{employeeCancelCardDoneManagedBean.debitPanelVisible}" requiredMessage="Please input your card password" id="cardPwd" value="#{employeeCancelCardDoneManagedBean.debitCardPwd}">
 
                             </p:inputText>
                         </h:panelGrid>
@@ -58,12 +58,12 @@
                         </h:panelGrid>
                     </p:panel>
 
-                    <p:commandButton value="Cancel My Card" actionListener="#{employeeCancelCardDoneManagedBean.cancelCard}" style="width:auto">
+                    <p:commandButton value="Cancel My Card" actionListener="#{employeeCancelCardDoneManagedBean.cancelCard}" style="width:auto" update="message">
                         <p:confirm header="Confirmation" message="Are you sure to cancel the card? This action is not reversible" icon="ui-icon-alert" />
                     </p:commandButton>
 
                     <p:confirmDialog id="dialog" global="true" showEffect="fade" hideEffect="fade">
-                        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" style="width:auto"/>
+                        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" style="width:auto" update="message"/>
                         <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" style="width:auto"/>
                     </p:confirmDialog>
 

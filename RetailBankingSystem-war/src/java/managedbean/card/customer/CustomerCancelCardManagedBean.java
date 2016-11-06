@@ -97,7 +97,7 @@ public class CustomerCancelCardManagedBean implements Serializable {
 
         switch (result) {
             case "success":
-                message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Your debit card has been succesfully deleted!", null);
+                message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Your debit card has been succesfully canceled!", null);
                 context.addMessage(null, message);
                 System.out.println("debit card deleted");
                 break;
@@ -171,7 +171,7 @@ public class CustomerCancelCardManagedBean implements Serializable {
 
             customer = getCustomerViaSessionMap();
             Long id = customer.getCustomerBasicId();
-            debitCards = debitCardSessionBeanLocal.getAllDebitCards(id);
+            debitCards = debitCardSessionBeanLocal.getAllActivatedDebitCards(id);
 
         }
         return debitCards;

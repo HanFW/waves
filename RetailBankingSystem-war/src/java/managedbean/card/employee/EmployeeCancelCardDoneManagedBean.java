@@ -102,7 +102,7 @@ public class EmployeeCancelCardDoneManagedBean {
 
         switch (result) {
             case "success":
-                message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Your debit card has been succesfully deleted!", null);
+                message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Your debit card has been succesfully canceled!", null);
                 context.addMessage(null, message);
                 System.out.println("debit card deleted");
                 break;
