@@ -19,7 +19,7 @@
                 <div align="center">
 
                     <h1>Cancel My Card</h1>
-                    <p:messages autoUpdate="true"/>
+                    <p:messages id="msg" showDetail="false"/>
                     
                     <h:panelGrid columns="2" class="ui-lg-6"> 
 
@@ -61,7 +61,7 @@
                         </h:panelGrid>
                     </p:panel>
 
-                    <p:commandButton value="Cancel My Card" actionListener="#{customerCancelCardManagedBean.cancelCard}" style="width:auto">
+                    <p:commandButton value="Cancel My Card" actionListener="#{customerCancelCardManagedBean.cancelCard}" style="width:auto" update="msg">
                         <p:confirm header="Confirmation" message="Are you sure to cancel the card? This action is not reversible" icon="ui-icon-alert" />
                     </p:commandButton>
 
