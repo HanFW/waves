@@ -1,0 +1,518 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/internalSystemTemplate.xhtml">
+
+    <ui:define name="content">
+        <h:form>
+            <div class="ui-g-10">
+                <p:tabView>
+                    <p:tab title="Application Information">
+                        <p:accordionPanel multiple="true">
+                            <p:tab title="Basic Information">
+                                <p:panelGrid columns="4">
+                                    <p:outputLabel style="font-weight: bold;" value="Salutation: "/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.customerSalutation}"/>
+
+                                    <p:outputLabel style="font-weight: bold;" value="Name:"/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.customerName}"/>
+
+                                    <p:outputLabel style="font-weight: bold;" value="Date of Birth: "/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.customerDateOfBirth}"/>
+
+                                    <p:outputLabel style="font-weight: bold;" value="Gender: "/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.customerGender}"/>
+
+                                    <p:outputLabel style="font-weight: bold;" value="Nationality: "/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.customerNationality}"/>
+
+                                    <p:outputLabel style="font-weight: bold;" value="Idenfincation Number: "/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.customerIdentificationNum}"/>
+
+                                    <p:outputLabel style="font-weight: bold;" value="Country of Residence: "/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.customerCountryOfResidence}"/>
+
+                                    <p:outputLabel style="font-weight: bold;" value="Race: "/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.customerRace}"/>
+
+                                    <p:outputLabel style="font-weight: bold;" value="Mobie: "/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.customerMobile}"/>
+
+                                    <p:outputLabel style="font-weight: bold;" value="Email"/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.customerEmail}"/>
+                                </p:panelGrid>
+                            </p:tab>
+                            <p:tab title="Customer Details">
+                                <p:panelGrid columns="4">
+                                    <p:outputLabel style="font-weight: bold;" value="Education: "/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.customerEducation}"/>
+
+                                    <p:outputLabel style="font-weight: bold;" value="Marital Status: "/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.customerMaritalStatus}"/>
+
+                                    <p:outputLabel style="font-weight: bold;" value="Number of Dependents: "/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.customerNumOfDependents}"/>
+
+                                    <p:outputLabel style="font-weight: bold;" value="Home Address: "/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.customerAddress}"/>
+
+                                    <p:outputLabel style="font-weight: bold;" value="Postal Code:"/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.customerPostal}"/>
+
+                                    <p:outputLabel style="font-weight: bold;" value="Residential Status: "/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.customerResidentialStatus}"/>
+
+                                    <p:outputLabel style="font-weight: bold;" value="Residential Type: "/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.customerResidentialType}"/>
+
+                                    <p:outputLabel style="font-weight: bold;" value="Length of Residence: "/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.customerLengthOfResidence}"/>
+                                </p:panelGrid>
+                            </p:tab>
+                            <p:tab title="Employment Details">
+                                <p:panelGrid columns="4">
+                                    <p:outputLabel style="font-weight: bold;" value="Employment Status: "/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.customerEmploymentStatus}"/>
+
+                                    <p:outputLabel style="font-weight: bold;" value="Industry: "/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.customerIndustryType}"/>
+
+                                    <p:outputLabel style="font-weight: bold;" value="Occupation: "/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.customerOccupation}"/>
+
+                                    <p:outputLabel style="font-weight: bold;" value="Company Name: "/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.customerCompanyName}"/>
+
+                                    <p:outputLabel style="font-weight: bold;" value="Company Address: "/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.customerCompanyAddress}"/>
+
+                                    <p:outputLabel style="font-weight: bold;" value="Company Postal Code: "/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.customerPostal}"/>
+
+                                    <p:outputLabel style="font-weight: bold;" value="Current Position: "/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.customerCurrentPosition}"/>
+
+                                    <p:outputLabel style="font-weight: bold;" value="Current Job Title: "/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.customerCurrentJobTitle}"/>
+
+                                    <p:outputLabel style="font-weight: bold;" value="Length of Current Job: "/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.customerLengthOfCurrentJob}"/>
+
+                                    <p:outputLabel style="font-weight: bold;" value="Previous Company Name: "/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.customerPreviousCompany}"/>
+
+                                    <p:outputLabel style="font-weight: bold;" value="Length of Previous Job: "/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.customerLengthOfPreviousJob}"/>
+
+                                    <p:outputLabel style="font-weight: bold;" value="Monthly Fixed Income: "/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.customerMonthlyFixedIncome}"/>
+
+                                    <p:outputLabel style="font-weight: bold;" value="Other Monthly Income: "/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.customerOtherMonthlyIncome}"/>
+
+                                    <p:outputLabel style="font-weight: bold;" value="Souce of Other Income: "/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.customerOtherMonthlyIncomeSource}"/>
+                                </p:panelGrid>
+                            </p:tab>
+
+                            <p:tab title="Education Details">
+                                <p:panelGrid columns="4">
+                                    <p:column colspan="2">
+                                        <p:outputLabel style="font-weight: bold;" value="Education Institution: "/>
+                                    </p:column>
+                                    <p:column colspan="2">
+                                        <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.customerEducationInstitution}"/>
+                                    </p:column>
+
+                                    <p:outputLabel style="font-weight: bold;" value="Education Starts on: "/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.customerEducationStarton}"/>
+
+                                    <p:outputLabel style="font-weight: bold;" value="Education Ends on: "/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.customerEducationEndon}"/>
+
+                                    <p:outputLabel style="font-weight: bold;" value="Course Duration: "/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.customerCourseDuration}"/>
+
+                                    <p:outputLabel style="font-weight: bold;" value="Course Fee: "/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.customerCourseFee}"/>
+                                </p:panelGrid>
+                            </p:tab>
+                        </p:accordionPanel>
+                    </p:tab>
+
+                    <p:tab title="Guarantor">
+
+                        <p:outputLabel style="font-weight: bold;" value="Relationship with Applicant: "/>
+                        <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.relationship}"/>
+                        
+                        <p:accordionPanel multiple="true">
+                            <p:tab title="Basic Information">
+                                <p:panelGrid columns="4">                                    
+                                    <p:outputLabel style="font-weight: bold;" value="Salutation: "/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.guarantorSalutation}"/>
+
+                                    <p:outputLabel style="font-weight: bold;" value="Name:"/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.guarantorName}"/>
+
+                                    <p:outputLabel style="font-weight: bold;" value="Date of Birth: "/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.guarantorDateOfBirth}"/>
+
+                                    <p:outputLabel style="font-weight: bold;" value="Gender: "/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.guarantorGender}"/>
+
+                                    <p:outputLabel style="font-weight: bold;" value="Nationality: "/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.guarantorNationality}"/>
+
+                                    <p:outputLabel style="font-weight: bold;" value="Idenfincation Number: "/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.guarantorIdentificationNum}"/>
+
+                                    <p:outputLabel style="font-weight: bold;" value="Country of Residence: "/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.guarantorCountryOfResidence}"/>
+
+                                    <p:outputLabel style="font-weight: bold;" value="Race: "/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.guarantorRace}"/>
+
+                                    <p:outputLabel style="font-weight: bold;" value="Mobie: "/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.guarantorMobile}"/>
+
+                                    <p:outputLabel style="font-weight: bold;" value="Email"/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.guarantorEmail}"/>
+                                </p:panelGrid>
+                            </p:tab>
+                            <p:tab title="Customer Details">
+                                <p:panelGrid columns="4">
+                                    <p:outputLabel style="font-weight: bold;" value="Education: "/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.guarantorEducation}"/>
+
+                                    <p:outputLabel style="font-weight: bold;" value="Marital Status: "/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.guarantorMaritalStatus}"/>
+
+                                    <p:outputLabel style="font-weight: bold;" value="Number of Dependents: "/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.guarantorNumOfDependents}"/>
+
+                                    <p:outputLabel style="font-weight: bold;" value="Home Address: "/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.guarantorAddress}"/>
+
+                                    <p:outputLabel style="font-weight: bold;" value="Postal Code:"/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.guarantorPostal}"/>
+
+                                    <p:outputLabel style="font-weight: bold;" value="Residential Status: "/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.guarantorResidentialStatus}"/>
+
+                                    <p:outputLabel style="font-weight: bold;" value="Residential Type: "/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.guarantorResidentialType}"/>
+
+                                    <p:outputLabel style="font-weight: bold;" value="Length of Residence: "/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.guarantorLengthOfResidence}"/>
+                                </p:panelGrid>
+                            </p:tab>
+                            <p:tab title="Employment Details">
+                                <p:panelGrid columns="4">
+                                    <p:outputLabel style="font-weight: bold;" value="Employment Status: "/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.guarantorEmploymentStatus}"/>
+
+                                    <p:outputLabel style="font-weight: bold;" value="Industry: "/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.guarantorIndustryType}"/>
+
+                                    <p:outputLabel style="font-weight: bold;" value="Occupation: "/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.guarantorOccupation}"/>
+
+                                    <p:outputLabel style="font-weight: bold;" value="Company Name: "/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.guarantorCompanyName}"/>
+
+                                    <p:outputLabel style="font-weight: bold;" value="Company Address: "/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.guarantorCompanyAddress}"/>
+
+                                    <p:outputLabel style="font-weight: bold;" value="Company Postal Code: "/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.guarantorPostal}"/>
+
+                                    <p:outputLabel style="font-weight: bold;" value="Current Position: "/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.guarantorCurrentPosition}"/>
+
+                                    <p:outputLabel style="font-weight: bold;" value="Current Job Title: "/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.guarantorCurrentJobTitle}"/>
+
+                                    <p:outputLabel style="font-weight: bold;" value="Length of Current Job: "/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.guarantorLengthOfCurrentJob}"/>
+
+                                    <p:outputLabel style="font-weight: bold;" value="Previous Company Name: "/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.guarantorPreviousCompany}"/>
+
+                                    <p:outputLabel style="font-weight: bold;" value="Length of Previous Job: "/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.guarantorLengthOfPreviousJob}"/>
+
+                                    <p:outputLabel style="font-weight: bold;" value="Monthly Fixed Income: "/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.guarantorMonthlyFixedIncome}"/>
+
+                                    <p:outputLabel style="font-weight: bold;" value="Other Monthly Income: "/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.guarantorOtherMonthlyIncome}"/>
+
+                                    <p:outputLabel style="font-weight: bold;" value="Souce of Other Income: "/>
+                                    <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.guarantorOtherMonthlyIncomeSource}"/>
+                                </p:panelGrid>
+                            </p:tab>
+                        </p:accordionPanel>
+                    </p:tab>
+
+                    <p:tab title="Documents">
+                        <p:accordionPanel multiple="true" activeIndex="-1">
+                            <p:tab title="Identification" rendered="#{loanOfficerProcessEducationLoanManagedBean.docs.get('identification')}">
+                                <p:media value="https://localhost:8181/#{loanOfficerProcessEducationLoanManagedBean.customerIdentificationNum}.pdf" width="100%" height="300px"/>  
+                            </p:tab>
+                            <p:tab title="Guarantor's Identification" rendered="#{loanOfficerProcessEducationLoanManagedBean.docs.get('guarantorIdentification')}">
+                                <p:media value="https://localhost:8181/#{loanOfficerProcessEducationLoanManagedBean.customerIdentificationNum}-guarantor_identification.pdf" width="100%" height="300px"/>  
+                            </p:tab>
+                            <p:tab title="Employee Income Tax Assessment" rendered="#{loanOfficerProcessEducationLoanManagedBean.docs.get('employeeTax')}">
+                                <p:media value="https://localhost:8181/#{loanOfficerProcessEducationLoanManagedBean.customerIdentificationNum}-employee_tax.pdf" width="100%" height="300px"/>  
+                            </p:tab>
+                            <p:tab title="Self-employed Income Tax Assessment" rendered="#{loanOfficerProcessEducationLoanManagedBean.docs.get('selfEmployedTax')}">
+                                <p:media value="https://localhost:8181/#{loanOfficerProcessEducationLoanManagedBean.customerIdentificationNum}-self-employed_tax.pdf" width="100%" height="300px"/>  
+                            </p:tab>
+                            <p:tab title="Course fee invoice / schedule of payment" rendered="#{loanOfficerProcessEducationLoanManagedBean.docs.get('guarantorEmployeeTax')}">
+                                <p:media value="https://localhost:8181/#{loanOfficerProcessEducationLoanManagedBean.customerIdentificationNum}-guarantor_employee_tax.pdf" width="100%" height="300px"/>  
+                            </p:tab>
+                            <p:tab title="Course fee invoice / schedule of payment" rendered="#{loanOfficerProcessEducationLoanManagedBean.docs.get('guarantorSelfEmployedTax')}">
+                                <p:media value="https://localhost:8181/#{loanOfficerProcessEducationLoanManagedBean.customerIdentificationNum}-guarantor_self-employed_tax.pdf" width="100%" height="300px"/>  
+                            </p:tab>
+                            <p:tab title="Acceptance letter" rendered="#{loanOfficerProcessEducationLoanManagedBean.docs.get('acceptance')}">
+                                <p:media value="https://localhost:8181/#{loanOfficerProcessEducationLoanManagedBean.customerIdentificationNum}-acceptance.pdf" width="100%" height="300px"/>  
+                            </p:tab>
+                            <p:tab title="Course fee invoice / schedule of payment" rendered="#{loanOfficerProcessEducationLoanManagedBean.docs.get('invoice')}">
+                                <p:media value="https://localhost:8181/#{loanOfficerProcessEducationLoanManagedBean.customerIdentificationNum}-invoice.pdf" width="100%" height="300px"/>  
+                            </p:tab>
+                            <p:tab title="Proof of relationship" rendered="#{loanOfficerProcessEducationLoanManagedBean.docs.get('relationship')}">
+                                <p:media value="https://localhost:8181/#{loanOfficerProcessEducationLoanManagedBean.customerIdentificationNum}-guarantor_relationship.pdf" width="100%" height="300px"/>  
+                            </p:tab>
+                        </p:accordionPanel>
+                    </p:tab>
+
+                    <p:tab title="Credit Report">
+                        <p:panel header="Account Status" toggleable="true">
+                            <p:dataTable value="#{loanOfficerProcessEducationLoanManagedBean.accountStatus}" var="as">
+                                <p:column headerText="Product Type">
+                                    <h:outputText value="#{as.productType}"/>
+                                </p:column>
+                                <p:column headerText="Grantor Bank">
+                                    <h:outputText value="#{as.grantorBank}"/>
+                                </p:column>
+                                <p:column headerText="Date Open">
+                                    <h:outputText value="#{as.dateOpen}"/>
+                                </p:column>
+                                <p:column headerText="Date Close">
+                                    <h:outputText value="#{as.dateClose}"/>
+                                </p:column>
+                                <p:column headerText="Overdue Balance">
+                                    <h:outputText value="#{as.overdueBalance}"/>
+                                </p:column>
+                            </p:dataTable>
+                        </p:panel>
+                        <p:panel header="Default Records" toggleable="true">
+                            <p:dataTable value="#{loanOfficerProcessEducationLoanManagedBean.defaultRecords}" var="dr">
+                                <p:column headerText="Product Type">
+                                    <h:outputText value="#{dr.productType}"/>
+                                </p:column>
+                                <p:column headerText="Client">
+                                    <h:outputText value="#{dr.productType}"/>
+                                </p:column>
+                                <p:column headerText="Date Loaded">
+                                    <h:outputText value="#{dr.dateLoaded}"/>
+                                </p:column>
+                                <p:column headerText="Original Amount">
+                                    <h:outputText value="#{dr.originalAmount}"/>
+                                </p:column>
+                                <p:column headerText="Outstanding Balance">
+                                    <h:outputText value="#{dr.outstandingBalance}"/>
+                                </p:column>
+                                <p:column headerText="Status">
+                                    <h:outputText value="#{dr.status}"/>
+                                </p:column>
+                                <p:column headerText="Status Date">
+                                    <h:outputText value="#{dr.statusDate}"/>
+                                </p:column>
+                            </p:dataTable>
+                        </p:panel>
+                        <p:panel header="Bureau Score" toggleable="true">
+                            <p:panelGrid columns="2">
+                                <p:outputLabel style="font-weight: bold;" value="Bureau Score: "/>
+                                <h:outputText value="#{loanOfficerProcessEducationLoanManagedBean.bureauScore}"/>
+
+                                <p:outputLabel style="font-weight: bold;" value="Risk Grade: "/>
+                                <h:outputText value="#{loanOfficerProcessEducationLoanManagedBean.riskGrade}"/>
+
+                                <p:outputLabel style="font-weight: bold;" value="Probability of Default: "/>
+                                <h:outputText value="#{loanOfficerProcessEducationLoanManagedBean.probabilityOfDefault}"/>
+                            </p:panelGrid>
+                        </p:panel>
+                    </p:tab>
+
+                    <p:tab title="Processing">
+                        <p:accordionPanel multiple="true">
+                            <p:tab title="Suggestion">
+                                <p:panelGrid>
+                                    <p:row>
+                                        <p:column>
+                                            <p:outputLabel style="font-weight: bold;" value="Suggested Action: "/>
+                                        </p:column>
+                                        <p:column>
+                                            <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.suggestedAction}"/>
+                                        </p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column>
+                                            <p:outputLabel style="font-weight: bold;" value="Maximum Suggested Amount: "/>
+                                        </p:column>
+                                        <p:column>
+                                            <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.maxAmountGranted}"/>
+                                        </p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column>
+                                            <p:outputLabel style="font-weight: bold;" value="Minimum Tenure: "/>
+                                        </p:column>
+                                        <p:column>
+                                            <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.minTenure}"/>
+                                        </p:column>
+                                    </p:row>
+                                </p:panelGrid>
+                            </p:tab>
+                            <p:tab title="Remarks">
+                                <p:panelGrid>
+                                    <p:row>
+                                        <p:column>
+                                            <p:outputLabel style="font-weight: bold;" value="Risk: "/>
+                                        </p:column>
+                                        <p:column>
+                                            <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.riskRatio}"/>
+                                        </p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column colspan="2">
+                                            <p:outputLabel style="font-weight: bold;" value="Maximum Allowable Amount: "/>
+                                        </p:column>
+                                        <p:column>
+                                            <h:outputText value="#{loanOfficerProcessEducationLoanManagedBean.maxAllowableAmount}"/>
+                                        </p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column colspan="2">
+                                            <p:outputLabel style="font-weight: bold;" value="Course Fee: "/>
+                                        </p:column>
+                                        <p:column>
+                                            <h:outputText value="#{loanOfficerProcessEducationLoanManagedBean.customerCourseFee}"/>
+                                        </p:column>
+                                    </p:row>
+                                </p:panelGrid>
+                            </p:tab>
+                            <p:tab title="Highlights">
+                                <p:panelGrid>
+                                    <p:row>
+                                        <p:column colspan="2">
+                                            <p:outputLabel style="font-weight: bold;" value="Total Amount Overdue: "/>
+                                        </p:column>
+                                        <p:column>
+                                            <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.totalAmountOverdue}"/>
+                                        </p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column colspan="2">
+                                            <p:outputLabel style="font-weight: bold;" value="Education:"/>
+                                        </p:column>
+                                        <p:column> 
+                                            <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.customerEducation}"/>
+                                        </p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column colspan="2">
+                                            <p:outputLabel style="font-weight: bold;" value="Number of Dependents: "/>
+                                        </p:column>
+                                        <p:column>    
+                                            <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.customerNumOfDependents}"/>
+                                        </p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column colspan="2">
+                                            <p:outputLabel style="font-weight: bold;" value="Employment Status: "/>
+                                        </p:column>
+                                        <p:column>    
+                                            <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.customerEmploymentStatus}"/>
+                                        </p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column>
+                                            <p:outputLabel style="font-weight: bold;" value="Monthly Income: "/>
+                                        </p:column>
+                                        <p:column>    
+                                            <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.customerMonthlyFixedIncome}"/>
+                                        </p:column>
+                                        <p:column>
+                                            <p:outputLabel style="font-weight: bold;" value="Other Income: "/>
+                                        </p:column>
+                                        <p:column>    
+                                            <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.customerOtherMonthlyIncome}"/>
+                                        </p:column>
+                                        <p:column>
+                                            <p:outputLabel style="font-weight: bold;" value="Other Income Source: "/>
+                                        </p:column>
+                                        <p:column>    
+                                            <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.customerOtherMonthlyIncomeSource}"/>
+                                        </p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column>
+                                            <p:outputLabel style="font-weight: bold;" value="Current Job: "/>
+                                        </p:column>
+                                        <p:column>    
+                                            <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.customerLengthOfCurrentJob}Years"/>
+                                        </p:column>
+                                        <p:column>
+                                            <p:outputLabel style="font-weight: bold;" value="Previous Job: "/>
+                                        </p:column>
+                                        <p:column>    
+                                            <p:outputLabel value="#{loanOfficerProcessEducationLoanManagedBean.customerLengthOfPreviousJob}Years"/>
+                                        </p:column>
+                                    </p:row>
+                                </p:panelGrid>
+                            </p:tab>
+                        </p:accordionPanel>
+                    </p:tab>
+                </p:tabView>
+            </div>
+            <div class="ui-g-2">
+                <p:panelGrid columns="1">
+                    <p:outputLabel style="font-weight: bold;" value="#{loanOfficerProcessEducationLoanManagedBean.loanType}"/>
+                    <p:outputLabel style="font-weight: bold;" value="Request"/>
+                    #{loanOfficerProcessEducationLoanManagedBean.customerLoanAmountRequired} / #{loanOfficerProcessEducationLoanManagedBean.customerLoanTenure}
+                    <p:outputLabel  style="font-weight: bold;" value="Amount"/>
+                    <p:inputText value="#{loanOfficerProcessEducationLoanManagedBean.amountGranted}"/>
+                    <p:outputLabel  style="font-weight: bold;" value="Tenure"/>
+                    <p:inputText value="#{loanOfficerProcessEducationLoanManagedBean.periodSuggested}"/>
+                    <p:outputLabel style="font-weight: bold;" value="Instalment"/>
+                    <p:outputLabel id="instalment" value="#{loanOfficerProcessEducationLoanManagedBean.instalmentSuggested}"/>
+                </p:panelGrid>
+                <p:panelGrid>
+                    <p:commandButton value="Calculate" actionListener="#{loanOfficerProcessEducationLoanManagedBean.calculateInstalment}" update="instalment"/>
+                    <p:commandButton value="Approve" onclick="PF('approveDialog').show();" />
+                    <p:commandButton value="Reject" onclick="PF('rejectDialog').show();"/>
+                </p:panelGrid>
+            </div>
+        </h:form>
+
+        <h:form>
+            <p:confirmDialog widgetVar="approveDialog" header="Loan Approval" message="Are you sure to approve this application?">
+                <p:commandButton value="Approve" actionListener="#{loanOfficerProcessEducationLoanManagedBean.approveLoanRequest}"/>
+                <p:commandButton value="Cancel" onclick="PF('approveDialog').hide();" />
+            </p:confirmDialog>
+        </h:form>
+
+        <h:form>
+            <p:confirmDialog widgetVar="rejectDialog" header="Loan Rejection" message="Are you sure to reject this application?">
+                <p:commandButton value="Reject" actionListener="#{loanOfficerProcessEducationLoanManagedBean.rejectLoanRequest}"/>
+                <p:commandButton value="Cancel" onclick="PF('rejectDialog').hide();" />
+            </p:confirmDialog>
+        </h:form>
+    </ui:define>
+</ui:composition>
