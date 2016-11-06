@@ -809,8 +809,10 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
 
         //applicant 1 risk
         CreditReportBureauScore customerBureauScore = customer.getBureauScore();
+        if (customerBureauScore != null) {
+            customerRisk = customerBureauScore.getProbabilityOfDefault();
+        }
         CustomerAdvanced ca = customer.getCustomerAdvanced();
-        customerRisk = customerBureauScore.getProbabilityOfDefault();
         if (customer.getCustomerMaritalStatus().equals("Married")) {
             customerRisk += 0.01;
         }
@@ -829,7 +831,9 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
         if (joint != null) {
             CreditReportBureauScore jointBureauScore = joint.getBureauScore();
             CustomerAdvanced jointCA = joint.getCustomerAdvanced();
-            jointRisk = jointBureauScore.getProbabilityOfDefault();
+            if (jointBureauScore != null) {
+                jointRisk = jointBureauScore.getProbabilityOfDefault();
+            }
             if (joint.getCustomerMaritalStatus().equals("Married")) {
                 jointRisk += 0.01;
             }
@@ -844,16 +848,16 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
                 jointRisk += 0.01;
             }
         }
-        
+
         DecimalFormat df = new DecimalFormat("0.00");
         String risk = df.format(Math.max(customerRisk, jointRisk));
-        
+
         return Double.parseDouble(risk);
     }
-    
+
     @Override
-    public int calculateMortgageTenure(double amount, double instalment){
-        Double tenure = Math.log(1- 0.035/12*amount/instalment) / Math.log(1+0.035/12) * -1 / 12;
-        return tenure.intValue()+1;
+    public int calculateMortgageTenure(double amount, double instalment) {
+        Double tenure = Math.log(1 - 0.035 / 12 * amount / instalment) / Math.log(1 + 0.035 / 12) * -1 / 12;
+        return tenure.intValue() + 1;
     }
 }

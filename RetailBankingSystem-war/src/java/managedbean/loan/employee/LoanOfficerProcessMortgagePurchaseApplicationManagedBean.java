@@ -224,12 +224,13 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
         debts = customer.getCustomerDebt();
         property = customer.getCustomerProperty();
         cr = customer.getBureauScore();
-        accountStatus = loanApplicationSessionBeanLocal.getAccountStatusByBureauScoreId(cr.getId());
-        defaultRecords = cr.getDefaultRecords();
-
-        bureauScore = cr.getBureauScore();
-        riskGrade = cr.getRiskGrade();
-        probabilityOfDefault = cr.getProbabilityOfDefault();
+        if (cr != null) {
+            accountStatus = loanApplicationSessionBeanLocal.getAccountStatusByBureauScoreId(cr.getId());
+            defaultRecords = cr.getDefaultRecords();
+            bureauScore = cr.getBureauScore();
+            riskGrade = cr.getRiskGrade();
+            probabilityOfDefault = cr.getProbabilityOfDefault();
+        }
 
         customerSalutation = customer.getCustomerSalutation();
         customerName = customer.getCustomerName();
@@ -310,12 +311,14 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
             jointCA = joint.getCustomerAdvanced();
             jointDebts = joint.getCustomerDebt();
             jointCR = joint.getBureauScore();
-            jointAccountStatus = loanApplicationSessionBeanLocal.getAccountStatusByBureauScoreId(jointCR.getId());
-            jointDefaultRecords = jointCR.getDefaultRecords();
+            if (jointCR != null) {
+                jointAccountStatus = loanApplicationSessionBeanLocal.getAccountStatusByBureauScoreId(jointCR.getId());
+                jointDefaultRecords = jointCR.getDefaultRecords();
 
-            jointBureauScore = jointCR.getBureauScore();
-            jointRiskGrade = jointCR.getRiskGrade();
-            jointProbabilityOfDefault = jointCR.getProbabilityOfDefault();
+                jointBureauScore = jointCR.getBureauScore();
+                jointRiskGrade = jointCR.getRiskGrade();
+                jointProbabilityOfDefault = jointCR.getProbabilityOfDefault();
+            }
 
             jointSalutation = joint.getCustomerSalutation();
             jointName = joint.getCustomerName();
@@ -353,8 +356,10 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
             //Decison support
             jointAge = Integer.valueOf(joint.getCustomerAge());
             averageAge = loanApplicationSessionBeanLocal.getApplicantsAverageAge(customer, joint);
-            for (CreditReportAccountStatus account : jointAccountStatus) {
-                jointAmountOverdue += account.getOverdueBalance();
+            if (jointCR != null) {
+                for (CreditReportAccountStatus account : jointAccountStatus) {
+                    jointAmountOverdue += account.getOverdueBalance();
+                }
             }
         }
 
@@ -373,10 +378,12 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
         if (loanType.contains("HDB")) {
             maxMSRInstalment = loanApplicationSessionBeanLocal.getMSRRemaining(customer, joint) + tenancy;
         }
-
-        for (CreditReportAccountStatus account : accountStatus) {
-            totalAmountOverdue += account.getOverdueBalance();
+        if (cr != null) {
+            for (CreditReportAccountStatus account : accountStatus) {
+                totalAmountOverdue += account.getOverdueBalance();
+            }
         }
+
         if (riskRatio > 0.35) {
             suggestedAction = "Reject";
             maxAmountGranted = 0;
