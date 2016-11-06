@@ -215,6 +215,10 @@ public class LoanOfficerProcessMortgageRefinancingApplicationManagedBean impleme
         if (cr != null) {
             accountStatus = cr.getAccountStatus();
             defaultRecords = cr.getDefaultRecords();
+
+            bureauScore = cr.getBureauScore();
+            riskGrade = cr.getRiskGrade();
+            probabilityOfDefault = cr.getProbabilityOfDefault();
         }
 
         customerSalutation = customer.getCustomerSalutation();
@@ -273,10 +277,6 @@ public class LoanOfficerProcessMortgageRefinancingApplicationManagedBean impleme
         docs = ra.getUploads();
 
         applicationDate = ra.getApplicationDate();
-
-        bureauScore = cr.getBureauScore();
-        riskGrade = cr.getRiskGrade();
-        probabilityOfDefault = cr.getProbabilityOfDefault();
 
         //joint applicant        
         joint = ra.getCustomer();
