@@ -61,7 +61,29 @@
                     </p:dataTable>
                 </p:tab>
                 <p:tab title="Renovation Loan">
-
+                    <p:dataTable var="renovationApplication" value="#{loanOfficerViewLoanApplicationsManagedBean.renovationLoanApplications}">
+                        <p:column headerText="Applicant">
+                            <h:outputText value="#{renovationApplication.customerBasic.customerName}" />
+                        </p:column>
+                        <p:column headerText="Type">
+                            <h:outputText value="#{renovationApplication.loanType}" />
+                        </p:column>
+                        <p:column headerText="Application Time">
+                            <h:outputText value="#{renovationApplication.applicationDate}" />
+                        </p:column>
+                        <p:column headerText="Amount">
+                            <h:outputText value="#{renovationApplication.amountRequired}" />
+                        </p:column>
+                        <p:column headerText="Period">
+                            <h:outputText value="#{renovationApplication.periodRequired}" />
+                        </p:column>
+                        <p:column headerText="Status">
+                            <h:outputText value="#{renovationApplication.applicationStatus}" />
+                        </p:column>
+                        <p:column>
+                            <p:commandButton value="View" action="#{loanOfficerViewLoanApplicationsManagedBean.viewApplication(renovationApplication.loanApplicationId, renovationApplication.loanType)}"/>
+                        </p:column>
+                    </p:dataTable>
                 </p:tab>
                 <p:tab title="Cashline">
 

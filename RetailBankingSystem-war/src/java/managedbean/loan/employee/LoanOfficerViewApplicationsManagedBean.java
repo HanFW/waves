@@ -54,6 +54,28 @@ public class LoanOfficerViewApplicationsManagedBean {
         mortgagePurchaseApplications.addAll(loanApplicationSessionBeanLocal.getLoanApplications(appStatus, "Private Property - New Purchase"));
         mortgageRefinancingApplications.addAll(loanApplicationSessionBeanLocal.getLoanApplications(appStatus, "HDB - Refinancing"));
         mortgageRefinancingApplications.addAll(loanApplicationSessionBeanLocal.getLoanApplications(appStatus, "Private Property - Refinancing"));
+        
+        appStatus = new ArrayList<String>();
+        appStatus.add("in progress");
+        renovationLoanApplications = loanApplicationSessionBeanLocal.getLoanApplications(appStatus, "Renovation Loan");
+        appStatus = new ArrayList<String>();
+        appStatus.add("pending");
+        renovationLoanApplications.addAll(loanApplicationSessionBeanLocal.getLoanApplications(appStatus, "Renovation Loan"));
+        
+        appStatus = new ArrayList<String>();
+        appStatus.add("in progress");
+        carLoanApplications = loanApplicationSessionBeanLocal.getLoanApplications(appStatus, "Car Loan");
+        appStatus = new ArrayList<String>();
+        appStatus.add("pending");
+        carLoanApplications.addAll(loanApplicationSessionBeanLocal.getLoanApplications(appStatus, "Car Loan"));
+        
+        appStatus = new ArrayList<String>();
+        appStatus.add("in progress");
+        studyLoanApplications = loanApplicationSessionBeanLocal.getLoanApplications(appStatus, "Education Loan");
+        appStatus = new ArrayList<String>();
+        appStatus.add("pending");
+        studyLoanApplications.addAll(loanApplicationSessionBeanLocal.getLoanApplications(appStatus, "Education Loan"));
+        
     }
 
     public void viewApplication(Long loanApplicationId, String loanType) throws IOException {
@@ -65,6 +87,12 @@ public class LoanOfficerViewApplicationsManagedBean {
             ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/loan/loanOfficerProcessMortgagePurchaseApplication.xhtml?faces-redirect=true");
         }else if(loanType.equals("HDB - Refinancing") || loanType.equals("Private Property - Refinancing")){
             ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/loan/loanOfficerProcessMortgageRefinancingApplication.xhtml?faces-redirect=true");
+        }else if(loanType.equals("Renovation Loan")){
+            ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/loan/loanOfficerProcessRenovationLoanApplication.xhtml?faces-redirect=true");
+        }else if(loanType.equals("Car Loan")){
+            ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/loan/loanOfficerProcessCarLoanApplication.xhtml?faces-redirect=true");
+        }else if(loanType.equals("Education Loan")){
+            ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/loan/loanOfficerProcessEducationLoanApplication.xhtml?faces-redirect=true");
         }
     }
 

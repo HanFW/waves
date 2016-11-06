@@ -419,13 +419,13 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public void approveLoanRequest() throws IOException {
-        loanApplicationSessionBeanLocal.approveMortgageLoanRequest(ma.getLoanApplicationId(), amountGranted, periodSuggested, instalmentSuggested);
+        loanApplicationSessionBeanLocal.approveLoanRequest(ma.getLoanApplicationId(), amountGranted, periodSuggested, instalmentSuggested);
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/loan/loanOfficerViewApplications.xhtml?faces-redirect=true");
     }
 
     public void rejectLoanRequest() throws IOException {
-        loanApplicationSessionBeanLocal.rejectMortgageLoanRequest(ma.getLoanApplicationId());
+        loanApplicationSessionBeanLocal.rejectLoanRequest(ma.getLoanApplicationId());
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/loan/loanOfficerViewApplications.xhtml?faces-redirect=true");
     }

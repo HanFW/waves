@@ -429,8 +429,7 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
     }
 
     @Override
-    public void approveMortgageLoanRequest(Long applicationId, double amount, int period, double instalment) {
-        System.out.println("****** loan/LoanApplicationSessionBean: approveMortgageLoanRequest() ******");
+    public void approveLoanRequest(Long applicationId, double amount, int period, double instalment) {
         LoanApplication application = em.find(LoanApplication.class, applicationId);
         application.setAmountGranted(amount);
         application.setPeriodSuggested(period * 12);
@@ -441,40 +440,14 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
     }
 
     @Override
-    public void rejectMortgageLoanRequest(Long applicationId) {
-        System.out.println("****** loan/LoanApplicationSessionBean: rejectMortgageLoanRequest() ******");
+    public void rejectLoanRequest(Long applicationId) {
         LoanApplication application = em.find(LoanApplication.class, applicationId);
-        CustomerBasic guarantor = application.getCustomerBasic();
-        CustomerAdvanced ca = guarantor.getCustomerAdvanced();
-        CustomerProperty property = guarantor.getCustomerProperty();
-
-        CreditReportBureauScore report = guarantor.getBureauScore();
-        for (CustomerDebt debt : guarantor.getCustomerDebt()) {
-            em.remove(debt);
+        CustomerBasic customer = application.getCustomerBasic();
+        CustomerProperty property = customer.getCustomerProperty();
+        if (property != null) {
+            em.remove(property);
         }
-        for (CreditReportAccountStatus as : report.getAccountStatus()) {
-            em.remove(as);
-        }
-        for (CreditReportDefaultRecords dr : report.getDefaultRecords()) {
-            em.remove(dr);
-        }
-        em.remove(report);
-
         em.remove(application);
-        em.remove(property);
-        em.remove(ca);
-        em.remove(guarantor);
-        em.flush();
-    }
-
-    @Override
-    public void approveRefinancingLoanRequest(Long applicationId, int period, double instalment) {
-        System.out.println("****** loan/LoanApplicationSessionBean: approveRefinancingLoanRequest() ******");
-        LoanApplication application = em.find(LoanApplication.class, applicationId);
-        application.setPeriodSuggested(period * 12);
-        application.setInstalment(instalment);
-        application.setApplicationStatus("approved");
-        application.setFinalActionDate(new Date());
         em.flush();
     }
 
@@ -859,5 +832,12 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
     public int calculateMortgageTenure(double amount, double instalment) {
         Double tenure = Math.log(1 - 0.035 / 12 * amount / instalment) / Math.log(1 + 0.035 / 12) * -1 / 12;
         return tenure.intValue() + 1;
+    }
+
+    @Override
+    public RenovationLoanApplication getRenovationLoanApplicationById(Long applicationId) {
+        RenovationLoanApplication application = em.find(RenovationLoanApplication.class, applicationId);
+        em.refresh(application);
+        return application;
     }
 }
