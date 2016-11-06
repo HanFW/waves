@@ -13,7 +13,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.DateFormat;
@@ -27,7 +26,6 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
-import org.apache.commons.io.IOUtils;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.FlowEvent;
 import org.primefaces.model.UploadedFile;
@@ -41,10 +39,11 @@ import org.primefaces.model.UploadedFile;
 public class CustomerCreditCardApplicationManagedBean implements Serializable {
 
     @EJB
-    private CRMCustomerSessionBeanLocal cRMCustomerSessionBeanLocal;
+    private CRMCustomerSessionBeanLocal customerSessionBeanLocal;
 
     @EJB
     private CreditCardSessionBeanLocal creditCardSessionLocal;
+
     //basic information
     private String customerSalutation;
     private String customerSalutationOthers;
@@ -128,10 +127,12 @@ public class CustomerCreditCardApplicationManagedBean implements Serializable {
     @PostConstruct
     public void init() {
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+//        customerIdentificationNum = ec.getSessionMap().get("customerIdentificationNum").toString();
+//        CustomerBasic customer = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum);
+//        customerNationality = customer.getCustomerNationality();
         CustomerBasic customer = (CustomerBasic) ec.getSessionMap().get("customer");
         customerIdentificationNum = customer.getCustomerIdentificationNum();
         customerNationality = customer.getCustomerNationality();
-        
         showNationalityPanel();
     }
 
@@ -187,7 +188,7 @@ public class CustomerCreditCardApplicationManagedBean implements Serializable {
         if (file != null) {
             String newFilePath = System.getProperty("user.dir").replace("config", "docroot") + System.getProperty("file.separator");
 
-            System.out.println("@@@@@@@@@@@@@@@@@@ID num "+ customerIdentificationNum);
+            System.out.println("@@@@@@@@@@@@@@@@@@ID num " + customerIdentificationNum);
             String filename = customerIdentificationNum + ".pdf";
             File newFile = new File(newFilePath, filename);
             FileOutputStream fileOutputStream = new FileOutputStream(newFile);
@@ -847,14 +848,14 @@ public class CustomerCreditCardApplicationManagedBean implements Serializable {
                 //create CustomerAdvanced
 
                 if (customerEmploymentStatus.equals("Unemployed")) {
-                    newCustomerAdvancedId = cRMCustomerSessionBeanLocal.addNewCustomerAdvanced(customerNumOfDependents, customerEducation, customerResidentialStatus,
+                    newCustomerAdvancedId = customerSessionBeanLocal.addNewCustomerAdvanced(customerNumOfDependents, customerEducation, customerResidentialStatus,
                             customerLengthOfResidence, null, 0, customerEmploymentStatus,
                             customerMonthlyFixedIncome.doubleValue(), customerResidentialType, null,
                             null, null, null,
                             null, 0, 0,
                             null);
                 } else {
-                    newCustomerAdvancedId = cRMCustomerSessionBeanLocal.addNewCustomerAdvanced(customerNumOfDependents, customerEducation, customerResidentialStatus,
+                    newCustomerAdvancedId = customerSessionBeanLocal.addNewCustomerAdvanced(customerNumOfDependents, customerEducation, customerResidentialStatus,
                             customerLengthOfResidence, customerIndustryType, customerLengthOfCurrentJob, customerEmploymentStatus,
                             customerMonthlyFixedIncome.doubleValue(), customerResidentialType, customerCompanyAddress,
                             customerCompanyPostal, customerCurrentPosition, customerCurrentJobTitle,
@@ -863,13 +864,13 @@ public class CustomerCreditCardApplicationManagedBean implements Serializable {
                 }
             } else {
                 if (customerEmploymentStatus.equals("Unemployed")) {
-                    newCustomerAdvancedId = cRMCustomerSessionBeanLocal.updateCustomerAdvanced(customer.getCustomerIdentificationNum(), customerNumOfDependents,
+                    newCustomerAdvancedId = customerSessionBeanLocal.updateCustomerAdvanced(customer.getCustomerIdentificationNum(), customerNumOfDependents,
                             customerEducation, customerResidentialStatus, customerLengthOfResidence, null, 0,
                             customerEmploymentStatus, customerMonthlyFixedIncome.doubleValue(), customerResidentialType, null, null,
                             null, null, null, 0, 0.0,
                             null);
                 } else {
-                    newCustomerAdvancedId = cRMCustomerSessionBeanLocal.updateCustomerAdvanced(customer.getCustomerIdentificationNum(), customerNumOfDependents,
+                    newCustomerAdvancedId = customerSessionBeanLocal.updateCustomerAdvanced(customer.getCustomerIdentificationNum(), customerNumOfDependents,
                             customerEducation, customerResidentialStatus, customerLengthOfResidence, customerIndustryType, customerLengthOfCurrentJob,
                             customerEmploymentStatus, customerMonthlyFixedIncome.doubleValue(), customerResidentialType, customerCompanyAddress, customerCompanyPostal,
                             customerCurrentPosition, customerCurrentJobTitle, null, 0, 0.0,

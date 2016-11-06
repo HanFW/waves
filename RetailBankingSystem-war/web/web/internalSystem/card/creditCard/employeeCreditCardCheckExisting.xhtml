@@ -34,7 +34,7 @@
                                 <p:outputLabel for="customerName" style="font-weight: bold" value="Name(As per NRIC/Passport): " />
                             </p:column>
                             <p:column>
-                                <p:inputText label="Customer Name" id="customerName" value="#{employeeApplyDebitCardManagedBean.customerName}"
+                                <p:inputText label="Customer Name" id="customerName" value="#{employeeCreditCardApplicationManagedBean.customerName}"
                                              required="true" requiredMessage="Required Field">
                                 </p:inputText>
                             </p:column>
@@ -48,7 +48,7 @@
                                 <p:outputLabel for="customerIdentificationNum" style="font-weight: bold" value="Identification Number: " />
                             </p:column>
                             <p:column>
-                                <p:inputText label="Customer Identification Number" id="customerIdentificationNum" value="#{employeeApplyDebitCardManagedBean.customerIdentificationNum}"
+                                <p:inputText label="Customer Identification Number" id="customerIdentificationNum" value="#{employeeCreditCardApplicationManagedBean.customerIdentificationNum}"
                                              required="true" requiredMessage="Required Field">
                                 </p:inputText>
                             </p:column>
@@ -62,7 +62,7 @@
                                 <p:outputLabel for="customerDateOfBirth" style="font-weight: bold" value="Date Of Birth: " />
                             </p:column>
                             <p:column>
-                                <p:calendar id="customerDateOfBirth" value="#{employeeApplyDebitCardManagedBean.customerDateOfBirth}" 
+                                <p:calendar id="customerDateOfBirth" value="#{employeeCreditCardApplicationManagedBean.customerDateOfBirth}" 
                                             showOn="button" locale="de" navigator="true" pattern="dd/MM/yyyy" 
                                             yearRange="c-200:c+200" required="true" requiredMessage="Required Field"/>
                             </p:column>
@@ -80,7 +80,7 @@
                         </p:commandButton>
                        
                         <p:commandButton id="submitBtn" value="Submit"
-                                         action="#{employeeApplyDebitCardManagedBean.submit}" ajax="true"/>
+                                         action="#{employeeCreditCardApplicationManagedBean.submit}" ajax="true"/>
 
                     </h:panelGrid>
                     <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">

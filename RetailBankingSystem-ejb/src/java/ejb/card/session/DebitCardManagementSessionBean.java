@@ -50,14 +50,15 @@ public class DebitCardManagementSessionBean implements DebitCardManagementSessio
                 if (!findDebitCard.getDebitCardPwd().equals(hashedInputPwd)) {
                     return "wrong pwd";
                 } else {
-//                    BankAccount depositAccount = findDebitCard.getBankAccount();
-//                    DebitCardType debitCardType = findDebitCard.getDebitCardType();
-//
-//                    depositAccount.removeDebitCard(findDebitCard);
-//                    debitCardType.removeDebitCard(findDebitCard);
-//
-//                    em.remove(findDebitCard);
-                    findDebitCard.setStatus("cancel");
+                    BankAccount depositAccount = findDebitCard.getBankAccount();
+                    DebitCardType debitCardType = findDebitCard.getDebitCardType();
+
+                    depositAccount.removeDebitCard(findDebitCard);
+                    debitCardType.removeDebitCard(findDebitCard);
+
+                    em.remove(findDebitCard);
+//                    findDebitCard.setStatus("cancel");
+                    em.flush();
                     return "success";
 
                 }
@@ -214,6 +215,7 @@ public class DebitCardManagementSessionBean implements DebitCardManagementSessio
     }
 
     private String md5Hashing(String stringToHash) throws NoSuchAlgorithmException {
+        System.out.println("hashing: "+stringToHash);
         MessageDigest md = MessageDigest.getInstance("MD5");
         return Arrays.toString(md.digest(stringToHash.getBytes()));
     }

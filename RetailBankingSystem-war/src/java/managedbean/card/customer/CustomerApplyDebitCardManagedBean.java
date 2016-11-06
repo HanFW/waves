@@ -53,19 +53,6 @@ public class CustomerApplyDebitCardManagedBean implements Serializable {
     public CustomerApplyDebitCardManagedBean() {
     }
 
-//    public void checkDepositAccountStatus(ActionEvent event) throws IOException{
-//        FacesContext context = FacesContext.getCurrentInstance();
-//        ExternalContext ec = context.getExternalContext();
-//        
-//        CustomerBasic findCustomer = getCustomerViaSessionMap();
-//        System.out.println("test findCustomer: "+findCustomer);
-//        
-//        if(findCustomer.getBankAccount().isEmpty()){
-//            ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/card/debitCard/customerRedirectToOpenDepositAccountPage.xhtml?faces-redirect=true");
-//        }else {
-//            ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/card/debitCard/customerApplyDebitCard.xhtml?faces-redirect=true"); 
-//        }
-//    }
     public void createDebitCard(ActionEvent event) {
         RequestContext rc = RequestContext.getCurrentInstance();
         rc.execute("PF('applyDebitCardWizard').next();");
@@ -204,16 +191,13 @@ public class CustomerApplyDebitCardManagedBean implements Serializable {
     }
 
     public List<String> getDepositAccounts() {
-        System.out.println("test " + depositAccounts);
-        if (depositAccounts.isEmpty()) {
-            customer = getCustomerViaSessionMap();
-            System.out.println("check customer" + customer);
-            List<BankAccount> depositAccountsOfCustomer = customer.getBankAccount();
-            for (int i = 0; i < depositAccountsOfCustomer.size(); i++) {
-                String info = depositAccountsOfCustomer.get(i).getBankAccountType() + "-" + depositAccountsOfCustomer.get(i).getBankAccountNum();
-                depositAccounts.add(i, info);
-            }
-        }
+
+        customer = getCustomerViaSessionMap();
+        Long id = customer.getCustomerBasicId();
+
+        depositAccounts = debitCardSessionBeanLocal.getAllDepositAccounts(id);
+        System.out.println("debug: " + depositAccounts);
+
         return depositAccounts;
     }
 

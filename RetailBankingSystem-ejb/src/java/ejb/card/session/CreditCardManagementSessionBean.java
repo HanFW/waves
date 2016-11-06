@@ -56,6 +56,7 @@ public class CreditCardManagementSessionBean implements CreditCardManagementSess
                     return "credit limit unpaid";
                 } else {
                     findCreditCard.setStatus("cancel");
+                    em.flush();
 
                     return "success";
                 }
@@ -123,6 +124,7 @@ public class CreditCardManagementSessionBean implements CreditCardManagementSess
 //                cct.removeCreditCard(findCreditCard);
                 System.out.println(findCreditCard);
                 em.remove(findCreditCard);
+                em.flush();
                 System.out.println("!!!!!!!after delete card" + findCreditCard);
 
                 System.out.println("!!!!!!!!!!!!!!!!!!management session bean ccct ID" + creditCardTypeId);

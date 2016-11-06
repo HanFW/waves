@@ -19,9 +19,9 @@
                 <div align="center">
 
                     <h1>Cancel My Card</h1>
-                    <p:messages autoUpdate="true"/>
+                    <p:messages id="msg" showDetail="false"/>
                     
-                    <h:panelGrid columns="4" class="ui-lg-4"> 
+                    <h:panelGrid columns="2" class="ui-lg-6"> 
 
                         <p:outputLabel value="Card Type:"/>
                         <p:selectOneRadio required="true" requiredMessage="Please select card type" id="cardType" value="#{customerCancelCardManagedBean.cardType}">
@@ -40,7 +40,7 @@
                                 <f:selectItems value="#{customerCancelCardManagedBean.debitCards}"/> 
                             </p:selectOneMenu>
                             <p:outputLabel value="Card Password:" />
-                            <p:inputText  required="#{customerCancelCardManagedBean.debitPanelVisible}" requiredMessage="Please input your card password" id="cardPwd" value="#{customerCancelCardManagedBean.debitCardPwd}">
+                            <p:inputText type="password" required="#{customerCancelCardManagedBean.debitPanelVisible}" requiredMessage="Please input your card password" id="cardPwd" value="#{customerCancelCardManagedBean.debitCardPwd}">
 
                             </p:inputText>
                         </h:panelGrid>
@@ -61,7 +61,7 @@
                         </h:panelGrid>
                     </p:panel>
 
-                    <p:commandButton value="Cancel My Card" actionListener="#{customerCancelCardManagedBean.cancelCard}" style="width:auto">
+                    <p:commandButton value="Cancel My Card" actionListener="#{customerCancelCardManagedBean.cancelCard}" style="width:auto" update="msg">
                         <p:confirm header="Confirmation" message="Are you sure to cancel the card? This action is not reversible" icon="ui-icon-alert" />
                     </p:commandButton>
 

@@ -13,8 +13,8 @@
                 <p:tab title="Mortgage Loan">
                     <p:tabView>
                         <p:tab title="Waiting for Appraisal">
-                            <p:dataTable var="mortgage1" reflow="true" value="#{loanManagerStartNewLoanManagedBean.appraisalApplications}">
-                                <p:column headerText="Loan ID" filterBy="#{mortgage1.loanApplicationId}" filterMatchMode="contains">
+                            <p:dataTable var="mortgage1" value="#{loanManagerViewAllLoanApplicationsManagedBean.appraisalApplications}">
+                                <p:column headerText="Application ID" filterBy="#{mortgage1.loanApplicationId}" filterMatchMode="contains">
                                     <h:outputText value="#{mortgage1.loanApplicationId}" />
                                 </p:column>
                                 <p:column headerText="Application Date" filterBy="#{mortgage1.applicationDate}" filterMatchMode="contains" sortBy="#{mortgage1.applicationDate}">
@@ -32,14 +32,11 @@
                                 <p:column headerText="Status">
                                     <h:outputText value="#{mortgage1.applicationStatus}" />
                                 </p:column>
-                                <p:column headerText="View">
-                                    <p:commandButton value="View" update="@form"/>
-                                </p:column>
                             </p:dataTable>
                         </p:tab>
                         <p:tab title="Pending">
-                            <p:dataTable var="mortgage2" reflow="true" value="#{loanManagerStartNewLoanManagedBean.pendingMortgageApplications}">
-                                <p:column headerText="Loan ID" filterBy="#{mortgage2.loanApplicationId}" filterMatchMode="contains">
+                            <p:dataTable var="mortgage2" value="#{loanManagerViewAllLoanApplicationsManagedBean.pendingMortgageApplications}">
+                                <p:column headerText="Application ID" filterBy="#{mortgage2.loanApplicationId}" filterMatchMode="contains">
                                     <h:outputText value="#{mortgage2.loanApplicationId}" />
                                 </p:column>
                                 <p:column headerText="Application Date" filterBy="#{mortgage2.applicationDate}" filterMatchMode="contains" sortBy="#{mortgage2.applicationDate}">
@@ -57,15 +54,10 @@
                                 <p:column headerText="Status">
                                     <h:outputText value="#{mortgage2.applicationStatus}" />
                                 </p:column>
-                                <p:column headerText="View">
-                                    <p:commandButton value="View" update="@form"/>
-                                </p:column>
                             </p:dataTable>
                         </p:tab>
                         <p:tab title="In Progress">
                             <p:messages autoUpdate="true"/>
-                            <p:dataTable var="mortgage3" reflow="true" value="#{loanManagerStartNewLoanManagedBean.inprogressMortgageApplications}">
-                                <p:column headerText="Loan ID" filterBy="#{mortgage3.loanApplicationId}" filterMatchMode="contains">
                                     <h:outputText value="#{mortgage3.loanApplicationId}" />
                                 </p:column>
                                 <p:column headerText="Application Date" filterBy="#{mortgage3.applicationDate}" filterMatchMode="contains" sortBy="#{mortgage3.applicationDate}">
@@ -83,14 +75,11 @@
                                 <p:column headerText="Status">
                                     <h:outputText value="#{mortgage3.applicationStatus}" />
                                 </p:column>
-                                <p:column headerText="View">
-                                    <p:commandButton value="View"/>
-                                </p:column>
                             </p:dataTable>
                         </p:tab>
                         <p:tab title="Approved">
-                            <p:dataTable var="mortgage4" reflow="true" value="#{loanManagerStartNewLoanManagedBean.approvedMortgageApplications}">
-                                <p:column headerText="Loan ID">
+                            <p:dataTable var="mortgage3" value="#{loanManagerViewAllLoanApplicationsManagedBean.inprogressMortgageApplications}">
+                                <p:column headerText="Application ID" filterBy="#{mortgage3.loanApplicationId}" filterMatchMode="contains">
                                     <h:outputText value="#{mortgage4.loanApplicationId}" />
                                 </p:column>
                                 <p:column headerText="Application Date" filterBy="#{mortgage4.applicationDate}" filterMatchMode="contains" sortBy="#{mortgage4.applicationDate}">
@@ -111,26 +100,311 @@
                                 <p:column headerText="Status">
                                     <h:outputText value="#{mortgage4.applicationStatus}" />
                                 </p:column>
-                                <p:column headerText="View">
-                                    <p:commandButton value="View"/>
+                                <p:column headerText="Start">
+                                    <p:commandButton value="Start" action="#{loanManagerViewAllLoanApplicationsManagedBean.startNewMortgageLoan(mortgage4.loanApplicationId)}"/>
                                 </p:column>
                             </p:dataTable>
                         </p:tab>
                     </p:tabView>
                 </p:tab>
                 <p:tab title="Renovation Loan">
-
+                    <p:tabView>
+                        <p:tab title="Pending">
+                            <p:dataTable var="renovation1" value="#{loanManagerViewAllLoanApplicationsManagedBean.pendingRenovationApplications}">
+                                <p:column headerText="Application ID" filterBy="#{renovation1.loanApplicationId}" filterMatchMode="contains">
+                                    <h:outputText value="#{renovation1.loanApplicationId}" />
+                                </p:column>
+                                <p:column headerText="Application Date" filterBy="#{renovation1.applicationDate}" filterMatchMode="contains" sortBy="#{renovation1.applicationDate}">
+                                    <h:outputText value="#{renovation1.applicationDate}"/>
+                                </p:column>
+                                <p:column headerText="Type" filterBy="#{renovation1.loanType}" filterMatchMode="contains">
+                                    <h:outputText value="#{renovation1.loanType}" />
+                                </p:column>
+                                <p:column headerText="Amount">
+                                    <h:outputText value="#{renovation1.amountRequired}" />
+                                </p:column>
+                                <p:column headerText="Period">
+                                    <h:outputText value="#{renovation1.periodRequired}" />
+                                </p:column>
+                                <p:column headerText="Status">
+                                    <h:outputText value="#{renovation1.applicationStatus}" />
+                                </p:column>
+                            </p:dataTable>
+                        </p:tab>
+                        <p:tab title="In Progress">
+                            <p:dataTable var="renovation2" value="#{loanManagerViewAllLoanApplicationsManagedBean.inprogressRenovationApplications}">
+                                <p:column headerText="Application ID" filterBy="#{renovation2.loanApplicationId}" filterMatchMode="contains">
+                                    <h:outputText value="#{renovation2.loanApplicationId}" />
+                                </p:column>
+                                <p:column headerText="Application Date" filterBy="#{renovation2.applicationDate}" filterMatchMode="contains" sortBy="#{renovation2.applicationDate}">
+                                    <h:outputText value="#{renovation2.applicationDate}"/>
+                                </p:column>
+                                <p:column headerText="Type" filterBy="#{renovation2.loanType}" filterMatchMode="contains">
+                                    <h:outputText value="#{renovation2.loanType}" />
+                                </p:column>
+                                <p:column headerText="Amount">
+                                    <h:outputText value="#{renovation2.amountRequired}" />
+                                </p:column>
+                                <p:column headerText="Period">
+                                    <h:outputText value="#{renovation2.periodRequired}" />
+                                </p:column>
+                                <p:column headerText="Status">
+                                    <h:outputText value="#{renovation2.applicationStatus}" />
+                                </p:column>
+                            </p:dataTable>
+                        </p:tab>
+                        <p:tab title="Approved">
+                            <p:dataTable var="renovation3" value="#{loanManagerViewAllLoanApplicationsManagedBean.approvedRenovationApplications}">
+                                <p:column headerText="Application ID">
+                                    <h:outputText value="#{renovation3.loanApplicationId}" />
+                                </p:column>
+                                <p:column headerText="Application Date" filterBy="#{renovation3.applicationDate}" filterMatchMode="contains" sortBy="#{renovation3.applicationDate}">
+                                    <h:outputText value="#{renovation3.applicationDate}"/>
+                                </p:column>
+                                <p:column headerText="Approval Date" filterBy="#{renovation3.applicationDate}" filterMatchMode="contains" sortBy="#{renovation3.applicationDate}">
+                                    <h:outputText value="#{renovation3.finalActionDate}"/>
+                                </p:column>
+                                <p:column headerText="Type">
+                                    <h:outputText value="#{renovation3.loanType}" />
+                                </p:column>
+                                <p:column headerText="Amount">
+                                    <h:outputText value="#{renovation3.amountRequired}" />
+                                </p:column>
+                                <p:column headerText="Period">
+                                    <h:outputText value="#{renovation3.periodRequired}" />
+                                </p:column>
+                                <p:column headerText="Status">
+                                    <h:outputText value="#{renovation3.applicationStatus}" />
+                                </p:column>
+                                <p:column headerText="Start">
+                                    <p:commandButton value="Start"/>
+                                </p:column>
+                            </p:dataTable>
+                        </p:tab>
+                    </p:tabView>
                 </p:tab>
                 <p:tab title="Car Loan">
-
+                    <p:tabView>
+                        <p:tab title="Pending">
+                            <p:dataTable var="car1" value="#{loanManagerViewAllLoanApplicationsManagedBean.pendingCarApplications}">
+                                <p:column headerText="Application ID" filterBy="#{car1.loanApplicationId}" filterMatchMode="contains">
+                                    <h:outputText value="#{car1.loanApplicationId}" />
+                                </p:column>
+                                <p:column headerText="Application Date" filterBy="#{car1.applicationDate}" filterMatchMode="contains" sortBy="#{car1.applicationDate}">
+                                    <h:outputText value="#{car1.applicationDate}"/>
+                                </p:column>
+                                <p:column headerText="Type" filterBy="#{car1.loanType}" filterMatchMode="contains">
+                                    <h:outputText value="#{car1.loanType}" />
+                                </p:column>
+                                <p:column headerText="Amount">
+                                    <h:outputText value="#{car1.amountRequired}" />
+                                </p:column>
+                                <p:column headerText="Period">
+                                    <h:outputText value="#{car1.periodRequired}" />
+                                </p:column>
+                                <p:column headerText="Status">
+                                    <h:outputText value="#{car1.applicationStatus}" />
+                                </p:column>
+                            </p:dataTable>
+                        </p:tab>
+                        <p:tab title="In Progress">
+                            <p:dataTable var="car2" value="#{loanManagerViewAllLoanApplicationsManagedBean.inprogressCarApplications}">
+                                <p:column headerText="Application ID" filterBy="#{car2.loanApplicationId}" filterMatchMode="contains">
+                                    <h:outputText value="#{car2.loanApplicationId}" />
+                                </p:column>
+                                <p:column headerText="Application Date" filterBy="#{car2.applicationDate}" filterMatchMode="contains" sortBy="#{car2.applicationDate}">
+                                    <h:outputText value="#{car2.applicationDate}"/>
+                                </p:column>
+                                <p:column headerText="Type" filterBy="#{car2.loanType}" filterMatchMode="contains">
+                                    <h:outputText value="#{car2.loanType}" />
+                                </p:column>
+                                <p:column headerText="Amount">
+                                    <h:outputText value="#{car2.amountRequired}" />
+                                </p:column>
+                                <p:column headerText="Period">
+                                    <h:outputText value="#{car2.periodRequired}" />
+                                </p:column>
+                                <p:column headerText="Status">
+                                    <h:outputText value="#{car2.applicationStatus}" />
+                                </p:column>
+                            </p:dataTable>
+                        </p:tab>
+                        <p:tab title="Approved">
+                            <p:dataTable var="car3" value="#{loanManagerViewAllLoanApplicationsManagedBean.approvedCarApplications}">
+                                <p:column headerText="Application ID">
+                                    <h:outputText value="#{car3.loanApplicationId}" />
+                                </p:column>
+                                <p:column headerText="Application Date" filterBy="#{car3.applicationDate}" filterMatchMode="contains" sortBy="#{car3.applicationDate}">
+                                    <h:outputText value="#{car3.applicationDate}"/>
+                                </p:column>
+                                <p:column headerText="Approval Date" filterBy="#{car3.applicationDate}" filterMatchMode="contains" sortBy="#{car3.applicationDate}">
+                                    <h:outputText value="#{car3.finalActionDate}"/>
+                                </p:column>
+                                <p:column headerText="Type">
+                                    <h:outputText value="#{car3.loanType}" />
+                                </p:column>
+                                <p:column headerText="Amount">
+                                    <h:outputText value="#{car3.amountRequired}" />
+                                </p:column>
+                                <p:column headerText="Period">
+                                    <h:outputText value="#{car3.periodRequired}" />
+                                </p:column>
+                                <p:column headerText="Status">
+                                    <h:outputText value="#{car3.applicationStatus}" />
+                                </p:column>
+                                <p:column headerText="Start">
+                                    <p:commandButton value="Start"/>
+                                </p:column>
+                            </p:dataTable>
+                        </p:tab>
+                    </p:tabView>
                 </p:tab>
-                <p:tab title="Study Loan">
-
+                <p:tab title="Education Loan">
+                    <p:tabView>
+                        <p:tab title="Pending">
+                            <p:dataTable var="education1" value="#{loanManagerViewAllLoanApplicationsManagedBean.pendingEducationApplications}">
+                                <p:column headerText="Application ID" filterBy="#{education1.loanApplicationId}" filterMatchMode="contains">
+                                    <h:outputText value="#{education1.loanApplicationId}" />
+                                </p:column>
+                                <p:column headerText="Application Date" filterBy="#{education1.applicationDate}" filterMatchMode="contains" sortBy="#{education1.applicationDate}">
+                                    <h:outputText value="#{education1.applicationDate}"/>
+                                </p:column>
+                                <p:column headerText="Type" filterBy="#{education1.loanType}" filterMatchMode="contains">
+                                    <h:outputText value="#{education1.loanType}" />
+                                </p:column>
+                                <p:column headerText="Amount">
+                                    <h:outputText value="#{education1.amountRequired}" />
+                                </p:column>
+                                <p:column headerText="Period">
+                                    <h:outputText value="#{education1.periodRequired}" />
+                                </p:column>
+                                <p:column headerText="Status">
+                                    <h:outputText value="#{education1.applicationStatus}" />
+                                </p:column>
+                            </p:dataTable>
+                        </p:tab>
+                        <p:tab title="In Progress">
+                            <p:dataTable var="education2" value="#{loanManagerViewAllLoanApplicationsManagedBean.inprogressEducationApplications}">
+                                <p:column headerText="Application ID" filterBy="#{education2.loanApplicationId}" filterMatchMode="contains">
+                                    <h:outputText value="#{education2.loanApplicationId}" />
+                                </p:column>
+                                <p:column headerText="Application Date" filterBy="#{education2.applicationDate}" filterMatchMode="contains" sortBy="#{education2.applicationDate}">
+                                    <h:outputText value="#{education2.applicationDate}"/>
+                                </p:column>
+                                <p:column headerText="Type" filterBy="#{education2.loanType}" filterMatchMode="contains">
+                                    <h:outputText value="#{education2.loanType}" />
+                                </p:column>
+                                <p:column headerText="Amount">
+                                    <h:outputText value="#{education2.amountRequired}" />
+                                </p:column>
+                                <p:column headerText="Period">
+                                    <h:outputText value="#{education2.periodRequired}" />
+                                </p:column>
+                                <p:column headerText="Status">
+                                    <h:outputText value="#{education2.applicationStatus}" />
+                                </p:column>
+                            </p:dataTable>
+                        </p:tab>
+                        <p:tab title="Approved">
+                            <p:dataTable var="education3" value="#{loanManagerViewAllLoanApplicationsManagedBean.approvedEducationApplications}">
+                                <p:column headerText="Application ID">
+                                    <h:outputText value="#{education3.loanApplicationId}" />
+                                </p:column>
+                                <p:column headerText="Application Date" filterBy="#{education3.applicationDate}" filterMatchMode="contains" sortBy="#{education3.applicationDate}">
+                                    <h:outputText value="#{education3.applicationDate}"/>
+                                </p:column>
+                                <p:column headerText="Approval Date" filterBy="#{education3.applicationDate}" filterMatchMode="contains" sortBy="#{education3.applicationDate}">
+                                    <h:outputText value="#{education3.finalActionDate}"/>
+                                </p:column>
+                                <p:column headerText="Type">
+                                    <h:outputText value="#{education3.loanType}" />
+                                </p:column>
+                                <p:column headerText="Amount">
+                                    <h:outputText value="#{education3.amountRequired}" />
+                                </p:column>
+                                <p:column headerText="Period">
+                                    <h:outputText value="#{education3.periodRequired}" />
+                                </p:column>
+                                <p:column headerText="Status">
+                                    <h:outputText value="#{education3.applicationStatus}" />
+                                </p:column>
+                                <p:column headerText="Start">
+                                    <p:commandButton value="Start"/>
+                                </p:column>
+                            </p:dataTable>
+                        </p:tab>
+                    </p:tabView>
                 </p:tab>
                 <p:tab title="Cashline">
-
+                    <p:tabView>
+                        <p:tab title="Pending">
+                            <p:dataTable var="cashlinePending" value="#{loanManagerViewAllLoanApplicationsManagedBean.pendingCashlineApplications}">
+                                <p:column headerText="Application ID" filterBy="#{cashlinePending.id}" filterMatchMode="contains">
+                                    <h:outputText value="#{cashlinePending.id}" />
+                                </p:column>
+                                <p:column headerText="Application Date" filterBy="#{cashlinePending.applicationDate}" filterMatchMode="contains" sortBy="#{cashlinePending.applicationDate}">
+                                    <h:outputText value="#{cashlinePending.applicationDate}"/>
+                                </p:column>
+                                <p:column headerText="Type" filterBy="#{cashlinePending.loanType}" filterMatchMode="contains">
+                                    <h:outputText value="#{cashlinePending.loanType}" />
+                                </p:column>
+                                <p:column headerText="Amount">
+                                    <h:outputText value="#{cashlinePending.amountRequired}" />
+                                </p:column>
+                                <p:column headerText="Status">
+                                    <h:outputText value="#{cashlinePending.applicationStatus}" />
+                                </p:column>
+                            </p:dataTable>
+                        </p:tab>
+                        <p:tab title="In Progress">
+                            <p:dataTable var="cashline2" value="#{loanManagerViewAllLoanApplicationsManagedBean.inprogressCashlineApplications}">
+                                <p:column headerText="Application ID" filterBy="#{cashline2.id}" filterMatchMode="contains">
+                                    <h:outputText value="#{cashline2.id}" />
+                                </p:column>
+                                <p:column headerText="Application Date" filterBy="#{cashline2.applicationDate}" filterMatchMode="contains" sortBy="#{cashline2.applicationDate}">
+                                    <h:outputText value="#{cashline2.applicationDate}"/>
+                                </p:column>
+                                <p:column headerText="Type" filterBy="#{cashline2.loanType}" filterMatchMode="contains">
+                                    <h:outputText value="#{cashline2.loanType}" />
+                                </p:column>
+                                <p:column headerText="Amount">
+                                    <h:outputText value="#{cashline2.amountRequired}" />
+                                </p:column>
+                                <p:column headerText="Status">
+                                    <h:outputText value="#{cashline2.applicationStatus}" />
+                                </p:column>
+                            </p:dataTable>
+                        </p:tab>
+                        <p:tab title="Approved">
+                            <p:dataTable var="cashline3" value="#{loanManagerViewAllLoanApplicationsManagedBean.approvedCashlineApplications}">
+                                <p:column headerText="Application ID">
+                                    <h:outputText value="#{cashline3.loanApplicationId}" />
+                                </p:column>
+                                <p:column headerText="Application Date" filterBy="#{cashline3.applicationDate}" filterMatchMode="contains" sortBy="#{cashline3.applicationDate}">
+                                    <h:outputText value="#{cashline3.applicationDate}"/>
+                                </p:column>
+                                <p:column headerText="Approval Date" filterBy="#{cashline3.applicationDate}" filterMatchMode="contains" sortBy="#{cashline3.applicationDate}">
+                                    <h:outputText value="#{cashline3.finalActionDate}"/>
+                                </p:column>
+                                <p:column headerText="Type">
+                                    <h:outputText value="#{cashline3.loanType}" />
+                                </p:column>
+                                <p:column headerText="Amount">
+                                    <h:outputText value="#{cashline3.amountRequired}" />
+                                </p:column>
+                                <p:column headerText="Status">
+                                    <h:outputText value="#{cashline3.applicationStatus}" />
+                                </p:column>
+                                <p:column headerText="Start">
+                                    <p:commandButton value="Start"/>
+                                </p:column>
+                            </p:dataTable>
+                        </p:tab>
+                    </p:tabView>
                 </p:tab>
             </p:tabView>
         </h:form>
     </ui:define>
 </ui:composition>
+                            <p:dataTable var="mortgage4" value="#{loanManagerViewAllLoanApplicationsManagedBean.approvedMortgageApplications}">
+                                <p:column headerText="Application ID">

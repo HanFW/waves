@@ -6,6 +6,10 @@
     <system systemId="http://localhost:8080/SWIFTWebService/SWIFTWebService?xsd=1" uri="wsdl/localhost_8080/SWIFTWebService/SWIFTWebService.xsd_1.xsd"/>
     <system systemId="http://localhost:8080/CHIPSWebService/CHIPSWebService?wsdl" uri="wsdl/localhost_8080/CHIPSWebService/CHIPSWebService.wsdl"/>
     <system systemId="http://localhost:8080/CHIPSWebService/CHIPSWebService?xsd=1" uri="wsdl/localhost_8080/CHIPSWebService/CHIPSWebService.xsd_1.xsd"/>
+    <system systemId="http://localhost:8080/MerlionTransactionAuthorizationWebService/MerlionTransactionAuthorizationWebService?wsdl" uri="wsdl/localhost_8080/MerlionTransactionAuthorizationWebService/MerlionTransactionAuthorizationWebService.wsdl"/>
+    <system systemId="http://localhost:8080/MerlionTransactionAuthorizationWebService/MerlionTransactionAuthorizationWebService?xsd=1" uri="wsdl/localhost_8080/MerlionTransactionAuthorizationWebService/MerlionTransactionAuthorizationWebService.xsd_1.xsd"/>
+    <system systemId="http://localhost:8080/TransactionAuthorizationWebService/TransactionAuthorizationWebService?wsdl" uri="wsdl/localhost_8080/TransactionAuthorizationWebService/TransactionAuthorizationWebService.wsdl"/>
+    <system systemId="http://localhost:8080/TransactionAuthorizationWebService/TransactionAuthorizationWebService?xsd=1" uri="wsdl/localhost_8080/TransactionAuthorizationWebService/TransactionAuthorizationWebService.xsd_1.xsd"/>
     <system systemId="http://localhost:8080/OtherBanksWebService/OtherBanksWebService?wsdl" uri="wsdl/localhost_8080/OtherBanksWebService/OtherBanksWebService.wsdl"/>
     <system systemId="http://localhost:8080/OtherBanksWebService/OtherBanksWebService?xsd=1" uri="wsdl/localhost_8080/OtherBanksWebService/OtherBanksWebService.xsd_1.xsd"/>
 </catalog>

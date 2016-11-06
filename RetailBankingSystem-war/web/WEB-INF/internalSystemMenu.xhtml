@@ -78,7 +78,15 @@
                             <p:menuitem value="Add Standing GIRO" url="/web/internalSystem/payment/employeeAddStandingGIRO.xhtml" />
                             <p:menuitem value="Delete Standing GIRO" url="/web/internalSystem/payment/employeeDeleteStandingGIRO.xhtml" />
                             <p:menuitem value="Non Standing GIRO Transfer" url="/web/internalSystem/payment/employeeNonStandingGIROTransfer.xhtml" />
+                            <p:menuitem value="Apply Debit Card" url="/web/internalSystem/card/debitCard/employeeDebitCardCheckExisting.xhtml"/>
+                            <p:menuitem value="Apply Credit Card" url="/web/internalSystem/card/creditCard/employeeCreditCardCheckExisting.xhtml"/>
                             <p:menuitem value="View Dashboard" url="/web/internalSystem/BI/employeeViewDashboard.xhtml" />
+                            <p:menuitem value="Apply for HDB Loan" action="#{employeeChooseLoanManagedBean.chooseMortgageLoan('HDB')}"/>
+                            <p:menuitem value="Apply for Private Property Loan" action="#{employeeChooseLoanManagedBean.chooseMortgageLoan('Private Property')}"/>
+                            <p:menuitem value="Apply for Renovation Loan" url="/web/internalSystem/loan/employeeRenovationLoanApplication.xhtml"/>
+                            <p:menuitem value="Apply for Car Loan" url="/web/internalSystem/loan/employeeCarLoanApplication.xhtml"/>
+                            <p:menuitem value="Apply for Education Loan" url="/web/internalSystem/loan/employeeEducationLoanApplication.xhtml"/>
+                            <p:menuitem value="Apply for Cashline" url="/web/internalSystem/loan/employeeCashlineApplication.xhtml"/>
                         </p:submenu>
 
                         <p:submenu label="Customer Service Agent" rendered="#{employeeAccountManagedBean.hasRoleCustomerServiceAgent()}">
@@ -106,6 +114,7 @@
                         <p:submenu label="Relationship Manager" rendered="#{employeeAccountManagedBean.hasRoleRelationshipManager()}">
                             <p:menuitem value="Update Customer Advanced Profile" url="/web/internalSystem/CRM/RMViewCustomerList.xhtml" />
                             <p:menuitem value="View All My Customers" url="/web/internalSystem/CRM/RMSearchCustomer.xhtml" />
+                            <p:menuitem value="Risk Tolerance Test" url="/web/internalSystem/wealth/RMHelpCustomerDoRiskTestCheckExistingCustomer.xhtml" />
                         </p:submenu>
 
                         <p:submenu label="Wealth Management Specialist" rendered="#{employeeAccountManagedBean.hasRoleWealthManagementSpecialist()}">
@@ -137,7 +146,7 @@
                         </p:submenu>
 
                         <p:submenu label="Card Department Manager" rendered="#{employeeAccountManagedBean.hasRoleCardDepartmentManager()}">
-                            <p:menuitem value="XXXXXX" url="" />
+                            <p:menuitem value="View Transaction Authorization" url="/web/internalSystem/card/merlionBankViewAllAuthorizedTransactions.xhtml" />
                         </p:submenu>
 
                         <p:submenu label="Card Specialist" rendered="#{employeeAccountManagedBean.hasRoleCardSpecialist()}">

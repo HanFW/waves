@@ -45,7 +45,7 @@
                                 <f:selectItems value="#{employeeReportCardLossDoneManagedBean.debitCards}"/> 
                             </p:selectOneMenu>
                             <p:outputLabel value="Card Password:" />
-                            <p:inputText  required="#{employeeReportCardLossDoneManagedBean.debitPanelVisible}" requiredMessage="Please input your card password" id="cardPwd" value="#{employeeReportCardLossDoneManagedBean.debitCardPwd}">
+                            <p:inputText type="password" required="#{employeeReportCardLossDoneManagedBean.debitPanelVisible}" requiredMessage="Please input your card password" id="cardPwd" value="#{employeeReportCardLossDoneManagedBean.debitCardPwd}">
                             </p:inputText>
                         </h:panelGrid>
                         <p:commandButton value="Confirm" actionListener="#{employeeReportCardLossDoneManagedBean.reportCardLoss}" style="width:150px"/>             
