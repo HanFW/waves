@@ -13,7 +13,7 @@
                 <p:tab title="Mortgage Loan">
                     <p:tabView>
                         <p:tab title="Waiting for Appraisal">
-                            <p:dataTable var="mortgage1" value="#{loanManagerStartNewLoanManagedBean.appraisalApplications}">
+                            <p:dataTable var="mortgage1" reflow="true" value="#{loanManagerStartNewLoanManagedBean.appraisalApplications}">
                                 <p:column headerText="Loan ID" filterBy="#{mortgage1.loanApplicationId}" filterMatchMode="contains">
                                     <h:outputText value="#{mortgage1.loanApplicationId}" />
                                 </p:column>
@@ -38,7 +38,7 @@
                             </p:dataTable>
                         </p:tab>
                         <p:tab title="Pending">
-                            <p:dataTable var="mortgage2" value="#{loanManagerStartNewLoanManagedBean.pendingMortgageApplications}">
+                            <p:dataTable var="mortgage2" reflow="true" value="#{loanManagerStartNewLoanManagedBean.pendingMortgageApplications}">
                                 <p:column headerText="Loan ID" filterBy="#{mortgage2.loanApplicationId}" filterMatchMode="contains">
                                     <h:outputText value="#{mortgage2.loanApplicationId}" />
                                 </p:column>
@@ -64,7 +64,7 @@
                         </p:tab>
                         <p:tab title="In Progress">
                             <p:messages autoUpdate="true"/>
-                            <p:dataTable var="mortgage3" value="#{loanManagerStartNewLoanManagedBean.inprogressMortgageApplications}">
+                            <p:dataTable var="mortgage3" reflow="true" value="#{loanManagerStartNewLoanManagedBean.inprogressMortgageApplications}">
                                 <p:column headerText="Loan ID" filterBy="#{mortgage3.loanApplicationId}" filterMatchMode="contains">
                                     <h:outputText value="#{mortgage3.loanApplicationId}" />
                                 </p:column>
@@ -89,7 +89,7 @@
                             </p:dataTable>
                         </p:tab>
                         <p:tab title="Approved">
-                            <p:dataTable var="mortgage4" value="#{loanManagerStartNewLoanManagedBean.approvedMortgageApplications}">
+                            <p:dataTable var="mortgage4" reflow="true" value="#{loanManagerStartNewLoanManagedBean.approvedMortgageApplications}">
                                 <p:column headerText="Loan ID">
                                     <h:outputText value="#{mortgage4.loanApplicationId}" />
                                 </p:column>

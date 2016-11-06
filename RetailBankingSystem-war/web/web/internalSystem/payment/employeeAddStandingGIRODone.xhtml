@@ -5,14 +5,10 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
-                template="/WEB-INF/onlineBankingTemplate.xhtml">
+                 template="/WEB-INF/internalSystemTemplate.xhtml">
 
     <ui:define name="content">
         <h:form>
-            <p:panel>
-                <p:outputLabel value="Welcome "/>
-                <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
-            </p:panel>
             <div align="center">
                 <p:growl id="growl" sticky="true" showDetail="true"/>
 

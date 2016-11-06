@@ -169,7 +169,7 @@ public class CustomerOnlineRiskToleranceTestManagedBean implements Serializable 
         pieModel1.set("Equity", 0.8);
         pieModel1.set("Fiexed Income", 0.2);
 
-        pieModel1.setTitle("Aggressive");
+        pieModel1.setTitle("Aggressive Portfolio");
         pieModel1.setLegendPosition("w");
         pieModel1.setShowDataLabels(true);
     }
@@ -185,7 +185,7 @@ public class CustomerOnlineRiskToleranceTestManagedBean implements Serializable 
         pieModel2.set("Bonds", 0.75);
         pieModel2.set("Stocks", 0.1);
 
-        pieModel2.setTitle("Moderate");
+        pieModel2.setTitle("Moderate Portfolio");
         pieModel2.setLegendPosition("w");
         pieModel2.setShowDataLabels(true);
     }
@@ -200,7 +200,7 @@ public class CustomerOnlineRiskToleranceTestManagedBean implements Serializable 
         pieModel3.set("Equity", 0.3);
         pieModel3.set("Fiexed Income", 0.7);
 
-        pieModel3.setTitle("Conservative");
+        pieModel3.setTitle("Conservative Portfolio");
         pieModel3.setLegendPosition("w");
         pieModel3.setShowDataLabels(true);
     }

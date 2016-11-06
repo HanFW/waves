@@ -9,61 +9,42 @@
 
     <ui:define name="content">
         <h:body>
-            <h:form>
-                <p:menubar>
-                    <p:submenu label="Home">
-                        <p:menuitem value="Home" url="/web/internalSystem/infrastructure/employeeCounterTellerMainPage.xhtml"/>
-                    </p:submenu>
-
-                    <p:submenu label="Log Out">
-                        <p:menuitem value="Logout" actionListener="#{employeeLoginManagedBean.doLogOut}" />
-                    </p:submenu>
-                </p:menubar>
-            </h:form>
-
             <h:form id="formMain">
+                <p:panel id="panel"> 
+                    <div align="center">
+                        <h:panelGrid columns="1" class="ui-lg-4">
 
-                <div class="ui-g ui-fluid">
-                    <div class="ui-g-12 ui-lg-12">
-                        <div class="card card-w-title"> 
-                            <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                            <p:messages globalOnly="true"/>
 
-                                <p:panel id="panel"> 
-                                    <p:messages globalOnly="true"/>
+                            <p:outputLabel for="billingOrganizationName" style="font-weight: bold" value="Billing Organization: " />
+                            <p:inputText required="true" label="Billing Organization Name" requiredMessage="Required Field" id="billingOrganizationName"
+                                         value="#{employeeEnterBillingOrganizationManagedBean.billingOrganizationName}">
+                            </p:inputText>
+                            <p:message for="billingOrganizationName" />
 
-                                    <p:outputLabel for="billingOrganizationName" style="font-weight: bold" value="Billing Organization: " />
-                                    <p:inputText required="true" label="Billing Organization Name" requiredMessage="Required Field" id="billingOrganizationName"
-                                                 value="#{employeeEnterBillingOrganizationManagedBean.billingOrganizationName}">
-                                    </p:inputText>
-                                    <p:message for="billingOrganizationName" />
+                            <p:outputLabel for="bankAccountNum" style="font-weight: bold" value="Bank Account Number: " />
+                            <p:inputText required="true" label="Bank Account Number" requiredMessage="Required Field" id="bankAccountNum"
+                                         value="#{employeeEnterBillingOrganizationManagedBean.bankAccountNum}">
+                            </p:inputText>
+                            <p:message for="bankAccountNum" />
 
-                                    <p:outputLabel for="bankAccountNum" style="font-weight: bold" value="Bank Account Number: " />
-                                    <p:inputText required="true" label="Bank Account Number" requiredMessage="Required Field" id="bankAccountNum"
-                                                 value="#{employeeEnterBillingOrganizationManagedBean.bankAccountNum}">
-                                    </p:inputText>
-                                    <p:message for="bankAccountNum" />
+                            <p:outputLabel for="bankAccountType" style="font-weight: bold" value="Bank Account Type: " />
+                            <p:inputText required="true" label="Bank Account Type" requiredMessage="Required Field" id="bankAccountType"
+                                         value="#{employeeEnterBillingOrganizationManagedBean.bankAccountType}">
+                            </p:inputText>
+                            <p:message for="bankAccountType" />
 
-                                    <p:outputLabel for="bankAccountType" style="font-weight: bold" value="Bank Account Type: " />
-                                    <p:inputText required="true" label="Bank Account Type" requiredMessage="Required Field" id="bankAccountType"
-                                                 value="#{employeeEnterBillingOrganizationManagedBean.bankAccountType}">
-                                    </p:inputText>
-                                    <p:message for="bankAccountType" />
+                            <p:outputLabel for="bankName" style="font-weight: bold" value="Bank: " />
+                            <p:inputText required="true" label="Bank" requiredMessage="Required Field" id="bankName"
+                                         value="#{employeeEnterBillingOrganizationManagedBean.bankName}">
+                            </p:inputText>
+                            <p:message for="bankName" />
 
-                                    <p:outputLabel for="bankName" style="font-weight: bold" value="Bank: " />
-                                    <p:inputText required="true" label="Bank" requiredMessage="Required Field" id="bankName"
-                                                 value="#{employeeEnterBillingOrganizationManagedBean.bankName}">
-                                    </p:inputText>
-                                    <p:message for="bankName" />
-
-                                    <p:commandButton id="submitBtn" value="Submit" update="panel" 
-                                                     actionListener="#{employeeEnterBillingOrganizationManagedBean.submit()}" ajax="true"/>
-                                </p:panel>
-
-                            </p:panelGrid>
-                        </div>
-                    </div>
-                </div>
-
+                        </h:panelGrid>
+                        <p:commandButton id="submitBtn" value="Submit" update="panel" style="width:150px"
+                                         actionListener="#{employeeEnterBillingOrganizationManagedBean.submit()}" ajax="true"/>
+                    </div>                          
+                </p:panel>
             </h:form>
         </h:body>
     </ui:define>

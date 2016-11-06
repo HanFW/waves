@@ -20,7 +20,8 @@
 
                     <h1>Cancel My Card</h1>
                     <p:messages autoUpdate="true"/>
-                    <h:panelGrid columns="2" class="ui-lg-6"> 
+                    
+                    <h:panelGrid columns="4" class="ui-lg-4"> 
 
                         <p:outputLabel value="Card Type:"/>
                         <p:selectOneRadio required="true" requiredMessage="Please select card type" id="cardType" value="#{customerCancelCardManagedBean.cardType}">
@@ -28,12 +29,12 @@
                             <f:selectItem itemLabel="Debit Card" itemValue="debit" />
                             <p:ajax event="change" update="creditPanel debitPanel" listener="#{customerCancelCardManagedBean.showCards}"/>
                         </p:selectOneRadio>
-                        <p:messages for="cardType"/>
+<!--                        <p:messages for="cardType"/>-->
                     </h:panelGrid>
 
                     <p:panel id="debitPanel" visible="#{customerCancelCardManagedBean.debitPanelVisible}">
                         <h:panelGrid columns="2" class="ui-lg-4">
-                            <p:outputLabel value="Debit Card"/>
+                            <p:outputLabel value="Debit Card:"/>
                             <p:selectOneMenu id="selectCard" required="#{customerCancelCardManagedBean.debitPanelVisible}" requiredMessage="Please select a debit card" style="text-align:left" value="#{customerCancelCardManagedBean.selectedDebitCard}">
                                 <f:selectItem itemLabel="Please select..." itemValue=""/>
                                 <f:selectItems value="#{customerCancelCardManagedBean.debitCards}"/> 
@@ -47,7 +48,7 @@
 
                     <p:panel id="creditPanel" visible="#{customerCancelCardManagedBean.creditPanelVisible}">
                         <h:panelGrid columns="2" class="ui-lg-4">
-                            <p:outputLabel value="Credit Card"/>
+                            <p:outputLabel value="Credit Card:"/>
                             <p:selectOneMenu id="selectCreditCard" required="#{customerCancelCardManagedBean.creditPanelVisible}" requiredMessage="Please select a credit card" style="text-align:left" value="#{customerCancelCardManagedBean.selectedCreditCard}">
                                 <f:selectItem itemLabel="Please select..." itemValue=""/>
                                 <f:selectItems value="#{customerCancelCardManagedBean.creditCards}"/> 

@@ -29,13 +29,11 @@
 
                     <p:outputLabel id="cardHolderName" value="Card Holder Name: "/>
                     <p:inputText required="true" requiredMessage="Please enter card holder name" value="#{customerActivateDebitCardManagedBean.cardHolderName}"/>
-                    <p:message for="cardHolderName"/>
 
                     <p:outputLabel  id="csc" value="3-digit Card Security Code: "/>
                     <p:inputText validatorMessage="Card Security Code is 3-digit" required="true" requiredMessage="Please enter the card security code" value="#{customerActivateDebitCardManagedBean.debitCardSecurityCode}">
                         <f:validateLength minimum="3" maximum="3" /> 
                     </p:inputText> 
-                    <!--<p:message for="csc"/>-->
 
                 </h:panelGrid>                  
                 <br/>

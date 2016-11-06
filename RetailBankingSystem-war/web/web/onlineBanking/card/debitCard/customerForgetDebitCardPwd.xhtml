@@ -19,9 +19,9 @@
                 <h:form>
                     <p:messages autoUpdate="true" globalOnly="true"/>
 
-                    <h:panelGrid columns="3" class="ui-lg-6"> 
+                    <h:panelGrid columns="1" class="ui-lg-4"> 
 
-                        <p:outputLabel value="Debit Card"/>
+                        <p:outputLabel value="Debit Card:"/>
                         <p:selectOneMenu id="selectCard" required="true" requiredMessage="Please select a debit card" style="text-align:left" value="#{customerForgetDebitCardPwdManagedBean.selectedDebitCard}">
                             <f:selectItem itemLabel="Please select..." itemValue=""/>
                             <f:selectItems value="#{customerForgetDebitCardPwdManagedBean.debitCards}"/> 
@@ -29,9 +29,9 @@
                         <p:message for="selectCard"/>
 
 
-                        <h:outputLabel for="pwd2" value="Password *" />
+                        <h:outputLabel for="pwd2" value="Password: *" />
 
-                        <p:password converterMessage="Please enter a 6-digit PIN which consists of digit only" validatorMessage="Please enter a 6-digit PIN which consists of digit only" id="pwd2" value="#{customerForgetDebitCardPwdManagedBean.debitCardPwd}" label="Password 2" required="true">
+                        <p:password converterMessage="Please enter a 6-digit PIN which consists of digit only" validatorMessage="Please enter a 6-digit PIN which consists of digit only" id="pwd2" value="#{customerForgetDebitCardPwdManagedBean.debitCardPwd}" label="Password 2" required="true"  requiredMessage="Please enter password">
                             <f:validateLength minimum="6" maximum="6" /> 
                         </p:password>
 
@@ -39,7 +39,7 @@
 
                         <h:outputLabel for="pwd3" value="Confirm Password: *" />
 
-                        <p:password converterMessage="Please enter a 6-digit PIN which consists of digit only" validatorMessage="Please enter a 6-digit PIN which consists of digit only" id="pwd3" value="#{customerForgetDebitCardPwdManagedBean.debitCardPwd1}" label="Password 3" required="true">
+                        <p:password converterMessage="Please enter a 6-digit PIN which consists of digit only" validatorMessage="Please enter a 6-digit PIN which consists of digit only" id="pwd3" value="#{customerForgetDebitCardPwdManagedBean.debitCardPwd1}" label="Password 3" required="true"  requiredMessage="Please enter password">
                             <f:validateLength minimum="6" maximum="6" /> 
                         </p:password>
 
