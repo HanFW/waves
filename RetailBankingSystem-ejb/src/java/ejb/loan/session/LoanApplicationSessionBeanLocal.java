@@ -70,4 +70,7 @@ public interface LoanApplicationSessionBeanLocal {
     public RenovationLoanApplication getRenovationLoanApplicationById(Long applicationId);
     public CarLoanApplication getCarLoanApplicationById(Long applicationId);
     public EducationLoanApplication getEducationLoanApplicationById(Long applicationId);
+    public CashlineApplication getCashlineApplicationById(Long applicationId);
+    public void approveCashlineRequest(Long applicationId, double amount);
+    public void rejectCashlineRequest(Long applicationId);
 }

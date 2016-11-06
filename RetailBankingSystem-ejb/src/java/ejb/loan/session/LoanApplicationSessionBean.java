@@ -861,4 +861,28 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
         em.refresh(application);
         return application;
     }
+    
+    @Override
+    public CashlineApplication getCashlineApplicationById(Long applicationId) {
+        CashlineApplication application = em.find(CashlineApplication.class, applicationId);
+        em.refresh(application);
+        return application;
+    }
+    
+    @Override
+    public void approveCashlineRequest(Long applicationId, double amount) {
+        CashlineApplication application = em.find(CashlineApplication.class, applicationId);
+        application.setAmountGranted((int) amount);
+        application.setApplicationStatus("approved");
+        application.setFinalActionDate(new Date());
+        em.flush();
+    }
+    
+    @Override
+    public void rejectCashlineRequest(Long applicationId) {
+        CashlineApplication application = em.find(CashlineApplication.class, applicationId);
+
+        em.remove(application);
+        em.flush();
+    }
 }
