@@ -3,11 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package managedbean.loan.customer;
+package managedbean.loan.employee;
 
 import ejb.customer.session.CRMCustomerSessionBean;
 import ejb.infrastructure.session.CustomerEmailSessionBeanLocal;
-import ejb.loan.entity.CarLoanApplication;
+import ejb.loan.entity.CustomerProperty;
+import ejb.loan.entity.RenovationLoanApplication;
 import ejb.loan.session.LoanApplicationSessionBeanLocal;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -16,9 +17,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
@@ -33,9 +40,9 @@ import org.primefaces.model.UploadedFile;
  *
  * @author hanfengwei
  */
-@Named(value = "publicCarLoanApplicationManagedBean")
+@Named(value = "employeeRenovationLoanApplicationManagedBean")
 @ViewScoped
-public class PublicCarLoanApplicationManagedBean implements Serializable {
+public class EmployeeRenovationLoanApplicationManagedBean implements Serializable {
 
     @EJB
     private CustomerEmailSessionBeanLocal customerEmailSessionBeanLocal;
@@ -93,23 +100,21 @@ public class PublicCarLoanApplicationManagedBean implements Serializable {
     private BigDecimal customerOtherMonthlyIncome;
     private String customerOtherMonthlyIncomeSource;
 
-    //commitments
-    private ArrayList<HashMap> customerFinancialCommitments = new ArrayList<HashMap>();
-    private String customerFacilityType;
-    private String customerFinancialInstitution;
-    private BigDecimal customerLoanAmount;
-    private BigDecimal customerMonthlyInstalment;
-    private HashMap customerFinancialCommitment = new HashMap();
+    //property details
+    private String customerPropertyStreetName;
+    private String customerPropertyBlockNum;
+    private String customerPropertyUnitNum;
+    private String customerPropertyPostal;
+    private ArrayList<String> customerPropertyOwners = new ArrayList<String>();
+    private String customerPropertyOwner;
+    private String customerPropertyType;
 
     //loan
     private BigDecimal customerLoanAmountRequired;
     private Integer customerLoanTenure;
-    private String isNewCar;
-    private String customerCarMake;
-    private String customerCarModel;
-    private String customerChassis;
-    private BigDecimal customerCarPurchasePrice;
-    private Integer customerCarYearOfManufacture;
+    private Date renovationStartDate;
+    private Date renovationEndDate;
+    private BigDecimal renovationQuotation;
 
     //confirmation
     private boolean agreement;
@@ -134,30 +139,48 @@ public class PublicCarLoanApplicationManagedBean implements Serializable {
     private boolean occupationPanelVisible;
     private boolean employmentPanelVisible;
 
+    private ArrayList propertyTypes = new ArrayList();
+    private String property;
+
     /**
-     * Creates a new instance of PublicCarLoanApplicationManagedBean
+     * Creates a new instance of PublicRenovationLoanApplicationManagedBean
      */
-    public PublicCarLoanApplicationManagedBean() {
+    public EmployeeRenovationLoanApplicationManagedBean() {
         uploads.put("identification", false);
-        uploads.put("order", false);
-        uploads.put("registration", false);
+        uploads.put("quotation", false);
+        uploads.put("ownership", false);
         uploads.put("employeeTax", false);
         uploads.put("selfEmployedTax", false);
     }
 
-    public void addCarLoanApplicationFast() throws IOException {
+    @PostConstruct
+    public void init() {
+        propertyTypes.add("3-Room");
+        propertyTypes.add("4-Room");
+        propertyTypes.add("5-Room");
+        propertyTypes.add("Executive Apartment/Mansionette");
+        propertyTypes.add("HUDC");
+        propertyTypes.add("Bungalow");
+        propertyTypes.add("Semi-D");
+        propertyTypes.add("Intermediate/Comer Terrace");
+        propertyTypes.add("Executive Condominium");
+        propertyTypes.add("Apartment");
+        propertyTypes.add("SOHO");
+    }
+
+    public void addRenovationLoanApplicationFast() throws IOException {
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         //create or update CustomerBasic
         Long newCustomerBasicId;
 
-        boolean isExistingCustomer = cRMCustomerSessionBeanLocal.checkExistingCustomerByIdentification("F11223344");
+        boolean isExistingCustomer = cRMCustomerSessionBeanLocal.checkExistingCustomerByIdentification("R11223344");
         if (isExistingCustomer) {
-            newCustomerBasicId = cRMCustomerSessionBeanLocal.updateCustomerBasic("F11223344", "hanfengwei96@gmail.com", "83114121",
+            newCustomerBasicId = cRMCustomerSessionBeanLocal.updateCustomerBasic("R11223344", "hanfengwei96@gmail.com", "83114121",
                     "China", "China", "Single", "Student", "AfterYou",
-                    "address", "123123");
+                    "Fan Shimeng", "123123");
         } else {
-            newCustomerBasicId = cRMCustomerSessionBeanLocal.addNewCustomerBasic("Lai Qing",
-                    "Ms", "F11223344",
+            newCustomerBasicId = cRMCustomerSessionBeanLocal.addNewCustomerBasic("Fan Shimeng",
+                    "Ms", "R11223344",
                     "Female", "hanfengwei96@gmail.com", "83114121", "08/Mar/1993",
                     "China", "China", "Chinese",
                     "Single", "Student", "AfterYou",
@@ -166,9 +189,9 @@ public class PublicCarLoanApplicationManagedBean implements Serializable {
 
         //create CustomerAdvanced
         Long newCustomerAdvancedId;
-        boolean hasCustomerAdvanced = cRMCustomerSessionBeanLocal.checkExistingCustomerAdvanced("F11223344");
+        boolean hasCustomerAdvanced = cRMCustomerSessionBeanLocal.checkExistingCustomerAdvanced("R11223344");
         if (hasCustomerAdvanced) {
-            newCustomerAdvancedId = cRMCustomerSessionBeanLocal.updateCustomerAdvanced("F11223344", 2,
+            newCustomerAdvancedId = cRMCustomerSessionBeanLocal.updateCustomerAdvanced("R11223344", 2,
                     "Degree", "Rented", 5, "Government", 6,
                     "Employee", 3000, "HDB", "company address",
                     "123123", "Senior Management", "job title", null,
@@ -182,11 +205,29 @@ public class PublicCarLoanApplicationManagedBean implements Serializable {
                     "income source");
         }
 
-        //create education loan application
-        CarLoanApplication application = new CarLoanApplication();
-        application.create(170000, 5, "Yes", "Employee","Jaguar", "Prestige", "1GKDM19X84B502016", 177999, 2015);
-        loanApplicationSessionBeanLocal.submitCarLoanApplication(isExistingCustomer, hasCustomerAdvanced, application, newCustomerBasicId, newCustomerAdvancedId);
+        //create customerProperty
+        CustomerProperty cp = new CustomerProperty();
+        customerPropertyOwners.add("Han Fengwei");
+        customerPropertyOwners.add("Dai Hailang");
         
+        cp.create("property address", "118427", customerPropertyOwners, "3-Room",
+                0, 0, null, null, null, null, 0, 0, null);
+
+        //create loan application
+        DateFormat df = new SimpleDateFormat("dd/MMM/yyyy");
+        Date starton = new Date();
+        Date endon = new Date();
+        try {
+            starton = df.parse("16/Jan/2016");
+            endon = df.parse("16/Jan/2020");
+        } catch (ParseException ex) {
+            Logger.getLogger(EmployeeEducationLoanApplicationManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        RenovationLoanApplication application = new RenovationLoanApplication();
+        application.create(20000, 4, "Employee", starton, endon, 20000);
+        loanApplicationSessionBeanLocal.submitRenovationLoanApplication(isExistingCustomer, hasCustomerAdvanced, application, cp, newCustomerBasicId, newCustomerAdvancedId);
+
         //second customer
         isExistingCustomer = cRMCustomerSessionBeanLocal.checkExistingCustomerByIdentification("G11223344");
         if (isExistingCustomer) {
@@ -219,19 +260,22 @@ public class PublicCarLoanApplicationManagedBean implements Serializable {
                     "income source");
         }
 
-        //create education loan application
-        application = new CarLoanApplication();
-        application.create(170000, 5, "Employee", "Yes", "Jaguar", "Prestige", "1GKDM19X84B502016", 177999, 2015);
-        loanApplicationSessionBeanLocal.submitCarLoanApplication(isExistingCustomer, hasCustomerAdvanced, application, newCustomerBasicId, newCustomerAdvancedId);
+        //create customerProperty
+        cp.create("property address", "118427", customerPropertyOwners, "Bungalow",
+                0, 0, null, null, null, null, 0, 0, null);
+
+        //create loan application
+        application = new RenovationLoanApplication();
+        application.create(30000, 4, "Employee", starton, endon, 30000);
+        loanApplicationSessionBeanLocal.submitRenovationLoanApplication(isExistingCustomer, hasCustomerAdvanced, application, cp, newCustomerBasicId, newCustomerAdvancedId);
         
-        ec.getFlash().put("amountRequired", BigDecimal.valueOf(170000));
-        ec.getFlash().put("loanType", "Car Loan");
-        ec.getFlash().put("tenure", 5);
-        ec.redirect(ec.getRequestContextPath() + "/web/merlionBank/loan/publicLoanApplicationDone.xhtml?faces-redirect=true");
+        ec.getFlash().put("amountRequired", BigDecimal.valueOf(20000));
+        ec.getFlash().put("tenure", 4);
+        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/loan/employeeLoanApplicationDone.xhtml?faces-redirect=true");
     }
 
-    public void addCarLoanApplication() throws IOException {
-        System.out.println("====== loan/PublicEducationLoanApplicationManagedBean: addEducationLoanApplication() ======");
+    public void addLoanApplication() throws IOException {
+        System.out.println("====== loan/PublicRenovationLoanApplicationManagedBean: addLoanApplication() ======");
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         customerSignature = ec.getSessionMap().get("customerSignature").toString();
         if (customerSignature.equals("") || !agreement) {
@@ -309,15 +353,21 @@ public class PublicCarLoanApplicationManagedBean implements Serializable {
                 }
             }
 
-            //create education loan application
-            CarLoanApplication application = new CarLoanApplication();
-            application.create(customerLoanAmountRequired.doubleValue(), customerLoanTenure, customerEmploymentStatus, isNewCar, customerCarMake, customerCarModel, customerChassis, customerCarPurchasePrice.doubleValue(), customerCarYearOfManufacture);
-            loanApplicationSessionBeanLocal.submitCarLoanApplication(isExistingCustomer, hasCustomerAdvanced, application, newCustomerBasicId, newCustomerAdvancedId);
-            customerEmailSessionBeanLocal.sendEmail(cRMCustomerSessionBeanLocal.getCustomerBasicById(newCustomerBasicId), "educationLoanApplication", null);
+            //create customerProperty
+            String customerPropertyAddress = customerPropertyStreetName + ", " + customerPropertyBlockNum + ", " + customerPropertyUnitNum + ", " + customerPropertyPostal;
+            CustomerProperty cp = new CustomerProperty();
+            cp.create(customerPropertyAddress, customerPropertyPostal, customerPropertyOwners, customerPropertyType,
+                    0, 0, null, null, null, null, 0, 0, null);
+
+            //create loan application
+            RenovationLoanApplication application = new RenovationLoanApplication();
+            application.create(customerLoanAmountRequired.doubleValue(), customerLoanTenure, customerEmploymentStatus, renovationStartDate, renovationEndDate, renovationQuotation.doubleValue());
+            loanApplicationSessionBeanLocal.submitRenovationLoanApplication(isExistingCustomer, hasCustomerAdvanced, application, cp, newCustomerBasicId, newCustomerAdvancedId);
+            HashMap emailActions = new HashMap();
+            customerEmailSessionBeanLocal.sendEmail(cRMCustomerSessionBeanLocal.getCustomerBasicById(newCustomerBasicId), "renovationLoanApplication", emailActions);
             ec.getFlash().put("amountRequired", customerLoanAmountRequired);
-            ec.getFlash().put("loanType", "Education Loan");
             ec.getFlash().put("tenure", customerLoanTenure);
-            ec.redirect(ec.getRequestContextPath() + "/web/merlionBank/loan/publicLoanApplicationDone.xhtml?faces-redirect=true");
+            ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/loan/employeeLoanApplicationDone.xhtml?faces-redirect=true");
         }
     }
 
@@ -341,14 +391,30 @@ public class PublicCarLoanApplicationManagedBean implements Serializable {
                 customerIdentificationNum = customerForeignNRIC;
             } else {
                 customerIdentificationNum = customerForeignPassport;
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Eligibility: Singapore Citizen or Singapore Permanent Resident", "");
+                FacesContext.getCurrentInstance().addMessage(null, message);
+                nextStep = event.getOldStep();
             }
 
-            if (age < 21 || age > 65) {
+            if (age < 21 || age > 60) {
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Your age is not qualified to apply for this type of loan", "");
                 FacesContext.getCurrentInstance().addMessage(null, message);
                 nextStep = event.getOldStep();
             } else if (customerIdentificationNum.length() != 9) {
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please enter a valid indentification number", "");
+                FacesContext.getCurrentInstance().addMessage(null, message);
+                nextStep = event.getOldStep();
+            }
+        } else if (event.getOldStep().equals("employment")) {
+            double grossIncome = customerOtherMonthlyIncome.doubleValue() + customerMonthlyFixedIncome.doubleValue();
+            if (grossIncome <= 2500) {
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "The minimum gross monthly income required is S$6,000", "");
+                FacesContext.getCurrentInstance().addMessage(null, message);
+                nextStep = event.getOldStep();
+            }
+        } else if (event.getOldStep().equals("property")) {
+            if (customerPropertyOwners.isEmpty()) {
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please enter all the names of owners", "");
                 FacesContext.getCurrentInstance().addMessage(null, message);
                 nextStep = event.getOldStep();
             }
@@ -375,28 +441,20 @@ public class PublicCarLoanApplicationManagedBean implements Serializable {
         return nextStep;
     }
 
-    public void addCustomerFinancialCommitment() {
-        System.out.println("====== loan/PublicHDBLoanApplicationManagedBean: addCustomerFinancialCommitment() ======");
-        if (customerFinancialInstitution == null || customerFacilityType == null || customerLoanAmount == null || customerMonthlyInstalment == null) {
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please fill in all the fields", "");
-            FacesContext.getCurrentInstance().addMessage(null, message);
+    public void addCustomerPropertyOwner() {
+        System.out.println("====== loan/PublicHDBLoanApplicationManagedBean: addCustomerPropertyOwner() ======");
+        if (!customerPropertyOwner.equals("")) {
+            customerPropertyOwners.add(customerPropertyOwner);
+            customerPropertyOwner = "";
         } else {
-            customerFinancialCommitment.put("institution", customerFinancialInstitution);
-            customerFinancialCommitment.put("type", customerFacilityType);
-            customerFinancialCommitment.put("amount", customerLoanAmount);
-            customerFinancialCommitment.put("instalment", customerMonthlyInstalment);
-            customerFinancialCommitments.add(customerFinancialCommitment);
-            customerFinancialInstitution = null;
-            customerFacilityType = null;
-            customerLoanAmount = null;
-            customerMonthlyInstalment = null;
-            customerFinancialCommitment = new HashMap();
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Required Field", "");
+            FacesContext.getCurrentInstance().addMessage("customerPropertyOwner", message);
         }
     }
 
-    public void deleteCustomerFinancialCommitment(HashMap commitment) {
-        System.out.println("====== loan/PublicHDBLoanApplicationManagedBean: deleteCustomerFinancialCommitment() ======");
-        customerFinancialCommitments.remove(commitment);
+    public void deleteCustomerPropertyOwner(String owner) {
+        System.out.println("====== loan/PublicHDBLoanApplicationManagedBean: deleteCustomerPropertyOwner() ======");
+        customerPropertyOwners.remove(owner);
     }
 
     public void showSalutationPanel() {
@@ -404,6 +462,7 @@ public class PublicCarLoanApplicationManagedBean implements Serializable {
     }
 
     public void showNationalityPanel() {
+        System.out.println("====== loan/PublicHDBLoanApplicationManagedBean: showNationalityPanel() ======");
         customerIsPR = null;
         customerSingaporeNRIC = null;
         if (customerNationality.equals("Singapore")) {
@@ -420,6 +479,7 @@ public class PublicCarLoanApplicationManagedBean implements Serializable {
     }
 
     public void showIdentificationPanel() {
+        System.out.println("====== loan/PublicHDBLoanApplicationManagedBean: showIdentificationPanel() ======");
         customerForeignNRIC = null;
         customerForeignPassport = null;
         if (customerIsPR.equals("Yes")) {
@@ -458,16 +518,6 @@ public class PublicCarLoanApplicationManagedBean implements Serializable {
             employmentPanelVisible = false;
             uploads.replace("selfEmployedTax", true);
             uploads.replace("employeeTax", false);
-        }
-    }
-
-    public void changeCarStatus() {
-        if (isNewCar.equals("Yes")) {
-            uploads.replace("order", false);
-            uploads.replace("registration", true);
-        } else {
-            uploads.replace("order", true);
-            uploads.replace("registration", false);
         }
     }
 
@@ -517,13 +567,12 @@ public class PublicCarLoanApplicationManagedBean implements Serializable {
         }
     }
 
-    public void carSalesOrderUpload(FileUploadEvent event) throws FileNotFoundException, IOException {
+    public void quotationUpload(FileUploadEvent event) throws FileNotFoundException, IOException {
         this.file = event.getFile();
-
         if (file != null) {
             String newFilePath = System.getProperty("user.dir").replace("config", "docroot") + System.getProperty("file.separator");
 
-            String filename = customerIdentificationNum + "-car_order.pdf";
+            String filename = customerIdentificationNum + "-renovation_quotation.pdf";
             File newFile = new File(newFilePath, filename);
             FileOutputStream fileOutputStream = new FileOutputStream(newFile);
 
@@ -547,22 +596,21 @@ public class PublicCarLoanApplicationManagedBean implements Serializable {
             fileOutputStream.close();
             inputStream.close();
 
-            uploads.replace("order", true);
+            uploads.replace("quotation", true);
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, file.getFileName() + " uploaded successfully.", "");
-            FacesContext.getCurrentInstance().addMessage("carSalesOrderUpload", message);
+            FacesContext.getCurrentInstance().addMessage("quotationUpload", message);
         } else {
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cannot find the file, please upload again.", "");
-            FacesContext.getCurrentInstance().addMessage("carSalesOrderUpload", message);
+            FacesContext.getCurrentInstance().addMessage("quotationUpload", message);
         }
     }
 
-    public void carRegistrationCardUpload(FileUploadEvent event) throws FileNotFoundException, IOException {
+    public void propertyOwnershipUpload(FileUploadEvent event) throws FileNotFoundException, IOException {
         this.file = event.getFile();
-
         if (file != null) {
             String newFilePath = System.getProperty("user.dir").replace("config", "docroot") + System.getProperty("file.separator");
 
-            String filename = customerIdentificationNum + "car_registration.pdf";
+            String filename = customerIdentificationNum + "-renovation_ownership.pdf";
             File newFile = new File(newFilePath, filename);
             FileOutputStream fileOutputStream = new FileOutputStream(newFile);
 
@@ -586,12 +634,12 @@ public class PublicCarLoanApplicationManagedBean implements Serializable {
             fileOutputStream.close();
             inputStream.close();
 
-            uploads.replace("registration", true);
+            uploads.replace("ownership", true);
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, file.getFileName() + " uploaded successfully.", "");
-            FacesContext.getCurrentInstance().addMessage("carRegistrationCardUpload", message);
+            FacesContext.getCurrentInstance().addMessage("propertyOwnershipUpload", message);
         } else {
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cannot find the file, please upload again.", "");
-            FacesContext.getCurrentInstance().addMessage("carRegistrationCardUpload", message);
+            FacesContext.getCurrentInstance().addMessage("propertyOwnershipUpload", message);
         }
     }
 
@@ -999,52 +1047,60 @@ public class PublicCarLoanApplicationManagedBean implements Serializable {
         this.customerOtherMonthlyIncomeSource = customerOtherMonthlyIncomeSource;
     }
 
-    public ArrayList<HashMap> getCustomerFinancialCommitments() {
-        return customerFinancialCommitments;
+    public String getCustomerPropertyStreetName() {
+        return customerPropertyStreetName;
     }
 
-    public void setCustomerFinancialCommitments(ArrayList<HashMap> customerFinancialCommitments) {
-        this.customerFinancialCommitments = customerFinancialCommitments;
+    public void setCustomerPropertyStreetName(String customerPropertyStreetName) {
+        this.customerPropertyStreetName = customerPropertyStreetName;
     }
 
-    public String getCustomerFacilityType() {
-        return customerFacilityType;
+    public String getCustomerPropertyBlockNum() {
+        return customerPropertyBlockNum;
     }
 
-    public void setCustomerFacilityType(String customerFacilityType) {
-        this.customerFacilityType = customerFacilityType;
+    public void setCustomerPropertyBlockNum(String customerPropertyBlockNum) {
+        this.customerPropertyBlockNum = customerPropertyBlockNum;
     }
 
-    public String getCustomerFinancialInstitution() {
-        return customerFinancialInstitution;
+    public String getCustomerPropertyUnitNum() {
+        return customerPropertyUnitNum;
     }
 
-    public void setCustomerFinancialInstitution(String customerFinancialInstitution) {
-        this.customerFinancialInstitution = customerFinancialInstitution;
+    public void setCustomerPropertyUnitNum(String customerPropertyUnitNum) {
+        this.customerPropertyUnitNum = customerPropertyUnitNum;
     }
 
-    public BigDecimal getCustomerLoanAmount() {
-        return customerLoanAmount;
+    public String getCustomerPropertyPostal() {
+        return customerPropertyPostal;
     }
 
-    public void setCustomerLoanAmount(BigDecimal customerLoanAmount) {
-        this.customerLoanAmount = customerLoanAmount;
+    public void setCustomerPropertyPostal(String customerPropertyPostal) {
+        this.customerPropertyPostal = customerPropertyPostal;
     }
 
-    public BigDecimal getCustomerMonthlyInstalment() {
-        return customerMonthlyInstalment;
+    public ArrayList<String> getCustomerPropertyOwners() {
+        return customerPropertyOwners;
     }
 
-    public void setCustomerMonthlyInstalment(BigDecimal customerMonthlyInstalment) {
-        this.customerMonthlyInstalment = customerMonthlyInstalment;
+    public void setCustomerPropertyOwners(ArrayList<String> customerPropertyOwners) {
+        this.customerPropertyOwners = customerPropertyOwners;
     }
 
-    public HashMap getCustomerFinancialCommitment() {
-        return customerFinancialCommitment;
+    public String getCustomerPropertyOwner() {
+        return customerPropertyOwner;
     }
 
-    public void setCustomerFinancialCommitment(HashMap customerFinancialCommitment) {
-        this.customerFinancialCommitment = customerFinancialCommitment;
+    public void setCustomerPropertyOwner(String customerPropertyOwner) {
+        this.customerPropertyOwner = customerPropertyOwner;
+    }
+
+    public String getCustomerPropertyType() {
+        return customerPropertyType;
+    }
+
+    public void setCustomerPropertyType(String customerPropertyType) {
+        this.customerPropertyType = customerPropertyType;
     }
 
     public BigDecimal getCustomerLoanAmountRequired() {
@@ -1063,36 +1119,28 @@ public class PublicCarLoanApplicationManagedBean implements Serializable {
         this.customerLoanTenure = customerLoanTenure;
     }
 
-    public String getCustomerCarModel() {
-        return customerCarModel;
+    public Date getRenovationStartDate() {
+        return renovationStartDate;
     }
 
-    public void setCustomerCarModel(String customerCarModel) {
-        this.customerCarModel = customerCarModel;
+    public void setRenovationStartDate(Date renovationStartDate) {
+        this.renovationStartDate = renovationStartDate;
     }
 
-    public String getCustomerChassis() {
-        return customerChassis;
+    public Date getRenovationEndDate() {
+        return renovationEndDate;
     }
 
-    public void setCustomerChassis(String customerChassis) {
-        this.customerChassis = customerChassis;
+    public void setRenovationEndDate(Date renovationEndDate) {
+        this.renovationEndDate = renovationEndDate;
     }
 
-    public BigDecimal getCustomerCarPurchasePrice() {
-        return customerCarPurchasePrice;
+    public BigDecimal getRenovationQuotation() {
+        return renovationQuotation;
     }
 
-    public void setCustomerCarPurchasePrice(BigDecimal customerCarPurchasePrice) {
-        this.customerCarPurchasePrice = customerCarPurchasePrice;
-    }
-
-    public Integer getCustomerCarYearOfManufacture() {
-        return customerCarYearOfManufacture;
-    }
-
-    public void setCustomerCarYearOfManufacture(Integer customerCarYearOfManufacture) {
-        this.customerCarYearOfManufacture = customerCarYearOfManufacture;
+    public void setRenovationQuotation(BigDecimal renovationQuotation) {
+        this.renovationQuotation = renovationQuotation;
     }
 
     public boolean isAgreement() {
@@ -1199,20 +1247,20 @@ public class PublicCarLoanApplicationManagedBean implements Serializable {
         this.employmentPanelVisible = employmentPanelVisible;
     }
 
-    public String getIsNewCar() {
-        return isNewCar;
+    public ArrayList getPropertyTypes() {
+        return propertyTypes;
     }
 
-    public void setIsNewCar(String isNewCar) {
-        this.isNewCar = isNewCar;
+    public void setPropertyTypes(ArrayList propertyTypes) {
+        this.propertyTypes = propertyTypes;
     }
 
-    public String getCustomerCarMake() {
-        return customerCarMake;
+    public String getProperty() {
+        return property;
     }
 
-    public void setCustomerCarMake(String customerCarMake) {
-        this.customerCarMake = customerCarMake;
+    public void setProperty(String property) {
+        this.property = property;
     }
 
 }

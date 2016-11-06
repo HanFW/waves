@@ -199,22 +199,149 @@
                         </p:accordionPanel>
                     </p:tab>
 
+                    <p:tab title="Joint Applicant">
+                        <p:panel visible="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.noJoint}">
+                            <p:outputLabel style="font-weight: bold;" value="No Joint Applicant"/>
+                        </p:panel>
+                        <p:panel visible="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.hasJoint}">
+                            <p:outputLabel style="font-weight: bold;" value="Relationship with Applicant: "/>
+                            <p:outputLabel value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.relationship}"/>
+                            <p:accordionPanel multiple="true">
+                                <p:tab title="Basic Information">
+                                    <p:panelGrid columns="4">                                    
+                                        <p:outputLabel style="font-weight: bold;" value="Salutation: "/>
+                                        <p:outputLabel value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.jointSalutation}"/>
+
+                                        <p:outputLabel style="font-weight: bold;" value="Name:"/>
+                                        <p:outputLabel value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.jointName}"/>
+
+                                        <p:outputLabel style="font-weight: bold;" value="Date of Birth: "/>
+                                        <p:outputLabel value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.jointDateOfBirth}"/>
+
+                                        <p:outputLabel style="font-weight: bold;" value="Gender: "/>
+                                        <p:outputLabel value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.jointGender}"/>
+
+                                        <p:outputLabel style="font-weight: bold;" value="Nationality: "/>
+                                        <p:outputLabel value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.jointNationality}"/>
+
+                                        <p:outputLabel style="font-weight: bold;" value="Idenfincation Number: "/>
+                                        <p:outputLabel value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.jointIdentificationNum}"/>
+
+                                        <p:outputLabel style="font-weight: bold;" value="Country of Residence: "/>
+                                        <p:outputLabel value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.jointCountryOfResidence}"/>
+
+                                        <p:outputLabel style="font-weight: bold;" value="Race: "/>
+                                        <p:outputLabel value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.jointRace}"/>
+
+                                        <p:outputLabel style="font-weight: bold;" value="Mobie: "/>
+                                        <p:outputLabel value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.jointMobile}"/>
+
+                                        <p:outputLabel style="font-weight: bold;" value="Email"/>
+                                        <p:outputLabel value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.jointEmail}"/>
+                                    </p:panelGrid>
+                                </p:tab>
+                                <p:tab title="Customer Details">
+                                    <p:panelGrid columns="4">
+                                        <p:outputLabel style="font-weight: bold;" value="Education: "/>
+                                        <p:outputLabel value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.jointEducation}"/>
+
+                                        <p:outputLabel style="font-weight: bold;" value="Marital Status: "/>
+                                        <p:outputLabel value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.jointMaritalStatus}"/>
+
+                                        <p:outputLabel style="font-weight: bold;" value="Number of Dependents: "/>
+                                        <p:outputLabel value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.jointNumOfDependents}"/>
+
+                                        <p:outputLabel style="font-weight: bold;" value="Home Address: "/>
+                                        <p:outputLabel value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.jointAddress}"/>
+
+                                        <p:outputLabel style="font-weight: bold;" value="Postal Code:"/>
+                                        <p:outputLabel value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.jointPostal}"/>
+
+                                        <p:outputLabel style="font-weight: bold;" value="Residential Status: "/>
+                                        <p:outputLabel value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.jointResidentialStatus}"/>
+
+                                        <p:outputLabel style="font-weight: bold;" value="Residential Type: "/>
+                                        <p:outputLabel value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.jointResidentialType}"/>
+
+                                        <p:outputLabel style="font-weight: bold;" value="Length of Residence: "/>
+                                        <p:outputLabel value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.jointLengthOfResidence}"/>
+                                    </p:panelGrid>
+                                </p:tab>
+                                <p:tab title="Employment Details">
+                                    <p:panelGrid columns="4">
+                                        <p:outputLabel style="font-weight: bold;" value="Employment Status: "/>
+                                        <p:outputLabel value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.jointEmploymentStatus}"/>
+
+                                        <p:outputLabel style="font-weight: bold;" value="Industry: "/>
+                                        <p:outputLabel value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.jointIndustryType}"/>
+
+                                        <p:outputLabel style="font-weight: bold;" value="Occupation: "/>
+                                        <p:outputLabel value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.jointOccupation}"/>
+
+                                        <p:outputLabel style="font-weight: bold;" value="Company Name: "/>
+                                        <p:outputLabel value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.jointCompanyName}"/>
+
+                                        <p:outputLabel style="font-weight: bold;" value="Company Address: "/>
+                                        <p:outputLabel value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.jointCompanyAddress}"/>
+
+                                        <p:outputLabel style="font-weight: bold;" value="Company Postal Code: "/>
+                                        <p:outputLabel value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.jointPostal}"/>
+
+                                        <p:outputLabel style="font-weight: bold;" value="Current Position: "/>
+                                        <p:outputLabel value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.jointCurrentPosition}"/>
+
+                                        <p:outputLabel style="font-weight: bold;" value="Current Job Title: "/>
+                                        <p:outputLabel value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.jointCurrentJobTitle}"/>
+
+                                        <p:outputLabel style="font-weight: bold;" value="Length of Current Job: "/>
+                                        <p:outputLabel value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.jointLengthOfCurrentJob}"/>
+
+                                        <p:outputLabel style="font-weight: bold;" value="Previous Company Name: "/>
+                                        <p:outputLabel value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.jointPreviousCompany}"/>
+
+                                        <p:outputLabel style="font-weight: bold;" value="Length of Previous Job: "/>
+                                        <p:outputLabel value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.jointLengthOfPreviousJob}"/>
+
+                                        <p:outputLabel style="font-weight: bold;" value="Monthly Fixed Income: "/>
+                                        <p:outputLabel value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.jointMonthlyFixedIncome}"/>
+
+                                        <p:outputLabel style="font-weight: bold;" value="Other Monthly Income: "/>
+                                        <p:outputLabel value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.jointOtherMonthlyIncome}"/>
+
+                                        <p:outputLabel style="font-weight: bold;" value="Souce of Other Income: "/>
+                                        <p:outputLabel value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.jointOtherMonthlyIncomeSource}"/>
+                                    </p:panelGrid>
+                                </p:tab>
+                                <p:tab title="Financial Commitments">
+                                    <p:dataTable value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.debts}" var="debt">
+                                        <p:column headerText="Facility Type">
+                                            <h:outputText value="#{debt.facilityType}"/>
+                                        </p:column>
+                                        <p:column headerText="Financial Institution">
+                                            <h:outputText value="#{debt.financialInstitution}"/>
+                                        </p:column>
+                                        <p:column headerText="Loan Amount/Credit Limit">
+                                            <h:outputText value="#{debt.totalAmount}"/>
+                                        </p:column>
+                                        <p:column headerText="Monthly Instalment">
+                                            <h:outputText value="#{debt.monthlyInstalment}"/>
+                                        </p:column>
+                                    </p:dataTable>
+                                </p:tab>
+                            </p:accordionPanel>
+                        </p:panel>
+                    </p:tab>
+                    
                     <p:tab title="Documents">
                         <p:accordionPanel multiple="true" activeIndex="-1">
                             <p:tab title="Identification" rendered="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.docs.get('identification')}">
                                 <p:media value="https://localhost:8181/#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.customerIdentificationNum}.pdf" width="100%" height="300px"/>  
                             </p:tab>
-                            <p:tab title="Option to Purchase/Sale" rendered="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.docs.get('otp')}">
-                                <p:media value="https://localhost:8181/#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.customerIdentificationNum}-otp.pdf" width="100%" height="300px"/>  
+                            <p:tab title="Loan Statement from Existing Bank" rendered="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.docs.get('existingLoan')}">
+                                <p:media value="https://localhost:8181/#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.customerIdentificationNum}-existing_loan.pdf" width="100%" height="300px"/>  
                             </p:tab>
-                            <p:tab title="Purchase Agreement" rendered="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.docs.get('purchaseAgreement')}">
-                                <p:media value="https://localhost:8181/#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.customerIdentificationNum}-purchase_agreement.pdf" width="100%" height="300px"/>  
-                            </p:tab>
-                            <p:tab title="Evidence of Sale of Existing Property" rendered="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.docs.get('evidenceOfSale')}">
-                                <p:media value="https://localhost:8181/#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.customerIdentificationNum}-evidence_of_sale.pdf" width="100%" height="300px"/>  
-                            </p:tab>
-                            <p:tab title="Tenancy Agreement" rendered="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.docs.get('tenancy')}">
-                                <p:media value="https://localhost:8181/#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.customerIdentificationNum}-tenancy.pdf" width="100%" height="300px"/>  
+                            <p:tab title="Latest CPF Withdrawal Statement" rendered="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.docs.get('cpfWithdrawal')}">
+                                <p:media value="https://localhost:8181/#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.customerIdentificationNum}-cpf_withdrawal.pdf" width="100%" height="300px"/>  
                             </p:tab>
                             <p:tab title="Employee Income Tax Assessment" rendered="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.docs.get('employeeTax')}">
                                 <p:media value="https://localhost:8181/#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.customerIdentificationNum}-employee_tax.pdf" width="100%" height="300px"/>  
@@ -225,75 +352,374 @@
                             <p:tab title="Self-employed Income Tax Assessment" rendered="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.docs.get('selfEmployedTax')}">
                                 <p:media value="https://localhost:8181/#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.customerIdentificationNum}-self-employed_tax.pdf" width="100%" height="300px"/>  
                             </p:tab>
+                            <p:tab title="Proof of Relationship" rendered="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.docs.get('relationship')}">
+                                <p:media value="https://localhost:8181/#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.customerIdentificationNum}-joint_relationship.pdf" width="100%" height="300px"/>  
+                            </p:tab>
+                            <p:tab title="Joint Applicant Indentification" rendered="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.docs.get('jointIdentification')}">
+                                <p:media value="https://localhost:8181/#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.jointIdentificationNum}.pdf" width="100%" height="300px"/>  
+                            </p:tab>
+                            <p:tab title="Joint Applicant Employee Income Tax Assessment" rendered="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.docs.get('jointEmployeeTax')}">
+                                <p:media value="https://localhost:8181/#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.jointIdentificationNum}-employee_tax.pdf" width="100%" height="300px"/>  
+                            </p:tab>
+                            <p:tab title="Joint Applicant Self-employed Income Tax Assessment" rendered="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.docs.get('jointSelfEmployedTax')}">
+                                <p:media value="https://localhost:8181/#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.jointIdentificationNum}-self-employed_tax.pdf" width="100%" height="300px"/>  
+                            </p:tab>
                         </p:accordionPanel>
                     </p:tab>
 
                     <p:tab title="Credit Report">
-                        <p:panel header="Account Status" toggleable="true">
-                            <p:dataTable value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.accountStatus}" var="as">
-                                <p:column headerText="Product Type">
-                                    <h:outputText value="#{as.productType}"/>
-                                </p:column>
-                                <p:column headerText="Grantor Bank">
-                                    <h:outputText value="#{as.grantorBank}"/>
-                                </p:column>
-                                <p:column headerText="Date Open">
-                                    <h:outputText value="#{as.dateOpen}"/>
-                                </p:column>
-                                <p:column headerText="Date Close">
-                                    <h:outputText value="#{as.dateClose}"/>
-                                </p:column>
-                                <p:column headerText="Overdue Balance">
-                                    <h:outputText value="#{as.overdueBalance}"/>
-                                </p:column>
-                            </p:dataTable>
-                        </p:panel>
-                        <p:panel header="Default Records" toggleable="true">
-                            <p:dataTable value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.defaultRecords}" var="dr">
-                                <p:column headerText="Product Type">
-                                    <h:outputText value="#{dr.productType}"/>
-                                </p:column>
-                                <p:column headerText="Client">
-                                    <h:outputText value="#{dr.productType}"/>
-                                </p:column>
-                                <p:column headerText="Date Loaded">
-                                    <h:outputText value="#{dr.dateLoaded}"/>
-                                </p:column>
-                                <p:column headerText="Original Amount">
-                                    <h:outputText value="#{dr.originalAmount}"/>
-                                </p:column>
-                                <p:column headerText="Outstanding Balance">
-                                    <h:outputText value="#{dr.outstandingBalance}"/>
-                                </p:column>
-                                <p:column headerText="Status">
-                                    <h:outputText value="#{dr.status}"/>
-                                </p:column>
-                                <p:column headerText="Status Date">
-                                    <h:outputText value="#{dr.statusDate}"/>
-                                </p:column>
-                            </p:dataTable>
-                        </p:panel>
-                        <p:panel header="Bureau Score" toggleable="true">
-                            <p:panelGrid columns="2">
-                                <p:outputLabel style="font-weight: bold;" value="Bureau Score: "/>
-                                <h:outputText value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.bureauScore}"/>
+                        <p:tabView>
+                            <p:tab title="Main Applicant">
+                                <p:panel header="Account Status" toggleable="true">
+                                    <p:dataTable value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.accountStatus}" var="as">
+                                        <p:column headerText="Product Type">
+                                            <h:outputText value="#{as.productType}"/>
+                                        </p:column>
+                                        <p:column headerText="Grantor Bank">
+                                            <h:outputText value="#{as.grantorBank}"/>
+                                        </p:column>
+                                        <p:column headerText="Date Open">
+                                            <h:outputText value="#{as.dateOpen}"/>
+                                        </p:column>
+                                        <p:column headerText="Date Close">
+                                            <h:outputText value="#{as.dateClose}"/>
+                                        </p:column>
+                                        <p:column headerText="Overdue Balance">
+                                            <h:outputText value="#{as.overdueBalance}"/>
+                                        </p:column>
+                                    </p:dataTable>
+                                </p:panel>
+                                <p:panel header="Default Records" toggleable="true">
+                                    <p:dataTable value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.defaultRecords}" var="dr">
+                                        <p:column headerText="Product Type">
+                                            <h:outputText value="#{dr.productType}"/>
+                                        </p:column>
+                                        <p:column headerText="Client">
+                                            <h:outputText value="#{dr.productType}"/>
+                                        </p:column>
+                                        <p:column headerText="Date Loaded">
+                                            <h:outputText value="#{dr.dateLoaded}"/>
+                                        </p:column>
+                                        <p:column headerText="Original Amount">
+                                            <h:outputText value="#{dr.originalAmount}"/>
+                                        </p:column>
+                                        <p:column headerText="Outstanding Balance">
+                                            <h:outputText value="#{dr.outstandingBalance}"/>
+                                        </p:column>
+                                        <p:column headerText="Status">
+                                            <h:outputText value="#{dr.status}"/>
+                                        </p:column>
+                                        <p:column headerText="Status Date">
+                                            <h:outputText value="#{dr.statusDate}"/>
+                                        </p:column>
+                                    </p:dataTable>
+                                </p:panel>
+                                <p:panel header="Bureau Score" toggleable="true">
+                                    <p:panelGrid columns="2">
+                                        <p:outputLabel style="font-weight: bold;" value="Bureau Score: "/>
+                                        <h:outputText value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.bureauScore}"/>
 
-                                <p:outputLabel style="font-weight: bold;" value="Risk Grade: "/>
-                                <h:outputText value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.riskGrade}"/>
+                                        <p:outputLabel style="font-weight: bold;" value="Risk Grade: "/>
+                                        <h:outputText value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.riskGrade}"/>
 
-                                <p:outputLabel style="font-weight: bold;" value="Probability of Default: "/>
-                                <h:outputText value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.probabilityOfDefault}"/>
-                            </p:panelGrid>
-                        </p:panel>
+                                        <p:outputLabel style="font-weight: bold;" value="Probability of Default: "/>
+                                        <h:outputText value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.probabilityOfDefault}"/>
+                                    </p:panelGrid>
+                                </p:panel>
+                            </p:tab>
+                            <p:tab title="Joint Applicant">
+                                <p:panel visible="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.noJoint}">
+                                    <p:outputLabel style="font-weight: bold;" value="No Joint Applicant"/>
+                                </p:panel>
+                                <p:panel visible="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.hasJoint}">
+                                    <p:panel header="Account Status" toggleable="true">
+                                        <p:dataTable value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.jointAccountStatus}" var="jointAS">
+                                            <p:column headerText="Product Type">
+                                                <h:outputText value="#{jointAS.productType}"/>
+                                            </p:column>
+                                            <p:column headerText="Grantor Bank">
+                                                <h:outputText value="#{jointAS.grantorBank}"/>
+                                            </p:column>
+                                            <p:column headerText="Date Open">
+                                                <h:outputText value="#{jointAS.dateOpen}"/>
+                                            </p:column>
+                                            <p:column headerText="Date Close">
+                                                <h:outputText value="#{jointAS.dateClose}"/>
+                                            </p:column>
+                                            <p:column headerText="Overdue Balance">
+                                                <h:outputText value="#{jointAS.overdueBalance}"/>
+                                            </p:column>
+                                        </p:dataTable>
+                                    </p:panel>
+                                    <p:panel header="Default Records" toggleable="true">
+                                        <p:dataTable value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.jointDefaultRecords}" var="jointDR">
+                                            <p:column headerText="Product Type">
+                                                <h:outputText value="#{jointDR.productType}"/>
+                                            </p:column>
+                                            <p:column headerText="Client">
+                                                <h:outputText value="#{jointDR.productType}"/>
+                                            </p:column>
+                                            <p:column headerText="Date Loaded">
+                                                <h:outputText value="#{jointDR.dateLoaded}"/>
+                                            </p:column>
+                                            <p:column headerText="Original Amount">
+                                                <h:outputText value="#{jointDR.originalAmount}"/>
+                                            </p:column>
+                                            <p:column headerText="Outstanding Balance">
+                                                <h:outputText value="#{jointDR.outstandingBalance}"/>
+                                            </p:column>
+                                            <p:column headerText="Status">
+                                                <h:outputText value="#{jointDR.status}"/>
+                                            </p:column>
+                                            <p:column headerText="Status Date">
+                                                <h:outputText value="#{jointDR.statusDate}"/>
+                                            </p:column>
+                                        </p:dataTable>
+                                    </p:panel>
+                                    <p:panel header="Bureau Score" toggleable="true">
+                                        <p:panelGrid columns="2">
+                                            <p:outputLabel style="font-weight: bold;" value="Bureau Score: "/>
+                                            <h:outputText value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.jointBureauScore}"/>
+
+                                            <p:outputLabel style="font-weight: bold;" value="Risk Grade: "/>
+                                            <h:outputText value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.jointRiskGrade}"/>
+
+                                            <p:outputLabel style="font-weight: bold;" value="Probability of Default: "/>
+                                            <h:outputText value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.jointProbabilityOfDefault}"/>
+                                        </p:panelGrid>
+                                    </p:panel>
+                                </p:panel> 
+                            </p:tab>
+                        </p:tabView>
                     </p:tab>
 
                     <p:tab title="Processing">
                         <p:accordionPanel multiple="true">
+                            <p:tab title="Suggestion">
+                                <p:panelGrid>
+                                    <p:row>
+                                        <p:column>
+                                            <p:outputLabel style="font-weight: bold;" value="Suggested Action: "/>
+                                        </p:column>
+                                        <p:column>
+                                            <p:outputLabel value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.suggestedAction}"/>
+                                        </p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column>
+                                            <p:outputLabel style="font-weight: bold;" value="Minimum Tenure: "/>
+                                        </p:column>
+                                        <p:column>
+                                            <p:outputLabel value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.minTenure}"/>
+                                        </p:column>
+                                        <p:column>
+                                            <p:outputLabel style="font-weight: bold;" value="Maximum Instalment: "/>
+                                        </p:column>
+                                        <p:column>
+                                            <p:outputLabel value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.maxInstalment}"/>
+                                        </p:column>
+                                    </p:row>
+                                </p:panelGrid>
+                            </p:tab>
                             <p:tab title="Result">
-                                
+                                <p:panelGrid>
+                                    <p:row>
+                                        <p:column>
+                                            <p:outputLabel style="font-weight: bold;" value="Risk: "/>
+                                        </p:column>
+                                        <p:column>
+                                            <p:outputLabel value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.riskRatio}"/>
+                                        </p:column>
+                                    </p:row>
+                                    <p:row rendered="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.noJoint}">
+                                        <p:column >
+                                            <p:outputLabel style="font-weight: bold;" value="Applicant's Age: "/>
+                                        </p:column>
+                                        <p:column>
+                                            <h:outputText value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.customerAge}"/>
+                                        </p:column>
+                                    </p:row>
+                                    <p:row rendered="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.hasJoint}">
+                                        <p:column>
+                                            <p:outputLabel style="font-weight: bold;" value="Average Age: "/>
+                                        </p:column>
+                                        <p:column>
+                                            <h:outputText value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.averageAge}"/>
+                                        </p:column>
+                                        <p:column >
+                                            <p:outputLabel style="font-weight: bold;" value="Applicant's Age: "/>
+                                        </p:column>
+                                        <p:column>
+                                            <h:outputText value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.customerAge}"/>
+                                        </p:column>
+                                        <p:column>
+                                            <p:outputLabel style="font-weight: bold;" value="Joint Applicant's Age: "/>
+                                        </p:column>
+                                        <p:column>
+                                            <h:outputText value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.jointAge}"/>
+                                        </p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column colspan="3">
+                                            <p:outputLabel style="font-weight: bold; color: orange;" value="Maximum Instalment (subject to TDSR): "/>
+                                        </p:column>
+                                        <p:column>
+                                            <h:outputText style="color:orange;" value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.maxTDSRInstalment}"/>
+                                        </p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column colspan="3">
+                                            <p:outputLabel style="font-weight: bold;color: orange;" value="Maximum Instalment (subject to MSR): "/>
+                                        </p:column>
+                                        <p:column>
+                                            <h:outputText style="color:orange" value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.maxMSRInstalment}"/>
+                                        </p:column>
+                                    </p:row>
+                                </p:panelGrid>
                             </p:tab>
                             <p:tab title="Highlights">
-
+                                <p:tabView>
+                                    <p:tab title="Main Applicant">
+                                        <p:panelGrid>
+                                            <p:row>
+                                                <p:column colspan="2">
+                                                    <p:outputLabel style="font-weight: bold;" value="Total Amount Overdue: "/>
+                                                </p:column>
+                                                <p:column>
+                                                    <p:outputLabel value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.totalAmountOverdue}"/>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column colspan="2">
+                                                    <p:outputLabel style="font-weight: bold;" value="Education:"/>
+                                                </p:column>
+                                                <p:column> 
+                                                    <p:outputLabel value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.customerEducation}"/>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column colspan="2">
+                                                    <p:outputLabel style="font-weight: bold;" value="Number of Dependents: "/>
+                                                </p:column>
+                                                <p:column>    
+                                                    <p:outputLabel value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.customerNumOfDependents}"/>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column colspan="2">
+                                                    <p:outputLabel style="font-weight: bold;" value="Employment Status: "/>
+                                                </p:column>
+                                                <p:column>    
+                                                    <p:outputLabel value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.customerEmploymentStatus}"/>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column>
+                                                    <p:outputLabel style="font-weight: bold;" value="Monthly Income: "/>
+                                                </p:column>
+                                                <p:column>    
+                                                    <p:outputLabel value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.customerMonthlyFixedIncome}"/>
+                                                </p:column>
+                                                <p:column>
+                                                    <p:outputLabel style="font-weight: bold;" value="Other Income: "/>
+                                                </p:column>
+                                                <p:column>    
+                                                    <p:outputLabel value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.customerOtherMonthlyIncome}"/>
+                                                </p:column>
+                                                <p:column>
+                                                    <p:outputLabel style="font-weight: bold;" value="Other Income Source: "/>
+                                                </p:column>
+                                                <p:column>    
+                                                    <p:outputLabel value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.customerOtherMonthlyIncomeSource}"/>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column>
+                                                    <p:outputLabel style="font-weight: bold;" value="Current Job: "/>
+                                                </p:column>
+                                                <p:column>    
+                                                    <p:outputLabel value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.customerLengthOfCurrentJob}Years"/>
+                                                </p:column>
+                                                <p:column>
+                                                    <p:outputLabel style="font-weight: bold;" value="Previous Job: "/>
+                                                </p:column>
+                                                <p:column>    
+                                                    <p:outputLabel value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.customerLengthOfPreviousJob}Years"/>
+                                                </p:column>
+                                            </p:row>
+                                        </p:panelGrid>
+                                    </p:tab>
+                                    <p:tab title="Joint Applicant" rendered="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.hasJoint}">
+                                        <p:panelGrid>
+                                            <p:row>
+                                                <p:column colspan="2">
+                                                    <p:outputLabel style="font-weight: bold;" value="Total Amount Overdue: "/>
+                                                </p:column>
+                                                <p:column>
+                                                    <p:outputLabel value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.jointAmountOverdue}"/>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column colspan="2">
+                                                    <p:outputLabel style="font-weight: bold;" value="Education:"/>
+                                                </p:column>
+                                                <p:column> 
+                                                    <p:outputLabel value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.jointEducation}"/>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column colspan="2">
+                                                    <p:outputLabel style="font-weight: bold;" value="Number of Dependents: "/>
+                                                </p:column>
+                                                <p:column>    
+                                                    <p:outputLabel value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.jointNumOfDependents}"/>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column colspan="2">
+                                                    <p:outputLabel style="font-weight: bold;" value="Employment Status: "/>
+                                                </p:column>
+                                                <p:column>    
+                                                    <p:outputLabel value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.jointEmploymentStatus}"/>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column>
+                                                    <p:outputLabel style="font-weight: bold;" value="Monthly Income: "/>
+                                                </p:column>
+                                                <p:column>    
+                                                    <p:outputLabel value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.jointMonthlyFixedIncome}"/>
+                                                </p:column>
+                                                <p:column>
+                                                    <p:outputLabel style="font-weight: bold;" value="Other Income: "/>
+                                                </p:column>
+                                                <p:column>    
+                                                    <p:outputLabel value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.jointOtherMonthlyIncome}"/>
+                                                </p:column>
+                                                <p:column>
+                                                    <p:outputLabel style="font-weight: bold;" value="Other Income Source: "/>
+                                                </p:column>
+                                                <p:column>    
+                                                    <p:outputLabel value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.jointOtherMonthlyIncomeSource}"/>
+                                                </p:column>
+                                            </p:row>
+                                            <p:row>
+                                                <p:column>
+                                                    <p:outputLabel style="font-weight: bold;" value="Current Job: "/>
+                                                </p:column>
+                                                <p:column>    
+                                                    <p:outputLabel value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.jointLengthOfCurrentJob}Years"/>
+                                                </p:column>
+                                                <p:column>
+                                                    <p:outputLabel style="font-weight: bold;" value="Previous Job: "/>
+                                                </p:column>
+                                                <p:column>    
+                                                    <p:outputLabel value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.jointLengthOfPreviousJob}Years"/>
+                                                </p:column>
+                                            </p:row>
+                                        </p:panelGrid>
+                                    </p:tab>
+                                </p:tabView>
                             </p:tab>
                         </p:accordionPanel>
                     </p:tab>
@@ -301,6 +727,7 @@
             </div>
             <div class="ui-g-2">
                 <p:panelGrid columns="1">
+                    <p:outputLabel style="font-weight: bold;" value="#{loanOfficerProcessMortgageRefinancingApplicationManagedBean.loanType}"/>
                     <p:outputLabel style="font-weight: bold;" value="Request"/>
                     #{loanOfficerProcessMortgageRefinancingApplicationManagedBean.customerOutstandingLoan} / #{loanOfficerProcessMortgageRefinancingApplicationManagedBean.customerLoanTenure}
                     <p:outputLabel  style="font-weight: bold;" value="Tenure"/>

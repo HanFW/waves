@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package managedbean.loan.customer;
+package managedbean.loan.employee;
 
 import ejb.customer.session.CRMCustomerSessionBean;
 import ejb.infrastructure.session.CustomerEmailSessionBeanLocal;
@@ -37,9 +37,9 @@ import org.primefaces.model.UploadedFile;
  *
  * @author hanfengwei
  */
-@Named(value = "publicMortgageLoanApplicationManagedBean")
+@Named(value = "employeeMortgageLoanApplicationManagedBean")
 @ViewScoped
-public class PublicMortgageLoanApplicationManagedBean implements Serializable {
+public class EmployeeMortgageLoanApplicationManagedBean implements Serializable {
 
     @EJB
     private CustomerEmailSessionBeanLocal customerEmailSessionBeanLocal;
@@ -273,7 +273,7 @@ public class PublicMortgageLoanApplicationManagedBean implements Serializable {
     /**
      * Creates a new instance of PublicHDBLoanApplication
      */
-    public PublicMortgageLoanApplicationManagedBean() {
+    public EmployeeMortgageLoanApplicationManagedBean() {
         uploads.put("identification", false);
         uploads.put("jointIdentification", false);
         uploads.put("otp", false);
@@ -478,7 +478,7 @@ public class PublicMortgageLoanApplicationManagedBean implements Serializable {
                 false, false, false, null, null,null,
                 cp4, mortgage4, null, "purchase", "Private Property-Fixed");
 
-        ec.redirect(ec.getRequestContextPath() + "/web/merlionBank/loan/publicLoanApplicationDone.xhtml?faces-redirect=true");
+        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/loan/employeeLoanApplicationDone.xhtml?faces-redirect=true");
     }
 
     public void addLoanApplication() throws IOException {
@@ -736,7 +736,7 @@ public class PublicMortgageLoanApplicationManagedBean implements Serializable {
             customerEmailSessionBeanLocal.sendEmail(cRMCustomerSessionBeanLocal.getCustomerBasicById(newCustomerBasicId), "mortgageLoanApplication", emailActions);
             ec.getFlash().put("amountRequired", customerLoanAmountRequired);
             ec.getFlash().put("tenure", customerLoanTenure);
-            ec.redirect(ec.getRequestContextPath() + "/web/merlionBank/loan/publicLoanApplicationDone.xhtml?faces-redirect=true");
+            ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/loan/employeeLoanApplicationDone.xhtml?faces-redirect=true");
         }
     }
 

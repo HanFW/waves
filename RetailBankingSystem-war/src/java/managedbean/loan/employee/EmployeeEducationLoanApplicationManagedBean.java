@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package managedbean.loan.customer;
+package managedbean.loan.employee;
 
 import ejb.customer.session.CRMCustomerSessionBean;
 import ejb.infrastructure.session.CustomerEmailSessionBeanLocal;
-import ejb.loan.entity.CarLoanApplication;
+import ejb.loan.entity.EducationLoanApplication;
 import ejb.loan.session.LoanApplicationSessionBeanLocal;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -16,9 +16,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.ArrayList;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
@@ -33,9 +37,9 @@ import org.primefaces.model.UploadedFile;
  *
  * @author hanfengwei
  */
-@Named(value = "publicCarLoanApplicationManagedBean")
+@Named(value = "employeeEducationLoanApplicationManagedBean")
 @ViewScoped
-public class PublicCarLoanApplicationManagedBean implements Serializable {
+public class EmployeeEducationLoanApplicationManagedBean implements Serializable {
 
     @EJB
     private CustomerEmailSessionBeanLocal customerEmailSessionBeanLocal;
@@ -93,23 +97,14 @@ public class PublicCarLoanApplicationManagedBean implements Serializable {
     private BigDecimal customerOtherMonthlyIncome;
     private String customerOtherMonthlyIncomeSource;
 
-    //commitments
-    private ArrayList<HashMap> customerFinancialCommitments = new ArrayList<HashMap>();
-    private String customerFacilityType;
-    private String customerFinancialInstitution;
-    private BigDecimal customerLoanAmount;
-    private BigDecimal customerMonthlyInstalment;
-    private HashMap customerFinancialCommitment = new HashMap();
-
-    //loan
+    //customer - loan both
     private BigDecimal customerLoanAmountRequired;
     private Integer customerLoanTenure;
-    private String isNewCar;
-    private String customerCarMake;
-    private String customerCarModel;
-    private String customerChassis;
-    private BigDecimal customerCarPurchasePrice;
-    private Integer customerCarYearOfManufacture;
+    private String customerEducationInstitution;
+    private Date customerEducationStarton;
+    private Date customerEducationEndon;
+    private Integer customerCourseDuration;
+    private Integer customerCourseFee;
 
     //confirmation
     private boolean agreement;
@@ -133,31 +128,105 @@ public class PublicCarLoanApplicationManagedBean implements Serializable {
     //employement
     private boolean occupationPanelVisible;
     private boolean employmentPanelVisible;
+    
+    
+    //guarantor basic information
+    private String guarantorRelationship;
+    
+    private String guarantorSalutation;
+    private String guarantorSalutationOthers;
+    private String guarantorName;
+    private Date guarantorDateOfBirth;
+    private String guarantorGender;
+    private String guarantorNationality;
+    private String guarantorIsPR;
+    private String guarantorIdentificationNum;
+    private String guarantorSingaporeNRIC;
+    private String guarantorForeignNRIC;
+    private String guarantorForeignPassport;
+    private String guarantorCountryOfResidence;
+    private String guarantorRace;
+    private String guarantorMobile;
+    private String guarantorEmail;
+
+    //guarantor personal details
+    private String guarantorEducation;
+    private String guarantorMaritalStatus;
+    private Integer guarantorNumOfDependents;
+    private String guarantorStreetName;
+    private String guarantorBlockNum;
+    private String guarantorUnitNum;
+    private String guarantorPostal;
+    private String guarantorResidentialStatus;
+    private String guarantorResidentialType;
+    private Integer guarantorLengthOfResidence;
+
+    //guarantor employment details
+    private String guarantorEmploymentStatus;
+    private String guarantorOccupation;
+    private String guarantorCompanyName;
+    private String guarantorCompanyAddress;
+    private String guarantorCompanyPostal;
+    private String guarantorIndustryType;
+    private String guarantorIndustryTypeOthers;
+    private String guarantorCurrentPosition;
+    private String guarantorCurrentPositionOthers;
+    private String guarantorCurrentJobTitle;
+    private Integer guarantorLengthOfCurrentJob;
+    private String guarantorPreviousCompany;
+    private Integer guarantorLengthOfPreviousJob;
+    private BigDecimal guarantorMonthlyFixedIncome;
+    private BigDecimal guarantorOtherMonthlyIncome;
+    private String guarantorOtherMonthlyIncomeSource;
+    
+    //confirmation
+    private String guarantorSignature;
+
+    //basic information
+    private boolean guarantorSalutationPanelVisible;
+    private boolean guarantorNationalitySGPanelVisible;
+    private boolean guarantorNationalityOthersPanelVisible;
+    private boolean guarantorNricPanelVisible;
+    private boolean guarantorPassportPanelVisible;
+
+    //personal details
+    private boolean guarantorIndustryTypePanelVisible;
+    private boolean guarantorCurrentPositionPanelVisible;
+
+    //employement
+    private boolean guarantorOccupationPanelVisible;
+    private boolean guarantorEmploymentPanelVisible;
 
     /**
-     * Creates a new instance of PublicCarLoanApplicationManagedBean
+     * Creates a new instance of PublicEducationLoanApplicationManagedBean
      */
-    public PublicCarLoanApplicationManagedBean() {
+    public EmployeeEducationLoanApplicationManagedBean() {
         uploads.put("identification", false);
-        uploads.put("order", false);
-        uploads.put("registration", false);
+        uploads.put("guarantorIdentification", false);
+        uploads.put("acceptance", false);
+        uploads.put("invoice", false);
         uploads.put("employeeTax", false);
         uploads.put("selfEmployedTax", false);
+        uploads.put("guarantorEmployeeTax", false);
+        uploads.put("guarantorSelfEmployedTax", false);
+        uploads.put("relationship", false);
     }
 
-    public void addCarLoanApplicationFast() throws IOException {
+    public void addEducationLoanApplicationFast() throws IOException {
+        System.out.println("====== loan/PublicEducationLoanApplicationManagedBean: addEducationLoanApplication() ======");
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         //create or update CustomerBasic
+
         Long newCustomerBasicId;
 
-        boolean isExistingCustomer = cRMCustomerSessionBeanLocal.checkExistingCustomerByIdentification("F11223344");
+        boolean isExistingCustomer = cRMCustomerSessionBeanLocal.checkExistingCustomerByIdentification("E11223344");
         if (isExistingCustomer) {
-            newCustomerBasicId = cRMCustomerSessionBeanLocal.updateCustomerBasic("F11223344", "hanfengwei96@gmail.com", "83114121",
+            newCustomerBasicId = cRMCustomerSessionBeanLocal.updateCustomerBasic("E11223344", "hanfengwei96@gmail.com", "83114121",
                     "China", "China", "Single", "Student", "AfterYou",
-                    "address", "123123");
+                    "Zhou Jingyuan", "123123");
         } else {
-            newCustomerBasicId = cRMCustomerSessionBeanLocal.addNewCustomerBasic("Lai Qing",
-                    "Ms", "F11223344",
+            newCustomerBasicId = cRMCustomerSessionBeanLocal.addNewCustomerBasic("Zhou Jingyuan",
+                    "Ms", "E11223344",
                     "Female", "hanfengwei96@gmail.com", "83114121", "08/Mar/1993",
                     "China", "China", "Chinese",
                     "Single", "Student", "AfterYou",
@@ -166,9 +235,9 @@ public class PublicCarLoanApplicationManagedBean implements Serializable {
 
         //create CustomerAdvanced
         Long newCustomerAdvancedId;
-        boolean hasCustomerAdvanced = cRMCustomerSessionBeanLocal.checkExistingCustomerAdvanced("F11223344");
+        boolean hasCustomerAdvanced = cRMCustomerSessionBeanLocal.checkExistingCustomerAdvanced("E11223344");
         if (hasCustomerAdvanced) {
-            newCustomerAdvancedId = cRMCustomerSessionBeanLocal.updateCustomerAdvanced("F11223344", 2,
+            newCustomerAdvancedId = cRMCustomerSessionBeanLocal.updateCustomerAdvanced("E11223344", 2,
                     "Degree", "Rented", 5, "Government", 6,
                     "Employee", 3000, "HDB", "company address",
                     "123123", "Senior Management", "job title", null,
@@ -181,13 +250,31 @@ public class PublicCarLoanApplicationManagedBean implements Serializable {
                     null, 0, 2000,
                     "income source");
         }
+        
+        //create loan guarantor
+        Long guarantorId = loanApplicationSessionBeanLocal.createLoanGuarantor("Hu Yanhong", "Ms", "E99887766", "Female", "hanfengwei96@gmail.com", 
+                "83114121", "01/Mar/1967", "China", "China", "Chinese", "Married", 
+                    "Professor", "National University of Singapore", "guarantor address", "987654", null, 1, 
+                    "Degree", "Fully owned", 6, "Education", 20, 
+                    "Employee", 7000, "HDB", "company address", "998877", 
+                    "Associate Professor", "job title", "NTU", 1, 
+                    2600, "tuition");
 
         //create education loan application
-        CarLoanApplication application = new CarLoanApplication();
-        application.create(170000, 5, "Yes", "Employee","Jaguar", "Prestige", "1GKDM19X84B502016", 177999, 2015);
-        loanApplicationSessionBeanLocal.submitCarLoanApplication(isExistingCustomer, hasCustomerAdvanced, application, newCustomerBasicId, newCustomerAdvancedId);
-        
-        //second customer
+        EducationLoanApplication application = new EducationLoanApplication();
+        DateFormat df = new SimpleDateFormat("dd/MMM/yyyy");
+        Date starton = new Date();
+        Date endon = new Date();
+        try {
+            starton = df.parse("16/Jan/2016");
+            endon = df.parse("16/Jan/2020");
+        } catch (ParseException ex) {
+            Logger.getLogger(EmployeeEducationLoanApplicationManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        application.create(30000, 5, "Stockholm University", starton, endon, 4, 25000, "Employee", "Mother", "Employee");
+        loanApplicationSessionBeanLocal.submitEducationLoanApplication(isExistingCustomer, hasCustomerAdvanced, application, newCustomerBasicId, newCustomerAdvancedId, guarantorId);
+
+        //second loan applicaiton
         isExistingCustomer = cRMCustomerSessionBeanLocal.checkExistingCustomerByIdentification("G11223344");
         if (isExistingCustomer) {
             newCustomerBasicId = cRMCustomerSessionBeanLocal.updateCustomerBasic("G11223344", "hanfengwei96@gmail.com", "83114121",
@@ -218,25 +305,45 @@ public class PublicCarLoanApplicationManagedBean implements Serializable {
                     null, 0, 2000,
                     "income source");
         }
+        
+        guarantorId = loanApplicationSessionBeanLocal.createLoanGuarantor("Han Lei", "Mr", "E88776655", "Male", "hanfengwei96@gmail.com", 
+                "83114121", "01/Mar/1967", "China", "China", "Chinese", "Married", 
+                    "Professor", "National University of Singapore", "guarantor address", "987654", null, 1, 
+                    "Degree", "Fully owned", 6, "Education", 20, 
+                    "Employee", 7000, "HDB", "company address", "998877", 
+                    "Associate Professor", "job title", "NTU", 1, 
+                    2600, "tuition");
 
         //create education loan application
-        application = new CarLoanApplication();
-        application.create(170000, 5, "Employee", "Yes", "Jaguar", "Prestige", "1GKDM19X84B502016", 177999, 2015);
-        loanApplicationSessionBeanLocal.submitCarLoanApplication(isExistingCustomer, hasCustomerAdvanced, application, newCustomerBasicId, newCustomerAdvancedId);
+        application = new EducationLoanApplication();
+        try {
+            starton = df.parse("01/May/2015");
+            endon = df.parse("01/May/2019");
+        } catch (ParseException ex) {
+            Logger.getLogger(EmployeeEducationLoanApplicationManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        application.create(20000, 6, "Peking University", starton, endon, 4, 20000, "Employee", "Father", "Employee");
         
-        ec.getFlash().put("amountRequired", BigDecimal.valueOf(170000));
-        ec.getFlash().put("loanType", "Car Loan");
+        
+        loanApplicationSessionBeanLocal.submitEducationLoanApplication(isExistingCustomer, hasCustomerAdvanced, application, newCustomerBasicId, newCustomerAdvancedId, guarantorId);
+        
+        ec.getFlash().put("amountRequired", BigDecimal.valueOf(30000));
+        ec.getFlash().put("loanType", "Education Loan");
         ec.getFlash().put("tenure", 5);
-        ec.redirect(ec.getRequestContextPath() + "/web/merlionBank/loan/publicLoanApplicationDone.xhtml?faces-redirect=true");
+        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/loan/employeeLoanApplicationDone.xhtml?faces-redirect=true");
     }
 
-    public void addCarLoanApplication() throws IOException {
+    public void addEducationLoanApplication() throws IOException {
         System.out.println("====== loan/PublicEducationLoanApplicationManagedBean: addEducationLoanApplication() ======");
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         customerSignature = ec.getSessionMap().get("customerSignature").toString();
-        if (customerSignature.equals("") || !agreement) {
+        guarantorSignature = ec.getSessionMap().get("guarantorSignature").toString();
+        if (customerSignature.equals("") || guarantorSignature.equals("") || !agreement) {
             if (customerSignature.equals("")) {
                 FacesContext.getCurrentInstance().addMessage("input", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Please provide your digital signature", "Failed!"));
+            }
+            if (guarantorSignature.equals("")) {
+                FacesContext.getCurrentInstance().addMessage("input", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Please provide guarantor's digital signature", "Failed!"));
             }
             if (!agreement) {
                 FacesContext.getCurrentInstance().addMessage("agreement", new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Please agree to terms to proceed", "Failed!"));
@@ -308,16 +415,40 @@ public class PublicCarLoanApplicationManagedBean implements Serializable {
                             customerOtherMonthlyIncomeSource);
                 }
             }
+            
+            //create new guarantor
+            if (guarantorSalutation.equals("Others")) {
+                guarantorSalutation = guarantorSalutationOthers;
+            }
+
+            dateOfBirth = changeDateFormat(guarantorDateOfBirth);
+            String guarantorAddress = guarantorStreetName + ", " + guarantorBlockNum + ", " + guarantorUnitNum + ", " + guarantorPostal;
+            if (guarantorEmploymentStatus.equals("Employee") || guarantorEmploymentStatus.equals("Self-Employed")) {
+                if (guarantorIndustryType.equals("Others")) {
+                    guarantorIndustryType = guarantorIndustryTypeOthers;
+                }
+                if (guarantorCurrentPosition.equals("Others")) {
+                    guarantorCurrentPosition = guarantorCurrentPositionOthers;
+                }
+            }
+            
+            Long guarantorId = loanApplicationSessionBeanLocal.createLoanGuarantor(guarantorName, guarantorSalutation, guarantorIdentificationNum, guarantorGender, guarantorEmail, 
+                    guarantorMobile, dateOfBirth, guarantorNationality, guarantorCountryOfResidence, guarantorRace, guarantorMaritalStatus, 
+                    guarantorOccupation, guarantorCompanyName, guarantorAddress, guarantorPostal, guarantorSignature.getBytes(), guarantorNumOfDependents, 
+                    guarantorEducation, guarantorResidentialStatus, guarantorLengthOfResidence, guarantorIndustryType, guarantorLengthOfCurrentJob, 
+                    guarantorEmploymentStatus, guarantorMonthlyFixedIncome.doubleValue(), guarantorResidentialType, guarantorCompanyAddress, guarantorCompanyPostal, 
+                    guarantorCurrentPosition, guarantorCurrentJobTitle, guarantorPreviousCompany, guarantorLengthOfPreviousJob, 
+                    guarantorOtherMonthlyIncome.doubleValue(), guarantorOtherMonthlyIncomeSource);
 
             //create education loan application
-            CarLoanApplication application = new CarLoanApplication();
-            application.create(customerLoanAmountRequired.doubleValue(), customerLoanTenure, customerEmploymentStatus, isNewCar, customerCarMake, customerCarModel, customerChassis, customerCarPurchasePrice.doubleValue(), customerCarYearOfManufacture);
-            loanApplicationSessionBeanLocal.submitCarLoanApplication(isExistingCustomer, hasCustomerAdvanced, application, newCustomerBasicId, newCustomerAdvancedId);
+            EducationLoanApplication application = new EducationLoanApplication();
+            application.create(customerLoanAmountRequired.doubleValue(), customerLoanTenure, customerEducationInstitution, customerEducationStarton, customerEducationEndon, customerCourseDuration, customerCourseFee, customerEmploymentStatus, guarantorRelationship, guarantorEmploymentStatus);
+            loanApplicationSessionBeanLocal.submitEducationLoanApplication(isExistingCustomer, hasCustomerAdvanced, application, newCustomerBasicId, newCustomerAdvancedId, guarantorId);
             customerEmailSessionBeanLocal.sendEmail(cRMCustomerSessionBeanLocal.getCustomerBasicById(newCustomerBasicId), "educationLoanApplication", null);
             ec.getFlash().put("amountRequired", customerLoanAmountRequired);
             ec.getFlash().put("loanType", "Education Loan");
             ec.getFlash().put("tenure", customerLoanTenure);
-            ec.redirect(ec.getRequestContextPath() + "/web/merlionBank/loan/publicLoanApplicationDone.xhtml?faces-redirect=true");
+            ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/loan/employeeLoanApplicationDone.xhtml?faces-redirect=true");
         }
     }
 
@@ -341,14 +472,24 @@ public class PublicCarLoanApplicationManagedBean implements Serializable {
                 customerIdentificationNum = customerForeignNRIC;
             } else {
                 customerIdentificationNum = customerForeignPassport;
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Eligibility: Singapore Citizen or Singapore Permanent Resident", "");
+                FacesContext.getCurrentInstance().addMessage(null, message);
+                nextStep = event.getOldStep();
             }
 
-            if (age < 21 || age > 65) {
+            if (age < 17 || age > 65) {
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Your age is not qualified to apply for this type of loan", "");
                 FacesContext.getCurrentInstance().addMessage(null, message);
                 nextStep = event.getOldStep();
             } else if (customerIdentificationNum.length() != 9) {
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please enter a valid indentification number", "");
+                FacesContext.getCurrentInstance().addMessage(null, message);
+                nextStep = event.getOldStep();
+            }
+        } else if (event.getOldStep().equals("employment")) {
+            double grossIncome = customerOtherMonthlyIncome.doubleValue() + customerMonthlyFixedIncome.doubleValue();
+            if (grossIncome <= 1500) {
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "The minimum gross monthly income required is S$1,500", "");
                 FacesContext.getCurrentInstance().addMessage(null, message);
                 nextStep = event.getOldStep();
             }
@@ -373,30 +514,6 @@ public class PublicCarLoanApplicationManagedBean implements Serializable {
             }
         }
         return nextStep;
-    }
-
-    public void addCustomerFinancialCommitment() {
-        System.out.println("====== loan/PublicHDBLoanApplicationManagedBean: addCustomerFinancialCommitment() ======");
-        if (customerFinancialInstitution == null || customerFacilityType == null || customerLoanAmount == null || customerMonthlyInstalment == null) {
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Please fill in all the fields", "");
-            FacesContext.getCurrentInstance().addMessage(null, message);
-        } else {
-            customerFinancialCommitment.put("institution", customerFinancialInstitution);
-            customerFinancialCommitment.put("type", customerFacilityType);
-            customerFinancialCommitment.put("amount", customerLoanAmount);
-            customerFinancialCommitment.put("instalment", customerMonthlyInstalment);
-            customerFinancialCommitments.add(customerFinancialCommitment);
-            customerFinancialInstitution = null;
-            customerFacilityType = null;
-            customerLoanAmount = null;
-            customerMonthlyInstalment = null;
-            customerFinancialCommitment = new HashMap();
-        }
-    }
-
-    public void deleteCustomerFinancialCommitment(HashMap commitment) {
-        System.out.println("====== loan/PublicHDBLoanApplicationManagedBean: deleteCustomerFinancialCommitment() ======");
-        customerFinancialCommitments.remove(commitment);
     }
 
     public void showSalutationPanel() {
@@ -460,14 +577,66 @@ public class PublicCarLoanApplicationManagedBean implements Serializable {
             uploads.replace("employeeTax", false);
         }
     }
+    
+    public void showGuarantorSalutationPanel() {
+        guarantorSalutationPanelVisible = guarantorSalutation.equals("Others");
+    }
 
-    public void changeCarStatus() {
-        if (isNewCar.equals("Yes")) {
-            uploads.replace("order", false);
-            uploads.replace("registration", true);
+    public void showGuarantorNationalityPanel() {
+        guarantorIsPR = null;
+        guarantorSingaporeNRIC = null;
+        if (guarantorNationality.equals("Singapore")) {
+            guarantorNationalitySGPanelVisible = true;
+            guarantorNationalityOthersPanelVisible = false;
+            guarantorNricPanelVisible = false;
+            guarantorPassportPanelVisible = false;
         } else {
-            uploads.replace("order", true);
-            uploads.replace("registration", false);
+            guarantorNationalityOthersPanelVisible = true;
+            guarantorNationalitySGPanelVisible = false;
+            guarantorNricPanelVisible = false;
+            guarantorPassportPanelVisible = false;
+        }
+    }
+
+    public void showGuarantorIdentificationPanel() {
+        guarantorForeignNRIC = null;
+        guarantorForeignPassport = null;
+        if (guarantorIsPR.equals("Yes")) {
+            guarantorNricPanelVisible = true;
+            guarantorPassportPanelVisible = false;
+        } else if (customerIsPR.equals("No")) {
+            guarantorPassportPanelVisible = true;
+            guarantorNricPanelVisible = false;
+        } else {
+            guarantorPassportPanelVisible = false;
+            guarantorNricPanelVisible = false;
+        }
+    }
+
+    public void showGuarantorIndustryTypePanel() {
+        guarantorIndustryTypePanelVisible = guarantorIndustryType.equals("Others");
+    }
+
+    public void showGuarantorCurrentPositionPanel() {
+        guarantorCurrentPositionPanelVisible = guarantorCurrentPosition.equals("Others");
+    }
+
+    public void changeGuarantorEmployeeStatus() {
+        if (guarantorEmploymentStatus.equals("Employee")) {
+            guarantorEmploymentPanelVisible = true;
+            guarantorOccupationPanelVisible = true;
+            uploads.replace("guarantorSelfEmployedTax", true);
+            uploads.replace("guarantorEmployeeTax", false);
+        } else if (guarantorEmploymentStatus.equals("Self-Employed")) {
+            guarantorEmploymentPanelVisible = true;
+            guarantorOccupationPanelVisible = false;
+            uploads.replace("guarantorSelfEmployedTax", false);
+            uploads.replace("guarantorEmployeeTax", true);
+        } else {
+            guarantorOccupationPanelVisible = false;
+            guarantorEmploymentPanelVisible = false;
+            uploads.replace("guarantorSelfEmployedTax", true);
+            uploads.replace("guarantorEmployeeTax", false);
         }
     }
 
@@ -516,14 +685,14 @@ public class PublicCarLoanApplicationManagedBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage("identificationUpload", message);
         }
     }
-
-    public void carSalesOrderUpload(FileUploadEvent event) throws FileNotFoundException, IOException {
+    
+    public void guarantorIdentificationUpload(FileUploadEvent event) throws FileNotFoundException, IOException {
         this.file = event.getFile();
 
         if (file != null) {
             String newFilePath = System.getProperty("user.dir").replace("config", "docroot") + System.getProperty("file.separator");
 
-            String filename = customerIdentificationNum + "-car_order.pdf";
+            String filename = customerIdentificationNum + "-guarantor_identification.pdf";
             File newFile = new File(newFilePath, filename);
             FileOutputStream fileOutputStream = new FileOutputStream(newFile);
 
@@ -547,22 +716,60 @@ public class PublicCarLoanApplicationManagedBean implements Serializable {
             fileOutputStream.close();
             inputStream.close();
 
-            uploads.replace("order", true);
+            uploads.replace("guarantorIdentification", true);
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, file.getFileName() + " uploaded successfully.", "");
-            FacesContext.getCurrentInstance().addMessage("carSalesOrderUpload", message);
+            FacesContext.getCurrentInstance().addMessage("guarantorIdentificationUpload", message);
         } else {
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cannot find the file, please upload again.", "");
-            FacesContext.getCurrentInstance().addMessage("carSalesOrderUpload", message);
+            FacesContext.getCurrentInstance().addMessage("guarantorIdentificationUpload", message);
+        }
+    }
+    
+    public void guarantorRelationshipUpload(FileUploadEvent event) throws FileNotFoundException, IOException {
+        this.file = event.getFile();
+
+        if (file != null) {
+            String newFilePath = System.getProperty("user.dir").replace("config", "docroot") + System.getProperty("file.separator");
+
+            String filename = customerIdentificationNum + "-guarantor_relationship.pdf";
+            File newFile = new File(newFilePath, filename);
+            FileOutputStream fileOutputStream = new FileOutputStream(newFile);
+
+            int a;
+            int BUFFER_SIZE = 8192;
+            byte[] buffer = new byte[BUFFER_SIZE];
+
+            InputStream inputStream = file.getInputstream();
+
+            while (true) {
+                a = inputStream.read(buffer);
+
+                if (a < 0) {
+                    break;
+                }
+
+                fileOutputStream.write(buffer, 0, a);
+                fileOutputStream.flush();
+            }
+
+            fileOutputStream.close();
+            inputStream.close();
+
+            uploads.replace("relationship", true);
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, file.getFileName() + " uploaded successfully.", "");
+            FacesContext.getCurrentInstance().addMessage("guarantorRelationshipUpload", message);
+        } else {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cannot find the file, please upload again.", "");
+            FacesContext.getCurrentInstance().addMessage("guarantorRelationshipUpload", message);
         }
     }
 
-    public void carRegistrationCardUpload(FileUploadEvent event) throws FileNotFoundException, IOException {
+    public void acceptanceLetterUpload(FileUploadEvent event) throws FileNotFoundException, IOException {
         this.file = event.getFile();
-
         if (file != null) {
             String newFilePath = System.getProperty("user.dir").replace("config", "docroot") + System.getProperty("file.separator");
 
-            String filename = customerIdentificationNum + "car_registration.pdf";
+            String filename = customerIdentificationNum + "-acceptance.pdf";
             File newFile = new File(newFilePath, filename);
             FileOutputStream fileOutputStream = new FileOutputStream(newFile);
 
@@ -586,12 +793,50 @@ public class PublicCarLoanApplicationManagedBean implements Serializable {
             fileOutputStream.close();
             inputStream.close();
 
-            uploads.replace("registration", true);
+            uploads.replace("acceptance", true);
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, file.getFileName() + " uploaded successfully.", "");
-            FacesContext.getCurrentInstance().addMessage("carRegistrationCardUpload", message);
+            FacesContext.getCurrentInstance().addMessage("acceptanceLetterUpload", message);
         } else {
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cannot find the file, please upload again.", "");
-            FacesContext.getCurrentInstance().addMessage("carRegistrationCardUpload", message);
+            FacesContext.getCurrentInstance().addMessage("acceptanceLetterUpload", message);
+        }
+    }
+
+    public void courseInvoiceUpload(FileUploadEvent event) throws FileNotFoundException, IOException {
+        this.file = event.getFile();
+        if (file != null) {
+            String newFilePath = System.getProperty("user.dir").replace("config", "docroot") + System.getProperty("file.separator");
+
+            String filename = customerIdentificationNum + "-invoice.pdf";
+            File newFile = new File(newFilePath, filename);
+            FileOutputStream fileOutputStream = new FileOutputStream(newFile);
+
+            int a;
+            int BUFFER_SIZE = 8192;
+            byte[] buffer = new byte[BUFFER_SIZE];
+
+            InputStream inputStream = file.getInputstream();
+
+            while (true) {
+                a = inputStream.read(buffer);
+
+                if (a < 0) {
+                    break;
+                }
+
+                fileOutputStream.write(buffer, 0, a);
+                fileOutputStream.flush();
+            }
+
+            fileOutputStream.close();
+            inputStream.close();
+
+            uploads.replace("invoice", true);
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, file.getFileName() + " uploaded successfully.", "");
+            FacesContext.getCurrentInstance().addMessage("courseInvoiceUpload", message);
+        } else {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cannot find the file, please upload again.", "");
+            FacesContext.getCurrentInstance().addMessage("courseInvoiceUpload", message);
         }
     }
 
@@ -670,7 +915,92 @@ public class PublicCarLoanApplicationManagedBean implements Serializable {
             FacesContext.getCurrentInstance().addMessage("selfEmployedTaxUpload", message);
         }
     }
+    
+    public void guarantorEmployeeTaxUpload(FileUploadEvent event) throws FileNotFoundException, IOException {
+        this.file = event.getFile();
+        if (file != null) {
+            String newFilePath = System.getProperty("user.dir").replace("config", "docroot") + System.getProperty("file.separator");
 
+            String filename = customerIdentificationNum + "-guarantor_employee_tax.pdf";
+            File newFile = new File(newFilePath, filename);
+            FileOutputStream fileOutputStream = new FileOutputStream(newFile);
+
+            int a;
+            int BUFFER_SIZE = 8192;
+            byte[] buffer = new byte[BUFFER_SIZE];
+
+            InputStream inputStream = file.getInputstream();
+
+            while (true) {
+                a = inputStream.read(buffer);
+
+                if (a < 0) {
+                    break;
+                }
+
+                fileOutputStream.write(buffer, 0, a);
+                fileOutputStream.flush();
+            }
+
+            fileOutputStream.close();
+            inputStream.close();
+
+            uploads.replace("guarantorEmployeeTax", true);
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, file.getFileName() + " uploaded successfully.", "");
+            FacesContext.getCurrentInstance().addMessage("guarantorEmployeeTaxUpload", message);
+        } else {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cannot find the file, please upload again.", "");
+            FacesContext.getCurrentInstance().addMessage("guarantorEmployeeTaxUpload", message);
+        }
+    }
+
+    public void guarantorSelfEmployedTaxUpload(FileUploadEvent event) throws FileNotFoundException, IOException {
+        this.file = event.getFile();
+        if (file != null) {
+            String newFilePath = System.getProperty("user.dir").replace("config", "docroot") + System.getProperty("file.separator");
+
+            String filename = customerIdentificationNum + "-guarantor_self-employed_tax.pdf";
+            File newFile = new File(newFilePath, filename);
+            FileOutputStream fileOutputStream = new FileOutputStream(newFile);
+
+            int a;
+            int BUFFER_SIZE = 8192;
+            byte[] buffer = new byte[BUFFER_SIZE];
+
+            InputStream inputStream = file.getInputstream();
+
+            while (true) {
+                a = inputStream.read(buffer);
+
+                if (a < 0) {
+                    break;
+                }
+
+                fileOutputStream.write(buffer, 0, a);
+                fileOutputStream.flush();
+            }
+
+            fileOutputStream.close();
+            inputStream.close();
+
+            uploads.replace("guarantorSelfEmployedTax", true);
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, file.getFileName() + " uploaded successfully.", "");
+            FacesContext.getCurrentInstance().addMessage("guarantorSelfEmployedTaxUpload", message);
+        } else {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Cannot find the file, please upload again.", "");
+            FacesContext.getCurrentInstance().addMessage("guarantorSelfEmployedTaxUpload", message);
+        }
+    }
+
+    public String getGuarantorRelationship() {
+        return guarantorRelationship;
+    }
+
+    public void setGuarantorRelationship(String guarantorRelationship) {
+        this.guarantorRelationship = guarantorRelationship;
+    }
+
+    
     public String getCustomerSalutation() {
         return customerSalutation;
     }
@@ -999,54 +1329,6 @@ public class PublicCarLoanApplicationManagedBean implements Serializable {
         this.customerOtherMonthlyIncomeSource = customerOtherMonthlyIncomeSource;
     }
 
-    public ArrayList<HashMap> getCustomerFinancialCommitments() {
-        return customerFinancialCommitments;
-    }
-
-    public void setCustomerFinancialCommitments(ArrayList<HashMap> customerFinancialCommitments) {
-        this.customerFinancialCommitments = customerFinancialCommitments;
-    }
-
-    public String getCustomerFacilityType() {
-        return customerFacilityType;
-    }
-
-    public void setCustomerFacilityType(String customerFacilityType) {
-        this.customerFacilityType = customerFacilityType;
-    }
-
-    public String getCustomerFinancialInstitution() {
-        return customerFinancialInstitution;
-    }
-
-    public void setCustomerFinancialInstitution(String customerFinancialInstitution) {
-        this.customerFinancialInstitution = customerFinancialInstitution;
-    }
-
-    public BigDecimal getCustomerLoanAmount() {
-        return customerLoanAmount;
-    }
-
-    public void setCustomerLoanAmount(BigDecimal customerLoanAmount) {
-        this.customerLoanAmount = customerLoanAmount;
-    }
-
-    public BigDecimal getCustomerMonthlyInstalment() {
-        return customerMonthlyInstalment;
-    }
-
-    public void setCustomerMonthlyInstalment(BigDecimal customerMonthlyInstalment) {
-        this.customerMonthlyInstalment = customerMonthlyInstalment;
-    }
-
-    public HashMap getCustomerFinancialCommitment() {
-        return customerFinancialCommitment;
-    }
-
-    public void setCustomerFinancialCommitment(HashMap customerFinancialCommitment) {
-        this.customerFinancialCommitment = customerFinancialCommitment;
-    }
-
     public BigDecimal getCustomerLoanAmountRequired() {
         return customerLoanAmountRequired;
     }
@@ -1063,36 +1345,44 @@ public class PublicCarLoanApplicationManagedBean implements Serializable {
         this.customerLoanTenure = customerLoanTenure;
     }
 
-    public String getCustomerCarModel() {
-        return customerCarModel;
+    public String getCustomerEducationInstitution() {
+        return customerEducationInstitution;
     }
 
-    public void setCustomerCarModel(String customerCarModel) {
-        this.customerCarModel = customerCarModel;
+    public void setCustomerEducationInstitution(String customerEducationInstitution) {
+        this.customerEducationInstitution = customerEducationInstitution;
     }
 
-    public String getCustomerChassis() {
-        return customerChassis;
+    public Date getCustomerEducationStarton() {
+        return customerEducationStarton;
     }
 
-    public void setCustomerChassis(String customerChassis) {
-        this.customerChassis = customerChassis;
+    public void setCustomerEducationStarton(Date customerEducationStarton) {
+        this.customerEducationStarton = customerEducationStarton;
     }
 
-    public BigDecimal getCustomerCarPurchasePrice() {
-        return customerCarPurchasePrice;
+    public Date getCustomerEducationEndon() {
+        return customerEducationEndon;
     }
 
-    public void setCustomerCarPurchasePrice(BigDecimal customerCarPurchasePrice) {
-        this.customerCarPurchasePrice = customerCarPurchasePrice;
+    public void setCustomerEducationEndon(Date customerEducationEndon) {
+        this.customerEducationEndon = customerEducationEndon;
     }
 
-    public Integer getCustomerCarYearOfManufacture() {
-        return customerCarYearOfManufacture;
+    public Integer getCustomerCourseDuration() {
+        return customerCourseDuration;
     }
 
-    public void setCustomerCarYearOfManufacture(Integer customerCarYearOfManufacture) {
-        this.customerCarYearOfManufacture = customerCarYearOfManufacture;
+    public void setCustomerCourseDuration(Integer customerCourseDuration) {
+        this.customerCourseDuration = customerCourseDuration;
+    }
+
+    public Integer getCustomerCourseFee() {
+        return customerCourseFee;
+    }
+
+    public void setCustomerCourseFee(Integer customerCourseFee) {
+        this.customerCourseFee = customerCourseFee;
     }
 
     public boolean isAgreement() {
@@ -1199,20 +1489,413 @@ public class PublicCarLoanApplicationManagedBean implements Serializable {
         this.employmentPanelVisible = employmentPanelVisible;
     }
 
-    public String getIsNewCar() {
-        return isNewCar;
+    public String getGuarantorSalutation() {
+        return guarantorSalutation;
     }
 
-    public void setIsNewCar(String isNewCar) {
-        this.isNewCar = isNewCar;
+    public void setGuarantorSalutation(String guarantorSalutation) {
+        this.guarantorSalutation = guarantorSalutation;
     }
 
-    public String getCustomerCarMake() {
-        return customerCarMake;
+    public String getGuarantorSalutationOthers() {
+        return guarantorSalutationOthers;
     }
 
-    public void setCustomerCarMake(String customerCarMake) {
-        this.customerCarMake = customerCarMake;
+    public void setGuarantorSalutationOthers(String guarantorSalutationOthers) {
+        this.guarantorSalutationOthers = guarantorSalutationOthers;
     }
 
+    public String getGuarantorName() {
+        return guarantorName;
+    }
+
+    public void setGuarantorName(String guarantorName) {
+        this.guarantorName = guarantorName;
+    }
+
+    public Date getGuarantorDateOfBirth() {
+        return guarantorDateOfBirth;
+    }
+
+    public void setGuarantorDateOfBirth(Date guarantorDateOfBirth) {
+        this.guarantorDateOfBirth = guarantorDateOfBirth;
+    }
+
+    public String getGuarantorGender() {
+        return guarantorGender;
+    }
+
+    public void setGuarantorGender(String guarantorGender) {
+        this.guarantorGender = guarantorGender;
+    }
+
+    public String getGuarantorNationality() {
+        return guarantorNationality;
+    }
+
+    public void setGuarantorNationality(String guarantorNationality) {
+        this.guarantorNationality = guarantorNationality;
+    }
+
+    public String getGuarantorIsPR() {
+        return guarantorIsPR;
+    }
+
+    public void setGuarantorIsPR(String guarantorIsPR) {
+        this.guarantorIsPR = guarantorIsPR;
+    }
+
+    public String getGuarantorIdentificationNum() {
+        return guarantorIdentificationNum;
+    }
+
+    public void setGuarantorIdentificationNum(String guarantorIdentificationNum) {
+        this.guarantorIdentificationNum = guarantorIdentificationNum;
+    }
+
+    public String getGuarantorSingaporeNRIC() {
+        return guarantorSingaporeNRIC;
+    }
+
+    public void setGuarantorSingaporeNRIC(String guarantorSingaporeNRIC) {
+        this.guarantorSingaporeNRIC = guarantorSingaporeNRIC;
+    }
+
+    public String getGuarantorForeignNRIC() {
+        return guarantorForeignNRIC;
+    }
+
+    public void setGuarantorForeignNRIC(String guarantorForeignNRIC) {
+        this.guarantorForeignNRIC = guarantorForeignNRIC;
+    }
+
+    public String getGuarantorForeignPassport() {
+        return guarantorForeignPassport;
+    }
+
+    public void setGuarantorForeignPassport(String guarantorForeignPassport) {
+        this.guarantorForeignPassport = guarantorForeignPassport;
+    }
+
+    public String getGuarantorCountryOfResidence() {
+        return guarantorCountryOfResidence;
+    }
+
+    public void setGuarantorCountryOfResidence(String guarantorCountryOfResidence) {
+        this.guarantorCountryOfResidence = guarantorCountryOfResidence;
+    }
+
+    public String getGuarantorRace() {
+        return guarantorRace;
+    }
+
+    public void setGuarantorRace(String guarantorRace) {
+        this.guarantorRace = guarantorRace;
+    }
+
+    public String getGuarantorMobile() {
+        return guarantorMobile;
+    }
+
+    public void setGuarantorMobile(String guarantorMobile) {
+        this.guarantorMobile = guarantorMobile;
+    }
+
+    public String getGuarantorEmail() {
+        return guarantorEmail;
+    }
+
+    public void setGuarantorEmail(String guarantorEmail) {
+        this.guarantorEmail = guarantorEmail;
+    }
+
+    public String getGuarantorEducation() {
+        return guarantorEducation;
+    }
+
+    public void setGuarantorEducation(String guarantorEducation) {
+        this.guarantorEducation = guarantorEducation;
+    }
+
+    public String getGuarantorMaritalStatus() {
+        return guarantorMaritalStatus;
+    }
+
+    public void setGuarantorMaritalStatus(String guarantorMaritalStatus) {
+        this.guarantorMaritalStatus = guarantorMaritalStatus;
+    }
+
+    public Integer getGuarantorNumOfDependents() {
+        return guarantorNumOfDependents;
+    }
+
+    public void setGuarantorNumOfDependents(Integer guarantorNumOfDependents) {
+        this.guarantorNumOfDependents = guarantorNumOfDependents;
+    }
+
+    public String getGuarantorStreetName() {
+        return guarantorStreetName;
+    }
+
+    public void setGuarantorStreetName(String guarantorStreetName) {
+        this.guarantorStreetName = guarantorStreetName;
+    }
+
+    public String getGuarantorBlockNum() {
+        return guarantorBlockNum;
+    }
+
+    public void setGuarantorBlockNum(String guarantorBlockNum) {
+        this.guarantorBlockNum = guarantorBlockNum;
+    }
+
+    public String getGuarantorUnitNum() {
+        return guarantorUnitNum;
+    }
+
+    public void setGuarantorUnitNum(String guarantorUnitNum) {
+        this.guarantorUnitNum = guarantorUnitNum;
+    }
+
+    public String getGuarantorPostal() {
+        return guarantorPostal;
+    }
+
+    public void setGuarantorPostal(String guarantorPostal) {
+        this.guarantorPostal = guarantorPostal;
+    }
+
+    public String getGuarantorResidentialStatus() {
+        return guarantorResidentialStatus;
+    }
+
+    public void setGuarantorResidentialStatus(String guarantorResidentialStatus) {
+        this.guarantorResidentialStatus = guarantorResidentialStatus;
+    }
+
+    public String getGuarantorResidentialType() {
+        return guarantorResidentialType;
+    }
+
+    public void setGuarantorResidentialType(String guarantorResidentialType) {
+        this.guarantorResidentialType = guarantorResidentialType;
+    }
+
+    public Integer getGuarantorLengthOfResidence() {
+        return guarantorLengthOfResidence;
+    }
+
+    public void setGuarantorLengthOfResidence(Integer guarantorLengthOfResidence) {
+        this.guarantorLengthOfResidence = guarantorLengthOfResidence;
+    }
+
+    public String getGuarantorEmploymentStatus() {
+        return guarantorEmploymentStatus;
+    }
+
+    public void setGuarantorEmploymentStatus(String guarantorEmploymentStatus) {
+        this.guarantorEmploymentStatus = guarantorEmploymentStatus;
+    }
+
+    public String getGuarantorOccupation() {
+        return guarantorOccupation;
+    }
+
+    public void setGuarantorOccupation(String guarantorOccupation) {
+        this.guarantorOccupation = guarantorOccupation;
+    }
+
+    public String getGuarantorCompanyName() {
+        return guarantorCompanyName;
+    }
+
+    public void setGuarantorCompanyName(String guarantorCompanyName) {
+        this.guarantorCompanyName = guarantorCompanyName;
+    }
+
+    public String getGuarantorCompanyAddress() {
+        return guarantorCompanyAddress;
+    }
+
+    public void setGuarantorCompanyAddress(String guarantorCompanyAddress) {
+        this.guarantorCompanyAddress = guarantorCompanyAddress;
+    }
+
+    public String getGuarantorCompanyPostal() {
+        return guarantorCompanyPostal;
+    }
+
+    public void setGuarantorCompanyPostal(String guarantorCompanyPostal) {
+        this.guarantorCompanyPostal = guarantorCompanyPostal;
+    }
+
+    public String getGuarantorIndustryType() {
+        return guarantorIndustryType;
+    }
+
+    public void setGuarantorIndustryType(String guarantorIndustryType) {
+        this.guarantorIndustryType = guarantorIndustryType;
+    }
+
+    public String getGuarantorIndustryTypeOthers() {
+        return guarantorIndustryTypeOthers;
+    }
+
+    public void setGuarantorIndustryTypeOthers(String guarantorIndustryTypeOthers) {
+        this.guarantorIndustryTypeOthers = guarantorIndustryTypeOthers;
+    }
+
+    public String getGuarantorCurrentPosition() {
+        return guarantorCurrentPosition;
+    }
+
+    public void setGuarantorCurrentPosition(String guarantorCurrentPosition) {
+        this.guarantorCurrentPosition = guarantorCurrentPosition;
+    }
+
+    public String getGuarantorCurrentPositionOthers() {
+        return guarantorCurrentPositionOthers;
+    }
+
+    public void setGuarantorCurrentPositionOthers(String guarantorCurrentPositionOthers) {
+        this.guarantorCurrentPositionOthers = guarantorCurrentPositionOthers;
+    }
+
+    public String getGuarantorCurrentJobTitle() {
+        return guarantorCurrentJobTitle;
+    }
+
+    public void setGuarantorCurrentJobTitle(String guarantorCurrentJobTitle) {
+        this.guarantorCurrentJobTitle = guarantorCurrentJobTitle;
+    }
+
+    public Integer getGuarantorLengthOfCurrentJob() {
+        return guarantorLengthOfCurrentJob;
+    }
+
+    public void setGuarantorLengthOfCurrentJob(Integer guarantorLengthOfCurrentJob) {
+        this.guarantorLengthOfCurrentJob = guarantorLengthOfCurrentJob;
+    }
+
+    public String getGuarantorPreviousCompany() {
+        return guarantorPreviousCompany;
+    }
+
+    public void setGuarantorPreviousCompany(String guarantorPreviousCompany) {
+        this.guarantorPreviousCompany = guarantorPreviousCompany;
+    }
+
+    public Integer getGuarantorLengthOfPreviousJob() {
+        return guarantorLengthOfPreviousJob;
+    }
+
+    public void setGuarantorLengthOfPreviousJob(Integer guarantorLengthOfPreviousJob) {
+        this.guarantorLengthOfPreviousJob = guarantorLengthOfPreviousJob;
+    }
+
+    public BigDecimal getGuarantorMonthlyFixedIncome() {
+        return guarantorMonthlyFixedIncome;
+    }
+
+    public void setGuarantorMonthlyFixedIncome(BigDecimal guarantorMonthlyFixedIncome) {
+        this.guarantorMonthlyFixedIncome = guarantorMonthlyFixedIncome;
+    }
+
+    public BigDecimal getGuarantorOtherMonthlyIncome() {
+        return guarantorOtherMonthlyIncome;
+    }
+
+    public void setGuarantorOtherMonthlyIncome(BigDecimal guarantorOtherMonthlyIncome) {
+        this.guarantorOtherMonthlyIncome = guarantorOtherMonthlyIncome;
+    }
+
+    public String getGuarantorOtherMonthlyIncomeSource() {
+        return guarantorOtherMonthlyIncomeSource;
+    }
+
+    public void setGuarantorOtherMonthlyIncomeSource(String guarantorOtherMonthlyIncomeSource) {
+        this.guarantorOtherMonthlyIncomeSource = guarantorOtherMonthlyIncomeSource;
+    }
+
+    public String getGuarantorSignature() {
+        return guarantorSignature;
+    }
+
+    public void setGuarantorSignature(String guarantorSignature) {
+        this.guarantorSignature = guarantorSignature;
+    }
+
+    public boolean isGuarantorSalutationPanelVisible() {
+        return guarantorSalutationPanelVisible;
+    }
+
+    public void setGuarantorSalutationPanelVisible(boolean guarantorSalutationPanelVisible) {
+        this.guarantorSalutationPanelVisible = guarantorSalutationPanelVisible;
+    }
+
+    public boolean isGuarantorNationalitySGPanelVisible() {
+        return guarantorNationalitySGPanelVisible;
+    }
+
+    public void setGuarantorNationalitySGPanelVisible(boolean guarantorNationalitySGPanelVisible) {
+        this.guarantorNationalitySGPanelVisible = guarantorNationalitySGPanelVisible;
+    }
+
+    public boolean isGuarantorNationalityOthersPanelVisible() {
+        return guarantorNationalityOthersPanelVisible;
+    }
+
+    public void setGuarantorNationalityOthersPanelVisible(boolean guarantorNationalityOthersPanelVisible) {
+        this.guarantorNationalityOthersPanelVisible = guarantorNationalityOthersPanelVisible;
+    }
+
+    public boolean isGuarantorNricPanelVisible() {
+        return guarantorNricPanelVisible;
+    }
+
+    public void setGuarantorNricPanelVisible(boolean guarantorNricPanelVisible) {
+        this.guarantorNricPanelVisible = guarantorNricPanelVisible;
+    }
+
+    public boolean isGuarantorPassportPanelVisible() {
+        return guarantorPassportPanelVisible;
+    }
+
+    public void setGuarantorPassportPanelVisible(boolean guarantorPassportPanelVisible) {
+        this.guarantorPassportPanelVisible = guarantorPassportPanelVisible;
+    }
+
+    public boolean isGuarantorIndustryTypePanelVisible() {
+        return guarantorIndustryTypePanelVisible;
+    }
+
+    public void setGuarantorIndustryTypePanelVisible(boolean guarantorIndustryTypePanelVisible) {
+        this.guarantorIndustryTypePanelVisible = guarantorIndustryTypePanelVisible;
+    }
+
+    public boolean isGuarantorCurrentPositionPanelVisible() {
+        return guarantorCurrentPositionPanelVisible;
+    }
+
+    public void setGuarantorCurrentPositionPanelVisible(boolean guarantorCurrentPositionPanelVisible) {
+        this.guarantorCurrentPositionPanelVisible = guarantorCurrentPositionPanelVisible;
+    }
+
+    public boolean isGuarantorOccupationPanelVisible() {
+        return guarantorOccupationPanelVisible;
+    }
+
+    public void setGuarantorOccupationPanelVisible(boolean guarantorOccupationPanelVisible) {
+        this.guarantorOccupationPanelVisible = guarantorOccupationPanelVisible;
+    }
+
+    public boolean isGuarantorEmploymentPanelVisible() {
+        return guarantorEmploymentPanelVisible;
+    }
+
+    public void setGuarantorEmploymentPanelVisible(boolean guarantorEmploymentPanelVisible) {
+        this.guarantorEmploymentPanelVisible = guarantorEmploymentPanelVisible;
+    }
+
+    
 }
