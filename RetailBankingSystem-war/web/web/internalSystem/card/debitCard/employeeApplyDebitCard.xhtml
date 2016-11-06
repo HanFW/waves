@@ -74,7 +74,7 @@
 
                             <h:panelGrid class="ui-lg-4">
                                 <p:selectOneMenu required="true" requiredMessage="Please select a deposit account" id="depositAccount" value="#{employeeApplyDebitCardDoneManagedBean.selectedDepositAccount}">
-                                    <f:selectItem itemLabel="Please Select Depoit Account"/>
+                                    <f:selectItem itemLabel="Please Select Deposit Account"/>
                                     <f:selectItems value="#{employeeApplyDebitCardDoneManagedBean.depositAccounts}"/>
                                 </p:selectOneMenu>
                             </h:panelGrid>
@@ -236,7 +236,7 @@
                                 </p:row>
 
                                 <p:row>
-                                    <p:outputLabel style="font-weight: bold" value="Depost Account for Selected Card: "/>
+                                    <p:outputLabel style="font-weight: bold" value="Deposit Account for Selected Card: "/>
                                     <p:outputLabel value="#{employeeApplyDebitCardDoneManagedBean.selectedDepositAccount}"/>
                                 </p:row>
 
