@@ -79,6 +79,12 @@
                             <p:menuitem value="Delete Standing GIRO" url="/web/internalSystem/payment/employeeDeleteStandingGIRO.xhtml" />
                             <p:menuitem value="Non Standing GIRO Transfer" url="/web/internalSystem/payment/employeeNonStandingGIROTransfer.xhtml" />
                             <p:menuitem value="View Dashboard" url="/web/internalSystem/BI/employeeViewDashboard.xhtml" />
+                            <p:menuitem value="Apply for HDB Loan" action="#{employeeChooseLoanManagedBean.chooseMortgageLoan('HDB')}"/>
+                            <p:menuitem value="Apply for Private Property Loan" action="#{employeeChooseLoanManagedBean.chooseMortgageLoan('Private Property')}"/>
+                            <p:menuitem value="Apply for Renovation Loan" url="/web/internalSystem/loan/employeeRenovationLoanApplication.xhtml"/>
+                            <p:menuitem value="Apply for Car Loan" url="/web/internalSystem/loan/employeeCarLoanApplication.xhtml"/>
+                            <p:menuitem value="Apply for Education Loan" url="/web/internalSystem/loan/employeeEducationLoanApplication.xhtml"/>
+                            <p:menuitem value="Apply for Cashline" url="/web/internalSystem/loan/employeeCashlineApplication.xhtml"/>
                         </p:submenu>
 
                         <p:submenu label="Customer Service Agent" rendered="#{employeeAccountManagedBean.hasRoleCustomerServiceAgent()}">
