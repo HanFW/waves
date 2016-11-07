@@ -58,6 +58,8 @@
                         </p:tab>
                         <p:tab title="In Progress">
                             <p:messages autoUpdate="true"/>
+                            <p:dataTable var="mortgage3" value="#{loanManagerViewAllLoanApplicationsManagedBean.inprogressMortgageApplications}">
+                                <p:column headerText="Application ID" filterBy="#{mortgage3.loanApplicationId}" filterMatchMode="contains">
                                     <h:outputText value="#{mortgage3.loanApplicationId}" />
                                 </p:column>
                                 <p:column headerText="Application Date" filterBy="#{mortgage3.applicationDate}" filterMatchMode="contains" sortBy="#{mortgage3.applicationDate}">
@@ -78,8 +80,8 @@
                             </p:dataTable>
                         </p:tab>
                         <p:tab title="Approved">
-                            <p:dataTable var="mortgage3" value="#{loanManagerViewAllLoanApplicationsManagedBean.inprogressMortgageApplications}">
-                                <p:column headerText="Application ID" filterBy="#{mortgage3.loanApplicationId}" filterMatchMode="contains">
+                            <p:dataTable var="mortgage4" value="#{loanManagerViewAllLoanApplicationsManagedBean.approvedMortgageApplications}">
+                                <p:column headerText="Application ID">
                                     <h:outputText value="#{mortgage4.loanApplicationId}" />
                                 </p:column>
                                 <p:column headerText="Application Date" filterBy="#{mortgage4.applicationDate}" filterMatchMode="contains" sortBy="#{mortgage4.applicationDate}">
