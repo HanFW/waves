@@ -7,6 +7,7 @@ package ejb.loan.session;
 
 import ejb.customer.entity.CustomerAdvanced;
 import ejb.customer.entity.CustomerBasic;
+import ejb.deposit.entity.BankAccount;
 import ejb.loan.entity.CarLoanApplication;
 import ejb.loan.entity.CashlineApplication;
 import ejb.loan.entity.CreditReportAccountStatus;
@@ -23,6 +24,8 @@ import ejb.loan.entity.LoanRepaymentAccount;
 import ejb.loan.entity.MortgageLoanApplication;
 import ejb.loan.entity.RefinancingApplication;
 import ejb.loan.entity.RenovationLoanApplication;
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.Period;
@@ -469,6 +472,8 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
 
         DecimalFormat df = new DecimalFormat("000000");
 
+        String accountNumber = generateAccountNumber();
+
         loanPayableAccount.setAccountNumber("6000" + df.format(loanPayableAccount.getId()));
         loanPayableAccount.setInitialAmount(application.getAmountGranted());
         loanPayableAccount.setAccountBalance(application.getAmountGranted());
@@ -481,13 +486,51 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
         em.flush();
     }
 
+    private String generateAccountNumber() {
+        String bankAccountNum;
+        String status;
+        SecureRandom random = new SecureRandom();
+
+        bankAccountNum = new BigInteger(23, random).setBit(22).toString(10);
+        status = checkAccountDuplication(bankAccountNum);
+
+        while (status.equals("Duplicated")) {
+            bankAccountNum = new BigInteger(23, random).setBit(22).toString(10);
+            status = checkAccountDuplication(bankAccountNum);
+        }
+
+        return bankAccountNum;
+    }
+
+    private String checkAccountDuplication(String accountNum) {
+        Query query = em.createQuery("Select a From BankAccount a Where a.bankAccountNum=:bankAccountNum");
+        query.setParameter("bankAccountNum", accountNum);
+        
+        List bankAccountList = query.getResultList();
+        
+        if(bankAccountList.isEmpty()){
+            Query query2 = em.createQuery("Select a From LoanPayableAccount a Where a.accountNumber=:bankAccountNum");
+            query2.setParameter("bankAccountNum", accountNum);
+            
+            List payableList = query2.getResultList();
+            if(payableList.isEmpty()){
+                return "Success";
+            }else{
+                return "Duplicated";
+            }
+        }else{
+            return "Duplicated";
+        }
+        
+    }
+
     @Override
     public void updateLoanStatus(String status, Long applicationId) {
         LoanApplication application = em.find(LoanApplication.class, applicationId);
         application.setApplicationStatus(status);
         em.flush();
     }
-    
+
     @Override
     public void updateCashlineStatus(String status, Long applicationId) {
         CashlineApplication application = em.find(CashlineApplication.class, applicationId);
@@ -847,28 +890,28 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
         em.refresh(application);
         return application;
     }
-    
+
     @Override
     public CarLoanApplication getCarLoanApplicationById(Long applicationId) {
         CarLoanApplication application = em.find(CarLoanApplication.class, applicationId);
         em.refresh(application);
         return application;
     }
-    
+
     @Override
     public EducationLoanApplication getEducationLoanApplicationById(Long applicationId) {
         EducationLoanApplication application = em.find(EducationLoanApplication.class, applicationId);
         em.refresh(application);
         return application;
     }
-    
+
     @Override
     public CashlineApplication getCashlineApplicationById(Long applicationId) {
         CashlineApplication application = em.find(CashlineApplication.class, applicationId);
         em.refresh(application);
         return application;
     }
-    
+
     @Override
     public void approveCashlineRequest(Long applicationId, double amount) {
         CashlineApplication application = em.find(CashlineApplication.class, applicationId);
@@ -877,7 +920,7 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
         application.setFinalActionDate(new Date());
         em.flush();
     }
-    
+
     @Override
     public void rejectCashlineRequest(Long applicationId) {
         CashlineApplication application = em.find(CashlineApplication.class, applicationId);
