@@ -380,7 +380,7 @@
                         <p:tab title="Approved">
                             <p:dataTable var="cashline3" value="#{loanManagerViewAllLoanApplicationsManagedBean.approvedCashlineApplications}">
                                 <p:column headerText="Application ID">
-                                    <h:outputText value="#{cashline3.loanApplicationId}" />
+                                    <h:outputText value="#{cashline3.id}" />
                                 </p:column>
                                 <p:column headerText="Application Date" filterBy="#{cashline3.applicationDate}" filterMatchMode="contains" sortBy="#{cashline3.applicationDate}">
                                     <h:outputText value="#{cashline3.applicationDate}"/>
