@@ -107,6 +107,16 @@ public class CustomerEmailSessionBean implements CustomerEmailSessionBeanLocal {
                 emailText += "Renovation Loan application usually takes a few weeks to process. We will contact you via email once we have finished processing your request.\n";
                 emailText += "Thank you for your cooperation. \n";
                 break;
+            case "approveContractLoanRequest":
+                emailText += "Your loan request has been approved. We would like to arrange a meeting with you soon to sign the contracts.\n\n";
+            case "startMortgageLoan":
+                emailText += "Your Mortgage Loan has commenced. We have created an online banking account for you to make your repayments.\n\n";
+                emailText += "Here are your online banking details: \n";
+                if (actions.get("onlineBanking").equals("yes")) {
+                    emailText += "Initial User ID: " + customer.getCustomerOnlineBankingAccountNum() + "\n";
+                    emailText += "Initial PIN: " + actions.get("onlineBankingPassword") + "\n";
+                    emailText += "Please login with your initial User ID and PIN. \n\n";
+                }
         }
 
         try {

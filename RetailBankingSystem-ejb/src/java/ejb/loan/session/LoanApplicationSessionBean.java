@@ -8,6 +8,7 @@ package ejb.loan.session;
 import ejb.customer.entity.CustomerAdvanced;
 import ejb.customer.entity.CustomerBasic;
 import ejb.deposit.entity.BankAccount;
+import ejb.infrastructure.session.CustomerAdminSessionBeanLocal;
 import ejb.loan.entity.CarLoanApplication;
 import ejb.loan.entity.CashlineApplication;
 import ejb.loan.entity.CreditReportAccountStatus;
@@ -32,6 +33,7 @@ import java.time.Period;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -43,10 +45,13 @@ import javax.persistence.Query;
  */
 @Stateless
 public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLocal {
+    @EJB
+    private CustomerAdminSessionBeanLocal customerAdminSessionBeanLocal;
 
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager em;
 
+    
     @Override
     public void submitLoanApplication(boolean isExistingCustomer, boolean hasCustomerAdvanced, Long customerBasicId, Long customerAdvancedId, ArrayList<CustomerDebt> debts,
             boolean hasJoint, boolean jointIsExistingCustomer, boolean jointHasCustomerAdvanced, Long jointBasicId, Long jointAdvancedId, ArrayList<CustomerDebt> jointDebts,
@@ -470,18 +475,20 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
 
         em.flush();
 
-        DecimalFormat df = new DecimalFormat("000000");
 
-        String accountNumber = generateAccountNumber();
+        String payableAccountNumber = generateAccountNumber();
+        String repaymentAccountNumber = generateAccountNumber();
 
-        loanPayableAccount.setAccountNumber("6000" + df.format(loanPayableAccount.getId()));
+        loanPayableAccount.setAccountNumber(payableAccountNumber);
         loanPayableAccount.setInitialAmount(application.getAmountGranted());
         loanPayableAccount.setAccountBalance(application.getAmountGranted());
         loanPayableAccount.setStartDate(new Date());
         loanPayableAccount.setAccountStatus("started");
         loanPayableAccount.setOverdueBalance(0);
 
-        loanRepaymentAccount.setAccountNumber("7000" + df.format(loanRepaymentAccount.getId()));
+        loanRepaymentAccount.setAccountNumber(repaymentAccountNumber);
+        
+        customerAdminSessionBeanLocal.createOnlineBankingAccount(application.getCustomerBasic().getCustomerBasicId(), "startMortgageLoan");
 
         em.flush();
     }
@@ -511,10 +518,16 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
         if(bankAccountList.isEmpty()){
             Query query2 = em.createQuery("Select a From LoanPayableAccount a Where a.accountNumber=:bankAccountNum");
             query2.setParameter("bankAccountNum", accountNum);
-            
             List payableList = query2.getResultList();
             if(payableList.isEmpty()){
-                return "Success";
+                Query query3 = em.createQuery("Select a From LoanRepaymentAccount a Where a.accountNumber=:bankAccountNum");
+                query3.setParameter("bankAccountNum", accountNum);
+                List repaymentList = query3.getResultList();
+                if(repaymentList.isEmpty()){
+                    return "Success";
+                }else{
+                    return "Duplicated";
+                }
             }else{
                 return "Duplicated";
             }

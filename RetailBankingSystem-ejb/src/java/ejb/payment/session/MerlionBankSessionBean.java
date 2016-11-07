@@ -56,7 +56,7 @@ public class MerlionBankSessionBean implements MerlionBankSessionBeanLocal {
             bankAccount.setBankAccountStatus("Inactive");
         }
 
-        String onlineBankingAccount = adminSessionBeanLocal.createOnlineBankingAccount(customerBasic.getCustomerBasicId());
+        String onlineBankingAccount = adminSessionBeanLocal.createOnlineBankingAccount(customerBasic.getCustomerBasicId(), "openAccount");
     }
 
     @Override
