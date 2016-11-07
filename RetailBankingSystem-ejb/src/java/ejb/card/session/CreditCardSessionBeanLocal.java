@@ -45,4 +45,5 @@ public interface CreditCardSessionBeanLocal {
     public void rejectSupplementary (Long supplementaryCardId);
     public List<SupplementaryCard> getAllSupplementaryCardByCustomer(CustomerBasic customer);
     public PrincipalCard getPrincipalCardByCardNum(String cardNum);
+    public List<PrincipalCard> getAllPrincipalCardByCustomer(CustomerBasic customer);
 }
