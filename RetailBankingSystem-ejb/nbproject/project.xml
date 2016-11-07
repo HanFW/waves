@@ -17,8 +17,7 @@
             <included-library dirs="200">libs.Jackson_Core_Asl.classpath</included-library>
             <included-library dirs="200">libs.Jackson_Mapper_Asl.classpath</included-library>
             <included-library dirs="200">libs.Apache_Commons_Codec_1.10.classpath</included-library>
-            <included-library dirs="200">libs.Twilio_Jave.classpath</included-library>
-            <included-library dirs="200">libs.junit_4.classpath</included-library>
+            <included-library dirs="200">libs.Twilio_Java.classpath</included-library>
             <source-roots>
                 <root id="src.dir"/>
             </source-roots>

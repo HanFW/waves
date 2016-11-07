@@ -4,6 +4,18 @@
 <xsd:import namespace="http://session.ws.ejb/" schemaLocation="http://localhost:8080/TransactionAuthorizationWebService/TransactionAuthorizationWebService?xsd=1"/>
 </xsd:schema>
 </types>
+<message name="getAllAuthorizedTransactions">
+<part name="parameters" element="tns:getAllAuthorizedTransactions"/>
+</message>
+<message name="getAllAuthorizedTransactionsResponse">
+<part name="parameters" element="tns:getAllAuthorizedTransactionsResponse"/>
+</message>
+<message name="createNewVisaClearingRecord">
+<part name="parameters" element="tns:createNewVisaClearingRecord"/>
+</message>
+<message name="createNewVisaClearingRecordResponse">
+<part name="parameters" element="tns:createNewVisaClearingRecordResponse"/>
+</message>
 <message name="getAllPendingTransactionsToBeAuthorized">
 <part name="parameters" element="tns:getAllPendingTransactionsToBeAuthorized"/>
 </message>
@@ -22,19 +34,15 @@
 <message name="createTransactionToBeAuthorizedResponse">
 <part name="parameters" element="tns:createTransactionToBeAuthorizedResponse"/>
 </message>
-<message name="getAllAuthorizedTransactions">
-<part name="parameters" element="tns:getAllAuthorizedTransactions"/>
-</message>
-<message name="getAllAuthorizedTransactionsResponse">
-<part name="parameters" element="tns:getAllAuthorizedTransactionsResponse"/>
-</message>
-<message name="createNewVisaClearingRecord">
-<part name="parameters" element="tns:createNewVisaClearingRecord"/>
-</message>
-<message name="createNewVisaClearingRecordResponse">
-<part name="parameters" element="tns:createNewVisaClearingRecordResponse"/>
-</message>
 <portType name="TransactionAuthorizationWebService">
+<operation name="getAllAuthorizedTransactions">
+<input wsam:Action="http://session.ws.ejb/TransactionAuthorizationWebService/getAllAuthorizedTransactionsRequest" message="tns:getAllAuthorizedTransactions"/>
+<output wsam:Action="http://session.ws.ejb/TransactionAuthorizationWebService/getAllAuthorizedTransactionsResponse" message="tns:getAllAuthorizedTransactionsResponse"/>
+</operation>
+<operation name="createNewVisaClearingRecord">
+<input wsam:Action="http://session.ws.ejb/TransactionAuthorizationWebService/createNewVisaClearingRecordRequest" message="tns:createNewVisaClearingRecord"/>
+<output wsam:Action="http://session.ws.ejb/TransactionAuthorizationWebService/createNewVisaClearingRecordResponse" message="tns:createNewVisaClearingRecordResponse"/>
+</operation>
 <operation name="getAllPendingTransactionsToBeAuthorized">
 <input wsam:Action="http://session.ws.ejb/TransactionAuthorizationWebService/getAllPendingTransactionsToBeAuthorizedRequest" message="tns:getAllPendingTransactionsToBeAuthorized"/>
 <output wsam:Action="http://session.ws.ejb/TransactionAuthorizationWebService/getAllPendingTransactionsToBeAuthorizedResponse" message="tns:getAllPendingTransactionsToBeAuthorizedResponse"/>
@@ -47,17 +55,27 @@
 <input wsam:Action="http://session.ws.ejb/TransactionAuthorizationWebService/createTransactionToBeAuthorizedRequest" message="tns:createTransactionToBeAuthorized"/>
 <output wsam:Action="http://session.ws.ejb/TransactionAuthorizationWebService/createTransactionToBeAuthorizedResponse" message="tns:createTransactionToBeAuthorizedResponse"/>
 </operation>
-<operation name="getAllAuthorizedTransactions">
-<input wsam:Action="http://session.ws.ejb/TransactionAuthorizationWebService/getAllAuthorizedTransactionsRequest" message="tns:getAllAuthorizedTransactions"/>
-<output wsam:Action="http://session.ws.ejb/TransactionAuthorizationWebService/getAllAuthorizedTransactionsResponse" message="tns:getAllAuthorizedTransactionsResponse"/>
-</operation>
-<operation name="createNewVisaClearingRecord">
-<input wsam:Action="http://session.ws.ejb/TransactionAuthorizationWebService/createNewVisaClearingRecordRequest" message="tns:createNewVisaClearingRecord"/>
-<output wsam:Action="http://session.ws.ejb/TransactionAuthorizationWebService/createNewVisaClearingRecordResponse" message="tns:createNewVisaClearingRecordResponse"/>
-</operation>
 </portType>
 <binding name="TransactionAuthorizationWebServicePortBinding" type="tns:TransactionAuthorizationWebService">
 <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+<operation name="getAllAuthorizedTransactions">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="createNewVisaClearingRecord">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
 <operation name="getAllPendingTransactionsToBeAuthorized">
 <soap:operation soapAction=""/>
 <input>
@@ -77,24 +95,6 @@
 </output>
 </operation>
 <operation name="createTransactionToBeAuthorized">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="getAllAuthorizedTransactions">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="createNewVisaClearingRecord">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
