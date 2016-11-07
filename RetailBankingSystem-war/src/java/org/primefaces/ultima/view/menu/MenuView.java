@@ -64,6 +64,7 @@ public class MenuView {
 		secondSubmenu.addElement(item);
 
         model.addElement(secondSubmenu);
+        
 	}
 
 	public MenuModel getModel() {

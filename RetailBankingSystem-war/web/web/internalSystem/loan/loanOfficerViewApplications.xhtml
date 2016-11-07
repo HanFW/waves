@@ -11,7 +11,7 @@
         <h:form>
             <p:tabView>
                 <p:tab title="Mortgage Loan - Purchase">
-                    <p:dataTable var="mortgageApplication" value="#{loanOfficerViewLoanApplicationsManagedBean.mortgagePurchaseApplications}">
+                    <p:dataTable var="mortgageApplication" reflow="true" value="#{loanOfficerViewLoanApplicationsManagedBean.mortgagePurchaseApplications}">
                         <p:column headerText="Applicant">
                             <h:outputText value="#{mortgageApplication.customerBasic.customerName}" />
                         </p:column>
@@ -36,7 +36,7 @@
                     </p:dataTable>
                 </p:tab>
                 <p:tab title="Mortgage Loan - Refinancing">
-                    <p:dataTable var="refinancingApplication" value="#{loanOfficerViewLoanApplicationsManagedBean.mortgageRefinancingApplications}">
+                    <p:dataTable var="refinancingApplication" reflow="true" value="#{loanOfficerViewLoanApplicationsManagedBean.mortgageRefinancingApplications}">
                         <p:column headerText="Applicant">
                             <h:outputText value="#{refinancingApplication.customerBasic.customerName}" />
                         </p:column>

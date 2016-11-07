@@ -18,7 +18,7 @@
             <p:panel id="panel"> 
                 <div align="center">
 
-                    <h:panelGrid columns="1" styleClass="ui-panelgrid-blank form-group ui-lg-4" >
+                    <h:panelGrid columns="1" class="ui-lg-4" >
                         <p:messages globalOnly="true"/>
                         <br/>
                         <p:outputLabel value="To: Merlion Bank Ltd" />
@@ -26,10 +26,9 @@
                         <p:outputLabel value="I/We authorise you to close my/our following account with immediate effect:" />
                         <br/>
                         <p:outputLabel value="Personal Information" style="font-weight: bold;font-size: 24px"/>
-                        <br/>
                     </h:panelGrid>
 
-                    <h:panelGrid columns="2" styleClass="ui-panelgrid-blank form-group ui-lg-4" >
+                    <h:panelGrid columns="2" class="ui-lg-4" >
                         <p:outputLabel value="Customer Name: " />
                         <p:outputLabel value="#{closeAccountManagedBean.customerName}" />
 
@@ -43,7 +42,7 @@
                         <p:outputLabel value="#{closeAccountManagedBean.customerAddress}" />
                     </h:panelGrid>
 
-                    <h:panelGrid columns="1" styleClass="ui-panelgrid-blank form-group ui-lg-4" >
+                    <h:panelGrid columns="1" class="ui-lg-4" >
 
                         <p:outputLabel value="Account Closure Information" style="font-weight: bold;font-size: 24px"/>
                         <br/>
@@ -84,8 +83,9 @@
                         <p:signature id="input" style="width:300px;height:200px" widgetVar="sig" value="#{signatureViewManagedBean.customerSignature}" 
                                      guideline="true"/>
 
-                        <p:commandButton process="@this input output" value="Submit" icon="ui-icon-check" update="output"/>
-                        <p:commandButton process="@this input output" value="Clear" icon="ui-icon-close" type="button" onclick="PF('sig').clear()"/>
+                     
+                        <p:commandButton process="@this input output" value="Clear" icon="ui-icon-close" type="button" onclick="PF('sig').clear()" />
+                            <p:commandButton process="@this input output" value="Submit" icon="ui-icon-check" update="output"/>             
 
                         <p:outputPanel id="output">
                             <h:outputText rendered="#{not empty signatureViewManagedBean.customerSignature}" style="font-size:20px;display:block" value="Your Signature" />

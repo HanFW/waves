@@ -81,7 +81,7 @@ public class EmployeeAddNewStandingGIROManagedBean {
                 Map<String, Object> sessionMap = externalContext.getSessionMap();
                 sessionMap.put("customerIdentificationNum", customerIdentificationNum);
 
-                ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/deposit/employeeAddStandingGIRODone.xhtml?faces-redirect=true");
+                ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/payment/employeeAddStandingGIRODone.xhtml?faces-redirect=true");
             }
         }
     }

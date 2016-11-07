@@ -30,7 +30,7 @@
                         <li role="menuitem">
                             <a href="/RetailBankingSystem-war/web/onlineBanking/customer/customerUpdateBasicProfile.xhtml">
                                 <i class="material-icons">&#xE7FD;</i>
-                                <span>Update Profile</span>
+                                <span>My Profile</span>
                             </a>
                         </li>
                         <li role="menuitem">
@@ -51,7 +51,7 @@
                 <li>
                     <a href="#">
                         <i class="topbar-icon material-icons animated swing">&#xE0C9;</i>
-                        <span class="topbar-badge animated rubberBand">6</span>
+                        <span class="topbar-badge animated rubberBand">#{customerLoginManagedBean.customer.messageBox.size()}</span>
                         <span class="topbar-item-name">Messages</span>
                     </a>
                     <ul class="ultima-menu animated">

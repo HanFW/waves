@@ -10,16 +10,15 @@
     <ui:define name="content">
         <h:form id="formMain">
             <div align="center">
-<!--                <h:outputText value="You have logged in as: Counter Teller"/>-->
                 <br/>
-                <p:panel id="panel" header="Fund Transfer"> 
+                <p:panel id="panel"> 
                     <p:messages />
 
                     <p:panelGrid style="margin-bottom:10px">
-                        <p:outputLabel style="font-weight: bold" value="From" />
+                        <p:outputLabel style="font-weight: bold;font-size:20px" value="From:" class="ui-lg-4"/>
                     </p:panelGrid>
                     <br/>
-                    <h:panelGrid columns="1" cellpadding="5" styleClass="ui-panelgrid-blank form-group">     
+                    <p:panelGrid columns="1" styleClass="ui-panelgrid-blank form-group" class="ui-lg-4">     
                         <p:row>
                             <p:column>
                                 <p:outputLabel for="transferFromAccount" style="font-weight: bold" value="Account: " />
@@ -48,13 +47,13 @@
                                 <p:message for="transferFromCurrency" />
                             </p:column>
                         </p:row>
-                    </h:panelGrid>
-                    <br/>
-                    <p:panelGrid style="margin-bottom:10px">
-                        <p:outputLabel style="font-weight: bold" value="To" />
                     </p:panelGrid>
                     <br/>
-                    <h:panelGrid columns="1" cellpadding="5" styleClass="ui-panelgrid-blank form-group">     
+                    <p:panelGrid style="margin-bottom:10px" class="ui-lg-4">
+                        <p:outputLabel style="font-weight: bold;font-size:20px" value="To:"  />
+                    </p:panelGrid>
+                    <br/>
+                    <p:panelGrid columns="1" styleClass="ui-panelgrid-blank form-group" class="ui-lg-4">     
                         <p:row>
                             <p:column>
                                 <p:outputLabel for="transferToAccount" style="font-weight: bold" value="Account: " />
@@ -98,25 +97,22 @@
                                 <p:message for="transferAmt" />
                             </p:column>
                         </p:row>
-                    </h:panelGrid> 
+                    </p:panelGrid> 
 
-                    <h:panelGrid columns="2" cellpadding="5" styleClass="ui-panelgrid-blank form-group">  
-
-
-
-                        <p:commandButton id="nextBtn" value="Next" update="panel" 
-                                         actionListener="#{employeeTransferDoneManagedBean.transfer}" ajax="true"/>
+                    <h:panelGrid columns="2" class="ui-lg-4">  
 
                         <p:commandButton id="cancelBtn" action="/web/onlineBanking/deposit/customerDepositIndex.xhtml" value="Cancel" update="panel" immediate = "true">
                             <p:confirm header="Cancel" message="Are you sure?" />
                         </p:commandButton>
 
-                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                        <p:commandButton id="nextBtn" value="Next" update="panel" 
+                                         actionListener="#{employeeTransferDoneManagedBean.transfer}" ajax="true"/>
+                    </h:panelGrid>
+                    
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true">
                             <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" action="/web/onlineBanking/deposit/customerDepositIndex.xhtml"/>
                             <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" />
                         </p:confirmDialog>
-
-                    </h:panelGrid>
                 </p:panel>
             </div>
         </h:form>

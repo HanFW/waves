@@ -8,8 +8,11 @@
                 template="/WEB-INF/internalSystemTemplate.xhtml">
 
     <ui:define name="content">
-        <h1>Credit Card Application </h1>
-        <p:dataTable var="principalCard" value="#{creditCardManagerViewManagedBean.principalCards}">
+        <br/>
+        <h:outputText value="Credit Card Application" style="font-size:18px"/>
+        <br/>
+        <br/>
+        <p:dataTable var="principalCard" reflow="true" value="#{creditCardManagerViewManagedBean.principalCards}">
             <p:column headerText="Applicant">
                 <h:outputText value="#{principalCard.cardHolderName}" />
             </p:column>
@@ -26,9 +29,11 @@
                 <p:commandButton value="Process" action="#{creditCardManagerViewManagedBean.viewApplication(principalCard.cardId)}"/>
             </p:column>
         </p:dataTable>
-        
-        <h1>Supplementary Card Application </h1>
-        <p:dataTable var="supplementaryCard" value="#{creditCardManagerViewManagedBean.supplementaryCards}">
+        <br/>
+        <h:outputText value="Supplementary Card Application" style="font-size:18px"/>
+        <br/>
+        <br/>
+        <p:dataTable var="supplementaryCard" reflow="true" value="#{creditCardManagerViewManagedBean.supplementaryCards}">
             <p:column headerText="Applicant">
                 <h:outputText value="#{supplementaryCard.cardHolderName}" />
             </p:column>
@@ -45,6 +50,6 @@
                 <p:commandButton value="Process" action="#{creditCardManagerViewManagedBean.viewSupplementaryApplication(supplementaryCard.cardId)}"/>
             </p:column>
         </p:dataTable>
-        
+
     </ui:define>
 </ui:composition>

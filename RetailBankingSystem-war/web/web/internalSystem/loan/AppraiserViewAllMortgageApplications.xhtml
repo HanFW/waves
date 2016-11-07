@@ -8,7 +8,7 @@
                 template="/WEB-INF/internalSystemTemplate.xhtml">
 
     <ui:define name="content">
-        <p:dataTable var="loanApplication" value="#{appraiserViewAllMortgageApplicationsManagedBean.applications}">
+        <p:dataTable var="loanApplication" reflow="true" value="#{appraiserViewAllMortgageApplicationsManagedBean.applications}">
             <p:column headerText="Applicant">
                 <h:outputText value="#{loanApplication.customerBasic.customerName}" />
             </p:column>

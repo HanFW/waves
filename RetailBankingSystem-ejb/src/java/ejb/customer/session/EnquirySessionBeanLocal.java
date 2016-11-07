@@ -16,6 +16,7 @@ import java.util.List;
  *
  * @author aaa
  */
+@Local
 public interface EnquirySessionBeanLocal {
 
     public List<EnquiryCase> getCustomerEnquiry(Long customerId);
@@ -64,7 +65,7 @@ public interface EnquirySessionBeanLocal {
 
     public String replyIssue(Long issueId, String issueSolution);
 
-    public String caseIssueIsCreated(Long caseId);
+//    public String caseIssueIsCreated(Long caseId);
 
     public String caseIssueAllReplied(Long caseId);
 
