@@ -1,25 +1,19 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ejb.customer.session;
 
 import ejb.customer.entity.CustomerBasic;
-import javax.ejb.Local;
 import ejb.customer.entity.EnquiryCase;
 import ejb.customer.entity.FollowUp;
 import ejb.customer.entity.Issue;
 import java.util.List;
+import javax.ejb.Remote;
 
 /**
  *
- * @author aaa
+ * @author Nicole
  */
-@Local
-public interface EnquirySessionBeanLocal {
-
-    public List<EnquiryCase> getCustomerEnquiry(Long customerId);
+@Remote
+public interface EnquirySessionBeanRemote {
+     public List<EnquiryCase> getCustomerEnquiry(Long customerId);
 
     public List<EnquiryCase> getAllPendingCustomerEnquiry();
 
@@ -70,5 +64,4 @@ public interface EnquirySessionBeanLocal {
     public String caseIssueAllReplied(Long caseId);
 
     public String deleteCase(Long caseId);
-
 }

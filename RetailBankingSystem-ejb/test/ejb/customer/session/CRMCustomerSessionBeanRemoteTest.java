@@ -57,7 +57,7 @@ public class CRMCustomerSessionBeanRemoteTest {
     @Test
     public void testGetCustomer() {
         System.out.println("getCustomer");
-        String onlineBankingAccountNum = "fengwei";
+        String onlineBankingAccountNum = "johnlee";
         String expResult = "G11223344";
         CustomerBasic result = systemUserSessionRemote.getCustomer(onlineBankingAccountNum);
         assertEquals(expResult, result.getCustomerIdentificationNum());
@@ -111,9 +111,9 @@ public class CRMCustomerSessionBeanRemoteTest {
     @Test
     public void testUpdateCustomerOnlineBankingAccountPIN1() {
         System.out.println("updateCustomerOnlineBankingAccountPIN");
-        String onlineBankingAccountNum = "fengwei";
-        String inputPassowrd = "123456";
-        String newPassword = "112233";
+        String onlineBankingAccountNum = "johnlee";
+        String inputPassowrd = "12345678";
+        String newPassword = "11223344";
         String expResult = "Update Successful";
         String result = "";
         CustomerBasic cb = systemUserSessionRemote.getCustomer(onlineBankingAccountNum);
@@ -135,9 +135,9 @@ public class CRMCustomerSessionBeanRemoteTest {
     @Test
     public void testUpdateCustomerOnlineBankingAccountPIN2() {
         System.out.println("updateCustomerOnlineBankingAccountPIN");
-        String onlineBankingAccountNum = "fengwei";
-        String inputPassowrd = "12345678";
-        String newPassword = "123456";
+        String onlineBankingAccountNum = "johnlee";
+        String inputPassowrd = "22222222";
+        String newPassword = "11223344";
         String expResult = "Incorrect Current Password";
         String result = "";
         CustomerBasic cb = systemUserSessionRemote.getCustomer(onlineBankingAccountNum);
@@ -155,8 +155,8 @@ public class CRMCustomerSessionBeanRemoteTest {
     public void testUpdateCustomerOnlineBankingAccountPIN3() {
         System.out.println("updateCustomerOnlineBankingAccountPIN");
         String onlineBankingAccountNum = "fengwei";
-        String inputPassowrd = "112233";
-        String newPassword = "112233";
+        String inputPassowrd = "11223344";
+        String newPassword = "11223344";
         String expResult = "Same Password";
         String result = "";
         CustomerBasic cb = systemUserSessionRemote.getCustomer(onlineBankingAccountNum);
@@ -177,14 +177,14 @@ public class CRMCustomerSessionBeanRemoteTest {
     @Test
     public void testUpdateCustomerBasicProfile1() {
         System.out.println("updateCustomerBasicProfile");
-        String customerOnlineBankingAccountNum = "fengwei";
+        String customerOnlineBankingAccountNum = "johnlee";
         String customerNationality = "Chinese";
         String customerCountryOfResidence = "Singapore";
-        String customerMaritalStatus = "Married";
+        String customerMaritalStatus = "Single";
         String customerOccupation = "Student";
         String customerCompany = "NUS";
-        String customerEmail = "yongxue0701@gmail.com";
-        String customerMobile = "84819970";
+        String customerEmail = "erhe@hotmail.com";
+        String customerMobile = "98678075";
         String customerAddress = "PGP, BLK 24, #04-G, 118429";
         String customerPostal = "118429";
 
@@ -196,14 +196,14 @@ public class CRMCustomerSessionBeanRemoteTest {
     @Test
     public void testUpdateCustomerBasicProfile2() {
         System.out.println("updateCustomerBasicProfile");
-        String customerOnlineBankingAccountNum = "fengwei2";
+        String customerOnlineBankingAccountNum = "johnlee2";
         String customerNationality = "Chinese";
         String customerCountryOfResidence = "Singapore";
-        String customerMaritalStatus = "Married";
+        String customerMaritalStatus = "Single";
         String customerOccupation = "Student";
         String customerCompany = "NUS";
-        String customerEmail = "yongxue0701@gmail.com";
-        String customerMobile = "84819970";
+        String customerEmail = "erhe@hotmail.com";
+        String customerMobile = "98678075";
         String customerAddress = "PGP, BLK 24, #04-G, 118429";
         String customerPostal = "118429";
         
@@ -243,9 +243,9 @@ public class CRMCustomerSessionBeanRemoteTest {
     @Test
     public void testAddNewCustomerBasic() {
         System.out.println("addNewCustomerBasic");
-        String customerName = "John Lee";
+        String customerName = "Mark Zuckerberg";
         String customerSalutation = "Mr";
-        String customerIdentificationNum = "J1234567L";
+        String customerIdentificationNum = "M1234567Z";
         String customerGender = "male";
         String customerEmail = "erhe@hotmail.com";
         String customerMobile = "98678075";
@@ -256,7 +256,7 @@ public class CRMCustomerSessionBeanRemoteTest {
         String customerMaritalStatus = "Married";
         String customerOccupation = "Student";
         String customerCompany = "NUS";
-        String customerAddress = "Apple Street";
+        String customerAddress = "Street 1";
         String customerPostal = "123456";
         String customerOnlineBankingAccountNum = "testAccount";
         String customerOnlineBankingPassword = "123456";
@@ -268,7 +268,7 @@ public class CRMCustomerSessionBeanRemoteTest {
         }
         byte[] customerSignature = null;
         String newCustomer = "";
-        Long expResult = (long)8;
+        Long expResult = (long)7;
         Long result = systemUserSessionRemote.addNewCustomerBasic(customerName, customerSalutation, customerIdentificationNum, customerGender, customerEmail, customerMobile, customerDateOfBirth, customerNationality, customerCountryOfResidence, customerRace, customerMaritalStatus, customerOccupation, customerCompany, customerAddress, customerPostal, customerOnlineBankingAccountNum, hashedCustomerOnlineBankingPassword, customerSignature, newCustomer);
         assertEquals(expResult, result);
 
@@ -281,9 +281,9 @@ public class CRMCustomerSessionBeanRemoteTest {
     @Test
     public void testDeleteCustomerBasic() {
         System.out.println("deleteCustomerBasic");
-        String customerIdentificationNum = "";
+        String customerIdentificationNum = "M1234567Z";
 
-        String expResult = "";
+        String expResult = "Delete Customer Successfully";
         String result = systemUserSessionRemote.deleteCustomerBasic(customerIdentificationNum);
         assertEquals(expResult, result);
 
@@ -296,11 +296,10 @@ public class CRMCustomerSessionBeanRemoteTest {
     @Test
     public void testRetrieveCustomerBasicByIC() {
         System.out.println("retrieveCustomerBasicByIC");
-        String customerIdentificationNum = "";
-
-        CustomerBasic expResult = null;
+        String customerIdentificationNum = "G11223344";
+        String expResult = "John Lee";
         CustomerBasic result = systemUserSessionRemote.retrieveCustomerBasicByIC(customerIdentificationNum);
-        assertEquals(expResult, result);
+        assertEquals(expResult, result.getCustomerName());
 
     }
 
@@ -312,7 +311,6 @@ public class CRMCustomerSessionBeanRemoteTest {
     public void testRetrieveCustomerAdvancedByAdId() {
         System.out.println("retrieveCustomerAdvancedByAdId");
         Long customerAdvancedId = null;
-
         CustomerAdvanced expResult = null;
         CustomerAdvanced result = systemUserSessionRemote.retrieveCustomerAdvancedByAdId(customerAdvancedId);
         assertEquals(expResult, result);
@@ -323,14 +321,12 @@ public class CRMCustomerSessionBeanRemoteTest {
      * Test of deleteCustomerAdvanced method, of class
      * CRMCustomerSessionBeanRemote.
      */
-    @Test
-    public void testDeleteCustomerAdvanced() {
-        System.out.println("deleteCustomerAdvanced");
-        Long customerAdvancedId = null;
-
-        systemUserSessionRemote.deleteCustomerAdvanced(customerAdvancedId);
-
-    }
+//    @Test
+//    public void testDeleteCustomerAdvanced() {
+//        System.out.println("deleteCustomerAdvanced");
+//        Long customerAdvancedId = null;
+//        systemUserSessionRemote.deleteCustomerAdvanced(customerAdvancedId);
+//    }
 
     /**
      * Test of getCustomerAdvancedById method, of class
@@ -339,11 +335,9 @@ public class CRMCustomerSessionBeanRemoteTest {
     @Test
     public void testGetCustomerAdvancedById() {
         System.out.println("getCustomerAdvancedById");
-        Long id = null;
-
-        CustomerAdvanced expResult = null;
+        Long id = (long)1;
         CustomerAdvanced result = systemUserSessionRemote.getCustomerAdvancedById(id);
-        assertEquals(expResult, result);
+        assertNotNull(result);
 
     }
 
@@ -351,34 +345,34 @@ public class CRMCustomerSessionBeanRemoteTest {
      * Test of addNewCustomerOneTime method, of class
      * CRMCustomerSessionBeanRemote.
      */
-    @Test
-    public void testAddNewCustomerOneTime() {
-        System.out.println("addNewCustomerOneTime");
-        String customerName = "";
-        String customerSalutation = "";
-        String customerIdentificationNum = "";
-        String customerGender = "";
-        String customerEmail = "";
-        String customerMobile = "";
-        String customerDateOfBirth = "";
-        String customerNationality = "";
-        String customerCountryOfResidence = "";
-        String customerRace = "";
-        String customerMaritalStatus = "";
-        String customerOccupation = "";
-        String customerCompany = "";
-        String customerAddress = "";
-        String customerPostal = "";
-        String customerOnlineBankingAccountNum = "";
-        String customerOnlineBankingPassword = "";
-        byte[] customerSignature = null;
-        String newCustomer = "";
-
-        Long expResult = null;
-        Long result = systemUserSessionRemote.addNewCustomerOneTime(customerName, customerSalutation, customerIdentificationNum, customerGender, customerEmail, customerMobile, customerDateOfBirth, customerNationality, customerCountryOfResidence, customerRace, customerMaritalStatus, customerOccupation, customerCompany, customerAddress, customerPostal, customerOnlineBankingAccountNum, customerOnlineBankingPassword, customerSignature, newCustomer);
-        assertEquals(expResult, result);
-
-    }
+//    @Test
+//    public void testAddNewCustomerOneTime() {
+//        System.out.println("addNewCustomerOneTime");
+//        String customerName = "";
+//        String customerSalutation = "";
+//        String customerIdentificationNum = "";
+//        String customerGender = "";
+//        String customerEmail = "";
+//        String customerMobile = "";
+//        String customerDateOfBirth = "";
+//        String customerNationality = "";
+//        String customerCountryOfResidence = "";
+//        String customerRace = "";
+//        String customerMaritalStatus = "";
+//        String customerOccupation = "";
+//        String customerCompany = "";
+//        String customerAddress = "";
+//        String customerPostal = "";
+//        String customerOnlineBankingAccountNum = "";
+//        String customerOnlineBankingPassword = "";
+//        byte[] customerSignature = null;
+//        String newCustomer = "";
+//
+//        Long expResult = null;
+//        Long result = systemUserSessionRemote.addNewCustomerOneTime(customerName, customerSalutation, customerIdentificationNum, customerGender, customerEmail, customerMobile, customerDateOfBirth, customerNationality, customerCountryOfResidence, customerRace, customerMaritalStatus, customerOccupation, customerCompany, customerAddress, customerPostal, customerOnlineBankingAccountNum, customerOnlineBankingPassword, customerSignature, newCustomer);
+//        assertEquals(expResult, result);
+//
+//    }
 
     /**
      * Test of getAllNewCustomer method, of class CRMCustomerSessionBeanRemote.
@@ -386,10 +380,9 @@ public class CRMCustomerSessionBeanRemoteTest {
     @Test
     public void testGetAllNewCustomer() {
         System.out.println("getAllNewCustomer");
-
-        List<CustomerBasic> expResult = null;
+        int expResult = 1;
         List<CustomerBasic> result = systemUserSessionRemote.getAllNewCustomer();
-        assertEquals(expResult, result);
+        assertEquals(expResult, result.size());
 
     }
 
@@ -397,15 +390,14 @@ public class CRMCustomerSessionBeanRemoteTest {
      * Test of updateCustomerMobile method, of class
      * CRMCustomerSessionBeanRemote.
      */
-    @Test
-    public void testUpdateCustomerMobile() {
-        System.out.println("updateCustomerMobile");
-        Long customerId = null;
-        String customerMobile = "";
-
-        systemUserSessionRemote.updateCustomerMobile(customerId, customerMobile);
-
-    }
+//    @Test
+//    public void testUpdateCustomerMobile() {
+//        System.out.println("updateCustomerMobile");
+//        Long customerId = (long)5;
+//        String customerMobile = "98678075";
+//        systemUserSessionRemote.updateCustomerMobile(customerId, customerMobile);
+//
+//    }
 
     /**
      * Test of getCustomerBasicById method, of class
@@ -414,7 +406,7 @@ public class CRMCustomerSessionBeanRemoteTest {
     @Test
     public void testGetCustomerBasicById() {
         System.out.println("getCustomerBasicById");
-        Long customerId = (long) 7;
+        Long customerId = (long) 6;
         String expResult = "G11223344";
         CustomerBasic result = systemUserSessionRemote.getCustomerBasicById(customerId);
         assertEquals(expResult, result.getCustomerIdentificationNum());
@@ -428,24 +420,24 @@ public class CRMCustomerSessionBeanRemoteTest {
     @Test
     public void testAddNewCustomerAdvanced() {
         System.out.println("addNewCustomerAdvanced");
-        int customerNumOfDependents = 0;
-        String customerEducation = "";
-        String customerResidentialStatus = "";
-        int customerLengthOfResidence = 0;
-        String customerIndustryType = "";
-        int customerLengthOfCurrentJob = 0;
-        String customerEmploymentStatus = "";
-        double customerMonthlyFixedIncome = 0.0;
-        String customerResidentialType = "";
-        String customerCompanyAddress = "";
-        String customerCompanyPostal = "";
-        String customerCurrentPosition = "";
-        String customerCurrentJobTitle = "";
-        String customerPreviousCompany = "";
-        int customerLengthOfPreviousJob = 0;
-        double customerOtherMonthlyIncome = 0.0;
-        String customerOtherMonthlyIncomeSource = "";
-        Long expResult = null;
+        int customerNumOfDependents = 4;
+        String customerEducation = "Degree";
+        String customerResidentialStatus = "Rented";
+        int customerLengthOfResidence = 3;
+        String customerIndustryType = "IT";
+        int customerLengthOfCurrentJob = 2;
+        String customerEmploymentStatus = "Employee";
+        double customerMonthlyFixedIncome = 7000;
+        String customerResidentialType = "BHD";
+        String customerCompanyAddress = "Street 2";
+        String customerCompanyPostal = "112334";
+        String customerCurrentPosition = "Manager";
+        String customerCurrentJobTitle = "Manager";
+        String customerPreviousCompany = "Apple";
+        int customerLengthOfPreviousJob = 3;
+        double customerOtherMonthlyIncome = 5000;
+        String customerOtherMonthlyIncomeSource = "Software Development";
+        Long expResult = (long)6;
         Long result = systemUserSessionRemote.addNewCustomerAdvanced(customerNumOfDependents, customerEducation, customerResidentialStatus, customerLengthOfResidence, customerIndustryType, customerLengthOfCurrentJob, customerEmploymentStatus, customerMonthlyFixedIncome, customerResidentialType, customerCompanyAddress, customerCompanyPostal, customerCurrentPosition, customerCurrentJobTitle, customerPreviousCompany, customerLengthOfPreviousJob, customerOtherMonthlyIncome, customerOtherMonthlyIncomeSource);
         assertEquals(expResult, result);
 
