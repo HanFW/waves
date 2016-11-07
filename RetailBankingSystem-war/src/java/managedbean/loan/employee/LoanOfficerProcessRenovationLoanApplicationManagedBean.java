@@ -250,7 +250,7 @@ public class LoanOfficerProcessRenovationLoanApplicationManagedBean implements S
     }
     
     public void approveLoanRequest() throws IOException {
-        loanApplicationSessionBeanLocal.approveLoanRequest(application.getLoanApplicationId(), amountGranted, periodSuggested, instalmentSuggested);
+        loanApplicationSessionBeanLocal.approveLoanRequest(application.getLoanApplicationId(), amountGranted, periodSuggested, instalmentSuggested, "Renovation Loan");
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/loan/loanOfficerViewApplications.xhtml?faces-redirect=true");
     }

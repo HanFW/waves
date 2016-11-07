@@ -109,10 +109,30 @@ public class CustomerEmailSessionBean implements CustomerEmailSessionBeanLocal {
                 break;
             case "approveContractLoanRequest":
                 emailText += "Your loan request has been approved. We would like to arrange a meeting with you soon to sign the contracts.\n\n";
-            case "startMortgageLoan":
-                emailText += "Your Mortgage Loan has commenced. We have created an online banking account for you to make your repayments.\n\n";
-                emailText += "Here are your online banking details: \n";
+            case "approveRenovationLoanRequest":
+                emailText += "Your Renovation Loan request has been approved. \n\n";
                 if (actions.get("onlineBanking").equals("yes")) {
+                    emailText += "Here are your online banking details: \n";
+                    emailText += "Initial User ID: " + customer.getCustomerOnlineBankingAccountNum() + "\n";
+                    emailText += "Initial PIN: " + actions.get("onlineBankingPassword") + "\n";
+                    emailText += "Please login with your initial User ID and PIN. \n\n";
+                }
+                emailText += "We will inform you again once the loan has been disbursed. ";
+            case "approveEducationLoanRequest":
+                emailText += "Your Education Loan request has been approved. \n\n";
+                if (actions.get("onlineBanking").equals("yes")) {
+                    emailText += "Here are your online banking details: \n";
+                    emailText += "Initial User ID: " + customer.getCustomerOnlineBankingAccountNum() + "\n";
+                    emailText += "Initial PIN: " + actions.get("onlineBankingPassword") + "\n";
+                    emailText += "Please login with your initial User ID and PIN. \n\n";
+                }
+                emailText += "Please log in to online banking to submit your loan disbursement forms. ";
+            case "startMortgageLoan":
+                emailText += "Your Mortgage Loan has commenced. \n";
+                emailText += "Please log in to your online banking to view your loan details and make repayments. \n";
+                emailText += "The repayment due day is on 15th every month and your first repayment is due on 15th next month. \n";
+                if (actions.get("onlineBanking").equals("yes")) {
+                    emailText += "Here are your online banking details: \n";
                     emailText += "Initial User ID: " + customer.getCustomerOnlineBankingAccountNum() + "\n";
                     emailText += "Initial PIN: " + actions.get("onlineBankingPassword") + "\n";
                     emailText += "Please login with your initial User ID and PIN. \n\n";

@@ -9,6 +9,7 @@ import ejb.customer.entity.CustomerAdvanced;
 import ejb.customer.entity.CustomerBasic;
 import ejb.deposit.entity.BankAccount;
 import ejb.infrastructure.session.CustomerAdminSessionBeanLocal;
+import ejb.infrastructure.session.CustomerEmailSessionBeanLocal;
 import ejb.loan.entity.CarLoanApplication;
 import ejb.loan.entity.CashlineApplication;
 import ejb.loan.entity.CreditReportAccountStatus;
@@ -45,13 +46,15 @@ import javax.persistence.Query;
  */
 @Stateless
 public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLocal {
+
+    @EJB
+    private CustomerEmailSessionBeanLocal customerEmailSessionBeanLocal;
     @EJB
     private CustomerAdminSessionBeanLocal customerAdminSessionBeanLocal;
 
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager em;
 
-    
     @Override
     public void submitLoanApplication(boolean isExistingCustomer, boolean hasCustomerAdvanced, Long customerBasicId, Long customerAdvancedId, ArrayList<CustomerDebt> debts,
             boolean hasJoint, boolean jointIsExistingCustomer, boolean jointHasCustomerAdvanced, Long jointBasicId, Long jointAdvancedId, ArrayList<CustomerDebt> jointDebts,
@@ -437,13 +440,23 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
     }
 
     @Override
-    public void approveLoanRequest(Long applicationId, double amount, int period, double instalment) {
+    public void approveLoanRequest(Long applicationId, double amount, int period, double instalment, String loanType) {
         LoanApplication application = em.find(LoanApplication.class, applicationId);
         application.setAmountGranted(amount);
         application.setPeriodSuggested(period * 12);
         application.setInstalment(instalment);
         application.setApplicationStatus("approved");
         application.setFinalActionDate(new Date());
+
+        if (loanType.equals("Mortgage Loan")) {
+            customerEmailSessionBeanLocal.sendEmail(application.getCustomerBasic(), "approveContractLoanRequest", null);
+        } else if(loanType.equals("Renovation Loan")){
+            customerAdminSessionBeanLocal.createOnlineBankingAccount(application.getCustomerBasic().getCustomerBasicId(), "approveRenovationLoanRequest");
+        } else if(loanType.equals("Car Loan")){
+            customerEmailSessionBeanLocal.sendEmail(application.getCustomerBasic(), "approveContractLoanRequest", null);
+        } else if(loanType.equals("Education Loan")){
+            customerAdminSessionBeanLocal.createOnlineBankingAccount(application.getCustomerBasic().getCustomerBasicId(), "approveEducationLoanRequest");
+        } 
         em.flush();
     }
 
@@ -475,7 +488,6 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
 
         em.flush();
 
-
         String payableAccountNumber = generateAccountNumber();
         String repaymentAccountNumber = generateAccountNumber();
 
@@ -487,7 +499,7 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
         loanPayableAccount.setOverdueBalance(0);
 
         loanRepaymentAccount.setAccountNumber(repaymentAccountNumber);
-        
+
         customerAdminSessionBeanLocal.createOnlineBankingAccount(application.getCustomerBasic().getCustomerBasicId(), "startMortgageLoan");
 
         em.flush();
@@ -512,29 +524,29 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
     private String checkAccountDuplication(String accountNum) {
         Query query = em.createQuery("Select a From BankAccount a Where a.bankAccountNum=:bankAccountNum");
         query.setParameter("bankAccountNum", accountNum);
-        
+
         List bankAccountList = query.getResultList();
-        
-        if(bankAccountList.isEmpty()){
+
+        if (bankAccountList.isEmpty()) {
             Query query2 = em.createQuery("Select a From LoanPayableAccount a Where a.accountNumber=:bankAccountNum");
             query2.setParameter("bankAccountNum", accountNum);
             List payableList = query2.getResultList();
-            if(payableList.isEmpty()){
+            if (payableList.isEmpty()) {
                 Query query3 = em.createQuery("Select a From LoanRepaymentAccount a Where a.accountNumber=:bankAccountNum");
                 query3.setParameter("bankAccountNum", accountNum);
                 List repaymentList = query3.getResultList();
-                if(repaymentList.isEmpty()){
+                if (repaymentList.isEmpty()) {
                     return "Success";
-                }else{
+                } else {
                     return "Duplicated";
                 }
-            }else{
+            } else {
                 return "Duplicated";
             }
-        }else{
+        } else {
             return "Duplicated";
         }
-        
+
     }
 
     @Override

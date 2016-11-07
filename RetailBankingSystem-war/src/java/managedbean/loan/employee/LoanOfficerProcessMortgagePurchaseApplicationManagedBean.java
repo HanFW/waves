@@ -420,7 +420,7 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     public void approveLoanRequest() throws IOException {
-        loanApplicationSessionBeanLocal.approveLoanRequest(ma.getLoanApplicationId(), amountGranted, periodSuggested, instalmentSuggested);
+        loanApplicationSessionBeanLocal.approveLoanRequest(ma.getLoanApplicationId(), amountGranted, periodSuggested, instalmentSuggested, "Mortgage Loan");
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/loan/loanOfficerViewApplications.xhtml?faces-redirect=true");
     }

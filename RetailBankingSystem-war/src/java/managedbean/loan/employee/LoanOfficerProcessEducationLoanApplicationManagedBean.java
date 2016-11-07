@@ -302,7 +302,7 @@ public class LoanOfficerProcessEducationLoanApplicationManagedBean implements Se
     }
 
     public void approveLoanRequest() throws IOException {
-        loanApplicationSessionBeanLocal.approveLoanRequest(application.getLoanApplicationId(), amountGranted, periodSuggested, instalmentSuggested);
+        loanApplicationSessionBeanLocal.approveLoanRequest(application.getLoanApplicationId(), amountGranted, periodSuggested, instalmentSuggested, "Education Loan");
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/loan/loanOfficerViewApplications.xhtml?faces-redirect=true");
     }

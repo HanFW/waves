@@ -239,7 +239,7 @@ public class LoanOfficerProcessCarLoanApplicationManagedBean implements Serializ
     }
     
     public void approveLoanRequest() throws IOException {
-        loanApplicationSessionBeanLocal.approveLoanRequest(application.getLoanApplicationId(), amountGranted, periodSuggested, instalmentSuggested);
+        loanApplicationSessionBeanLocal.approveLoanRequest(application.getLoanApplicationId(), amountGranted, periodSuggested, instalmentSuggested, "Car Loan");
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/loan/loanOfficerViewApplications.xhtml?faces-redirect=true");
     }
