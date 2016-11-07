@@ -116,7 +116,7 @@ public class LoanManagerViewAllLoanApplicationsManagedBean implements Serializab
     }
     
     public void startNewMortgageLoan(Long applicationId){
-        loanApplicationSessionBeanLocal.startNewMortgageLoan(applicationId);
+        loanApplicationSessionBeanLocal.startNewLoan(applicationId, "Mortgage Loan");
         FacesContext context = FacesContext.getCurrentInstance();
         String msg = "Loan - " + applicationId + " start successfully";
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, null);

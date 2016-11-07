@@ -450,13 +450,13 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
 
         if (loanType.equals("Mortgage Loan")) {
             customerEmailSessionBeanLocal.sendEmail(application.getCustomerBasic(), "approveContractLoanRequest", null);
-        } else if(loanType.equals("Renovation Loan")){
+        } else if (loanType.equals("Renovation Loan")) {
             customerAdminSessionBeanLocal.createOnlineBankingAccount(application.getCustomerBasic().getCustomerBasicId(), "approveRenovationLoanRequest");
-        } else if(loanType.equals("Car Loan")){
+        } else if (loanType.equals("Car Loan")) {
             customerEmailSessionBeanLocal.sendEmail(application.getCustomerBasic(), "approveContractLoanRequest", null);
-        } else if(loanType.equals("Education Loan")){
+        } else if (loanType.equals("Education Loan")) {
             customerAdminSessionBeanLocal.createOnlineBankingAccount(application.getCustomerBasic().getCustomerBasicId(), "approveEducationLoanRequest");
-        } 
+        }
         em.flush();
     }
 
@@ -473,7 +473,7 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
     }
 
     @Override
-    public void startNewMortgageLoan(Long applicationId) {
+    public void startNewLoan(Long applicationId, String loanType) {
         LoanApplication application = em.find(LoanApplication.class, applicationId);
         application.setApplicationStatus("started");
 
@@ -500,7 +500,11 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
 
         loanRepaymentAccount.setAccountNumber(repaymentAccountNumber);
 
-        customerAdminSessionBeanLocal.createOnlineBankingAccount(application.getCustomerBasic().getCustomerBasicId(), "startMortgageLoan");
+        if (loanType.equals("Mortgage Loan")) {
+            customerAdminSessionBeanLocal.createOnlineBankingAccount(application.getCustomerBasic().getCustomerBasicId(), "startMortgageLoan");
+        } else if(loanType.equals("Car Loan")){
+            customerAdminSessionBeanLocal.createOnlineBankingAccount(application.getCustomerBasic().getCustomerBasicId(), "startCarLoan");
+        }
 
         em.flush();
     }
