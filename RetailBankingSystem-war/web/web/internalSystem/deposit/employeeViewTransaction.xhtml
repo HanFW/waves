@@ -9,28 +9,19 @@
 
     <ui:define name="content">
         <h:form id="formMain">
-            <div align="center">
-<!--                <h:outputText value="You have logged in as: Counter Teller "/>-->
-                <br/>                   
-                <p:panel id="panel" header="View Transaction">
+            <div align="center">                          
                     <p:messages globalOnly="true"/>
                     <h:panelGrid columns="1" cellpadding="5" styleClass="ui-panelgrid-blank form-group">                  
-                        <p:row>
-                            <p:column>
-                                <p:outputLabel for="customerName" style="font-weight: bold" value="Name: " />
-                                <p:outputLabel style="font-weight: bold" value="(As per NRIC/Passport): " />
-                            </p:column>
-                            <p:column>
+                        
+                                <p:outputLabel for="customerName" style="font-weight: bold" value="Name (As per NRIC/Passport): " />
+                           
                                 <p:inputText label="Customer Name" id="customerName" value="#{employeeViewTransactionManagedBean.customerName}"
                                              required="true" requiredMessage="Required Field">
                                 </p:inputText>
-                            </p:column>
-                            <p:column>
+                            
                                 <p:message for="customerName" />
-                            </p:column>
-                        </p:row>
+                        
                     </h:panelGrid>
-                </p:panel>
             </div>
         </h:form>
     </ui:define>

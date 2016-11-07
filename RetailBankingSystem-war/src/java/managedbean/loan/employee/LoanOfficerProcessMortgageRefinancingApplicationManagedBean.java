@@ -34,24 +34,25 @@ import javax.faces.view.ViewScoped;
  */
 @Named(value = "loanOfficerProcessMortgageRefinancingApplicationManagedBean")
 @ViewScoped
-public class LoanOfficerProcessMortgageRefinancingApplicationManagedBean implements Serializable{
+public class LoanOfficerProcessMortgageRefinancingApplicationManagedBean implements Serializable {
+
     @EJB
     private LoanApplicationSessionBeanLocal loanApplicationSessionBeanLocal;
-    
+
     private Long applicationId;
     private String loanType;
-    
+
     private RefinancingApplication ra;
     private CustomerBasic customer;
     private CustomerAdvanced ca;
     private List<CustomerDebt> debts;
     private CustomerProperty property;
-    
+
     private Date applicationDate;
     private double amountGranted;
     private int periodSuggested;
     private double instalmentSuggested;
-    
+
     //basic information
     private String customerSalutation;
     private String customerName;
@@ -112,9 +113,9 @@ public class LoanOfficerProcessMortgageRefinancingApplicationManagedBean impleme
     private Double customerTotalCPFWithdrawal;
     private Integer customerLoanTenure;
     private String customerInterestPackage;
-    
+
     private HashMap docs;
-    
+
     //credit report
     CreditReportBureauScore cr;
     private List<CreditReportAccountStatus> accountStatus;
@@ -122,7 +123,7 @@ public class LoanOfficerProcessMortgageRefinancingApplicationManagedBean impleme
     private Double bureauScore;
     private String riskGrade;
     private Double probabilityOfDefault;
-    
+
     //joint applicant
     private boolean hasJoint;
     private boolean noJoint;
@@ -176,7 +177,7 @@ public class LoanOfficerProcessMortgageRefinancingApplicationManagedBean impleme
     private Double jointBureauScore;
     private String jointRiskGrade;
     private Double jointProbabilityOfDefault;
-    
+
     //decision support
     private int customerAge;
     private int jointAge;
@@ -190,20 +191,20 @@ public class LoanOfficerProcessMortgageRefinancingApplicationManagedBean impleme
     private String suggestedAction;
     private int minTenure;
     private double maxInstalment;
-    
+
     /**
      * Creates a new instance of
      * LoanOfficerProcessMortgageRefinancingApplicationManagedBean
      */
     public LoanOfficerProcessMortgageRefinancingApplicationManagedBean() {
     }
-    
+
     @PostConstruct
-    public void init(){
+    public void init() {
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-        applicationId = (Long) ec.getFlash().get("applicationId"); 
+        applicationId = (Long) ec.getFlash().get("applicationId");
         System.out.println(applicationId);
-        
+
         ra = loanApplicationSessionBeanLocal.getRefinancingApplicationById(applicationId);
         loanType = ra.getLoanType();
         customer = ra.getCustomerBasic();
@@ -211,9 +212,15 @@ public class LoanOfficerProcessMortgageRefinancingApplicationManagedBean impleme
         debts = customer.getCustomerDebt();
         property = customer.getCustomerProperty();
         cr = customer.getBureauScore();
-        accountStatus = cr.getAccountStatus();
-        defaultRecords = cr.getDefaultRecords();
-        
+        if (cr != null) {
+            accountStatus = cr.getAccountStatus();
+            defaultRecords = cr.getDefaultRecords();
+
+            bureauScore = cr.getBureauScore();
+            riskGrade = cr.getRiskGrade();
+            probabilityOfDefault = cr.getProbabilityOfDefault();
+        }
+
         customerSalutation = customer.getCustomerSalutation();
         customerName = customer.getCustomerName();
         customerDateOfBirth = customer.getCustomerDateOfBirth();
@@ -246,7 +253,7 @@ public class LoanOfficerProcessMortgageRefinancingApplicationManagedBean impleme
         customerMonthlyFixedIncome = ca.getMonthlyFixedIncome();
         customerOtherMonthlyIncome = ca.getOtherMonthlyIncome();
         customerOtherMonthlyIncomeSource = ca.getOtherMonthlyIncomeSource();
-        
+
         customerPropertyAddress = property.getPropertyAddress();
         customerPropertyPostal = property.getPropertyPostal();
         customerPropertyOwners = property.getPropertyOwners();
@@ -259,7 +266,7 @@ public class LoanOfficerProcessMortgageRefinancingApplicationManagedBean impleme
         customerPropertyTenureType = property.getPropertyTenureType();
         customerPropertyTenureDuration = property.getPropertyTenureDuration();
         customerPropertyTenureFromYear = property.getPropertyTenureStartYear();
-        
+
         customerExistingFinancer = ra.getExistingFinancer();
         customerOutstandingLoan = ra.getOutstandingBalance();
         customerOutstandingYear = ra.getOutstandingYear();
@@ -268,14 +275,9 @@ public class LoanOfficerProcessMortgageRefinancingApplicationManagedBean impleme
         customerLoanTenure = ra.getPeriodRequired();
         customerInterestPackage = ra.getLoanInterestPackage().getPackageName();
         docs = ra.getUploads();
-        
+
         applicationDate = ra.getApplicationDate();
-        
-        
-        bureauScore = cr.getBureauScore();
-        riskGrade = cr.getRiskGrade();
-        probabilityOfDefault = cr.getProbabilityOfDefault();
-        
+
         //joint applicant        
         joint = ra.getCustomer();
         if (joint == null) {
@@ -288,12 +290,13 @@ public class LoanOfficerProcessMortgageRefinancingApplicationManagedBean impleme
             jointCA = joint.getCustomerAdvanced();
             jointDebts = joint.getCustomerDebt();
             jointCR = joint.getBureauScore();
-            jointAccountStatus = loanApplicationSessionBeanLocal.getAccountStatusByBureauScoreId(jointCR.getId());
-            jointDefaultRecords = jointCR.getDefaultRecords();
-
-            jointBureauScore = jointCR.getBureauScore();
-            jointRiskGrade = jointCR.getRiskGrade();
-            jointProbabilityOfDefault = jointCR.getProbabilityOfDefault();
+            if (jointCR != null) {
+                jointAccountStatus = loanApplicationSessionBeanLocal.getAccountStatusByBureauScoreId(jointCR.getId());
+                jointDefaultRecords = jointCR.getDefaultRecords();
+                jointBureauScore = jointCR.getBureauScore();
+                jointRiskGrade = jointCR.getRiskGrade();
+                jointProbabilityOfDefault = jointCR.getProbabilityOfDefault();
+            }
 
             jointSalutation = joint.getCustomerSalutation();
             jointName = joint.getCustomerName();
@@ -331,11 +334,14 @@ public class LoanOfficerProcessMortgageRefinancingApplicationManagedBean impleme
             //Decison support
             jointAge = Integer.valueOf(joint.getCustomerAge());
             averageAge = loanApplicationSessionBeanLocal.getApplicantsAverageAge(customer, joint);
-            for (CreditReportAccountStatus account : jointAccountStatus) {
-                jointAmountOverdue += account.getOverdueBalance();
+            if (jointCR != null) {
+                for (CreditReportAccountStatus account : jointAccountStatus) {
+                    jointAmountOverdue += account.getOverdueBalance();
+                }
             }
+
         }
-        
+
         // decision support
         customerAge = Integer.valueOf(customer.getCustomerAge());
         riskRatio = loanApplicationSessionBeanLocal.getRiskRatio(customer, joint);
@@ -345,9 +351,12 @@ public class LoanOfficerProcessMortgageRefinancingApplicationManagedBean impleme
             maxMSRInstalment = loanApplicationSessionBeanLocal.getMSRRemaining(customer, joint);
         }
 
-        for (CreditReportAccountStatus account : accountStatus) {
-            totalAmountOverdue += account.getOverdueBalance();
+        if (cr != null) {
+            for (CreditReportAccountStatus account : accountStatus) {
+                totalAmountOverdue += account.getOverdueBalance();
+            }
         }
+
         if (riskRatio > 0.35) {
             suggestedAction = "Reject";
             minTenure = 0;
@@ -360,7 +369,7 @@ public class LoanOfficerProcessMortgageRefinancingApplicationManagedBean impleme
             } else {
                 maxInstalment = maxTDSRInstalment;
             }
-            minTenure = loanApplicationSessionBeanLocal.calculateMortgageTenure(customerOutstandingLoan, maxInstalment);
+            minTenure = loanApplicationSessionBeanLocal.calculateMortgageTenure(customerOutstandingLoan, maxInstalment, 0.035);
             if (minTenure > 30) {
                 suggestedAction = "Reject";
             }
@@ -369,21 +378,21 @@ public class LoanOfficerProcessMortgageRefinancingApplicationManagedBean impleme
             }
         }
     }
-    
-    public void approveLoanRequest() throws IOException{
-        loanApplicationSessionBeanLocal.approveRefinancingLoanRequest(ra.getLoanApplicationId(), periodSuggested, instalmentSuggested);
+
+    public void approveLoanRequest() throws IOException {
+        loanApplicationSessionBeanLocal.approveLoanRequest(ra.getLoanApplicationId(),customerOutstandingLoan, periodSuggested, instalmentSuggested);
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/loan/loanOfficerViewApplications.xhtml?faces-redirect=true");
     }
-    
-    public void rejectLoanRequest() throws IOException{
-        loanApplicationSessionBeanLocal.rejectMortgageLoanRequest(ra.getLoanApplicationId());
+
+    public void rejectLoanRequest() throws IOException {
+        loanApplicationSessionBeanLocal.rejectLoanRequest(ra.getLoanApplicationId());
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/loan/loanOfficerViewApplications.xhtml?faces-redirect=true");    
+        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/loan/loanOfficerViewApplications.xhtml?faces-redirect=true");
     }
-    
-    public void calculateInstalment(){
-        instalmentSuggested = (0.035/12*customerOutstandingLoan) / (1 - Math.pow((1+0.035/12),-periodSuggested*12));
+
+    public void calculateInstalment() {
+        instalmentSuggested = (0.035 / 12 * customerOutstandingLoan) / (1 - Math.pow((1 + 0.035 / 12), -periodSuggested * 12));
         DecimalFormat df = new DecimalFormat("0.00");
         instalmentSuggested = Double.valueOf(df.format(instalmentSuggested));
     }
@@ -1387,6 +1396,5 @@ public class LoanOfficerProcessMortgageRefinancingApplicationManagedBean impleme
     public void setMaxInstalment(double maxInstalment) {
         this.maxInstalment = maxInstalment;
     }
-    
-    
+
 }

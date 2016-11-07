@@ -16,7 +16,7 @@
 
                     <p:outputLabel for="employeeRole" style="font-weight: bold" value="Role: " />
 
-                    <h:selectOneMenu id="employeeRole" value="#{employeeAssignPermissionManagedBean.roleName}" 
+                    <p:selectOneMenu id="employeeRole" value="#{employeeAssignPermissionManagedBean.roleName}" 
                                      style="width:125px">
                         <f:selectItem itemLabel="Please Select" itemValue=" " />
                         <f:selectItem itemLabel="CEO" itemValue="CEO" />
@@ -34,7 +34,7 @@
                         <f:selectItem itemLabel="Operation Specialist" itemValue="Operation Specialist"/>
                         <f:selectItem itemLabel="Loan Specialist" itemValue="Loan Specialist"/>
                         <f:selectItem itemLabel="Wealth Department Specialist" itemValue="Wealth Department Specialist"/>        
-                    </h:selectOneMenu>
+                    </p:selectOneMenu>
 
                     <p:commandButton type="submit" value="Confirm" update="permissionTable" actionListener="#{employeeAssignPermissionManagedBean.getListOfPermissions}" ajax="false"/>
                 </h:panelGrid>
@@ -65,16 +65,16 @@
 
             <h:form>
                 <p:row>
-                    <p:commandButton value="Add Permission" type="button" style="width:50%" onclick="PF('dlg1').show();" />
+                    <p:commandButton value="Add Permission" type="button" style="width:auto" onclick="PF('dlg1').show();" />
                 </p:row>
-                <p:dialog header="Add a New Permission" widgetVar="dlg1" minHeight="40" >
+                <p:dialog header="Add a New Permission" widgetVar="dlg1" minHeight="40" responsive="true" >
                     <h:panelGrid columns="3" id="matchGrid" cellpadding="5" styleClass="ui-panelgrid-blank form-group">
                         <p:outputLabel for="rolePermission" style="font-weight: bold" value="Permission: " />
 
-                        <h:selectOneMenu id="rolePermission" value="#{employeeAssignPermissionManagedBean.permissionName}" 
+                        <p:selectOneMenu id="rolePermission" value="#{employeeAssignPermissionManagedBean.permissionName}" 
                                          style="width:125px">
                             <f:selectItems value="#{employeeAssignPermissionManagedBean.permissionList1}" var="permission" itemLabel="#{permission}" itemValue="#{permissionName}" />
-                        </h:selectOneMenu>
+                        </p:selectOneMenu>
 
 
                         <p:commandButton type="submit" value="Add" update="PermissionTable" actionListener="#{employeeAssignPermissionManagedBean.addNewPermissionToRole}" ajax="false"/>                 

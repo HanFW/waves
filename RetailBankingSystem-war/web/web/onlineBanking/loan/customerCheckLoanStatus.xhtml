@@ -22,7 +22,8 @@
                 <h1>Check My Loans Status</h1>
             </div>
             
-            <p:outputLabel style="font-weight: bold;" value="Loan Status"/>
+            <p:outputLabel style="font-weight: bold;" value="Loan Status:"/>
+            <br/>
             <p:dataTable var="loanApp" value="#{customerViewAllLoansManagedBean.applications}" paginator="true" reflow="true" emptyMessage="No Loan Account">
                 <p:column headerText="Loan Type"> 
                     <h:outputText value="#{loanApp.loanType}" />
@@ -47,8 +48,10 @@
                 <p:column headerText="Status"> 
                     <h:outputText value="#{loanApp.applicationStatus}" />
                 </p:column>
-            </p:dataTable>    
-            <p:outputLabel style="font-weight: bold;" value="Cashline Status"/>
+            </p:dataTable>
+            <br/>
+            <p:outputLabel style="font-weight: bold;" value="Cashline Status:"/>
+            <br/>
             <p:dataTable var="cashline" value="#{customerViewAllLoansManagedBean.cashlineApplications}" paginator="true" reflow="true" emptyMessage="No Cashline">
                 <p:column> 
                     <h:outputText value="Cashline" />

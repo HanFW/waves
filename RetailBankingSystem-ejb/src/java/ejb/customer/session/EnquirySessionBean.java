@@ -20,7 +20,7 @@ import javax.ejb.EJB;
 import javax.persistence.Query;
 
 @Stateless
-public class EnquirySessionBean implements EnquirySessionBeanLocal {
+public class EnquirySessionBean implements EnquirySessionBeanLocal, EnquirySessionBeanRemote {
 
     @EJB
     private FollowUpSessionBeanLocal followUpSessionBeanLocal;
@@ -362,17 +362,17 @@ public class EnquirySessionBean implements EnquirySessionBeanLocal {
         }
     }
 
-    @Override
-    public String caseIssueIsCreated(Long caseId) {
-        List resultList = getEnquiryByCaseId(caseId);
-        EnquiryCase ec = (EnquiryCase) resultList.get(0);
-        List issueList = ec.getIssue();
-        if (issueList.isEmpty()) {
-            return "No";
-        } else {
-            return "Yes";
-        }
-    }
+//    @Override
+//    public String caseIssueIsCreated(Long caseId) {
+//        List resultList = getEnquiryByCaseId(caseId);
+//        EnquiryCase ec = (EnquiryCase) resultList.get(0);
+//        List issueList = ec.getIssue();
+//        if (issueList.isEmpty()) {
+//            return "No";
+//        } else {
+//            return "Yes";
+//        }
+//    }
 
     @Override
     public String caseIssueAllReplied(Long caseId) {

@@ -562,7 +562,7 @@ public class EmployeeCarLoanApplicationManagedBean implements Serializable {
         if (file != null) {
             String newFilePath = System.getProperty("user.dir").replace("config", "docroot") + System.getProperty("file.separator");
 
-            String filename = customerIdentificationNum + "car_registration.pdf";
+            String filename = customerIdentificationNum + "-car_registration.pdf";
             File newFile = new File(newFilePath, filename);
             FileOutputStream fileOutputStream = new FileOutputStream(newFile);
 

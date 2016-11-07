@@ -81,7 +81,7 @@ public class EmployeeNonStandingGIROTransferManagedBean {
                 Map<String, Object> sessionMap = externalContext.getSessionMap();
                 sessionMap.put("customerIdentificationNum", customerIdentificationNum);
 
-                ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/deposit/employeeNonStandingGIROTransferDone.xhtml?faces-redirect=true");
+                ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/payment/employeeNonStandingGIROTransferDone.xhtml?faces-redirect=true");
             }
         }
     }

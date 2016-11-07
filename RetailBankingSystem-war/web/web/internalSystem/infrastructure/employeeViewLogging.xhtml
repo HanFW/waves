@@ -11,7 +11,7 @@
         <h:form>
             <p:tabView>
                 <p:tab title="Customer">
-                    <p:dataTable var="customerLog" value="#{employeeViewLoggingManagedBean.customerLogging}" paginator="true" rows="20"
+                    <p:dataTable var="customerLog" reflow="true" value="#{employeeViewLoggingManagedBean.customerLogging}" paginator="true" rows="20"
                                  widgetVar="customerLog" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}" lazy="true">
                         <f:facet name="header">
                             <p:outputPanel>
@@ -19,25 +19,25 @@
                                 <p:inputText id="globalFilter" onkeyup="PF('customerLog').filter()" style="width:150px" placeholder="Enter keyword"/>
                             </p:outputPanel>
                         </f:facet>
-                        <p:column headerText="Time" sortBy="#{customerLog.logTime}" filterBy="#{customerLog.logTime}" style="width:20%;">
+                        <p:column headerText="Time" sortBy="#{customerLog.logTime}" filterBy="#{customerLog.logTime}" >
                             <h:outputText value="#{customerLog.logTime}"/>
                         </p:column>
-                        <p:column headerText="Id" sortBy="#{customerLog.id}" filterBy="#{customerLog.id}" style="width:15%;">
+                        <p:column headerText="Id" sortBy="#{customerLog.id}" filterBy="#{customerLog.id}" >
                             <h:outputText value="#{customerLog.id}" />
                         </p:column>
-                        <p:column headerText="Activity" sortBy="#{customerLog.logActivity}" filterBy="#{customerLog.logActivity}" style="width:35%;">
+                        <p:column headerText="Activity" sortBy="#{customerLog.logActivity}" filterBy="#{customerLog.logActivity}" >
                             <h:outputText value="#{customerLog.logActivity}" />
                         </p:column>
-                        <p:column headerText="Result" sortBy="#{customerLog.logResult}" filterBy="#{customerLog.logResult}" style="width:15%;">
+                        <p:column headerText="Result" sortBy="#{customerLog.logResult}" filterBy="#{customerLog.logResult}">
                             <h:outputText value="#{customerLog.logResult}" />
                         </p:column>
-                        <p:column headerText="Remarks" filterBy="#{customerLog.logRemarks}" style="width:15%;">
+                        <p:column headerText="Remarks" filterBy="#{customerLog.logRemarks}" >
                             <h:outputText value="#{customerLog.logRemarks}" />
                         </p:column>
                     </p:dataTable>
                 </p:tab>
                 <p:tab title="Employee">
-                    <p:dataTable var="employeeLog" value="#{employeeViewLoggingManagedBean.employeeLogging}" paginator="true" rows="20"
+                    <p:dataTable var="employeeLog" reflow="true" value="#{employeeViewLoggingManagedBean.employeeLogging}" paginator="true" rows="20"
                                  widgetVar="employeeLog" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}" lazy="true">
                         <f:facet name="header">
                             <p:outputPanel>
@@ -45,25 +45,25 @@
                                 <p:inputText id="globalFilter" onkeyup="PF('employeeLog').filter()" style="width:150px" placeholder="Enter keyword"/>
                             </p:outputPanel>
                         </f:facet>
-                        <p:column headerText="Time" sortBy="#{employeeLog.logTime}" filterBy="#{employeeLog.logTime}" style="width:20%;">
+                        <p:column headerText="Time" sortBy="#{employeeLog.logTime}" filterBy="#{employeeLog.logTime}" >
                             <h:outputText value="#{employeeLog.logTime}"/>
                         </p:column>
-                        <p:column headerText="Id" sortBy="#{employeeLog.id}" filterBy="#{employeeLog.id}" style="width:15%;">
+                        <p:column headerText="Id" sortBy="#{employeeLog.id}" filterBy="#{employeeLog.id}" >
                             <h:outputText value="#{employeeLog.id}" />
                         </p:column>
-                        <p:column headerText="Activity" sortBy="#{employeeLog.logActivity}" filterBy="#{employeeLog.logActivity}" style="width:35%;">
+                        <p:column headerText="Activity" sortBy="#{employeeLog.logActivity}" filterBy="#{employeeLog.logActivity}">
                             <h:outputText value="#{employeeLog.logActivity}" />
                         </p:column>
-                        <p:column headerText="Result" sortBy="#{employeeLog.logResult}" filterBy="#{employeeLog.logResult}" style="width:15%;">
+                        <p:column headerText="Result" sortBy="#{employeeLog.logResult}" filterBy="#{employeeLog.logResult}" >
                             <h:outputText value="#{employeeLog.logResult}" />
                         </p:column>
-                        <p:column headerText="Remarks" filterBy="#{employeeLog.logRemarks}" style="width:15%;">
+                        <p:column headerText="Remarks" filterBy="#{employeeLog.logRemarks}">
                             <h:outputText value="#{employeeLog.logRemarks}" />
                         </p:column>
                     </p:dataTable>
                 </p:tab>
                 <p:tab title="System">
-                    <p:dataTable var="systemLog" value="#{employeeViewLoggingManagedBean.systemLogging}" paginator="true" rows="20"
+                    <p:dataTable var="systemLog" reflow="true" value="#{employeeViewLoggingManagedBean.systemLogging}" paginator="true" rows="20"
                                  widgetVar="systemLog" paginatorTemplate="{FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}" lazy="true">
                         <f:facet name="header">
                             <p:outputPanel>
@@ -71,19 +71,19 @@
                                 <p:inputText id="globalFilter" onkeyup="PF('systemLog').filter()" style="width:150px" placeholder="Enter keyword"/>
                             </p:outputPanel>
                         </f:facet>
-                        <p:column headerText="Time" sortBy="#{systemLog.logTime}" filterBy="#{systemLog.logTime}" style="width:20%;">
+                        <p:column headerText="Time" sortBy="#{systemLog.logTime}" filterBy="#{systemLog.logTime}" >
                             <h:outputText value="#{systemLog.logTime}"/>
                         </p:column>
-                        <p:column headerText="Id" sortBy="#{systemLog.id}" filterBy="#{systemLog.id}" style="width:15%;">
+                        <p:column headerText="Id" sortBy="#{systemLog.id}" filterBy="#{systemLog.id}" >
                             <h:outputText value="#{systemLog.id}" />
                         </p:column>
-                        <p:column headerText="Activity" sortBy="#{systemLog.logActivity}" filterBy="#{systemLog.logActivity}" style="width:35%;">
+                        <p:column headerText="Activity" sortBy="#{systemLog.logActivity}" filterBy="#{systemLog.logActivity}" >
                             <h:outputText value="#{systemLog.logActivity}" />
                         </p:column>
-                        <p:column headerText="Result" sortBy="#{systemLog.logResult}" filterBy="#{systemLog.logResult}" style="width:15%;">
+                        <p:column headerText="Result" sortBy="#{systemLog.logResult}" filterBy="#{systemLog.logResult}" >
                             <h:outputText value="#{systemLog.logResult}" />
                         </p:column>
-                        <p:column headerText="Remarks" filterBy="#{systemLog.logRemarks}" style="width:15%;">
+                        <p:column headerText="Remarks" filterBy="#{systemLog.logRemarks}" >
                             <h:outputText value="#{systemLog.logRemarks}" />
                         </p:column>
                     </p:dataTable>

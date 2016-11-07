@@ -401,7 +401,6 @@ public class CRMCustomerManagedBean implements Serializable{
 
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         cb = (CustomerBasic) ec.getSessionMap().get("customer");
-//        cb = customerSessionBean.getAllCustomerBasicProfile().get(0);
 
         if (customerName == null) {
             customerName = cb.getCustomerName();

@@ -9,15 +9,9 @@
 
     <ui:define name="content">
         <h:form>
-            <p:panel>
-                <p:outputLabel value="Welcome "/>
-                <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
-            </p:panel>
+            
             <p:messages globalOnly="true"/>
             <br/>
-            <div align="center">
-            <h1>Choose GRIO Arrangement to Delete</h1>  
-            </div>
             <p:dataTable var="standingGIRO" value="#{employeeDeleteStandingGIROManagedBean.standingGIROs}" 
                          reflow="true" paginator="true" rows="10" 
                          emptyMessage="No GIRO Arrangement">
