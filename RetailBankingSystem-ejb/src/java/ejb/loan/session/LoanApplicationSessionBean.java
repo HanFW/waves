@@ -7,6 +7,9 @@ package ejb.loan.session;
 
 import ejb.customer.entity.CustomerAdvanced;
 import ejb.customer.entity.CustomerBasic;
+import ejb.deposit.entity.BankAccount;
+import ejb.infrastructure.session.CustomerAdminSessionBeanLocal;
+import ejb.infrastructure.session.CustomerEmailSessionBeanLocal;
 import ejb.loan.entity.CarLoanApplication;
 import ejb.loan.entity.CashlineApplication;
 import ejb.loan.entity.CreditReportAccountStatus;
@@ -23,12 +26,15 @@ import ejb.loan.entity.LoanRepaymentAccount;
 import ejb.loan.entity.MortgageLoanApplication;
 import ejb.loan.entity.RefinancingApplication;
 import ejb.loan.entity.RenovationLoanApplication;
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -40,6 +46,11 @@ import javax.persistence.Query;
  */
 @Stateless
 public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLocal {
+
+    @EJB
+    private CustomerEmailSessionBeanLocal customerEmailSessionBeanLocal;
+    @EJB
+    private CustomerAdminSessionBeanLocal customerAdminSessionBeanLocal;
 
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager em;
@@ -429,57 +440,40 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
     }
 
     @Override
-    public void approveMortgageLoanRequest(Long applicationId, double amount, int period, double instalment) {
-        System.out.println("****** loan/LoanApplicationSessionBean: approveMortgageLoanRequest() ******");
+    public void approveLoanRequest(Long applicationId, double amount, int period, double instalment, String loanType) {
         LoanApplication application = em.find(LoanApplication.class, applicationId);
         application.setAmountGranted(amount);
         application.setPeriodSuggested(period * 12);
         application.setInstalment(instalment);
         application.setApplicationStatus("approved");
         application.setFinalActionDate(new Date());
+
+        if (loanType.equals("Mortgage Loan")) {
+            customerEmailSessionBeanLocal.sendEmail(application.getCustomerBasic(), "approveContractLoanRequest", null);
+        } else if (loanType.equals("Renovation Loan")) {
+            customerAdminSessionBeanLocal.createOnlineBankingAccount(application.getCustomerBasic().getCustomerBasicId(), "approveRenovationLoanRequest");
+        } else if (loanType.equals("Car Loan")) {
+            customerEmailSessionBeanLocal.sendEmail(application.getCustomerBasic(), "approveContractLoanRequest", null);
+        } else if (loanType.equals("Education Loan")) {
+            customerAdminSessionBeanLocal.createOnlineBankingAccount(application.getCustomerBasic().getCustomerBasicId(), "approveEducationLoanRequest");
+        }
         em.flush();
     }
 
     @Override
-    public void rejectMortgageLoanRequest(Long applicationId) {
-        System.out.println("****** loan/LoanApplicationSessionBean: rejectMortgageLoanRequest() ******");
+    public void rejectLoanRequest(Long applicationId) {
         LoanApplication application = em.find(LoanApplication.class, applicationId);
-        CustomerBasic guarantor = application.getCustomerBasic();
-        CustomerAdvanced ca = guarantor.getCustomerAdvanced();
-        CustomerProperty property = guarantor.getCustomerProperty();
-
-        CreditReportBureauScore report = guarantor.getBureauScore();
-        for (CustomerDebt debt : guarantor.getCustomerDebt()) {
-            em.remove(debt);
-        }
-        for (CreditReportAccountStatus as : report.getAccountStatus()) {
-            em.remove(as);
-        }
-        for (CreditReportDefaultRecords dr : report.getDefaultRecords()) {
-            em.remove(dr);
-        }
-        em.remove(report);
-
+//        CustomerBasic customer = application.getCustomerBasic();
+//        CustomerProperty property = customer.getCustomerProperty();
+//        if (property != null) {
+//            em.remove(property);
+//        }
         em.remove(application);
-        em.remove(property);
-        em.remove(ca);
-        em.remove(guarantor);
         em.flush();
     }
 
     @Override
-    public void approveRefinancingLoanRequest(Long applicationId, int period, double instalment) {
-        System.out.println("****** loan/LoanApplicationSessionBean: approveRefinancingLoanRequest() ******");
-        LoanApplication application = em.find(LoanApplication.class, applicationId);
-        application.setPeriodSuggested(period * 12);
-        application.setInstalment(instalment);
-        application.setApplicationStatus("approved");
-        application.setFinalActionDate(new Date());
-        em.flush();
-    }
-
-    @Override
-    public void startNewMortgageLoan(Long applicationId) {
+    public void startNewLoan(Long applicationId, String loanType) {
         LoanApplication application = em.find(LoanApplication.class, applicationId);
         application.setApplicationStatus("started");
 
@@ -494,23 +488,82 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
 
         em.flush();
 
-        DecimalFormat df = new DecimalFormat("000000");
+        String payableAccountNumber = generateAccountNumber();
+        String repaymentAccountNumber = generateAccountNumber();
 
-        loanPayableAccount.setAccountNumber("6000" + df.format(loanPayableAccount.getId()));
+        loanPayableAccount.setAccountNumber(payableAccountNumber);
         loanPayableAccount.setInitialAmount(application.getAmountGranted());
         loanPayableAccount.setAccountBalance(application.getAmountGranted());
         loanPayableAccount.setStartDate(new Date());
         loanPayableAccount.setAccountStatus("started");
         loanPayableAccount.setOverdueBalance(0);
 
-        loanRepaymentAccount.setAccountNumber("7000" + df.format(loanRepaymentAccount.getId()));
+        loanRepaymentAccount.setAccountNumber(repaymentAccountNumber);
+        loanRepaymentAccount.setDefaultMonths(0);
+
+        if (loanType.equals("Mortgage Loan")) {
+            customerAdminSessionBeanLocal.createOnlineBankingAccount(application.getCustomerBasic().getCustomerBasicId(), "startMortgageLoan");
+        } else if(loanType.equals("Car Loan")){
+            customerAdminSessionBeanLocal.createOnlineBankingAccount(application.getCustomerBasic().getCustomerBasicId(), "startCarLoan");
+        }
 
         em.flush();
+    }
+
+    private String generateAccountNumber() {
+        String bankAccountNum;
+        String status;
+        SecureRandom random = new SecureRandom();
+
+        bankAccountNum = new BigInteger(23, random).setBit(22).toString(10);
+        status = checkAccountDuplication(bankAccountNum);
+
+        while (status.equals("Duplicated")) {
+            bankAccountNum = new BigInteger(23, random).setBit(22).toString(10);
+            status = checkAccountDuplication(bankAccountNum);
+        }
+
+        return bankAccountNum;
+    }
+
+    private String checkAccountDuplication(String accountNum) {
+        Query query = em.createQuery("Select a From BankAccount a Where a.bankAccountNum=:bankAccountNum");
+        query.setParameter("bankAccountNum", accountNum);
+
+        List bankAccountList = query.getResultList();
+
+        if (bankAccountList.isEmpty()) {
+            Query query2 = em.createQuery("Select a From LoanPayableAccount a Where a.accountNumber=:bankAccountNum");
+            query2.setParameter("bankAccountNum", accountNum);
+            List payableList = query2.getResultList();
+            if (payableList.isEmpty()) {
+                Query query3 = em.createQuery("Select a From LoanRepaymentAccount a Where a.accountNumber=:bankAccountNum");
+                query3.setParameter("bankAccountNum", accountNum);
+                List repaymentList = query3.getResultList();
+                if (repaymentList.isEmpty()) {
+                    return "Success";
+                } else {
+                    return "Duplicated";
+                }
+            } else {
+                return "Duplicated";
+            }
+        } else {
+            return "Duplicated";
+        }
+
     }
 
     @Override
     public void updateLoanStatus(String status, Long applicationId) {
         LoanApplication application = em.find(LoanApplication.class, applicationId);
+        application.setApplicationStatus(status);
+        em.flush();
+    }
+
+    @Override
+    public void updateCashlineStatus(String status, Long applicationId) {
+        CashlineApplication application = em.find(CashlineApplication.class, applicationId);
         application.setApplicationStatus(status);
         em.flush();
     }
@@ -809,8 +862,10 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
 
         //applicant 1 risk
         CreditReportBureauScore customerBureauScore = customer.getBureauScore();
+        if (customerBureauScore != null) {
+            customerRisk = customerBureauScore.getProbabilityOfDefault();
+        }
         CustomerAdvanced ca = customer.getCustomerAdvanced();
-        customerRisk = customerBureauScore.getProbabilityOfDefault();
         if (customer.getCustomerMaritalStatus().equals("Married")) {
             customerRisk += 0.01;
         }
@@ -829,7 +884,9 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
         if (joint != null) {
             CreditReportBureauScore jointBureauScore = joint.getBureauScore();
             CustomerAdvanced jointCA = joint.getCustomerAdvanced();
-            jointRisk = jointBureauScore.getProbabilityOfDefault();
+            if (jointBureauScore != null) {
+                jointRisk = jointBureauScore.getProbabilityOfDefault();
+            }
             if (joint.getCustomerMaritalStatus().equals("Married")) {
                 jointRisk += 0.01;
             }
@@ -844,16 +901,61 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
                 jointRisk += 0.01;
             }
         }
-        
+
         DecimalFormat df = new DecimalFormat("0.00");
         String risk = df.format(Math.max(customerRisk, jointRisk));
-        
+
         return Double.parseDouble(risk);
     }
-    
+
     @Override
-    public int calculateMortgageTenure(double amount, double instalment){
-        Double tenure = Math.log(1- 0.035/12*amount/instalment) / Math.log(1+0.035/12) * -1 / 12;
-        return tenure.intValue()+1;
+    public int calculateMortgageTenure(double amount, double instalment, double interest) {
+        Double tenure = Math.log(1 - interest / 12 * amount / instalment) / Math.log(1 + interest / 12) * -1 / 12;
+        return tenure.intValue() + 1;
+    }
+
+    @Override
+    public RenovationLoanApplication getRenovationLoanApplicationById(Long applicationId) {
+        RenovationLoanApplication application = em.find(RenovationLoanApplication.class, applicationId);
+        em.refresh(application);
+        return application;
+    }
+
+    @Override
+    public CarLoanApplication getCarLoanApplicationById(Long applicationId) {
+        CarLoanApplication application = em.find(CarLoanApplication.class, applicationId);
+        em.refresh(application);
+        return application;
+    }
+
+    @Override
+    public EducationLoanApplication getEducationLoanApplicationById(Long applicationId) {
+        EducationLoanApplication application = em.find(EducationLoanApplication.class, applicationId);
+        em.refresh(application);
+        return application;
+    }
+
+    @Override
+    public CashlineApplication getCashlineApplicationById(Long applicationId) {
+        CashlineApplication application = em.find(CashlineApplication.class, applicationId);
+        em.refresh(application);
+        return application;
+    }
+
+    @Override
+    public void approveCashlineRequest(Long applicationId, double amount) {
+        CashlineApplication application = em.find(CashlineApplication.class, applicationId);
+        application.setAmountGranted((int) amount);
+        application.setApplicationStatus("approved");
+        application.setFinalActionDate(new Date());
+        em.flush();
+    }
+
+    @Override
+    public void rejectCashlineRequest(Long applicationId) {
+        CashlineApplication application = em.find(CashlineApplication.class, applicationId);
+
+        em.remove(application);
+        em.flush();
     }
 }

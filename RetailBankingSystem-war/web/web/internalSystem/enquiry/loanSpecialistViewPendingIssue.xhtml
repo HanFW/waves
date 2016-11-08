@@ -9,10 +9,8 @@
 
     <ui:define name="content">     
         <h:form>
-<!--            <h:outputText value="You have logged in as: Loan Specialist"/>-->
-
-            <p:panel header="Pending Issue">
-                <p:dataTable var="issue" value="#{specialistReplyIssueManagedBean.loanPendingIssue}" 
+            <p:panel>
+                <p:dataTable var="issue" reflow="true" value="#{specialistReplyIssueManagedBean.loanPendingIssue}" 
                              paginator="true" rows="10" emptyMessage="No Pending Issue">
                     <p:column headerText="Issue ID" >
                         <h:outputText value="#{issue.issueId}" /> 

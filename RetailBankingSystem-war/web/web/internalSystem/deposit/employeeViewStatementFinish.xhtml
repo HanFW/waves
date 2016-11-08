@@ -12,12 +12,12 @@
                 <div align="center">
 <!--                    <h:outputText value="You have logged in as: Counter Teller"/>-->
                     <br/>
-                    <p:panel id="panel" header="View Statement"> 
+                    <p:panel id="panel"> 
                         <p:messages />
 
                         <p:dataTable var="statement" paginator="true" rows="10"
                                      value="#{employeeViewStatementDoneManagedBean.statement}"
-                                     emptyMessage="No Statement">
+                                     emptyMessage="No Statement" reflow="true">
 
                             <p:column headerText="Date"> 
                                 <h:outputText value="#{statement.statementDate}" />

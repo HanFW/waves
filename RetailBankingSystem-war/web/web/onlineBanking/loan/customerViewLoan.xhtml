@@ -19,31 +19,116 @@
             </p:panel>
 
             <div align="center">
-                <h1>#{customerViewLoanManagedBean.loanType} #{customerViewLoanManagedBean.loanAccountNumber}</h1>
+                <h1>#{customerViewLoanManagedBean.pa.loanApplication.loanType} - #{customerViewLoanManagedBean.loanAccountNumber}</h1>
             </div>
 
             <div align="center">
-                <p:panel header="Repayment">
-                    <p:panelGrid columns="8">
-                        <p:outputLabel style="font-weight: bold;" value="Instalment "/>
-                        <h:outputText value="#{customerViewLoanManagedBean.instalment}"/>
-
-                        <p:outputLabel style="font-weight: bold;" value="Fees: "/>
-                        <h:outputText value="#{customerViewLoanManagedBean.fees}"/>
-
-                        <p:outputLabel style="font-weight: bold;" value="Overdue Balance: "/>
-                        <h:outputText value="#{customerViewLoanManagedBean.overdueBalance}"/>
-
-                        <p:menuButton value="Make Payment">
-                            <p:menuitem value="Via Merlion Bank Account" action="#{customerViewLoanManagedBean.makeRepaymentByMerlionBankAccount}"/>
-                            <p:menuitem value="Via Other Bank Account"/>
-                            <p:menuitem value="Via GIRO"/>
-                        </p:menuButton>
+                <p:panel header="Loan Summary - Account #{customerViewLoanManagedBean.pa.accountNumber}">
+                    <p:panelGrid>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel style="font-weight: bold;" value="Total Amount: "/>
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{customerViewLoanManagedBean.pa.initialAmount}"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel style="font-weight: bold;" value="Remaining Amount: "/>
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{customerViewLoanManagedBean.pa.accountBalance}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel style="font-weight: bold;" value="Start Date: "/>
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{customerViewLoanManagedBean.pa.startDate}"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel style="font-weight: bold;" value="Loan Tenure: "/>
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{customerViewLoanManagedBean.loanTenure} years"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel style="font-weight: bold;" value="Remaining Tenure: "/>
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{customerViewLoanManagedBean.remainingyears} years #{customerViewLoanManagedBean.remainingmonths} months"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel style="font-weight: bold;" value="Interest Package: "/>
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{customerViewLoanManagedBean.pa.loanApplication.loanInterestPackage.packageName}"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel style="font-weight: bold;" value="Interest Rate: "/>
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{customerViewLoanManagedBean.interestRate} %"/>
+                            </p:column>
+                        </p:row>
                     </p:panelGrid>
                 </p:panel>
             </div>
 
+            <div align="center">
+                <p:panel header="Repayment Summary - Account #{customerViewLoanManagedBean.ra.accountNumber}">
+                    <p:panelGrid>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel style="font-weight: bold;" value="Total Repayment Acount:  "/>
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{customerViewLoanManagedBean.totalPayment}"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel style="font-weight: bold;" value="Account Balance: "/>
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{customerViewLoanManagedBean.ra.accountBalance} to be paid"/>
+                            </p:column>
+                            <p:column>
+                                <p:menuButton value="Make Payment">
+                                    <p:menuitem value="Pay Via My Deposit Account" action="#{customerViewLoanManagedBean.makeRepaymentByMerlionBankAccount}"/>
+                                    <p:menuitem value="Recurring Repayment"/>
+                                </p:menuButton>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel style="font-weight: bold;" value="Instalment "/>
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{customerViewLoanManagedBean.instalment}"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel style="font-weight: bold;" value="Fees: "/>
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{customerViewLoanManagedBean.fees}"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel style="font-weight: bold;" value="Overdue Balance: "/>
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{customerViewLoanManagedBean.overdueBalance}"/>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+                </p:panel>
+            </div>
 
+            <div align="center">
+                <p:panel header="Repayment History">
+
+                </p:panel>
+            </div>
         </h:form>
         <ezcomp:CCTimeout/>
     </ui:define>

@@ -1656,7 +1656,7 @@ body.layout-compact {
   body.layout-compact .ui-datatable .ui-datatable-footer {
     padding: 8px 14px; }
   body.layout-compact .ui-datatable .ui-paginator {
-    padding: 8px 14px; }
+    padding: 3px 14px; }
   body.layout-compact .ui-datatable thead th {
     padding: 6px 10px; }
     body.layout-compact .ui-datatable thead th .ui-sortable-column-icon {

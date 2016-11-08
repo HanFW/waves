@@ -5,7 +5,6 @@ import ejb.customer.entity.CustomerBasic;
 import ejb.deposit.entity.Payee;
 import ejb.deposit.session.BankAccountSessionBean;
 import javax.ejb.Stateless;
-import javax.ejb.LocalBean;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.security.MessageDigest;
@@ -27,9 +26,7 @@ import java.util.logging.Logger;
 import org.jboss.aerogear.security.otp.api.Base32;
 
 @Stateless
-@LocalBean
-
-public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
+public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal, CRMCustomerSessionBeanRemote {
 
     @EJB
     private MessageSessionBeanLocal messageSessionBeanLocal;
@@ -131,17 +128,19 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
 
     @Override
     public CustomerBasic getCustomer(String onlineBankingAccountNum) {
-        CustomerBasic customer = entityManager.find(CustomerBasic.class, onlineBankingAccountNum);
+        Query query = entityManager.createQuery("SELECT cb FROM CustomerBasic cb WHERE cb.customerOnlineBankingAccountNum = :onlinebankingAccountNum");
+        query.setParameter("onlinebankingAccountNum", onlineBankingAccountNum);
+        CustomerBasic customer = (CustomerBasic) query.getResultList().get(0);
         return customer;
     }
 
-    @Override
-    public List<CustomerBasic> getMyCustomerBasicProfile(String onlineBankingAccountNum) {
-        CustomerBasic customer = getCustomer(onlineBankingAccountNum);
-        Query query = entityManager.createQuery("SELECT cb FROM CustomerBasic cb WHERE cb.customerBasicId = :inCustomer");
-        query.setParameter("inCustomer", customer);
-        return query.getResultList();
-    }
+//    @Override
+//    public List<CustomerBasic> getMyCustomerBasicProfile(String onlineBankingAccountNum) {
+//        CustomerBasic customer = getCustomer(onlineBankingAccountNum);
+//        Query query = entityManager.createQuery("SELECT cb FROM CustomerBasic cb WHERE cb.customerBasicId = :inCustomer");
+//        query.setParameter("inCustomer", customer);
+//        return query.getResultList();
+//    }
 
     @Override
     public CustomerAdvanced getCustomerAdvancedByAccNum(String onlineBankingAccountNum) {
@@ -163,11 +162,11 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal {
         return ca;
     }
 
-    @Override
-    public List<CustomerBasic> getAllCustomerBasicProfile() {
-        Query query = entityManager.createQuery("SELECT cb FROM CustomerBasic cb");
-        return query.getResultList();
-    }
+//    @Override
+//    public List<CustomerBasic> getAllCustomerBasicProfile() {
+//        Query query = entityManager.createQuery("SELECT cb FROM CustomerBasic cb");
+//        return query.getResultList();
+//    }
 
     @Override
     public String updateCustomerOnlineBankingAccountPIN(String customerOnlineBankingAccountNum, String hashedCurrentPassword, String hashedNewPassword) {

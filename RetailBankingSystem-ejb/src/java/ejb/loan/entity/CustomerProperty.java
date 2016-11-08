@@ -44,7 +44,7 @@ public class CustomerProperty implements Serializable {
     private int propertyTenureDuration;
     private int propertyTenureStartYear;
     
-    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerProperty")
+    @OneToMany(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER, mappedBy = "customerProperty")
     private List<CustomerBasic> customerBasic;
     
     public void create(String propertyAddress, String propertyPostal, ArrayList<String> propertyOwners, 
