@@ -35,24 +35,30 @@
                     </p:column>
 
                     <p:column headerText="Identification">
-                        <p:commandButton process="@this" oncomplete="PF('dlg1').show()" 
-                                         value="View" update="identificationNumDialog">
-                            <f:setPropertyActionListener value="#{customerBasic.customerIdentificationNum}" target="#{employeeOpenAccountApprovalManagedBean.customerIdentificationNum}"/>
-                        </p:commandButton>
+                        <center>
+                            <p:commandButton process="@this" oncomplete="PF('dlg1').show()" 
+                                             value="View" update="identificationNumDialog">
+                                <f:setPropertyActionListener value="#{customerBasic.customerIdentificationNum}" target="#{employeeOpenAccountApprovalManagedBean.customerIdentificationNum}"/>
+                            </p:commandButton>
+                        </center>
                     </p:column>
 
                     <p:column headerText="Approve">
-                        <p:commandButton process="@this" ajax="false"
-                                         value="Approve" action="#{employeeOpenAccountApprovalManagedBean.approveOpenAccount()}">
-                            <f:setPropertyActionListener value="#{customerBasic.customerIdentificationNum}" target="#{employeeOpenAccountApprovalManagedBean.customerIdentificationNum}"/>
-                        </p:commandButton>
+                        <center>
+                            <p:commandButton process="@this" ajax="false"
+                                             value="Approve" action="#{employeeOpenAccountApprovalManagedBean.approveOpenAccount()}">
+                                <f:setPropertyActionListener value="#{customerBasic.customerIdentificationNum}" target="#{employeeOpenAccountApprovalManagedBean.customerIdentificationNum}"/>
+                            </p:commandButton>
+                        </center>
                     </p:column>
 
                     <p:column headerText="Reject">
-                        <p:commandButton process="@this" ajax="false"
-                                         value="Reject" action="#{employeeOpenAccountApprovalManagedBean.rejectOpenAccount()}">
-                            <f:setPropertyActionListener value="#{customerBasic.customerIdentificationNum}" target="#{employeeOpenAccountApprovalManagedBean.customerIdentificationNum}"/>
-                        </p:commandButton>
+                        <center>
+                            <p:commandButton process="@this" ajax="false"
+                                             value="Reject" action="#{employeeOpenAccountApprovalManagedBean.rejectOpenAccount()}">
+                                <f:setPropertyActionListener value="#{customerBasic.customerIdentificationNum}" target="#{employeeOpenAccountApprovalManagedBean.customerIdentificationNum}"/>
+                            </p:commandButton>
+                        </center>
                     </p:column>
 
                 </p:dataTable>

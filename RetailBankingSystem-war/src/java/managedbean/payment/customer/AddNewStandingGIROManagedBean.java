@@ -183,7 +183,7 @@ public class AddNewStandingGIROManagedBean implements Serializable {
 
         bankAccountNum = handleAccountString(bankAccountNumWithType);
 
-        StandingGIRO standingGIRO = standingGIROSessionBeanLocal.retrieveOnHoldRecordByBillRef(billReference);
+        StandingGIRO standingGIRO = standingGIROSessionBeanLocal.retrieveStandingGIROByBillRef(billReference);
 
         if (standingGIRO.getGiroId() != null) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("GIRO Arrangement has already existed", ""));

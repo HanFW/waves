@@ -10,9 +10,13 @@
 <xs:element name="customerMobile" type="xs:string" minOccurs="0"/>
 <xs:element name="billReference" type="xs:string" minOccurs="0"/>
 <xs:element name="billingOrganizationName" type="xs:string" minOccurs="0"/>
+<xs:element name="creditBank" type="xs:string" minOccurs="0"/>
 <xs:element name="debitBank" type="xs:string" minOccurs="0"/>
+<xs:element name="creditBankAccountNum" type="xs:string" minOccurs="0"/>
 <xs:element name="debitBankAccountNum" type="xs:string" minOccurs="0"/>
 <xs:element name="paymentLimit" type="xs:string" minOccurs="0"/>
+<xs:element name="billStatus" type="xs:string" minOccurs="0"/>
+<xs:element name="buttonRender" type="xs:boolean"/>
 </xs:sequence>
 </xs:complexType>
 

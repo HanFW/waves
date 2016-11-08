@@ -3,6 +3,7 @@ package ejb.payment.session;
 import ejb.customer.entity.CustomerBasic;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import ejb.payment.entity.GIRO;
+import ejb.payment.entity.RegisteredBillingOrganization;
 import ejb.payment.entity.StandingGIRO;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,9 @@ import ws.client.bill.BillWebService_Service;
 
 @Stateless
 public class StandingGIROSessionBean implements StandingGIROSessionBeanLocal {
+
+    @EJB
+    private RegisteredBillingOrganizationSessionBeanLocal registeredBillingOrganizationSessionBeanLocal;
 
     @WebServiceRef(wsdlLocation = "META-INF/wsdl/localhost_8080/BillWebService/BillWebService.wsdl")
     private BillWebService_Service service_bill;
@@ -49,8 +53,13 @@ public class StandingGIROSessionBean implements StandingGIROSessionBeanLocal {
         standingGiro.setGiroType(giroType);
         standingGiro.setCustomerBasic(bankAccountSessionBeanLocal.retrieveCustomerBasicById(customerBasicId));
 
+        RegisteredBillingOrganization billOrg = registeredBillingOrganizationSessionBeanLocal.retrieveRegisteredBillingOrganizationByName(billingOrganizationName);
+        String creditBank = billOrg.getBankName();
+        String creditBankAccountNum = billOrg.getBankAccountNum();
+
         addNewBill(customerName, customerMobile, billReference, billingOrganizationName,
-                "Merlion", bankAccountNum, paymemtLimit);
+                creditBank, creditBankAccountNum, "Merlion", bankAccountNum, paymemtLimit,
+                "Pending", false);
 
         entityManager.persist(standingGiro);
         entityManager.flush();
@@ -92,9 +101,9 @@ public class StandingGIROSessionBean implements StandingGIROSessionBeanLocal {
             return new ArrayList<StandingGIRO>();
         }
     }
-    
+
     @Override
-    public StandingGIRO retrieveOnHoldRecordByBillRef(String billingReference) {
+    public StandingGIRO retrieveStandingGIROByBillRef(String billingReference) {
         StandingGIRO standingGIRO = new StandingGIRO();
 
         try {
@@ -117,10 +126,10 @@ public class StandingGIROSessionBean implements StandingGIROSessionBeanLocal {
         return standingGIRO;
     }
 
-    private Long addNewBill(java.lang.String customerName, java.lang.String customerMobile, java.lang.String billReference, java.lang.String billingOrganizationName, java.lang.String debitBank, java.lang.String debitBankAccountNum, java.lang.String paymentLimit) {
+    private Long addNewBill(java.lang.String customerName, java.lang.String customerMobile, java.lang.String billReference, java.lang.String billingOrganizationName, java.lang.String creditBank, java.lang.String debitBank, java.lang.String creditBankAccountNum, java.lang.String debitBankAccountNum, java.lang.String paymentLimit, java.lang.String billStatus, boolean buttonRender) {
         // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
         // If the calling of port operations may lead to race condition some synchronization is required.
         ws.client.bill.BillWebService port = service_bill.getBillWebServicePort();
-        return port.addNewBill(customerName, customerMobile, billReference, billingOrganizationName, debitBank, debitBankAccountNum, paymentLimit);
+        return port.addNewBill(customerName, customerMobile, billReference, billingOrganizationName, creditBank, debitBank, creditBankAccountNum, debitBankAccountNum, paymentLimit, billStatus, buttonRender);
     }
 }

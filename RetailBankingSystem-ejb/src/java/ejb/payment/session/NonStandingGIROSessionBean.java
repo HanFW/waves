@@ -21,13 +21,9 @@ import javax.xml.ws.WebServiceRef;
 import ws.client.otherbanks.OtherBankAccount;
 import ws.client.otherbanks.OtherBanksWebService_Service;
 import ws.client.sach.SACHWebService_Service;
-import ws.client.sach.Sach;
 
 @Stateless
 public class NonStandingGIROSessionBean implements NonStandingGIROSessionBeanLocal {
-
-    @EJB
-    private MerlionBankSessionBeanLocal merlionBankSessionBeanLocal;
 
     @WebServiceRef(wsdlLocation = "META-INF/wsdl/localhost_8080/OtherBanksWebService/OtherBanksWebService.wsdl")
     private OtherBanksWebService_Service service_otherBank;
@@ -484,8 +480,7 @@ public class NonStandingGIROSessionBean implements NonStandingGIROSessionBeanLoc
     }
 
     @Override
-    public void updateButtonRender(Long giroId
-    ) {
+    public void updateButtonRender(Long giroId) {
         NonStandingGIRO nonStandingGiro = retrieveNonStandingGIROById(giroId);
         nonStandingGiro.setButtonRender(true);
     }
@@ -509,19 +504,5 @@ public class NonStandingGIROSessionBean implements NonStandingGIROSessionBeanLoc
         // If the calling of port operations may lead to race condition some synchronization is required.
         ws.client.sach.SACHWebService port = service_sach.getSACHWebServicePort();
         port.sachRegularGIROTransferMTD(fromBankAccountNum, toBankAccountNum, transferAmt);
-    }
-
-    private Long addNewSACH(java.lang.Double otherTotalCredit, java.lang.Double merlionTotalCredit, java.lang.String currentTime, java.lang.String bankNames, java.lang.String paymentMethod, java.lang.String creditAccountNum, java.lang.String creditBank, java.lang.String debitAccountNum, java.lang.String debitBank, java.lang.Long currentTimeMilis, java.lang.Double creditAmt, java.lang.String sachStatus) {
-        // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
-        // If the calling of port operations may lead to race condition some synchronization is required.
-        ws.client.sach.SACHWebService port = service_sach.getSACHWebServicePort();
-        return port.addNewSACH(otherTotalCredit, merlionTotalCredit, currentTime, bankNames, paymentMethod, creditAccountNum, creditBank, debitAccountNum, debitBank, currentTimeMilis, creditAmt, sachStatus);
-    }
-
-    private Sach retrieveSACHById(java.lang.Long sachId) {
-        // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
-        // If the calling of port operations may lead to race condition some synchronization is required.
-        ws.client.sach.SACHWebService port = service_sach.getSACHWebServicePort();
-        return port.retrieveSACHById(sachId);
     }
 }

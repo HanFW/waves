@@ -42,7 +42,7 @@
 
                 <p:column headerText="Action" style="width: 10%">
                     <center>
-                        <p:commandButton process="@this" action="#{deleteSWIFTPayeeManagedBean.deletePayee()}"
+                        <p:commandButton process="@this" action="#{deleteSWIFTPayeeManagedBean.deletePayee}"
                                          icon="ui-icon-trash" ajax="false">
                             <f:setPropertyActionListener target="#{deleteSWIFTPayeeManagedBean.payeeId}" value="#{SWIFTPayee.payeeId}" />
                         </p:commandButton>

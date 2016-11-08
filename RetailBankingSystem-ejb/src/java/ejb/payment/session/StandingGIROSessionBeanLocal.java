@@ -12,8 +12,8 @@ public interface StandingGIROSessionBeanLocal {
             String bankAccountNumWithType, String giroType, Long customerBasicId);
 
     public String deleteStandingGIRO(Long giroId);
-
+    
     public List<StandingGIRO> retrieveStandingGIROByCusId(Long customerBasicId);
-
-    public StandingGIRO retrieveOnHoldRecordByBillRef(String billingReference);
+    
+    public StandingGIRO retrieveStandingGIROByBillRef(String billingReference);
 }
