@@ -161,7 +161,11 @@ public class LoanInterestSessionBean implements LoanInterestSessionBeanLocal {
             account.setPrincipal(instalment - interest);
             account.setInstalment(instalment);
             double previousAccountBalance = account.getAccountBalance();
-            account.setAccountBalance(previousAccountBalance + instalment);
+            if(oldTotalRemaining < instalment){
+                account.setAccountBalance(previousAccountBalance + oldTotalRemaining);
+            }else{
+                account.setAccountBalance(previousAccountBalance + instalment);
+            }
         }
 
         em.flush();
@@ -170,7 +174,7 @@ public class LoanInterestSessionBean implements LoanInterestSessionBeanLocal {
     public void checkAccountStatus(LoanRepaymentAccount account) {
         LoanPayableAccount payableAccount = account.getLoanPayableAccount();
         
-        if (payableAccount.getAccountBalance() - account.getPrincipal() <= 0) {
+        if (payableAccount.getAccountBalance() - account.getInstalment()<= 0) {
             payableAccount.setAccountStatus("ended");
         } else if(account.getRepaymentMonths() >= payableAccount.getLoanApplication().getPeriodSuggested()){
             payableAccount.setAccountStatus("ended");
