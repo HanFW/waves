@@ -32,18 +32,20 @@ public class LoanRepaymentSessionBean implements LoanRepaymentSessionBeanLocal {
 
     @Override
     public Long makeMonthlyRepayment(BankAccount depositAccount, LoanRepaymentAccount repaymentAccount, double amount) {
-        Long fromTransactionId = addDepositTransction(depositAccount, repaymentAccount, amount);        
+               
+        LoanRepaymentAccount ra = em.find(LoanRepaymentAccount.class, repaymentAccount.getId());
+        BankAccount deposit = em.find(BankAccount.class, depositAccount.getBankAccountId());
+            
+        Long fromTransactionId = addDepositTransction(deposit, ra, amount); 
+        updateLoanAccounts(ra, amount);
+        addLoanRepaymentTransaction(ra, amount);
         
-        updateLoanAccounts(repaymentAccount, amount);
-        addLoanRepaymentTransaction(repaymentAccount, amount);
-        repaymentAccount.setAccountBalance(repaymentAccount.getAccountBalance() - amount);
-        LoanPayableAccount loanPayableAccount = repaymentAccount.getLoanPayableAccount();
-        loanPayableAccount.setAccountBalance(loanPayableAccount.getAccountBalance() - amount);
-
+        em.flush();
         return fromTransactionId;
     }
     
     private void updateLoanAccounts(LoanRepaymentAccount repaymentAccount, double amount){
+        System.out.println("****** update loan accounts");
         LoanPayableAccount payableAccount = repaymentAccount.getLoanPayableAccount();
         
         double previousRepaymentBalance = repaymentAccount.getAccountBalance();
@@ -64,12 +66,22 @@ public class LoanRepaymentSessionBean implements LoanRepaymentSessionBeanLocal {
                 repaymentAccount.setFees(0);
             }
             repaymentAccount.setPaymentStatus("partially paid");
-        }else if(amount < previousRepaymentBalance){
+        }else if(amount == previousRepaymentBalance){
+            repaymentAccount.setOverdueBalance(0);
+            repaymentAccount.setFees(0);
             repaymentAccount.setPaymentStatus("paid");
+            repaymentAccount.setDefaultMonths(0);
+            payableAccount.setAccountStatus("started");
         }else{
+            repaymentAccount.setOverdueBalance(0);
+            repaymentAccount.setFees(0);
             repaymentAccount.setPaymentStatus("over paid");
+            repaymentAccount.setDefaultMonths(0);
+            payableAccount.setAccountStatus("started");
         }
         
+        payableAccount.setAccountBalance(payableAccount.getAccountBalance() - amount);
+        em.flush();
     }
     
     private void addLoanRepaymentTransaction(LoanRepaymentAccount repaymentAccount, double amount){
@@ -88,7 +100,7 @@ public class LoanRepaymentSessionBean implements LoanRepaymentSessionBeanLocal {
         em.flush();
     }
     
-    private Long addDepositTransction(BankAccount depositAccount, LoanRepaymentAccount repaymentAccount, double amount){
+    private Long addDepositTransction(BankAccount depositAccount, LoanRepaymentAccount repaymentAccount, double amount){        
         Double newAvailableBalance = Double.valueOf(depositAccount.getAvailableBankAccountBalance()) - amount;
         Double newTotalBalanace = Double.valueOf(depositAccount.getTotalBankAccountBalance()) - amount;
         

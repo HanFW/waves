@@ -82,6 +82,8 @@ public class CustomerMakeLoanRepaymentManagedBean implements Serializable{
     }
 
     public void makeMonthlyRepayment() throws IOException {
+        System.out.println("=");
+        System.out.println("====== loan/CustomerMakeLoanRepaymentManagedBean: makeMonthlyRepayment() ======");
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
 
         fromAccount = handleAccountString(fromBankAccountNumWithType);
