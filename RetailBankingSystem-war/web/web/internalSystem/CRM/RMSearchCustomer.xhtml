@@ -10,11 +10,10 @@
     <ui:define name="content">
         <h:form>
             <div align="center">
-<!--                <h:outputText value="You have logged in as: Relationship Manager"/>-->
                 <br/>
-                <p:dataTable var="customerAdvanced" value="#{rMSearchCustomerAdvancedManagedBean.customerListFromEmployeeId}" paginator="true" rows="10"
+                <p:dataTable var="customerAdvanced" value="#{rMSearchCustomerAdvancedManagedBean.customerAdvanceds}" paginator="true" rows="10"
                              paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
-                             id="customerAdvancedTable" >
+                             id="customerAdvancedTable">
 
                     <p:column headerText="Customer Name" sortBy="#{customerAdvanced.customerBasic.customerName}" filterBy="#{customerAdvanced.customerBasic.customerName}">
                         <h:outputText value="#{customerAdvanced.customerBasic.customerName}" /> 
@@ -28,26 +27,27 @@
                         <h:outputText value="#{customerAdvanced.customerBasic.customerIdentificationNum}" /> 
                     </p:column>
 
-                    <p:column headerText="Employment Details" sortBy="#{customerAdvanced.customerEmploymentDetails}" filterBy="#{customerAdvanced.customerEmploymentDetails}">
-                        <h:outputText value="#{customerAdvanced.customerEmploymentDetails}" />
+                    <p:column headerText="Employment Details" sortBy="#{customerAdvanced.employmentStatus}" filterBy="#{customerAdvanced.employmentStatus}">
+                        <h:outputText value="#{customerAdvanced.employmentStatus}"/>
                     </p:column>
-                    <p:column headerText="Family Info" sortBy="#{customerAdvanced.customerFamilyInfo}" filterBy="#{customerAdvanced.customerFamilyInfo}">
-                        <h:outputText value="#{customerAdvanced.customerFamilyInfo}" />
+                    
+                    <p:column headerText="Family Info(Number of Dependent)" sortBy="#{customerAdvanced.numOfDependent}" filterBy="#{customerAdvanced.numOfDependent}">
+                        <h:outputText value="#{customerAdvanced.numOfDependent}"/>
                     </p:column>
-                    <p:column headerText="CreditReport" sortBy="#{customerAdvanced.customerCreditReport}" filterBy="#{customerAdvanced.customerCreditReport}">
-                        <h:outputText value="#{customerAdvanced.customerCreditReport}" />
+
+                    <p:column headerText="Risk Tolerance Rating" sortBy="#{customerAdvanced.customerBasic.riskProfile.level}" filterBy="#{customerAdvanced.customerBasic.riskProfile.level}">
+                        <h:outputText value="#{customerAdvanced.customerBasic.riskProfile.level}"/>
                     </p:column>
-                    <p:column headerText="Financial Risk Rating" sortBy="#{customerAdvanced.customerFinancialRiskRating}" filterBy="#{customerAdvanced.customerFinancialRiskRating}">
-                        <h:outputText value="#{customerAdvanced.customerFinancialRiskRating}" />
-                    </p:column>
-                    <p:column headerText="Finanacial Goals" sortBy="#{customerAdvanced.customerFinanacialGoals}" filterBy="#{customerAdvanced.customerFinanacialGoals}">
-                        <h:outputText value="#{customerAdvanced.customerFinanacialGoals}"/>
-                    </p:column>
-                    <p:column headerText="Finanacial Assets" sortBy="#{customerAdvanced.customerFinanacialAssets}" filterBy="#{customerAdvanced.customerFinanacialAssets}">
-                        <h:outputText value="#{customerAdvanced.customerFinanacialAssets}"/>
-                    </p:column>
+                    
+                    <p:column headerText="Portfolios">
+                        <p:commandButton value="View Portfolios" action="/web/internalSystem/wealth/RMViewCustomerPortfolio.xhtml"/>
+                    </p:column>      
+                                        
+                    <p:column headerText="Action">
+                        <p:commandButton value="Update Profile" actionListener="#{rMSearchCustomerAdvancedManagedBean.updateCustomerAdvancedProfile(customerAdvanced.customerAdvancedId)}"/>
+                    </p:column>  
                 </p:dataTable>
             </div>
         </h:form>
     </ui:define>
-</ui:composition>
+</ui:composition> 
