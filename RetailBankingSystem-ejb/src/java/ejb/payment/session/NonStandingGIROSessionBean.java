@@ -453,6 +453,30 @@ public class NonStandingGIROSessionBean implements NonStandingGIROSessionBeanLoc
     }
 
     @Override
+    public NonStandingGIRO retrieveOnHoldRecordByBillRef(String billingReference) {
+        NonStandingGIRO nonStandingGIRO = new NonStandingGIRO();
+
+        try {
+            Query query = entityManager.createQuery("Select n From NonStandingGIRO n Where n.billReference=:billReference And n.giroType=:giroType");
+            query.setParameter("billReference", billingReference);
+            query.setParameter("giroType", "Non Standing");
+
+            if (query.getResultList().isEmpty()) {
+                return new NonStandingGIRO();
+            } else {
+                nonStandingGIRO = (NonStandingGIRO) query.getSingleResult();
+            }
+        } catch (EntityNotFoundException enfe) {
+            System.out.println("Entity not found error: " + enfe.getMessage());
+            return new NonStandingGIRO();
+        } catch (NonUniqueResultException nure) {
+            System.out.println("Non unique result error: " + nure.getMessage());
+        }
+
+        return nonStandingGIRO;
+    }
+
+    @Override
     public void updateNonStandingStatus(Long giroId, String paymentFrequency
     ) {
         NonStandingGIRO nonStandingGiro = retrieveNonStandingGIROById(giroId);

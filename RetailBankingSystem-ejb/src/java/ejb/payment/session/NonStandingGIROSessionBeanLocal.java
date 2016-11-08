@@ -36,4 +36,6 @@ public interface NonStandingGIROSessionBeanLocal {
     public void monthlyRecurrentRegularGIROTransfer();
 
     public void weeklyRecurrentRegularGIROTransfer();
+
+    public NonStandingGIRO retrieveOnHoldRecordByBillRef(String billingReference);
 }

@@ -3,6 +3,7 @@ package managedbean.payment.customer;
 import ejb.customer.entity.CustomerBasic;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
+import ejb.payment.entity.NonStandingGIRO;
 import ejb.payment.entity.RegisteredBillingOrganization;
 import ejb.payment.session.RegisteredBillingOrganizationSessionBeanLocal;
 import ejb.payment.session.NonStandingGIROSessionBeanLocal;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.inject.Named;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -224,44 +226,50 @@ public class AddNonStandingGIROManagedBean implements Serializable {
         CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
         giroType = "Non Standing";
 
-        if (transferMethod.equals("One Time")) {
-            paymentFrequency = "One Time";
-            bankAccountNum = handleAccountString(bankAccountNumWithType);
+        NonStandingGIRO nonStandingGIRO = nonStandingGIROSessionBeanLocal.retrieveOnHoldRecordByBillRef(billReference);
 
-            giroId = nonStandingGIROSessionBeanLocal.addNewNonStandingGIRO(billingOrganization,
-                    billReference, bankAccountNum, bankAccountNumWithType,
-                    paymentFrequency, paymentAmt, giroType, "Incompleted", false, customerBasic.getCustomerBasicId());
-
-            statusMessage = "Your new billing organization has been added!";
-            Calendar cal = Calendar.getInstance();
-            updateDate = cal.getTime().toString();
-
-            ec.getFlash().put("statusMessage", statusMessage);
-            ec.getFlash().put("giroId", giroId.toString());
-            ec.getFlash().put("updateDate", updateDate);
-            ec.getFlash().put("billingOrganization", billingOrganization);
-            ec.getFlash().put("billReference", billReference);
-
-            ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/payment/customerAddBillingOrganizationDone.xhtml?faces-redirect=true");
-
+        if (nonStandingGIRO.getGiroId() != null) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Bill has already existed", ""));
         } else {
-            bankAccountNum = handleAccountString(bankAccountNumWithType);
+            if (transferMethod.equals("One Time")) {
+                paymentFrequency = "One Time";
+                bankAccountNum = handleAccountString(bankAccountNumWithType);
 
-            giroId = nonStandingGIROSessionBeanLocal.addNewNonStandingGIRO(billingOrganization, billReference,
-                    bankAccountNum, bankAccountNumWithType, transferFrequency,
-                    paymentAmt, giroType, "Incompleted", false, customerBasic.getCustomerBasicId());
+                giroId = nonStandingGIROSessionBeanLocal.addNewNonStandingGIRO(billingOrganization,
+                        billReference, bankAccountNum, bankAccountNumWithType,
+                        paymentFrequency, paymentAmt, giroType, "Incompleted", false, customerBasic.getCustomerBasicId());
 
-            statusMessage = "Your new billing organization has been added!";
-            Calendar cal = Calendar.getInstance();
-            updateDate = cal.getTime().toString();
+                statusMessage = "Your new billing organization has been added!";
+                Calendar cal = Calendar.getInstance();
+                updateDate = cal.getTime().toString();
 
-            ec.getFlash().put("statusMessage", statusMessage);
-            ec.getFlash().put("giroId", giroId.toString());
-            ec.getFlash().put("updateDate", updateDate);
-            ec.getFlash().put("billingOrganization", billingOrganization);
-            ec.getFlash().put("billReference", billReference);
+                ec.getFlash().put("statusMessage", statusMessage);
+                ec.getFlash().put("giroId", giroId.toString());
+                ec.getFlash().put("updateDate", updateDate);
+                ec.getFlash().put("billingOrganization", billingOrganization);
+                ec.getFlash().put("billReference", billReference);
 
-            ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/payment/customerAddBillingOrganizationDone.xhtml?faces-redirect=true");
+                ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/payment/customerAddBillingOrganizationDone.xhtml?faces-redirect=true");
+
+            } else {
+                bankAccountNum = handleAccountString(bankAccountNumWithType);
+
+                giroId = nonStandingGIROSessionBeanLocal.addNewNonStandingGIRO(billingOrganization, billReference,
+                        bankAccountNum, bankAccountNumWithType, transferFrequency,
+                        paymentAmt, giroType, "Incompleted", false, customerBasic.getCustomerBasicId());
+
+                statusMessage = "Your new billing organization has been added!";
+                Calendar cal = Calendar.getInstance();
+                updateDate = cal.getTime().toString();
+
+                ec.getFlash().put("statusMessage", statusMessage);
+                ec.getFlash().put("giroId", giroId.toString());
+                ec.getFlash().put("updateDate", updateDate);
+                ec.getFlash().put("billingOrganization", billingOrganization);
+                ec.getFlash().put("billReference", billReference);
+
+                ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/payment/customerAddBillingOrganizationDone.xhtml?faces-redirect=true");
+            }
         }
     }
 

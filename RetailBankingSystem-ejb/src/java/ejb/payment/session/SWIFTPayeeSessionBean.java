@@ -116,4 +116,28 @@ public class SWIFTPayeeSessionBean implements SWIFTPayeeSessionBeanLocal {
 
         return swiftPayee;
     }
+    
+    @Override
+    public SWIFTPayee retrieveSWIFTPayeeByNum(String payeeAccountNum) {
+
+        SWIFTPayee swiftPayee = new SWIFTPayee();
+
+        try {
+            Query query = entityManager.createQuery("Select s From SWIFTPayee s Where s.payeeAccountNum=:payeeAccountNum");
+            query.setParameter("payeeAccountNum", payeeAccountNum);
+
+            if (query.getResultList().isEmpty()) {
+                return new SWIFTPayee();
+            } else {
+                swiftPayee = (SWIFTPayee) query.getSingleResult();
+            }
+        } catch (EntityNotFoundException enfe) {
+            System.out.println("Entity not found error: " + enfe.getMessage());
+            return new SWIFTPayee();
+        } catch (NonUniqueResultException nure) {
+            System.out.println("Non unique result error: " + nure.getMessage());
+        }
+
+        return swiftPayee;
+    }
 }

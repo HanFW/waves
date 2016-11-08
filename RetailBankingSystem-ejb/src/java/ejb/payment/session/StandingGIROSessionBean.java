@@ -10,6 +10,7 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
+import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.xml.ws.WebServiceRef;
@@ -90,6 +91,30 @@ public class StandingGIROSessionBean implements StandingGIROSessionBeanLocal {
             System.out.println("Entity not found error: " + enfe.getMessage());
             return new ArrayList<StandingGIRO>();
         }
+    }
+    
+    @Override
+    public StandingGIRO retrieveOnHoldRecordByBillRef(String billingReference) {
+        StandingGIRO standingGIRO = new StandingGIRO();
+
+        try {
+            Query query = entityManager.createQuery("Select s From StandingGIRO s Where s.billReference=:billReference And s.giroType=:giroType");
+            query.setParameter("billReference", billingReference);
+            query.setParameter("giroType", "Standing");
+
+            if (query.getResultList().isEmpty()) {
+                return new StandingGIRO();
+            } else {
+                standingGIRO = (StandingGIRO) query.getSingleResult();
+            }
+        } catch (EntityNotFoundException enfe) {
+            System.out.println("Entity not found error: " + enfe.getMessage());
+            return new StandingGIRO();
+        } catch (NonUniqueResultException nure) {
+            System.out.println("Non unique result error: " + nure.getMessage());
+        }
+
+        return standingGIRO;
     }
 
     private Long addNewBill(java.lang.String customerName, java.lang.String customerMobile, java.lang.String billReference, java.lang.String billingOrganizationName, java.lang.String debitBank, java.lang.String debitBankAccountNum, java.lang.String paymentLimit) {
