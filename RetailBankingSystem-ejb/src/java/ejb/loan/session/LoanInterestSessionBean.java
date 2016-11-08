@@ -34,10 +34,14 @@ public class LoanInterestSessionBean implements LoanInterestSessionBeanLocal {
         List<LoanRepaymentAccount> accounts = query.getResultList();
 
         for (LoanRepaymentAccount account : accounts) {
-            if (account.getLoanPayableAccount().getAccountStatus().equals("started")) {
+            if (account.getLoanPayableAccount().getAccountStatus().equals("started")
+                    || account.getLoanPayableAccount().getAccountStatus().equals("default")) {
                 checkLastRepayment(account);
                 calculateNewRepayment(account);
                 account.setRepaymentMonths(account.getRepaymentMonths() + 1);
+                checkAccountStatus(account);
+            }else if(account.getLoanPayableAccount().getAccountStatus().equals("ended")){
+                checkLastRepayment(account);
             }
         }
 
@@ -54,23 +58,34 @@ public class LoanInterestSessionBean implements LoanInterestSessionBeanLocal {
             //change balance
             double newOverdue = account.getAccountBalance() - account.getFees();
             double newFee = newOverdue * 0.003;
+            newFee = Math.round(newFee * 100.0) / 100.0;
             if(newFee < 30){
                 newFee = 30;
             }
+            newOverdue = Math.round(newOverdue * 100.0) / 100.0;
             account.setOverdueBalance(newOverdue);
+            payableAccount.setOverdueBalance(newOverdue);
             account.setAccountBalance(newOverdue+newFee);
+            account.setFees(newFee);
             System.out.println("******* new overdue: " + newOverdue);
             System.out.println("******* new fee: " + newFee);
             
             if (defaultMonths > 0 && defaultMonths < 3) {
                 //send gentle email
+                payableAccount.setAccountStatus("default");
+                payableAccount.setOverdueBalance(newOverdue);
             } else if (defaultMonths < 6) {
                 //send warning email, credit report record
+                payableAccount.setAccountStatus("default");
+                payableAccount.setOverdueBalance(newOverdue);
             } else {
                 //take actions
+                payableAccount.setAccountStatus("bankrupt");
+                payableAccount.setOverdueBalance(newOverdue);
             }
             account.setPaymentStatus("default");
         }else{
+            //should be done when customer make payment
             System.out.println("******* no overdue balance this month");
             account.setDefaultMonths(0);
             account.setPaymentStatus("pending");
@@ -119,7 +134,8 @@ public class LoanInterestSessionBean implements LoanInterestSessionBeanLocal {
 
             instalment = (rate / 12 * principal) / (1 - Math.pow((1 + rate / 12), -period));
             System.out.println("*** new month instalment: " + instalment);
-            interest = oldTotalRemaining * rate;
+            interest = oldTotalRemaining * rate / 12;
+            interest = Math.round(interest * 100.0) / 100.0;
             System.out.println("*** new month interest: " + interest);
             newTotalRemaining = oldTotalRemaining - (instalment - interest);
             System.out.println("*** old account balance: " + oldTotalRemaining);
@@ -134,5 +150,12 @@ public class LoanInterestSessionBean implements LoanInterestSessionBeanLocal {
         }
 
         em.flush();
+    }
+    
+    public void checkAccountStatus(LoanRepaymentAccount account){
+        LoanPayableAccount payableAccount = account.getLoanPayableAccount();
+        if(payableAccount.getAccountBalance() - account.getPrincipal() <= 0){
+            payableAccount.setAccountStatus("ended");
+        }
     }
 }

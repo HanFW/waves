@@ -103,6 +103,7 @@ public class CustomerViewLoanManagedBean {
     public void makeRepaymentByMerlionBankAccount() throws IOException {
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         ec.getFlash().put("loanAccountNumber", ra.getAccountNumber());
+        ec.getFlash().put("amount", ra.getAccountBalance());
         ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/loan/customerMakeLoanRepayment.xhtml?faces-redirect=true");
     }
 

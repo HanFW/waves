@@ -26,11 +26,32 @@ public class LoanManagementSessionBean implements LoanManagementSessionBeanLocal
 
     @Override
     public List<LoanPayableAccount> getLoanPayableAccountByIdentification(String identification) {
+        List<LoanPayableAccount> accounts;
+        
         Query query = em.createQuery("SELECT a FROM LoanPayableAccount a WHERE a.loanApplication.customerBasic.customerIdentificationNum = :identification AND a.accountStatus = :status");
         query.setParameter("identification", identification);
         query.setParameter("status", "started");
+        accounts = query.getResultList();
+        
+        Query query2 = em.createQuery("SELECT a FROM LoanPayableAccount a WHERE a.loanApplication.customerBasic.customerIdentificationNum = :identification AND a.accountStatus = :status");
+        query2.setParameter("identification", identification);
+        query2.setParameter("status", "default");
+        accounts.addAll(query2.getResultList());
 
-        List<LoanPayableAccount> accounts = query.getResultList();
+        Query query3 = em.createQuery("SELECT a FROM LoanPayableAccount a WHERE a.loanApplication.customerBasic.customerIdentificationNum = :identification AND a.accountStatus = :status");
+        query3.setParameter("identification", identification);
+        query3.setParameter("status", "ended");
+        accounts.addAll(query3.getResultList());
+        
+        Query query4 = em.createQuery("SELECT a FROM LoanPayableAccount a WHERE a.loanApplication.customerBasic.customerIdentificationNum = :identification AND a.accountStatus = :status");
+        query4.setParameter("identification", identification);
+        query4.setParameter("status", "completed");
+        accounts.addAll(query4.getResultList());
+        
+        Query query5 = em.createQuery("SELECT a FROM LoanPayableAccount a WHERE a.loanApplication.customerBasic.customerIdentificationNum = :identification AND a.accountStatus = :status");
+        query5.setParameter("identification", identification);
+        query5.setParameter("status", "bankrupt");
+        accounts.addAll(query5.getResultList());
 
         return accounts;
     }

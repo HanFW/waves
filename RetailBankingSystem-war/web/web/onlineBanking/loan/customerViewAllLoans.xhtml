@@ -24,12 +24,16 @@
 
             <p:dataTable var="loan" value="#{customerViewAllLoansManagedBean.accounts}" paginator="true" reflow="true" emptyMessage="No Loan Account">
 
-                <p:column headerText="Account Number"> 
+                <p:column headerText="Account"> 
                     <h:outputText value="#{loan.accountNumber}" />
                 </p:column>
                 
                 <p:column headerText="Loan Type"> 
                     <h:outputText value="#{loan.loanApplication.loanType}" />
+                </p:column>
+                
+                <p:column headerText="Loan Status"> 
+                    <h:outputText value="#{loan.accountStatus}" />
                 </p:column>
                 
                 <p:column headerText="Total Amount"> 
