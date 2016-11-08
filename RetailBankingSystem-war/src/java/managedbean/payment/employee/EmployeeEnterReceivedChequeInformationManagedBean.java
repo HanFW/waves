@@ -105,7 +105,7 @@ public class EmployeeEnterReceivedChequeInformationManagedBean {
         Long receivedChequeId = receivedChequeSessionBeanLocal.addNewReceivedCheque(
                 transactionDate, transactionAmt, receivedBankAccountNum, customerName,
                 customerMobile, receivedChequeStatus, chequeNum,
-                "Received", customerBasic.getCustomerBasicId());
+                "Received", issuedBankAccountNum, customerBasic.getCustomerBasicId());
 
         ReceivedCheque receivedCheque = receivedChequeSessionBeanLocal.retrieveReceivedChequeByNum(chequeNum);
         clearMerlionReceivedCheque(receivedCheque.getChequeNum());

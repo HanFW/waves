@@ -59,6 +59,10 @@
 
                     <p:outputLabel style="font-weight: bold" value="Amount (Singapore Dollar): " />
                     <h:outputText id="output" value="#{sWIFTTransferManagedBean.receivedCountryTransferAmtSGD}" />
+                    <br/>
+                    <br/>
+                    <br/>
+                    <p:outputLabel style="font-weight: bold" value="Service Charge: S$10" />
 
                     <br/>
                     <h:outputText value="&lt;br /&gt;" escape="false" />
@@ -92,7 +96,8 @@
                     </p:confirmDialog>
 
                     <p:commandButton id="nextBtn" value="Next" update="panel" 
-                                     actionListener="#{sWIFTTransferManagedBean.swiftTransfer}" ajax="true"/>
+                                     actionListener="#{sWIFTTransferManagedBean.swiftTransfer}" 
+                                     ajax="true"/>
 
                 </p:panel>
             </p:panelGrid>

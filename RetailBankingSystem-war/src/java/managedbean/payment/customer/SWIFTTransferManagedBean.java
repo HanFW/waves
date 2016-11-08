@@ -21,9 +21,10 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Named;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 
 @Named(value = "sWIFTTransferManagedBean")
-@RequestScoped
+@ViewScoped
 
 public class SWIFTTransferManagedBean implements Serializable {
 
@@ -55,10 +56,12 @@ public class SWIFTTransferManagedBean implements Serializable {
     private String recipientSWIFTCode;
     private String receivedCountryTransferAmtSGD;
     private String statusMessage;
+    private Double serviceCharge;
 
     private ExternalContext ec;
 
     public SWIFTTransferManagedBean() {
+//        System.out.println("I am being created");
     }
 
     @PostConstruct
@@ -188,11 +191,11 @@ public class SWIFTTransferManagedBean implements Serializable {
 
     public void setToCurrencyWithDollar(String toCurrencyWithDollar) {
 
-        ec = FacesContext.getCurrentInstance().getExternalContext();
-
-        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-        Map<String, Object> sessionMap = externalContext.getSessionMap();
-        sessionMap.put("toCurrencyWithDollar", toCurrencyWithDollar);
+//        ec = FacesContext.getCurrentInstance().getExternalContext();
+//
+//        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+//        Map<String, Object> sessionMap = externalContext.getSessionMap();
+//        sessionMap.put("toCurrencyWithDollar", toCurrencyWithDollar);
 
         this.toCurrencyWithDollar = toCurrencyWithDollar;
     }
@@ -203,11 +206,11 @@ public class SWIFTTransferManagedBean implements Serializable {
 
     public void setReceivedCountryTransferAmt(Double receivedCountryTransferAmt) {
 
-        ec = FacesContext.getCurrentInstance().getExternalContext();
-
-        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-        Map<String, Object> sessionMap = externalContext.getSessionMap();
-        sessionMap.put("receivedCountryTransferAmt", receivedCountryTransferAmt);
+//        ec = FacesContext.getCurrentInstance().getExternalContext();
+//
+//        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+//        Map<String, Object> sessionMap = externalContext.getSessionMap();
+//        sessionMap.put("receivedCountryTransferAmt", receivedCountryTransferAmt);
 
         this.receivedCountryTransferAmt = receivedCountryTransferAmt;
     }
@@ -228,12 +231,20 @@ public class SWIFTTransferManagedBean implements Serializable {
         this.receivedCountryTransferAmtSGD = receivedCountryTransferAmtSGD;
     }
 
+    public Double getServiceCharge() {
+        return serviceCharge;
+    }
+
+    public void setServiceCharge(Double serviceCharge) {
+        this.serviceCharge = serviceCharge;
+    }
+
     public void transferForeignAmountToSGD() {
 
         DecimalFormat df = new DecimalFormat("#.00");
 
-        toCurrencyWithDollar = ec.getSessionMap().get("toCurrencyWithDollar").toString();
-        receivedCountryTransferAmt = (Double) ec.getSessionMap().get("receivedCountryTransferAmt");
+//        toCurrencyWithDollar = ec.getSessionMap().get("toCurrencyWithDollar").toString();
+//        receivedCountryTransferAmt = (Double) ec.getSessionMap().get("receivedCountryTransferAmt");
 
         if (toCurrencyWithDollar != null && receivedCountryTransferAmt != null) {
             toCurrency = handleCurrencyString(toCurrencyWithDollar);
@@ -250,6 +261,7 @@ public class SWIFTTransferManagedBean implements Serializable {
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
         DecimalFormat df = new DecimalFormat("#.00");
+        serviceCharge = 10.0;
 
         toCurrency = handleCurrencyString(toCurrencyWithDollar);
         Currency foreignCurrency = currencySessionBeanLocal.retrieveCurrencyByType(toCurrency);
@@ -257,6 +269,7 @@ public class SWIFTTransferManagedBean implements Serializable {
         Double buyingCurrencyRate = Double.valueOf(foreignCurrency.getBuyingRate());
         Double unit = Double.valueOf(foreignCurrency.getUnit());
         transferAmt = receivedCountryTransferAmt / (buyingCurrencyRate * unit);
+        transferAmt = transferAmt + serviceCharge;
 
         SWIFTPayee swiftPayee = handleStringReturnSWIFTPayee(toBankAccountNumWithType);
 

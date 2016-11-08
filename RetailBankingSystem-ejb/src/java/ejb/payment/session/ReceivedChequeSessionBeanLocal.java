@@ -9,7 +9,8 @@ public interface ReceivedChequeSessionBeanLocal {
 
     public Long addNewReceivedCheque(String transactionDate, String transactionAmt,
             String receivedBankAccountNum, String receivedCustomerName, String receivedCustomerMobile,
-            String receivedChequeStatus, String chequeNum, String chequeType, Long customerBasicId);
+            String receivedChequeStatus, String chequeNum, String chequeType,
+            String otherBankAccountNum, Long customerBasicId);
 
     public List<ReceivedCheque> getAllNewReceivedCheque();
 

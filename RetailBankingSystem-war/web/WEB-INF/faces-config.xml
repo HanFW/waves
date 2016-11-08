@@ -17,5 +17,4 @@
             <renderer-class>org.primefaces.ultima.component.menu.UltimaMenuRenderer</renderer-class>
         </renderer>
     </render-kit>
-    
 </faces-config>

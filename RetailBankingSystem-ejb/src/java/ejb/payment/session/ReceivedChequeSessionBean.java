@@ -25,7 +25,8 @@ public class ReceivedChequeSessionBean implements ReceivedChequeSessionBeanLocal
     @Override
     public Long addNewReceivedCheque(String transactionDate, String transactionAmt,
             String receivedBankAccountNum, String receivedCustomerName, String receivedCustomerMobile,
-            String receivedChequeStatus, String chequeNum, String chequeType, Long customerBasicId) {
+            String receivedChequeStatus, String chequeNum, String chequeType, 
+            String otherBankAccountNum, Long customerBasicId) {
 
         ReceivedCheque receivedCheque = new ReceivedCheque();
 
@@ -37,6 +38,7 @@ public class ReceivedChequeSessionBean implements ReceivedChequeSessionBeanLocal
         receivedCheque.setTransactionDate(transactionDate);
         receivedCheque.setChequeNum(chequeNum);
         receivedCheque.setChequeType(chequeType);
+        receivedCheque.setOtherBankAccountNum(otherBankAccountNum);
         receivedCheque.setCustomerBasic(bankAccountSessionBeanLocal.retrieveCustomerBasicById(customerBasicId));
 
         entityManager.persist(receivedCheque);

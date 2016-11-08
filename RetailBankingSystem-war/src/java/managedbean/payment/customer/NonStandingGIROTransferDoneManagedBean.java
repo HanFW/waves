@@ -175,7 +175,7 @@ public class NonStandingGIROTransferDoneManagedBean implements Serializable {
         NonStandingGIRO nonStandingGiro = nonStandingGIROSessionBeanLocal.retrieveNonStandingGIROById(giroId);
 
         if (nonStandingGiro.getNonStandingStatus().equals("Incompleted")) {
-            
+
             String billingOrganizationName = nonStandingGiro.getBillingOrganizationName();
             String bankAccountNum = nonStandingGiro.getBankAccountNum();
 
@@ -189,7 +189,7 @@ public class NonStandingGIROTransferDoneManagedBean implements Serializable {
             String billOrgBankAccountNum = billOrg.getBankAccountNum();
 
             if (bankName.equals("DBS") && nonStandingGiro.getPaymentFrequency().equals("One Time")) {
-                
+
                 sachNonStandingGIROTransferMTD(bankAccount.getBankAccountNum(), billOrgBankAccountNum, paymentAmt);
 
                 OtherBankAccount dbsBankAccount = retrieveBankAccountByNum(billOrg.getBankAccountNum());
@@ -212,7 +212,7 @@ public class NonStandingGIROTransferDoneManagedBean implements Serializable {
                 ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/payment/customerNonStandingGIROTransferFinished.xhtml?faces-redirect=true");
 
             } else if (bankName.equals("DBS") && !nonStandingGiro.getPaymentFrequency().equals("One Time")) {
-                
+
                 sachNonStandingGIROTransferMTD(bankAccount.getBankAccountNum(), billOrgBankAccountNum, paymentAmt);
 
                 nonStandingGIROSessionBeanLocal.updatePaymentAmt(giroId, paymentAmt.toString());
@@ -261,17 +261,17 @@ public class NonStandingGIROTransferDoneManagedBean implements Serializable {
         transactionFrequencyForOneTime = null;
     }
 
-    private void sachNonStandingGIROTransferMTD(java.lang.String fromBankAccountNum, java.lang.String toBankAccountNum, java.lang.Double transferAmt) {
-        // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
-        // If the calling of port operations may lead to race condition some synchronization is required.
-        ws.client.sach.SACHWebService port = service_sach.getSACHWebServicePort();
-        port.sachNonStandingGIROTransferMTD(fromBankAccountNum, toBankAccountNum, transferAmt);
-    }
-
     private OtherBankAccount retrieveBankAccountByNum(java.lang.String otherBankAccountNum) {
         // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
         // If the calling of port operations may lead to race condition some synchronization is required.
         ws.client.otherbanks.OtherBanksWebService port = service_otherBanks.getOtherBanksWebServicePort();
         return port.retrieveBankAccountByNum(otherBankAccountNum);
+    }
+
+    private void sachNonStandingGIROTransferMTD(java.lang.String fromBankAccountNum, java.lang.String toBankAccountNum, java.lang.Double transferAmt) {
+        // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
+        // If the calling of port operations may lead to race condition some synchronization is required.
+        ws.client.sach.SACHWebService port = service_sach.getSACHWebServicePort();
+        port.sachNonStandingGIROTransferMTD(fromBankAccountNum, toBankAccountNum, transferAmt);
     }
 }

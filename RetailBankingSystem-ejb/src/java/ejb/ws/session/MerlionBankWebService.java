@@ -387,7 +387,18 @@ public class MerlionBankWebService {
 
         entityManager.detach(receivedCheque);
         receivedCheque.setCustomerBasic(null);
-        
+
         return receivedCheque;
+    }
+
+    @WebMethod(operationName = "rejectTransaction")
+//    @Oneway
+    public void rejectTransaction(@WebParam(name = "bankAccountNum") String bankAccountNum,
+            @WebParam(name = "transferAmt") Double transferAmt,
+            @WebParam(name = "toBankAccountNum") String toBankAccountNum) {
+        BankAccount bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountByNum(bankAccountNum);
+        String currentAvailableBalance = bankAccount.getAvailableBankAccountBalance();
+        Double totalAvailableBalance = Double.valueOf(currentAvailableBalance) + transferAmt;
+        bankAccountSessionBeanLocal.updateBankAccountAvailableBalance(bankAccountNum, totalAvailableBalance.toString());
     }
 }
