@@ -38,9 +38,12 @@
                                          required="true" requiredMessage="Required Field">
                             <f:selectItem itemLabel="Please Select One" itemValue="" />
                             <f:selectItem itemLabel="DBS Savings Account" itemValue="DBS Savings Account" />
+                            <f:selectItem itemLabel="POSB Savings Account" itemValue="POSB Savings Account" />
+                            <f:selectItem itemLabel="OCBC Savings Account" itemValue="OCBC Savings Account" />
+                            <f:selectItem itemLabel="UOB Savings Account" itemValue="UOB Savings Account" />
                         </p:selectOneMenu>
                         <p:message for="payeeAccountType" />
-                  </p:panel>
+                    </p:panel>
                 </h:panelGrid>
 
                 <h:panelGrid columns="2" styleClass="ui-panelgrid-blank form-group" class="ui-lg-4">
@@ -51,9 +54,9 @@
 
                     <p:commandButton id="addBtn" value="Add Recipient" update="panel" 
                                      actionListener="#{addOtherBankPayeeManagedBean.addOtherBankPayee()}" ajax="true"/>
-                
+
                 </h:panelGrid>
-              
+
                 <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
                     <p:commandButton value="Yes" styleClass="ui-confirmdialog-yes" action="depositIndex"/>
                     <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" />

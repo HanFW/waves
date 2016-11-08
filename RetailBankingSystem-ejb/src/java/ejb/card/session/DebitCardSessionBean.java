@@ -511,4 +511,29 @@ public class DebitCardSessionBean implements DebitCardSessionBeanLocal {
             }
         }
     }
+    
+    @Override
+    public List<DebitCard> viewDebitCards(Long customerId){
+        List<DebitCard> debitCards = new ArrayList<> ();
+        CustomerBasic customer = em.find(CustomerBasic.class, customerId);
+
+        System.out.println("check customer" + customer);
+        List<BankAccount> depositAccountsOfCustomer = customer.getBankAccount();
+        System.out.println("test depositAccountsOfCustomer " + depositAccountsOfCustomer);
+        for (int i = 0; i < depositAccountsOfCustomer.size(); i++) {
+
+            List<DebitCard> debitCardsOfDepositAccount = depositAccountsOfCustomer.get(i).getDebitCards();
+            System.out.println("test debitCardsOfDepositAccount " + debitCardsOfDepositAccount);
+            int size = debitCardsOfDepositAccount.size();
+            System.out.println("test size" + size);
+
+            for (int j = 0; j < size; j++) {
+                DebitCard debitCard = debitCardsOfDepositAccount.get(j);
+                debitCards.add(debitCard);
+
+            }//get a list of debit cards 
+        }// get a list of deposit accounts
+
+        return debitCards;
+    }
 }

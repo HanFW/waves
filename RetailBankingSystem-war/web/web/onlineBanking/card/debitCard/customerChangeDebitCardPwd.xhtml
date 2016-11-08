@@ -9,56 +9,54 @@
                 xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
     <ui:define name="content">
 
-        <h:body>
-     <p:panel>
-                        <p:outputLabel value="Welcome "/>
-                        <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
-                    </p:panel>
-            <div align="center">
-                <h:form>  
-                    <p:messages autoUpdate="true" globalOnly="true"/>
 
-                    <h:panelGrid columns="3" class="ui-lg-6"> 
+        <p:panel>
+            <p:outputLabel value="Welcome "/>
+            <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
+        </p:panel>
+        <div align="center">
+            <h:form>  
+                <p:messages autoUpdate="true" globalOnly="true"/>
 
-                        <p:outputLabel value="Debit Card:"/>
-                        <p:selectOneMenu id="selectCard" required="true" requiredMessage="Please select a debit card" style="text-align:left" value="#{customerChangeDebitCardPwdManagedBean.selectedDebitCard}">
-                            <f:selectItem itemLabel="Please select..." itemValue=""/>
-                            <f:selectItems value="#{customerChangeDebitCardPwdManagedBean.debitCards}"/> 
-                        </p:selectOneMenu>
-                        <p:message for="selectCard"/>
+                <h:panelGrid columns="1" class="ui-lg-4"> 
 
-                        <h:outputLabel for="pwd1" value="Current Password *:" />
+                    <p:outputLabel value="Debit Card:"/>
+                    <p:selectOneMenu id="selectCard" required="true" requiredMessage="Please select a debit card" style="text-align:left" value="#{customerChangeDebitCardPwdManagedBean.selectedDebitCard}">
+                        <f:selectItem itemLabel="Please select..." itemValue=""/>
+                        <f:selectItems value="#{customerChangeDebitCardPwdManagedBean.debitCards}"/> 
+                    </p:selectOneMenu>
+                    <p:message for="selectCard"/>
 
-                        <p:password converterMessage="Please enter a 6-digit PIN which consists of digit only" validatorMessage="Please enter a 6-digit PIN which consists of digit only" id="pwd1" value="#{customerChangeDebitCardPwdManagedBean.currentDebitCardPwd}" label="Password 1" required="true">
-                            <f:validateLength minimum="6" maximum="6" /> 
-                        </p:password>
+                    <h:outputLabel for="pwd1" value="Current Password: *" />
 
-                        <p:message for="pwd1"/>
+                    <p:password converterMessage="Please enter a 6-digit PIN which consists of digit only" validatorMessage="Please enter a 6-digit PIN which consists of digit only" id="pwd1" value="#{customerChangeDebitCardPwdManagedBean.currentDebitCardPwd}" label="Password 1" required="true" requiredMessage="Please enter password">
+                        <f:validateLength minimum="6" maximum="6" /> 
+                    </p:password>
+
+                    <p:message for="pwd1"/>
 
 
-                        <h:outputLabel for="pwd2" value="New Password *:" />
+                    <h:outputLabel for="pwd2" value="New Password: *" />
 
-                        <p:password converterMessage="Please enter a 6-digit PIN which consists of digit only" validatorMessage="Please enter a 6-digit PIN which consists of digit only" id="pwd2" value="#{customerChangeDebitCardPwdManagedBean.debitCardPwd}" label="Password 2" required="true">
-                            <f:validateLength minimum="6" maximum="6" /> 
-                        </p:password>
+                    <p:password converterMessage="Please enter a 6-digit PIN which consists of digit only" validatorMessage="Please enter a 6-digit PIN which consists of digit only" id="pwd2" value="#{customerChangeDebitCardPwdManagedBean.debitCardPwd}" label="Password 2" required="true" requiredMessage="Please enter password">
+                        <f:validateLength minimum="6" maximum="6" /> 
+                    </p:password>
 
-                        <p:message for="pwd2"/>
+                    <p:message for="pwd2"/>
 
-                        <h:outputLabel for="pwd3" value="Confirm Password *:" />
+                    <h:outputLabel for="pwd3" value="Confirm Password: *" />
 
-                        <p:password converterMessage="Please enter a 6-digit PIN which consists of digit only" validatorMessage="Please enter a 6-digit PIN which consists of digit only" id="pwd3" value="#{customerChangeDebitCardPwdManagedBean.debitCardPwd1}" label="Password 3" required="true">
-                            <f:validateLength minimum="6" maximum="6" /> 
-                        </p:password>
+                    <p:password converterMessage="Please enter a 6-digit PIN which consists of digit only" validatorMessage="Please enter a 6-digit PIN which consists of digit only" id="pwd3" value="#{customerChangeDebitCardPwdManagedBean.debitCardPwd1}" label="Password 3" required="true" requiredMessage="Please enter password">
+                        <f:validateLength minimum="6" maximum="6" /> 
+                    </p:password>
 
-                        <p:message for="pwd3"/>
+                    <p:message for="pwd3"/>
 
-                    </h:panelGrid>
-                    <p:commandButton value="Set Password" type="submit" actionListener="#{customerChangeDebitCardPwdManagedBean.changeDebitCardPassword}" update="@form" style="width:150px"/>
+                </h:panelGrid>
+                <p:commandButton value="Set Password" type="submit" actionListener="#{customerChangeDebitCardPwdManagedBean.changeDebitCardPassword}" update="@form" style="width:150px"/>
 
-                </h:form>
-            </div>
-        </h:body>
-
+            </h:form>
+        </div>
     </ui:define>
 </ui:composition>
 

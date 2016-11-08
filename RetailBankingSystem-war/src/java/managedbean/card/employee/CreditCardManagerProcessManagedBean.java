@@ -147,7 +147,7 @@ public class CreditCardManagerProcessManagedBean implements Serializable {
         System.out.println("!!!!!!!!customer id "+ customer.getCustomerBasicId());
         System.out.println("!!!!!!!!!csutomer has online banking acc or not "+ cRMCustomerSessionBeanLocal.hasOnlineBankingAcc(customer.getCustomerBasicId()));
         if (!cRMCustomerSessionBeanLocal.hasOnlineBankingAcc(customer.getCustomerBasicId())) {
-            customerAdminSessionBeanLocal.createOnlineBankingAccount(cc.getCustomerBasic().getCustomerBasicId());
+            customerAdminSessionBeanLocal.createOnlineBankingAccount(cc.getCustomerBasic().getCustomerBasicId(), "approveCreditCard");
         }
 
         Calendar cal = Calendar.getInstance();
