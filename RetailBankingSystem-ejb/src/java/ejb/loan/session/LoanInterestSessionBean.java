@@ -35,7 +35,8 @@ public class LoanInterestSessionBean implements LoanInterestSessionBeanLocal {
 
         for (LoanRepaymentAccount account : accounts) {
             if (account.getLoanPayableAccount().getAccountStatus().equals("started")
-                    || account.getLoanPayableAccount().getAccountStatus().equals("default")) {
+                    || account.getLoanPayableAccount().getAccountStatus().equals("default")
+                    || account.getLoanPayableAccount().getAccountStatus().equals("bankrupt")) {
                 checkLastRepayment(account);
                 calculateNewRepayment(account);
                 account.setRepaymentMonths(account.getRepaymentMonths() + 1);

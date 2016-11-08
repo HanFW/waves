@@ -27,62 +27,63 @@ import javax.faces.context.FacesContext;
 @Named(value = "customerMakeLoanRepaymentManagedBean")
 @RequestScoped
 public class CustomerMakeLoanRepaymentManagedBean {
+
     @EJB
     private LoanRepaymentSessionBeanLocal loanRepaymentSessionBeanLocal;
     @EJB
     private BankAccountSessionBeanLocal bankAccountSessionBeanLocal;
-    
+
     String loanAccountNumber;
-    
+
     private Map<String, String> fromAccounts = new HashMap<String, String>();
     private String fromCurrency;
     private Map<String, String> toAccounts = new HashMap<String, String>();
     private String toCurrency;
     private Double transferAmt;
     private String fromBankAccountNumWithType;
+    private String toBankAccountNumWithType;
     private String fromAccount;
     private String toAccount;
-    
+    private String loanType;
 
     /**
      * Creates a new instance of CustomerMakeLoanRepaymentManagedBean
      */
     public CustomerMakeLoanRepaymentManagedBean() {
     }
-    
+
     @PostConstruct
-    public void init(){
+    public void init() {
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         loanAccountNumber = (String) ec.getFlash().get("loanAccountNumber");
-        System.out.println("====== loan/CustomerMakeLoanRepaymentManagedBean: init: get loan account number: " + loanAccountNumber);
+        transferAmt = (double) ec.getFlash().get("amount");
+        loanType = (String) ec.getFlash().get("loanType");
         
         CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
+        List<BankAccount> bankAccounts = bankAccountSessionBeanLocal.retrieveBankAccountByCusIC(customerBasic.getCustomerIdentificationNum());
+        fromAccounts = new HashMap<String, String>();
 
-            List<BankAccount> bankAccounts = bankAccountSessionBeanLocal.retrieveBankAccountByCusIC(customerBasic.getCustomerIdentificationNum());
-            fromAccounts = new HashMap<String, String>();
-            
-            for (int i = 0; i < bankAccounts.size(); i++) {
-                fromAccounts.put(bankAccounts.get(i).getBankAccountType() + "-" + bankAccounts.get(i).getBankAccountNum(), bankAccounts.get(i).getBankAccountType() + "-" + bankAccounts.get(i).getBankAccountNum());
-            }
-            
-            toAccounts.put(loanAccountNumber, loanAccountNumber);
-    }
-    
-    public void makePayment(){
-        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        for (int i = 0; i < bankAccounts.size(); i++) {
+            fromAccounts.put(bankAccounts.get(i).getBankAccountType() + "-" + bankAccounts.get(i).getBankAccountNum(), bankAccounts.get(i).getBankAccountType() + "-" + bankAccounts.get(i).getBankAccountNum());
+        }
         
+        toAccounts = new HashMap<String, String>();
+        toAccounts.put(loanType + " Repayment Account-" + loanAccountNumber , loanAccountNumber);
+    }
+
+    public void makePayment() {
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+
         fromAccount = handleAccountString(fromBankAccountNumWithType);
         toAccount = loanAccountNumber;
-        
-        CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
-        
+
         loanRepaymentSessionBeanLocal.makeMonthlyRepayment(fromAccount, toAccount, transferAmt);
-        
+
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Transaction successful", null);
         FacesContext context = FacesContext.getCurrentInstance();
         context.addMessage(null, message);
     }
-    
+
     private String handleAccountString(String bankAccountNumWithType) {
 
         String[] bankAccountNums = bankAccountNumWithType.split("-");
@@ -163,6 +164,12 @@ public class CustomerMakeLoanRepaymentManagedBean {
         this.toAccount = toAccount;
     }
 
-    
-    
+    public String getToBankAccountNumWithType() {
+        return toBankAccountNumWithType;
+    }
+
+    public void setToBankAccountNumWithType(String toBankAccountNumWithType) {
+        this.toBankAccountNumWithType = toBankAccountNumWithType;
+    }
+
 }

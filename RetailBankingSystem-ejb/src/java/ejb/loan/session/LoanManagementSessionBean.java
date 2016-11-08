@@ -5,6 +5,8 @@
  */
 package ejb.loan.session;
 
+import ejb.customer.entity.CustomerBasic;
+import ejb.deposit.entity.BankAccount;
 import ejb.loan.entity.CashlineApplication;
 import ejb.loan.entity.LoanApplication;
 import ejb.loan.entity.LoanPayableAccount;
@@ -83,5 +85,11 @@ public class LoanManagementSessionBean implements LoanManagementSessionBeanLocal
         List<CashlineApplication> resultList = query.getResultList();
         
         return resultList;
+    }
+    
+    @Override
+    public List<BankAccount> getCustomerDepositAccounts(Long customerId){
+        CustomerBasic customer = em.find(CustomerBasic.class, customerId);
+        return customer.getBankAccount();
     }
 }

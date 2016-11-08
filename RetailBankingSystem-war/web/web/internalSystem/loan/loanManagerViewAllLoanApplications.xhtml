@@ -156,6 +156,7 @@
                             </p:dataTable>
                         </p:tab>
                         <p:tab title="Approved">
+                            <p:messages autoUpdate="true"/>
                             <p:dataTable var="renovation3" value="#{loanManagerViewAllLoanApplicationsManagedBean.approvedRenovationApplications}">
                                 <p:column headerText="Application ID">
                                     <h:outputText value="#{renovation3.loanApplicationId}" />
@@ -376,6 +377,7 @@
                             </p:dataTable>
                         </p:tab>
                         <p:tab title="Approved">
+                            <p:messages autoUpdate="true"/>
                             <p:dataTable var="cashline3" value="#{loanManagerViewAllLoanApplicationsManagedBean.approvedCashlineApplications}">
                                 <p:column headerText="Application ID">
                                     <h:outputText value="#{cashline3.id}" />
