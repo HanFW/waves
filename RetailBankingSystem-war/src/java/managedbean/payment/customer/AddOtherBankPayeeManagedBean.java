@@ -93,7 +93,9 @@ public class AddOtherBankPayeeManagedBean {
 
         lastTransactionDate = "";
         customerBasicId = customerBasic.getCustomerBasicId();
-        otherBankPayeeId = otherBankPayeeSessionBeanLocal.addNewOtherBankPayee(payeeName, payeeAccountNum, payeeAccountType, lastTransactionDate, "Other Bank", customerBasicId);
+        otherBankPayeeId = otherBankPayeeSessionBeanLocal.addNewOtherBankPayee(payeeName,
+                payeeAccountNum, payeeAccountType, lastTransactionDate, "Other Bank",
+                customerBasicId);
         OtherBankPayee otherBankPayee = otherBankPayeeSessionBeanLocal.retrieveOtherBankPayeeById(otherBankPayeeId);
 
         customerBasic.getOtherBankPayee().add(otherBankPayee);
@@ -108,5 +110,4 @@ public class AddOtherBankPayeeManagedBean {
 
         ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/payment/customerAddOtherBankPayeeDone.xhtml?faces-redirect=true");
     }
-
 }
