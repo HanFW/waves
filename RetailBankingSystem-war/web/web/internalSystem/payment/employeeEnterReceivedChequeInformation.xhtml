@@ -8,83 +8,64 @@
                 template="/WEB-INF/internalSystemTemplate.xhtml">
 
     <ui:define name="content">
-        <h:body>
-            <h:form>
-                <p:menubar>
-                    <p:submenu label="Home">
-                        <p:menuitem value="Home" url="/web/internalSystem/infrastructure/employeeCounterTellerMainPage.xhtml"/>
-                    </p:submenu>
+        <h:form id="formMain">
+            <p:panel id="panel"> 
+                <div align="center">
+                    <h:panelGrid columns="1" class="ui-lg-4">
 
-                    <p:submenu label="Log Out">
-                        <p:menuitem value="Logout" actionListener="#{employeeLoginManagedBean.doLogOut}" />
-                    </p:submenu>
-                </p:menubar>
-            </h:form>
+                        <p:messages globalOnly="true"/>
 
-            <h:form id="formMain">
+                        <p:outputLabel for="chequeNum" style="font-weight: bold" 
+                                       value="Cheque Number: " />
+                        <p:inputText required="true" label="Cheque Number" 
+                                     requiredMessage="Required Field" id="chequeNum"
+                                     value="#{employeeEnterReceivedChequeInformationManagedBean.chequeNum}">
+                        </p:inputText>
+                        <p:message for="chequeNum" />
 
-                <div class="ui-g ui-fluid">
-                    <div class="ui-g-12 ui-lg-12">
-                        <div class="card card-w-title"> 
-                            <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
-                                <p:panel id="panel"> 
-                                    <p:messages globalOnly="true"/>
+                        <p:outputLabel for="transactionAmt" style="font-weight: bold" 
+                                       value="Transfer Amount: " />
+                        <p:inputText required="true" label="Transfer Amount" 
+                                     requiredMessage="Required Field" id="transactionAmt"
+                                     value="#{employeeEnterReceivedChequeInformationManagedBean.transactionAmt}">
+                        </p:inputText>
+                        <p:message for="transactionAmt" />
 
-                                    <p:outputLabel for="chequeNum" style="font-weight: bold" 
-                                                   value="Cheque Number: " />
-                                    <p:inputText required="true" label="Cheque Number" 
-                                                 requiredMessage="Required Field" id="chequeNum"
-                                                 value="#{employeeEnterReceivedChequeInformationManagedBean.chequeNum}">
-                                    </p:inputText>
-                                    <p:message for="chequeNum" />
+                        <p:outputLabel for="issuedBankAccountNum" style="font-weight: bold" value="Issued Account Number: " />
+                        <p:inputText required="true" label="Issued Account Number" 
+                                     requiredMessage="Required Field" id="issuedBankAccountNum"
+                                     value="#{employeeEnterReceivedChequeInformationManagedBean.issuedBankAccountNum}">
+                        </p:inputText>
+                        <p:message for="issuedBankAccountNum" />
 
-                                    <p:outputLabel for="transactionAmt" style="font-weight: bold" 
-                                                   value="Transfer Amount: " />
-                                    <p:inputText required="true" label="Transfer Amount" 
-                                                 requiredMessage="Required Field" id="transactionAmt"
-                                                 value="#{employeeEnterReceivedChequeInformationManagedBean.transactionAmt}">
-                                    </p:inputText>
-                                    <p:message for="transactionAmt" />
+                        <p:outputLabel for="receivedBankAccountNum" style="font-weight: bold" value="Account Number: " />
+                        <p:inputText required="true" label="Account Number" 
+                                     requiredMessage="Required Field" id="receivedBankAccountNum"
+                                     value="#{employeeEnterReceivedChequeInformationManagedBean.receivedBankAccountNum}">
+                        </p:inputText>
+                        <p:message for="receivedBankAccountNum" />
 
-                                    <p:outputLabel for="issuedBankAccountNum" style="font-weight: bold" value="Issued Account Number: " />
-                                    <p:inputText required="true" label="Issued Account Number" 
-                                                 requiredMessage="Required Field" id="issuedBankAccountNum"
-                                                 value="#{employeeEnterReceivedChequeInformationManagedBean.issuedBankAccountNum}">
-                                    </p:inputText>
-                                    <p:message for="issuedBankAccountNum" />
+                        <p:outputLabel for="receivedCustomerName" style="font-weight: bold" value="Customer Name: " />
+                        <p:inputText required="true" label="Customer Name" 
+                                     requiredMessage="Required Field" id="receivedCustomerName"
+                                     value="#{employeeEnterReceivedChequeInformationManagedBean.customerName}">
+                        </p:inputText>
+                        <p:message for="receivedCustomerName" />
 
-                                    <p:outputLabel for="receivedBankAccountNum" style="font-weight: bold" value="Account Number: " />
-                                    <p:inputText required="true" label="Account Number" 
-                                                 requiredMessage="Required Field" id="receivedBankAccountNum"
-                                                 value="#{employeeEnterReceivedChequeInformationManagedBean.receivedBankAccountNum}">
-                                    </p:inputText>
-                                    <p:message for="receivedBankAccountNum" />
+                        <p:outputLabel for="receivedCustomerMobile" style="font-weight: bold" value="Customer Mobile: " />
+                        <p:inputText required="true" label="Customer Mobile" 
+                                     requiredMessage="Required Field" id="receivedCustomerMobile"
+                                     value="#{employeeEnterReceivedChequeInformationManagedBean.customerMobile}">
+                        </p:inputText>
+                        <p:message for="receivedCustomerMobile" />
 
-                                    <p:outputLabel for="receivedCustomerName" style="font-weight: bold" value="Customer Name: " />
-                                    <p:inputText required="true" label="Customer Name" 
-                                                 requiredMessage="Required Field" id="receivedCustomerName"
-                                                 value="#{employeeEnterReceivedChequeInformationManagedBean.customerName}">
-                                    </p:inputText>
-                                    <p:message for="receivedCustomerName" />
-
-                                    <p:outputLabel for="receivedCustomerMobile" style="font-weight: bold" value="Customer Mobile: " />
-                                    <p:inputText required="true" label="Customer Mobile" 
-                                                 requiredMessage="Required Field" id="receivedCustomerMobile"
-                                                 value="#{employeeEnterReceivedChequeInformationManagedBean.customerMobile}">
-                                    </p:inputText>
-                                    <p:message for="receivedCustomerMobile" />
-
-                                    <p:commandButton id="submitBtn" value="Submit" update="panel" 
-                                                     actionListener="#{employeeEnterReceivedChequeInformationManagedBean.submit()}" 
-                                                     ajax="true"/>
-                                </p:panel>
-                            </p:panelGrid>
-                        </div>
-                    </div>
+                    </h:panelGrid>
+                      <p:commandButton id="submitBtn" value="Submit" update="panel" 
+                                         actionListener="#{employeeEnterReceivedChequeInformationManagedBean.submit()}" 
+                                         ajax="true" style="width:150px"/>
                 </div>
-
-            </h:form>
-        </h:body>
+            </p:panel>
+        </h:form>
     </ui:define>
 </ui:composition>
 

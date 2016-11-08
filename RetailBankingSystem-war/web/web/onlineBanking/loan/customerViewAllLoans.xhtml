@@ -22,7 +22,7 @@
                 <h1>View My Loans</h1>
             </div>
 
-            <p:dataTable var="loan" value="#{customerViewAllLoansManagedBean.accounts}" reflow="true" emptyMessage="No Loan Account">
+            <p:dataTable var="loan" value="#{customerViewAllLoansManagedBean.accounts}" paginator="true" reflow="true" emptyMessage="No Loan Account">
 
                 <p:column headerText="Account Number"> 
                     <h:outputText value="#{loan.accountNumber}" />

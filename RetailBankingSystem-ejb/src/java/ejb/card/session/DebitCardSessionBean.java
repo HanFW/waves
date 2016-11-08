@@ -79,6 +79,7 @@ public class DebitCardSessionBean implements DebitCardSessionBeanLocal {
         debitCard.setStatus("not activated");
 
         debitCard.setTransactionLimit(500);
+        debitCard.setAvailableTransactionBalance(500);
 
         em.persist(debitCard);
         depositAccount.addDebitCard(debitCard);
@@ -379,6 +380,22 @@ public class DebitCardSessionBean implements DebitCardSessionBeanLocal {
         return Arrays.toString(md.digest(stringToHash.getBytes()));
     }
 
+    //get all deposit accounts of a customer
+    @Override
+    public List<String> getAllDepositAccounts(Long customerId) {
+        List<String> depositAccounts = new ArrayList();
+        CustomerBasic customer = em.find(CustomerBasic.class, customerId);
+
+        System.out.println("check customer" + customer);
+        List<BankAccount> depositAccountsOfCustomer = customer.getBankAccount();
+        for (int i = 0; i < depositAccountsOfCustomer.size(); i++) {
+            String info = depositAccountsOfCustomer.get(i).getBankAccountType() + "-" + depositAccountsOfCustomer.get(i).getBankAccountNum();
+            depositAccounts.add(i, info);
+        }
+        
+        return depositAccounts;
+    }
+
     //get all debit cards of a customer
     @Override
     public List<String> getAllDebitCards(Long customerId) {
@@ -466,6 +483,54 @@ public class DebitCardSessionBean implements DebitCardSessionBeanLocal {
                     System.out.println("test debitcards" + debitCards);
                     index++;
                 }
+            }//get a list of debit cards 
+        }// get a list of deposit accounts
+
+        return debitCards;
+    }
+    
+    @Override
+    public BankAccount getBankAccountByCardNum(String cardNum){
+        DebitCard card = getCardByCardNum(cardNum);
+        return card.getBankAccount();
+    }
+    
+    @Override
+    public void updateAllDebitCardsAvailableDailyTransactionBalance(){
+        List<DebitCard> debitCards = new ArrayList<> ();
+        Query q=em.createQuery("select d from DebitCard d where d.status=:status");
+        q.setParameter("status", "activated");
+        
+        if(!q.getResultList().isEmpty()){
+            debitCards = q.getResultList();
+            
+            for(int i=0;i<debitCards.size();i++){
+                double newAvailableDailyTransactionBalance = debitCards.get(i).getTransactionLimit();
+                debitCards.get(i).setAvailableTransactionBalance(newAvailableDailyTransactionBalance);
+                em.flush();
+            }
+        }
+    }
+    
+    @Override
+    public List<DebitCard> viewDebitCards(Long customerId){
+        List<DebitCard> debitCards = new ArrayList<> ();
+        CustomerBasic customer = em.find(CustomerBasic.class, customerId);
+
+        System.out.println("check customer" + customer);
+        List<BankAccount> depositAccountsOfCustomer = customer.getBankAccount();
+        System.out.println("test depositAccountsOfCustomer " + depositAccountsOfCustomer);
+        for (int i = 0; i < depositAccountsOfCustomer.size(); i++) {
+
+            List<DebitCard> debitCardsOfDepositAccount = depositAccountsOfCustomer.get(i).getDebitCards();
+            System.out.println("test debitCardsOfDepositAccount " + debitCardsOfDepositAccount);
+            int size = debitCardsOfDepositAccount.size();
+            System.out.println("test size" + size);
+
+            for (int j = 0; j < size; j++) {
+                DebitCard debitCard = debitCardsOfDepositAccount.get(j);
+                debitCards.add(debitCard);
+
             }//get a list of debit cards 
         }// get a list of deposit accounts
 

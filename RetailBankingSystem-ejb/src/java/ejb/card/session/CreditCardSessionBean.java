@@ -296,20 +296,20 @@ public class CreditCardSessionBean implements CreditCardSessionBeanLocal {
 
         return creditCardNames;
     }
-    
+
     @Override
-    public SupplementaryCard getSupplementaryCardById(Long supplementaryCardId){
+    public SupplementaryCard getSupplementaryCardById(Long supplementaryCardId) {
         SupplementaryCard sc = em.find(SupplementaryCard.class, supplementaryCardId);
         em.refresh(sc);
 
         return sc;
     }
-    
+
     @Override
-    public List<SupplementaryCard> getAllSupplementaryCardByCustomer(CustomerBasic customer){
+    public List<SupplementaryCard> getAllSupplementaryCardByCustomer(CustomerBasic customer) {
         Query query = em.createQuery("SELECT s FROM SupplementaryCard s WHERE s.customerBasic = :customer");
         query.setParameter("customer", customer);
-        
+
         return query.getResultList();
     }
 
@@ -451,6 +451,19 @@ public class CreditCardSessionBean implements CreditCardSessionBeanLocal {
     }
 
     @Override
+    public PrincipalCard getPrincipalCardByCardNum(String cardNum) {
+        Query query = em.createQuery("SELECT p FROM PrincipalCard p WHERE p.cardNum = :cardNum");
+        query.setParameter("cardNum", cardNum);
+
+        if (query.getResultList().isEmpty()) {
+            return null;
+        } else {
+            PrincipalCard findCreditCard = (PrincipalCard) query.getResultList().get(0);
+            return findCreditCard;
+        }
+    }
+
+    @Override
     public CreditCard getCardByCardId(Long cardId) {
         Query query = em.createQuery("SELECT c FROM CreditCard c WHERE c.cardId = :cardId");
         query.setParameter("cardId", cardId);
@@ -512,20 +525,20 @@ public class CreditCardSessionBean implements CreditCardSessionBeanLocal {
         em.flush();
 
     }
-    
+
     @Override
-    public void approveSupplementary (Long supplementaryCardId){
+    public void approveSupplementary(Long supplementaryCardId) {
         SupplementaryCard sc = em.find(SupplementaryCard.class, supplementaryCardId);
         sc.setStatus("Approved");
         em.flush();
     }
+
     @Override
-    public void rejectSupplementary (Long supplementaryCardId) {
+    public void rejectSupplementary(Long supplementaryCardId) {
         SupplementaryCard sc = em.find(SupplementaryCard.class, supplementaryCardId);
         em.remove(sc);
         em.flush();
     }
-        
 
     private PrincipalCard getPrincipalByCardNum(String cardNum) {
         Query query = em.createQuery("SELECT p FROM PrincipalCard p WHERE p.cardNum = :cardNum");
@@ -543,6 +556,25 @@ public class CreditCardSessionBean implements CreditCardSessionBeanLocal {
         System.out.println("md5 hashing- string to hash " + stringToHash);
         MessageDigest md = MessageDigest.getInstance("MD5");
         return Arrays.toString(md.digest(stringToHash.getBytes()));
+    }
+
+    @Override
+    public void updateCreditCardLimit(String creditCardNum, double transactionAmt) {
+        PrincipalCard card = getPrincipalCardByCardNum(creditCardNum);
+        double newCreditLimit = card.getCreditLimit() - transactionAmt;
+        card.setCreditLimit(newCreditLimit);
+        double newOutstandingBalance = card.getOutstandingBalance() + transactionAmt;
+        card.setOutstandingBalance(newOutstandingBalance);
+        em.flush();
+
+    }
+
+    @Override
+    public List<PrincipalCard> getAllPrincipalCardByCustomer(CustomerBasic customer) {
+        Query query = em.createQuery("SELECT p FROM PrincipalCard p WHERE p.customerBasic=:customer");
+        query.setParameter("customer", customer);
+
+        return query.getResultList();
     }
 
 }

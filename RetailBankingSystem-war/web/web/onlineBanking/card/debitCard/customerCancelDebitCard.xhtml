@@ -19,7 +19,8 @@
                 <div align="center">
 
                     <h1>Cancel My Card</h1>
-                    <p:messages autoUpdate="true"/>
+                    <p:messages id="msg" showDetail="false"/>
+                    
                     <h:panelGrid columns="2" class="ui-lg-6"> 
 
                         <p:outputLabel value="Card Type:"/>
@@ -28,18 +29,18 @@
                             <f:selectItem itemLabel="Debit Card" itemValue="debit" />
                             <p:ajax event="change" update="creditPanel debitPanel" listener="#{customerCancelCardManagedBean.showCards}"/>
                         </p:selectOneRadio>
-                        <p:messages for="cardType"/>
+<!--                        <p:messages for="cardType"/>-->
                     </h:panelGrid>
 
                     <p:panel id="debitPanel" visible="#{customerCancelCardManagedBean.debitPanelVisible}">
                         <h:panelGrid columns="2" class="ui-lg-4">
-                            <p:outputLabel value="Debit Card"/>
+                            <p:outputLabel value="Debit Card:"/>
                             <p:selectOneMenu id="selectCard" required="#{customerCancelCardManagedBean.debitPanelVisible}" requiredMessage="Please select a debit card" style="text-align:left" value="#{customerCancelCardManagedBean.selectedDebitCard}">
                                 <f:selectItem itemLabel="Please select..." itemValue=""/>
                                 <f:selectItems value="#{customerCancelCardManagedBean.debitCards}"/> 
                             </p:selectOneMenu>
                             <p:outputLabel value="Card Password:" />
-                            <p:inputText  required="#{customerCancelCardManagedBean.debitPanelVisible}" requiredMessage="Please input your card password" id="cardPwd" value="#{customerCancelCardManagedBean.debitCardPwd}">
+                            <p:inputText type="password" required="#{customerCancelCardManagedBean.debitPanelVisible}" requiredMessage="Please input your card password" id="cardPwd" value="#{customerCancelCardManagedBean.debitCardPwd}">
 
                             </p:inputText>
                         </h:panelGrid>
@@ -47,7 +48,7 @@
 
                     <p:panel id="creditPanel" visible="#{customerCancelCardManagedBean.creditPanelVisible}">
                         <h:panelGrid columns="2" class="ui-lg-4">
-                            <p:outputLabel value="Credit Card"/>
+                            <p:outputLabel value="Credit Card:"/>
                             <p:selectOneMenu id="selectCreditCard" required="#{customerCancelCardManagedBean.creditPanelVisible}" requiredMessage="Please select a credit card" style="text-align:left" value="#{customerCancelCardManagedBean.selectedCreditCard}">
                                 <f:selectItem itemLabel="Please select..." itemValue=""/>
                                 <f:selectItems value="#{customerCancelCardManagedBean.creditCards}"/> 
@@ -60,7 +61,7 @@
                         </h:panelGrid>
                     </p:panel>
 
-                    <p:commandButton value="Cancel My Card" actionListener="#{customerCancelCardManagedBean.cancelCard}" style="width:auto">
+                    <p:commandButton value="Cancel My Card" actionListener="#{customerCancelCardManagedBean.cancelCard}" style="width:auto" update="msg">
                         <p:confirm header="Confirmation" message="Are you sure to cancel the card? This action is not reversible" icon="ui-icon-alert" />
                     </p:commandButton>
 

@@ -31,6 +31,7 @@ public class DebitCardType implements Serializable {
     private List<DebitCard> debitCards;
 
     private String debitCardTypeName;
+    private String cardNetwork;
     private String principal;
     private String annualFeeWaiver;
     private double cashBackRate;
@@ -49,6 +50,14 @@ public class DebitCardType implements Serializable {
 
     public void setDebitCardTypeName(String debitCardTypeName) {
         this.debitCardTypeName = debitCardTypeName;
+    }
+
+    public String getCardNetwork() {
+        return cardNetwork;
+    }
+
+    public void setCardNetwork(String cardNetwork) {
+        this.cardNetwork = cardNetwork;
     }
 
     public String getPrincipal() {

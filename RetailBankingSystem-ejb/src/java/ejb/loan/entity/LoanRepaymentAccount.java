@@ -28,8 +28,8 @@ public class LoanRepaymentAccount implements Serializable {
     private Long id;
     
     private String accountNumber;
-//    private double principal;
-//    private double interest;
+    private double principal;
+    private double interest;
     private double instalment;
     private double overdueBalance;
     private double fees;
@@ -37,6 +37,7 @@ public class LoanRepaymentAccount implements Serializable {
     private int repaymentMonths;
     private String depositAccountNumber;
     private double accountBalance;
+    private int defaultMonths;
     
     @OneToOne(mappedBy = "loanRepaymentAccount")
     private LoanPayableAccount loanPayableAccount;
@@ -130,6 +131,30 @@ public class LoanRepaymentAccount implements Serializable {
 
     public void setAccountBalance(double accountBalance) {
         this.accountBalance = accountBalance;
+    }
+
+    public double getPrincipal() {
+        return principal;
+    }
+
+    public void setPrincipal(double principal) {
+        this.principal = principal;
+    }
+
+    public double getInterest() {
+        return interest;
+    }
+
+    public void setInterest(double interest) {
+        this.interest = interest;
+    }
+
+    public int getDefaultMonths() {
+        return defaultMonths;
+    }
+
+    public void setDefaultMonths(int defaultMonths) {
+        this.defaultMonths = defaultMonths;
     }
 
     @Override

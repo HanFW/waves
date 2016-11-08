@@ -1,0 +1,129 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/onlineBankingTemplate.xhtml"
+                xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
+    <ui:define name="content">
+
+        <div align="center">
+            <h:form>
+                <p:panel>
+                    <p:outputLabel value="Welcome "/>
+                    <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
+                </p:panel>
+
+                <p:tabView id='tabview' cache="false" dynamic="true"> 
+                    <p:tab title="Debit Cards" id='debitCards'>
+
+                        <p:dataTable var="debitCard" id="debitCardsTable" value="#{customerViewCardsManagedBean.debitCards}">
+                            <p:column headerText="Bank Account">
+                                <h:outputText value="#{debitCard.bankAccount.bankAccountType}" />
+                            </p:column>
+
+                            <p:column headerText="Debit Card Type Name">
+                                <h:outputText value="#{debitCard.debitCardType.debitCardTypeName}" />
+                            </p:column>
+
+                            <p:column headerText="Card Number">
+                                <h:outputText value="#{debitCard.cardNum}" />
+                            </p:column>
+
+                            <p:column headerText="Expiry Date">
+                                <h:outputText value="#{debitCard.cardExpiryDate}" />
+                            </p:column>
+
+                            <p:column headerText="Available Balance">
+                                <h:outputText value="#{debitCard.bankAccount.availableBankAccountBalance}" />
+                            </p:column>
+
+                            <p:column headerText="Daily Transaction Limit">
+                                <h:outputText value="#{debitCard.transactionLimit}" />
+                            </p:column>
+
+                            <p:column headerText="Card Status">
+                                <h:outputText value="#{debitCard.status}"/>
+                            </p:column>
+
+                            <p:column>
+                                <p:commandButton rendered="#{customerViewCardsManagedBean.activateCardAction(debitCard.status)}" id="activate" value="Activate" action="/web/onlineBanking/card/debitCard/customerActivateDebitCard.xhtml?faces-redirect=true">
+                                </p:commandButton>
+                            </p:column>
+
+                        </p:dataTable>
+                    </p:tab>
+
+                    <p:tab title="Credit Cards" id="creditCards">
+                        <p:dataTable var="creditCard" id="creditCardsTable" value="#{customerViewCardsManagedBean.creditCards}">
+                            <p:column headerText="Credit Card Type Name">
+                                <h:outputText value="#{creditCard.creditCardType.creditCardTypeName}" />
+                            </p:column>
+
+                            <p:column headerText="Card Number">
+                                <h:outputText value="#{creditCard.cardNum}" />
+                            </p:column>
+
+                            <p:column headerText="Expiry Date">
+                                <h:outputText value="#{creditCard.cardExpiryDate}" />
+                            </p:column>
+
+                            <p:column headerText="Credit Limit">
+                                <h:outputText value="#{creditCard.creditLimit}" />
+                            </p:column>
+
+                            <p:column headerText="Outstanding Balance">
+                                <h:outputText value="#{creditCard.outstandingBalance}" />
+                            </p:column>
+
+                            <p:column headerText="Card Status">
+                                <h:outputText value="#{creditCard.status}"/>
+                            </p:column>
+
+                            <p:column>
+                                <p:commandButton rendered="#{customerViewCardsManagedBean.activateCardAction(creditCard.status)}" id="activate" value="Activate" action="/web/onlineBanking/card/creditCard/customerActivateCreditCard.xhtml?faces-redirect=true">
+                                </p:commandButton>
+                            </p:column>
+
+                        </p:dataTable>
+                    </p:tab>
+
+
+                    <p:tab title="Supplementary Cards" id="suplementaryCards">
+                        <p:dataTable var="supplementaryCard" id="supplementaryCardsTable" value="#{customerViewCardsManagedBean.supplementaryCards}">
+                            <p:column headerText="Credit Card Type Name">
+                                <h:outputText value="#{supplementaryCard.creditCardType.creditCardTypeName}" />
+                            </p:column>
+
+                            <p:column headerText="Card Number">
+                                <h:outputText value="#{supplementaryCard.cardNum}" />
+                            </p:column>
+
+                            <p:column headerText="Expiry Date">
+                                <h:outputText value="#{supplementaryCard.cardExpiryDate}" />
+                            </p:column>
+
+                            <p:column headerText="Principal Card Number">
+                                <h:outputText value="#{supplementaryCard.principalCard.cardNum}" />
+                            </p:column>
+
+                            <p:column headerText="Card Status">
+                                <h:outputText value="#{supplementaryCard.status}"/>
+                            </p:column>
+
+                            <p:column>
+                                <p:commandButton rendered="#{customerViewCardsManagedBean.activateCardAction(supplementaryCard.status)}" id="activate" value="Activate" action="/web/onlineBanking/card/creditCard/customerActivateCreditCard.xhtml?faces-redirect=true">
+                                </p:commandButton>
+                            </p:column>
+
+                        </p:dataTable>
+                    </p:tab>
+                </p:tabView>
+
+            </h:form>
+        </div>
+
+    </ui:define>
+</ui:composition>

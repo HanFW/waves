@@ -11,24 +11,22 @@
 
         <h:form>
             <div align="center">
-<!--                <h:outputText value="You have logged in as: Counter Teller"/>-->
+                <!--                <h:outputText value="You have logged in as: Counter Teller"/>-->
                 <br/>
                 <p:messages />
-                <h:outputText value="&lt;br /&gt;" escape="false" /> 
-                <h:outputText value="&lt;br /&gt;" escape="false" /> 
-                <p:outputLabel for="customerID"  value="Customer NRIC/Passport:" />
-
-                <h:panelGrid columns="1" id="matchGrid" cellpadding="5" styleClass="ui-panelgrid-blank form-group">                  
-                    <p:inputText id="customerID" value="#{counterTellerSearchCustomerManagedBean.identificationNum}" />
+                <p:panelGrid columns="1" id="matchGrid" class="ui-lg-3"> 
+                    <p:outputLabel for="customerID"  style="font-weight: bold" value="Customer NRIC/Passport:" />                
+                    <p:inputText id="customerID" value="#{counterTellerSearchCustomerManagedBean.identificationNum}" required="true"/>
                     <p:commandButton value="Show Customer" actionListener="#{counterTellerSearchCustomerManagedBean.retieveCustomerByIdentification}" update="@form"/>
-                </h:panelGrid>
-
+                </p:panelGrid>
 
                 <p:panelGrid rendered="#{counterTellerSearchCustomerManagedBean.visible}" >
 
                     <p:row>
                         <p:column colspan="2">
-                            <h:outputText value="Customer Basic Information" />
+                            <div align="center">
+                                <h:outputText value="Customer Basic Information" style="font-size:20px"/>
+                            </div>
                         </p:column>
                     </p:row>
                     <p:row>

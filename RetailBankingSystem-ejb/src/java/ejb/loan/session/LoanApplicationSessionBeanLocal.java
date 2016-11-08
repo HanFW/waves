@@ -5,6 +5,7 @@
  */
 package ejb.loan.session;
 
+import ejb.customer.entity.CustomerBasic;
 import ejb.loan.entity.CarLoanApplication;
 import ejb.loan.entity.CashlineApplication;
 import ejb.loan.entity.CreditReportAccountStatus;
@@ -36,14 +37,11 @@ public interface LoanApplicationSessionBeanLocal {
     public List<LoanApplication> getLoanApplications(ArrayList<String> loans, String loanType);
     public MortgageLoanApplication getMortgageLoanApplicationById(Long applicationId);
     public RefinancingApplication getRefinancingApplicationById(Long applicationId);
-    public double[] getMortgagePurchaseLoanMaxInterval();
-    public double getMortgagePurchaseLoanRiskRatio();
-    public double[] getMortgagePurchaseLoanSuggestedInterval();
-    public void approveMortgageLoanRequest(Long applicationId, double amount, int period, double instalment);
-    public void rejectMortgageLoanRequest(Long applicationId);
-    public void approveRefinancingLoanRequest(Long applicationId, int period, double instalment);
-    public void startNewLoan(Long applicationId);
+    public void approveLoanRequest(Long applicationId, double amount, int period, double instalment, String loanType);
+    public void rejectLoanRequest(Long applicationId);
+    public void startNewLoan(Long applicationId, String loanType);
     public void updateLoanStatus(String status, Long applicationId);
+    public void updateCashlineStatus(String status, Long applicationId);
     public List<MortgageLoanApplication> getAllMortgageApplicationsPendingAppraisal();
     public void submitAppraisal(double appraisedValue, Long applicationId);
     public List<CreditReportAccountStatus> getAccountStatusByBureauScoreId(Long id);
@@ -59,4 +57,20 @@ public interface LoanApplicationSessionBeanLocal {
             String guarantorCompanyPostal, String guarantorCurrentPosition, String guarantorCurrentJobTitle,
             String guarantorPreviousCompany, int guarantorLengthOfPreviousJob, double guarantorOtherMonthlyIncome,
             String guarantorOtherMonthlyIncomeSource);
+    
+    public List<CashlineApplication> getCashlineApplications(ArrayList<String> status);
+    
+    public int getApplicantsAverageAge(CustomerBasic customer, CustomerBasic joint);
+    public int getLTVRatio(CustomerBasic customer, CustomerBasic joint, LoanApplication application);
+    public int getTDSRRemaining(CustomerBasic customer, CustomerBasic joint);
+    public int getMSRRemaining(CustomerBasic customer, CustomerBasic joint);
+    public double getRiskRatio(CustomerBasic customer, CustomerBasic joint);
+    public double getGrossIncome(CustomerBasic customer, CustomerBasic joint);
+    public int calculateMortgageTenure(double amount, double instalment, double interest);
+    public RenovationLoanApplication getRenovationLoanApplicationById(Long applicationId);
+    public CarLoanApplication getCarLoanApplicationById(Long applicationId);
+    public EducationLoanApplication getEducationLoanApplicationById(Long applicationId);
+    public CashlineApplication getCashlineApplicationById(Long applicationId);
+    public void approveCashlineRequest(Long applicationId, double amount);
+    public void rejectCashlineRequest(Long applicationId);
 }

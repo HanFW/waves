@@ -5,7 +5,7 @@
  */
 package managedbean.loan.customer;
 
-import ejb.customer.session.CRMCustomerSessionBean;
+import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import ejb.infrastructure.session.CustomerEmailSessionBeanLocal;
 import ejb.loan.entity.CashlineApplication;
 import ejb.loan.session.LoanApplicationSessionBeanLocal;
@@ -40,7 +40,7 @@ public class PublicCashlineApplicationManagedBean implements Serializable {
     private CustomerEmailSessionBeanLocal customerEmailSessionBeanLocal;
 
     @EJB
-    private CRMCustomerSessionBean cRMCustomerSessionBeanLocal;
+    private CRMCustomerSessionBeanLocal cRMCustomerSessionBeanLocal;
 
     @EJB
     private LoanApplicationSessionBeanLocal loanApplicationSessionBeanLocal;

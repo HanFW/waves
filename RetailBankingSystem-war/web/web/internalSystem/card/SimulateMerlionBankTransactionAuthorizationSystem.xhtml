@@ -1,0 +1,72 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        Merlion Bank Authorizes Transaction
+    </h:head>
+
+    <h:body>
+
+        <div align="center">
+            <h:form>
+
+                <p:menubar>
+                    <p:submenu label="MEPS">
+                        <p:menuitem value="CitiBank Account Transaction" url="/web/simulateSystem/Merchant/CustomerMakePaymentToMerchant.xhtml" />
+                        <p:menuitem value="MerlionBank Account Transaction" url="/Merchant/CustomerMakePaymentToMerchant.xhtml" />
+                        <p:menuitem value="CitiBank and Merlion MEPS History Records" url="/Merchant/CustomerMakePaymentToMerchant.xhtml" />
+                    </p:submenu>
+
+                    <p:submenu label="VISA" >
+                        <p:menuitem value="CitiBank and Merlion VISA network Clearing History Records" url="/web/simulateSystem/Visa/SimulateVisaClearingNetWork.xhtml" />
+                    </p:submenu>
+
+                    <p:submenu label="MasterCard" >
+                        <p:menuitem value="CitiBank and Merlion MasterCard Clearing History Records" url="/Merchant/CustomerMakePaymentToMerchant.xhtml" />
+                    </p:submenu>
+
+                    <p:submenu label="Transaction Records" >
+                        <p:menuitem value="Simulate Customer Make Payment To Merchant" url="/web/simulateSystem/Merchant/CustomerMakePaymentToMerchant.xhtml" />
+                        <p:menuitem value="Watsons View Transaction" url="/web/simulateSystem/Merchant/CustomerMakePaymentToMerchant.xhtml" />
+                        <p:menuitem value="Merlion CardHolder View Transaction" url="/web/simulateSystem/Merchant/CustomerMakePaymentToMerchant.xhtml" />
+                    </p:submenu>
+
+                    <p:submenu label="Transaction Authorization">
+                        <p:menuitem value="Merlion Bank Transaction Authoriztion" url="/web/simulateSystem/MerlionBank/SimulateMerlionBankTransactionAuthorizationSystem.xhtml" />
+                    </p:submenu>
+                </p:menubar>
+
+                <p:dataTable var="transactionAuthorization" value="#{merlionBankTransactionAuthorizationManagedBean.transactionList}" reflow="true" paginator="true" rows="10">
+                    <p:column headerText="Transaction Time">
+                        <h:outputText value="#{transactionAuthorization.transactionTime}" />
+                    </p:column>
+
+                    <p:column headerText="Reference No">
+                        <h:outputText value="#{transactionAuthorization.cardNum}" />
+                    </p:column>
+                    <p:column headerText="Merchant Name">
+                        <h:outputText value="Watsons" />
+                    </p:column>
+
+                    <p:column headerText="Reference" >
+                        <h:outputText value="CTW" /> 
+                    </p:column>
+
+                    <p:column headerText="Transaction Amt"> 
+                        <h:outputText value="#{transactionAuthorization.transactionAmt}" />
+                    </p:column>
+
+                    <p:column headerText="Status"> 
+                        <h:outputText value="#{merlionBankTransactionAuthorizationManagedBean.checkTransactionAuthorization(transactionAuthorization.transactionToBeAuthorizedId)}" />
+                    </p:column>
+                </p:dataTable>
+
+            </h:form>
+        </div>
+    </h:body>
+
+</html>

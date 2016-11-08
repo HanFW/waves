@@ -7,6 +7,9 @@ package ejb.loan.session;
 
 import ejb.customer.entity.CustomerAdvanced;
 import ejb.customer.entity.CustomerBasic;
+import ejb.deposit.entity.BankAccount;
+import ejb.infrastructure.session.CustomerAdminSessionBeanLocal;
+import ejb.infrastructure.session.CustomerEmailSessionBeanLocal;
 import ejb.loan.entity.CarLoanApplication;
 import ejb.loan.entity.CashlineApplication;
 import ejb.loan.entity.CreditReportAccountStatus;
@@ -23,12 +26,15 @@ import ejb.loan.entity.LoanRepaymentAccount;
 import ejb.loan.entity.MortgageLoanApplication;
 import ejb.loan.entity.RefinancingApplication;
 import ejb.loan.entity.RenovationLoanApplication;
+import java.math.BigInteger;
+import java.security.SecureRandom;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -40,6 +46,11 @@ import javax.persistence.Query;
  */
 @Stateless
 public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLocal {
+
+    @EJB
+    private CustomerEmailSessionBeanLocal customerEmailSessionBeanLocal;
+    @EJB
+    private CustomerAdminSessionBeanLocal customerAdminSessionBeanLocal;
 
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager em;
@@ -429,82 +440,40 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
     }
 
     @Override
-    public double[] getMortgagePurchaseLoanMaxInterval() {
-        System.out.println("****** loan/LoanApplicationSessionBean: getMortgagePurchaseLoanMaxInterval() ******");
-        double[] maxInterval = new double[2];
-        maxInterval[0] = 460000;
-        maxInterval[1] = 510000;
-        return maxInterval;
-    }
-
-    @Override
-    public double getMortgagePurchaseLoanRiskRatio() {
-        System.out.println("****** loan/LoanApplicationSessionBean: getMortgagePurchaseLoanRiskRatio() ******");
-        double ratio = 0;
-        return ratio;
-    }
-
-    @Override
-    public double[] getMortgagePurchaseLoanSuggestedInterval() {
-        System.out.println("****** loan/LoanApplicationSessionBean: getMortgagePurchaseLoanSuggestedInterval() ******");
-        double[] interval = new double[2];
-        interval[0] = 460000;
-        interval[1] = 510000;
-        return interval;
-    }
-
-    @Override
-    public void approveMortgageLoanRequest(Long applicationId, double amount, int period, double instalment) {
-        System.out.println("****** loan/LoanApplicationSessionBean: approveMortgageLoanRequest() ******");
+    public void approveLoanRequest(Long applicationId, double amount, int period, double instalment, String loanType) {
         LoanApplication application = em.find(LoanApplication.class, applicationId);
         application.setAmountGranted(amount);
         application.setPeriodSuggested(period * 12);
         application.setInstalment(instalment);
         application.setApplicationStatus("approved");
         application.setFinalActionDate(new Date());
+
+        if (loanType.equals("Mortgage Loan")) {
+            customerEmailSessionBeanLocal.sendEmail(application.getCustomerBasic(), "approveContractLoanRequest", null);
+        } else if (loanType.equals("Renovation Loan")) {
+            customerAdminSessionBeanLocal.createOnlineBankingAccount(application.getCustomerBasic().getCustomerBasicId(), "approveRenovationLoanRequest");
+        } else if (loanType.equals("Car Loan")) {
+            customerEmailSessionBeanLocal.sendEmail(application.getCustomerBasic(), "approveContractLoanRequest", null);
+        } else if (loanType.equals("Education Loan")) {
+            customerAdminSessionBeanLocal.createOnlineBankingAccount(application.getCustomerBasic().getCustomerBasicId(), "approveEducationLoanRequest");
+        }
         em.flush();
     }
 
     @Override
-    public void rejectMortgageLoanRequest(Long applicationId) {
-        System.out.println("****** loan/LoanApplicationSessionBean: rejectMortgageLoanRequest() ******");
+    public void rejectLoanRequest(Long applicationId) {
         LoanApplication application = em.find(LoanApplication.class, applicationId);
-        CustomerBasic guarantor = application.getCustomerBasic();
-        CustomerAdvanced ca = guarantor.getCustomerAdvanced();
-        CustomerProperty property = guarantor.getCustomerProperty();
-
-        CreditReportBureauScore report = guarantor.getBureauScore();
-        for (CustomerDebt debt : guarantor.getCustomerDebt()) {
-            em.remove(debt);
-        }
-        for (CreditReportAccountStatus as : report.getAccountStatus()) {
-            em.remove(as);
-        }
-        for (CreditReportDefaultRecords dr : report.getDefaultRecords()) {
-            em.remove(dr);
-        }
-        em.remove(report);
-
+//        CustomerBasic customer = application.getCustomerBasic();
+//        CustomerProperty property = customer.getCustomerProperty();
+//        if (property != null) {
+//            em.remove(property);
+//        }
         em.remove(application);
-        em.remove(property);
-        em.remove(ca);
-        em.remove(guarantor);
         em.flush();
     }
 
     @Override
-    public void approveRefinancingLoanRequest(Long applicationId, int period, double instalment) {
-        System.out.println("****** loan/LoanApplicationSessionBean: approveRefinancingLoanRequest() ******");
-        LoanApplication application = em.find(LoanApplication.class, applicationId);
-        application.setPeriodSuggested(period * 12);
-        application.setInstalment(instalment);
-        application.setApplicationStatus("approved");
-        application.setFinalActionDate(new Date());
-        em.flush();
-    }
-
-    @Override
-    public void startNewLoan(Long applicationId) {
+    public void startNewLoan(Long applicationId, String loanType) {
         LoanApplication application = em.find(LoanApplication.class, applicationId);
         application.setApplicationStatus("started");
 
@@ -519,23 +488,82 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
 
         em.flush();
 
-        DecimalFormat df = new DecimalFormat("000000");
+        String payableAccountNumber = generateAccountNumber();
+        String repaymentAccountNumber = generateAccountNumber();
 
-        loanPayableAccount.setAccountNumber("6000" + df.format(loanPayableAccount.getId()));
+        loanPayableAccount.setAccountNumber(payableAccountNumber);
         loanPayableAccount.setInitialAmount(application.getAmountGranted());
         loanPayableAccount.setAccountBalance(application.getAmountGranted());
         loanPayableAccount.setStartDate(new Date());
         loanPayableAccount.setAccountStatus("started");
         loanPayableAccount.setOverdueBalance(0);
 
-        loanRepaymentAccount.setAccountNumber("7000" + df.format(loanRepaymentAccount.getId()));
+        loanRepaymentAccount.setAccountNumber(repaymentAccountNumber);
+        loanRepaymentAccount.setDefaultMonths(0);
+
+        if (loanType.equals("Mortgage Loan")) {
+            customerAdminSessionBeanLocal.createOnlineBankingAccount(application.getCustomerBasic().getCustomerBasicId(), "startMortgageLoan");
+        } else if(loanType.equals("Car Loan")){
+            customerAdminSessionBeanLocal.createOnlineBankingAccount(application.getCustomerBasic().getCustomerBasicId(), "startCarLoan");
+        }
 
         em.flush();
+    }
+
+    private String generateAccountNumber() {
+        String bankAccountNum;
+        String status;
+        SecureRandom random = new SecureRandom();
+
+        bankAccountNum = new BigInteger(23, random).setBit(22).toString(10);
+        status = checkAccountDuplication(bankAccountNum);
+
+        while (status.equals("Duplicated")) {
+            bankAccountNum = new BigInteger(23, random).setBit(22).toString(10);
+            status = checkAccountDuplication(bankAccountNum);
+        }
+
+        return bankAccountNum;
+    }
+
+    private String checkAccountDuplication(String accountNum) {
+        Query query = em.createQuery("Select a From BankAccount a Where a.bankAccountNum=:bankAccountNum");
+        query.setParameter("bankAccountNum", accountNum);
+
+        List bankAccountList = query.getResultList();
+
+        if (bankAccountList.isEmpty()) {
+            Query query2 = em.createQuery("Select a From LoanPayableAccount a Where a.accountNumber=:bankAccountNum");
+            query2.setParameter("bankAccountNum", accountNum);
+            List payableList = query2.getResultList();
+            if (payableList.isEmpty()) {
+                Query query3 = em.createQuery("Select a From LoanRepaymentAccount a Where a.accountNumber=:bankAccountNum");
+                query3.setParameter("bankAccountNum", accountNum);
+                List repaymentList = query3.getResultList();
+                if (repaymentList.isEmpty()) {
+                    return "Success";
+                } else {
+                    return "Duplicated";
+                }
+            } else {
+                return "Duplicated";
+            }
+        } else {
+            return "Duplicated";
+        }
+
     }
 
     @Override
     public void updateLoanStatus(String status, Long applicationId) {
         LoanApplication application = em.find(LoanApplication.class, applicationId);
+        application.setApplicationStatus(status);
+        em.flush();
+    }
+
+    @Override
+    public void updateCashlineStatus(String status, Long applicationId) {
+        CashlineApplication application = em.find(CashlineApplication.class, applicationId);
         application.setApplicationStatus(status);
         em.flush();
     }
@@ -551,6 +579,7 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
     public void submitAppraisal(double appraisedValue, Long applicationId) {
         System.out.println("****** loan/LoanApplicationSessionBean: submitAppraisal() ******");
         MortgageLoanApplication application = em.find(MortgageLoanApplication.class, applicationId);
+        application.setPropertyAppraisedValue(appraisedValue);
         application.setApplicationStatus("pending");
     }
 
@@ -673,4 +702,260 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
         return guarantorAge;
     }
 
+    @Override
+    public List<CashlineApplication> getCashlineApplications(ArrayList<String> status) {
+        List<CashlineApplication> applications = new ArrayList<CashlineApplication>();
+
+        for (String currentStatus : status) {
+            switch (currentStatus) {
+                case "pending":
+                    Query query1 = em.createQuery("SELECT c FROM CashlineApplication c WHERE c.applicationStatus = :applicationStatus");
+                    query1.setParameter("applicationStatus", "pending");
+                    applications.addAll(query1.getResultList());
+                    break;
+                case "in progress":
+                    Query query2 = em.createQuery("SELECT c FROM CashlineApplication c WHERE c.applicationStatus = :applicationStatus");
+                    query2.setParameter("applicationStatus", "in progress");
+                    applications.addAll(query2.getResultList());
+                    break;
+                case "approved":
+                    Query query3 = em.createQuery("SELECT c FROM CashlineApplication c WHERE c.applicationStatus = :applicationStatus");
+                    query3.setParameter("applicationStatus", "approved");
+                    applications.addAll(query3.getResultList());
+                    break;
+            }
+        }
+        return applications;
+    }
+
+    @Override
+    public int getApplicantsAverageAge(CustomerBasic customer, CustomerBasic joint) {
+        int averageAge = 0;
+        double customerIncome = customer.getCustomerAdvanced().getMonthlyFixedIncome()
+                + customer.getCustomerAdvanced().getOtherMonthlyIncome() * 0.7;
+
+        double jointIncome = joint.getCustomerAdvanced().getMonthlyFixedIncome()
+                + joint.getCustomerAdvanced().getOtherMonthlyIncome() * 0.7;
+
+        double totalIncome = customerIncome + jointIncome;
+
+        int customerAge = Integer.parseInt(customer.getCustomerAge());
+        int jointAge = Integer.parseInt(joint.getCustomerAge());
+        Double age = customerAge * customerIncome / totalIncome + jointAge * jointIncome / totalIncome;
+
+        averageAge = age.intValue();
+        return averageAge;
+    }
+
+    @Override
+    public int getLTVRatio(CustomerBasic customer, CustomerBasic joint, LoanApplication application) {
+        int numOfMortgage = getAllMortgageDebts(customer, joint).size();
+
+        System.out.println("****** loan/LoanApplicationSessionBean: getLTVRatio(): Number of mortgages: " + numOfMortgage);
+
+        if (numOfMortgage == 0) {
+            return 80;
+        } else if (numOfMortgage == 1) {
+            return 50;
+        } else {
+            return 40;
+        }
+    }
+
+    private List<CustomerDebt> getAllMortgageDebts(CustomerBasic customer, CustomerBasic joint) {
+        List<CustomerDebt> accountStatus = customer.getCustomerDebt();
+        List<CustomerDebt> customerMortgage = new ArrayList<CustomerDebt>();
+        List<CustomerDebt> allMortgage = new ArrayList<CustomerDebt>();
+
+        for (CustomerDebt account : accountStatus) {
+            if (account.getFacilityType().equals("mortgage")) {
+                customerMortgage.add(account);
+            }
+        }
+        allMortgage.addAll(customerMortgage);
+
+        if (joint != null) {
+            List<CustomerDebt> jointAccountStatus = joint.getCustomerDebt();
+            for (CustomerDebt account : jointAccountStatus) {
+                if (account.getFacilityType().equals("mortgage")) {
+                    allMortgage.add(account);
+                    for (CustomerDebt customerAccount : customerMortgage) {
+                        if (account.getCollateralDetails().equals(customerAccount.getCollateralDetails())) {
+                            allMortgage.remove(account);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        return allMortgage;
+    }
+
+    @Override
+    public int getTDSRRemaining(CustomerBasic customer, CustomerBasic joint) {
+        double totalInstalment = 0;
+        List<CustomerDebt> allDebts = getAllCustomerDebts(customer, joint);
+        for (CustomerDebt debt : allDebts) {
+            totalInstalment += debt.getMonthlyInstalment();
+        }
+
+        double totalIncome = getGrossIncome(customer, joint);
+
+        Double remaining = totalIncome * 0.6 - totalInstalment;
+
+        return remaining.intValue();
+    }
+
+    private List<CustomerDebt> getAllCustomerDebts(CustomerBasic customer, CustomerBasic joint) {
+        List<CustomerDebt> allDebts = customer.getCustomerDebt();
+        List<CustomerDebt> customerDebts = customer.getCustomerDebt();
+
+        if (joint != null) {
+            List<CustomerDebt> jointDebts = joint.getCustomerDebt();
+            for (CustomerDebt account : jointDebts) {
+                allDebts.add(account);
+                for (CustomerDebt customerAccount : customerDebts) {
+                    if (account.getCollateralDetails().equals(customerAccount.getCollateralDetails())) {
+                        allDebts.remove(account);
+                        break;
+                    }
+                }
+            }
+        }
+        return allDebts;
+    }
+
+    @Override
+    public int getMSRRemaining(CustomerBasic customer, CustomerBasic joint) {
+        double totalInstalment = 0;
+        List<CustomerDebt> allMortgage = getAllMortgageDebts(customer, joint);
+        for (CustomerDebt debt : allMortgage) {
+            totalInstalment += debt.getMonthlyInstalment();
+        }
+        double totalIncome = getGrossIncome(customer, joint);
+
+        Double remaining = totalIncome * 0.3 - totalInstalment;
+
+        return remaining.intValue();
+    }
+
+    @Override
+    public double getGrossIncome(CustomerBasic customer, CustomerBasic joint) {
+        double customerIncome = customer.getCustomerAdvanced().getMonthlyFixedIncome()
+                + customer.getCustomerAdvanced().getOtherMonthlyIncome() * 0.7;
+
+        double jointIncome = 0;
+        if (joint != null) {
+            jointIncome = joint.getCustomerAdvanced().getMonthlyFixedIncome()
+                    + joint.getCustomerAdvanced().getOtherMonthlyIncome() * 0.7;
+        }
+
+        double totalIncome = customerIncome + jointIncome;
+
+        return totalIncome;
+    }
+
+    @Override
+    public double getRiskRatio(CustomerBasic customer, CustomerBasic joint) {
+        double customerRisk = 0;
+        double jointRisk = 0;
+
+        //applicant 1 risk
+        CreditReportBureauScore customerBureauScore = customer.getBureauScore();
+        if (customerBureauScore != null) {
+            customerRisk = customerBureauScore.getProbabilityOfDefault();
+        }
+        CustomerAdvanced ca = customer.getCustomerAdvanced();
+        if (customer.getCustomerMaritalStatus().equals("Married")) {
+            customerRisk += 0.01;
+        }
+        customerRisk += ca.getNumOfDependent() * 0.03;
+        if (ca.getResidentialStatus().equals("Rented")) {
+            customerRisk += 0.05;
+        }
+        if (ca.getEmploymentStatus().equals("Self-Employed") && ca.getLengthOfCurrentJob() < 3) {
+            customerRisk += 0.02;
+        }
+        if (ca.getLengthOfCurrentJob() < 3 && ca.getLengthOfPreviousJob() < 3) {
+            customerRisk += 0.01;
+        }
+
+        //joint applicant risk
+        if (joint != null) {
+            CreditReportBureauScore jointBureauScore = joint.getBureauScore();
+            CustomerAdvanced jointCA = joint.getCustomerAdvanced();
+            if (jointBureauScore != null) {
+                jointRisk = jointBureauScore.getProbabilityOfDefault();
+            }
+            if (joint.getCustomerMaritalStatus().equals("Married")) {
+                jointRisk += 0.01;
+            }
+            jointRisk += jointCA.getNumOfDependent() * 0.03;
+            if (jointCA.getResidentialStatus().equals("Rented")) {
+                jointRisk += 0.05;
+            }
+            if (jointCA.getEmploymentStatus().equals("Self-Employed") && jointCA.getLengthOfCurrentJob() < 3) {
+                jointRisk += 0.02;
+            }
+            if (jointCA.getLengthOfCurrentJob() < 3 && jointCA.getLengthOfPreviousJob() < 3) {
+                jointRisk += 0.01;
+            }
+        }
+
+        DecimalFormat df = new DecimalFormat("0.00");
+        String risk = df.format(Math.max(customerRisk, jointRisk));
+
+        return Double.parseDouble(risk);
+    }
+
+    @Override
+    public int calculateMortgageTenure(double amount, double instalment, double interest) {
+        Double tenure = Math.log(1 - interest / 12 * amount / instalment) / Math.log(1 + interest / 12) * -1 / 12;
+        return tenure.intValue() + 1;
+    }
+
+    @Override
+    public RenovationLoanApplication getRenovationLoanApplicationById(Long applicationId) {
+        RenovationLoanApplication application = em.find(RenovationLoanApplication.class, applicationId);
+        em.refresh(application);
+        return application;
+    }
+
+    @Override
+    public CarLoanApplication getCarLoanApplicationById(Long applicationId) {
+        CarLoanApplication application = em.find(CarLoanApplication.class, applicationId);
+        em.refresh(application);
+        return application;
+    }
+
+    @Override
+    public EducationLoanApplication getEducationLoanApplicationById(Long applicationId) {
+        EducationLoanApplication application = em.find(EducationLoanApplication.class, applicationId);
+        em.refresh(application);
+        return application;
+    }
+
+    @Override
+    public CashlineApplication getCashlineApplicationById(Long applicationId) {
+        CashlineApplication application = em.find(CashlineApplication.class, applicationId);
+        em.refresh(application);
+        return application;
+    }
+
+    @Override
+    public void approveCashlineRequest(Long applicationId, double amount) {
+        CashlineApplication application = em.find(CashlineApplication.class, applicationId);
+        application.setAmountGranted((int) amount);
+        application.setApplicationStatus("approved");
+        application.setFinalActionDate(new Date());
+        em.flush();
+    }
+
+    @Override
+    public void rejectCashlineRequest(Long applicationId) {
+        CashlineApplication application = em.find(CashlineApplication.class, applicationId);
+
+        em.remove(application);
+        em.flush();
+    }
 }
