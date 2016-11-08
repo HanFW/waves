@@ -92,13 +92,13 @@
 
 
                     <p:tab title="Supplementary Cards" id="suplementaryCards">
-                        <p:dataTable var="supplementaryCard" id="supplementaryCardsTable">
+                        <p:dataTable var="supplementaryCard" id="supplementaryCardsTable" value="#{customerViewCardsManagedBean.supplementaryCards}">
                             <p:column headerText="Credit Card Type Name">
                                 <h:outputText value="#{supplementaryCard.creditCardType.creditCardTypeName}" />
                             </p:column>
 
                             <p:column headerText="Card Number">
-                                <h:outputText value="#{creditCard.cardNum}" />
+                                <h:outputText value="#{supplementaryCard.cardNum}" />
                             </p:column>
 
                             <p:column headerText="Expiry Date">
@@ -111,6 +111,11 @@
 
                             <p:column headerText="Card Status">
                                 <h:outputText value="#{supplementaryCard.status}"/>
+                            </p:column>
+
+                            <p:column>
+                                <p:commandButton rendered="#{customerViewCardsManagedBean.activateCardAction(supplementaryCard.status)}" id="activate" value="Activate" action="/web/onlineBanking/card/creditCard/customerActivateCreditCard.xhtml?faces-redirect=true">
+                                </p:commandButton>
                             </p:column>
 
                         </p:dataTable>
