@@ -499,6 +499,7 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
         loanPayableAccount.setOverdueBalance(0);
 
         loanRepaymentAccount.setAccountNumber(repaymentAccountNumber);
+        loanRepaymentAccount.setDefaultMonths(0);
 
         if (loanType.equals("Mortgage Loan")) {
             customerAdminSessionBeanLocal.createOnlineBankingAccount(application.getCustomerBasic().getCustomerBasicId(), "startMortgageLoan");
