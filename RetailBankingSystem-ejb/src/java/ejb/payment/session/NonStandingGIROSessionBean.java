@@ -25,6 +25,9 @@ import ws.client.sach.SACHWebService_Service;
 @Stateless
 public class NonStandingGIROSessionBean implements NonStandingGIROSessionBeanLocal {
 
+    @EJB
+    private OtherBankPayeeSessionBeanLocal otherBankPayeeSessionBeanLocal;
+
     @WebServiceRef(wsdlLocation = "META-INF/wsdl/localhost_8080/OtherBanksWebService/OtherBanksWebService.wsdl")
     private OtherBanksWebService_Service service_otherBank;
 
@@ -347,6 +350,8 @@ public class NonStandingGIROSessionBean implements NonStandingGIROSessionBeanLoc
                     Double currentAvailableBalance = Double.valueOf(bankAccount.getAvailableBankAccountBalance()) - Double.valueOf(paymentAmt);
                     bankAccount.setAvailableBankAccountBalance(currentAvailableBalance.toString());
 
+                    otherBankPayeeSessionBeanLocal.updateLastTransactionDate(payeeAccountNum);
+
                     Calendar cal = Calendar.getInstance();
                     String currentTime = cal.getTime().toString();
                     String transactionCode = "GIRO";
@@ -393,6 +398,8 @@ public class NonStandingGIROSessionBean implements NonStandingGIROSessionBeanLoc
                     Double currentAvailableBalance = Double.valueOf(bankAccount.getAvailableBankAccountBalance()) - Double.valueOf(paymentAmt);
                     bankAccount.setAvailableBankAccountBalance(currentAvailableBalance.toString());
 
+                    otherBankPayeeSessionBeanLocal.updateLastTransactionDate(payeeAccountNum);
+
                     Calendar cal = Calendar.getInstance();
                     String currentTime = cal.getTime().toString();
                     String transactionCode = "GIRO";
@@ -438,6 +445,8 @@ public class NonStandingGIROSessionBean implements NonStandingGIROSessionBeanLoc
 
                     Double currentAvailableBalance = Double.valueOf(bankAccount.getAvailableBankAccountBalance()) - Double.valueOf(paymentAmt);
                     bankAccount.setAvailableBankAccountBalance(currentAvailableBalance.toString());
+
+                    otherBankPayeeSessionBeanLocal.updateLastTransactionDate(payeeAccountNum);
 
                     Calendar cal = Calendar.getInstance();
                     String currentTime = cal.getTime().toString();

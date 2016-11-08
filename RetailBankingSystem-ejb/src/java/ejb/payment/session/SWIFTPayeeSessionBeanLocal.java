@@ -18,4 +18,6 @@ public interface SWIFTPayeeSessionBeanLocal {
     public SWIFTPayee retrieveSWIFTPayeeByInstitution(String swiftInstitution);
 
     public SWIFTPayee retrieveSWIFTPayeeByNum(String payeeAccountNum);
+
+    public void updateLastTransactionDate(String payeeAccountNum);
 }

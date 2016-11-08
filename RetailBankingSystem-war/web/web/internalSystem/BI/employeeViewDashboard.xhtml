@@ -18,8 +18,16 @@
                              style="height:400px;"/>
                     <br/>
                     <br/>
+                    <p:chart type="bar" model="#{employeeViewDashboardManagedBean.barModel}" 
+                             style="height:400px"/>
+                    <br/>
+                    <br/>
                     <p:chart type="line" model="#{employeeViewDashboardManagedBean.netAcqAttLineModel}" 
                              style="height:400px;"/>
+                    <br/>
+                    <br/>
+                    <p:outputLabel value="#{employeeViewDashboardManagedBean.updateDate}" 
+                                   style="font-size: 20px;font-weight: bold" />
                     <br/>
                     <br/>
                     <p:chart type="pie" model="#{employeeViewDashboardManagedBean.accountClosureReasonPieModel}" 

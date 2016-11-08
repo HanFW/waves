@@ -235,6 +235,8 @@ public class RegularGIROTransferManagedBean {
 
             sachRegularGIROTransferMTD(fromBankAccountNum, toOtherBankAccountNum, transferAmt);
 
+            otherBankPayeeSessionBeanLocal.updateLastTransactionDate(toOtherBankAccountNum);
+
             statusMessage = "Your transaction has been completed.";
             fromBankAccountAvailableBalance = currentAvailableBankAccountBalance.toString();
             fromBankAccountTotalBalance = fromBankAccount.getTotalBankAccountBalance();
@@ -253,6 +255,7 @@ public class RegularGIROTransferManagedBean {
             sachRegularGIROTransferMTD(fromBankAccountNum, toOtherBankAccountNum, transferAmt);
 
             regularGIROSessionBeanLocal.updatePaymentAmt(regularGIROId, transferAmt.toString());
+            otherBankPayeeSessionBeanLocal.updateLastTransactionDate(toOtherBankAccountNum);
 
             statusMessage = "Your transaction has been completed.";
             fromBankAccountAvailableBalance = currentAvailableBankAccountBalance.toString();

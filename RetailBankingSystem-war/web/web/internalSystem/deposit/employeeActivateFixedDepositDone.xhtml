@@ -10,9 +10,8 @@
     <ui:define name="content">
         <h:form id="formMain">
             <div align="center">
-<!--                <h:outputText value="You have logged in as: Counter Teller"/>-->
                 <br/>
-                <p:panel id="panel" header="Activate Fixed Deposit Account">
+                <p:panel id="panel">
                     <p:messages globalOnly="true"/>
 
                     <h:panelGrid columns="1" cellpadding="5" styleClass="ui-panelgrid-blank form-group">     
@@ -64,21 +63,17 @@
                     </h:panelGrid>
                     <br/>
 
-
-                    <h:panelGrid columns="2" cellpadding="5" styleClass="ui-panelgrid-blank form-group">
-
-
-                        <p:commandButton id="confirmBtn" value="Confirm" update="panel" 
-                                         actionListener="#{employeeActivateFixedDepositDoneManagedBean.confirm}" ajax="true"/>
-                        <p:commandButton id="cancelBtn" action="/web/index.xhtml" value="Cancel" update="panel" immediate = "true">
+                    <h:panelGrid columns="2" styleClass="ui-panelgrid-blank form-group">
+                        <p:commandButton id="cancelBtn" value="Cancel" update="panel" immediate = "true">
                             <p:confirm header="Cancel" message="Are you sure?" />
                         </p:commandButton>
+                        <p:commandButton id="confirmBtn" value="Confirm" update="panel" 
+                                         actionListener="#{employeeActivateFixedDepositDoneManagedBean.confirm}" ajax="true"/>
 
-                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" action="/web/index.xhtml"/>
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true">
+                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" action="/RetailBankingSystem-war/web/internalSystem/infrastructure/employeeMainPage.xhtml?faces-redirect=true"/>
                             <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" />
                         </p:confirmDialog>
-
                     </h:panelGrid>
 
                 </p:panel>

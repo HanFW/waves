@@ -4,6 +4,7 @@ import ejb.customer.entity.CustomerBasic;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import ejb.payment.entity.SWIFTPayee;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -116,7 +117,7 @@ public class SWIFTPayeeSessionBean implements SWIFTPayeeSessionBeanLocal {
 
         return swiftPayee;
     }
-    
+
     @Override
     public SWIFTPayee retrieveSWIFTPayeeByNum(String payeeAccountNum) {
 
@@ -129,7 +130,7 @@ public class SWIFTPayeeSessionBean implements SWIFTPayeeSessionBeanLocal {
             if (query.getResultList().isEmpty()) {
                 return new SWIFTPayee();
             } else {
-                swiftPayee = (SWIFTPayee) query.getSingleResult();
+                swiftPayee = (SWIFTPayee) query.getResultList().get(0);
             }
         } catch (EntityNotFoundException enfe) {
             System.out.println("Entity not found error: " + enfe.getMessage());
@@ -139,5 +140,20 @@ public class SWIFTPayeeSessionBean implements SWIFTPayeeSessionBeanLocal {
         }
 
         return swiftPayee;
+    }
+
+    @Override
+    public void updateLastTransactionDate(String payeeAccountNum) {
+
+        SWIFTPayee swiftPayee = retrieveSWIFTPayeeByNum(payeeAccountNum);
+
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
+
+        String lastTransactionDate = dayOfMonth + "-" + (month + 1) + "-" + year;
+
+        swiftPayee.setLastTransactionDate(lastTransactionDate);
     }
 }

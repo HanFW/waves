@@ -1,5 +1,6 @@
 package managedbean.deposit.customer;
 
+import ejb.bi.session.DepositAccountOpenSessionBeanLocal;
 import ejb.deposit.entity.BankAccount;
 import ejb.customer.entity.CustomerBasic;
 import ejb.deposit.entity.RegularPayee;
@@ -19,11 +20,15 @@ import ejb.deposit.session.PayeeSessionBeanLocal;
 import ejb.deposit.session.RegularPayeeSessionBeanLocal;
 import ejb.deposit.session.TransactionSessionBeanLocal;
 import ejb.infrastructure.session.LoggingSessionBeanLocal;
+import java.util.Calendar;
 
 @Named(value = "transferManagedBean")
 @RequestScoped
 
 public class TransferManagedBean {
+
+    @EJB
+    private DepositAccountOpenSessionBeanLocal depositAccountOpenSessionBeanLocal;
 
     @EJB
     private RegularPayeeSessionBeanLocal regularPayeeSessionBeanLocal;
@@ -32,13 +37,13 @@ public class TransferManagedBean {
     private LoggingSessionBeanLocal loggingSessionBeanLocal;
 
     @EJB
-    private PayeeSessionBeanLocal payeeSessionLocal;
+    private PayeeSessionBeanLocal payeeSessionBeanLocal;
 
     @EJB
-    private BankAccountSessionBeanLocal bankAccountSessionLocal;
+    private BankAccountSessionBeanLocal bankAccountSessionBeanLocal;
 
     @EJB
-    private TransactionSessionBeanLocal transactionSessionLocal;
+    private TransactionSessionBeanLocal transactionSessionBeanLocal;
 
     private String fromAccount;
     private Map<String, String> fromAccounts = new HashMap<String, String>();
@@ -74,7 +79,7 @@ public class TransferManagedBean {
         if (ec.getSessionMap().get("customer") != null) {
             CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
 
-            List<BankAccount> bankAccounts = bankAccountSessionLocal.retrieveBankAccountByCusIC(customerBasic.getCustomerIdentificationNum());
+            List<BankAccount> bankAccounts = bankAccountSessionBeanLocal.retrieveBankAccountByCusIC(customerBasic.getCustomerIdentificationNum());
             fromAccounts = new HashMap<String, String>();
             toAccounts = new HashMap<String, String>();
             customerPayees = new HashMap<String, String>();
@@ -232,7 +237,7 @@ public class TransferManagedBean {
 
         if (fromBankAccountNumWithType != null) {
             fromAccount = handleAccountString(fromBankAccountNumWithType);
-            BankAccount bankAccountFrom = bankAccountSessionLocal.retrieveBankAccountByNum(fromAccount);
+            BankAccount bankAccountFrom = bankAccountSessionBeanLocal.retrieveBankAccountByNum(fromAccount);
             fromAccountDefaultTransferLimit = bankAccountFrom.getTransferDailyLimit();
         } else {
             fromAccountDefaultTransferLimit = "3000.0";
@@ -249,7 +254,7 @@ public class TransferManagedBean {
 
         if (fromBankAccountNumWithType != null) {
             fromAccount = handleAccountString(fromBankAccountNumWithType);
-            BankAccount bankAccountFrom = bankAccountSessionLocal.retrieveBankAccountByNum(fromAccount);
+            BankAccount bankAccountFrom = bankAccountSessionBeanLocal.retrieveBankAccountByNum(fromAccount);
             fromAccountRemainingTransferLimit = bankAccountFrom.getTransferBalance();
         } else {
             fromAccountRemainingTransferLimit = "3000.0";
@@ -270,8 +275,8 @@ public class TransferManagedBean {
 
         CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
 
-        BankAccount bankAccountFrom = bankAccountSessionLocal.retrieveBankAccountByNum(fromAccount);
-        BankAccount bankAccountTo = bankAccountSessionLocal.retrieveBankAccountByNum(toAccount);
+        BankAccount bankAccountFrom = bankAccountSessionBeanLocal.retrieveBankAccountByNum(fromAccount);
+        BankAccount bankAccountTo = bankAccountSessionBeanLocal.retrieveBankAccountByNum(toAccount);
 
         String activationCheck;
         ec = FacesContext.getCurrentInstance().getExternalContext();
@@ -288,7 +293,7 @@ public class TransferManagedBean {
             } else {
                 if (bankAccountFrom.getBankAccountStatus().equals("Active") && bankAccountTo.getBankAccountStatus().equals("Inactive")) {
 
-                    activationCheck = transactionSessionLocal.checkAccountActivation(bankAccountTo.getBankAccountNum(), transferAmt.toString());
+                    activationCheck = transactionSessionBeanLocal.checkAccountActivation(bankAccountTo.getBankAccountNum(), transferAmt.toString());
 
                     if (activationCheck.equals("Insufficient")) {
                         if (bankAccountTo.getBankAccountType().equals("Bonus Savings Account")) {
@@ -311,9 +316,12 @@ public class TransferManagedBean {
                             Double currentAvailableBalance = Double.valueOf(bankAccountFrom.getAvailableBankAccountBalance());
                             Double currentTotalBalance = Double.valueOf(bankAccountFrom.getTotalBankAccountBalance());
 
-                            newTransactionId = transactionSessionLocal.fundTransfer(fromAccount, toAccount, transferAmt.toString());
+                            newTransactionId = transactionSessionBeanLocal.fundTransfer(fromAccount, toAccount, transferAmt.toString());
                             statusMessage = "Your transaction has been completed.";
                             loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "transfer to my account", "successful", null);
+
+                            Calendar cal = Calendar.getInstance();
+                            depositAccountOpenSessionBeanLocal.addNewDepositAccountOpen(cal.getTimeInMillis(), cal.getTime().toString());
 
                             Double fromAccountAvailableBalanceDouble = currentAvailableBalance - transferAmt;
                             Double fromAccountTotalBalanceDouble = currentTotalBalance - transferAmt;
@@ -346,7 +354,7 @@ public class TransferManagedBean {
                         Double currentAvailableBalance = Double.valueOf(bankAccountFrom.getAvailableBankAccountBalance());
                         Double currentTotalBalance = Double.valueOf(bankAccountFrom.getTotalBankAccountBalance());
 
-                        newTransactionId = transactionSessionLocal.fundTransfer(fromAccount, toAccount, transferAmt.toString());
+                        newTransactionId = transactionSessionBeanLocal.fundTransfer(fromAccount, toAccount, transferAmt.toString());
                         statusMessage = "Your transaction has been completed.";
                         loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "transfer to my account", "successful", null);
 
@@ -385,8 +393,8 @@ public class TransferManagedBean {
         fromAccount = handleAccountString(fromBankAccountNumWithType);
         toAccount = handleAccountString(toBankAccountNumWithType);
 
-        BankAccount bankAccountFrom = bankAccountSessionLocal.retrieveBankAccountByNum(fromAccount);
-        BankAccount bankAccountTo = bankAccountSessionLocal.retrieveBankAccountByNum(toAccount);
+        BankAccount bankAccountFrom = bankAccountSessionBeanLocal.retrieveBankAccountByNum(fromAccount);
+        BankAccount bankAccountTo = bankAccountSessionBeanLocal.retrieveBankAccountByNum(toAccount);
         String activationCheck;
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
@@ -402,7 +410,7 @@ public class TransferManagedBean {
             } else {
                 if (bankAccountFrom.getBankAccountStatus().equals("Active") && bankAccountTo.getBankAccountStatus().equals("Inactive")) {
 
-                    activationCheck = transactionSessionLocal.checkAccountActivation(bankAccountTo.getBankAccountNum(), transferAmt.toString());
+                    activationCheck = transactionSessionBeanLocal.checkAccountActivation(bankAccountTo.getBankAccountNum(), transferAmt.toString());
 
                     if (activationCheck.equals("Insufficient")) {
                         if (bankAccountTo.getBankAccountType().equals("Bonus Savings Account")) {
@@ -424,11 +432,14 @@ public class TransferManagedBean {
                             Double currentAvailableBalance = Double.valueOf(bankAccountFrom.getAvailableBankAccountBalance());
                             Double currentTotalBalance = Double.valueOf(bankAccountFrom.getTotalBankAccountBalance());
 
-                            newTransactionId = transactionSessionLocal.fundTransfer(fromAccount, toAccount, transferAmt.toString());
-                            payeeSessionLocal.updateLastTransactionDate(toAccount);
+                            newTransactionId = transactionSessionBeanLocal.fundTransfer(fromAccount, toAccount, transferAmt.toString());
+                            payeeSessionBeanLocal.updateLastTransactionDate(toAccount);
 
                             statusMessage = "Your transaction has been completed.";
                             loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "transfer to other account", "successful", null);
+
+                            Calendar cal = Calendar.getInstance();
+                            depositAccountOpenSessionBeanLocal.addNewDepositAccountOpen(cal.getTimeInMillis(), cal.getTime().toString());
 
                             Double fromAccountAvailableBalanceDouble = currentAvailableBalance - transferAmt;
                             Double fromAccountTotalBalanceDouble = currentTotalBalance - transferAmt;
@@ -461,8 +472,8 @@ public class TransferManagedBean {
                         Double currentAvailableBalance = Double.valueOf(bankAccountFrom.getAvailableBankAccountBalance());
                         Double currentTotalBalance = Double.valueOf(bankAccountFrom.getTotalBankAccountBalance());
 
-                        newTransactionId = transactionSessionLocal.fundTransfer(fromAccount, toAccount, transferAmt.toString());
-                        payeeSessionLocal.updateLastTransactionDate(toAccount);
+                        newTransactionId = transactionSessionBeanLocal.fundTransfer(fromAccount, toAccount, transferAmt.toString());
+                        payeeSessionBeanLocal.updateLastTransactionDate(toAccount);
 
                         statusMessage = "Your transaction has been completed.";
                         loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "transfer to other account", "successful", null);
@@ -501,8 +512,8 @@ public class TransferManagedBean {
         CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
         fromAccount = handleAccountString(fromBankAccountNumWithType);
 
-        BankAccount bankAccountFrom = bankAccountSessionLocal.retrieveBankAccountByNum(fromAccount);
-        BankAccount bankAccountTo = bankAccountSessionLocal.retrieveBankAccountByNum(toAccount);
+        BankAccount bankAccountFrom = bankAccountSessionBeanLocal.retrieveBankAccountByNum(fromAccount);
+        BankAccount bankAccountTo = bankAccountSessionBeanLocal.retrieveBankAccountByNum(toAccount);
         String activationCheck;
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
@@ -518,7 +529,7 @@ public class TransferManagedBean {
             } else {
                 if (bankAccountFrom.getBankAccountStatus().equals("Active") && bankAccountTo.getBankAccountStatus().equals("Inactive")) {
 
-                    activationCheck = transactionSessionLocal.checkAccountActivation(bankAccountTo.getBankAccountNum(), transferAmt.toString());
+                    activationCheck = transactionSessionBeanLocal.checkAccountActivation(bankAccountTo.getBankAccountNum(), transferAmt.toString());
 
                     if (activationCheck.equals("Insufficient")) {
                         if (bankAccountTo.getBankAccountType().equals("Bonus Savings Account")) {
@@ -541,9 +552,12 @@ public class TransferManagedBean {
                             Double currentAvailableBalance = Double.valueOf(bankAccountFrom.getAvailableBankAccountBalance());
                             Double currentTotalBalance = Double.valueOf(bankAccountFrom.getTotalBankAccountBalance());
 
-                            newTransactionId = transactionSessionLocal.fundTransfer(fromAccount, toAccount, transferAmt.toString());
+                            newTransactionId = transactionSessionBeanLocal.fundTransfer(fromAccount, toAccount, transferAmt.toString());
                             statusMessage = "Your transaction has been completed.";
                             loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "one time transfer", "successful", null);
+
+                            Calendar cal = Calendar.getInstance();
+                            depositAccountOpenSessionBeanLocal.addNewDepositAccountOpen(cal.getTimeInMillis(), cal.getTime().toString());
 
                             Double fromAccountAvailableBalanceDouble = currentAvailableBalance - transferAmt;
                             Double fromAccountTotalBalanceDouble = currentTotalBalance - transferAmt;
@@ -580,7 +594,7 @@ public class TransferManagedBean {
                         Double currentAvailableBalance = Double.valueOf(bankAccountFrom.getAvailableBankAccountBalance());
                         Double currentTotalBalance = Double.valueOf(bankAccountFrom.getTotalBankAccountBalance());
 
-                        newTransactionId = transactionSessionLocal.fundTransfer(fromAccount, toAccount, transferAmt.toString());
+                        newTransactionId = transactionSessionBeanLocal.fundTransfer(fromAccount, toAccount, transferAmt.toString());
                         statusMessage = "Your transaction has been completed.";
                         loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "one time transfer", "successful", null);
 

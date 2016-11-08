@@ -65,8 +65,8 @@
                             <p:menuitem value="View Transaction History" url="/web/internalSystem/deposit/employeeViewTransaction.xhtml" />
                             <p:menuitem value="View Bank Statement" url="/web/internalSystem/deposit/employeeViewStatement.xhtml" />
                             <p:menuitem value="Fund Transfer" url="/web/internalSystem/deposit/employeeTransfer.xhtml" />
-                            <p:menuitem value="Cash Deposit" url="/web/internalSystem/deposit/employeeCashDeposit.xhtml" />
-                            <p:menuitem value="Cash Withdraw" url="/web/internalSystem/deposit/employeeCashWithdraw.xhtml" />
+                            <p:menuitem value="Cash Deposit" url="/web/internalSystem/deposit/employeeBeforeCashDeposit.xhtml" />
+                            <p:menuitem value="Cash Withdraw" url="/web/internalSystem/deposit/employeeBeforeCashWithdraw.xhtml" />
                             <p:menuitem value="Open Account" url="/web/internalSystem/deposit/employeeOpenAccount.xhtml" />
                             <p:menuitem value="Delete Account" url="/web/internalSystem/deposit/employeeCloseAccount.xhtml" />
                             <p:menuitem value="Reactivate Fixed Deposit" url="/web/internalSystem/deposit/employeeActivateFixedDeposit.xhtml" />
@@ -115,6 +115,7 @@
                             <p:menuitem value="Update Customer Advanced Profile" url="/web/internalSystem/CRM/RMViewCustomerList.xhtml" />
                             <p:menuitem value="View All My Customers" url="/web/internalSystem/CRM/RMSearchCustomer.xhtml" />
                             <p:menuitem value="Risk Tolerance Test" url="/web/internalSystem/wealth/RMHelpCustomerDoRiskTestCheckExistingCustomer.xhtml" />
+                            <p:menuitem value="Declare Financial Goal" url="/web/internalSystem/wealth/RMGuideCustomerDeclareFinancialGoalCheckExisting.xhtml" />
                         </p:submenu>
 
                         <p:submenu label="Wealth Management Specialist" rendered="#{employeeAccountManagedBean.hasRoleWealthManagementSpecialist()}">

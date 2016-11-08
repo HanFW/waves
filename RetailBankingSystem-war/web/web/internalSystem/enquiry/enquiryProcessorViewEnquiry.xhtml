@@ -10,11 +10,9 @@
     <ui:define name="content">
         <h:form>
             <div align="center">
-<!--                <h:outputText value="You have logged in as: Enquiry Manager "/>-->
                 <br/>
-                <br/>
-                <p:panel header="Pending Customer Enquiry">
-                    <p:dataTable var="enquiryCase" value="#{enquiryManagerManagedBean.pendingCases}" 
+                <p:panel>
+                    <p:dataTable var="enquiryCase" reflow="true" value="#{enquiryManagerManagedBean.pendingCases}" 
                                  paginator="true" rows="10" emptyMessage="No Pending Cases">
                         <p:column headerText="Case ID" >
                             <h:outputText value="#{enquiryCase.caseId}" /> 

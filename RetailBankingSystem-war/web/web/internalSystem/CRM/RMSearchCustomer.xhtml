@@ -10,9 +10,8 @@
     <ui:define name="content">
         <h:form>
             <div align="center">
-<!--                <h:outputText value="You have logged in as: Relationship Manager"/>-->
                 <br/>
-                <p:dataTable var="customerAdvanced" value="#{rMSearchCustomerAdvancedManagedBean.customerListFromEmployeeId}" paginator="true" rows="10"
+                <p:dataTable var="customerAdvanced" reflow="true" value="#{rMSearchCustomerAdvancedManagedBean.customerListFromEmployeeId}" paginator="true" rows="10"
                              paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
                              id="customerAdvancedTable" >
 
