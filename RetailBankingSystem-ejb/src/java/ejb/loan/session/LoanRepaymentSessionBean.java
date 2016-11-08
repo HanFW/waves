@@ -6,9 +6,11 @@
 package ejb.loan.session;
 
 import ejb.deposit.entity.BankAccount;
-import ejb.deposit.session.BankAccountSessionBeanLocal;
+import ejb.deposit.session.TransactionSessionBean;
 import ejb.loan.entity.LoanPayableAccount;
 import ejb.loan.entity.LoanRepaymentAccount;
+import ejb.loan.entity.LoanRepaymentTransaction;
+import java.util.Calendar;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -22,23 +24,106 @@ import javax.persistence.Query;
  */
 @Stateless
 public class LoanRepaymentSessionBean implements LoanRepaymentSessionBeanLocal {
-
     @EJB
-    private BankAccountSessionBeanLocal bankAccountSessionBeanLocal;
+    private TransactionSessionBean transactionSessionBeanLocal;
+
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager em;
 
     @Override
     public Long makeMonthlyRepayment(BankAccount depositAccount, LoanRepaymentAccount repaymentAccount, double amount) {
-        Double newBalance = Double.valueOf(depositAccount.getAvailableBankAccountBalance()) - amount;
-        depositAccount.setAvailableBankAccountBalance(newBalance.toString());
-
+        Long fromTransactionId = addDepositTransction(depositAccount, repaymentAccount, amount);        
+        
+        updateLoanAccounts(repaymentAccount, amount);
+        addLoanRepaymentTransaction(repaymentAccount, amount);
         repaymentAccount.setAccountBalance(repaymentAccount.getAccountBalance() - amount);
         LoanPayableAccount loanPayableAccount = repaymentAccount.getLoanPayableAccount();
         loanPayableAccount.setAccountBalance(loanPayableAccount.getAccountBalance() - amount);
 
+        return fromTransactionId;
+    }
+    
+    private void updateLoanAccounts(LoanRepaymentAccount repaymentAccount, double amount){
+        LoanPayableAccount payableAccount = repaymentAccount.getLoanPayableAccount();
+        
+        double previousRepaymentBalance = repaymentAccount.getAccountBalance();
+        double newRepaymentBalance = previousRepaymentBalance - amount;
+        repaymentAccount.setAccountBalance(newRepaymentBalance);
+        
+        double previousOverdue = repaymentAccount.getOverdueBalance();
+        double previousFee = repaymentAccount.getFees();
+        
+        if(amount < previousRepaymentBalance){
+            if(amount <= previousOverdue){
+                repaymentAccount.setOverdueBalance(previousOverdue - amount);
+            } else if(amount <= (previousOverdue + previousFee)){
+                repaymentAccount.setOverdueBalance(0);
+                repaymentAccount.setFees(previousFee - (amount - previousOverdue));
+            } else{
+                repaymentAccount.setOverdueBalance(0);
+                repaymentAccount.setFees(0);
+            }
+            repaymentAccount.setPaymentStatus("partially paid");
+        }else if(amount < previousRepaymentBalance){
+            repaymentAccount.setPaymentStatus("paid");
+        }else{
+            repaymentAccount.setPaymentStatus("over paid");
+        }
+        
+    }
+    
+    private void addLoanRepaymentTransaction(LoanRepaymentAccount repaymentAccount, double amount){
+        Calendar cal = Calendar.getInstance();
+        Long transactionDateMilis = cal.getTimeInMillis();
+        LoanRepaymentTransaction transaction = new LoanRepaymentTransaction();
+        transaction.setAccountBalance(repaymentAccount.getAccountBalance() - amount);
+        transaction.setAccountCredit(amount);
+        transaction.setAccountDebit(0);
+        transaction.setDescription("Monthly Repayment");
+        transaction.setTransactionDate(cal.getTime());
+        transaction.setTransactionMillis(transactionDateMilis);
+        transaction.setLoanRepaymentAccount(repaymentAccount);
+        
+        em.persist(transaction);
         em.flush();
-        return Long.valueOf("1");
+    }
+    
+    private Long addDepositTransction(BankAccount depositAccount, LoanRepaymentAccount repaymentAccount, double amount){
+        Double newAvailableBalance = Double.valueOf(depositAccount.getAvailableBankAccountBalance()) - amount;
+        Double newTotalBalanace = Double.valueOf(depositAccount.getTotalBankAccountBalance()) - amount;
+        
+        Calendar cal = Calendar.getInstance();
+        Long transactionDateMilis = cal.getTimeInMillis();
+        
+        String longType = repaymentAccount.getLoanPayableAccount().getLoanApplication().getLoanType();
+        String transactionCode;
+        if(longType.equals("Education Loan")){
+            transactionCode = "EDR";
+        }else if(longType.equals("Car Loan")){
+            transactionCode = "CRR";
+        }else if(longType.equals("Renovation Loan")){
+            transactionCode = "RNR";
+        }else if(longType.equals("Cashline")){
+            transactionCode = "CLR";
+        }else{
+            transactionCode = "MGR";
+        }
+        
+        String transactionRefFrom = depositAccount.getBankAccountType() + "-" + depositAccount.getBankAccountNum();
+        
+        Long fromTransactionId = transactionSessionBeanLocal.addNewTransaction(cal.getTime().toString(), transactionCode, transactionRefFrom,
+                Double.valueOf(amount).toString(), " ", transactionDateMilis, depositAccount.getBankAccountId());
+        
+        depositAccount.setAvailableBankAccountBalance(newAvailableBalance.toString());
+        depositAccount.setTotalBankAccountBalance(newTotalBalanace.toString());
+        
+        depositAccount.getInterest().setIsTransfer("1");
+
+        Double currentDailyTransferLimit = Double.valueOf(depositAccount.getTransferBalance()) - amount;
+        depositAccount.setTransferBalance(currentDailyTransferLimit.toString());
+        
+        em.flush();
+        return fromTransactionId;
     }
 
     @Override

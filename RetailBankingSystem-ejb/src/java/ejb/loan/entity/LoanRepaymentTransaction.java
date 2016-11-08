@@ -7,7 +7,6 @@ package ejb.loan.entity;
 
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -29,13 +28,14 @@ public class LoanRepaymentTransaction implements Serializable {
     
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date transactionDate;
-    private String transactionCode;
-    private String transactionRefrence;
-    private String accountDebit;
-    private String accountCredit;
+    private Long transactionMillis;
+    private double accountBalance;
+    private String description;
+    private double accountDebit;
+    private double accountCredit;
     
     
-    @ManyToOne (cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER)
+    @ManyToOne (fetch = FetchType.EAGER)
     private LoanRepaymentAccount loanRepaymentAccount;
 
     public Long getId() {
@@ -62,37 +62,47 @@ public class LoanRepaymentTransaction implements Serializable {
         this.transactionDate = transactionDate;
     }
 
-    public String getTransactionCode() {
-        return transactionCode;
-    }
-
-    public void setTransactionCode(String transactionCode) {
-        this.transactionCode = transactionCode;
-    }
-
-    public String getTransactionRefrence() {
-        return transactionRefrence;
-    }
-
-    public void setTransactionRefrence(String transactionRefrence) {
-        this.transactionRefrence = transactionRefrence;
-    }
-
-    public String getAccountDebit() {
+    public double getAccountDebit() {
         return accountDebit;
     }
 
-    public void setAccountDebit(String accountDebit) {
+    public void setAccountDebit(double accountDebit) {
         this.accountDebit = accountDebit;
     }
 
-    public String getAccountCredit() {
+    public double getAccountCredit() {
         return accountCredit;
     }
 
-    public void setAccountCredit(String accountCredit) {
+    public void setAccountCredit(double accountCredit) {
         this.accountCredit = accountCredit;
     }
+
+    public Long getTransactionMillis() {
+        return transactionMillis;
+    }
+
+    public void setTransactionMillis(Long transactionMillis) {
+        this.transactionMillis = transactionMillis;
+    }
+
+    public double getAccountBalance() {
+        return accountBalance;
+    }
+
+    public void setAccountBalance(double accountBalance) {
+        this.accountBalance = accountBalance;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    
+    
 
     @Override
     public int hashCode() {
