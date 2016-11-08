@@ -152,6 +152,20 @@ public class CustomerEmailSessionBean implements CustomerEmailSessionBeanLocal {
                     emailText += "Please login with your initial User ID and PIN. \n\n";
                 }
                 break;
+            case "startRenovationLoan":
+                emailText += "Your Renovation Loan has commenced. \n";
+                emailText += "Please log in to your online banking to view your loan details and make repayments. \n";
+                emailText += "The repayment due day is on 1st every month and your first repayment will due on the second month after commencement. \n";
+                if (actions.get("onlineBanking").equals("yes")) {
+                    emailText += "Here are your online banking details: \n";
+                    emailText += "Initial User ID: " + customer.getCustomerOnlineBankingAccountNum() + "\n";
+                    emailText += "Initial PIN: " + actions.get("onlineBankingPassword") + "\n";
+                    emailText += "Please login with your initial User ID and PIN. \n\n";
+                }
+                break;
+            case "startEducationLoan":
+                emailText += "Your Education Loan Repayment has commenced. \n";
+                emailText += "Please log in to your online banking to view your loan details and make repayments. \n";
         }
 
         try {
