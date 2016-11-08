@@ -29,20 +29,20 @@ public class LoanRepaymentSessionBean implements LoanRepaymentSessionBeanLocal {
     private EntityManager em;
 
     @Override
-    public void makeMonthlyRepayment(String depositAccount, String repaymentAccount, double amount) {
-        BankAccount deposit = bankAccountSessionBeanLocal.retrieveBankAccountByNum(depositAccount);
-        Double newBalance = Double.valueOf(deposit.getAvailableBankAccountBalance()) - amount;
-        deposit.setAvailableBankAccountBalance(newBalance.toString());
+    public Long makeMonthlyRepayment(BankAccount depositAccount, LoanRepaymentAccount repaymentAccount, double amount) {
+        Double newBalance = Double.valueOf(depositAccount.getAvailableBankAccountBalance()) - amount;
+        depositAccount.setAvailableBankAccountBalance(newBalance.toString());
 
-        LoanRepaymentAccount loanRepaymentAccount = getRepaymentAccountByAccountNum(repaymentAccount);
-        loanRepaymentAccount.setAccountBalance(loanRepaymentAccount.getAccountBalance() - amount);
-        LoanPayableAccount loanPayableAccount = loanRepaymentAccount.getLoanPayableAccount();
+        repaymentAccount.setAccountBalance(repaymentAccount.getAccountBalance() - amount);
+        LoanPayableAccount loanPayableAccount = repaymentAccount.getLoanPayableAccount();
         loanPayableAccount.setAccountBalance(loanPayableAccount.getAccountBalance() - amount);
 
         em.flush();
+        return Long.valueOf("1");
     }
 
-    private LoanRepaymentAccount getRepaymentAccountByAccountNum(String accountNum) {
+    @Override
+    public LoanRepaymentAccount getRepaymentAccountByAccountNum(String accountNum) {
         Query query = em.createQuery("Select a From LoanRepaymentAccount a Where a.accountNumber=:accountNum");
         query.setParameter("accountNum", accountNum);
 
