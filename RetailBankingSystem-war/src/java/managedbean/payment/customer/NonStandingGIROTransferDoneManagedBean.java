@@ -174,7 +174,7 @@ public class NonStandingGIROTransferDoneManagedBean implements Serializable {
 
         NonStandingGIRO nonStandingGiro = nonStandingGIROSessionBeanLocal.retrieveNonStandingGIROById(giroId);
 
-        if (nonStandingGiro.getNonStandingStatus().equals("Incompleted")) {
+        if (nonStandingGiro.getNonStandingStatus().equals("Approved")) {
 
             String billingOrganizationName = nonStandingGiro.getBillingOrganizationName();
             String bankAccountNum = nonStandingGiro.getBankAccountNum();
@@ -237,7 +237,7 @@ public class NonStandingGIROTransferDoneManagedBean implements Serializable {
                 ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/payment/customerNonStandingGIROTransferFinished.xhtml?faces-redirect=true");
             }
         } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("You have already set your recurrent bill payment", ""));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Now your are not allowed to pay bill", ""));
         }
     }
 
@@ -257,7 +257,7 @@ public class NonStandingGIROTransferDoneManagedBean implements Serializable {
     }
 
     public void changeToRecurrentPayment() {
-        nonStandingGIROSessionBeanLocal.updateNonStandingStatus(giroId, transactionFrequencyForOneTime);
+        nonStandingGIROSessionBeanLocal.updateNonStandingPaymentFrequency(giroId, transactionFrequencyForOneTime);
         transactionFrequencyForOneTime = null;
     }
 

@@ -15,16 +15,16 @@ import javax.persistence.NonUniqueResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.xml.ws.WebServiceRef;
-import ws.client.bill.BillWebService_Service;
+import ws.client.sach.SACHWebService_Service;
 
 @Stateless
 public class StandingGIROSessionBean implements StandingGIROSessionBeanLocal {
 
+    @WebServiceRef(wsdlLocation = "META-INF/wsdl/localhost_8080/SACHWebService/SACHWebService.wsdl")
+    private SACHWebService_Service service_sach;
+
     @EJB
     private RegisteredBillingOrganizationSessionBeanLocal registeredBillingOrganizationSessionBeanLocal;
-
-    @WebServiceRef(wsdlLocation = "META-INF/wsdl/localhost_8080/BillWebService/BillWebService.wsdl")
-    private BillWebService_Service service_bill;
 
     @EJB
     private GIROSessionBeanLocal gIROSessionBeanLocal;
@@ -57,9 +57,12 @@ public class StandingGIROSessionBean implements StandingGIROSessionBeanLocal {
         String creditBank = billOrg.getBankName();
         String creditBankAccountNum = billOrg.getBankAccountNum();
 
-        addNewBill(customerName, customerMobile, billReference, billingOrganizationName,
-                creditBank, creditBankAccountNum, "Merlion", bankAccountNum, paymemtLimit,
-                "Pending", false);
+        String debitBank = "Merlion";
+        String billStatus = "Pending";
+
+        passStandingGIROToSACH(customerName, customerMobile, billReference, billingOrganizationName,
+                creditBank, creditBankAccountNum, debitBank, bankAccountNum, paymemtLimit,
+                billStatus, false);
 
         entityManager.persist(standingGiro);
         entityManager.flush();
@@ -126,10 +129,10 @@ public class StandingGIROSessionBean implements StandingGIROSessionBeanLocal {
         return standingGIRO;
     }
 
-    private Long addNewBill(java.lang.String customerName, java.lang.String customerMobile, java.lang.String billReference, java.lang.String billingOrganizationName, java.lang.String creditBank, java.lang.String debitBank, java.lang.String creditBankAccountNum, java.lang.String debitBankAccountNum, java.lang.String paymentLimit, java.lang.String billStatus, boolean buttonRender) {
+    private void passStandingGIROToSACH(java.lang.String customerName, java.lang.String customerMobile, java.lang.String billReference, java.lang.String billingOrganizationName, java.lang.String creditBank, java.lang.String creditBankAccountNum, java.lang.String debitBank, java.lang.String debitBankAccountNum, java.lang.String paymemtLimit, java.lang.String billStatus, boolean buttonRender) {
         // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
         // If the calling of port operations may lead to race condition some synchronization is required.
-        ws.client.bill.BillWebService port = service_bill.getBillWebServicePort();
-        return port.addNewBill(customerName, customerMobile, billReference, billingOrganizationName, creditBank, debitBank, creditBankAccountNum, debitBankAccountNum, paymentLimit, billStatus, buttonRender);
+        ws.client.sach.SACHWebService port = service_sach.getSACHWebServicePort();
+        port.passStandingGIROToSACH(customerName, customerMobile, billReference, billingOrganizationName, creditBank, creditBankAccountNum, debitBank, debitBankAccountNum, paymemtLimit, billStatus, buttonRender);
     }
 }

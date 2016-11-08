@@ -4,24 +4,6 @@
 <xsd:import namespace="http://session.ws.ejb/" schemaLocation="http://localhost:8080/SACHWebService/SACHWebService?xsd=1"/>
 </xsd:schema>
 </types>
-<message name="SACHRegularGIROTransferMTD">
-<part name="parameters" element="tns:SACHRegularGIROTransferMTD"/>
-</message>
-<message name="SACHRegularGIROTransferMTDResponse">
-<part name="parameters" element="tns:SACHRegularGIROTransferMTDResponse"/>
-</message>
-<message name="clearMerlionReceivedCheque">
-<part name="parameters" element="tns:clearMerlionReceivedCheque"/>
-</message>
-<message name="clearMerlionReceivedChequeResponse">
-<part name="parameters" element="tns:clearMerlionReceivedChequeResponse"/>
-</message>
-<message name="SACHNonStandingGIROTransferMTD">
-<part name="parameters" element="tns:SACHNonStandingGIROTransferMTD"/>
-</message>
-<message name="SACHNonStandingGIROTransferMTDResponse">
-<part name="parameters" element="tns:SACHNonStandingGIROTransferMTDResponse"/>
-</message>
 <message name="SACHTransferMTD">
 <part name="parameters" element="tns:SACHTransferMTD"/>
 </message>
@@ -40,19 +22,37 @@
 <message name="addNewSACHResponse">
 <part name="parameters" element="tns:addNewSACHResponse"/>
 </message>
+<message name="clearMerlionReceivedCheque">
+<part name="parameters" element="tns:clearMerlionReceivedCheque"/>
+</message>
+<message name="clearMerlionReceivedChequeResponse">
+<part name="parameters" element="tns:clearMerlionReceivedChequeResponse"/>
+</message>
+<message name="SACHNonStandingGIROTransferMTD">
+<part name="parameters" element="tns:SACHNonStandingGIROTransferMTD"/>
+</message>
+<message name="SACHNonStandingGIROTransferMTDResponse">
+<part name="parameters" element="tns:SACHNonStandingGIROTransferMTDResponse"/>
+</message>
+<message name="SACHRegularGIROTransferMTD">
+<part name="parameters" element="tns:SACHRegularGIROTransferMTD"/>
+</message>
+<message name="SACHRegularGIROTransferMTDResponse">
+<part name="parameters" element="tns:SACHRegularGIROTransferMTDResponse"/>
+</message>
+<message name="passNonStandingGIROToSACH">
+<part name="parameters" element="tns:passNonStandingGIROToSACH"/>
+</message>
+<message name="passNonStandingGIROToSACHResponse">
+<part name="parameters" element="tns:passNonStandingGIROToSACHResponse"/>
+</message>
+<message name="passStandingGIROToSACH">
+<part name="parameters" element="tns:passStandingGIROToSACH"/>
+</message>
+<message name="passStandingGIROToSACHResponse">
+<part name="parameters" element="tns:passStandingGIROToSACHResponse"/>
+</message>
 <portType name="SACHWebService">
-<operation name="SACHRegularGIROTransferMTD">
-<input wsam:Action="http://session.ws.ejb/SACHWebService/SACHRegularGIROTransferMTDRequest" message="tns:SACHRegularGIROTransferMTD"/>
-<output wsam:Action="http://session.ws.ejb/SACHWebService/SACHRegularGIROTransferMTDResponse" message="tns:SACHRegularGIROTransferMTDResponse"/>
-</operation>
-<operation name="clearMerlionReceivedCheque">
-<input wsam:Action="http://session.ws.ejb/SACHWebService/clearMerlionReceivedChequeRequest" message="tns:clearMerlionReceivedCheque"/>
-<output wsam:Action="http://session.ws.ejb/SACHWebService/clearMerlionReceivedChequeResponse" message="tns:clearMerlionReceivedChequeResponse"/>
-</operation>
-<operation name="SACHNonStandingGIROTransferMTD">
-<input wsam:Action="http://session.ws.ejb/SACHWebService/SACHNonStandingGIROTransferMTDRequest" message="tns:SACHNonStandingGIROTransferMTD"/>
-<output wsam:Action="http://session.ws.ejb/SACHWebService/SACHNonStandingGIROTransferMTDResponse" message="tns:SACHNonStandingGIROTransferMTDResponse"/>
-</operation>
 <operation name="SACHTransferMTD">
 <input wsam:Action="http://session.ws.ejb/SACHWebService/SACHTransferMTDRequest" message="tns:SACHTransferMTD"/>
 <output wsam:Action="http://session.ws.ejb/SACHWebService/SACHTransferMTDResponse" message="tns:SACHTransferMTDResponse"/>
@@ -65,10 +65,48 @@
 <input wsam:Action="http://session.ws.ejb/SACHWebService/addNewSACHRequest" message="tns:addNewSACH"/>
 <output wsam:Action="http://session.ws.ejb/SACHWebService/addNewSACHResponse" message="tns:addNewSACHResponse"/>
 </operation>
+<operation name="clearMerlionReceivedCheque">
+<input wsam:Action="http://session.ws.ejb/SACHWebService/clearMerlionReceivedChequeRequest" message="tns:clearMerlionReceivedCheque"/>
+<output wsam:Action="http://session.ws.ejb/SACHWebService/clearMerlionReceivedChequeResponse" message="tns:clearMerlionReceivedChequeResponse"/>
+</operation>
+<operation name="SACHNonStandingGIROTransferMTD">
+<input wsam:Action="http://session.ws.ejb/SACHWebService/SACHNonStandingGIROTransferMTDRequest" message="tns:SACHNonStandingGIROTransferMTD"/>
+<output wsam:Action="http://session.ws.ejb/SACHWebService/SACHNonStandingGIROTransferMTDResponse" message="tns:SACHNonStandingGIROTransferMTDResponse"/>
+</operation>
+<operation name="SACHRegularGIROTransferMTD">
+<input wsam:Action="http://session.ws.ejb/SACHWebService/SACHRegularGIROTransferMTDRequest" message="tns:SACHRegularGIROTransferMTD"/>
+<output wsam:Action="http://session.ws.ejb/SACHWebService/SACHRegularGIROTransferMTDResponse" message="tns:SACHRegularGIROTransferMTDResponse"/>
+</operation>
+<operation name="passNonStandingGIROToSACH">
+<input wsam:Action="http://session.ws.ejb/SACHWebService/passNonStandingGIROToSACHRequest" message="tns:passNonStandingGIROToSACH"/>
+<output wsam:Action="http://session.ws.ejb/SACHWebService/passNonStandingGIROToSACHResponse" message="tns:passNonStandingGIROToSACHResponse"/>
+</operation>
+<operation name="passStandingGIROToSACH">
+<input wsam:Action="http://session.ws.ejb/SACHWebService/passStandingGIROToSACHRequest" message="tns:passStandingGIROToSACH"/>
+<output wsam:Action="http://session.ws.ejb/SACHWebService/passStandingGIROToSACHResponse" message="tns:passStandingGIROToSACHResponse"/>
+</operation>
 </portType>
 <binding name="SACHWebServicePortBinding" type="tns:SACHWebService">
 <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
-<operation name="SACHRegularGIROTransferMTD">
+<operation name="SACHTransferMTD">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="retrieveSACHById">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="addNewSACH">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
@@ -95,7 +133,7 @@
 <soap:body use="literal"/>
 </output>
 </operation>
-<operation name="SACHTransferMTD">
+<operation name="SACHRegularGIROTransferMTD">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
@@ -104,7 +142,7 @@
 <soap:body use="literal"/>
 </output>
 </operation>
-<operation name="retrieveSACHById">
+<operation name="passNonStandingGIROToSACH">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
@@ -113,7 +151,7 @@
 <soap:body use="literal"/>
 </output>
 </operation>
-<operation name="addNewSACH">
+<operation name="passStandingGIROToSACH">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>

@@ -226,7 +226,7 @@ public class AddNonStandingGIROManagedBean implements Serializable {
         CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
         giroType = "Non Standing";
 
-        NonStandingGIRO nonStandingGIRO = nonStandingGIROSessionBeanLocal.retrieveOnHoldRecordByBillRef(billReference);
+        NonStandingGIRO nonStandingGIRO = nonStandingGIROSessionBeanLocal.retrieveNonStandingByBillRef(billReference);
 
         if (nonStandingGIRO.getGiroId() != null) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Bill has already existed", ""));
@@ -237,7 +237,8 @@ public class AddNonStandingGIROManagedBean implements Serializable {
 
                 giroId = nonStandingGIROSessionBeanLocal.addNewNonStandingGIRO(billingOrganization,
                         billReference, bankAccountNum, bankAccountNumWithType,
-                        paymentFrequency, paymentAmt, giroType, "Incompleted", false, customerBasic.getCustomerBasicId());
+                        paymentFrequency, paymentAmt, giroType, "Pending", true, 
+                        customerBasic.getCustomerBasicId());
 
                 statusMessage = "Your new billing organization has been added!";
                 Calendar cal = Calendar.getInstance();
@@ -256,7 +257,7 @@ public class AddNonStandingGIROManagedBean implements Serializable {
 
                 giroId = nonStandingGIROSessionBeanLocal.addNewNonStandingGIRO(billingOrganization, billReference,
                         bankAccountNum, bankAccountNumWithType, transferFrequency,
-                        paymentAmt, giroType, "Incompleted", false, customerBasic.getCustomerBasicId());
+                        paymentAmt, giroType, "Pending", true, customerBasic.getCustomerBasicId());
 
                 statusMessage = "Your new billing organization has been added!";
                 Calendar cal = Calendar.getInstance();

@@ -61,6 +61,14 @@ public class NonStandingGIROSessionBean implements NonStandingGIROSessionBeanLoc
         nonStandingGIRO.setButtonRender(buttonRender);
         nonStandingGIRO.setCustomerBasic(bankAccountSessionBeanLocal.retrieveCustomerBasicById(customerBasicId));
 
+        String debitBank = "Merlion";
+        String billStatus = "Pending";
+        RegisteredBillingOrganization billOrg = registeredBillingOrganizationSessionBeanLocal.retrieveRegisteredBillingOrganizationByName(billingOrganizationName);
+
+        passNonStandingGIROToSACH(" ", " ", billReference, billingOrganizationName,
+                billOrg.getBankName(), billOrg.getBankAccountNum(), debitBank,
+                bankAccountNum, " ", billStatus, paymentFrequency);
+
         entityManager.persist(nonStandingGIRO);
         entityManager.flush();
 
@@ -449,7 +457,7 @@ public class NonStandingGIROSessionBean implements NonStandingGIROSessionBeanLoc
     }
 
     @Override
-    public NonStandingGIRO retrieveOnHoldRecordByBillRef(String billingReference) {
+    public NonStandingGIRO retrieveNonStandingByBillRef(String billingReference) {
         NonStandingGIRO nonStandingGIRO = new NonStandingGIRO();
 
         try {
@@ -473,8 +481,7 @@ public class NonStandingGIROSessionBean implements NonStandingGIROSessionBeanLoc
     }
 
     @Override
-    public void updateNonStandingStatus(Long giroId, String paymentFrequency
-    ) {
+    public void updateNonStandingPaymentFrequency(Long giroId, String paymentFrequency) {
         NonStandingGIRO nonStandingGiro = retrieveNonStandingGIROById(giroId);
         nonStandingGiro.setPaymentFrequency(paymentFrequency);
     }
@@ -504,5 +511,12 @@ public class NonStandingGIROSessionBean implements NonStandingGIROSessionBeanLoc
         // If the calling of port operations may lead to race condition some synchronization is required.
         ws.client.sach.SACHWebService port = service_sach.getSACHWebServicePort();
         port.sachRegularGIROTransferMTD(fromBankAccountNum, toBankAccountNum, transferAmt);
+    }
+
+    private void passNonStandingGIROToSACH(java.lang.String customerName, java.lang.String customerMobile, java.lang.String billReference, java.lang.String billingOrganizationName, java.lang.String creditBank, java.lang.String creditBankAccountNum, java.lang.String debitBank, java.lang.String debitBankAccountNum, java.lang.String paymemtLimit, java.lang.String billStatus, java.lang.String paymentFrequency) {
+        // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
+        // If the calling of port operations may lead to race condition some synchronization is required.
+        ws.client.sach.SACHWebService port = service_sach.getSACHWebServicePort();
+        port.passNonStandingGIROToSACH(customerName, customerMobile, billReference, billingOrganizationName, creditBank, creditBankAccountNum, debitBank, debitBankAccountNum, paymemtLimit, billStatus, paymentFrequency);
     }
 }

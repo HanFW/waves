@@ -27,7 +27,7 @@ public interface NonStandingGIROSessionBeanLocal {
 
     public void monthlyRecurrentPayment();
 
-    public void updateNonStandingStatus(Long giroId, String paymentFrequency);
+    public void updateNonStandingPaymentFrequency(Long giroId, String paymentFrequency);
 
     public void updateButtonRender(Long giroId);
 
@@ -37,5 +37,5 @@ public interface NonStandingGIROSessionBeanLocal {
 
     public void weeklyRecurrentRegularGIROTransfer();
 
-    public NonStandingGIRO retrieveOnHoldRecordByBillRef(String billingReference);
+    public NonStandingGIRO retrieveNonStandingByBillRef(String billingReference);
 }

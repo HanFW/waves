@@ -15,7 +15,6 @@
 <xs:element name="creditBankAccountNum" type="xs:string" minOccurs="0"/>
 <xs:element name="debitBankAccountNum" type="xs:string" minOccurs="0"/>
 <xs:element name="paymentLimit" type="xs:string" minOccurs="0"/>
-<xs:element name="billStatus" type="xs:string" minOccurs="0"/>
 <xs:element name="buttonRender" type="xs:boolean"/>
 </xs:sequence>
 </xs:complexType>

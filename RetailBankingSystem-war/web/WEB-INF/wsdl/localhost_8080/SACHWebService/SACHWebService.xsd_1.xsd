@@ -20,6 +20,14 @@
 
 <xs:element name="clearMerlionReceivedChequeResponse" type="tns:clearMerlionReceivedChequeResponse"/>
 
+<xs:element name="passNonStandingGIROToSACH" type="tns:passNonStandingGIROToSACH"/>
+
+<xs:element name="passNonStandingGIROToSACHResponse" type="tns:passNonStandingGIROToSACHResponse"/>
+
+<xs:element name="passStandingGIROToSACH" type="tns:passStandingGIROToSACH"/>
+
+<xs:element name="passStandingGIROToSACHResponse" type="tns:passStandingGIROToSACHResponse"/>
+
 <xs:element name="retrieveSACHById" type="tns:retrieveSACHById"/>
 
 <xs:element name="retrieveSACHByIdResponse" type="tns:retrieveSACHByIdResponse"/>
@@ -33,6 +41,26 @@
 </xs:complexType>
 
 <xs:complexType name="SACHRegularGIROTransferMTDResponse">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="passNonStandingGIROToSACH">
+<xs:sequence>
+<xs:element name="customerName" type="xs:string" minOccurs="0"/>
+<xs:element name="customerMobile" type="xs:string" minOccurs="0"/>
+<xs:element name="billReference" type="xs:string" minOccurs="0"/>
+<xs:element name="billingOrganizationName" type="xs:string" minOccurs="0"/>
+<xs:element name="creditBank" type="xs:string" minOccurs="0"/>
+<xs:element name="creditBankAccountNum" type="xs:string" minOccurs="0"/>
+<xs:element name="debitBank" type="xs:string" minOccurs="0"/>
+<xs:element name="debitBankAccountNum" type="xs:string" minOccurs="0"/>
+<xs:element name="paymemtLimit" type="xs:string" minOccurs="0"/>
+<xs:element name="billStatus" type="xs:string" minOccurs="0"/>
+<xs:element name="paymentFrequency" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="passNonStandingGIROToSACHResponse">
 <xs:sequence/>
 </xs:complexType>
 
@@ -111,6 +139,26 @@
 </xs:complexType>
 
 <xs:complexType name="SACHTransferMTDResponse">
+<xs:sequence/>
+</xs:complexType>
+
+<xs:complexType name="passStandingGIROToSACH">
+<xs:sequence>
+<xs:element name="customerName" type="xs:string" minOccurs="0"/>
+<xs:element name="customerMobile" type="xs:string" minOccurs="0"/>
+<xs:element name="billReference" type="xs:string" minOccurs="0"/>
+<xs:element name="billingOrganizationName" type="xs:string" minOccurs="0"/>
+<xs:element name="creditBank" type="xs:string" minOccurs="0"/>
+<xs:element name="creditBankAccountNum" type="xs:string" minOccurs="0"/>
+<xs:element name="debitBank" type="xs:string" minOccurs="0"/>
+<xs:element name="debitBankAccountNum" type="xs:string" minOccurs="0"/>
+<xs:element name="paymemtLimit" type="xs:string" minOccurs="0"/>
+<xs:element name="billStatus" type="xs:string" minOccurs="0"/>
+<xs:element name="buttonRender" type="xs:boolean"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="passStandingGIROToSACHResponse">
 <xs:sequence/>
 </xs:complexType>
 
