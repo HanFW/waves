@@ -11,6 +11,8 @@ public class RegularGIRO extends GIRO implements Serializable {
     private String paymentFrequency;
     private String payeeBankName;
     private String payeeAccountNum;
+    private String regularGIROStatus;
+    private String payeeName;
 
     public String getPaymentAmt() {
         return paymentAmt;
@@ -42,6 +44,22 @@ public class RegularGIRO extends GIRO implements Serializable {
 
     public void setPayeeAccountNum(String payeeAccountNum) {
         this.payeeAccountNum = payeeAccountNum;
+    }
+
+    public String getRegularGIROStatus() {
+        return regularGIROStatus;
+    }
+
+    public void setRegularGIROStatus(String regularGIROStatus) {
+        this.regularGIROStatus = regularGIROStatus;
+    }
+
+    public String getPayeeName() {
+        return payeeName;
+    }
+
+    public void setPayeeName(String payeeName) {
+        this.payeeName = payeeName;
     }
     
 }

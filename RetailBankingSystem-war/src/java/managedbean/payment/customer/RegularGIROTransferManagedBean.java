@@ -216,6 +216,9 @@ public class RegularGIROTransferManagedBean {
         String fromBankAccountNum = handleAccountString(fromBankAccountNumWithType);
         String toOtherBankAccountNum = handleAccountString(toBankAccountNumWithType);
 
+        OtherBankPayee otherBankPayee = otherBankPayeeSessionBeanLocal.retrieveOtherBankPayeeByNum(toOtherBankAccountNum);
+        String payeeName = otherBankPayee.getOtherBankPayeeName();
+
         BankAccount fromBankAccount = bankAccountSessionBeanLocal.retrieveBankAccountByNum(fromBankAccountNum);
         Double currentAvailableBankAccountBalance = Double.valueOf(fromBankAccount.getAvailableBankAccountBalance()) - transferAmt;
         bankAccountSessionBeanLocal.updateBankAccountAvailableBalance(fromBankAccountNum, currentAvailableBankAccountBalance.toString());
@@ -223,13 +226,13 @@ public class RegularGIROTransferManagedBean {
         if (transferMethod.equals("One Time")) {
             transferFrequency = "One Time";
         }
-        
+
         Long regularGIROId = regularGIROSessionBeanLocal.addNewRegularGRIO(fromBankAccountNum,
                 fromBankAccountNumWithType, "Regular GIRO", transferAmt.toString(), transferFrequency,
-                toBankName, toOtherBankAccountNum, fromBankAccount.getBankAccountId());
+                toBankName, toOtherBankAccountNum, "Active", payeeName, fromBankAccount.getBankAccountId());
 
         if (toBankName.equals("DBS") && transferMethod.equals("One Time")) {
-            
+
             sachRegularGIROTransferMTD(fromBankAccountNum, toOtherBankAccountNum, transferAmt);
 
             statusMessage = "Your transaction has been completed.";
@@ -246,7 +249,7 @@ public class RegularGIROTransferManagedBean {
             ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/payment/customerRegularGIROTransferDone.xhtml?faces-redirect=true");
 
         } else if (toBankName.equals("DBS") && !transferMethod.equals("One Time")) {
-            
+
             sachRegularGIROTransferMTD(fromBankAccountNum, toOtherBankAccountNum, transferAmt);
 
             regularGIROSessionBeanLocal.updatePaymentAmt(regularGIROId, transferAmt.toString());

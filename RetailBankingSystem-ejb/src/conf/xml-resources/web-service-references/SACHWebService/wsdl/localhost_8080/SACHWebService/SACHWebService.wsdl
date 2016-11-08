@@ -28,6 +28,18 @@
 <message name="SACHTransferMTDResponse">
 <part name="parameters" element="tns:SACHTransferMTDResponse"/>
 </message>
+<message name="retrieveSACHById">
+<part name="parameters" element="tns:retrieveSACHById"/>
+</message>
+<message name="retrieveSACHByIdResponse">
+<part name="parameters" element="tns:retrieveSACHByIdResponse"/>
+</message>
+<message name="addNewSACH">
+<part name="parameters" element="tns:addNewSACH"/>
+</message>
+<message name="addNewSACHResponse">
+<part name="parameters" element="tns:addNewSACHResponse"/>
+</message>
 <portType name="SACHWebService">
 <operation name="SACHRegularGIROTransferMTD">
 <input wsam:Action="http://session.ws.ejb/SACHWebService/SACHRegularGIROTransferMTDRequest" message="tns:SACHRegularGIROTransferMTD"/>
@@ -44,6 +56,14 @@
 <operation name="SACHTransferMTD">
 <input wsam:Action="http://session.ws.ejb/SACHWebService/SACHTransferMTDRequest" message="tns:SACHTransferMTD"/>
 <output wsam:Action="http://session.ws.ejb/SACHWebService/SACHTransferMTDResponse" message="tns:SACHTransferMTDResponse"/>
+</operation>
+<operation name="retrieveSACHById">
+<input wsam:Action="http://session.ws.ejb/SACHWebService/retrieveSACHByIdRequest" message="tns:retrieveSACHById"/>
+<output wsam:Action="http://session.ws.ejb/SACHWebService/retrieveSACHByIdResponse" message="tns:retrieveSACHByIdResponse"/>
+</operation>
+<operation name="addNewSACH">
+<input wsam:Action="http://session.ws.ejb/SACHWebService/addNewSACHRequest" message="tns:addNewSACH"/>
+<output wsam:Action="http://session.ws.ejb/SACHWebService/addNewSACHResponse" message="tns:addNewSACHResponse"/>
 </operation>
 </portType>
 <binding name="SACHWebServicePortBinding" type="tns:SACHWebService">
@@ -76,6 +96,24 @@
 </output>
 </operation>
 <operation name="SACHTransferMTD">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="retrieveSACHById">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="addNewSACH">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
