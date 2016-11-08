@@ -5,9 +5,15 @@
  */
 package managedbean.wealth.customer;
 
+import ejb.customer.entity.CustomerBasic;
+import ejb.wealth.session.CreateFinancialGoalSessionBeanLocal;
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
@@ -30,11 +36,15 @@ public class CustomerUseInvestmentCalculatorManagedBean implements Serializable 
     /**
      * Creates a new instance of CustomerUseInvestmentCalculatorManagedBean
      */
+    @EJB
+    CreateFinancialGoalSessionBeanLocal createFinancialGoalSessionBeanLocal;
+
     private double startingBalance;
     private double rate;
     private double monthlyContribution;
     private int contributeDuration;
     private int worthYear;
+    private double amountExpected;
 
     private double interestEarnedPercentage = 0.0;
     private double contributionsPercentage = 0.0;
@@ -53,6 +63,8 @@ public class CustomerUseInvestmentCalculatorManagedBean implements Serializable 
     private double maxValue;
     private Axis xAxis;
     private Axis yAxis;
+    
+    private CustomerBasic customer;
 
     @PostConstruct
     public void init() {
@@ -234,6 +246,14 @@ public class CustomerUseInvestmentCalculatorManagedBean implements Serializable 
         this.contributionsPercentage = contributionsPercentage;
     }
 
+    public double getAmountExpected() {
+        return amountExpected;
+    }
+
+    public void setAmountExpected(double amountExpected) {
+        this.amountExpected = amountExpected;
+    }
+
     public void createPieModel1() {
         pieModel1 = new PieChartModel();
 
@@ -251,5 +271,27 @@ public class CustomerUseInvestmentCalculatorManagedBean implements Serializable 
     public BarChartModel getBarModel() {
         return barModel;
     }
+
+    public void declareFinancialGoal() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        ExternalContext ec = context.getExternalContext();
+        FacesMessage message = null;
+        
+        Long id= getCustomerViaSessionMap().getCustomerBasicId();
+
+        createFinancialGoalSessionBeanLocal.createPortfolio(id,startingBalance, monthlyContribution, contributeDuration, worthYear, amountExpected);
+
+        message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Your financial goal has been successfully saved!", null);
+        context.addMessage(null, message);
+    }
+    
+    
+    public CustomerBasic getCustomerViaSessionMap() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        customer = (CustomerBasic) context.getExternalContext().getSessionMap().get("customer");
+
+        return customer;
+
+    } 
 
 }
