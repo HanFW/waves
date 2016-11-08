@@ -80,7 +80,11 @@ public class LoanRepaymentSessionBean implements LoanRepaymentSessionBeanLocal {
             payableAccount.setAccountStatus("started");
         }
         
-        payableAccount.setAccountBalance(payableAccount.getAccountBalance() - amount);
+        double previousPayableBalance = payableAccount.getAccountBalance();
+        payableAccount.setAccountBalance(previousPayableBalance - amount);
+        if(previousPayableBalance - amount <= 0){
+            payableAccount.setAccountStatus("completed");
+        }
         em.flush();
     }
     
