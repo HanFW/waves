@@ -57,7 +57,6 @@ public class ViewStatementDoneManagedBean {
         System.out.println("=");
         System.out.println("====== deposit/ViewStatementManagedBean: viewStatement() ======");
 
-        System.out.println(statementId);
         Connection connection;
 
         FacesContext ctx = FacesContext.getCurrentInstance();
@@ -67,12 +66,6 @@ public class ViewStatementDoneManagedBean {
 
         InputStream reportStream = ctx.getExternalContext()
                 .getResourceAsStream("/E-Statements/myBankStatement.jasper");
-
-//        if (reportStream == null) {
-//            System.err.println("********* INputstream is null");
-//        } else {
-//            System.err.println("********* INputstream is not null");
-//        }
 
         ServletOutputStream servletOutputStream = response.getOutputStream();
         Class.forName("com.mysql.jdbc.Driver");
@@ -100,6 +93,4 @@ public class ViewStatementDoneManagedBean {
         servletOutputStream.flush();
         servletOutputStream.close();
     }
-
-    
 }

@@ -181,12 +181,12 @@ public class AddNewStandingGIROManagedBean implements Serializable {
         giroType = "Standing";
 
         bankAccountNum = handleAccountString(bankAccountNumWithType);
-        
+
         standingGIROSessionBeanLocal.addNewStandingGIRO(billingOrganization, billReference, paymentLimit.toString(),
                 customerName, customerMobile, bankAccountNum, standingGiroStatus,
                 bankAccountNumWithType, giroType, customerBasic.getCustomerBasicId());
 
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Add GIRO Arrangement Successfully", ""));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Add GIRO Arrangement Successfully", ""));
     }
 
     private String handleAccountString(String bankAccountNumWithType) {

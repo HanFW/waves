@@ -7,6 +7,7 @@ package ejb.wealth.entity;
 
 import ejb.customer.entity.CustomerBasic;
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,6 +15,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -38,6 +40,9 @@ public class Portfolio implements Serializable {
     
     @ManyToOne(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER)
     private CustomerBasic customerBasic;
+    
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "portfolio")
+    private List<Asset> asset;
 
     public Long getId() {
         return id;
@@ -118,6 +123,17 @@ public class Portfolio implements Serializable {
     public void setEndDate(String endDate) {
         this.endDate = endDate;
     }   
+    public List<Asset> getAsset() {
+        return asset;
+    }
+
+    public void setAsset(List<Asset> asset) {
+        this.asset = asset;
+    }
+    
+    public void addAsset (Asset a) {
+        asset.add(a);
+    }
 
     @Override
     public int hashCode() {

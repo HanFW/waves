@@ -35,15 +35,22 @@
                             <p:column headerText="Expiry Date">
                                 <h:outputText value="#{supplementaryCard.cardExpiryDate}" />
                             </p:column>
-                            <p:column headerText="Action">
-                                <p:commandButton value="Cancel" action="#{customerCancelSupplementaryManagedBean.cancelSupplementaryCard(supplementaryCard.cardId)}" update="@form"/>
+                            <p:column>
+                                <p:commandButton value="Cancel" action="#{customerCancelSupplementaryManagedBean.cancelSupplementaryCard(supplementaryCard.cardId)}" update="@form">
+                                    <p:confirm header="Confirmation" message="Are you sure to cancel this card? This action is not reversible" icon="ui-icon-alert" />
+                                </p:commandButton>
+
+                                <p:confirmDialog id="dialog" global="true" showEffect="fade" hideEffect="fade">
+                                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" style="width:auto"/>
+                                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" style="width:auto"/>
+                                </p:confirmDialog>
                             </p:column>
                         </p:dataTable>
                     </p:panel>
-                    
-                    
-                    <p:commandButton value="Want to add a new Supplementary Card?" action="#{customerCancelSupplementaryManagedBean.redirectToAddSupplementaryCard}" style="width:auto"/>
-                    
+
+                    <p:panel>
+                        <p:commandButton value="Add a new Supplementary Card" action="#{customerCancelSupplementaryManagedBean.redirectToAddSupplementaryCard}"/>
+                    </p:panel>
                 </div>
             </h:form>
 
