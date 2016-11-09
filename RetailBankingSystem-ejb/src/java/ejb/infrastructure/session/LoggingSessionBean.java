@@ -6,6 +6,7 @@
 package ejb.infrastructure.session;
 
 import ejb.infrastructure.entity.Logging;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -17,7 +18,7 @@ import javax.persistence.Query;
  * @author hanfengwei
  */
 @Stateless
-public class LoggingSessionBean implements LoggingSessionBeanLocal {
+public class LoggingSessionBean implements LoggingSessionBeanLocal, LoggingSessionBeanRemote {
     
     @PersistenceContext
     private EntityManager em;
@@ -27,7 +28,7 @@ public class LoggingSessionBean implements LoggingSessionBeanLocal {
         System.out.println("#");
         System.out.println("##### infrastructure/LoggingSessionBean: createNewLogging() ######");
         Logging log = new Logging();
-        log.create(trigger, person, activity, result, remarks);
+        log.create(new Date().toString(), person, activity, result, remarks);
         em.persist(log);
         em.flush();
     }

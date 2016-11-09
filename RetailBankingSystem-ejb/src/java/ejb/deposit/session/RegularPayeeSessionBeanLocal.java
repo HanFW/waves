@@ -14,4 +14,5 @@ public interface RegularPayeeSessionBeanLocal {
     public List<RegularPayee> retrieveRegularPayeeByCusId(Long customerBasicId);
     
     public Payee retrieveRegularPayeeByName(String payeeName);
+    
 }

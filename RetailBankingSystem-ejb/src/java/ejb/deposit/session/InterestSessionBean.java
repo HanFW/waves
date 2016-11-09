@@ -3,7 +3,6 @@ package ejb.deposit.session;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.entity.Interest;
 import javax.ejb.EJB;
-import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
@@ -12,9 +11,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 @Stateless
-@LocalBean
-
-public class InterestSessionBean implements InterestSessionBeanLocal {
+public class InterestSessionBean implements InterestSessionBeanLocal, InterestSessionBeanRemote {
 
     @EJB
     private BankAccountSessionBeanLocal bankAccountSessionLocal;
@@ -100,13 +97,15 @@ public class InterestSessionBean implements InterestSessionBeanLocal {
     }
     
     @Override
-    public void deleteInterest(Long interestId) {
+    public String deleteInterest(Long interestId) {
         System.out.println("*");
         System.out.println("****** deposit/InterestSessionBean: deleteInterest() ******");
         Interest interest = retrieveInterestById(interestId);
         
         entityManager.remove(interest);
         entityManager.flush();
+        
+        return "Successfully Deleted!";
         
     }
 }

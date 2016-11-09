@@ -33,7 +33,7 @@ import javax.persistence.Query;
  * @author Jingyuan
  */
 @Stateless
-public class EmployeeEmailSessionBean implements EmployeeEmailSessionBeanLocal {
+public class EmployeeEmailSessionBean implements EmployeeEmailSessionBeanLocal, EmployeeEmailSessionBeanRemote{
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")

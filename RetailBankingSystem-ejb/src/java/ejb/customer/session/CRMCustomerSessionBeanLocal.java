@@ -11,11 +11,11 @@ public interface CRMCustomerSessionBeanLocal {
 
     public CustomerBasic getCustomer(String onlineBankingAccountNum);
 
-//    public List<CustomerBasic> getMyCustomerBasicProfile(String onlineBankingAccountNum);
+    public List<CustomerBasic> getMyCustomerBasicProfile(String onlineBankingAccountNum);
 
     public CustomerAdvanced getCustomerAdvancedByAccNum(String onlineBankingAccountNum);
 
-//    public List<CustomerBasic> getAllCustomerBasicProfile();
+    public List<CustomerBasic> getAllCustomerBasicProfile();
 
     public String updateCustomerOnlineBankingAccountPIN(String customerOnlineBankingAccountNum, String inputPassowrd, String newPassword);
 
@@ -55,7 +55,7 @@ public interface CRMCustomerSessionBeanLocal {
 
     public List<CustomerBasic> getAllNewCustomer();
 
-    public void updateCustomerMobile(Long customerId, String customerMobile);
+    public String updateCustomerMobile(Long customerId, String customerMobile);
     
     public CustomerBasic getCustomerBasicById(Long customerId);
     

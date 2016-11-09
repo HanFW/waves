@@ -362,17 +362,17 @@ public class EnquirySessionBean implements EnquirySessionBeanLocal, EnquirySessi
         }
     }
 
-//    @Override
-//    public String caseIssueIsCreated(Long caseId) {
-//        List resultList = getEnquiryByCaseId(caseId);
-//        EnquiryCase ec = (EnquiryCase) resultList.get(0);
-//        List issueList = ec.getIssue();
-//        if (issueList.isEmpty()) {
-//            return "No";
-//        } else {
-//            return "Yes";
-//        }
-//    }
+    @Override
+    public String caseIssueIsCreated(Long caseId) {
+        List resultList = getEnquiryByCaseId(caseId);
+        EnquiryCase ec = (EnquiryCase) resultList.get(0);
+        List issueList = ec.getIssue();
+        if (issueList.isEmpty()) {
+            return "No";
+        } else {
+            return "Yes";
+        }
+    }
 
     @Override
     public String caseIssueAllReplied(Long caseId) {

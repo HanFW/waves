@@ -25,7 +25,7 @@ import org.jboss.aerogear.security.otp.api.Base32;
  * @author hanfengwei
  */
 @Stateless
-public class CustomerAdminSessionBean implements CustomerAdminSessionBeanLocal {
+public class CustomerAdminSessionBean implements CustomerAdminSessionBeanLocal, CustomerAdminSessionBeanRemote {
 
     @EJB
     private CustomerEmailSessionBeanLocal customerEmailSessionBeanLocal;
@@ -276,11 +276,13 @@ public class CustomerAdminSessionBean implements CustomerAdminSessionBeanLocal {
     @Override
     public void deleteOnlineBankingAccount(Long customerId) {
         CustomerBasic customer = em.find(CustomerBasic.class, customerId);
-        customer.setCustomerOnlineBankingAccountNum(null);
+        if(customer!=null){
+            customer.setCustomerOnlineBankingAccountNum(null);
         customer.setCustomerOnlineBankingPassword(null);
         customer.setCustomerStatus("deleteIBAccount");
         customer.setCustomerOnlineBankingAccountLocked(null);
-        em.flush();
+        em.flush();      
+    }
     }
 
     @Override
@@ -310,21 +312,26 @@ public class CustomerAdminSessionBean implements CustomerAdminSessionBeanLocal {
     }
 
     @Override
-    public void lockCustomerOnlineBankingAccount(Long customerId) {
+    public String lockCustomerOnlineBankingAccount(Long customerId) {
         System.out.println("*");
         System.out.println("****** infrastructure/CustomerAdminSessionBean: lockCustomerOnlineBankingAccount() ******");
         CustomerBasic customer = em.find(CustomerBasic.class, customerId);
         customer.setCustomerOnlineBankingAccountLocked("yes");
         em.flush();
+        
+        return "Account Locked!";
+        
     }
 
     @Override
-    public void unlockCustomerOnlineBankingAccount(Long customerId) {
+    public String unlockCustomerOnlineBankingAccount(Long customerId) {
         System.out.println("*");
         System.out.println("****** infrastructure/CustomerAdminSessionBean: unlockCustomerOnlineBankingAccount() ******");
         CustomerBasic customer = em.find(CustomerBasic.class, customerId);
         customer.setCustomerOnlineBankingAccountLocked("no");
         em.flush();
+        
+        return "Account Unlocked!";
     }
 
     private String md5Hashing(String stringToHash) throws NoSuchAlgorithmException {

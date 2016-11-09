@@ -22,8 +22,7 @@ import ws.client.otherbanks.OtherBankAccount;
 import ws.client.otherbanks.OtherBanksWebService_Service;
 
 @Stateless
-@LocalBean
-public class TransactionSessionBean implements TransactionSessionBeanLocal {
+public class TransactionSessionBean implements TransactionSessionBeanLocal, TransactionSessionBeanRemote {
 
     @WebServiceRef(wsdlLocation = "META-INF/wsdl/localhost_8080/OtherBanksWebService/OtherBanksWebService.wsdl")
     private OtherBanksWebService_Service service;
@@ -316,15 +315,17 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
     }
 
     @Override
-    public void deleteAccTransaction(Long transactionId) {
+    public String deleteAccTransaction(Long transactionId) {
         AccTransaction transaction = bankAccountSessionBeanLocal.retrieveAccTransactionById(transactionId);
 
         entityManager.remove(transaction);
         entityManager.flush();
+        
+        return "Successfully Deleted!";
     }
 
     @Override
-    public void fastTransfer(String fromBankAccount, String toBankAccount, Double transferAmt) {
+    public String fastTransfer(String fromBankAccount, String toBankAccount, Double transferAmt) {
 
         OtherBankAccount otherBankAccount = retrieveBankAccountByNum_other(fromBankAccount);
         BankAccount bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountByNum(toBankAccount);
@@ -344,6 +345,8 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
 
         bankAccount.setAvailableBankAccountBalance(availableBalance.toString());
         bankAccount.setTotalBankAccountBalance(totalBalance.toString());
+        
+        return "Successfully Transfered!";
 
     }
 

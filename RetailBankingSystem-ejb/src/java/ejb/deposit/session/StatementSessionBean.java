@@ -16,9 +16,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 @Stateless
-@LocalBean
-
-public class StatementSessionBean implements StatementSessionBeanLocal {
+public class StatementSessionBean implements StatementSessionBeanLocal, StatementSessionBeanRemote {
 
     @EJB
     private BankAccountSessionBeanLocal bankAccountSessionLocal;
@@ -101,7 +99,7 @@ public class StatementSessionBean implements StatementSessionBeanLocal {
     }
 
     @Override
-    public void generateStatement() {
+    public String generateStatement() {
         System.out.println("*");
         System.out.println("****** deposit/StatementSessionBean: generateStatement() ******");
 
@@ -150,6 +148,8 @@ public class StatementSessionBean implements StatementSessionBeanLocal {
 
             statemens.add(statement);
         }
+        
+        return "Successfully Generated!";
     }
 
     private String handleStatementDate(Double statementDateDouble) {
@@ -186,10 +186,12 @@ public class StatementSessionBean implements StatementSessionBeanLocal {
     }
     
     @Override
-    public void deleteStatement (Long statementId) {
+    public String deleteStatement (Long statementId) {
         Statement statement = retrieveStatementById(statementId);
         
         entityManager.remove(statement);
         entityManager.flush();
+        
+        return "Successfully Deleted!";
     }
 }

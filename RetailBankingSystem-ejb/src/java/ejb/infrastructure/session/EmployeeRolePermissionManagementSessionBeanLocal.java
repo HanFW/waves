@@ -13,7 +13,8 @@ import javax.ejb.Local;
  */
 @Local
 public interface EmployeeRolePermissionManagementSessionBeanLocal {
-       public String[] getPermissions(String roleName);
-       
-       public String[] getPermissionList();
+
+    public String[] getPermissions(String roleName);
+
+    public String[] getPermissionList();
 }

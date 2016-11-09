@@ -15,8 +15,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.NonUniqueResultException;
 
 @Stateless
-@LocalBean
-public class PayeeSessionBean implements PayeeSessionBeanLocal {
+public class PayeeSessionBean implements PayeeSessionBeanLocal, PayeeSessionBeanRemote {
 
     @EJB
     private BankAccountSessionBeanLocal bankAccountSessionLocal;

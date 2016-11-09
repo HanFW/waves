@@ -35,7 +35,7 @@ public interface CustomerAdminSessionBeanLocal {
     
     public void recreateOnlineBankingAccount(Long customerId);
     
-    public void lockCustomerOnlineBankingAccount(Long customerId);
+    public String lockCustomerOnlineBankingAccount(Long customerId);
     
-    public void unlockCustomerOnlineBankingAccount(Long customerId);
+    public String unlockCustomerOnlineBankingAccount(Long customerId);
 }
