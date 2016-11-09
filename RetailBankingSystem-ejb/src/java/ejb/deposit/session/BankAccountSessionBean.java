@@ -1,17 +1,15 @@
 package ejb.deposit.session;
 
+import ejb.card.session.DebitCardSessionBeanLocal;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.entity.AccTransaction;
 import ejb.customer.entity.CustomerBasic;
 import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import ejb.deposit.entity.Interest;
 import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import javax.ejb.Stateless;
@@ -38,6 +36,9 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
 
     @EJB
     private InterestSessionBeanLocal interestSessionLocal;
+
+    @EJB
+    private DebitCardSessionBeanLocal debitCardSessionBeanLocal;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -729,5 +730,37 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
 
         bankAccount.setAvailableBankAccountBalance(availableBankAccountBalance);
         bankAccount.setTotalBankAccountBalance(totalBankAccountBalance);
+    }
+
+    @Override
+    public void updateDepositAccountAvailableBalance(String cardNum, double transactionAmt) {
+        System.out.println("!!!!!!!updateDepositAccountAvailableBalance");
+        BankAccount account = debitCardSessionBeanLocal.getBankAccountByCardNum(cardNum);
+        Double availableBalance;
+        availableBalance = Double.valueOf(account.getAvailableBankAccountBalance());
+        String newAvailableBalance = String.valueOf(availableBalance - transactionAmt);
+        account.setAvailableBankAccountBalance(newAvailableBalance);
+        entityManager.flush();
+    }
+
+    @Override
+    public void updateDepositAccountTotalBalance(String cardNum, double transactionAmt,String merchantName) {
+        System.out.println("~~~~~!!!!!!!updateDepositAccountTotalBalance");
+        BankAccount account = debitCardSessionBeanLocal.getBankAccountByCardNum(cardNum);
+
+        //add new transaction
+        Calendar cal = Calendar.getInstance();
+        String transactionDate = cal.getTime().toString();
+        Long transactionDateMilis = cal.getTimeInMillis();
+        String transactionCode = merchantName;
+        String debitAmt=String.valueOf(transactionAmt);
+        transactionSessionBeanLocal.addNewTransaction(transactionDate, transactionCode, "", debitAmt, "", transactionDateMilis, account.getBankAccountId());
+
+        Double totalBalance;
+        totalBalance = Double.valueOf(account.getTotalBankAccountBalance());
+        String newTotalBalance = String.valueOf(totalBalance - transactionAmt);
+        account.setTotalBankAccountBalance(newTotalBalance);
+        entityManager.flush();
+
     }
 }

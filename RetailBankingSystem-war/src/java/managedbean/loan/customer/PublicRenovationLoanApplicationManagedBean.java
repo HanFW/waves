@@ -5,7 +5,7 @@
  */
 package managedbean.loan.customer;
 
-import ejb.customer.session.CRMCustomerSessionBean;
+import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import ejb.infrastructure.session.CustomerEmailSessionBeanLocal;
 import ejb.loan.entity.CustomerProperty;
 import ejb.loan.entity.RenovationLoanApplication;
@@ -48,7 +48,7 @@ public class PublicRenovationLoanApplicationManagedBean implements Serializable 
     private CustomerEmailSessionBeanLocal customerEmailSessionBeanLocal;
 
     @EJB
-    private CRMCustomerSessionBean cRMCustomerSessionBeanLocal;
+    private CRMCustomerSessionBeanLocal cRMCustomerSessionBeanLocal;
 
     @EJB
     private LoanApplicationSessionBeanLocal loanApplicationSessionBeanLocal;

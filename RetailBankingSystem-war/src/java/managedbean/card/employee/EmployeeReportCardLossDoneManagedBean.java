@@ -200,6 +200,7 @@ public class EmployeeReportCardLossDoneManagedBean {
     }
 
     public List<String> getCreditCards() {
+        System.out.println("~~~~~debug");
         customer = getCustomerViaSessionMap();
         Long id = customer.getCustomerBasicId();
         creditCards = creditCardSessionBeanLocal.getAllActivatedCreditCards(id);

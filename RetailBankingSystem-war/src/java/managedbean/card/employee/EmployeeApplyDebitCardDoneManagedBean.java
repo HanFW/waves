@@ -10,6 +10,7 @@ import ejb.customer.entity.CustomerBasic;
 import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import ejb.deposit.entity.BankAccount;
 import java.io.IOException;
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -17,11 +18,11 @@ import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.inject.Named;
-import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.faces.view.ViewScoped;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.FlowEvent;
 
@@ -30,9 +31,9 @@ import org.primefaces.event.FlowEvent;
  * @author Nicole
  */
 @Named(value = "employeeApplyDebitCardDoneManagedBean")
-@RequestScoped
+@ViewScoped
 
-public class EmployeeApplyDebitCardDoneManagedBean {
+public class EmployeeApplyDebitCardDoneManagedBean implements Serializable {
 
     @EJB
     private DebitCardSessionBeanLocal debitCardSessionBeanLocal;
@@ -216,6 +217,7 @@ public class EmployeeApplyDebitCardDoneManagedBean {
     public void setSelectedDepositAccount(String selectedDepositAccount) throws IOException {
         this.selectedDepositAccount = selectedDepositAccount;
 //        checkExistingDebitCard();
+        System.out.println("test set selectedDepositAccount " + selectedDepositAccount);
     }
 
     public boolean isShowResult() {

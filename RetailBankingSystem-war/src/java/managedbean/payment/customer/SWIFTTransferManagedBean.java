@@ -281,6 +281,8 @@ public class SWIFTTransferManagedBean implements Serializable {
                 swiftCodeA, swiftCodeB, organizationA, organizationB, countryA, countryB,
                 df.format(transferAmt), myAccountNum);
 
+        sWIFTPayeeSessionBeanLocal.updateLastTransactionDate(swiftPayee.getPayeeAccountNum());
+
         statusMessage = "We have received your application. We will process your application within 3 working days.";
 
         ec.getFlash().put("statusMessage", statusMessage);

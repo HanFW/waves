@@ -15,11 +15,11 @@
                 <br/>      
                 <p:messages/>
                 
-                <h:panelGrid columns="1" cellpadding="5" styleClass="ui-panelgrid-blank form-group"> 
-                    <p:outputLabel for="CaseID"  value="Customer Case ID:" />
+                <p:panelGrid columns="1" class="ui-lg-3"> 
+                    <p:outputLabel for="CaseID"  style="font-weight: bold" value="Customer Case ID:" />
                     <p:inputText id="CaseID" value="#{employeeRecordEnquiryManagedBean.caseId}" required="true" requiredMessage="Please enter case ID"/>
                     <p:commandButton value="Search" actionListener="#{employeeRecordEnquiryManagedBean.retrieveCaseByCaseRef}" update="@form" />
-                </h:panelGrid>  
+                </p:panelGrid>  
             </div>
         </h:form>
     </ui:define>

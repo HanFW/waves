@@ -1,5 +1,6 @@
 package ejb.customer.entity;
 
+import ejb.bi.entity.CustomerRFM;
 import ejb.card.entity.CreditCard;
 import ejb.deposit.entity.BankAccount;
 import ejb.infrastructure.entity.MessageBox;
@@ -102,6 +103,9 @@ public class CustomerBasic implements Serializable {
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
     private List<CashlineApplication> cashlineApplication;
     
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
+    private List<Portfolio> portfolios;
+    
     @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     private CreditReportBureauScore bureauScore;
     
@@ -114,8 +118,8 @@ public class CustomerBasic implements Serializable {
     @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
     private RefinancingApplication refinancingApplication;
     
-    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
-    private List<Portfolio> portfolio;
+    @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
+    private CustomerRFM customerRFM;
     
     public void addLoanApplication(LoanApplication newApplication){
         loanApplication.add(newApplication);
@@ -484,14 +488,29 @@ public class CustomerBasic implements Serializable {
         this.refinancingApplication = refinancingApplication;
     }
 
-    public List<Portfolio> getPortfolio() {
-        return portfolio;
+    public CustomerRFM getCustomerRFM() {
+        return customerRFM;
     }
 
-    public void setPortfolio(List<Portfolio> portfolio) {
-        this.portfolio = portfolio;
+    public void setCustomerRFM(CustomerRFM customerRFM) {
+        this.customerRFM = customerRFM;
+    }
+
+    public List<Portfolio> getPortfolios() {
+        return portfolios;
+    }
+
+    public void setPotrfolios(List<Portfolio> potfolios) {
+        this.portfolios = potfolios;
     }
     
+    public void addPortfolio(Portfolio portfolio){
+        this.portfolios.add(portfolio);
+    }
+    
+    public void removePortfolio(Portfolio portfolio){
+        this.portfolios.remove(portfolio);
+    }
     
     @Override
     public int hashCode() {

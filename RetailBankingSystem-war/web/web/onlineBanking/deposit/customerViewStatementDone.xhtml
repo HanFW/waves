@@ -14,12 +14,14 @@
                 <p:outputLabel value="Welcome "/>
                 <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
             </p:panel>
+             <div align="center">
+                <h1>View My eStatement</h1>
+            </div>
+           
             <p:dataTable var="statement" reflow="true" paginator="true" rows="10"
                          value="#{viewStatementManagedBean.statement}"
                          emptyMessage="No Statement">
-                <f:facet name="header">
-                    View My eStatement
-                </f:facet>
+               
                 <p:column headerText="Date"> 
                     <h:outputText value="#{statement.statementDate}" />
                 </p:column>

@@ -56,7 +56,6 @@ public class RefinancingApplication extends LoanApplication implements Serializa
         docs.put("existingLoan", true);
         docs.put("cpfWithdrawal", true);
         docs.put("tenancy", false);
-        docs.put("evidenceOfSale", true);
 
         if (employmentStatus.equals("Self-Employed")) {
             docs.put("selfEmployedTax", true);

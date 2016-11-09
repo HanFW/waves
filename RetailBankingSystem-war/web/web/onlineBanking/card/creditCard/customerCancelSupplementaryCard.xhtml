@@ -22,7 +22,7 @@
 
                     <h1>Cancel Supplementary Card</h1>
                     <p:panel>
-                        <p:dataTable var="supplementaryCard" value="#{customerCancelSupplementaryManagedBean.allSupplementaryCard}">
+                        <p:dataTable var="supplementaryCard"  reflow="true" value="#{customerCancelSupplementaryManagedBean.allSupplementaryCard}" >
                             <p:column headerText="Card Number">
                                 <h:outputText value="#{supplementaryCard.cardNum}" />
                             </p:column>

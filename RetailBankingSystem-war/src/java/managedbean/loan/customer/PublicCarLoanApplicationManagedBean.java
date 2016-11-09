@@ -5,7 +5,7 @@
  */
 package managedbean.loan.customer;
 
-import ejb.customer.session.CRMCustomerSessionBean;
+import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import ejb.infrastructure.session.CustomerEmailSessionBeanLocal;
 import ejb.loan.entity.CarLoanApplication;
 import ejb.loan.session.LoanApplicationSessionBeanLocal;
@@ -41,7 +41,7 @@ public class PublicCarLoanApplicationManagedBean implements Serializable {
     private CustomerEmailSessionBeanLocal customerEmailSessionBeanLocal;
 
     @EJB
-    private CRMCustomerSessionBean cRMCustomerSessionBeanLocal;
+    private CRMCustomerSessionBeanLocal cRMCustomerSessionBeanLocal;
 
     @EJB
     private LoanApplicationSessionBeanLocal loanApplicationSessionBeanLocal;
@@ -154,7 +154,7 @@ public class PublicCarLoanApplicationManagedBean implements Serializable {
         if (isExistingCustomer) {
             newCustomerBasicId = cRMCustomerSessionBeanLocal.updateCustomerBasic("F11223344", "hanfengwei96@gmail.com", "83114121",
                     "China", "China", "Single", "Student", "AfterYou",
-                    "Lai Qing", "123123");
+                    "address", "123123");
         } else {
             newCustomerBasicId = cRMCustomerSessionBeanLocal.addNewCustomerBasic("Lai Qing",
                     "Ms", "F11223344",

@@ -5,8 +5,8 @@
  */
 package ejb.card.session;
 
-import ejb.customer.entity.CustomerBasic;
-import java.util.Date;
+import ejb.card.entity.DebitCard;
+import ejb.deposit.entity.BankAccount;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -28,10 +28,18 @@ public interface DebitCardSessionBeanLocal {
     
     public String debitCardNumValiadation(String debitCardNum, String cardHolderName, String debitCardSecurityCode);
     
+    public List<String> getAllDepositAccounts(Long customerId);
+    
     public List<String> getAllActivatedDebitCards(Long customerId);
     
     public List<String> getAllNonActivatedDebitCards(Long customerId);
     
     public List<String> getAllDebitCards(Long customerId);
+    
+    public List<DebitCard> viewDebitCards(Long customerId);
+    
+    public BankAccount getBankAccountByCardNum(String cardNum);
+    
+    public void updateAllDebitCardsAvailableDailyTransactionBalance();
     
 }

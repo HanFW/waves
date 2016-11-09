@@ -1,6 +1,7 @@
 package ejb.bi.session;
 
 import ejb.bi.entity.NumOfExistingCustomer;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
@@ -15,12 +16,19 @@ public class NumOfExistingCustomerSessionBean implements NumOfExistingCustomerSe
     private EntityManager entityManager;
 
     @Override
-    public Long addNewNumOfExistingCustomer(String numOfExistingCustomer, Integer updateDate) {
+    public Long addNewNumOfExistingCustomer(String numOfExistingCustomer, String numOfOpeningAccounts,
+            String numOfClosingAccounts, Integer updateMonth, Integer updateYear, String status,
+            String currentYeaar) {
 
         NumOfExistingCustomer numOfCustomer = new NumOfExistingCustomer();
 
+        numOfCustomer.setNumOfClosingAccounts(numOfClosingAccounts);
         numOfCustomer.setNumOfExistingCustomer(numOfExistingCustomer);
-        numOfCustomer.setUpdateDate(updateDate);
+        numOfCustomer.setNumOfOpeningAccounts(numOfOpeningAccounts);
+        numOfCustomer.setStatus(status);
+        numOfCustomer.setUpdateMonth(updateMonth);
+        numOfCustomer.setUpdateYear(updateYear);
+        numOfCustomer.setCurrentYear(currentYeaar);
 
         entityManager.persist(numOfCustomer);
         entityManager.flush();
@@ -29,12 +37,13 @@ public class NumOfExistingCustomerSessionBean implements NumOfExistingCustomerSe
     }
 
     @Override
-    public NumOfExistingCustomer retrieveNumOfExistingCustomerByDate(Integer updateDate) {
+    public NumOfExistingCustomer retrieveNumOfExistingCustomerByMonth(Integer updateMonth) {
         NumOfExistingCustomer numOfCustomer = new NumOfExistingCustomer();
 
         try {
-            Query query = entityManager.createQuery("Select n From NumOfExistingCustomer n Where n.updateDate=:updateDate");
-            query.setParameter("updateDate", updateDate);
+            Query query = entityManager.createQuery("Select n From NumOfExistingCustomer n Where n.updateMonth=:updateMonth And n.currentYear=:currentYear");
+            query.setParameter("updateMonth", updateMonth);
+            query.setParameter("currentYear", "Yes");
 
             if (query.getResultList().isEmpty()) {
                 return new NumOfExistingCustomer();
@@ -51,4 +60,44 @@ public class NumOfExistingCustomerSessionBean implements NumOfExistingCustomerSe
         return numOfCustomer;
     }
 
+    @Override
+    public NumOfExistingCustomer retrievePreviousNumOfExistingCustomerByMonth(Integer updateMonth, Integer updateYear) {
+        NumOfExistingCustomer numOfCustomer = new NumOfExistingCustomer();
+
+        try {
+            Query query = entityManager.createQuery("Select n From NumOfExistingCustomer n Where n.updateMonth=:updateMonth And n.currentYear=:currentYear And n.updateYear=:updateYear");
+            query.setParameter("updateMonth", updateMonth);
+            query.setParameter("updateYear", updateYear);
+            query.setParameter("currentYear", "No");
+
+            if (query.getResultList().isEmpty()) {
+                return new NumOfExistingCustomer();
+            } else {
+                numOfCustomer = (NumOfExistingCustomer) query.getSingleResult();
+            }
+        } catch (EntityNotFoundException enfe) {
+            System.out.println("Entity not found error: " + enfe.getMessage());
+            return new NumOfExistingCustomer();
+        } catch (NonUniqueResultException nure) {
+            System.out.println("Non unique result error: " + nure.getMessage());
+        }
+
+        return numOfCustomer;
+    }
+
+    @Override
+    public NumOfExistingCustomer getNumOfExistingCustomer() {
+        Query query = entityManager.createQuery("SELECT n FROM NumOfExistingCustomer n Where n.status=:status");
+        query.setParameter("status", "New");
+
+        return (NumOfExistingCustomer) query.getSingleResult();
+    }
+
+    @Override
+    public List<NumOfExistingCustomer> getCurrentYearNumOfExistingCustomer() {
+        Query query = entityManager.createQuery("SELECT n FROM NumOfExistingCustomer n Where n.currentYear=:currentYear");
+        query.setParameter("currentYear", "Yes");
+
+        return query.getResultList();
+    }
 }

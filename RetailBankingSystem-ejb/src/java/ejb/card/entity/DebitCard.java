@@ -30,6 +30,7 @@ public class DebitCard extends Card implements Serializable {
     
     private String debitCardPwd;
     private int transactionLimit;
+    private double availableTransactionBalance;
    
 
     public BankAccount getBankAccount() {
@@ -65,6 +66,12 @@ public class DebitCard extends Card implements Serializable {
         this.transactionLimit = transactionLimit;
     }
 
+    public double getAvailableTransactionBalance() {
+        return availableTransactionBalance;
+    }
 
+    public void setAvailableTransactionBalance(double availableTransactionBalance) {
+        this.availableTransactionBalance = availableTransactionBalance;
+    }
 
 }

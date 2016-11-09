@@ -18,7 +18,8 @@
 
             <h:form>
                 <div align="center">
-
+                    <p:growl id="growl" showDetail="true" globalOnly="true"/>
+                    
                     <h1>Report Loss</h1>
                     <h:panelGrid columns="1" class="ui-lg-5">
 
@@ -33,7 +34,7 @@
                         <p:outputLabel style="font-size: 20px" value="Once you report that your card is lost or stolen, you will not be liable for any fradulent
                                        transactions on your lost or stolen card from the time you notify us."/>
                     </h:panelGrid>
-                    <p:messages autoUpdate="true"/>
+                    <p:messages/>
                     <br/>
 
                     <h:panelGrid columns="2" class="ui-lg-4"> 
@@ -45,39 +46,40 @@
                             <p:ajax event="change" update="creditPanel debitPanel" listener="#{customerReportLossManagedBean.showCards}"/>
                         </p:selectOneRadio>
                     </h:panelGrid>
-                        <p:panel id="debitPanel" visible="#{customerReportLossManagedBean.debitPanelVisible}">
-                            <h:panelGrid columns="2" class="ui-lg-4">
-                                <p:outputLabel value="Debit Card"/>
-                                <p:selectOneMenu id="selectCard" required="#{customerReportLossManagedBean.debitPanelVisible}" requiredMessage="Please select a debit card" style="text-align:left" value="#{customerReportLossManagedBean.selectedDebitCard}">
-                                    <f:selectItem itemLabel="Please select..." itemValue=""/>
-                                    <f:selectItems value="#{customerReportLossManagedBean.debitCards}"/> 
-                                </p:selectOneMenu>
-                                <p:outputLabel value="Card Password:" />
-                                <p:inputText  required="#{customerReportLossManagedBean.debitPanelVisible}" requiredMessage="Please input your card password" id="cardPwd" value="#{customerReportLossManagedBean.debitCardPwd}">
 
-                                </p:inputText>
-                            </h:panelGrid>
-                            <p:commandButton value="Confirm" actionListener="#{customerReportLossManagedBean.reportCardLoss}" style="width:150px"/>             
-                        </p:panel>
+                    <p:panel id="debitPanel" visible="#{customerReportLossManagedBean.debitPanelVisible}">
+                        <h:panelGrid columns="2" class="ui-lg-4">
+                            <p:outputLabel value="Debit Card"/>
+                            <p:selectOneMenu id="selectCard" required="#{customerReportLossManagedBean.debitPanelVisible}" requiredMessage="Please select a debit card" style="text-align:left" value="#{customerReportLossManagedBean.selectedDebitCard}">
+                                <f:selectItem itemLabel="Please select..." itemValue=""/>
+                                <f:selectItems value="#{customerReportLossManagedBean.debitCards}"/> 
+                            </p:selectOneMenu>
+                            <p:outputLabel value="Card Password:" />
+                            <p:inputText type="password" required="#{customerReportLossManagedBean.debitPanelVisible}" requiredMessage="Please input your card password" id="cardPwd" value="#{customerReportLossManagedBean.debitCardPwd}">
 
-                        <p:panel id="creditPanel" visible="#{customerReportLossManagedBean.creditPanelVisible}">
-                            <h:panelGrid columns="2" class="ui-lg-4">
-                                <p:outputLabel value="Credit Card"/>
-                                <p:selectOneMenu id="selectCreditCard" required="#{customerReportLossManagedBean.creditPanelVisible}" requiredMessage="Please select a credit card" style="text-align:left" value="#{customerReportLossManagedBean.selectedCreditCard}">
-                                    <f:selectItem itemLabel="Please select..." itemValue=""/>
-                                    <f:selectItems value="#{customerReportLossManagedBean.creditCards}"/> 
-                                </p:selectOneMenu>
+                            </p:inputText>
+                        </h:panelGrid>
+                        <p:commandButton value="Confirm" actionListener="#{customerReportLossManagedBean.reportCardLoss}" style="width:150px"/>             
+                    </p:panel>
 
-                                <p:outputLabel value="Your NRIC/Passport number:" />
-                                <p:inputText  required="#{customerReportLossManagedBean.creditPanelVisible}" requiredMessage="Please input your NRIC/passport number" id="cardccs" value="#{customerReportLossManagedBean.identificationNum}">
+                    <p:panel id="creditPanel" visible="#{customerReportLossManagedBean.creditPanelVisible}">
+                        <h:panelGrid columns="2" class="ui-lg-4">
+                            <p:outputLabel value="Credit Card"/>
+                            <p:selectOneMenu id="selectCreditCard" required="#{customerReportLossManagedBean.creditPanelVisible}" requiredMessage="Please select a credit card" style="text-align:left" value="#{customerReportLossManagedBean.selectedCreditCard}">
+                                <f:selectItem itemLabel="Please select..." itemValue=""/>
+                                <f:selectItems value="#{customerReportLossManagedBean.creditCards}"/> 
+                            </p:selectOneMenu>
 
-                                </p:inputText>
-                            </h:panelGrid>
-                            <p:commandButton value="Confirm" actionListener="#{customerReportLossManagedBean.reportCardLoss}" style="width:150px"/>
-                        </p:panel>
+                            <p:outputLabel value="Your NRIC/Passport number:" />
+                            <p:inputText  required="#{customerReportLossManagedBean.creditPanelVisible}" requiredMessage="Please input your NRIC/passport number" id="cardccs" value="#{customerReportLossManagedBean.identificationNum}">
+
+                            </p:inputText>
+                        </h:panelGrid>
+                        <p:commandButton value="Confirm" actionListener="#{customerReportLossManagedBean.reportCardLoss}" style="width:150px"/>
+                    </p:panel>
 
 
-                        <br/>
+                    <br/>
                 </div>
             </h:form>
         </h:body>

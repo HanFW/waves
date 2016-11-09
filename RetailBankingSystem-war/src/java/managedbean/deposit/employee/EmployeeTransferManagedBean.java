@@ -5,6 +5,7 @@ import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import java.io.IOException;
 import java.util.Date;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
@@ -75,6 +76,11 @@ public class EmployeeTransferManagedBean {
             } else if (!dateOfBirth.equals(customerDateOfBirthString)) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Customer Date of Birth is Wrong.", "Failed!"));
             } else {
+                
+                ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+                Map<String, Object> sessionMap = externalContext.getSessionMap();
+                sessionMap.put("customerIdentificationNum", customerIdentificationNum);
+                
                 ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/deposit/employeeTransferDone.xhtml?faces-redirect=true");
             }
         }
