@@ -3,6 +3,7 @@ package managedbean.payment.customer;
 import ejb.customer.entity.CustomerBasic;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
+import ejb.deposit.session.TransactionSessionBeanLocal;
 import ejb.payment.entity.Currency;
 import ejb.payment.entity.SWIFTPayee;
 import ejb.payment.session.CurrencySessionBeanLocal;
@@ -26,6 +27,9 @@ import javax.faces.view.ViewScoped;
 @ViewScoped
 
 public class SWIFTTransferManagedBean implements Serializable {
+
+    @EJB
+    private TransactionSessionBeanLocal transactionSessionBeanLocal;
 
     @EJB
     private MerlionBankSessionBeanLocal merlionBankSessionBeanLocal;
@@ -276,6 +280,13 @@ public class SWIFTTransferManagedBean implements Serializable {
                 df.format(transferAmt), myAccountNum);
 
         sWIFTPayeeSessionBeanLocal.updateLastTransactionDate(swiftPayee.getPayeeAccountNum());
+
+        String transactionCode = "SWIFT";
+        String transactionRef = toBankAccountNumWithType;
+
+        Long transactionId = transactionSessionBeanLocal.addNewTransaction(transactionDate,
+                transactionCode, transactionRef, df.format(transferAmt), " ",
+                cal.getTimeInMillis(), bankAccount.getBankAccountId());
 
         statusMessage = "We have received your application. We will process your application within 3 working days.";
 

@@ -5,5 +5,5 @@ import javax.ejb.Local;
 @Local
 public interface LoanStatementSessionBeanLocal {
 
-    public Long addNewLoanStatement(String statementType, String accountDetails, Long loanPayableAccountId);
+    public Long addNewLoanStatement(String statementType, String accountDetails);
 }

@@ -8,8 +8,8 @@
     <system systemId="http://localhost:8080/OtherBanksWebService/OtherBanksWebService?xsd=1" uri="src/conf/xml-resources/web-service-references/OtherBanksWebService/wsdl/localhost_8080/OtherBanksWebService/OtherBanksWebService.xsd_1.xsd"/>
     <system systemId="http://localhost:8080/TransactionAuthorizationWebService/TransactionAuthorizationWebService?wsdl" uri="src/conf/xml-resources/web-service-references/TransactionAuthorizationWebService/wsdl/localhost_8080/TransactionAuthorizationWebService/TransactionAuthorizationWebService.wsdl"/>
     <system systemId="http://localhost:8080/TransactionAuthorizationWebService/TransactionAuthorizationWebService?xsd=1" uri="src/conf/xml-resources/web-service-references/TransactionAuthorizationWebService/wsdl/localhost_8080/TransactionAuthorizationWebService/TransactionAuthorizationWebService.xsd_1.xsd"/>
-    <system systemId="http://localhost:8080/SACHWebService/SACHWebService?wsdl" uri="src/conf/xml-resources/web-service-references/SACHWebService/wsdl/localhost_8080/SACHWebService/SACHWebService.wsdl"/>
-    <system systemId="http://localhost:8080/SACHWebService/SACHWebService?xsd=1" uri="src/conf/xml-resources/web-service-references/SACHWebService/wsdl/localhost_8080/SACHWebService/SACHWebService.xsd_1.xsd"/>
     <system systemId="http://localhost:8080/CHIPSWebService/CHIPSWebService?wsdl" uri="src/conf/xml-resources/web-service-references/CHIPSWebService/wsdl/localhost_8080/CHIPSWebService/CHIPSWebService.wsdl"/>
     <system systemId="http://localhost:8080/CHIPSWebService/CHIPSWebService?xsd=1" uri="src/conf/xml-resources/web-service-references/CHIPSWebService/wsdl/localhost_8080/CHIPSWebService/CHIPSWebService.xsd_1.xsd"/>
+    <system systemId="http://localhost:8080/SACHWebService/SACHWebService?wsdl" uri="src/conf/xml-resources/web-service-references/SACHWebService/wsdl/localhost_8080/SACHWebService/SACHWebService.wsdl"/>
+    <system systemId="http://localhost:8080/SACHWebService/SACHWebService?xsd=1" uri="src/conf/xml-resources/web-service-references/SACHWebService/wsdl/localhost_8080/SACHWebService/SACHWebService.xsd_1.xsd"/>
 </catalog>
