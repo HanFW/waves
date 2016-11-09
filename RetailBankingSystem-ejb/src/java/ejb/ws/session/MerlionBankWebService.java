@@ -85,6 +85,7 @@ public class MerlionBankWebService {
         }
 
         entityManager.detach(bankAccount);
+
         bankAccount.setAccTransaction(null);
         bankAccount.setCustomerBasic(null);
         bankAccount.setInterest(null);
@@ -424,7 +425,9 @@ public class MerlionBankWebService {
 
         BankAccount bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountByNum(bankAccountNum);
         String currentAvailableBalance = bankAccount.getAvailableBankAccountBalance();
+        System.out.println("current balance" + currentAvailableBalance);
         Double totalAvailableBalance = Double.valueOf(currentAvailableBalance) + transferAmt;
+        System.out.println("total balance" + totalAvailableBalance);
         bankAccountSessionBeanLocal.updateBankAccountAvailableBalance(bankAccountNum, totalAvailableBalance.toString());
 
         Calendar cal = Calendar.getInstance();
