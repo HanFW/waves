@@ -15,11 +15,11 @@
                     <p:dataTable var="customerBasic" value="#{employeeViewLoanRFM.customerBasic}" 
                                  paginator="true" reflow="true" rows="20" emptyMessage="No Record">
 
-                        <p:column headerText="Customer Name"> 
+                        <p:column headerText="Customer Name" style="width: 16%"> 
                             <h:outputText value="#{customerBasic.customerName}" />
                         </p:column>
 
-                        <p:column headerText="Customer Mobile"> 
+                        <p:column headerText="Customer Mobile" style="width: 10%"> 
                             <h:outputText value="#{customerBasic.customerMobile}" />
                         </p:column>
 
@@ -27,23 +27,23 @@
                             <h:outputText value="#{customerBasic.customerEmail}" />
                         </p:column>
 
-                        <p:column headerText="RFM Type"> 
+                        <p:column headerText="RFM Type" style="width: 11%"> 
                             <h:outputText value="#{customerBasic.customerRFM.RFMType}" />
                         </p:column>
 
-                        <p:column headerText="Recency"> 
+                        <p:column headerText="Recency" style="width: 9%"> 
                             <h:outputText value="#{customerBasic.customerRFM.getrValue}" />
                         </p:column>
 
-                        <p:column headerText="Frequency"> 
+                        <p:column headerText="Frequency" style="width: 9%"> 
                             <h:outputText value="#{customerBasic.customerRFM.getfValue}" />
                         </p:column>
 
-                        <p:column headerText="Monetary"> 
+                        <p:column headerText="Monetary" style="width: 9%"> 
                             <h:outputText value="#{customerBasic.customerRFM.getmValue}" />
                         </p:column>
 
-                        <p:column headerText="Total RFM Value"> 
+                        <p:column headerText="Total RFM Value" style="width: 15%"> 
                             <h:outputText value="#{customerBasic.customerRFM.totalRFMValue}" />
                         </p:column>
                     </p:dataTable>
