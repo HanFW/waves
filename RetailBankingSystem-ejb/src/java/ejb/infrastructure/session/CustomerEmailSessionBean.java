@@ -166,6 +166,19 @@ public class CustomerEmailSessionBean implements CustomerEmailSessionBeanLocal {
             case "startEducationLoan":
                 emailText += "Your Education Loan Repayment has commenced. \n";
                 emailText += "Please log in to your online banking to view your loan details and make repayments. \n";
+                break;
+            case "gentelDefaultReminder":
+                emailText += "Please be reminded to repay your loan. Default on loans will badly affect your credit scores. ";
+                break;
+            case "seriousDefaultReminder":
+                emailText += "Please be reminded to repay your loan. Merlion Bank will take actions on your assets if you are not able to repay the loan in the required period.";
+                break;
+            case "bankruptReminder":
+                emailText += "Please be reminded that Merlion Bank has sued your for bankrupt and will take actions on your assets to recover your default payments";
+                break;
+            case "recurringStopReminder":
+                emailText += "Please be noted that your recurring loan repayment has been terminated due to insufficient balance in your account. Please make repayment manually or declare recurring account again after deposit.";
+                break;
         }
 
         try {

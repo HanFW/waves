@@ -30,7 +30,7 @@ import javax.faces.view.ViewScoped;
  */
 @Named(value = "customerMakeLoanRepaymentManagedBean")
 @ViewScoped
-public class CustomerMakeLoanRepaymentManagedBean implements Serializable{
+public class CustomerMakeLoanRepaymentManagedBean implements Serializable {
 
     @EJB
     private LoggingSessionBeanLocal loggingSessionBeanLocal;
@@ -93,41 +93,36 @@ public class CustomerMakeLoanRepaymentManagedBean implements Serializable{
         BankAccount bankAccountFrom = bankAccountSessionBeanLocal.retrieveBankAccountByNum(fromAccount);
         LoanRepaymentAccount bankAccountTo = loanRepaymentSessionBeanLocal.getRepaymentAccountByAccountNum(toAccount);
 
-        if (Double.valueOf(bankAccountFrom.getTransferBalance()) < transferAmt) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Dear Customer, your transfer amount has been exceeded your daily transfer limit. "
-                    + "You remaining daily limit is S$" + bankAccountFrom.getTransferBalance(), "Failed!"));
-        } else {
-            if (bankAccountFrom.getBankAccountStatus().equals("Inactive")) {
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed!You account(from) has not been activated.", "Failed!"));
-            } else if (bankAccountFrom.getBankAccountStatus().equals("Active")) {
-                Double diffAmt = Double.valueOf(bankAccountFrom.getAvailableBankAccountBalance()) - transferAmt;
+        if (bankAccountFrom.getBankAccountStatus().equals("Inactive")) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed!You account(from) has not been activated.", "Failed!"));
+        } else if (bankAccountFrom.getBankAccountStatus().equals("Active")) {
+            Double diffAmt = Double.valueOf(bankAccountFrom.getAvailableBankAccountBalance()) - transferAmt;
 
-                if (diffAmt >= 0) {
+            if (diffAmt >= 0) {
 
-                    Double currentAvailableBalance = Double.valueOf(bankAccountFrom.getAvailableBankAccountBalance());
-                    Double currentTotalBalance = Double.valueOf(bankAccountFrom.getTotalBankAccountBalance());
+                Double currentAvailableBalance = Double.valueOf(bankAccountFrom.getAvailableBankAccountBalance());
+                Double currentTotalBalance = Double.valueOf(bankAccountFrom.getTotalBankAccountBalance());
 
-                    newTransactionId = loanRepaymentSessionBeanLocal.makeMonthlyRepayment(bankAccountFrom, bankAccountTo, transferAmt);
-                    statusMessage = "Your transaction has been completed.";
-                    loggingSessionBeanLocal.createNewLogging("customer", customer.getCustomerBasicId(), "make loan repayment for S$" + transferAmt, "successful", null);
+                newTransactionId = loanRepaymentSessionBeanLocal.makeMonthlyRepayment(bankAccountFrom, bankAccountTo, transferAmt);
+                statusMessage = "Your transaction has been completed.";
+                loggingSessionBeanLocal.createNewLogging("customer", customer.getCustomerBasicId(), "make loan repayment for S$" + transferAmt, "successful", null);
 
-                    Double fromAccountAvailableBalanceDouble = currentAvailableBalance - transferAmt;
-                    Double fromAccountTotalBalanceDouble = currentTotalBalance - transferAmt;
+                Double fromAccountAvailableBalanceDouble = currentAvailableBalance - transferAmt;
+                Double fromAccountTotalBalanceDouble = currentTotalBalance - transferAmt;
 
-                    ec.getFlash().put("statusMessage", statusMessage);
-                    ec.getFlash().put("newTransactionId", newTransactionId);
-                    ec.getFlash().put("toBankAccountNumWithType", toBankAccountNumWithType);
-                    ec.getFlash().put("fromBankAccountNumWithType", fromBankAccountNumWithType);
-                    ec.getFlash().put("transferAmt", transferAmt);
-                    ec.getFlash().put("fromAccount", fromAccount);
-                    ec.getFlash().put("toAccount", toAccount);
-                    ec.getFlash().put("fromAccountAvailableBalance", fromAccountAvailableBalanceDouble);
-                    ec.getFlash().put("fromAccountTotalBalance", fromAccountTotalBalanceDouble);
+                ec.getFlash().put("statusMessage", statusMessage);
+                ec.getFlash().put("newTransactionId", newTransactionId);
+                ec.getFlash().put("toBankAccountNumWithType", toBankAccountNumWithType);
+                ec.getFlash().put("fromBankAccountNumWithType", fromBankAccountNumWithType);
+                ec.getFlash().put("transferAmt", transferAmt);
+                ec.getFlash().put("fromAccount", fromAccount);
+                ec.getFlash().put("toAccount", toAccount);
+                ec.getFlash().put("fromAccountAvailableBalance", fromAccountAvailableBalanceDouble);
+                ec.getFlash().put("fromAccountTotalBalance", fromAccountTotalBalanceDouble);
 
-                    ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerTransferDone.xhtml?faces-redirect=true");
-                } else {
-                    FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed!Your account balance is insufficient.", "Failed!"));
-                }
+                ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerTransferDone.xhtml?faces-redirect=true");
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed!Your account balance is insufficient.", "Failed!"));
             }
         }
     }
