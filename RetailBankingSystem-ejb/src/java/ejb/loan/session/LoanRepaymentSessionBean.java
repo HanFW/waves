@@ -24,6 +24,7 @@ import javax.persistence.Query;
  */
 @Stateless
 public class LoanRepaymentSessionBean implements LoanRepaymentSessionBeanLocal {
+
     @EJB
     private TransactionSessionBean transactionSessionBeanLocal;
 
@@ -32,76 +33,141 @@ public class LoanRepaymentSessionBean implements LoanRepaymentSessionBeanLocal {
 
     @Override
     public Long makeMonthlyRepayment(BankAccount depositAccount, LoanRepaymentAccount repaymentAccount, double amount) {
-               
+
         LoanRepaymentAccount ra = em.find(LoanRepaymentAccount.class, repaymentAccount.getId());
         BankAccount deposit = em.find(BankAccount.class, depositAccount.getBankAccountId());
-            
-        Long fromTransactionId = addDepositTransction(deposit, ra, amount); 
+
+        Long fromTransactionId = addDepositTransction(deposit, ra, amount);
         updateLoanAccounts(ra, amount);
-        addLoanTransactions(ra, amount);
-        
+
         em.flush();
         return fromTransactionId;
     }
-    
-    private void updateLoanAccounts(LoanRepaymentAccount repaymentAccount, double amount){
+
+    private void updateLoanAccounts(LoanRepaymentAccount repaymentAccount, double amount) {
         System.out.println("****** update loan accounts");
         LoanPayableAccount payableAccount = repaymentAccount.getLoanPayableAccount();
-        
+
+        // set new account balance
         double previousRepaymentBalance = repaymentAccount.getAccountBalance();
         double newRepaymentBalance = previousRepaymentBalance - amount;
         repaymentAccount.setAccountBalance(newRepaymentBalance);
-        
+
+        // set new overdue
         double previousOverdue = repaymentAccount.getOverdueBalance();
         double previousFee = repaymentAccount.getFees();
-        
-        if(amount < previousRepaymentBalance){
-            if(amount <= previousOverdue){
+        double currentInstalment = repaymentAccount.getCurrentInstalment();
+        double currentInterest = repaymentAccount.getCurrentInterest();
+        double currentPrincipal = repaymentAccount.getCurrentPrincipal();
+        double totalInterest = repaymentAccount.getTotalInterest();
+        double totalPrincipal = repaymentAccount.getTotalPrincipal();
+        double previousInterest = totalInterest - repaymentAccount.getCurrentInterest();
+        double previousPrincipal = totalPrincipal - repaymentAccount.getCurrentPrincipal();
+
+        if (amount <= previousRepaymentBalance) {
+            //partial payment
+            if (amount <= previousInterest) {
+                repaymentAccount.setTotalInterest(totalInterest - amount);
                 repaymentAccount.setOverdueBalance(previousOverdue - amount);
-                payableAccount.setOverdueBalance(previousOverdue - amount);
-            } else if(amount <= (previousOverdue + previousFee)){
+                addLoanRepaymentTransaction(repaymentAccount, amount, "Interest Payment");
+            } else if (amount < (previousInterest + previousPrincipal)) {
+                repaymentAccount.setTotalInterest(currentInterest);
+                double principalPaid = amount - previousInterest;
+                repaymentAccount.setTotalPrincipal(totalPrincipal - principalPaid);
+                repaymentAccount.setOverdueBalance(previousOverdue - previousInterest - principalPaid);
+                addLoanRepaymentTransaction(repaymentAccount, previousInterest, "Interest Payment");
+                addLoanRepaymentTransaction(repaymentAccount, principalPaid, "Principal Payment");
+                payableAccount.setAccountBalance(payableAccount.getAccountBalance() - principalPaid);
+                //payable transaction
+                addLoanPayableTransaction(payableAccount, principalPaid);
+            } else if (amount < (previousInterest + previousPrincipal + previousFee)) {
+                repaymentAccount.setTotalInterest(currentInterest);
+                repaymentAccount.setTotalPrincipal(currentPrincipal);
+                double feePaid = amount - previousInterest - previousPrincipal;
+                repaymentAccount.setFees(previousFee - feePaid);
                 repaymentAccount.setOverdueBalance(0);
-                payableAccount.setOverdueBalance(0);
-                payableAccount.setAccountStatus("started");
-                repaymentAccount.setDefaultMonths(0);
-                repaymentAccount.setFees(previousFee - (amount - previousOverdue));
-            } else{
-                repaymentAccount.setOverdueBalance(0);
-                payableAccount.setOverdueBalance(0);
-                payableAccount.setAccountStatus("started");
-                repaymentAccount.setDefaultMonths(0);
+                payableAccount.setAccountBalance(payableAccount.getAccountBalance() - previousPrincipal);
+                addLoanRepaymentTransaction(repaymentAccount, previousInterest, "Interest Payment");
+                addLoanRepaymentTransaction(repaymentAccount, previousPrincipal, "Principal Payment");
+                addLoanRepaymentTransaction(repaymentAccount, feePaid, "Late Fee Payment");
+                //payable transaction
+                addLoanPayableTransaction(payableAccount, previousPrincipal);
+            } else if (amount < (previousInterest + previousPrincipal + previousFee + currentInterest)) {
                 repaymentAccount.setFees(0);
+                repaymentAccount.setOverdueBalance(0);
+                double interestPaid = amount - previousOverdue - previousFee;
+                repaymentAccount.setCurrentInterest(currentInterest - interestPaid);
+                repaymentAccount.setCurrentInstalment(currentInstalment - interestPaid);
+                payableAccount.setAccountBalance(payableAccount.getAccountBalance() - previousPrincipal);
+                repaymentAccount.setTotalInterest(currentInterest - interestPaid);
+                repaymentAccount.setTotalPrincipal(currentPrincipal);
+                addLoanRepaymentTransaction(repaymentAccount, previousInterest, "Interest Payment");
+                addLoanRepaymentTransaction(repaymentAccount, previousPrincipal, "Principal Payment");
+                addLoanRepaymentTransaction(repaymentAccount, previousFee, "Late Fee Payment");
+                addLoanRepaymentTransaction(repaymentAccount, interestPaid, "Interest Payment");
+                addLoanPayableTransaction(payableAccount, previousPrincipal);
+            } else {
+                repaymentAccount.setFees(0);
+                repaymentAccount.setOverdueBalance(0);
+                double principalPaid = amount - previousOverdue - previousFee - previousInterest;
+                repaymentAccount.setCurrentInterest(0);
+                repaymentAccount.setCurrentPrincipal(currentPrincipal - principalPaid);
+                repaymentAccount.setCurrentInstalment(currentInstalment - currentInterest - principalPaid);
+                payableAccount.setAccountBalance(payableAccount.getAccountBalance() - previousPrincipal - principalPaid);
+                repaymentAccount.setTotalInterest(0);
+                repaymentAccount.setTotalPrincipal(currentPrincipal - principalPaid);
+                addLoanRepaymentTransaction(repaymentAccount, previousInterest, "Interest Payment");
+                addLoanRepaymentTransaction(repaymentAccount, previousPrincipal, "Principal Payment");
+                addLoanRepaymentTransaction(repaymentAccount, previousFee, "Late Fee Payment");
+                addLoanRepaymentTransaction(repaymentAccount, currentInterest, "Interest Payment");
+                addLoanRepaymentTransaction(repaymentAccount, principalPaid, "Principal Payment");
+                addLoanPayableTransaction(payableAccount, previousPrincipal);
+                addLoanPayableTransaction(payableAccount, principalPaid);
             }
-            repaymentAccount.setPaymentStatus("partially paid");
-        }else if(amount == previousRepaymentBalance){
-            repaymentAccount.setOverdueBalance(0);
+        } else if (amount == previousRepaymentBalance) {
+            //full payment
             repaymentAccount.setFees(0);
-            repaymentAccount.setPaymentStatus("paid");
-            repaymentAccount.setDefaultMonths(0);
-            payableAccount.setAccountStatus("started");
-        }else{
             repaymentAccount.setOverdueBalance(0);
+            repaymentAccount.setCurrentInterest(0);
+            repaymentAccount.setCurrentPrincipal(0);
+            repaymentAccount.setTotalInterest(0);
+            repaymentAccount.setTotalPrincipal(0);
+            repaymentAccount.setCurrentInstalment(0);
+            addLoanRepaymentTransaction(repaymentAccount, previousInterest, "Interest Payment");
+            addLoanRepaymentTransaction(repaymentAccount, previousPrincipal, "Principal Payment");
+            addLoanRepaymentTransaction(repaymentAccount, previousFee, "Late Fee Payment");
+            addLoanRepaymentTransaction(repaymentAccount, currentInterest, "Interest Payment");
+            addLoanRepaymentTransaction(repaymentAccount, currentPrincipal, "Principal Payment");
+            addLoanPayableTransaction(payableAccount, previousPrincipal);
+            addLoanPayableTransaction(payableAccount, currentPrincipal);
+        } else {
+            //overpaid
             repaymentAccount.setFees(0);
-            repaymentAccount.setPaymentStatus("over paid");
-            repaymentAccount.setDefaultMonths(0);
-            payableAccount.setAccountStatus("started");
+            repaymentAccount.setOverdueBalance(0);
+            repaymentAccount.setCurrentInterest(0);
+            repaymentAccount.setCurrentPrincipal(0);
+            repaymentAccount.setTotalInterest(0);
+            repaymentAccount.setTotalPrincipal(0);
+            repaymentAccount.setCurrentInstalment(0);
+            addLoanRepaymentTransaction(repaymentAccount, previousInterest, "Interest Payment");
+            addLoanRepaymentTransaction(repaymentAccount, previousPrincipal, "Principal Payment");
+            addLoanRepaymentTransaction(repaymentAccount, previousFee, "Late Fee Payment");
+            addLoanRepaymentTransaction(repaymentAccount, currentInterest, "Interest Payment");
+            addLoanRepaymentTransaction(repaymentAccount, currentPrincipal, "Principal Payment");
+            addLoanPayableTransaction(payableAccount, previousPrincipal);
+            addLoanPayableTransaction(payableAccount, currentPrincipal);
         }
-        
+
         double previousPayableBalance = payableAccount.getAccountBalance();
-        payableAccount.setAccountBalance(previousPayableBalance - amount);
-        if(previousPayableBalance - amount <= 0){
+        if (previousPayableBalance - amount <= 0) {
             payableAccount.setAccountStatus("completed");
         }
+
         em.flush();
     }
-    
-    private void addLoanTransactions(LoanRepaymentAccount repaymentAccount, double amount){
-        double accountInterest = repaymentAccount.getInterest();
-        
-    }
-    
+
     @Override
-    public void addLoanRepaymentTransaction(LoanRepaymentAccount repaymentAccount, double amount, String description){
+    public void addLoanRepaymentTransaction(LoanRepaymentAccount repaymentAccount, double amount, String description) {
         Calendar cal = Calendar.getInstance();
         Long transactionDateMilis = cal.getTimeInMillis();
         LoanRepaymentTransaction transaction = new LoanRepaymentTransaction();
@@ -111,13 +177,13 @@ public class LoanRepaymentSessionBean implements LoanRepaymentSessionBeanLocal {
         transaction.setDescription(description);
         transaction.setTransactionDate(cal.getTime());
         transaction.setTransactionMillis(transactionDateMilis);
-        
+
         em.persist(transaction);
         em.flush();
     }
-    
+
     @Override
-    public void addLoanPayableTransaction(LoanPayableAccount payableAccount, double amount){
+    public void addLoanPayableTransaction(LoanPayableAccount payableAccount, double amount) {
         Calendar cal = Calendar.getInstance();
         Long transactionDateMilis = cal.getTimeInMillis();
         LoanRepaymentTransaction transaction = new LoanRepaymentTransaction();
@@ -127,40 +193,40 @@ public class LoanRepaymentSessionBean implements LoanRepaymentSessionBeanLocal {
         transaction.setDescription("Monthly Repayment");
         transaction.setTransactionDate(cal.getTime());
         transaction.setTransactionMillis(transactionDateMilis);
-        
+
         em.persist(transaction);
         em.flush();
     }
-    
-    private Long addDepositTransction(BankAccount depositAccount, LoanRepaymentAccount repaymentAccount, double amount){        
+
+    private Long addDepositTransction(BankAccount depositAccount, LoanRepaymentAccount repaymentAccount, double amount) {
         Double newAvailableBalance = Double.valueOf(depositAccount.getAvailableBankAccountBalance()) - amount;
         Double newTotalBalanace = Double.valueOf(depositAccount.getTotalBankAccountBalance()) - amount;
-        
+
         Calendar cal = Calendar.getInstance();
         Long transactionDateMilis = cal.getTimeInMillis();
-        
+
         String longType = repaymentAccount.getLoanPayableAccount().getLoanApplication().getLoanType();
         String transactionCode;
-        if(longType.equals("Education Loan")){
+        if (longType.equals("Education Loan")) {
             transactionCode = "EDR";
-        }else if(longType.equals("Car Loan")){
+        } else if (longType.equals("Car Loan")) {
             transactionCode = "CRR";
-        }else if(longType.equals("Renovation Loan")){
+        } else if (longType.equals("Renovation Loan")) {
             transactionCode = "RNR";
-        }else if(longType.equals("Cashline")){
+        } else if (longType.equals("Cashline")) {
             transactionCode = "CLR";
-        }else{
+        } else {
             transactionCode = "MGR";
         }
-        
+
         String transactionRefFrom = depositAccount.getBankAccountType() + "-" + depositAccount.getBankAccountNum();
-        
+
         Long fromTransactionId = transactionSessionBeanLocal.addNewTransaction(cal.getTime().toString(), transactionCode, transactionRefFrom,
                 Double.valueOf(amount).toString(), " ", transactionDateMilis, depositAccount.getBankAccountId());
-        
+
         depositAccount.setAvailableBankAccountBalance(newAvailableBalance.toString());
         depositAccount.setTotalBankAccountBalance(newTotalBalanace.toString());
-                
+
         em.flush();
         return fromTransactionId;
     }

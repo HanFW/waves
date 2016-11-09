@@ -147,43 +147,43 @@ public class LoanInterestSessionBean implements LoanInterestSessionBeanLocal {
             if (interestPackage.equals("Car Loan")) {
                 rate = loanApplicaiton.getLoanInterestPackage().getInterestRate();
                 double initialPrincipal = payableAccount.getInitialAmount();
-                                
+
                 //current interest
                 double currentInterest = initialPrincipal * rate / 12;
                 currentInterest = Math.round(currentInterest * 100.0) / 100.0;
                 account.setCurrentInterest(currentInterest);
                 System.out.println("*** new month interest: " + currentInterest);
-                
+
                 //current principal
                 double currentPrincipal = initialPrincipal / period;
                 currentPrincipal = Math.round(currentPrincipal * 100.0) / 100.0;
                 account.setCurrentPrincipal(currentPrincipal);
                 System.out.println("*** new month principal: " + currentPrincipal);
-                
+
                 //current instalment
                 currentInstalment = currentInterest + currentPrincipal;
                 currentInstalment = Math.round(currentInstalment * 100.0) / 100.0;
                 account.setCurrentInstalment(currentInstalment);
                 System.out.println("*** new month instalment: " + currentInstalment);
-                
+
                 //total interest
                 double newRepaymentInterest = repaymentInterest + currentInterest;
                 newRepaymentInterest = Math.round(newRepaymentInterest * 100.0) / 100.0;
                 account.setTotalInterest(newRepaymentInterest);
                 System.out.println("*** new total interest: " + newRepaymentInterest);
-                
+
                 //total principal
                 double newRepaymentPrincipal = repaymentPrincipal + currentPrincipal;
                 newRepaymentPrincipal = Math.round(newRepaymentPrincipal * 100.0) / 100.0;
                 account.setTotalPrincipal(newRepaymentPrincipal);
                 System.out.println("*** new total principal: " + newRepaymentPrincipal);
-                
+
                 //new account balance
                 double newAccountBalance = previousAccountBalance + currentInstalment;
                 newAccountBalance = Math.round(newAccountBalance * 100.0) / 100.0;
                 account.setAccountBalance(newAccountBalance);
                 System.out.println("*** new account balance: " + newAccountBalance);
-                
+
             } else {
                 if (interestPackage.equals("HDB-Fixed")) {
                     if (account.getRepaymentMonths() == 0) {
@@ -214,37 +214,51 @@ public class LoanInterestSessionBean implements LoanInterestSessionBeanLocal {
                 currentInstalment = Math.round(currentInstalment * 100.0) / 100.0;
                 account.setCurrentInstalment(currentInstalment);
                 System.out.println("*** new month instalment: " + currentInstalment);
-                
+
                 //interest for this month
                 double currentInterest = remainingPrincipal * rate / 12;
                 currentInterest = Math.round(currentInterest * 100.0) / 100.0;
                 account.setCurrentInterest(currentInterest);
                 System.out.println("*** new month interest: " + currentInterest);
-                
+
                 //principal for this month
                 double currentPrincipal = currentInstalment - currentInterest;
                 currentPrincipal = Math.round(currentPrincipal * 100.0) / 100.0;
                 account.setCurrentPrincipal(currentPrincipal);
                 System.out.println("*** new month principal: " + currentPrincipal);
-                
+
                 //total interest
                 double newRepaymentInterest = repaymentInterest + currentInterest;
                 newRepaymentInterest = Math.round(newRepaymentInterest * 100.0) / 100.0;
                 account.setTotalInterest(newRepaymentInterest);
                 System.out.println("*** new total interest: " + newRepaymentInterest);
-                
+
                 //total principal
                 double newRepaymentPrincipal = repaymentPrincipal + currentPrincipal;
                 newRepaymentPrincipal = Math.round(newRepaymentPrincipal * 100.0) / 100.0;
                 account.setTotalPrincipal(newRepaymentPrincipal);
                 System.out.println("*** new total principal: " + newRepaymentPrincipal);
-                
+
                 //new account balance
                 double newAccountBalance = previousAccountBalance + currentInstalment;
                 newAccountBalance = Math.round(newAccountBalance * 100.0) / 100.0;
                 account.setAccountBalance(newAccountBalance);
                 System.out.println("*** new account balance: " + newAccountBalance);
-            }            
+
+                //set payment status
+                if (newAccountBalance < 0) {
+                    account.setPaymentStatus("overpaid");
+                } else if (newAccountBalance == 0) {
+                    account.setPaymentStatus("paid");
+                } else if (newAccountBalance < currentInstalment) {
+                    account.setPaymentStatus("partially paid");
+                } else if (newAccountBalance == currentInstalment) {
+                    account.setPaymentStatus("pending");
+                } else{
+                    account.setPaymentStatus("default");
+                }
+            }
+
         }
 
         em.flush();
