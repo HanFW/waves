@@ -15,7 +15,7 @@ import javax.ejb.Remote;
  */
 @Remote
 public interface CustomerAdminSessionBeanRemote {
-    public String createOnlineBankingAccount(Long customerId);
+    public String createOnlineBankingAccount(Long customerId, String email);
 
     public String login(String customerAccount, String password);
     

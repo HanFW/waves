@@ -57,8 +57,9 @@ public class CustomerAdminSessionBeanRemoteTest {
     public void testCreateOnlineBankingAccount() {
         System.out.println("createOnlineBankingAccount");
         Long customerId = (long) 1;
+        String customerEmail = "erhe@hotmail.com";
         String expResult = "not a new customer";
-        String result = customerAdminSessionBeanRemote.createOnlineBankingAccount(customerId);
+        String result = customerAdminSessionBeanRemote.createOnlineBankingAccount(customerId,customerEmail);
         assertEquals(expResult, result);
 
     }
