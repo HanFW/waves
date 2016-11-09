@@ -13,6 +13,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import ejb.deposit.session.TransactionSessionBeanLocal;
+import ejb.infrastructure.entity.Employee;
 import ejb.infrastructure.session.LoggingSessionBeanLocal;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -61,6 +62,8 @@ public class EmployeeCashManagedBean {
     private ExternalContext ec;
 
     private BankAccount bankAccount;
+    
+    private String customerName;
 
     public EmployeeCashManagedBean() {
     }
@@ -72,6 +75,7 @@ public class EmployeeCashManagedBean {
 
         customerIdentificationNum = ec.getSessionMap().get("customerIdentificationNum").toString();
         CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum);
+        customerName=customerBasic.getCustomerName();
 
         List<BankAccount> bankAccounts = bankAccountSessionBeanLocal.retrieveBankAccountByCusIC(customerBasic.getCustomerIdentificationNum());
         fromAccounts = new HashMap<String, String>();
@@ -210,7 +214,7 @@ public class EmployeeCashManagedBean {
                 transactionId = transactionSessionLocal.cashDeposit(depositAccountNum, depositAmt.toString());
 
                 statusMessage = "Cash deposit Successfully!";
-                loggingSessionBeanLocal.createNewLogging("employee", null, "cash deposit", "successful", null);
+                loggingSessionBeanLocal.createNewLogging("employee", null, "cash deposit", "successful",customerName);
 
                 ec.getFlash().put("statusMessage", statusMessage);
                 ec.getFlash().put("depositAccountNum", depositAccountNum);
@@ -240,7 +244,7 @@ public class EmployeeCashManagedBean {
                     depositAccountOpenSessionBeanLocal.addNewDepositAccountOpen(cal.getTimeInMillis(), cal.getTime().toString());
 
                     statusMessage = "Cash deposit Successfully!";
-                    loggingSessionBeanLocal.createNewLogging("employee", null, "cash deposit", "successful", null);
+                    loggingSessionBeanLocal.createNewLogging("employee", getEmployeeViaSessionMap(), "cash deposit", "successful", customerName);
 
                     ec.getFlash().put("statusMessage", statusMessage);
                     ec.getFlash().put("depositAccountNum", depositAccountNum);
@@ -273,6 +277,7 @@ public class EmployeeCashManagedBean {
                 if (diffAmt >= 0) {
                     transactionId = transactionSessionLocal.cashWithdraw(withdrawAccountNum, withdrawAmt.toString());
                     statusMessage = "Cash withdraw Successfully!";
+                    loggingSessionBeanLocal.createNewLogging("employee", getEmployeeViaSessionMap(), "cash withdraw", "successful", customerName);
 
                     ec.getFlash().put("statusMessage", statusMessage);
                     ec.getFlash().put("withdrawAccountNum", withdrawAccountNum);
@@ -293,5 +298,14 @@ public class EmployeeCashManagedBean {
         String bankAccountNum = bankAccountNums[1];
 
         return bankAccountNum;
+    }
+    
+        private Long getEmployeeViaSessionMap(){
+        Long employeeId;
+        FacesContext context = FacesContext.getCurrentInstance();
+        Employee employee = (Employee) context.getExternalContext().getSessionMap().get("employee");
+        employeeId=employee.getEmployeeId();
+        
+        return employeeId;
     }
 }

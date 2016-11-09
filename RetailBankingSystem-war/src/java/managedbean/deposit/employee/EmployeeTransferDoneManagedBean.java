@@ -6,6 +6,8 @@ import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import ejb.deposit.session.TransactionSessionBeanLocal;
+import ejb.infrastructure.entity.Employee;
+import ejb.infrastructure.session.LoggingSessionBeanLocal;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -36,6 +38,9 @@ public class EmployeeTransferDoneManagedBean {
     @EJB
     private BankAccountSessionBeanLocal bankAccountSessionBeanLocal;
 
+    @EJB
+    private LoggingSessionBeanLocal loggingSessionBeanLocal;
+
     private String fromAccount;
     private String fromCurrency;
     private String toAccount;
@@ -54,6 +59,8 @@ public class EmployeeTransferDoneManagedBean {
 
     private ExternalContext ec;
 
+    private String customerName;
+
     public EmployeeTransferDoneManagedBean() {
     }
 
@@ -64,6 +71,7 @@ public class EmployeeTransferDoneManagedBean {
 
         customerIdentificationNum = ec.getSessionMap().get("customerIdentificationNum").toString();
         CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum);
+        customerName = customerBasic.getCustomerName();
 
         List<BankAccount> bankAccounts = bankAccountSessionBeanLocal.retrieveBankAccountByCusIC(customerBasic.getCustomerIdentificationNum());
         fromAccounts = new HashMap<String, String>();
@@ -227,6 +235,7 @@ public class EmployeeTransferDoneManagedBean {
 
                                 newTransactionId = transactionSessionBeanLocal.fundTransfer(fromAccount, toAccount, transferAmt.toString());
                                 statusMessage = "Your transaction has been completed.";
+                                loggingSessionBeanLocal.createNewLogging("employee", getEmployeeViaSessionMap(), "Fund transfer", "successful", customerName);
 
                                 Calendar cal = Calendar.getInstance();
                                 depositAccountOpenSessionBeanLocal.addNewDepositAccountOpen(cal.getTimeInMillis(), cal.getTime().toString());
@@ -267,6 +276,7 @@ public class EmployeeTransferDoneManagedBean {
 
                             newTransactionId = transactionSessionBeanLocal.fundTransfer(fromAccount, toAccount, transferAmt.toString());
                             statusMessage = "Your transaction has been completed.";
+                            loggingSessionBeanLocal.createNewLogging("employee", getEmployeeViaSessionMap(), "Fund transfer", "successful", customerName);
 
                             Double fromAccountAvailableBalanceDouble = currentAvailableBalance - transferAmt;
                             Double fromAccountTotalBalanceDouble = currentTotalBalance - transferAmt;
@@ -294,5 +304,14 @@ public class EmployeeTransferDoneManagedBean {
                 }
             }
         }
+    }
+
+    private Long getEmployeeViaSessionMap() {
+        Long employeeId;
+        FacesContext context = FacesContext.getCurrentInstance();
+        Employee employee = (Employee) context.getExternalContext().getSessionMap().get("employee");
+        employeeId = employee.getEmployeeId();
+
+        return employeeId;
     }
 }
