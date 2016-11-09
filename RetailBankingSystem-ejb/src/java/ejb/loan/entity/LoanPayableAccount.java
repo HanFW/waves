@@ -6,7 +6,6 @@
 package ejb.loan.entity;
 
 import java.io.Serializable;
-import java.text.DecimalFormat;
 import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -43,6 +42,9 @@ public class LoanPayableAccount implements Serializable {
     
     @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     private LoanRepaymentAccount loanRepaymentAccount;
+    
+    @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    private LoanStatement loanStatement;
     
     public Long getId() {
         return id;
@@ -122,6 +124,14 @@ public class LoanPayableAccount implements Serializable {
 
     public void setOverdueBalance(double overdueBalance) {
         this.overdueBalance = overdueBalance;
+    }
+
+    public LoanStatement getLoanStatement() {
+        return loanStatement;
+    }
+
+    public void setLoanStatement(LoanStatement loanStatement) {
+        this.loanStatement = loanStatement;
     }
 
     @Override
