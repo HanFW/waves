@@ -96,7 +96,6 @@ public class LoanInterestSessionBean implements LoanInterestSessionBeanLocal {
             }
             double extraFee = newFee - account.getFees();
             addLoanAccountTransaction(account, extraFee, "Late Charge", "debit");
-            payableAccount.setAccountBalance(payableAccount.getAccountBalance() + extraFee);
 
             newOverdue = Math.round(newOverdue * 100.0) / 100.0;
             account.setOverdueBalance(newOverdue);
@@ -124,7 +123,6 @@ public class LoanInterestSessionBean implements LoanInterestSessionBeanLocal {
             //should be done when customer make payment
             System.out.println("******* no overdue balance this month");
             account.setDefaultMonths(0);
-            account.setPaymentStatus("pending");
         }
 
         em.flush();
@@ -153,12 +151,14 @@ public class LoanInterestSessionBean implements LoanInterestSessionBeanLocal {
                 currentInterest = Math.round(currentInterest * 100.0) / 100.0;
                 account.setCurrentInterest(currentInterest);
                 System.out.println("*** new month interest: " + currentInterest);
+                addLoanAccountTransaction(account, currentInterest, "Interest Charge", "debit");
 
                 //current principal
                 double currentPrincipal = initialPrincipal / period;
                 currentPrincipal = Math.round(currentPrincipal * 100.0) / 100.0;
                 account.setCurrentPrincipal(currentPrincipal);
                 System.out.println("*** new month principal: " + currentPrincipal);
+                addLoanAccountTransaction(account, currentInterest, "Principal Charge", "debit");
 
                 //current instalment
                 currentInstalment = currentInterest + currentPrincipal;
@@ -258,7 +258,6 @@ public class LoanInterestSessionBean implements LoanInterestSessionBeanLocal {
                     account.setPaymentStatus("default");
                 }
             }
-
         }
 
         em.flush();

@@ -45,7 +45,7 @@ public class LoanPayableAccount implements Serializable {
     @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     private LoanRepaymentAccount loanRepaymentAccount;
     
-    @OneToMany (cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "loanRepaymentAccount")
+    @OneToMany (cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy ="loanPayableAccount")
     private List<LoanRepaymentTransaction> loanRepaymentTransactions;
     
     @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
