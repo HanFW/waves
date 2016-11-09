@@ -303,7 +303,8 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
 //        nonStandingGIROSessionBeanLocal.monthlyRecurrentPayment();
         rateSessionBeanLocal.monthlyDashboardRate();
         rateSessionBeanLocal.generateMonthlyAccountClosureReason();
-        customerRFMSessionBeanLocal.generateMonthlyCustomerRFM();
+//        customerRFMSessionBeanLocal.generateMonthlyCustomerRFM();
+        customerRFMSessionBeanLocal.generateLoanMonthlyRFM();
     }
 
     private void handleTimeout_15000ms() {

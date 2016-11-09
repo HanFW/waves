@@ -27,6 +27,8 @@ public class CustomerRFM implements Serializable {
     private Long transactionDays;
     private Integer numOfTransactions;
     private Double totalSpends;
+    private String totalRFMValue;
+    private String RFMType;
 
     @ManyToOne(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER)
     private CustomerBasic customerBasic;
@@ -125,6 +127,22 @@ public class CustomerRFM implements Serializable {
 
     public void setTotalSpends(Double totalSpends) {
         this.totalSpends = totalSpends;
+    }
+
+    public String getTotalRFMValue() {
+        return totalRFMValue;
+    }
+
+    public void setTotalRFMValue(String totalRFMValue) {
+        this.totalRFMValue = totalRFMValue;
+    }
+
+    public String getRFMType() {
+        return RFMType;
+    }
+
+    public void setRFMType(String RFMType) {
+        this.RFMType = RFMType;
     }
 
     @Override
