@@ -9,7 +9,6 @@ import javax.inject.Named;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import ejb.infrastructure.session.LoggingSessionBeanLocal;
 import java.io.Serializable;
 import java.util.List;
 import javax.enterprise.context.SessionScoped;
@@ -18,9 +17,6 @@ import javax.enterprise.context.SessionScoped;
 @SessionScoped
 
 public class ViewStatementManagedBean implements Serializable {
-
-    @EJB
-    private LoggingSessionBeanLocal loggingSessionBeanLocal;
 
     @EJB
     private BankAccountSessionBeanLocal bankAccountSessionBeanLocal;

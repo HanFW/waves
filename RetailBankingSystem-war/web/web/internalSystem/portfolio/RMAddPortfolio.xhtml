@@ -108,7 +108,7 @@
         <h:form id="stockForm">
             <p:dialog header="Stock Detail" widgetVar="stockDetailDialog" responsive="true" closable="true">
                 <h:panelGrid id="stockPanel">
-                    <!--<p:chart type="line" model="#{rMAddPorfolioManagedBean.stockLineModel}" style="height:300px;"/>-->
+                    <p:chart type="line" model="#{rMAddPorfolioManagedBean.stockLineModel}" style="height:500px;width:800px;"/>
 
                     <p:row>
                         <p:outputLabel for="purchaseUnit" style="font-weight: bold" value="Number of Unit: " />
@@ -120,7 +120,7 @@
 
                     <p:row>
                         <p:column>
-                            <p:commandButton value="Submit" actionListener="#{rMAddPorfolioManagedBean.createStockPurchaseList}" update="@form"/>
+                            <p:commandButton value="Submit" actionListener="#{rMAddPorfolioManagedBean.createStockPurchaseList}" update="@form mainForm"/>
                         </p:column>
                     </p:row>
                 </h:panelGrid>
@@ -129,7 +129,7 @@
         <h:form id="fundForm">
             <p:dialog header="Fund Detail" widgetVar="fundDetailDialog" responsive="true" closable="true">
                 <h:panelGrid id="fundPanel">
-                    <!--<p:chart type="line" model="#{rMAddPorfolioManagedBean.fundLineModel}" style="height:300px;"/>-->
+                    <p:chart type="line" model="#{rMAddPorfolioManagedBean.fundLineModel}" style="height:500px;width:800px;"/>
 
                     <p:row>
                         <p:outputLabel for="purchaseUnit" style="font-weight: bold" value="Number of Unit: " />
@@ -141,7 +141,7 @@
 
                     <p:row>
                         <p:column>
-                            <p:commandButton value="Submit" actionListener="#{rMAddPorfolioManagedBean.createFundPurchaseList}" update="@form"/>
+                            <p:commandButton value="Submit" actionListener="#{rMAddPorfolioManagedBean.createFundPurchaseList}" update="@form mainForm"/>
                         </p:column>
                     </p:row>
                 </h:panelGrid>
@@ -150,7 +150,7 @@
         <h:form id="bondForm">
             <p:dialog header="Bond Detail" widgetVar="bondDetailDialog" responsive="true" closable="true">
                 <h:panelGrid id="bondPanel">
-                    <!--<p:chart type="line" model="#{rMAddPorfolioManagedBean.bondLineModel}" style="height:300px;"/>-->
+                    <p:chart type="line" model="#{rMAddPorfolioManagedBean.bondLineModel}" style="height:500px;width:800px;"/>
 
                     <p:row>
                         <p:outputLabel for="purchaseUnit" style="font-weight: bold" value="Number of Unit: " />
