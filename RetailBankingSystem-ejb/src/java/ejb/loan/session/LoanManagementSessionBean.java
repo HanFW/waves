@@ -7,12 +7,14 @@ package ejb.loan.session;
 
 import ejb.customer.entity.CustomerBasic;
 import ejb.deposit.entity.BankAccount;
+import ejb.deposit.session.BankAccountSessionBeanLocal;
 import ejb.loan.entity.CashlineApplication;
 import ejb.loan.entity.LoanApplication;
 import ejb.loan.entity.LoanPayableAccount;
 import ejb.loan.entity.LoanRepaymentAccount;
 import ejb.loan.entity.LoanRepaymentTransaction;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -24,6 +26,10 @@ import javax.persistence.Query;
  */
 @Stateless
 public class LoanManagementSessionBean implements LoanManagementSessionBeanLocal {
+    @EJB
+    private BankAccountSessionBeanLocal bankAccountSessionBeanLocal;
+    @EJB
+    private LoanRepaymentSessionBeanLocal loanRepaymentSessionBeanLocal;
 
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager em;
@@ -101,6 +107,8 @@ public class LoanManagementSessionBean implements LoanManagementSessionBeanLocal
     public void setRecurringLoanServingAccount(String accountNum, Long repaymentAccountId) {
         LoanRepaymentAccount account = em.find(LoanRepaymentAccount.class, repaymentAccountId);
         account.setDepositAccountNumber(accountNum);
+        BankAccount deposit = bankAccountSessionBeanLocal.retrieveBankAccountByNum(accountNum);
+        loanRepaymentSessionBeanLocal.makeMonthlyRepayment(deposit, account, account.getAccountBalance());
         em.flush();
     }
     
