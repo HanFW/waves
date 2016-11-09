@@ -5,9 +5,11 @@
  */
 package managedbean.infrastructure.employee;
 
+import ejb.customer.entity.CustomerBasic;
 import ejb.infrastructure.entity.Employee;
 import ejb.infrastructure.session.EmployeeAdminSessionBeanLocal;
 import ejb.infrastructure.session.EmployeeEmailSessionBeanLocal;
+import ejb.infrastructure.session.LoggingSessionBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
@@ -25,12 +27,14 @@ import javax.faces.view.ViewScoped;
  */
 @Named(value = "employeeCreateUserAccountManagedBean")
 @ViewScoped
-public class EmployeeCreateUserAccountManagedBean implements Serializable{
+public class EmployeeCreateUserAccountManagedBean implements Serializable {
 
     @EJB
     private EmployeeAdminSessionBeanLocal adminSessionBeanLocal;
     @EJB
     private EmployeeEmailSessionBeanLocal sendEmailSessionBeanLocal;
+    @EJB
+    private LoggingSessionBeanLocal loggingSessionBeanLocal;
 
     private Employee employee;
     private String employeeName;
@@ -72,14 +76,14 @@ public class EmployeeCreateUserAccountManagedBean implements Serializable{
 
             message = new FacesMessage(FacesMessage.SEVERITY_INFO, "A new employee account has been successfully created", "Account created.");
             context.addMessage(null, message);
+            loggingSessionBeanLocal.createNewLogging("employee",getEmployeeViaSessionMap(), "employee create user account","success", null);
             System.out.println("*** AccountManagedBean: account created");
 
         }
 
     }
 
-    
-    public List<String> getPositions(){
+    public List<String> getPositions() {
         return positions;
     }
 
@@ -89,7 +93,7 @@ public class EmployeeCreateUserAccountManagedBean implements Serializable{
 
     public void onDepartmentChangePositions() {
         System.out.println("*** CreateUserAccountManagedBean: onDepartmentChangePositions");
-        positions=adminSessionBeanLocal.getPositionsByDepartment(employeeDepartment);
+        positions = adminSessionBeanLocal.getPositionsByDepartment(employeeDepartment);
 
     }
 
@@ -126,9 +130,9 @@ public class EmployeeCreateUserAccountManagedBean implements Serializable{
     public String getEmployeeDepartment() {
         return employeeDepartment;
     }
-    
+
     public void setEmployeeDepartment(String employeeDepartment) {
-        System.out.println("createAccountManagedBean: set employee Department"+ employeeDepartment);
+        System.out.println("createAccountManagedBean: set employee Department" + employeeDepartment);
         this.employeeDepartment = employeeDepartment;
     }
 
@@ -138,7 +142,7 @@ public class EmployeeCreateUserAccountManagedBean implements Serializable{
     }
 
     public void setEmployeePosition(String employeePosition) {
-        System.out.println("createAccountManagedBean: set employee position"+ employeePosition);
+        System.out.println("createAccountManagedBean: set employee position" + employeePosition);
         this.employeePosition = employeePosition;
     }
 
@@ -172,8 +176,17 @@ public class EmployeeCreateUserAccountManagedBean implements Serializable{
     }
 
     public void setSelectedRoles(Set<String> selectedRoles) {
-        System.out.println("createAccountManagedBean set selectedRoles: "+selectedRoles);
+        System.out.println("createAccountManagedBean set selectedRoles: " + selectedRoles);
         this.selectedRoles = selectedRoles;
+    }
+    
+    private Long getEmployeeViaSessionMap(){
+        Long employeeId;
+        FacesContext context = FacesContext.getCurrentInstance();
+        employee = (Employee) context.getExternalContext().getSessionMap().get("employee");
+        employeeId=employee.getEmployeeId();
+        
+        return employeeId;
     }
 
 }
