@@ -7,6 +7,7 @@ import java.io.IOException;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
@@ -91,23 +92,29 @@ public class AddOtherBankPayeeManagedBean {
 
         CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
 
-        lastTransactionDate = "";
-        customerBasicId = customerBasic.getCustomerBasicId();
-        otherBankPayeeId = otherBankPayeeSessionBeanLocal.addNewOtherBankPayee(payeeName,
-                payeeAccountNum, payeeAccountType, lastTransactionDate, "Other Bank",
-                customerBasicId);
-        OtherBankPayee otherBankPayee = otherBankPayeeSessionBeanLocal.retrieveOtherBankPayeeById(otherBankPayeeId);
+        OtherBankPayee payee = otherBankPayeeSessionBeanLocal.retrieveOtherBankPayeeByNum(payeeAccountNum);
 
-        customerBasic.getOtherBankPayee().add(otherBankPayee);
+        if (payee.getPayeeId() != null) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Recipient has already existed", ""));
+        } else {
+            lastTransactionDate = "";
+            customerBasicId = customerBasic.getCustomerBasicId();
+            otherBankPayeeId = otherBankPayeeSessionBeanLocal.addNewOtherBankPayee(payeeName,
+                    payeeAccountNum, payeeAccountType, lastTransactionDate, "Other Bank",
+                    customerBasicId);
+            OtherBankPayee otherBankPayee = otherBankPayeeSessionBeanLocal.retrieveOtherBankPayeeById(otherBankPayeeId);
 
-        statusMessage = "New Recipient Added Successfully.";
+            customerBasic.getOtherBankPayee().add(otherBankPayee);
 
-        ec.getFlash().put("statusMessage", statusMessage);
-        ec.getFlash().put("otherBankPayeeId", otherBankPayeeId);
-        ec.getFlash().put("payeeName", payeeName);
-        ec.getFlash().put("payeeAccountNum", payeeAccountNum);
-        ec.getFlash().put("payeeAccountType", payeeAccountType);
+            statusMessage = "New Recipient Added Successfully.";
 
-        ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/payment/customerAddOtherBankPayeeDone.xhtml?faces-redirect=true");
+            ec.getFlash().put("statusMessage", statusMessage);
+            ec.getFlash().put("otherBankPayeeId", otherBankPayeeId);
+            ec.getFlash().put("payeeName", payeeName);
+            ec.getFlash().put("payeeAccountNum", payeeAccountNum);
+            ec.getFlash().put("payeeAccountType", payeeAccountType);
+
+            ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/payment/customerAddOtherBankPayeeDone.xhtml?faces-redirect=true");
+        }
     }
 }

@@ -10,11 +10,22 @@
     <ui:define name="content">
         <h:form id="oneTimeGIROForm"> 
             <p:messages globalOnly="true"/>
+            <div align="center">
+                <h1>Pay Bills</h1>
+            </div>
+            <br/>
+            <p:outputLabel value="If your GIRO status is rejected, please check your recipient's account number"
+                           style="font-weight: bold"/>
+            <br/>
+            <p:outputLabel value="If you have any issue, please contact us at 800 820 8820"
+                           style="font-weight: bold"/>
+            <br/>
+            <br/>
             <p:outputLabel value="One Time Payment" style="font-weight: bold"/>
             <br/>
             <br/>
-            <p:dataTable var="oneTimeGiro" value="#{employeeNonStandingGIROTransferDoneManagedBean.oneTimeGIROs}" 
-                         reflow="true" paginator="true" rows="10" emptyMessage="No Recipient">
+            <p:dataTable id="oneTimeTable" var="oneTimeGiro" value="#{employeeNonStandingGIROTransferDoneManagedBean.oneTimeGIROs}" 
+                         reflow="true" paginator="true" rows="10" emptyMessage="No Record">
                 <p:column headerText="Billing Organization" >
                     <h:outputText value="#{oneTimeGiro.billingOrganizationName}" /> 
                 </p:column>
@@ -23,15 +34,37 @@
                     <h:outputText value="#{oneTimeGiro.billReference}" /> 
                 </p:column>
 
-                <p:column headerText="Transfer Frequency" >
+                <p:column headerText="Transfer Frequency" style="width: 13%">
                     <h:outputText value="#{oneTimeGiro.paymentFrequency}" /> 
                 </p:column>
 
-                <p:column headerText="Action">
+                <p:column headerText="Status" style="width: 10%">
+                    <h:outputText value="#{oneTimeGiro.nonStandingStatus}" /> 
+                </p:column>
+
+                <p:column headerText="Action" style="width: 13%">
                     <center>
-                        <p:commandButton action="/web/internalSystem/payment/employeeNonStandingGIROTransferFinished.xhtml?faces-redirect=true"
-                                         value="Transfer" update="oneTimeGIROForm" style="width: 50%">
-                            <f:setPropertyActionListener target="#{employeeNonStandingGIROTransferFinishedManagedBean.giroId}" value="#{oneTimeGiro.giroId}" />
+                        <p:commandButton process="@this" oncomplete="PF('dlg1').show()" 
+                                         value="Recurrent" update="recurrentPaymentDialog">
+                            <f:setPropertyActionListener target="#{employeeNonStandingGIROTransferFinalManagedBean.giroId}" value="#{oneTimeGiro.giroId}" />
+                        </p:commandButton>
+                    </center>
+                </p:column>
+
+                <p:column headerText="Action" style="width: 13%">
+                    <center>
+                        <p:commandButton action="/web/internalSystem/payment/employeeNonStandingGIROTransferFinal.xhtml?faces-redirect=true"
+                                         value="Pay" update="oneTimeGIROForm" style="width: 50%" disabled="#{oneTimeGiro.buttonRender}">
+                            <f:setPropertyActionListener target="#{employeeNonStandingGIROTransferFinalManagedBean.giroId}" value="#{oneTimeGiro.giroId}" />
+                        </p:commandButton>
+                    </center>
+                </p:column>
+
+                <p:column headerText="Action" style="width: 10%"> 
+                    <center>
+                        <p:commandButton process="@this" action="#{employeeNonStandingGIROTransferFinalManagedBean.delete()}"
+                                         icon="ui-icon-trash" ajax="false">
+                            <f:setPropertyActionListener target="#{employeeNonStandingGIROTransferFinalManagedBean.giroId}" value="#{oneTimeGiro.giroId}" />
                         </p:commandButton>
                     </center>
                 </p:column>
@@ -44,8 +77,8 @@
             <p:outputLabel value="Recurrent Payment" style="font-weight: bold"/>
             <br/>
             <br/>
-            <p:dataTable var="recurrentGIRO" value="#{employeeNonStandingGIROTransferDoneManagedBean.recurrentGIROs}" 
-                         reflow="true" paginator="true" rows="10" emptyMessage="No Recipient">
+            <p:dataTable id="recurrentTable" var="recurrentGIRO" value="#{employeeNonStandingGIROTransferDoneManagedBean.recurrentGIROs}" 
+                         reflow="true" paginator="true" rows="10" emptyMessage="No Record">
                 <p:column headerText="Billing Organization" >
                     <h:outputText value="#{recurrentGIRO.billingOrganizationName}" /> 
                 </p:column>
@@ -54,20 +87,54 @@
                     <h:outputText value="#{recurrentGIRO.billReference}" /> 
                 </p:column>
 
-                <p:column headerText="Transfer Frequency" >
+                <p:column headerText="Transfer Frequency" style="width: 13%">
                     <h:outputText value="#{recurrentGIRO.paymentFrequency}" /> 
                 </p:column>
 
-                <p:column headerText="Action">
+                <p:column headerText="Status" style="width: 10%">
+                    <h:outputText value="#{recurrentGIRO.nonStandingStatus}" /> 
+                </p:column>
+
+                <p:column headerText="Action" style="width: 13%">
                     <center>
-                        <p:commandButton action="/web/internalSystem/payment/employeeNonStandingGIROTransferFinished.xhtml?faces-redirect=true"
-                                         value="Transfer" update="recurrentGIROForm" style="width: 50%">
-                            <f:setPropertyActionListener target="#{employeeNonStandingGIROTransferFinishedManagedBean.giroId}" value="#{recurrentGIRO.giroId}" />
+                        <p:commandButton action="/web/internalSystem/payment/employeeNonStandingGIROTransferFinal.xhtml?faces-redirect=true"
+                                         value="Pay" update="recurrentGIROForm" style="width: 50%" disabled="#{recurrentGIRO.buttonRender}">
+                            <f:setPropertyActionListener target="#{employeeNonStandingGIROTransferFinalManagedBean.giroId}" value="#{recurrentGIRO.giroId}" />
+                        </p:commandButton>
+                    </center>
+                </p:column>
+
+                <p:column headerText="Action" style="width: 13%"> 
+                    <center>
+                        <p:commandButton process="@this" action="#{employeeNonStandingGIROTransferFinalManagedBean.delete()}"
+                                         icon="ui-icon-trash" ajax="false">
+                            <f:setPropertyActionListener target="#{employeeNonStandingGIROTransferFinalManagedBean.giroId}" value="#{recurrentGIRO.giroId}" />
                         </p:commandButton>
                     </center>
                 </p:column>
 
             </p:dataTable>
+        </h:form>
+
+        <h:form id="recurrentPaymentDialog">
+            <p:panel id="panel">
+                <p:dialog widgetVar="dlg1" minHeight="40" draggable="true" >
+                    <p:outputLabel value="Recurrent Frequency: " style="font-weight: bold"/>
+                    <br/>
+                    <br/>
+                    <p:selectOneRadio id="recurrenyFrequency" value="#{employeeNonStandingGIROTransferFinalManagedBean.transactionFrequencyForOneTime}"
+                                      required="true" requiredMessage="Required Field" layout="pageDirection">
+                        <f:selectItem itemLabel="Daily" itemValue="Daily"/>
+                        <f:selectItem itemLabel="Weekly" itemValue="Weekly" />
+                        <f:selectItem itemLabel="Monthly" itemValue="Monthly" />
+                    </p:selectOneRadio>
+                    <br/>
+                    <br/>
+                    <p:commandButton id="saveBtn" value="Submit" update="panel recurrentGIROForm oneTimeGIROForm"
+                                     actionListener="#{employeeNonStandingGIROTransferFinalManagedBean.changeToRecurrentPayment}" 
+                                     ajax="true"/>
+                </p:dialog>
+            </p:panel>
         </h:form>
     </ui:define>
 </ui:composition>

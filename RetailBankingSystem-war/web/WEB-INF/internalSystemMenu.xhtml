@@ -75,9 +75,6 @@
                             <p:menuitem value="Update Currency Rate" url="/web/internalSystem/payment/employeeUpdateCurrency.xhtml" />
                             <p:menuitem value="Input Billing Organization" url="/web/internalSystem/payment/employeeEnterBillingOrganization.xhtml" />
                             <p:menuitem value="Input Cheque Information" url="/web/internalSystem/payment/employeeEnterReceivedChequeInformation.xhtml" />
-                            <p:menuitem value="Add Standing GIRO" url="/web/internalSystem/payment/employeeAddStandingGIRO.xhtml" />
-                            <p:menuitem value="Delete Standing GIRO" url="/web/internalSystem/payment/employeeDeleteStandingGIRO.xhtml" />
-                            <p:menuitem value="Non Standing GIRO Transfer" url="/web/internalSystem/payment/employeeNonStandingGIROTransfer.xhtml" />
                             <p:menuitem value="Apply Debit Card" url="/web/internalSystem/card/debitCard/employeeDebitCardCheckExisting.xhtml"/>
                             <p:menuitem value="Apply Credit Card" url="/web/internalSystem/card/creditCard/employeeCreditCardCheckExisting.xhtml"/>
                             <p:menuitem value="View Dashboard" url="/web/internalSystem/BI/employeeViewDashboard.xhtml" />
@@ -87,6 +84,16 @@
                             <p:menuitem value="Apply for Car Loan" url="/web/internalSystem/loan/employeeCarLoanApplication.xhtml"/>
                             <p:menuitem value="Apply for Education Loan" url="/web/internalSystem/loan/employeeEducationLoanApplication.xhtml"/>
                             <p:menuitem value="Apply for Cashline" url="/web/internalSystem/loan/employeeCashlineApplication.xhtml"/>
+                            <p:menuitem value="Add Standing GIRO" url="/web/internalSystem/payment/employeeAddStandingGIRO.xhtml"/>
+                            <p:menuitem value="Delete Standing GIRO" url="/web/internalSystem/payment/employeeDeleteStandingGIRO.xhtml"/>
+                            <p:menuitem value="Add Billing Organization" url="/web/internalSystem/payment/employeeAddBillingOrganization.xhtml"/>
+                            <p:menuitem value="Pay bills" url="/web/internalSystem/payment/employeeNonStandingGIROTransfer.xhtml"/>
+                            <p:menuitem value="GIRO Transfer" url="/web/internalSystem/payment/employeeRegularGIROTransfer.xhtml"/>
+                            <p:menuitem value="SWIFT Transfer" url="/web/internalSystem/payment/employeeSWIFTTransfer.xhtml"/>
+                            <p:menuitem value="FAST Transfer" url="/web/internalSystem/payment/employeeTransferFast.xhtml"/>
+                            <p:menuitem value="View Cheque Status" url="/web/internalSystem/payment/employeeViewChequeStatus.xhtml"/>
+                            <p:menuitem value="View GIRO Transfer History" url="/web/internalSystem/payment/employeeViewRegularGIROTransfer.xhtml"/>
+                            <p:menuitem value="Add SWIFT Payee" url="/web/internalSystem/payment/employeeAddSWIFTPayee.xhtml"/>
                         </p:submenu>
 
                         <p:submenu label="Customer Service Agent" rendered="#{employeeAccountManagedBean.hasRoleCustomerServiceAgent()}">
@@ -96,7 +103,7 @@
                             <p:menuitem value="Cancel Card" url="/web/internalSystem/card/employeeCancelCardCheckExisting.xhtml" />            
                             <p:menuitem value="Renew Card" url="/web/internalSystem/card/employeeRenewCardCheckExisting.xhtml" />            
                             <p:menuitem value="Report Card Loss" url="/web/internalSystem/card/employeeReportCardLossCheckExisting.xhtml" />            
-<!--                            <p:menuitem value="Replace Card" url="" /> -->
+                            <!--                            <p:menuitem value="Replace Card" url="" /> -->
                         </p:submenu>
 
                         <p:submenu label="Enquiry Processor" rendered="#{employeeAccountManagedBean.hasRoleEnquiryProcessor()}">
@@ -112,10 +119,10 @@
                         </p:submenu>
 
                         <p:submenu label="Relationship Manager" rendered="#{employeeAccountManagedBean.hasRoleRelationshipManager()}">
-                            <p:menuitem value="Update Customer Advanced Profile" url="/web/internalSystem/CRM/RMViewCustomerList.xhtml" />
                             <p:menuitem value="View All My Customers" url="/web/internalSystem/CRM/RMSearchCustomer.xhtml" />
                             <p:menuitem value="Risk Tolerance Test" url="/web/internalSystem/wealth/RMHelpCustomerDoRiskTestCheckExistingCustomer.xhtml" />
                             <p:menuitem value="Declare Financial Goal" url="/web/internalSystem/wealth/RMGuideCustomerDeclareFinancialGoalCheckExisting.xhtml" />
+                            <p:menuitem value="Add Portfolio" url="/web/internalSystem/portfolio/RMAddPortfolio.xhtml"/>
                         </p:submenu>
 
                         <p:submenu label="Wealth Management Specialist" rendered="#{employeeAccountManagedBean.hasRoleWealthManagementSpecialist()}">

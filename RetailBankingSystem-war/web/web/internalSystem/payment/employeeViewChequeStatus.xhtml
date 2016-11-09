@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/internalSystemTemplate.xhtml">
+
+    <ui:define name="content">
+        <h:form id="formMain">
+            <div align="center">
+                <br/>
+                <p:panel id="panel">
+                    <p:messages globalOnly="true"/>
+
+                    <h:panelGrid columns="1" cellpadding="5" styleClass="ui-panelgrid-blank form-group">  
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="customerName" style="font-weight: bold" value="Name: " />
+                                <p:outputLabel style="font-weight: bold" value="(As per NRIC/Passport): " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText label="Customer Name" id="customerName" value="#{employeeViewChequeStatusManagedBean.customerName}"
+                                             required="true" requiredMessage="Required Field">
+                                </p:inputText>
+                            </p:column>
+                            <p:column>
+                                <p:message for="customerName" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="customerIdentificationNum" style="font-weight: bold" value="Identification Number: " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText label="Customer Identification Number" id="customerIdentificationNum" value="#{employeeViewChequeStatusManagedBean.customerIdentificationNum}"
+                                             required="true" requiredMessage="Required Field">
+                                </p:inputText>
+                            </p:column>
+                            <p:column>
+                                <p:message for="customerIdentificationNum" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="customerDateOfBirth" style="font-weight: bold" value="Date Of Birth: " />
+                            </p:column>
+                            <p:column>
+                                <p:calendar id="customerDateOfBirth" value="#{employeeViewChequeStatusManagedBean.customerDateOfBirth}" 
+                                            showOn="button" locale="de" navigator="true" pattern="dd/MM/yyyy" 
+                                            yearRange="c-200:c+200" required="true" requiredMessage="Required Field"/>
+                            </p:column>
+                            <p:column>
+                                <p:message for="customerDateOfBirth" />
+                            </p:column>
+                        </p:row>
+
+                    </h:panelGrid>
+
+                    <h:panelGrid columns="2" cellpadding="5" styleClass="ui-panelgrid-blank form-group">  
+
+                        <p:commandButton id="cancelBtn" value="Cancel" update="panel" immediate = "true">
+                            <p:confirm header="Cancel" message="Are you sure?" />
+                        </p:commandButton>
+                        <p:commandButton id="submitBtn" value="Submit" update="panel"
+                                         action="#{employeeViewChequeStatusManagedBean.submit}" ajax="true"/>
+
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                            <p:commandButton value="Yes" styleClass="ui-confirmdialog-yes" action="/RetailBankingSystem-war/web/internalSystem/infrastructure/employeeMainPage.xhtml?faces-redirect=true"/>
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" />
+                        </p:confirmDialog>
+
+                    </h:panelGrid>
+                </p:panel>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>
+

@@ -47,7 +47,7 @@ public class LoanInterestSessionBean implements LoanInterestSessionBeanLocal {
         Query query = em.createQuery("SELECT a FROM LoanRepaymentAccount a WHERE a.loanPayableAccount.accountStatus = :accountStatus OR a.loanPayableAccount.accountStatus = :accountStatus2 OR a.loanPayableAccount.accountStatus = :accountStatus3");
         query.setParameter("accountStatus", "started");
         query.setParameter("accountStatus2", "default");
-        query.setParameter("accountStatus2", "bankrupt");
+        query.setParameter("accountStatus3", "bankrupt");
         accounts = query.getResultList();
 
         for (LoanRepaymentAccount account : accounts) {
@@ -138,8 +138,9 @@ public class LoanInterestSessionBean implements LoanInterestSessionBeanLocal {
         double interest = 0;
         double oldTotalRemaining = payableAccount.getAccountBalance();
         double newTotalRemaining;
+        double previousAccountBalance = account.getAccountBalance();
 
-        if (oldTotalRemaining > 0) {
+        if (oldTotalRemaining - previousAccountBalance > 0) {
             if (interestPackage.equals("HDB-Fixed")) {
                 if (account.getRepaymentMonths() == 0) {
                     rate = 0.018;
@@ -179,25 +180,30 @@ public class LoanInterestSessionBean implements LoanInterestSessionBeanLocal {
             account.setInterest(interest);
             account.setPrincipal(instalment - interest);
             account.setInstalment(instalment);
-            double previousAccountBalance = account.getAccountBalance();
+            
             if (oldTotalRemaining < instalment) {
                 account.setAccountBalance(previousAccountBalance + oldTotalRemaining);
             } else {
                 account.setAccountBalance(previousAccountBalance + instalment);
             }
+            
         }
 
         em.flush();
     }
 
     public void checkAccountStatus(LoanRepaymentAccount account) {
+        System.out.println("****** checkLoanAccountStatus");
         LoanPayableAccount payableAccount = account.getLoanPayableAccount();
 
-        if (payableAccount.getAccountBalance() - account.getInstalment() <= 0) {
+        if (payableAccount.getAccountBalance() - account.getAccountBalance() <= 0) {
+            System.out.println("****** checkLoanAccountStatus: all balance counted");
             payableAccount.setAccountStatus("ended");
         } else if (account.getRepaymentMonths() >= payableAccount.getLoanApplication().getPeriodSuggested()) {
             payableAccount.setAccountStatus("ended");
+            System.out.println("****** checkLoanAccountStatus: loan tenure finished");
         }
+        em.flush();
     }
 
     private void addLoanAccountTransaction(LoanRepaymentAccount repaymentAccount, double amount, String description, String action) {

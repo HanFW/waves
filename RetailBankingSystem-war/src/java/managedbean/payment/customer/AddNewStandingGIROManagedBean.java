@@ -4,6 +4,7 @@ import ejb.customer.entity.CustomerBasic;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import ejb.payment.entity.RegisteredBillingOrganization;
+import ejb.payment.entity.StandingGIRO;
 import ejb.payment.session.RegisteredBillingOrganizationSessionBeanLocal;
 import ejb.payment.session.StandingGIROSessionBeanLocal;
 import java.io.Serializable;
@@ -182,11 +183,17 @@ public class AddNewStandingGIROManagedBean implements Serializable {
 
         bankAccountNum = handleAccountString(bankAccountNumWithType);
 
-        standingGIROSessionBeanLocal.addNewStandingGIRO(billingOrganization, billReference, paymentLimit.toString(),
-                customerName, customerMobile, bankAccountNum, standingGiroStatus,
-                bankAccountNumWithType, giroType, customerBasic.getCustomerBasicId());
+        StandingGIRO standingGIRO = standingGIROSessionBeanLocal.retrieveStandingGIROByBillRef(billReference);
 
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Add GIRO Arrangement Successfully", ""));
+        if (standingGIRO.getGiroId() != null) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("GIRO Arrangement has already existed", ""));
+        } else {
+            standingGIROSessionBeanLocal.addNewStandingGIRO(billingOrganization, billReference, paymentLimit.toString(),
+                    customerName, customerMobile, bankAccountNum, standingGiroStatus,
+                    bankAccountNumWithType, giroType, customerBasic.getCustomerBasicId());
+
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Add GIRO Arrangement Successfully", ""));
+        }
     }
 
     private String handleAccountString(String bankAccountNumWithType) {

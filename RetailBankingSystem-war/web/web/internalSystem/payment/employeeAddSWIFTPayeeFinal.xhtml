@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/internalSystemTemplate.xhtml">
+
+    <ui:define name="content">
+        <h:form>
+            <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
+                <p:panel>
+                    <p:messages globalOnly="true" />
+
+                    <h:outputText style="font-weight: bold" value="Status Message: " />
+                    <h:outputText value="#{employeeAddSWIFTPayeeFinalManagedBean.statusMessage}" />
+                    <br/>
+                    <h:outputText style="font-weight: bold" value="Recipient's Account Number: " />
+                    <h:outputText value="#{employeeAddSWIFTPayeeFinalManagedBean.payeeAccountNum}" />
+                    <br/>
+                    <h:outputText style="font-weight: bold" value="Recipient's Account Type: " />
+                    <h:outputText value="#{employeeAddSWIFTPayeeFinalManagedBean.payeeAccountType}" />
+                    <br/>
+                    <h:outputText style="font-weight: bold" value="Recipient's Bank: " />
+                    <h:outputText value="#{employeeAddSWIFTPayeeFinalManagedBean.payeeBank}" />
+                    <br/>
+                    <h:outputText style="font-weight: bold" value="Recipient's Country: " />
+                    <h:outputText value="#{employeeAddSWIFTPayeeFinalManagedBean.payeeCountry}" />
+                    <br/>
+                    <h:outputText style="font-weight: bold" value="Recipient's Institution: " />
+                    <h:outputText value="#{employeeAddSWIFTPayeeFinalManagedBean.payeeInstitution}" />
+                    <br/>
+                    <h:outputText style="font-weight: bold" value="Institution SWIFT Code: " />
+                    <h:outputText value="#{employeeAddSWIFTPayeeFinalManagedBean.payeeSWIFTCode}" />
+                    <br/>
+                </p:panel>
+            </p:panelGrid>
+        </h:form>
+    </ui:define>
+</ui:composition>

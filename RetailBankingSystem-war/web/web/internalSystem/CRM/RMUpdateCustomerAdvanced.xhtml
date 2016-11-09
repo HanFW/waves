@@ -10,47 +10,91 @@
     <ui:define name="content">
         <h:form>
             <div align="center">
-<!--                <h:outputText value="You have logged in as: Relationship Manager"/>-->
                 <br/>  
-                <p:dataList id="customerCurrentAdvancedProfile" value="#{rMUpdateCustomerAdvancedManagedBean.customerAdvancedInfo}" type="definition">
-                    <p:panel >
-                        <p:messages />
+                <p:panel >
+                    <p:messages id="msg" autoUpdate="true"/>
 
-                        <h:panelGrid id="AdvancedProfile" columns="2" cellpadding="5" >
+                    <h:panelGrid id="AdvancedProfile" columns="2" cellpadding="5" >
 
-                            <p:outputLabel for="customerEducation"  value="Education:" />
-                            <p:inputText id="customerEducation" value="#{rMUpdateCustomerAdvancedManagedBean.education}" required="true" />
+                        <p:outputLabel for="customerName"  value="Customer Name:" />
+                        <p:outputLabel id="customerName" value="#{rMUpdateCustomerAdvancedManagedBean.customer.customerBasic.customerName}"/>
 
-                            <p:outputLabel for="customerIncome"  value="Monthly Income:" />
-                            <p:inputText id="customerIncome" value="#{rMUpdateCustomerAdvancedManagedBean.incomeMonthly}" required="true" />
+                        <p:outputLabel for="customerIncome"  value="Monthly Fixed Income:" />
+                        <p:inputText required="true" requiredMessage="Please input customer fixed monthly income" id="customerIncome" value="#{rMUpdateCustomerAdvancedManagedBean.fixedIncomeMonthly}"/>
 
-                            <p:outputLabel for="customerOccupation"  value="Occupation:" />
-                            <p:inputText id="customerOccupation" value="#{rMUpdateCustomerAdvancedManagedBean.jobType}" required="true"  />
+                        <p:outputLabel for="customerOtherIncome"  value="Monthly Other Income:" />
+                        <p:inputText required="true" requiredMessage="Please input customer other monthly income" id="customerOtherIncome" value="#{rMUpdateCustomerAdvancedManagedBean.otherIncomeMonthly}"/>
 
-                            <p:outputLabel for="customerJobStatus"  value="Job Status:" />
-                            <p:inputText id="customerJobStatus" value="#{rMUpdateCustomerAdvancedManagedBean.jobStatus}" required="true"  />
 
-                            <p:outputLabel for="customerIndustry"  value="Job Industry:" />
-                            <p:inputText id="customerIndustry" value="#{rMUpdateCustomerAdvancedManagedBean.jobIndustry}" required="true"  />
+                        <p:outputLabel for="customerJobStatus"  value="Job Status:" />
+                        <p:selectOneMenu id="customerJobStatus" value="#{rMUpdateCustomerAdvancedManagedBean.jobStatus}"
+                                         required="true" requiredMessage="Please select job status">
+                            <f:selectItem itemLabel="Please Select" itemValue="" />
+                            <f:selectItem itemLabel="Employee" itemValue="Employee" />
+                            <f:selectItem itemLabel="Self-Employed" itemValue="Self-Employed" />
+                            <f:selectItem itemLabel="Unemployed" itemValue="Unemployed" />
+                        </p:selectOneMenu>
 
-                            <p:outputLabel for="customerJobDuration"  value="Length of Current Employeement" />
-                            <p:inputText id="customerJobDuration" value="#{rMUpdateCustomerAdvancedManagedBean.jobDuration}" required="true"  />
+                        <p:outputLabel for="customerOccupation"  value="Occupation:" />
+                        <p:selectOneMenu id="customerOccupation" value="#{rMUpdateCustomerAdvancedManagedBean.occupation}" 
+                                         required="true" requiredMessage="Please select customer occupation">
+                            <f:selectItem itemLabel="Please Select" itemValue="" />
+                            <f:selectItem itemLabel="Accountant" itemValue="Accountant" />
+                            <f:selectItem itemLabel="Architect" itemValue="Architect" />
+                            <f:selectItem itemLabel="Armed Forces" itemValue="Armed Forces" />
+                            <f:selectItem itemLabel="Auditor" itemValue="Auditor" />
+                            <f:selectItem itemLabel="Cook/Baker/Chef" itemValue="Cook/Baker/Chef" />
+                            <f:selectItem itemLabel="Clerical/Admin" itemValue="Clerical/Admin" />
+                            <f:selectItem itemLabel="Construction Worker" itemValue="Construction Worker" />
+                            <f:selectItem itemLabel="Consultant" itemValue="Consultant" />
+                            <f:selectItem itemLabel="Diplomat" itemValue="Diplomat" />
+                            <f:selectItem itemLabel="Director" itemValue="Director" />
+                            <f:selectItem itemLabel="Electrician" itemValue="Electrician" />
+                            <f:selectItem itemLabel="Engineer" itemValue="Engineer" />
+                            <f:selectItem itemLabel="Fund Manager" itemValue="Fund Manager" />
+                            <f:selectItem itemLabel="Headmaster/Principal" itemValue="Headmaster/Principal" />
+                            <f:selectItem itemLabel="Insurance Agent" itemValue="Insurance Agent" />
+                            <f:selectItem itemLabel="IT Systems Analyst/Programmer" itemValue="IT Systems Analyst/Programmer" />
+                            <f:selectItem itemLabel="Journalist/Reporter" itemValue="Journalist/Reporter" />
+                            <f:selectItem itemLabel="Lawyer" itemValue="Lawyer" />
+                            <f:selectItem itemLabel="Lecturer" itemValue="Lecturer" />
+                            <f:selectItem itemLabel="Legal Advisor (of a company)" itemValue="Legal Advisor (of a company)" />
+                            <f:selectItem itemLabel="Medical Professional" itemValue="Medical Professional" />
+                            <f:selectItem itemLabel="Managerial(AVP,VP ETC)" itemValue="Managerial(AVP,VP ETC)" />
+                            <f:selectItem itemLabel="Pawnbrokers" itemValue="Pawnbrokers" />
+                            <f:selectItem itemLabel="Pilot/Ship Master" itemValue="Pilot/Ship Master" />
+                            <f:selectItem itemLabel="Politician" itemValue="Politician" />
+                            <f:selectItem itemLabel="Sales/Marketing Exclusive" itemValue="Sales/Marketing Exclusive" />
+                            <f:selectItem itemLabel="Student" itemValue="Student" />
+                            <f:selectItem itemLabel="Teacher" itemValue="Teacher" />
+                            <f:selectItem itemLabel="Technician/Mechanics" itemValue="Technician/Mechanics" />
+                            <f:selectItem itemLabel="Tutor" itemValue="Tutor" />
+                        </p:selectOneMenu>
 
-                            <p:outputLabel for="customerNumDepend"  value="Number of Dependent:" />
-                            <p:inputText id="customerNumDepend" value="#{rMUpdateCustomerAdvancedManagedBean.numOfDependent}" required="true"  />
+                        <p:outputLabel for="customerIndustry"  value="Job Industry:" />
+                        <p:selectOneMenu id="customerIndustry" value="#{rMUpdateCustomerAdvancedManagedBean.jobIndustry}"
+                                         required="true" requiredMessage="Please select customer industry">
+                            <f:selectItem itemLabel="Please Select" itemValue="" />
+                            <f:selectItem itemLabel="Banking/Finance" itemValue="Banking/Finance" />
+                            <f:selectItem itemLabel="Building/Construction" itemValue="Building/Construction" />
+                            <f:selectItem itemLabel="Government" itemValue="Government" />
+                            <f:selectItem itemLabel="IT/Communications" itemValue="IT/Communications" />
+                            <f:selectItem itemLabel="Manufacturing" itemValue="Manufacturing" />
+                            <f:selectItem itemLabel="Retail/F&amp;B" itemValue="Retail/F&amp;B" />
+                            <f:selectItem itemLabel="Travel/Hospitality" itemValue="Travel/Hospitality" />
+                            <f:selectItem itemLabel="Shipping/Transport" itemValue="Shipping/Transport" />
+                            <f:selectItem itemLabel="Entertainment" itemValue="Entertainment" />
+                            <f:selectItem itemLabel="Others" itemValue="Others" />
+                        </p:selectOneMenu>
 
-                            <p:outputLabel for="customerResStatus"  value="Residential Status:" />
-                            <p:inputText id="customerResStatus" value="#{rMUpdateCustomerAdvancedManagedBean.residentialStatus}" required="true"  />
+                        <p:outputLabel for="customerNumDepend"  value="Number of Dependent:" />
+                        <p:inputText required="true" requiredMessage="Please input number of dependent" id="customerNumDepend" value="#{rMUpdateCustomerAdvancedManagedBean.numOfDependents}"/>
 
-                            <p:outputLabel for="customerYearInRes"  value="Number of year in this residence:" />
-                            <p:inputText id="customerYearInRes" value="#{rMUpdateCustomerAdvancedManagedBean.yearInResidence}" required="true"  />
-                        </h:panelGrid>   
-                    </p:panel>
-                    <p:commandButton value="Reset" type="reset" />
+                    </h:panelGrid>   
+                </p:panel>
+                <p:commandButton value="Reset" type="reset" />
 
-                    <p:commandButton value="Update" actionListener="#{rMUpdateCustomerAdvancedManagedBean.updateCustomerAdvanced}" ajax="false"/>
-
-                </p:dataList>
+                <p:commandButton value="Update" actionListener="#{rMUpdateCustomerAdvancedManagedBean.updateCustomerAdvanced}" ajax="false" update="msg"/>
             </div>
         </h:form>
     </ui:define>

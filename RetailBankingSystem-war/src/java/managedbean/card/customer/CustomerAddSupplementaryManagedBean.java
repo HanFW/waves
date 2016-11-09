@@ -14,19 +14,19 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
-import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import org.apache.commons.io.IOUtils;
+import javax.faces.view.ViewScoped;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
+import org.primefaces.event.FlowEvent;
 import org.primefaces.model.UploadedFile;
 
 /**
@@ -34,8 +34,8 @@ import org.primefaces.model.UploadedFile;
  * @author aaa
  */
 @Named(value = "customerAddSupplementaryManagedBean")
-@RequestScoped
-public class CustomerAddSupplementaryManagedBean {
+@ViewScoped
+public class CustomerAddSupplementaryManagedBean implements Serializable{
 
     @EJB
     private CreditCardManagementSessionBeanLocal creditCardManagementSessionBeanLocal;
@@ -48,6 +48,8 @@ public class CustomerAddSupplementaryManagedBean {
     private String identificationNum;
     private Date dateOfBirth;
     private String relationship;
+
+    private boolean show;
 
     //documents
     private UploadedFile file;
@@ -89,8 +91,10 @@ public class CustomerAddSupplementaryManagedBean {
 
         if (file != null) {
             String newFilePath = System.getProperty("user.dir").replace("config", "docroot") + System.getProperty("file.separator");
-            
-            String filename = "Supplementary-" + identificationNum + ".pdf";            
+            System.out.println("?????????????????????supp id " + identificationNum);
+            System.out.println("???//////////////////?supp id " + getIdentificationNum());
+            String filename = "Supplementary-" + getIdentificationNum() + ".pdf";
+            System.out.println("!!!!!!!!!!supp id " + identificationNum);
             File newFile = new File(newFilePath, filename);
             FileOutputStream fileOutputStream = new FileOutputStream(newFile);
 
@@ -122,7 +126,38 @@ public class CustomerAddSupplementaryManagedBean {
             FacesContext.getCurrentInstance().addMessage("identificationUpload", message);
         }
     }
-    
+
+    public void displayUpload() {
+        show = true;
+    }
+
+    public String onFlowProcess(FlowEvent event) {
+        return event.getNewStep();
+    }
+
+    public void checkAllInfo() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        ExternalContext ec = context.getExternalContext();
+        FacesMessage message = null;
+        CustomerBasic customer = getCustomerViaSessionMap();
+        String[] creditCardInfo = principalCardName.split("-");
+        String principalCardNum = creditCardInfo[2];
+        PrincipalCard pc = creditCardManagementSessionBeanLocal.getPrincipalByCardNum(principalCardNum);
+        if (pc.getCreditCardType().getCreditCardTypeId() != 3) {
+            message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Only Merlion Platinum Card can apply for supplementary cards", null);
+            context.addMessage(null, message);
+        } else if (getAge(dateOfBirth) < 18) {
+            System.out.println("@@@@@@@@@@@@supplementary age " + getAge(dateOfBirth));
+            message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Supplementary card holder must be at least 18 years old", null);
+            context.addMessage(null, message);
+        } else if (pc.getSupplementaryCards().size() >= 2) {
+            message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "A Merlion Platinum Card can only have 2 supplementary cards. You have reached the maximum limit", null);
+            context.addMessage(null, message);
+        } else {
+            RequestContext rc = RequestContext.getCurrentInstance();
+            rc.execute("PF('addSupplementaryCardWizard').next();");
+        }
+    }
 
     private int getAge(Date customerDateOfBirth) {
         Date now = new Date();
@@ -209,6 +244,14 @@ public class CustomerAddSupplementaryManagedBean {
 
     public void setUploads(HashMap uploads) {
         this.uploads = uploads;
+    }
+
+    public boolean isShow() {
+        return show;
+    }
+
+    public void setShow(boolean show) {
+        this.show = show;
     }
 
     public CustomerBasic getCustomerViaSessionMap() {

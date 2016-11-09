@@ -6,8 +6,13 @@ import javax.ejb.Local;
 
 @Local
 public interface RegisteredBillingOrganizationSessionBeanLocal {
-    public Long addNewRegisteredBillingOrganization(String billingOrganizationName, String bankAccountNum, 
+
+    public Long addNewRegisteredBillingOrganization(String billingOrganizationName, String bankAccountNum,
             String bankAccountType, String bankName);
+
     public List<RegisteredBillingOrganization> getAllRegisteredBillingOrganization();
+
     public RegisteredBillingOrganization retrieveRegisteredBillingOrganizationByName(String billingOrganizationName);
+
+    public RegisteredBillingOrganization retrieveRegisteredBillingOrganizationByNum(String bankAccountNum);
 }

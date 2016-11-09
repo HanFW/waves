@@ -217,6 +217,7 @@ public class FastTransferManagedBean {
                 fromAccountAvailableBalance = currentAvailableBalance.toString();
                 fromAccountTotalBalance = currentTotalBalance.toString();
 
+                ec.getFlash().put("transactionId", transactionId);
                 ec.getFlash().put("statusMessage", statusMessage);
                 ec.getFlash().put("toBankAccountNumWithType", toBankAccountNumWithType);
                 ec.getFlash().put("fromBankAccountNumWithType", fromBankAccountNumWithType);

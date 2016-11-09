@@ -5,10 +5,16 @@ import ejb.deposit.entity.BankAccount;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import ejb.deposit.session.TransactionSessionBeanLocal;
 import ejb.payment.entity.Cheque;
+import ejb.payment.entity.NonStandingGIRO;
 import ejb.payment.entity.OnHoldRecord;
 import ejb.payment.entity.ReceivedCheque;
+import ejb.payment.entity.RegularGIRO;
+import ejb.payment.entity.StandingGIRO;
 import ejb.payment.session.IssuedChequeSessionBeanLocal;
+import ejb.payment.session.NonStandingGIROSessionBeanLocal;
 import ejb.payment.session.ReceivedChequeSessionBeanLocal;
+import ejb.payment.session.RegularGIROSessionBeanLocal;
+import ejb.payment.session.StandingGIROSessionBeanLocal;
 import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.List;
@@ -30,6 +36,15 @@ import ws.client.otherbanks.OtherBanksWebService_Service;
 @Stateless()
 
 public class MerlionBankWebService {
+
+    @EJB
+    private NonStandingGIROSessionBeanLocal nonStandingGIROSessionBeanLocal;
+
+    @EJB
+    private StandingGIROSessionBeanLocal standingGIROSessionBeanLocal;
+
+    @EJB
+    private RegularGIROSessionBeanLocal regularGIROSessionBeanLocal;
 
     @EJB
     private IssuedChequeSessionBeanLocal issuedChequeSessionBeanLocal;
@@ -357,13 +372,6 @@ public class MerlionBankWebService {
                 chequeNum, "Pending", "Issued", customerBasic.getCustomerBasicId());
     }
 
-    private OtherBankAccount retrieveBankAccountByNum_other(java.lang.String otherBankAccountNum) {
-        // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
-        // If the calling of port operations may lead to race condition some synchronization is required.
-        ws.client.otherbanks.OtherBanksWebService port = service_otherBank.getOtherBanksWebServicePort();
-        return port.retrieveBankAccountByNum(otherBankAccountNum);
-    }
-
     @WebMethod(operationName = "retrieveReceivedChequeByNum")
     public ReceivedCheque retrieveReceivedChequeByNum(@WebParam(name = "chequeNum") String chequeNum) {
         ReceivedCheque receivedCheque = new ReceivedCheque();
@@ -387,7 +395,60 @@ public class MerlionBankWebService {
 
         entityManager.detach(receivedCheque);
         receivedCheque.setCustomerBasic(null);
-        
+
         return receivedCheque;
+    }
+
+    @WebMethod(operationName = "rejectRegularGIROTransaction")
+//    @Oneway
+    public void rejectRegularGIROTransaction(@WebParam(name = "bankAccountNum") String bankAccountNum,
+            @WebParam(name = "transferAmt") Double transferAmt,
+            @WebParam(name = "toBankAccountNum") String toBankAccountNum) {
+
+        List<RegularGIRO> regularGIRO = regularGIROSessionBeanLocal.retrieveRegularGIROByNum(toBankAccountNum);
+        for (int i = 0; i < regularGIRO.size(); i++) {
+            regularGIRO.get(i).setRegularGIROStatus("Rejected");
+        }
+
+        BankAccount bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountByNum(bankAccountNum);
+        String currentAvailableBalance = bankAccount.getAvailableBankAccountBalance();
+        Double totalAvailableBalance = Double.valueOf(currentAvailableBalance) + transferAmt;
+        bankAccountSessionBeanLocal.updateBankAccountAvailableBalance(bankAccountNum, totalAvailableBalance.toString());
+    }
+
+    @WebMethod(operationName = "rejectStandingGIROTransaction")
+//    @Oneway
+    public void rejectStandingGIROTransaction(@WebParam(name = "billReference") String billReference,
+            @WebParam(name = "creditBankAccountNum") String creditBankAccountNum,
+            @WebParam(name = "debitBankAccountNum") String debitBankAccountNum) {
+
+        StandingGIRO standingGIRO = standingGIROSessionBeanLocal.retrieveStandingGIROByBillRef(billReference);
+        standingGIRO.setStandingGiroStatus("Rejected");
+    }
+
+    @WebMethod(operationName = "rejectNonStandingGIROTransaction")
+//    @Oneway
+    public void rejectNonStandingGIROTransaction(@WebParam(name = "billReference") String billReference,
+            @WebParam(name = "creditBankAccountNum") String creditBankAccountNum,
+            @WebParam(name = "debitBankAccountNum") String debitBankAccountNum) {
+
+        NonStandingGIRO nonStandingGIRO = nonStandingGIROSessionBeanLocal.retrieveNonStandingByBillRef(billReference);
+        nonStandingGIRO.setNonStandingStatus("Rejected");
+        nonStandingGIRO.setButtonRender(true);
+    }
+
+    @WebMethod(operationName = "approveNonStandingGIROTransaction")
+//    @Oneway
+    public void approveNonStandingGIROTransaction(@WebParam(name = "billReference") String billReference) {
+        NonStandingGIRO nonStandingGIRO = nonStandingGIROSessionBeanLocal.retrieveNonStandingByBillRef(billReference);
+        nonStandingGIRO.setNonStandingStatus("Approved");
+        nonStandingGIRO.setButtonRender(false);
+    }
+
+    private OtherBankAccount retrieveBankAccountByNum_other(java.lang.String otherBankAccountNum) {
+        // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
+        // If the calling of port operations may lead to race condition some synchronization is required.
+        ws.client.otherbanks.OtherBanksWebService port = service_otherBank.getOtherBanksWebServicePort();
+        return port.retrieveBankAccountByNum(otherBankAccountNum);
     }
 }

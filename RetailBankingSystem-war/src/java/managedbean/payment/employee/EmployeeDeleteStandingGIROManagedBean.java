@@ -2,10 +2,10 @@ package managedbean.payment.employee;
 
 import ejb.customer.entity.CustomerBasic;
 import ejb.customer.session.CRMCustomerSessionBeanLocal;
-import ejb.payment.entity.StandingGIRO;
-import ejb.payment.session.StandingGIROSessionBeanLocal;
+import ejb.deposit.session.BankAccountSessionBeanLocal;
 import java.io.IOException;
-import java.util.List;
+import java.util.Date;
+import java.util.Map;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
@@ -19,25 +19,26 @@ import javax.faces.context.FacesContext;
 public class EmployeeDeleteStandingGIROManagedBean {
 
     @EJB
-    private StandingGIROSessionBeanLocal standingGIROSessionBeanLocal;
+    private CRMCustomerSessionBeanLocal customerSessionBeanLocal;
 
     @EJB
-    private CRMCustomerSessionBeanLocal customerSessionBeanLocal;
-    
+    private BankAccountSessionBeanLocal bankAccountSessionBeanLocal;
+
+    private String customerName;
+    private String customerIdentificationNum;
+    private Date customerDateOfBirth;
+
     private ExternalContext ec;
 
-    private Long giroId;
-    private String customerIdentificationNum;
-    
     public EmployeeDeleteStandingGIROManagedBean() {
     }
-    
-    public Long getGiroId() {
-        return giroId;
+
+    public String getCustomerName() {
+        return customerName;
     }
 
-    public void setGiroId(Long giroId) {
-        this.giroId = giroId;
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
     }
 
     public String getCustomerIdentificationNum() {
@@ -48,23 +49,40 @@ public class EmployeeDeleteStandingGIROManagedBean {
         this.customerIdentificationNum = customerIdentificationNum;
     }
 
-    public List<StandingGIRO> getStandingGIROs() throws IOException {
-        ec = FacesContext.getCurrentInstance().getExternalContext();
-
-        customerIdentificationNum = ec.getSessionMap().get("customerIdentificationNum").toString();
-        CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum);
-
-        List<StandingGIRO> standingGiro = standingGIROSessionBeanLocal.retrieveStandingGIROByCusId(customerBasic.getCustomerBasicId());
-
-        return standingGiro;
+    public Date getCustomerDateOfBirth() {
+        return customerDateOfBirth;
     }
 
-    public void deleteStandingGIRO() throws IOException {
+    public void setCustomerDateOfBirth(Date customerDateOfBirth) {
+        this.customerDateOfBirth = customerDateOfBirth;
+    }
+
+    public void submit() throws IOException {
+        System.out.println("=");
+        System.out.println("====== deposit/EmployeeChangeDailyTransferLimit: submit() ======");
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
-        standingGIROSessionBeanLocal.deleteStandingGIRO(giroId);
+        CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum.toUpperCase());
 
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Successfuly! GIRO Arrangement deleted Successfully.", "Successfuly!"));
+        if (customerBasic.getCustomerBasicId() == null) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Customer does not exist.", "Failed!"));
+        } else {
+            String name = customerBasic.getCustomerName();
+            String customerDateOfBirthString = customerBasic.getCustomerDateOfBirth();
+            String dateOfBirth = bankAccountSessionBeanLocal.changeDateFormat(customerDateOfBirth);
+
+            if (!name.toUpperCase().equals(customerName.toUpperCase())) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Customer Name is Wrong.", "Failed!"));
+            } else if (!dateOfBirth.equals(customerDateOfBirthString)) {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Customer Date of Birth is Wrong.", "Failed!"));
+            } else {
+
+                ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+                Map<String, Object> sessionMap = externalContext.getSessionMap();
+                sessionMap.put("customerIdentificationNum", customerIdentificationNum);
+
+                ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/payment/employeeDeleteStandingGIRODone.xhtml?faces-redirect=true");
+            }
+        }
     }
-    
 }
