@@ -5,6 +5,8 @@
  */
 package ejb.wealth.session;
 
+import ejb.wealth.entity.Portfolio;
+import java.util.List;
 import javax.ejb.Local;
 
 /**
@@ -13,5 +15,7 @@ import javax.ejb.Local;
  */
 @Local
 public interface CreateFinancialGoalSessionBeanLocal {
-    public void createPortfolio(Long id, double startingBalance,double monthlyContribution,int contributeDuration, int investmentPeriod, double amountExpected);
+    public void createPortfolio(Long id, double startingBalance,double monthlyContribution,int contributeDuration, int investmentPeriod, double amountExpected, String wealthPlan);
+    
+    public List<Portfolio> getAllPortfoliosById(Long id);
 }

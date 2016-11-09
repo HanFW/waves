@@ -40,7 +40,7 @@
                     </p:column>
                     
                     <p:column headerText="Portfolios">
-                        <p:commandButton value="View Portfolios" action="/web/internalSystem/wealth/RMViewCustomerPortfolio.xhtml"/>
+                        <p:commandButton value="View Portfolios" actionListener="#{rMSearchCustomerAdvancedManagedBean.redirectToPortfolio(customerAdvanced.customerBasic.customerBasicId)}"/>
                     </p:column>      
                                         
                     <p:column headerText="Action">

@@ -35,6 +35,7 @@ public class Portfolio implements Serializable {
     private String status;
     private String startingDate;
     private String endDate;
+    private String wealthPlan;
     
     @ManyToOne(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER)
     private CustomerBasic customerBasic;
@@ -118,6 +119,16 @@ public class Portfolio implements Serializable {
     public void setEndDate(String endDate) {
         this.endDate = endDate;
     }   
+
+    public String getWealthPlan() {
+        return wealthPlan;
+    }
+
+    public void setWealthPlan(String wealthPlan) {
+        this.wealthPlan = wealthPlan;
+    }
+    
+    
 
     @Override
     public int hashCode() {

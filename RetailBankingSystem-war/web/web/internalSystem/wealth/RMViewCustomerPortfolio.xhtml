@@ -6,15 +6,46 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/internalSystemTemplate.xhtml">
-    <ui:define name="merlionBankMenu">
-
-        <ui:include src="/WEB-INF/merlionBankMenuApplyDebitCard.xhtml" />
-
-    </ui:define>
     <ui:define name="content"> 
-       <div align="center">
+        <div align="center">
             <h:form>
-                 
+
+                <p:dataTable var="portfolio" value="#" paginator="true" rows="10"
+                             paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                             id="potfolioTable">
+                    <p:column headerText="Wealth Plan" sortBy="#{customerAdvanced.customerBasic.customerName}" filterBy="#{customerAdvanced.customerBasic.customerName}">
+                        <h:outputText value="#{customerAdvanced.customerBasic.customerName}" /> 
+                    </p:column>
+
+                    <p:column headerText="End Date" sortBy="#{customerAdvanced.customerBasic.customerName}" filterBy="#{customerAdvanced.customerBasic.customerName}">
+                        <h:outputText value="#{customerAdvanced.customerBasic.customerName}" /> 
+                    </p:column>
+
+                    <p:column headerText="starting Balance" sortBy="#{customerAdvanced.customerBasic.customerName}" filterBy="#{customerAdvanced.customerBasic.customerName}">
+                        <h:outputText value="#{customerAdvanced.customerBasic.customerName}" /> 
+                    </p:column>
+
+                    <p:column headerText="Monthly Contribution" sortBy="#{customerAdvanced.customerBasic.customerName}" filterBy="#{customerAdvanced.customerBasic.customerName}">
+                        <h:outputText value="#{customerAdvanced.customerBasic.customerName}" /> 
+                    </p:column>
+
+                    <p:column headerText="Contribute Duration" sortBy="#{customerAdvanced.customerBasic.customerName}" filterBy="#{customerAdvanced.customerBasic.customerName}">
+                        <h:outputText value="#{customerAdvanced.customerBasic.customerName}" /> 
+                    </p:column>
+
+                    <p:column headerText="Investment Period" sortBy="#{customerAdvanced.customerBasic.customerName}" filterBy="#{customerAdvanced.customerBasic.customerName}">
+                        <h:outputText value="#{customerAdvanced.customerBasic.customerName}" /> 
+                    </p:column>
+
+                    <p:column headerText="Starting Date" sortBy="#{customerAdvanced.customerBasic.customerName}" filterBy="#{customerAdvanced.customerBasic.customerName}">
+                        <h:outputText value="#{customerAdvanced.customerBasic.customerName}" /> 
+                    </p:column>
+
+                    <p:column headerText="End Date" sortBy="#{customerAdvanced.customerBasic.customerName}" filterBy="#{customerAdvanced.customerBasic.customerName}">
+                        <h:outputText value="#{customerAdvanced.customerBasic.customerName}" /> 
+                    </p:column>
+                </p:dataTable>
+
             </h:form>
         </div>
     </ui:define>
