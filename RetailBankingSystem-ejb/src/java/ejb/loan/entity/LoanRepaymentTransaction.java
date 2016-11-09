@@ -21,11 +21,12 @@ import javax.persistence.Temporal;
  */
 @Entity
 public class LoanRepaymentTransaction implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date transactionDate;
     private Long transactionMillis;
@@ -138,5 +139,5 @@ public class LoanRepaymentTransaction implements Serializable {
     public String toString() {
         return "ejb.loan.entity.LoanRepaymentTransaction[ id=" + id + " ]";
     }
-    
+
 }

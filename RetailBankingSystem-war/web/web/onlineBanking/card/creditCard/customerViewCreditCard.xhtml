@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/onlineBankingTemplate.xhtml"
+                xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
+
+    <ui:define name="content">
+
+        <h:form>             
+            <p:panel>
+                <p:outputLabel value="Welcome "/>
+                <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
+            </p:panel>
+
+            <div align="center">
+                <h1>View My Accounts</h1>
+            </div>
+
+            <p:dataTable var="creditCard" value="#{viewCreditCardManagedBean.creditCard}" 
+                         reflow="true" paginator="true" rows="10" emptyMessage="No Account">
+
+                <p:column headerText="Card Holder Name"> 
+                    <p:commandLink process="@this" action="/web/onlineBanking/card/creditCard/customerViewCreditCardReport.xhtml?faces-redirect=true" >
+                        <h:outputText value="#{creditCard.cardHolderName}" />
+                        <f:setPropertyActionListener value="#{creditCard.cardId}" 
+                                                     target="#{viewCreditCardReportManagedBean.cardId}" />
+                    </p:commandLink>
+                </p:column>
+
+                <p:column headerText="Card Number" >
+                    <p:commandLink process="@this" action="/web/onlineBanking/card/creditCard/customerViewCreditCardReport.xhtml?faces-redirect=true" >
+                        <h:outputText value="#{creditCard.cardNum}" />
+                        <f:setPropertyActionListener value="#{creditCard.cardId}" 
+                                                     target="#{viewCreditCardReportManagedBean.cardId}" />
+                    </p:commandLink>
+                </p:column>
+
+                <p:column headerText="Card Type"> 
+                    <p:commandLink process="@this" action="/web/onlineBanking/card/creditCard/customerViewCreditCardReport.xhtml?faces-redirect=true" >
+                        <h:outputText value="#{creditCard.cardType}" />
+                        <f:setPropertyActionListener value="#{creditCard.cardId}" 
+                                                     target="#{viewCreditCardReportManagedBean.cardId}" />
+                    </p:commandLink>
+                </p:column>
+
+                <p:column headerText="Credit Limit"> 
+                    <p:commandLink process="@this" action="/web/onlineBanking/card/creditCard/customerViewCreditCardReport.xhtml?faces-redirect=true" >
+                        <h:outputText value="#{creditCard.creditLimit}" />
+                        <f:setPropertyActionListener value="#{creditCard.cardId}" 
+                                                     target="#{viewCreditCardReportManagedBean.cardId}" />
+                    </p:commandLink>
+                </p:column>
+
+                <p:column headerText="Outstanding Amount">
+                    <p:commandLink process="@this" action="/web/onlineBanking/card/creditCard/customerViewCreditCardReport.xhtml?faces-redirect=true" >
+                        <h:outputText value="#{creditCard.outstandingBalance}" />
+                        <f:setPropertyActionListener value="#{creditCard.cardId}" 
+                                                     target="#{viewCreditCardReportManagedBean.cardId}" />
+                    </p:commandLink>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+        <ezcomp:CCTimeout/>
+    </ui:define>
+</ui:composition>

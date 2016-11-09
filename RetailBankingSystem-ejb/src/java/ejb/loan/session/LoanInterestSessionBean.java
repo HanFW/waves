@@ -158,7 +158,7 @@ public class LoanInterestSessionBean implements LoanInterestSessionBeanLocal {
                 currentPrincipal = Math.round(currentPrincipal * 100.0) / 100.0;
                 account.setCurrentPrincipal(currentPrincipal);
                 System.out.println("*** new month principal: " + currentPrincipal);
-                addLoanAccountTransaction(account, currentInterest, "Principal Charge", "debit");
+                addLoanAccountTransaction(account, currentPrincipal, "Principal Charge", "debit");
 
                 //current instalment
                 currentInstalment = currentInterest + currentPrincipal;
@@ -282,9 +282,9 @@ public class LoanInterestSessionBean implements LoanInterestSessionBeanLocal {
         Calendar cal = Calendar.getInstance();
         Long transactionDateMilis = cal.getTimeInMillis();
         LoanRepaymentTransaction transaction = new LoanRepaymentTransaction();
-        transaction.setAccountBalance(repaymentAccount.getAccountBalance() - amount);
         transaction.setAccountCredit(amount);
         if (action.equals("credit")) {
+            transaction.setAccountBalance(repaymentAccount.getAccountBalance() + amount);
             transaction.setAccountCredit(amount);
             transaction.setAccountDebit(0);
         } else {
@@ -294,6 +294,8 @@ public class LoanInterestSessionBean implements LoanInterestSessionBeanLocal {
         transaction.setDescription(description);
         transaction.setTransactionDate(cal.getTime());
         transaction.setTransactionMillis(transactionDateMilis);
+        transaction.setLoanRepaymentAccount(repaymentAccount);
+        repaymentAccount.addLoanRepaymentTransaction(transaction);
 
         em.persist(transaction);
         em.flush();

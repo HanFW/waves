@@ -2,6 +2,7 @@ package managedbean.payment.customer;
 
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
+import ejb.deposit.session.TransactionSessionBeanLocal;
 import ejb.payment.entity.GIRO;
 import ejb.payment.entity.NonStandingGIRO;
 import ejb.payment.entity.RegisteredBillingOrganization;
@@ -10,6 +11,7 @@ import ejb.payment.session.NonStandingGIROSessionBeanLocal;
 import ejb.payment.session.RegisteredBillingOrganizationSessionBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Calendar;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -25,6 +27,9 @@ import ws.client.sach.SACHWebService_Service;
 @SessionScoped
 
 public class NonStandingGIROTransferDoneManagedBean implements Serializable {
+
+    @EJB
+    private TransactionSessionBeanLocal transactionSessionBeanLocal;
 
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_8080/OtherBanksWebService/OtherBanksWebService.wsdl")
     private OtherBanksWebService_Service service_otherBanks;
@@ -190,7 +195,14 @@ public class NonStandingGIROTransferDoneManagedBean implements Serializable {
 
             if (bankName.equals("DBS") && nonStandingGiro.getPaymentFrequency().equals("One Time")) {
 
-                sachNonStandingGIROTransferMTD(bankAccount.getBankAccountNum(), billOrgBankAccountNum, paymentAmt);
+                Calendar cal = Calendar.getInstance();
+                String transactionDate = cal.getTime().toString();
+                String transactionCode = "BILL";
+                String transactionRef = "Pay bills to " + billingOrganizationName;
+
+                Long transactionId = transactionSessionBeanLocal.addNewTransaction(transactionDate,
+                        transactionCode, transactionRef, paymentAmt.toString(), " ",
+                        cal.getTimeInMillis(), bankAccount.getBankAccountId());
 
                 OtherBankAccount dbsBankAccount = retrieveBankAccountByNum(billOrg.getBankAccountNum());
                 toBankAccountNumWithType = dbsBankAccount.getOtherBankAccountType() + "-" + dbsBankAccount.getOtherBankAccountNum();
@@ -199,6 +211,8 @@ public class NonStandingGIROTransferDoneManagedBean implements Serializable {
 
                 fromBankAccountAvailableBalance = currentAvailableBankAccountBalance;
                 fromBankAccountTotalBalance = Double.valueOf(bankAccount.getTotalBankAccountBalance());
+
+                sachNonStandingGIROTransferMTD(bankAccount.getBankAccountNum(), billOrgBankAccountNum, paymentAmt);
 
                 ec.getFlash().put("statusMessage", statusMessage);
                 ec.getFlash().put("toBankAccountNumWithType", toBankAccountNumWithType);
@@ -213,7 +227,14 @@ public class NonStandingGIROTransferDoneManagedBean implements Serializable {
 
             } else if (bankName.equals("DBS") && !nonStandingGiro.getPaymentFrequency().equals("One Time")) {
 
-                sachNonStandingGIROTransferMTD(bankAccount.getBankAccountNum(), billOrgBankAccountNum, paymentAmt);
+                Calendar cal = Calendar.getInstance();
+                String transactionDate = cal.getTime().toString();
+                String transactionCode = "BILL";
+                String transactionRef = "Pay bills to " + billingOrganizationName;
+
+                Long transactionId = transactionSessionBeanLocal.addNewTransaction(transactionDate,
+                        transactionCode, transactionRef, paymentAmt.toString(), " ",
+                        cal.getTimeInMillis(), bankAccount.getBankAccountId());
 
                 nonStandingGIROSessionBeanLocal.updatePaymentAmt(giroId, paymentAmt.toString());
 
@@ -224,6 +245,8 @@ public class NonStandingGIROTransferDoneManagedBean implements Serializable {
 
                 fromBankAccountAvailableBalance = currentAvailableBankAccountBalance;
                 fromBankAccountTotalBalance = Double.valueOf(bankAccount.getTotalBankAccountBalance());
+
+                sachNonStandingGIROTransferMTD(bankAccount.getBankAccountNum(), billOrgBankAccountNum, paymentAmt);
 
                 ec.getFlash().put("statusMessage", statusMessage);
                 ec.getFlash().put("toBankAccountNumWithType", toBankAccountNumWithType);

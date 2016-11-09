@@ -3,10 +3,12 @@ package managedbean.payment.customer;
 import ejb.customer.entity.CustomerBasic;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
+import ejb.deposit.session.TransactionSessionBeanLocal;
 import ejb.payment.entity.OtherBankPayee;
 import ejb.payment.session.OtherBankPayeeSessionBeanLocal;
 import ejb.payment.session.RegularGIROSessionBeanLocal;
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +25,9 @@ import ws.client.sach.SACHWebService_Service;
 @RequestScoped
 
 public class RegularGIROTransferManagedBean {
+
+    @EJB
+    private TransactionSessionBeanLocal transactionSessionBeanLocal;
 
     @EJB
     private RegularGIROSessionBeanLocal regularGIROSessionBeanLocal;
@@ -211,6 +216,7 @@ public class RegularGIROTransferManagedBean {
     }
 
     public void regularGIROTransfer() throws IOException {
+
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
         String fromBankAccountNum = handleAccountString(fromBankAccountNumWithType);
@@ -241,6 +247,15 @@ public class RegularGIROTransferManagedBean {
             fromBankAccountAvailableBalance = currentAvailableBankAccountBalance.toString();
             fromBankAccountTotalBalance = fromBankAccount.getTotalBankAccountBalance();
 
+            Calendar cal = Calendar.getInstance();
+            String transactionDate = cal.getTime().toString();
+            String transactionCode = "GIRO";
+            String transactionRef = toBankAccountNumWithType;
+
+            Long transactionId = transactionSessionBeanLocal.addNewTransaction(transactionDate,
+                    transactionCode, transactionRef, transferAmt.toString(), " ",
+                    cal.getTimeInMillis(), fromBankAccount.getBankAccountId());
+
             ec.getFlash().put("statusMessage", statusMessage);
             ec.getFlash().put("toBankAccountNumWithType", toBankAccountNumWithType);
             ec.getFlash().put("fromBankAccountNumWithType", fromBankAccountNumWithType);
@@ -260,6 +275,15 @@ public class RegularGIROTransferManagedBean {
             statusMessage = "Your transaction has been completed.";
             fromBankAccountAvailableBalance = currentAvailableBankAccountBalance.toString();
             fromBankAccountTotalBalance = fromBankAccount.getTotalBankAccountBalance();
+
+            Calendar cal = Calendar.getInstance();
+            String transactionDate = cal.getTime().toString();
+            String transactionCode = "GIRO";
+            String transactionRef = toBankAccountNumWithType;
+
+            Long transactionId = transactionSessionBeanLocal.addNewTransaction(transactionDate,
+                    transactionCode, transactionRef, transferAmt.toString(), " ",
+                    cal.getTimeInMillis(), fromBankAccount.getBankAccountId());
 
             ec.getFlash().put("statusMessage", statusMessage);
             ec.getFlash().put("toBankAccountNumWithType", toBankAccountNumWithType);
@@ -285,6 +309,6 @@ public class RegularGIROTransferManagedBean {
         // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
         // If the calling of port operations may lead to race condition some synchronization is required.
         ws.client.sach.SACHWebService port = service_sach.getSACHWebServicePort();
-//        port.sachRegularGIROTransferMTD(fromBankAccountNum, toBankAccountNum, transferAmt);
+        port.sachRegularGIROTransferMTD(fromBankAccountNum, toBankAccountNum, transferAmt);
     }
 }

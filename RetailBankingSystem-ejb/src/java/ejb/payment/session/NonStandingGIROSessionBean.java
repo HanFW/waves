@@ -130,7 +130,6 @@ public class NonStandingGIROSessionBean implements NonStandingGIROSessionBeanLoc
         NonStandingGIRO nonStandingGiro = retrieveNonStandingGIROById(giroId);
 
         nonStandingGiro.setPaymentAmt(paymentAmt);
-        nonStandingGiro.setNonStandingStatus("Complete");
         nonStandingGiro.setButtonRender(true);
     }
 
@@ -139,7 +138,7 @@ public class NonStandingGIROSessionBean implements NonStandingGIROSessionBeanLoc
 
         Query query = entityManager.createQuery("SELECT n FROM NonStandingGIRO n WHERE n.paymentFrequency = :paymentFrequency And n.giroType=:giroType");
         query.setParameter("paymentFrequency", "Weekly");
-        query.setParameter("giroType", "Non Standing GIRO");
+        query.setParameter("giroType", "Non Standing");
         List<NonStandingGIRO> nonStandingGiros = query.getResultList();
 
         if (nonStandingGiros.isEmpty()) {
@@ -184,7 +183,7 @@ public class NonStandingGIROSessionBean implements NonStandingGIROSessionBeanLoc
 
         Query query = entityManager.createQuery("SELECT n FROM NonStandingGIRO n WHERE n.paymentFrequency = :paymentFrequency And n.giroType=:giroType");
         query.setParameter("paymentFrequency", "Daily");
-        query.setParameter("giroType", "Non Standing GIRO");
+        query.setParameter("giroType", "Non Standing");
         List<NonStandingGIRO> nonStandingGiros = query.getResultList();
 
         if (nonStandingGiros.isEmpty()) {
@@ -230,7 +229,7 @@ public class NonStandingGIROSessionBean implements NonStandingGIROSessionBeanLoc
 
         Query query = entityManager.createQuery("SELECT n FROM NonStandingGIRO n WHERE n.paymentFrequency = :paymentFrequency And n.giroType=:giroType");
         query.setParameter("paymentFrequency", "Monthly");
-        query.setParameter("giroType", "Non Standing GIRO");
+        query.setParameter("giroType", "Non Standing");
         List<NonStandingGIRO> nonStandingGiros = query.getResultList();
 
         if (nonStandingGiros.isEmpty()) {

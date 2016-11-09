@@ -4,6 +4,7 @@ import ejb.bi.session.CustomerRFMSessionBeanLocal;
 import ejb.bi.session.RateSessionBeanLocal;
 import ejb.card.session.CardActivationManagementSessionBeanLocal;
 import ejb.card.session.CreditCardExpirationManagementSessionBeanLocal;
+import ejb.card.session.CreditCardReportSessionBeanLocal;
 import ejb.card.session.DebitCardExpirationManagementSessionBeanLocal;
 import java.util.Collection;
 import javax.annotation.Resource;
@@ -26,6 +27,9 @@ import ws.client.meps.MEPSWebService_Service;
 @Stateless
 @LocalBean
 public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
+
+    @EJB
+    private CreditCardReportSessionBeanLocal creditCardReportSessionBeanLocal;
 
     @EJB
     private CustomerRFMSessionBeanLocal customerRFMSessionBeanLocal;
@@ -305,6 +309,7 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
         rateSessionBeanLocal.generateMonthlyAccountClosureReason();
 //        customerRFMSessionBeanLocal.generateMonthlyCustomerRFM();
         customerRFMSessionBeanLocal.generateLoanMonthlyRFM();
+        creditCardReportSessionBeanLocal.generateMonthlyCreditCardReport();
     }
 
     private void handleTimeout_15000ms() {
