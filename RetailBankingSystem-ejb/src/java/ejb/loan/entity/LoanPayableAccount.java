@@ -55,6 +55,9 @@ public class LoanPayableAccount implements Serializable {
         return loanRepaymentTransactions;
     }
 
+    public void addLoanRepaymentTransaction(LoanRepaymentTransaction transaction){
+        this.loanRepaymentTransactions.add(transaction);
+    }
     
     public void setLoanRepaymentTransactions(List<LoanRepaymentTransaction> loanRepaymentTransactions) {
         this.loanRepaymentTransactions = loanRepaymentTransactions;

@@ -49,6 +49,11 @@ public class LoanRepaymentAccount implements Serializable {
     
     @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     private LoanStatement loanStatement;
+    
+    
+    public void addLoanRepaymentTransaction(LoanRepaymentTransaction transaction){
+        this.loanRepaymentTransactions.add(transaction);
+    }
 
     public LoanStatement getLoanStatement() {
         return loanStatement;

@@ -177,6 +177,8 @@ public class LoanRepaymentSessionBean implements LoanRepaymentSessionBeanLocal {
         transaction.setDescription(description);
         transaction.setTransactionDate(cal.getTime());
         transaction.setTransactionMillis(transactionDateMilis);
+        transaction.setLoanRepaymentAccount(repaymentAccount);
+        repaymentAccount.addLoanRepaymentTransaction(transaction);
 
         em.persist(transaction);
         em.flush();
@@ -193,6 +195,8 @@ public class LoanRepaymentSessionBean implements LoanRepaymentSessionBeanLocal {
         transaction.setDescription("Monthly Repayment");
         transaction.setTransactionDate(cal.getTime());
         transaction.setTransactionMillis(transactionDateMilis);
+        transaction.setLoanPayableAccount(payableAccount);
+        payableAccount.addLoanRepaymentTransaction(transaction);
 
         em.persist(transaction);
         em.flush();

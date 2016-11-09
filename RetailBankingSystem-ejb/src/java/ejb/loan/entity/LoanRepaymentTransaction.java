@@ -95,6 +95,22 @@ public class LoanRepaymentTransaction implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public LoanRepaymentAccount getLoanRepaymentAccount() {
+        return loanRepaymentAccount;
+    }
+
+    public void setLoanRepaymentAccount(LoanRepaymentAccount loanRepaymentAccount) {
+        this.loanRepaymentAccount = loanRepaymentAccount;
+    }
+
+    public LoanPayableAccount getLoanPayableAccount() {
+        return loanPayableAccount;
+    }
+
+    public void setLoanPayableAccount(LoanPayableAccount loanPayableAccount) {
+        this.loanPayableAccount = loanPayableAccount;
+    }
     
     
 
