@@ -1,256 +1,128 @@
-///*
-// * To change this license header, choose License Headers in Project Properties.
-// * To change this template file, choose Tools | Templates
-// * and open the template in the editor.
-// */
-//package managedbean.customer.employee;
-//
-//import ejb.customer.entity.CustomerAdvanced;
-//import ejb.customer.entity.CustomerBasic;
-//import ejb.customer.session.CRMCustomerSessionBeanLocal;
-//import ejb.infrastructure.entity.Employee;
-//import java.io.IOException;
-//import javax.inject.Named;
-//import javax.enterprise.context.SessionScoped;
-//import java.io.Serializable;
-//import java.util.List;
-//import javax.ejb.EJB;
-//import javax.faces.application.FacesMessage;
-//import javax.faces.context.ExternalContext;
-//import javax.faces.context.FacesContext;
-//
-///**
-// *
-// * @author aaa
-// */
-//@Named(value = "rMUpdateCustomerAdvancedManagedBean")
-//@SessionScoped
-//public class RMUpdateCustomerAdvancedManagedBean implements Serializable {
-//
-//    @EJB
-//    private CRMCustomerSessionBeanLocal customerSessionBeanLocal;
-//
-//    private Employee em = new Employee();
-//    private List<CustomerBasic> customerBasics;
-//    private List<CustomerAdvanced> customerAdvanceds;
-//    private CustomerAdvanced customerAdvanced;
-//
-//    private String customerOnlineBankingAccountNum;
-//    private Long customerAdvancedId;
-//    private Long customerBasicId;
-//
-//    private String numOfDependent;
-//    private String education;
-//    private String residentialStatus;
-//    private String yearInResidence;
-//    private String jobType;
-//    private String jobIndustry;
-//    private String jobDuration;
-//    private String jobStatus;
-//    private String incomeMonthly;
-//
-//    public RMUpdateCustomerAdvancedManagedBean() {
-//    }
-//
-//    public Employee getEm() {
-//        return em;
-//    }
-//
-//    public void setEm(Employee em) {
-//        this.em = em;
-//    }
-//
-//    public List<CustomerBasic> getCustomerBasics() {
-//        return customerBasics;
-//    }
-//
-//    public void setCustomerBasics(List<CustomerBasic> customerBasics) {
-//        this.customerBasics = customerBasics;
-//    }
-//
-//    public List<CustomerAdvanced> getCustomerAdvanceds() {
-//        return customerAdvanceds;
-//    }
-//
-//    public void setCustomerAdvanceds(List<CustomerAdvanced> customerAdvanced) {
-//        this.customerAdvanceds = customerAdvanced;
-//    }
-//
-//    public Long getCustomerAdvancedId() {
-//        return customerAdvancedId;
-//    }
-//
-//    public void setCustomerAdvancedId(Long customerAdvancedId) {
-//        this.customerAdvancedId = customerAdvancedId;
-//    }
-//
-//    public Long getCustomerBasicId() {
-//        return customerBasicId;
-//    }
-//
-//    public void setCustomerBasicId(Long customerBasicId) {
-//        this.customerBasicId = customerBasicId;
-//    }
-//
-//    public CustomerAdvanced getCustomerAdvanced() {
-//        return customerAdvanced;
-//    }
-//
-//    public void setCustomerAdvanced(CustomerAdvanced customerAdvanced) {
-//        this.customerAdvanced = customerAdvanced;
-//    }
-//
-//    public String getCustomerOnlineBankingAccountNum() {
-//        return customerOnlineBankingAccountNum;
-//    }
-//
-//    public void setCustomerOnlineBankingAccountNum(String customerOnlineBankingAccountNum) {
-//        this.customerOnlineBankingAccountNum = customerOnlineBankingAccountNum;
-//    }
-//
-//    public String getNumOfDependent() {
-//        if (numOfDependent == null) {
-//            customerAdvanced = customerSessionBeanLocal.retrieveCustomerAdvancedByAdId(customerAdvancedId);
-//        }
-//        numOfDependent = customerAdvanced.getNumOfDependent();
-//
-//        return numOfDependent;
-//    }
-//
-//    public void setNumOfDependent(String numOfDependent) {
-//        this.numOfDependent = numOfDependent;
-//    }
-//
-//    public String getEducation() {
-//        if (education == null) {
-//            customerAdvanced = customerSessionBeanLocal.retrieveCustomerAdvancedByAdId(customerAdvancedId);
-//        }
-//        education = customerAdvanced.getEducation();
-//        return education;
-//    }
-//
-//    public void setEducation(String education) {
-//        this.education = education;
-//    }
-//
-//    public String getResidentialStatus() {
-//        if (residentialStatus == null) {
-//            customerAdvanced = customerSessionBeanLocal.retrieveCustomerAdvancedByAdId(customerAdvancedId);
-//        }
-//        residentialStatus = customerAdvanced.getResidentialStatus();
-//        return residentialStatus;
-//    }
-//
-//    public void setResidentialStatus(String residentialStatus) {
-//        this.residentialStatus = residentialStatus;
-//    }
-//
-//    public String getYearInResidence() {
-//        if (yearInResidence == null) {
-//            customerAdvanced = customerSessionBeanLocal.retrieveCustomerAdvancedByAdId(customerAdvancedId);
-//        }
-//        yearInResidence = customerAdvanced.getYearInResidence();
-//        return yearInResidence;
-//    }
-//
-//    public void setYearInResidence(String yearInResidence) {
-//        this.yearInResidence = yearInResidence;
-//    }
-//
-//    public String getJobType() {
-//        if (jobType == null) {
-//            customerAdvanced = customerSessionBeanLocal.retrieveCustomerAdvancedByAdId(customerAdvancedId);
-//        }
-//        jobType = customerAdvanced.getJobType();
-//        return jobType;
-//    }
-//
-//    public void setJobType(String jobType) {
-//        this.jobType = jobType;
-//    }
-//
-//    public String getJobIndustry() {
-//        if (jobIndustry == null) {
-//            customerAdvanced = customerSessionBeanLocal.retrieveCustomerAdvancedByAdId(customerAdvancedId);
-//        }
-//        jobIndustry = customerAdvanced.getJobIndustry();
-//        return jobIndustry;
-//    }
-//
-//    public void setJobIndustry(String jobIndustry) {
-//        this.jobIndustry = jobIndustry;
-//    }
-//
-//    public String getJobDuration() {
-//        if (jobDuration == null) {
-//            customerAdvanced = customerSessionBeanLocal.retrieveCustomerAdvancedByAdId(customerAdvancedId);
-//        }
-//        jobDuration = customerAdvanced.getJobDuration();
-//        return jobDuration;
-//    }
-//
-//    public void setJobDuration(String jobDuration) {
-//        this.jobDuration = jobDuration;
-//    }
-//
-//    public String getJobStatus() {
-//        if (jobStatus == null) {
-//            customerAdvanced = customerSessionBeanLocal.retrieveCustomerAdvancedByAdId(customerAdvancedId);
-//        }
-//        jobStatus = customerAdvanced.getJobStatus();
-//        return jobStatus;
-//    }
-//
-//    public void setJobStatus(String jobStatus) {
-//        this.jobStatus = jobStatus;
-//    }
-//
-//    public String getIncomeMonthly() {
-//        if (incomeMonthly == null) {
-//            customerAdvanced = customerSessionBeanLocal.retrieveCustomerAdvancedByAdId(customerAdvancedId);
-//        }
-//        incomeMonthly = customerAdvanced.getIncomeMonthly();
-//        return incomeMonthly;
-//    }
-//
-//    public void setIncomeMonthly(String incomeMonthly) {
-//        this.incomeMonthly = incomeMonthly;
-//    }
-//
-//    public List<CustomerAdvanced> getCustomerListFromEmployeeId() {
-//        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-//        em = (Employee) ec.getSessionMap().get("employee");
-//        customerAdvanceds = em.getCustomerAdvanced();
-//        return customerAdvanceds;
-//    }
-//
-//    public CustomerAdvanced getCustomerAdvancedInfo() {
-//
-//        customerAdvanced = customerSessionBeanLocal.retrieveCustomerAdvancedByAdId(customerAdvancedId);
-//
-//        return customerAdvanced;
-//
-//    }
-//
-//    public void updateCustomerAdvanced() {
-//        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(customerSessionBeanLocal.updateCustomerAdvancedProfile(customerAdvancedId,
-//                education, incomeMonthly, jobDuration, jobStatus, jobIndustry, jobType,
-//                numOfDependent, residentialStatus, yearInResidence), " "));
-//
-//        numOfDependent = null;
-//        education = null;
-//        residentialStatus = null;
-//        yearInResidence = null;
-//        jobType = null;
-//        jobIndustry = null;
-//        jobDuration = null;
-//        jobStatus = null;
-//        incomeMonthly = null;
-//    }
-//
-//    public void redirectToViewAdvanced() throws IOException {
-//        FacesContext context = FacesContext.getCurrentInstance();
-//        ExternalContext ec = context.getExternalContext();
-//        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/CRM/RMUpdateCustomerAdvanced.xhtml?faces-redirect=true");
-//    }
-//}
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package managedbean.customer.employee;
+
+import ejb.customer.entity.CustomerAdvanced;
+import static ejb.customer.entity.CustomerAdvanced_.customerAdvancedId;
+import static ejb.customer.entity.CustomerAdvanced_.education;
+import static ejb.customer.entity.CustomerAdvanced_.residentialStatus;
+import static ejb.customer.entity.CustomerAdvanced_.yearInResidence;
+import ejb.customer.session.CRMCustomerSessionBeanLocal;
+import java.io.IOException;
+import javax.inject.Named;
+import java.io.Serializable;
+import javax.ejb.EJB;
+import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
+
+/**
+ *
+ * @author aaa
+ */
+@Named(value = "rMUpdateCustomerAdvancedManagedBean")
+@RequestScoped
+public class RMUpdateCustomerAdvancedManagedBean implements Serializable {
+
+    @EJB
+    private CRMCustomerSessionBeanLocal customerSessionBeanLocal;
+
+    private CustomerAdvanced customer;
+    private Long customerAdvancedId;
+
+    private String jobStatus;
+    private String occupation;
+    private String jobIndustry;
+    private double fixedIncomeMonthly;
+    private double otherIncomeMonthly;
+    private int numOfDependents;
+
+    public RMUpdateCustomerAdvancedManagedBean() {
+    }
+
+    public CustomerAdvanced getCustomer() {
+        customerAdvancedId = getCustomerAdvancedId();
+        customer = customerSessionBeanLocal.retrieveCustomerAdvancedByAdId(customerAdvancedId);
+
+        return customer;
+
+    }
+
+    public Long getCustomerAdvancedId() {
+        FacesContext context = FacesContext.getCurrentInstance();
+        customerAdvancedId = (Long) context.getExternalContext().getSessionMap().get("customerAdvancedId");
+
+        return customerAdvancedId;
+    }
+
+    public String getJobStatus() {
+        return jobStatus;
+    }
+
+    public void setJobStatus(String jobStatus) {
+        this.jobStatus = jobStatus;
+    }
+
+    public String getOccupation() {
+        return occupation;
+    }
+
+    public void setOccupation(String occupation) {
+        this.occupation = occupation;
+    }
+
+    public String getJobIndustry() {
+        return jobIndustry;
+    }
+
+    public void setJobIndustry(String jobIndustry) {
+        this.jobIndustry = jobIndustry;
+    }
+
+    public double getFixedIncomeMonthly() {
+        return fixedIncomeMonthly;
+    }
+
+    public void setFixedIncomeMonthly(double fixedIncomeMonthly) {
+        this.fixedIncomeMonthly = fixedIncomeMonthly;
+    }
+
+    public double getOtherIncomeMonthly() {
+        return otherIncomeMonthly;
+    }
+
+    public void setOtherIncomeMonthly(double otherIncomeMonthly) {
+        this.otherIncomeMonthly = otherIncomeMonthly;
+    }
+
+    public int getNumOfDependents() {
+        return numOfDependents;
+    }
+
+    public void setNumOfDependents(int numOfDependents) {
+        this.numOfDependents = numOfDependents;
+    }
+
+    public void updateCustomerAdvanced(ActionEvent event) {
+        FacesMessage message = null;
+        FacesContext context = FacesContext.getCurrentInstance();
+
+        customerAdvancedId = getCustomerAdvancedId();
+        customerSessionBeanLocal.RMUpdateCustomerAdvancedInfo(customerAdvancedId, jobStatus, occupation, jobIndustry, fixedIncomeMonthly, otherIncomeMonthly, numOfDependents);
+
+        message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Advanced profile of customer has been successfully updated!", null);
+        context.addMessage(null, message);
+
+    }
+
+    public void redirectToViewAdvanced() throws IOException {
+        FacesContext context = FacesContext.getCurrentInstance();
+        ExternalContext ec = context.getExternalContext();
+        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/CRM/RMUpdateCustomerAdvanced.xhtml?faces-redirect=true");
+    }
+}

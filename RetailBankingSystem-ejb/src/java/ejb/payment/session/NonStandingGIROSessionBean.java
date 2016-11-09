@@ -484,6 +484,6 @@ public class NonStandingGIROSessionBean implements NonStandingGIROSessionBeanLoc
         // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
         // If the calling of port operations may lead to race condition some synchronization is required.
         ws.client.sach.SACHWebService port = service_sach.getSACHWebServicePort();
-        port.sachRegularGIROTransferMTD(fromBankAccountNum, toBankAccountNum, transferAmt);
+//        port.sachRegularGIROTransferMTD(fromBankAccountNum, toBankAccountNum, transferAmt);
     }
 }

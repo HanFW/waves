@@ -48,13 +48,17 @@
                     <h:outputText value="#{loan.overdueBalance}" />
                 </p:column>
 
-                <p:column headerText="Details">
+                <p:column headerText="View">
                     <p:commandButton value="View" action="#{customerViewAllLoansManagedBean.viewLoan(loan.id)}"/>
                 </p:column>
 
-                <p:column headerText="Statement">
+                <p:column headerText="Statement"> 
                     <center>
-                        <p:commandButton icon="ui-icon-document"/>
+                        <p:commandButton ajax="false" process="@this" 
+                                         action="#{customerViewAllLoansManagedBean.viewLoanStatement()}" 
+                                         icon="ui-icon-document">
+                            <f:setPropertyActionListener value="#{loan.id}" target="#{customerViewAllLoansManagedBean.loanPayableAccountId}" />
+                        </p:commandButton>
                     </center>
                 </p:column>
             </p:dataTable>

@@ -19,71 +19,98 @@
             <h:form>
 
                 <div align="center">
+                    <p:wizard widgetVar ="addSupplementaryCardWizard" flowListener="#{customerAddSupplementaryManagedBean.onFlowProcess}" class="ui-lg-12" showNavBar="false">
 
-                    <h1>Add Supplementary Card</h1>
-                    <h:panelGrid columns="1" class="ui-lg-5">
-                        <p:outputLabel style="font-size: 20px;font-weight: bold" value="Important"/>
-                        <p:outputLabel style="font-size: 20px" value="Only Merlion Platinum Card holders are able to add up to 2 supplemntary cards to his/her principal card."/>
-                        <br/>
-                        <p:outputLabel style="font-size: 20px" value="The principal card and its supplementary card(s) share the same credit limit."/>
-                        <br/>
-                        <p:outputLabel style="font-size: 20px" value="Principal card holders are responsible for managing supplementary cards, such as card activation and repayment."/>
-                        <br/>
-                    </h:panelGrid>
-                    <p:messages autoUpdate="true" globalOnly="true"/>
+                        <p:tab id="addCard">
 
-                    <p:panel id="creditPanel">
-                        <h:panelGrid columns="1" class="ui-lg-5">
-                            <p:outputLabel for="selectCreditCard" value="Credit Card:"/>
-                            <p:selectOneMenu id="selectCreditCard" required="true" requiredMessage="Please select a credit card" style="text-align:left" value="#{customerAddSupplementaryManagedBean.principalCardName}">
-                                <f:selectItem itemLabel="Please select..." itemValue=""/>
-                                <f:selectItems value="#{customerAddSupplementaryManagedBean.allPrincipalCards}"/> 
-                            </p:selectOneMenu>
-                            <p:message for="selectCreditCard"/>
+                            <h:panelGrid columns="1">
+                                <p:steps activeIndex="0">
+                                    <p:menuitem value="1. Card Holder Detail" />
+                                    <p:menuitem value="2. Upload Documents" />
+                                </p:steps>
+                            </h:panelGrid>
 
-                            <p:outputLabel for="cardHolderName" value="Supplementary Card Holder Name: "/>
-                            <p:inputText id="cardHolderName" required="true" requiredMessage="Please enter card holder name" value="#{customerAddSupplementaryManagedBean.cardHolderName}"/>
-                            <p:message for="cardHolderName"/>
+                            <h1>Add Supplementary Card</h1>
+                            <h:panelGrid columns="1" class="ui-lg-5">
+                                <p:outputLabel style="font-size: 20px;font-weight: bold" value="Important"/>
+                                <p:outputLabel style="font-size: 20px" value="Only Merlion Platinum Card holders are able to add up to 2 supplemntary cards to his/her principal card."/>
+                                <br/>
+                                <p:outputLabel style="font-size: 20px" value="The principal card and its supplementary card(s) share the same credit limit."/>
+                                <br/>
+                                <p:outputLabel style="font-size: 20px" value="Principal card holders are responsible for managing supplementary cards, such as card activation and repayment."/>
+                                <br/>
+                            </h:panelGrid>
+                            <p:messages autoUpdate="true" globalOnly="true"/>
 
-                            <p:outputLabel for="cardHolderID" value="Supplementary Card Holder NRIC/Passport: "/>
-                            <p:inputText id="cardHolderID" required="true" requiredMessage="Please enter card holder ID" value="#{customerAddSupplementaryManagedBean.identificationNum}"/>
-                            <p:message for="cardHolderID"/>
+                            <p:panel id="creditPanel">
+                                <h:panelGrid columns="3" class="ui-lg-8">
+                                    <p:outputLabel for="selectCreditCard" value="Credit Card:"/>
+                                    <p:selectOneMenu id="selectCreditCard" required="true" requiredMessage="Please select a credit card" style="text-align:left" value="#{customerAddSupplementaryManagedBean.principalCardName}">
+                                        <f:selectItem itemLabel="Please select..." itemValue=""/>
+                                        <f:selectItems value="#{customerAddSupplementaryManagedBean.allPrincipalCards}"/> 
+                                    </p:selectOneMenu>
+                                    <p:message for="selectCreditCard"/>
 
-                            <p:outputLabel for="dob" value="Supplementary Card Holder Date of Birth: "/>
-                            <p:calendar id="dob" value="#{customerAddSupplementaryManagedBean.dateOfBirth}" 
-                                        showOn="button" locale="de" navigator="true" pattern="dd/MM/yyyy" 
-                                        yearRange="c-200:c" required="true" requiredMessage="Required Field" />
-                            <p:message for="dob"/>
+                                    <p:outputLabel for="cardHolderName" value="Supplementary Card Holder Name: "/>
+                                    <p:inputText id="cardHolderName" required="true" requiredMessage="Please enter card holder name" value="#{customerAddSupplementaryManagedBean.cardHolderName}"/>
+                                    <p:message for="cardHolderName"/>
 
-                            <p:outputLabel for="relationship"  value="Relationship to you: "/>
-                            <p:selectOneMenu id="relationship" required="true" requiredMessage="Please select a relationship" style="text-align:left" value="#{customerAddSupplementaryManagedBean.relationship}">
-                                <f:selectItem itemLabel="Please select..." itemValue=""/>
-                                <f:selectItem itemLabel="Children" itemValue="Children"/> 
-                                <f:selectItem itemLabel="Spouse" itemValue="Spouse"/>
-                                <f:selectItem itemLabel="Parents" itemValue="Parents"/>
-                                <f:selectItem itemLabel="Siblings" itemValue="Siblings"/>
-                                <f:selectItem itemLabel="Others" itemValue="Others"/>
-                            </p:selectOneMenu>
-                            <p:message for="relationship"/>
+                                    <p:outputLabel for="cardHolderID" value="Supplementary Card Holder NRIC/Passport: "/>
+                                    <p:inputText id="cardHolderID" required="true" requiredMessage="Please enter card holder ID" value="#{customerAddSupplementaryManagedBean.identificationNum}">
+                                        <p:ajax event="change" listener="#{customerAddSupplementaryManagedBean.setIdentificationNum(identificationNum)}"/>
+                                    </p:inputText>
+                                    <p:message for="cardHolderID"/>
 
-                            <p:outputLabel value="Please upload files in PDF format"/>
-                            <p:panel>
-                                <p:outputLabel value="Please upload photocopy of supplementary card holder's NRIC/Passport:"/>
-                                <p:outputLabel value="(Please upload all photocopies in one single PDF file)"/>
-                                <p:messages id="identificationUploadMessage" for="identificationUpload"/>
-                                <p:fileUpload id="identificationUpload" update="identificationUploadMessage" fileUploadListener="#{customerAddSupplementaryManagedBean.identificationUpload}"
-                                              mode="advanced" skinSimple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(pdf)$/" multiple="false"/>
+                                    <p:outputLabel for="dob" value="Supplementary Card Holder Date of Birth: "/>
+                                    <p:calendar id="dob" value="#{customerAddSupplementaryManagedBean.dateOfBirth}" 
+                                                showOn="button" locale="de" navigator="true" pattern="dd/MM/yyyy" 
+                                                yearRange="c-200:c" required="true" requiredMessage="Required Field" />
+                                    <p:message for="dob"/>
+
+                                    <p:outputLabel for="relationship"  value="Relationship to you: "/>
+                                    <p:selectOneMenu id="relationship" required="true" requiredMessage="Please select a relationship" style="text-align:left" value="#{customerAddSupplementaryManagedBean.relationship}">
+                                        <f:selectItem itemLabel="Please select..." itemValue=""/>
+                                        <f:selectItem itemLabel="Children" itemValue="Children"/> 
+                                        <f:selectItem itemLabel="Spouse" itemValue="Spouse"/>
+                                        <f:selectItem itemLabel="Parents" itemValue="Parents"/>
+                                        <f:selectItem itemLabel="Siblings" itemValue="Siblings"/>
+                                        <f:selectItem itemLabel="Others" itemValue="Others"/>
+                                    </p:selectOneMenu>
+                                    <p:message for="relationship"/>
+                                </h:panelGrid>
                             </p:panel>
 
-                        </h:panelGrid>
-                        <p:commandButton value="Submit Application" actionListener="#{customerAddSupplementaryManagedBean.addSupplementaryCard}" style="width:150px" update="@form"/>        
-                    </p:panel>
-                    <br/>
+                            <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" actionListener="#{customerAddSupplementaryManagedBean.checkAllInfo}" style="width:200px" />
+
+                        </p:tab>
+
+                        <p:tab id="addDocuments">
+
+                            <h:panelGrid columns="1">
+                                <p:steps activeIndex="1">
+                                    <p:menuitem value="1. Card Holder Detail" />
+                                    <p:menuitem value="2. Upload Documents" />
+                                </p:steps>
+                            </h:panelGrid>
+                            <p:messages globalOnly="true"/>
+                            <p:outputLabel value="Please upload files in PDF format"/>
+
+                            <p:outputLabel value="Please upload photocopy of supplementary card holder's NRIC/Passport:"/>
+                            <p:outputLabel value="(Please upload all photocopies in one single PDF file)"/>
+                            <p:messages id="identificationUploadMessage" for="identificationUpload"/>
+                            <p:fileUpload id="identificationUpload" update="identificationUploadMessage" fileUploadListener="#{customerAddSupplementaryManagedBean.identificationUpload}"
+                                          mode="advanced" skinSimple="true" sizeLimit="10000000" allowTypes="/(\.|\/)(pdf)$/" multiple="false"/>
+
+
+
+                            <p:commandButton value="Submit Application" actionListener="#{customerAddSupplementaryManagedBean.addSupplementaryCard}" style="width:150px" update="@form"/>        
+
+                            <br/>
+                        </p:tab>
+                    </p:wizard>
                 </div>
             </h:form>
-
         </h:body>
-
     </ui:define>
 </ui:composition>
 

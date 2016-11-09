@@ -57,7 +57,7 @@ public class DeleteSWIFTPayeeManagedBean {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Recipient does not exist.", "Failed!"));
         } else {
             payeeSessionBeanLocal.deletePayee(swiftPayee.getPayeeAccountNum());
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Successfully! Recipient deleted Successfully.", "Successfuly!"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Successfully! Recipient deleted Successfully.", "Successfuly!"));
         }
     }
 }
