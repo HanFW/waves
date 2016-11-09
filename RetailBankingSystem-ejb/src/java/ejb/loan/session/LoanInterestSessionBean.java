@@ -295,7 +295,7 @@ public class LoanInterestSessionBean implements LoanInterestSessionBeanLocal {
 //            System.out.println("****** checkLoanAccountStatus: loan tenure finished");
 //        }
 //        em.flush();
-//        return "";
+        return "";
     }
 
     private void addLoanAccountTransaction(LoanRepaymentAccount repaymentAccount, double amount, String description, String action) {
