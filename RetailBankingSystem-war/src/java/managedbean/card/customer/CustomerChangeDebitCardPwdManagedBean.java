@@ -8,6 +8,7 @@ package managedbean.card.customer;
 import ejb.card.session.DebitCardPasswordSessionBeanLocal;
 import ejb.card.session.DebitCardSessionBeanLocal;
 import ejb.customer.entity.CustomerBasic;
+import ejb.infrastructure.session.LoggingSessionBeanLocal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
@@ -33,7 +34,10 @@ public class CustomerChangeDebitCardPwdManagedBean {
     private DebitCardPasswordSessionBeanLocal debitCardPasswordSessionBeanLocal;
 
     @EJB
-    DebitCardSessionBeanLocal debitCardSessionBeanLocal;
+    private DebitCardSessionBeanLocal debitCardSessionBeanLocal;
+    
+    @EJB
+    private LoggingSessionBeanLocal loggingSessionBeanLocal;
 
     private CustomerBasic customer;
 
@@ -75,6 +79,7 @@ public class CustomerChangeDebitCardPwdManagedBean {
                 System.out.println("1");
                 message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Password has been successfully changed for your debit card!", null);
                 context.addMessage(null, message);
+                loggingSessionBeanLocal.createNewLogging("customer",customer.getCustomerBasicId(),"custoemr change debit card pwd", "successful", null);
             } else {
                 System.out.println("2");
                 message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Please check the current debit card password input!", null);
@@ -138,7 +143,6 @@ public class CustomerChangeDebitCardPwdManagedBean {
         customer = (CustomerBasic) context.getExternalContext().getSessionMap().get("customer");
 
         return customer;
-
     }
 
 }
