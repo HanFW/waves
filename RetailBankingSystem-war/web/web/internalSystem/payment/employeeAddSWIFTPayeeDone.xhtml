@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/internalSystemTemplate.xhtml">
+
+    <ui:define name="content">
+        <h:form>
+            <div align="center">
+                <h1>Add Recipient</h1>
+                <h:panelGrid columns="1" styleClass="ui-panelgrid-blank form-group" class="ui-lg-4">
+                    <p:panel id="panel"> 
+                        <p:messages globalOnly="true"/>
+
+                        <p:outputLabel for="payeeOrganization" style="font-weight: bold" value="Recipent's Institution " />
+                        <p:inputText required="true" label="Recipient Organization" requiredMessage="Required Field" id="payeeOrganization"
+                                     value="#{employeeAddSWIFTPayeeDoneManagedBean.payeeInstitution}">
+                        </p:inputText>
+                        <p:message for="payeeOrganization" />
+
+                        <p:outputLabel for="payeeSWIFTCode" style="font-weight: bold" value="Recipient's SWIFT Code: " />
+                        <p:inputText required="true" label="Payee SWIFT Code" requiredMessage="Required Field" id="payeeSWIFTCode"
+                                     value="#{employeeAddSWIFTPayeeDoneManagedBean.payeeSWIFTCode}">
+                        </p:inputText>
+                        <p:message for="payeeSWIFTCode" />
+
+                        <p:outputLabel for="payeeCountry" style="font-weight: bold" value="Recipent's Country: " />
+                        <p:inputText required="true" label="Recipient Country" requiredMessage="Required Field" id="payeeCountry"
+                                     value="#{employeeAddSWIFTPayeeDoneManagedBean.payeeCountry}">
+                        </p:inputText>
+                        <p:message for="payeeCountry" />
+
+                        <p:outputLabel for="payeeAccountNum" style="font-weight: bold" value="Recipent's Account Number: " />
+                        <p:inputText required="true" label="Recipient Account Number" requiredMessage="Required Field" id="payeeAccountNum"
+                                     value="#{employeeAddSWIFTPayeeDoneManagedBean.payeeAccountNum}">
+                        </p:inputText>
+                        <p:message for="payeeAccountNum" />
+
+                        <p:outputLabel for="payeeAccountType" style="font-weight: bold" value="Recipient's Account Type: " />
+                        <p:selectOneMenu id="payeeAccountType" value="#{employeeAddSWIFTPayeeDoneManagedBean.payeeAccountType}" 
+                                         required="true" requiredMessage="Required Field">
+                            <f:selectItem itemLabel="Please Select One" itemValue="" />
+                            <f:selectItem itemLabel="Bank of Korea Savings Account" itemValue="Bank of Korea Savings Account" />
+                            <f:selectItem itemLabel="Japan Post Bank Savings Account" itemValue="Japan Post Bank Savings Account" />
+                            <f:selectItem itemLabel="American National Bank Savings Account" itemValue="American National Bank Savings Account" />
+                            <f:selectItem itemLabel="ANZ Savings Account" itemValue="ANZ Savings Account" />
+                            <f:selectItem itemLabel="ICBC Savings Account" itemValue="ICBC Savings Account" />
+                            <f:selectItem itemLabel="EURO Bank Savings Account" itemValue="EURO Bank Savings Account" />
+                        </p:selectOneMenu>
+                        <p:message for="payeeAccountType" />
+
+                        <p:outputLabel for="payeeBank" style="font-weight: bold" value="Recipent's Bank: " />
+                        <p:inputText required="true" label="Recipient Bank" requiredMessage="Required Field" id="payeeBank"
+                                     value="#{employeeAddSWIFTPayeeDoneManagedBean.payeeBank}">
+                        </p:inputText>
+                        <p:message for="payeeBank" />
+
+                    </p:panel>
+                </h:panelGrid>
+
+                <h:panelGrid columns="2" styleClass="ui-panelgrid-blank form-group" class="ui-lg-4">
+                    <p:commandButton id="cancelBtn" action="/RetailBankingSystem-war/web/internalSystem/infrastructure/employeeMainPage.xhtml?faces-redirect=true" 
+                                     value="Cancel" update="panel" immediate = "true">
+                        <p:confirm header="Cancel" message="Are you sure?" />
+                    </p:commandButton>
+
+
+                    <p:commandButton id="addBtn" value="Add Recipient" update="panel" 
+                                     actionListener="#{employeeAddSWIFTPayeeDoneManagedBean.addSWIFTPayee}" ajax="true"/>        
+                </h:panelGrid>
+
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Yes" styleClass="ui-confirmdialog-yes" action="depositIndex"/>
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" />
+                </p:confirmDialog>
+
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>

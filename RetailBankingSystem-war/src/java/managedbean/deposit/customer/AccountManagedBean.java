@@ -27,7 +27,6 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.Calendar;
 import javax.faces.view.ViewScoped;
-import org.apache.commons.io.IOUtils;
 
 @Named(value = "accountManagedBean")
 @ViewScoped
@@ -1108,15 +1107,28 @@ public class AccountManagedBean implements Serializable {
 
         if (file != null) {
             String filename = customerIdentificationNum + ".png";
-            InputStream input = file.getInputstream();
-            OutputStream output = new FileOutputStream(new File("/Users/Yongxue/Desktop/JavaBean/waves/RetailBankingSystem-war/web/resources/customerIdentification", filename));
 
-            try {
-                IOUtils.copy(input, output);
-            } finally {
-                IOUtils.closeQuietly(input);
-                IOUtils.closeQuietly(output);
+            String newFilePath = System.getProperty("user.dir").replace("config", "docroot") + System.getProperty("file.separator");
+            OutputStream output = new FileOutputStream(new File(newFilePath, filename));
+
+            int a;
+            int BUFFER_SIZE = 8192;
+            byte[] buffer = new byte[BUFFER_SIZE];
+
+            InputStream inputStream = file.getInputstream();
+
+            while (true) {
+                a = inputStream.read(buffer);
+                if (a < 0) {
+                    break;
+                }
+                output.write(buffer, 0, a);
+                output.flush();
             }
+
+            output.close();
+            inputStream.close();
+
             loggingSessionBeanLocal.createNewLogging("customer", null, "upload softcopy of passport or IC", "successful", null);
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Succesful " + file.getFileName() + " is uploaded.", "");
             FacesContext.getCurrentInstance().addMessage(null, message);

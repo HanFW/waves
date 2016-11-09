@@ -50,6 +50,6 @@ public class DeleteStandingGIROManagedBean {
 
         standingGIROSessionBeanLocal.deleteStandingGIRO(giroId);
 
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Successfuly! GIRO Arrangement deleted Successfully.", "Successfuly!"));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Successfuly! GIRO Arrangement deleted Successfully.", "Successfuly!"));
     }
 }

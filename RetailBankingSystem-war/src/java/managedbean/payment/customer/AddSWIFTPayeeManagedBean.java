@@ -7,6 +7,7 @@ import java.io.IOException;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
@@ -87,23 +88,29 @@ public class AddSWIFTPayeeManagedBean {
         CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
         String lastTransactionDate = "";
 
-        Long swiftPayeeId = sWIFTPayeeSessionBeanLocal.addNewSWIFTPayee(payeeInstitution,
-                payeeAccountNum, payeeAccountType, payeeSWIFTCode, lastTransactionDate,
-                payeeCountry, payeeBank, "SWIFT", customerBasic.getCustomerBasicId());
-        SWIFTPayee swiftPayee = sWIFTPayeeSessionBeanLocal.retrieveSWIFTPayeeById(swiftPayeeId);
+        SWIFTPayee payee = sWIFTPayeeSessionBeanLocal.retrieveSWIFTPayeeByNum(payeeAccountNum);
 
-        customerBasic.getSwiftPayee().add(swiftPayee);
+        if (payee.getPayeeId() != null) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Recipient has already existed", ""));
+        } else {
+            Long swiftPayeeId = sWIFTPayeeSessionBeanLocal.addNewSWIFTPayee(payeeInstitution,
+                    payeeAccountNum, payeeAccountType, payeeSWIFTCode, lastTransactionDate,
+                    payeeCountry, payeeBank, "SWIFT", customerBasic.getCustomerBasicId());
+            SWIFTPayee swiftPayee = sWIFTPayeeSessionBeanLocal.retrieveSWIFTPayeeById(swiftPayeeId);
 
-        statusMessage = "New Recipient Added Successfully.";
+            customerBasic.getSwiftPayee().add(swiftPayee);
 
-        ec.getFlash().put("statusMessage", statusMessage);
-        ec.getFlash().put("payeeInstitution", payeeInstitution);
-        ec.getFlash().put("payeeAccountNum", payeeAccountNum);
-        ec.getFlash().put("payeeAccountType", payeeAccountType);
-        ec.getFlash().put("payeeSWIFTCode", payeeSWIFTCode);
-        ec.getFlash().put("payeeCountry", payeeCountry);
-        ec.getFlash().put("payeeBank", payeeBank);
+            statusMessage = "New Recipient Added Successfully.";
 
-        ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/payment/customerAddSWIFTPayeeDone.xhtml?faces-redirect=true");
+            ec.getFlash().put("statusMessage", statusMessage);
+            ec.getFlash().put("payeeInstitution", payeeInstitution);
+            ec.getFlash().put("payeeAccountNum", payeeAccountNum);
+            ec.getFlash().put("payeeAccountType", payeeAccountType);
+            ec.getFlash().put("payeeSWIFTCode", payeeSWIFTCode);
+            ec.getFlash().put("payeeCountry", payeeCountry);
+            ec.getFlash().put("payeeBank", payeeBank);
+
+            ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/payment/customerAddSWIFTPayeeDone.xhtml?faces-redirect=true");
+        }
     }
 }

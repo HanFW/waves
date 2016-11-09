@@ -10,40 +10,44 @@
         <div align="center">
             <h:form>
 
-                <p:dataTable var="portfolio" value="#" paginator="true" rows="10"
+                <p:dataTable var="portfolio" value="#{rMViewCustomerPortfolioManagedBean.portfolios}" paginator="true" rows="10"
                              paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
                              id="potfolioTable">
-                    <p:column headerText="Wealth Plan" sortBy="#{customerAdvanced.customerBasic.customerName}" filterBy="#{customerAdvanced.customerBasic.customerName}">
-                        <h:outputText value="#{customerAdvanced.customerBasic.customerName}" /> 
+                    <p:column headerText="Wealth Plan" sortBy="#{portfolio.wealthPlan}" filterBy="#{portfolio.wealthPlan}">
+                        <h:outputText value="#{portfolio.wealthPlan}" /> 
                     </p:column>
 
-                    <p:column headerText="End Date" sortBy="#{customerAdvanced.customerBasic.customerName}" filterBy="#{customerAdvanced.customerBasic.customerName}">
-                        <h:outputText value="#{customerAdvanced.customerBasic.customerName}" /> 
+                    <p:column headerText="Annual Rate of Return" sortBy="#{portfolio.rate}" filterBy="#{portfolio.rate}">
+                        <h:outputText value="#{portfolio.rate}" /> 
                     </p:column>
 
-                    <p:column headerText="starting Balance" sortBy="#{customerAdvanced.customerBasic.customerName}" filterBy="#{customerAdvanced.customerBasic.customerName}">
-                        <h:outputText value="#{customerAdvanced.customerBasic.customerName}" /> 
+                    <p:column headerText="starting Balance" sortBy="#{portfolio.startingBalance}" filterBy="#{portfolio.startingBalance}">
+                        <h:outputText value="#{portfolio.startingBalance}" /> 
                     </p:column>
 
-                    <p:column headerText="Monthly Contribution" sortBy="#{customerAdvanced.customerBasic.customerName}" filterBy="#{customerAdvanced.customerBasic.customerName}">
-                        <h:outputText value="#{customerAdvanced.customerBasic.customerName}" /> 
+                    <p:column headerText="Monthly Contribution" sortBy="#{portfolio.monthlyContribution}" filterBy="#{portfolio.startingBalance}">
+                        <h:outputText value="#{portfolio.monthlyContribution}" /> 
                     </p:column>
 
-                    <p:column headerText="Contribute Duration" sortBy="#{customerAdvanced.customerBasic.customerName}" filterBy="#{customerAdvanced.customerBasic.customerName}">
-                        <h:outputText value="#{customerAdvanced.customerBasic.customerName}" /> 
+                    <p:column headerText="Contribute Duration" sortBy="#{portfolio.contributeDuration}" filterBy="#{portfolio.contributeDuration}">
+                        <h:outputText value="#{portfolio.contributeDuration}" /> 
                     </p:column>
 
-                    <p:column headerText="Investment Period" sortBy="#{customerAdvanced.customerBasic.customerName}" filterBy="#{customerAdvanced.customerBasic.customerName}">
-                        <h:outputText value="#{customerAdvanced.customerBasic.customerName}" /> 
+                    <p:column headerText="Investment Period" sortBy="#{portfolio.investmentPeriod}" filterBy="#{portfolio.investmentPeriod}">
+                        <h:outputText value="#{portfolio.investmentPeriod}" /> 
                     </p:column>
 
-                    <p:column headerText="Starting Date" sortBy="#{customerAdvanced.customerBasic.customerName}" filterBy="#{customerAdvanced.customerBasic.customerName}">
-                        <h:outputText value="#{customerAdvanced.customerBasic.customerName}" /> 
+                    <p:column headerText="Starting Date" sortBy="#{portfolio.startingDate}" filterBy="#{portfolio.startingDate}">
+                        <h:outputText value="#{portfolio.startingDate}" /> 
                     </p:column>
 
-                    <p:column headerText="End Date" sortBy="#{customerAdvanced.customerBasic.customerName}" filterBy="#{customerAdvanced.customerBasic.customerName}">
-                        <h:outputText value="#{customerAdvanced.customerBasic.customerName}" /> 
+                    <p:column headerText="End Date" sortBy="#{portfolio.endDate}" filterBy="#{portfolio.endDate}">
+                        <h:outputText value="#{portfolio.endDate}" /> 
                     </p:column>
+
+                    <p:column headerText="Action">
+                        <p:commandButton value="Asset Allocation" actionListener="#{rMViewCustomerPortfolioManagedBean.redirectToAddAssetPage(portfolio.id)}"/>
+                    </p:column> 
                 </p:dataTable>
 
             </h:form>

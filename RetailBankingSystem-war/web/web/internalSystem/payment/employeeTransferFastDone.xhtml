@@ -1,0 +1,86 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/internalSystemTemplate.xhtml">
+
+    <ui:define name="content">
+        <h:form>
+            <div align="center">
+                <h1>Fund Transfer to Other Bank Account(FAST)</h1>
+
+                <p:panelGrid columns="1" styleClass="ui-panelgrid-blank form-group" class="ui-lg-4">
+
+                    <p:panel id="panel"> 
+                        <p:messages globalOnly="true"/>
+
+                        <p:outputLabel style="font-weight: bold;font-size: 24px" value="To:" />
+                        <br/>
+                        <p:outputLabel for="transferToAccount" style="font-weight: bold" value="Account: " />
+                        <p:inputText required="true" label="Amount" requiredMessage="Amount is required." id="transferToAccount"
+                                     value="#{employeeTransferFastDoneManagedBean.toBankAccount}" converterMessage="Invalid input">
+                        </p:inputText>
+                        <p:message for="transferToAccount" />
+
+                        <p:outputLabel for="transferToCurrency" style="font-weight: bold" value="Currency: " />
+                        <p:selectOneMenu id="transferToCurrency" value="#{employeeTransferFastDoneManagedBean.toCurrency}" 
+                                         required="true">
+                            <f:selectItem itemLabel="Singapore Dollar" itemValue="SGD - Singapore Dollar" />
+                        </p:selectOneMenu>
+                        <p:message for="transferToCurrency" />
+                        <br/>
+                        <h:outputText value="&lt;br /&gt;" escape="false" />
+                        <h:outputText value="&lt;br /&gt;" escape="false" />
+
+                        <p:outputLabel style="font-weight: bold;font-size: 24px" value="From:" />
+                        <h:outputText value="&lt;br /&gt;" escape="false" />
+                        <br/>
+                        <p:outputLabel for="transferFromAccount" style="font-weight: bold" value="Account: " />
+                        <p:selectOneMenu id="transferFromAccount" value="#{employeeTransferFastDoneManagedBean.fromBankAccountNumWithType}" 
+                                         effect="fold" editable="false">
+                            <f:selectItem itemLabel="Please Select One" itemValue="" />
+                            <f:selectItems value="#{employeeTransferFastDoneManagedBean.fromAccounts}" />
+                        </p:selectOneMenu>
+                        <p:message for="transferFromAccount" />
+
+                        <p:outputLabel for="transferFromCurrency" style="font-weight: bold" value="Currency: " />
+                        <p:selectOneMenu id="transferFromCurrency" value="#{employeeTransferFastDoneManagedBean.fromCurrency}" 
+                                         required="true">
+                            <f:selectItem itemLabel="Singapore Dollar" itemValue="SGD - Singapore Dollar" />
+                        </p:selectOneMenu>
+                        <p:message for="transferFromCurrency" />
+
+                        <p:outputLabel for="transferAmt" style="font-weight: bold" value="Amount(S$): " />
+                        <p:inputText required="true" label="Amount" requiredMessage="Amount is required." id="transferAmt"
+                                     value="#{employeeTransferFastDoneManagedBean.transferAmt}" converterMessage="Invalid input">
+                            <f:validateDoubleRange minimum="0.0" maximum="99999999.0" />
+                        </p:inputText>
+                        <p:message for="transferAmt" />
+
+                    </p:panel>
+                </p:panelGrid>
+
+                <p:panelGrid columns="2" styleClass="ui-panelgrid-blank form-group" class="ui-lg-4">
+
+                    <p:commandButton id="cancelBtn" action="/RetailBankingSystem-war/web/internalSystem/infrastructure/employeeMainPage.xhtml?faces-redirect=true"
+                                     value="Cancel" update="panel" immediate = "true">
+                        <p:confirm header="Cancel" message="Are you sure?" />
+                    </p:commandButton>
+
+                    <p:commandButton id="nextBtn" value="Next" update="panel" 
+                                     actionListener="#{employeeTransferFastDoneManagedBean.fastTransfer}" ajax="true"/>
+                </p:panelGrid>
+            </div>
+
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" 
+                                 action="/RetailBankingSystem-war/web/internalSystem/infrastructure/employeeMainPage.xhtml?faces-redirect=true"/>
+                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" />
+            </p:confirmDialog>
+
+        </h:form>
+    </ui:define>
+</ui:composition>

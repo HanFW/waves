@@ -5,24 +5,26 @@ import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import ejb.payment.entity.RegisteredBillingOrganization;
+import ejb.payment.entity.StandingGIRO;
 import ejb.payment.session.RegisteredBillingOrganizationSessionBeanLocal;
 import ejb.payment.session.StandingGIROSessionBeanLocal;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
-import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 import org.primefaces.event.FlowEvent;
 
 @Named(value = "employeeAddStandingGIRODoneManagedBean")
-@RequestScoped
+@ViewScoped
 
-public class EmployeeAddStandingGIRODoneManagedBean {
+public class EmployeeAddStandingGIRODoneManagedBean implements Serializable {
 
     @EJB
     private StandingGIROSessionBeanLocal standingGIROSessionBeanLocal;
@@ -197,12 +199,17 @@ public class EmployeeAddStandingGIRODoneManagedBean {
         giroType = "Standing";
 
         bankAccountNum = handleAccountString(bankAccountNumWithType);
+        StandingGIRO standingGIRO = standingGIROSessionBeanLocal.retrieveStandingGIROByBillRef(billReference);
 
-        standingGIROSessionBeanLocal.addNewStandingGIRO(billingOrganization, billReference, paymentLimit.toString(),
-                customerName, customerMobile, bankAccountNum, standingGiroStatus,
-                bankAccountNumWithType, giroType, customerBasic.getCustomerBasicId());
+        if (standingGIRO.getGiroId() != null) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("GIRO Arrangement has already existed", ""));
+        } else {
+            standingGIROSessionBeanLocal.addNewStandingGIRO(billingOrganization, billReference, paymentLimit.toString(),
+                    customerName, customerMobile, bankAccountNum, standingGiroStatus,
+                    bankAccountNumWithType, giroType, customerBasic.getCustomerBasicId());
 
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Add GIRO Arrangement Successfully", ""));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Add GIRO Arrangement Successfully", ""));
+        }
     }
 
     private String handleAccountString(String bankAccountNumWithType) {

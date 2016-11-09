@@ -28,7 +28,7 @@ public class CreateFinancialGoalSessionBean implements CreateFinancialGoalSessio
 
     @Override
     public void createPortfolio(Long id, double startingBalance, double monthlyContribution, int contributeDuration,
-            int investmentPeriod, double amountExpected, String wealthPlan) {
+            int investmentPeriod, double amountExpected, String wealthPlan,double rate) {
         CustomerBasic customer = em.find(CustomerBasic.class, id);
 
         Calendar cal = Calendar.getInstance();
@@ -50,6 +50,7 @@ public class CreateFinancialGoalSessionBean implements CreateFinancialGoalSessio
         portfolio.setWealthPlan(wealthPlan);
         portfolio.setStartingDate(startingDate);
         portfolio.setEndDate(endDate);
+        portfolio.setRate(rate);
         em.persist(portfolio);
 
         customer.addPortfolio(portfolio);

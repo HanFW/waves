@@ -15,7 +15,7 @@ import javax.ejb.Local;
  */
 @Local
 public interface CreateFinancialGoalSessionBeanLocal {
-    public void createPortfolio(Long id, double startingBalance,double monthlyContribution,int contributeDuration, int investmentPeriod, double amountExpected, String wealthPlan);
+    public void createPortfolio(Long id, double startingBalance,double monthlyContribution,int contributeDuration, int investmentPeriod, double amountExpected, String wealthPlan, double rate);
     
     public List<Portfolio> getAllPortfoliosById(Long id);
 }

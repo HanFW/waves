@@ -54,7 +54,7 @@ public class RMChooseWealthPreservationPlanManagedBean {
             message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Investment period cannot be shorter than contribute duration", null);
             context.addMessage(null, message);
         } else {
-            createFinancialGoalSessionBeanLocal.createPortfolio(id, startingBalance, monthlyContribution, contributeDuration, worthYear, amountExpected, "wealth preservation plan");
+            createFinancialGoalSessionBeanLocal.createPortfolio(id, startingBalance, monthlyContribution, contributeDuration, worthYear, amountExpected, "wealth preservation plan",rate);
             message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Customer's portfolio has been succesfully created", null);
             context.addMessage(null, message);
         }

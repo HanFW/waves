@@ -49,7 +49,7 @@ public class RMViewCustomerPortfolioManagedBean {
         FacesContext context = FacesContext.getCurrentInstance();
         context.getExternalContext().getSessionMap().put("portfolioId", portfolioId);
         
-        context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/web/internalSystem/wealth/.xhtml?faces-redirect=true");
+        context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/web/internalSystem/portfolio/RMAddPortfolio.xhtml?faces-redirect=true");
     }
 
 }
