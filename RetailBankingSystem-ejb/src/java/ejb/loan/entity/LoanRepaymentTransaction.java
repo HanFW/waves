@@ -34,10 +34,13 @@ public class LoanRepaymentTransaction implements Serializable {
     private String description;
     private double accountDebit;
     private double accountCredit;
-
-    @ManyToOne (fetch = FetchType.EAGER)
-    private LoanRepaymentAccount loanRepaymentAccount;
     
+    @ManyToOne(fetch = FetchType.EAGER)
+    LoanRepaymentAccount loanRepaymentAccount;
+    
+    @ManyToOne(fetch = FetchType.EAGER)
+    LoanPayableAccount loanPayableAccount;
+
     public Long getId() {
         return id;
     }
@@ -101,6 +104,16 @@ public class LoanRepaymentTransaction implements Serializable {
     public void setLoanRepaymentAccount(LoanRepaymentAccount loanRepaymentAccount) {
         this.loanRepaymentAccount = loanRepaymentAccount;
     }
+
+    public LoanPayableAccount getLoanPayableAccount() {
+        return loanPayableAccount;
+    }
+
+    public void setLoanPayableAccount(LoanPayableAccount loanPayableAccount) {
+        this.loanPayableAccount = loanPayableAccount;
+    }
+    
+    
 
     @Override
     public int hashCode() {

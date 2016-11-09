@@ -1,0 +1,93 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/internalSystemTemplate.xhtml"
+                xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
+    <ui:define name="content">
+        <h:body>
+
+            <div align="center">
+                <h:form>
+
+                    <p:outputLabel value="Merlion Credit Cards" style="font-weight: bold;font-size:32px"/>
+                    <br/>
+                    <br/>
+
+                    <p:panelGrid>                            
+                        <p:row>
+                            <p:column colspan="2"> </p:column>
+                            <p:column colspan="2" style="font-weight: bold">Merlion Retirement Plan</p:column>
+                            <p:column colspan="2" style="font-weight: bold">Merlion Education Plan</p:column>
+                            <p:column colspan="2" style="font-weight: bold">Merlion Wealth Preservation and Distribution Plan</p:column>          
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="2" style="font-weight: bold">Annual Rate of Return</p:column>
+                            <p:column colspan="2">6%-10% annual rate of return</p:column>
+                            <p:column colspan="2">3%-12% annual rate of return</p:column>
+                            <p:column colspan="2">10%-20% annual rate of return</p:column>          
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="2" style="font-weight: bold">Starting Balance</p:column>
+                            <p:column colspan="2">No Limit</p:column>
+                            <p:column colspan="2">No Limit</p:column>
+                            <p:column colspan="2">Over $10,000</p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="2" style="font-weight: bold">Monthly Contribution Required</p:column>
+                            <p:column colspan="2">Yes</p:column>
+                            <p:column colspan="2">Yes</p:column>
+                            <p:column colspan="2">No</p:column>          
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="2" style="font-weight: bold">Contribute Duration</p:column>
+                            <p:column colspan="2">More than 10 years</p:column>
+                            <p:column colspan="2">More than 5 years</p:column>
+                            <p:column colspan="2">N.A.</p:column>          
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="2" style="font-weight: bold">Service Charge</p:column>
+                            <p:column colspan="2">$30 per month</p:column>
+                            <p:column colspan="2">$20 per month</p:column>
+                            <p:column colspan="2">$50 per month </p:column>          
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="2" style="font-weight: bold">Termination Penalty</p:column>
+                            <p:column colspan="2">45% of interest earned</p:column>
+                            <p:column colspan="2">35% of interest earned</p:column>
+                            <p:column colspan="2">10% of interest earned</p:column>          
+                        </p:row>
+
+                        <p:row>
+                            <p:column colspan="2" style="font-weight: bold"> </p:column>
+                            <p:column colspan="2"> 
+                                <p:commandButton value="Choose Retirement Plan" action="/web/internalSystem/wealth/RMGuideCustomerChooseRetirementPlan.xhtml" ajax="false" >
+
+                                </p:commandButton>
+                            </p:column> 
+
+                            <p:column colspan="2"> 
+                                <p:commandButton value="Choose Education Plan" action="/web/internalSystem/wealth/RMGuideCustomerChooseEducationPlan.xhtml" ajax="false" >
+
+                                </p:commandButton>
+                            </p:column>
+
+                            <p:column colspan="2"> 
+                                <p:commandButton value="Choose Wealth Preservation Plan" action="/web/internalSystem/wealth/RMGuideCustomerChooseWealthPreservationPlan.xhtml" ajax="false" >
+
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+
+                </h:form>
+            </div>
+        </h:body>
+    </ui:define>
+</ui:composition>
+
+
+
