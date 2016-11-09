@@ -13,10 +13,10 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
-@Named(value = "employeeDeleteStandingGIRO")
+@Named(value = "employeeAddSWIFTPayeeManagedBean")
 @RequestScoped
 
-public class EmployeeDeleteStandingGIRO {
+public class EmployeeAddSWIFTPayeeManagedBean {
 
     @EJB
     private CRMCustomerSessionBeanLocal customerSessionBeanLocal;
@@ -27,10 +27,10 @@ public class EmployeeDeleteStandingGIRO {
     private String customerName;
     private String customerIdentificationNum;
     private Date customerDateOfBirth;
-    
+
     private ExternalContext ec;
     
-    public EmployeeDeleteStandingGIRO() {
+    public EmployeeAddSWIFTPayeeManagedBean() {
     }
     
     public String getCustomerName() {
@@ -81,7 +81,7 @@ public class EmployeeDeleteStandingGIRO {
                 Map<String, Object> sessionMap = externalContext.getSessionMap();
                 sessionMap.put("customerIdentificationNum", customerIdentificationNum);
 
-                ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/payment/employeeDeleteStandingGIRODone.xhtml?faces-redirect=true");
+                ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/payment/employeeAddSWIFTPayeeDone.xhtml?faces-redirect=true");
             }
         }
     }

@@ -1,19 +1,14 @@
 <?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
-                template="/WEB-INF/onlineBankingTemplate.xhtml"
-                xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
-    
+                template="/WEB-INF/internalSystemTemplate.xhtml">
+
     <ui:define name="content">
         <h:form>
-            <p:panel>
-                <p:outputLabel value="Welcome "/>
-                <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
-            </p:panel>
             <div align="center">
                 <h1>Add Billing Organization</h1>
                 <p:messages id="message" globalOnly="true" />
@@ -25,16 +20,16 @@
                         <br/>
                         <br/>
                         <p:outputLabel value="Billing Organization" style="font-weight: bold"/>
-                        <p:selectOneMenu id="billingOrganization" value="#{addNonStandingGIROManagedBean.billingOrganization}" 
+                        <p:selectOneMenu id="billingOrganization" value="#{employeeAddBillingOrganizationDoneManagedBean.billingOrganization}" 
                                          effect="fold" editable="false" required="true" requiredMessage="Required Field">
                             <f:selectItem itemLabel="Please Select One" itemValue="" />
-                            <f:selectItems value="#{addNonStandingGIROManagedBean.billingOrganizations}" />
+                            <f:selectItems value="#{employeeAddBillingOrganizationDoneManagedBean.billingOrganizations}" />
                         </p:selectOneMenu>
                         <p:message for="billingOrganization" />
 
                         <p:outputLabel value="Bill Reference" style="font-weight: bold"/>
                         <p:inputText label="Bill Reference" id="billReference" 
-                                     value="#{addNonStandingGIROManagedBean.billReference}"
+                                     value="#{employeeAddBillingOrganizationDoneManagedBean.billReference}"
                                      required="true" requiredMessage="Required Field">
                         </p:inputText>
                         <p:message for="billReference" />
@@ -44,18 +39,18 @@
                         <br/>
                         <br/>
                         <p:outputLabel value="Transfer Method" style="font-weight: bold"/>
-                        <p:selectOneRadio id="transferMethod" value="#{addNonStandingGIROManagedBean.transferMethod}"
+                        <p:selectOneRadio id="transferMethod" value="#{employeeAddBillingOrganizationDoneManagedBean.transferMethod}"
                                           required="true" requiredMessage="Required Field">
                             <f:selectItem itemLabel="One Time" itemValue="One Time"/>
                             <f:selectItem itemLabel="Recurrent" itemValue="Recurrent" />
-                            <p:ajax event="change" update="transferFrequencyPanel" listener="#{addNonStandingGIROManagedBean.show()}"/>
+                            <p:ajax event="change" update="transferFrequencyPanel" listener="#{employeeAddBillingOrganizationDoneManagedBean.show()}"/>
                         </p:selectOneRadio>
                         <p:message for="transferMethod" />
 
-                        <p:panel id="transferFrequencyPanel" visible="#{addNonStandingGIROManagedBean.visible}">
+                        <p:panel id="transferFrequencyPanel" visible="#{employeeAddBillingOrganizationDoneManagedBean.visible}">
                             <p:outputLabel value="Frequency" style="font-weight: bold"/>
-                            <p:selectOneMenu id="transferFrequency" value="#{addNonStandingGIROManagedBean.transferFrequency}" 
-                                             effect="fold" editable="false" required="#{addNonStandingGIROManagedBean.transferMethodRender}"
+                            <p:selectOneMenu id="transferFrequency" value="#{employeeAddBillingOrganizationDoneManagedBean.transferFrequency}" 
+                                             effect="fold" editable="false" required="#{employeeAddBillingOrganizationDoneManagedBean.transferMethodRender}"
                                              requiredMessage="Required Field">
                                 <f:selectItem itemLabel="Please Select One" itemValue="" />
                                 <f:selectItem itemLabel="Monthly" itemValue="Monthly" />
@@ -66,24 +61,21 @@
                         </p:panel>
 
                         <p:outputLabel value="My Account" style="font-weight: bold"/>
-                        <p:selectOneMenu id="bankAccountNum" value="#{addNonStandingGIROManagedBean.bankAccountNumWithType}" 
+                        <p:selectOneMenu id="bankAccountNum" value="#{employeeAddBillingOrganizationDoneManagedBean.bankAccountNumWithType}" 
                                          effect="fold" editable="false" required="true" requiredMessage="Required Field">
                             <f:selectItem itemLabel="Please Select One" itemValue="" />
-                            <f:selectItems value="#{addNonStandingGIROManagedBean.myAccounts}" />
+                            <f:selectItems value="#{employeeAddBillingOrganizationDoneManagedBean.myAccounts}" />
                         </p:selectOneMenu>
                         <p:message for="bankAccountNum" />
 
                         <div align="center">
                             <p:commandButton id="submitBtn" value="Submit" update="panel message" 
-                                             actionListener="#{addNonStandingGIROManagedBean.addNewBillingOrganization()}" 
+                                             actionListener="#{employeeAddBillingOrganizationDoneManagedBean.addNewBillingOrganization()}" 
                                              ajax="true" style="width:150px"/>
                         </div>
                     </p:panel>
-
                 </p:panelGrid>
             </div>
-
         </h:form>
-        <ezcomp:CCTimeout/>
     </ui:define>
 </ui:composition>

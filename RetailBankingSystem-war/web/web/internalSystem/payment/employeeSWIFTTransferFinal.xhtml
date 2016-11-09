@@ -5,22 +5,16 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
-                template="/WEB-INF/onlineBankingTemplate.xhtml"
-                xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
+                template="/WEB-INF/internalSystemTemplate.xhtml">
 
     <ui:define name="content">
         <h:form>
             <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
-
-                <p:panel>
-                    <p:outputLabel value="Welcome "/>
-                    <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
-                </p:panel>
                 <p:messages globalOnly="true"/>
 
                 <p:panel header="Transfer to My Account">
 
-                    <h:outputText value="#{sWIFTTransferDoneManagedBean.statusMessage}" style="font-size: 24px"/>
+                    <h:outputText value="#{employeeSWIFTTransferFinalManagedBean.statusMessage}" style="font-size: 24px"/>
                     <br/>
                     <br/>
                     <br/>
@@ -28,10 +22,10 @@
                     <br/>
                     <br/>
                     <h:outputText style="font-weight: bold" value="To Account Number: "/>
-                    <h:outputText value="#{sWIFTTransferDoneManagedBean.toBankAccountNumWithType}"/>
+                    <h:outputText value="#{employeeSWIFTTransferFinalManagedBean.toBankAccountNumWithType}"/>
                     <br/>
                     <h:outputText style="font-weight: bold" value="Transfer Amount: "/>
-                    <h:outputText value="#{sWIFTTransferDoneManagedBean.transferAmt}"/>
+                    <h:outputText value="#{employeeSWIFTTransferFinalManagedBean.transferAmt}"/>
                     <br/>
                     <br/>
                     <p:accordionPanel activeIndex="-1" style="">
@@ -41,7 +35,7 @@
                             <br/>
                             <br/>
                             <h:outputText style="font-weight: bold" value="Account Number: "/>
-                            <h:outputText value="#{sWIFTTransferDoneManagedBean.fromBankAccountNumWithType}"/>
+                            <h:outputText value="#{employeeSWIFTTransferFinalManagedBean.fromBankAccountNumWithType}"/>
                             <br/>
                             <br/>
                             <h:outputText value="To" style="font-size: 24px" />
@@ -49,10 +43,10 @@
                             <br/>
                             <br/>
                             <h:outputText style="font-weight: bold" value="Account Number: "/>
-                            <h:outputText value="#{sWIFTTransferDoneManagedBean.toBankAccountNumWithType}"/>
+                            <h:outputText value="#{employeeSWIFTTransferFinalManagedBean.toBankAccountNumWithType}"/>
                             <br/>
                             <h:outputText style="font-weight: bold" value="Transfer Amount: "/>
-                            <h:outputText value="#{sWIFTTransferDoneManagedBean.transferAmt}"/>
+                            <h:outputText value="#{employeeSWIFTTransferFinalManagedBean.transferAmt}"/>
                         </p:tab>
                     </p:accordionPanel>
                 </p:panel>
@@ -60,6 +54,5 @@
             </p:panelGrid>
 
         </h:form>
-        <ezcomp:CCTimeout/>
     </ui:define>
 </ui:composition>

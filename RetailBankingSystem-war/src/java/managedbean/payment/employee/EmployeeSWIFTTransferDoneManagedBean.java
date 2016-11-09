@@ -1,6 +1,7 @@
-package managedbean.payment.customer;
+package managedbean.payment.employee;
 
 import ejb.customer.entity.CustomerBasic;
+import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import ejb.payment.entity.Currency;
@@ -22,10 +23,13 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 
-@Named(value = "sWIFTTransferManagedBean")
+@Named(value = "employeeSWIFTTransferDoneManagedBean")
 @ViewScoped
 
-public class SWIFTTransferManagedBean implements Serializable {
+public class EmployeeSWIFTTransferDoneManagedBean implements Serializable {
+
+    @EJB
+    private CRMCustomerSessionBeanLocal customerSessionBeanLocal;
 
     @EJB
     private MerlionBankSessionBeanLocal merlionBankSessionBeanLocal;
@@ -56,10 +60,11 @@ public class SWIFTTransferManagedBean implements Serializable {
     private String receivedCountryTransferAmtSGD;
     private String statusMessage;
     private Double serviceCharge;
+    private String customerIdentificationNum;
 
     private ExternalContext ec;
 
-    public SWIFTTransferManagedBean() {
+    public EmployeeSWIFTTransferDoneManagedBean() {
     }
 
     @PostConstruct
@@ -67,23 +72,22 @@ public class SWIFTTransferManagedBean implements Serializable {
 
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
-        if (ec.getSessionMap().get("customer") != null) {
-            CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
+        customerIdentificationNum = ec.getSessionMap().get("customerIdentificationNum").toString();
+        CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum);
 
-            List<BankAccount> bankAccounts = bankAccountSessionBeanLocal.retrieveBankAccountByCusIC(customerBasic.getCustomerIdentificationNum());
-            fromAccounts = new HashMap<String, String>();
-            customerSWIFTPayee = new HashMap<String, String>();
-            List<SWIFTPayee> swiftPayees = sWIFTPayeeSessionBeanLocal.retrieveSWIFTPayeeByCusIC(customerBasic.getCustomerIdentificationNum());
+        List<BankAccount> bankAccounts = bankAccountSessionBeanLocal.retrieveBankAccountByCusIC(customerBasic.getCustomerIdentificationNum());
+        fromAccounts = new HashMap<String, String>();
+        customerSWIFTPayee = new HashMap<String, String>();
+        List<SWIFTPayee> swiftPayees = sWIFTPayeeSessionBeanLocal.retrieveSWIFTPayeeByCusIC(customerBasic.getCustomerIdentificationNum());
 
-            for (int i = 0; i < bankAccounts.size(); i++) {
-                fromAccounts.put(bankAccounts.get(i).getBankAccountType() + "-" + bankAccounts.get(i).getBankAccountNum(), bankAccounts.get(i).getBankAccountType() + "-" + bankAccounts.get(i).getBankAccountNum());
-            }
+        for (int i = 0; i < bankAccounts.size(); i++) {
+            fromAccounts.put(bankAccounts.get(i).getBankAccountType() + "-" + bankAccounts.get(i).getBankAccountNum(), bankAccounts.get(i).getBankAccountType() + "-" + bankAccounts.get(i).getBankAccountNum());
+        }
 
-            for (int j = 0; j < swiftPayees.size(); j++) {
-                customerSWIFTPayee.put(swiftPayees.get(j).getPayeeAccountType() + "-" + swiftPayees.get(j).getPayeeAccountNum() + "-"
-                        + swiftPayees.get(j).getSwiftInstitution(), swiftPayees.get(j).getPayeeAccountType() + "-"
-                        + swiftPayees.get(j).getPayeeAccountNum() + "-" + swiftPayees.get(j).getSwiftInstitution());
-            }
+        for (int j = 0; j < swiftPayees.size(); j++) {
+            customerSWIFTPayee.put(swiftPayees.get(j).getPayeeAccountType() + "-" + swiftPayees.get(j).getPayeeAccountNum() + "-"
+                    + swiftPayees.get(j).getSwiftInstitution(), swiftPayees.get(j).getPayeeAccountType() + "-"
+                    + swiftPayees.get(j).getPayeeAccountNum() + "-" + swiftPayees.get(j).getSwiftInstitution());
         }
     }
 
@@ -284,7 +288,7 @@ public class SWIFTTransferManagedBean implements Serializable {
         ec.getFlash().put("fromBankAccountNumWithType", fromBankAccountNumWithType);
         ec.getFlash().put("transferAmt", df.format(transferAmt));
 
-        ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/payment/customerSWIFTTransferDone.xhtml?faces-redirect=true");
+        ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/payment/employeeSWIFTTransferFinal.xhtml?faces-redirect=true");
     }
 
     private String handleCurrencyString(String toCurrencyWithDollar) {

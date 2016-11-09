@@ -1,11 +1,12 @@
-package managedbean.payment.customer;
+package managedbean.payment.employee;
 
 import ejb.customer.entity.CustomerBasic;
+import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import ejb.deposit.session.TransactionSessionBeanLocal;
-import ejb.payment.session.OtherBankPayeeSessionBeanLocal;
 import ejb.payment.entity.OtherBankPayee;
+import ejb.payment.session.OtherBankPayeeSessionBeanLocal;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -23,10 +24,13 @@ import ws.client.otherbanks.OtherBankAccount;
 import ws.client.otherbanks.OtherBanksWebService_Service;
 import ws.client.sach.SACHWebService_Service;
 
-@Named(value = "fastTransferManagedBean")
+@Named(value = "employeeTransferFastDoneManagedBean")
 @RequestScoped
 
-public class FastTransferManagedBean {
+public class EmployeeTransferFastDoneManagedBean {
+
+    @EJB
+    private CRMCustomerSessionBeanLocal customerSessionBeanLocal;
 
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_8080/OtherBanksWebService/OtherBanksWebService.wsdl")
     private OtherBanksWebService_Service service_otherBanks;
@@ -43,9 +47,7 @@ public class FastTransferManagedBean {
     @EJB
     private BankAccountSessionBeanLocal bankAccountSessionBeanLocal;
 
-    private String toBankAccountNumWithType;
     private String toCurrency;
-    private Map<String, String> customerOtherBankPayee = new HashMap<String, String>();
     private Map<String, String> fromAccounts = new HashMap<String, String>();
     private String fromBankAccountNumWithType;
     private String fromCurrency;
@@ -56,41 +58,27 @@ public class FastTransferManagedBean {
     private String fromAccountTotalBalance;
 
     private String statusMessage;
+    private String customerIdentificationNum;
 
     private ExternalContext ec;
 
-    public FastTransferManagedBean() {
+    public EmployeeTransferFastDoneManagedBean() {
     }
 
     @PostConstruct
     public void init() {
-
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
-        if (ec.getSessionMap().get("customer") != null) {
-            CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
+        customerIdentificationNum = ec.getSessionMap().get("customerIdentificationNum").toString();
+        CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum);
 
-            List<BankAccount> bankAccounts = bankAccountSessionBeanLocal.retrieveBankAccountByCusIC(customerBasic.getCustomerIdentificationNum());
-            fromAccounts = new HashMap<String, String>();
-            customerOtherBankPayee = new HashMap<String, String>();
-            List<OtherBankPayee> otherBankPayees = otherBankPayeeSessionBeanLocal.retrieveOtherBankPayeeByCusId(customerBasic.getCustomerBasicId());
+        List<BankAccount> bankAccounts = bankAccountSessionBeanLocal.retrieveBankAccountByCusIC(customerBasic.getCustomerIdentificationNum());
+        fromAccounts = new HashMap<String, String>();
+        List<OtherBankPayee> otherBankPayees = otherBankPayeeSessionBeanLocal.retrieveOtherBankPayeeByCusId(customerBasic.getCustomerBasicId());
 
-            for (int i = 0; i < bankAccounts.size(); i++) {
-                fromAccounts.put(bankAccounts.get(i).getBankAccountType() + "-" + bankAccounts.get(i).getBankAccountNum(), bankAccounts.get(i).getBankAccountType() + "-" + bankAccounts.get(i).getBankAccountNum());
-            }
-
-            for (int j = 0; j < otherBankPayees.size(); j++) {
-                customerOtherBankPayee.put(otherBankPayees.get(j).getPayeeAccountType() + "-" + otherBankPayees.get(j).getPayeeAccountNum() + "-" + otherBankPayees.get(j).getOtherBankPayeeName(), otherBankPayees.get(j).getPayeeAccountType() + "-" + otherBankPayees.get(j).getPayeeAccountNum() + "-" + otherBankPayees.get(j).getOtherBankPayeeName());
-            }
+        for (int i = 0; i < bankAccounts.size(); i++) {
+            fromAccounts.put(bankAccounts.get(i).getBankAccountType() + "-" + bankAccounts.get(i).getBankAccountNum(), bankAccounts.get(i).getBankAccountType() + "-" + bankAccounts.get(i).getBankAccountNum());
         }
-    }
-
-    public String getToBankAccountNumWithType() {
-        return toBankAccountNumWithType;
-    }
-
-    public void setToBankAccountNumWithType(String toBankAccountNumWithType) {
-        this.toBankAccountNumWithType = toBankAccountNumWithType;
     }
 
     public String getToCurrency() {
@@ -173,22 +161,11 @@ public class FastTransferManagedBean {
         this.fromAccountTotalBalance = fromAccountTotalBalance;
     }
 
-    public Map<String, String> getCustomerOtherBankPayee() {
-        return customerOtherBankPayee;
-    }
-
-    public void setCustomerOtherBankPayee(Map<String, String> customerOtherBankPayee) {
-        this.customerOtherBankPayee = customerOtherBankPayee;
-    }
-
     public void fastTransfer() throws IOException {
 
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
-        CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
-
         fromBankAccount = handleAccountString(fromBankAccountNumWithType);
-        toBankAccount = handleAccountString(toBankAccountNumWithType);
 
         BankAccount merlionBankAccountFrom = bankAccountSessionBeanLocal.retrieveBankAccountByNum(fromBankAccount);
         OtherBankAccount otherBankAccountTo = retrieveBankAccountByNum(toBankAccount);
@@ -219,7 +196,6 @@ public class FastTransferManagedBean {
 
                 ec.getFlash().put("transactionId", transactionId);
                 ec.getFlash().put("statusMessage", statusMessage);
-                ec.getFlash().put("toBankAccountNumWithType", toBankAccountNumWithType);
                 ec.getFlash().put("fromBankAccountNumWithType", fromBankAccountNumWithType);
                 ec.getFlash().put("transferAmt", transferAmt);
                 ec.getFlash().put("fromAccount", fromBankAccount);
@@ -227,7 +203,7 @@ public class FastTransferManagedBean {
                 ec.getFlash().put("fromAccountAvailableBalance", fromAccountAvailableBalance);
                 ec.getFlash().put("fromAccountTotalBalance", fromAccountTotalBalance);
 
-                ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/payment/customerTransferFastDone.xhtml?faces-redirect=true");
+                ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/payment/employeeTransferFastFinal.xhtml?faces-redirect=true");
             } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Your account balance is insufficient.", "Failed!"));
             }

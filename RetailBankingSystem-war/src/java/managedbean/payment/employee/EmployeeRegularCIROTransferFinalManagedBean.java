@@ -5,10 +5,10 @@ import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 
-@Named(value = "employeeNonStandingGIROTransferFinishedManagedBean")
+@Named(value = "employeeRegularCIROTransferFinalManagedBean")
 @RequestScoped
 
-public class EmployeeNonStandingGIROTransferFinishedManagedBean {
+public class EmployeeRegularCIROTransferFinalManagedBean {
 
     private String statusMessage;
     private String toBankAccountNumWithType;
@@ -17,7 +17,7 @@ public class EmployeeNonStandingGIROTransferFinishedManagedBean {
     private String fromBankAccountAvailableBalance;
     private String fromBankAccountTotalBalance;
     
-    public EmployeeNonStandingGIROTransferFinishedManagedBean() {
+    public EmployeeRegularCIROTransferFinalManagedBean() {
     }
     
     @PostConstruct

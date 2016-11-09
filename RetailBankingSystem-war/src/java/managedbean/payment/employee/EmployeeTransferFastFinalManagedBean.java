@@ -1,18 +1,17 @@
-package managedbean.payment.customer;
+package managedbean.payment.employee;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.FacesContext;
 
-@Named(value = "fastTransferDoneManagedBean")
+@Named(value = "employeeTransferFastFinalManagedBean")
 @RequestScoped
 
-public class FastTransferDoneManagedBean {
+public class EmployeeTransferFastFinalManagedBean {
 
     private String statusMessage;
     private String transactionId;
-    private String toBankAccountNumWithType;
     private String fromBankAccountNumWithType;
     private String transferAmt;
     private String fromAccount;
@@ -20,20 +19,19 @@ public class FastTransferDoneManagedBean {
     private String fromAccountAvailableBalance;
     private String fromAccountTotalBalance;
 
-    public FastTransferDoneManagedBean() {
+    public EmployeeTransferFastFinalManagedBean() {
     }
 
     @PostConstruct
     public void init() {
-        transactionId = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("transactionId").toString();
         statusMessage = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("statusMessage").toString();
-        toBankAccountNumWithType = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("toBankAccountNumWithType").toString();
         fromBankAccountNumWithType = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("fromBankAccountNumWithType").toString();
         transferAmt = "S$" + FacesContext.getCurrentInstance().getExternalContext().getFlash().get("transferAmt").toString();
         fromAccount = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("fromAccount").toString();
         toAccount = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("toAccount").toString();
         fromAccountAvailableBalance = "S$" + FacesContext.getCurrentInstance().getExternalContext().getFlash().get("fromAccountAvailableBalance").toString();
         fromAccountTotalBalance = "S$" + FacesContext.getCurrentInstance().getExternalContext().getFlash().get("fromAccountTotalBalance").toString();
+        transactionId = FacesContext.getCurrentInstance().getExternalContext().getFlash().get("transactionId").toString();
     }
 
     public String getStatusMessage() {
@@ -50,14 +48,6 @@ public class FastTransferDoneManagedBean {
 
     public void setTransactionId(String transactionId) {
         this.transactionId = transactionId;
-    }
-
-    public String getToBankAccountNumWithType() {
-        return toBankAccountNumWithType;
-    }
-
-    public void setToBankAccountNumWithType(String toBankAccountNumWithType) {
-        this.toBankAccountNumWithType = toBankAccountNumWithType;
     }
 
     public String getFromBankAccountNumWithType() {

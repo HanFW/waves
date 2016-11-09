@@ -1,6 +1,7 @@
-package managedbean.payment.customer;
+package managedbean.payment.employee;
 
 import ejb.customer.entity.CustomerBasic;
+import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import ejb.payment.entity.RegularGIRO;
 import ejb.payment.session.RegularGIROSessionBeanLocal;
 import java.io.IOException;
@@ -12,16 +13,20 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
-@Named(value = "viewRegularGIROTransfer")
+@Named(value = "employeeViewRegularGIROTransferDone")
 @RequestScoped
 
-public class ViewRegularGIROTransfer {
+public class EmployeeViewRegularGIROTransferDone {
+
+    @EJB
+    private CRMCustomerSessionBeanLocal customerSessionBeanLocal;
 
     @EJB
     private RegularGIROSessionBeanLocal regularGIROSessionBeanLocal;
 
     private ExternalContext ec;
     private Long giroId;
+    private String customerIdentificationNum;
 
     public Long getGiroId() {
         return giroId;
@@ -31,13 +36,22 @@ public class ViewRegularGIROTransfer {
         this.giroId = giroId;
     }
 
-    public ViewRegularGIROTransfer() {
+    public String getCustomerIdentificationNum() {
+        return customerIdentificationNum;
+    }
+
+    public void setCustomerIdentificationNum(String customerIdentificationNum) {
+        this.customerIdentificationNum = customerIdentificationNum;
+    }
+
+    public EmployeeViewRegularGIROTransferDone() {
     }
 
     public List<RegularGIRO> getAllRegularGIROs() throws IOException {
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
-        CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
+        customerIdentificationNum = ec.getSessionMap().get("customerIdentificationNum").toString();
+        CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum);
 
         List<RegularGIRO> regularGIROs = regularGIROSessionBeanLocal.retrieveRegularGIROByCusIC(customerBasic.getCustomerIdentificationNum());
 

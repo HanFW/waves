@@ -1,6 +1,7 @@
-package managedbean.payment.customer;
+package managedbean.payment.employee;
 
 import ejb.customer.entity.CustomerBasic;
+import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import ejb.payment.entity.SWIFTPayee;
 import ejb.payment.session.SWIFTPayeeSessionBeanLocal;
 import java.io.IOException;
@@ -11,13 +12,16 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
-@Named(value = "addSWIFTPayeeManagedBean")
+@Named(value = "employeeAddSWIFTPayeeDoneManagedBean")
 @RequestScoped
 
-public class AddSWIFTPayeeManagedBean {
+public class EmployeeAddSWIFTPayeeDoneManagedBean {
 
     @EJB
     private SWIFTPayeeSessionBeanLocal sWIFTPayeeSessionBeanLocal;
+
+    @EJB
+    private CRMCustomerSessionBeanLocal customerSessionBeanLocal;
 
     private String payeeInstitution;
     private String payeeAccountNum;
@@ -27,10 +31,11 @@ public class AddSWIFTPayeeManagedBean {
     private String payeeCountry;
 
     private String statusMessage;
+    private String customerIdentificationNum;
 
     private ExternalContext ec;
 
-    public AddSWIFTPayeeManagedBean() {
+    public EmployeeAddSWIFTPayeeDoneManagedBean() {
     }
 
     public String getPayeeInstitution() {
@@ -81,11 +86,20 @@ public class AddSWIFTPayeeManagedBean {
         this.payeeCountry = payeeCountry;
     }
 
+    public String getCustomerIdentificationNum() {
+        return customerIdentificationNum;
+    }
+
+    public void setCustomerIdentificationNum(String customerIdentificationNum) {
+        this.customerIdentificationNum = customerIdentificationNum;
+    }
+
     public void addSWIFTPayee() throws IOException {
 
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
-        CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
+        customerIdentificationNum = ec.getSessionMap().get("customerIdentificationNum").toString();
+        CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum);
         String lastTransactionDate = "";
 
         SWIFTPayee payee = sWIFTPayeeSessionBeanLocal.retrieveSWIFTPayeeByNum(payeeAccountNum);
@@ -110,7 +124,7 @@ public class AddSWIFTPayeeManagedBean {
             ec.getFlash().put("payeeCountry", payeeCountry);
             ec.getFlash().put("payeeBank", payeeBank);
 
-            ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/payment/customerAddSWIFTPayeeDone.xhtml?faces-redirect=true");
+            ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/payment/employeeAddSWIFTPayeeFinal.xhtml?faces-redirect=true");
         }
     }
 }

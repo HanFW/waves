@@ -5,33 +5,28 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
-                template="/WEB-INF/onlineBankingTemplate.xhtml"
-                xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
-
+                template="/WEB-INF/internalSystemTemplate.xhtml">
+                    
     <ui:define name="content">
         <h:form>
             <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
-
-                <p:panel>
-                    <p:outputLabel value="Welcome "/>
-                    <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
-                </p:panel>
                 <p:messages globalOnly="true"/>
 
-                <p:panel header="Transfer to My Account">
+                <p:panel header="FAST Transfer">
 
-                    <h:outputText value="#{sWIFTTransferDoneManagedBean.statusMessage}" style="font-size: 24px"/>
+                    <h:outputText value="#{employeeTransferFastFinalManagedBean.statusMessage}" style="font-size: 24px"/>
                     <br/>
                     <br/>
                     <br/>
-                    <h:outputText style="font-weight: bold" value="Please review your transaction details" />
-                    <br/>
+                    <h:outputText style="font-weight: bold" value="Please note this transaction reference number
+                                  for your records: " />
+                    <h:outputText value="#{employeeTransferFastFinalManagedBean.transactionId}" />
                     <br/>
                     <h:outputText style="font-weight: bold" value="To Account Number: "/>
-                    <h:outputText value="#{sWIFTTransferDoneManagedBean.toBankAccountNumWithType}"/>
+                    <h:outputText value="#{employeeTransferFastFinalManagedBean.toAccount}"/>
                     <br/>
                     <h:outputText style="font-weight: bold" value="Transfer Amount: "/>
-                    <h:outputText value="#{sWIFTTransferDoneManagedBean.transferAmt}"/>
+                    <h:outputText value="#{employeeTransferFastFinalManagedBean.transferAmt}"/>
                     <br/>
                     <br/>
                     <p:accordionPanel activeIndex="-1" style="">
@@ -41,7 +36,13 @@
                             <br/>
                             <br/>
                             <h:outputText style="font-weight: bold" value="Account Number: "/>
-                            <h:outputText value="#{sWIFTTransferDoneManagedBean.fromBankAccountNumWithType}"/>
+                            <h:outputText value="#{employeeTransferFastFinalManagedBean.fromBankAccountNumWithType}"/>
+                            <br/>
+                            <h:outputText style="font-weight: bold" value="Lastest Available Balance: "/>
+                            <h:outputText value="#{employeeTransferFastFinalManagedBean.fromAccountAvailableBalance}"/>
+                            <br/>
+                            <h:outputText style="font-weight: bold" value="Lastest Total Balance: "/>
+                            <h:outputText value="#{employeeTransferFastFinalManagedBean.fromAccountTotalBalance}"/>
                             <br/>
                             <br/>
                             <h:outputText value="To" style="font-size: 24px" />
@@ -49,17 +50,17 @@
                             <br/>
                             <br/>
                             <h:outputText style="font-weight: bold" value="Account Number: "/>
-                            <h:outputText value="#{sWIFTTransferDoneManagedBean.toBankAccountNumWithType}"/>
+                            <h:outputText value="#{employeeTransferFastFinalManagedBean.toAccount}"/>
                             <br/>
                             <h:outputText style="font-weight: bold" value="Transfer Amount: "/>
-                            <h:outputText value="#{sWIFTTransferDoneManagedBean.transferAmt}"/>
+                            <h:outputText value="#{employeeTransferFastFinalManagedBean.transferAmt}"/>
+                            <br/>
+                            <h:outputText style="font-weight: bold" value="Transaction Reference Number: "/>
+                            <h:outputText value="#{employeeTransferFastFinalManagedBean.transactionId}" />
                         </p:tab>
                     </p:accordionPanel>
                 </p:panel>
-
             </p:panelGrid>
-
         </h:form>
-        <ezcomp:CCTimeout/>
     </ui:define>
 </ui:composition>
