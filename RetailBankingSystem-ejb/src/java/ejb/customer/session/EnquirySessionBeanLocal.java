@@ -22,6 +22,8 @@ public interface EnquirySessionBeanLocal {
     public List<EnquiryCase> getCustomerEnquiry(Long customerId);
 
     public List<EnquiryCase> getAllPendingCustomerEnquiry();
+    
+    public List<EnquiryCase> getCustomerWMEnquiry(Long employeeId);
 
     public String getCustomerEnquiryDetail(Long caseId);
 
@@ -70,5 +72,7 @@ public interface EnquirySessionBeanLocal {
     public String caseIssueAllReplied(Long caseId);
 
     public String deleteCase(Long caseId);
+    
+    public String replyWMCase (Long caseId, String solution);
 
 }

@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/internalSystemTemplate.xhtml">
+
+    <ui:define name="content">     
+        <h:form>
+            <p:panel>
+                <p:dataTable var="enquiryCase" reflow="true" value="#{rMViewEnquiryManagedBean.pendingWMCase}" 
+                             paginator="true" rows="10" emptyMessage="No Pending Case">
+                    <p:column headerText="Case ID" >
+                        <h:outputText value="#{enquiryCase.caseId}" /> 
+                    </p:column>
+
+                    <p:column headerText="Created Time" >
+                        <h:outputText value="#{enquiryCase.createdTime}" /> 
+                    </p:column>
+
+                    <p:column headerText="Department" >
+                        <h:outputText value="#{enquiryCase.caseType}" /> 
+                    </p:column>
+
+                    <p:column headerText="Detail" >
+                        <h:outputText value="#{enquiryCase.caseDetail}" /> 
+                    </p:column>
+
+                    <p:column headerText="Status"> 
+                        <h:outputText value="#{enquiryCase.caseStatus}" />
+                    </p:column>
+
+                    <p:column > 
+                        <p:commandButton value="Reply" actionListener="#{rMViewEnquiryManagedBean.redirectToReplyPage}" ajax="false">
+                            <f:setPropertyActionListener target="#{rMViewEnquiryManagedBean.caseId}" value="#{enquiryCase.caseId}" />
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+        </h:form>
+    </ui:define>
+</ui:composition>
+

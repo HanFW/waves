@@ -4,11 +4,11 @@
 <xsd:import namespace="http://session.ws.ejb/" schemaLocation="http://localhost:8080/TransactionAuthorizationWebService/TransactionAuthorizationWebService?xsd=1"/>
 </xsd:schema>
 </types>
-<message name="getAllAuthorizedTransactions">
-<part name="parameters" element="tns:getAllAuthorizedTransactions"/>
+<message name="createTransactionToBeAuthorized">
+<part name="parameters" element="tns:createTransactionToBeAuthorized"/>
 </message>
-<message name="getAllAuthorizedTransactionsResponse">
-<part name="parameters" element="tns:getAllAuthorizedTransactionsResponse"/>
+<message name="createTransactionToBeAuthorizedResponse">
+<part name="parameters" element="tns:createTransactionToBeAuthorizedResponse"/>
 </message>
 <message name="createNewVisaClearingRecord">
 <part name="parameters" element="tns:createNewVisaClearingRecord"/>
@@ -22,22 +22,22 @@
 <message name="getAllPendingTransactionsToBeAuthorizedResponse">
 <part name="parameters" element="tns:getAllPendingTransactionsToBeAuthorizedResponse"/>
 </message>
+<message name="getAllAuthorizedTransactions">
+<part name="parameters" element="tns:getAllAuthorizedTransactions"/>
+</message>
+<message name="getAllAuthorizedTransactionsResponse">
+<part name="parameters" element="tns:getAllAuthorizedTransactionsResponse"/>
+</message>
 <message name="getTransactionToBeAuthorizedById">
 <part name="parameters" element="tns:getTransactionToBeAuthorizedById"/>
 </message>
 <message name="getTransactionToBeAuthorizedByIdResponse">
 <part name="parameters" element="tns:getTransactionToBeAuthorizedByIdResponse"/>
 </message>
-<message name="createTransactionToBeAuthorized">
-<part name="parameters" element="tns:createTransactionToBeAuthorized"/>
-</message>
-<message name="createTransactionToBeAuthorizedResponse">
-<part name="parameters" element="tns:createTransactionToBeAuthorizedResponse"/>
-</message>
 <portType name="TransactionAuthorizationWebService">
-<operation name="getAllAuthorizedTransactions">
-<input wsam:Action="http://session.ws.ejb/TransactionAuthorizationWebService/getAllAuthorizedTransactionsRequest" message="tns:getAllAuthorizedTransactions"/>
-<output wsam:Action="http://session.ws.ejb/TransactionAuthorizationWebService/getAllAuthorizedTransactionsResponse" message="tns:getAllAuthorizedTransactionsResponse"/>
+<operation name="createTransactionToBeAuthorized">
+<input wsam:Action="http://session.ws.ejb/TransactionAuthorizationWebService/createTransactionToBeAuthorizedRequest" message="tns:createTransactionToBeAuthorized"/>
+<output wsam:Action="http://session.ws.ejb/TransactionAuthorizationWebService/createTransactionToBeAuthorizedResponse" message="tns:createTransactionToBeAuthorizedResponse"/>
 </operation>
 <operation name="createNewVisaClearingRecord">
 <input wsam:Action="http://session.ws.ejb/TransactionAuthorizationWebService/createNewVisaClearingRecordRequest" message="tns:createNewVisaClearingRecord"/>
@@ -47,18 +47,18 @@
 <input wsam:Action="http://session.ws.ejb/TransactionAuthorizationWebService/getAllPendingTransactionsToBeAuthorizedRequest" message="tns:getAllPendingTransactionsToBeAuthorized"/>
 <output wsam:Action="http://session.ws.ejb/TransactionAuthorizationWebService/getAllPendingTransactionsToBeAuthorizedResponse" message="tns:getAllPendingTransactionsToBeAuthorizedResponse"/>
 </operation>
+<operation name="getAllAuthorizedTransactions">
+<input wsam:Action="http://session.ws.ejb/TransactionAuthorizationWebService/getAllAuthorizedTransactionsRequest" message="tns:getAllAuthorizedTransactions"/>
+<output wsam:Action="http://session.ws.ejb/TransactionAuthorizationWebService/getAllAuthorizedTransactionsResponse" message="tns:getAllAuthorizedTransactionsResponse"/>
+</operation>
 <operation name="getTransactionToBeAuthorizedById">
 <input wsam:Action="http://session.ws.ejb/TransactionAuthorizationWebService/getTransactionToBeAuthorizedByIdRequest" message="tns:getTransactionToBeAuthorizedById"/>
 <output wsam:Action="http://session.ws.ejb/TransactionAuthorizationWebService/getTransactionToBeAuthorizedByIdResponse" message="tns:getTransactionToBeAuthorizedByIdResponse"/>
 </operation>
-<operation name="createTransactionToBeAuthorized">
-<input wsam:Action="http://session.ws.ejb/TransactionAuthorizationWebService/createTransactionToBeAuthorizedRequest" message="tns:createTransactionToBeAuthorized"/>
-<output wsam:Action="http://session.ws.ejb/TransactionAuthorizationWebService/createTransactionToBeAuthorizedResponse" message="tns:createTransactionToBeAuthorizedResponse"/>
-</operation>
 </portType>
 <binding name="TransactionAuthorizationWebServicePortBinding" type="tns:TransactionAuthorizationWebService">
 <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
-<operation name="getAllAuthorizedTransactions">
+<operation name="createTransactionToBeAuthorized">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
@@ -85,7 +85,7 @@
 <soap:body use="literal"/>
 </output>
 </operation>
-<operation name="getTransactionToBeAuthorizedById">
+<operation name="getAllAuthorizedTransactions">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
@@ -94,7 +94,7 @@
 <soap:body use="literal"/>
 </output>
 </operation>
-<operation name="createTransactionToBeAuthorized">
+<operation name="getTransactionToBeAuthorizedById">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>

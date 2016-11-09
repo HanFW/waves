@@ -16,6 +16,7 @@
     <ui:define name="content">
         <h:form id="mainForm">
             <div align="center">
+                <p:messages/>
                 <h1>Stocks</h1>
                 <p:panel>
                     <p:dataTable var="stock" value="#{rMAddPorfolioManagedBean.allStocks}">
@@ -89,16 +90,16 @@
                         </p:dataList>
                     </div>
                     <p:separator/>
-                    
+
                     <h:outputText value="Starting Banlance:"/> 
-                    <h:outputText value="$#{rMAddPorfolioManagedBean.startingBalance}"/>
+                    <h:outputText value="$#{rMAddPorfolioManagedBean.startingBalanceStr}"/>
                     <br/>
                     <h:outputText value="Total:   "/> 
-                    <h:outputText value="$#{rMAddPorfolioManagedBean.totalPurchase}"/>
+                    <h:outputText value="$#{rMAddPorfolioManagedBean.totalPurchaseStr}"/>
                     <br/>
                     <h:outputText value="Available Balance: "/> 
-                    <h:outputText value="$#{rMAddPorfolioManagedBean.availableBalance}"/>
-                    
+                    <h:outputText value="$#{rMAddPorfolioManagedBean.availableBalanceStr}"/>
+
                 </p:panel>
                 <p:commandButton value="Confirm Purchase" actionListener="#{rMAddPorfolioManagedBean.confirmPurchase}" update="@form"/>
 
@@ -108,7 +109,7 @@
         <h:form id="stockForm">
             <p:dialog header="Stock Detail" widgetVar="stockDetailDialog" responsive="true" closable="true">
                 <h:panelGrid id="stockPanel">
-                    <!--<p:chart type="line" model="#{rMAddPorfolioManagedBean.stockLineModel}" style="height:300px;"/>-->
+                    <p:chart type="line" model="#{rMAddPorfolioManagedBean.stockLineModel}" style="height:500px; width:800px; "/>
 
                     <p:row>
                         <p:outputLabel for="purchaseUnit" style="font-weight: bold" value="Number of Unit: " />
@@ -120,7 +121,7 @@
 
                     <p:row>
                         <p:column>
-                            <p:commandButton value="Submit" actionListener="#{rMAddPorfolioManagedBean.createStockPurchaseList}" update="@form"/>
+                            <p:commandButton value="Submit" actionListener="#{rMAddPorfolioManagedBean.createStockPurchaseList}" update="@form mainForm "/>
                         </p:column>
                     </p:row>
                 </h:panelGrid>
@@ -129,7 +130,7 @@
         <h:form id="fundForm">
             <p:dialog header="Fund Detail" widgetVar="fundDetailDialog" responsive="true" closable="true">
                 <h:panelGrid id="fundPanel">
-                    <!--<p:chart type="line" model="#{rMAddPorfolioManagedBean.fundLineModel}" style="height:300px;"/>-->
+                    <p:chart type="line" model="#{rMAddPorfolioManagedBean.fundLineModel}" style="height:500px; width:800px;"/>
 
                     <p:row>
                         <p:outputLabel for="purchaseUnit" style="font-weight: bold" value="Number of Unit: " />
@@ -141,7 +142,7 @@
 
                     <p:row>
                         <p:column>
-                            <p:commandButton value="Submit" actionListener="#{rMAddPorfolioManagedBean.createFundPurchaseList}" update="@form"/>
+                            <p:commandButton value="Submit" actionListener="#{rMAddPorfolioManagedBean.createFundPurchaseList}" update="@form mainForm "/>
                         </p:column>
                     </p:row>
                 </h:panelGrid>
@@ -150,7 +151,7 @@
         <h:form id="bondForm">
             <p:dialog header="Bond Detail" widgetVar="bondDetailDialog" responsive="true" closable="true">
                 <h:panelGrid id="bondPanel">
-                    <!--<p:chart type="line" model="#{rMAddPorfolioManagedBean.bondLineModel}" style="height:300px;"/>-->
+                    <p:chart type="line" model="#{rMAddPorfolioManagedBean.bondLineModel}" style="height:500px; width:800px;"/>
 
                     <p:row>
                         <p:outputLabel for="purchaseUnit" style="font-weight: bold" value="Number of Unit: " />

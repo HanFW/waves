@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/internalSystemTemplate.xhtml">
+
+    <ui:define name="content">
+        <h:form>
+            <div align="center">
+                <p:messages/>
+                <p:panel header="Case ID: #{rMViewEnquiryManagedBean.caseId}" >
+                    <p:row>
+                        <p:column colspan="2">
+                            <h:outputText value="Detail:   " style="font-weight: bold" />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{rMViewEnquiryManagedBean.caseDetail}" />
+                        </p:column>
+                    </p:row>
+                    <p:panel header="Reply Case:">
+                        <p:row>
+                            <p:inputTextarea  value="#{rMViewEnquiryManagedBean.solution}" required="true" requiredMessage="Please do not leave reply as a blank message" rows="5" cols="30" autoResize="false" />
+                            <h:outputText value="&lt;br/&gt;" escape="false" />
+                        </p:row>
+                    </p:panel>
+                    <p:row>
+                        <p:column colspan="2">
+                            <p:commandButton value="Send" actionListener="#{rMViewEnquiryManagedBean.rmReplyCase}" ajax="false"/>
+                        </p:column>
+                    </p:row>
+                </p:panel>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>
+
+

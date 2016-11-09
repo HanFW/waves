@@ -5,14 +5,17 @@
  */
 package ejb.customer.session;
 
+import ejb.customer.entity.CustomerAdvanced;
 import ejb.customer.entity.CustomerBasic;
 import ejb.customer.entity.EnquiryCase;
 import ejb.customer.entity.FollowUp;
 import ejb.customer.entity.Issue;
+import ejb.infrastructure.entity.Employee;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import javax.ejb.EJB;
@@ -57,6 +60,26 @@ public class EnquirySessionBean implements EnquirySessionBeanLocal, EnquirySessi
         Query query = entityManager.createQuery("SELECT ec FROM EnquiryCase ec WHERE ec.customerBasic.customerBasicId = :customerId");
         query.setParameter("customerId", customerId);
         return query.getResultList();
+    }
+
+    @Override
+    public List<EnquiryCase> getCustomerWMEnquiry(Long employeeId) {
+        Employee rm = entityManager.find(Employee.class, employeeId);
+        List<CustomerAdvanced> ca = rm.getCustomerAdvanced();
+        int customerNum = ca.size();
+        List<EnquiryCase> pendingCase = new ArrayList<EnquiryCase>();
+        for (int i = 0; i < customerNum; i++) {
+            CustomerBasic cb = ca.get(i).getCustomerBasic();
+            Query query = entityManager.createQuery("SELECT ec FROM EnquiryCase ec WHERE ec.customerBasic = :customerBasic AND ec.caseType = :caseType AND ec.caseStatus = :caseStatus");
+            query.setParameter("customerBasic", cb);
+            query.setParameter("caseType", "Wealth Management");
+            query.setParameter("caseStatus", "Pending");
+            for (int j = 0; j < query.getResultList().size(); j++) {
+                EnquiryCase ec = (EnquiryCase) query.getResultList().get(j);
+                pendingCase.add(ec);
+            }
+        }
+        return pendingCase;
     }
 
     @Override
@@ -361,6 +384,22 @@ public class EnquirySessionBean implements EnquirySessionBeanLocal, EnquirySessi
             return "Reply Sent Successful";
         }
     }
+    
+    @Override
+    public String replyWMCase (Long caseId, String solution){
+        EnquiryCase ec = entityManager.find(EnquiryCase.class, caseId);
+
+        if (ec == null) {
+            return "Incorrect Case ID.";
+        } else {
+            ec.setCaseReply(solution);
+            ec.setCaseStatus("Solved");
+
+            entityManager.flush();
+            return "Reply Sent Successful";
+        }
+    }
+            
 
 //    @Override
 //    public String caseIssueIsCreated(Long caseId) {
@@ -373,7 +412,6 @@ public class EnquirySessionBean implements EnquirySessionBeanLocal, EnquirySessi
 //            return "Yes";
 //        }
 //    }
-
     @Override
     public String caseIssueAllReplied(Long caseId) {
         List resultList = getEnquiryByCaseId(caseId);

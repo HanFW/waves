@@ -13,6 +13,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 /**
@@ -28,6 +29,8 @@ public class AssetType implements Serializable {
     
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "assetType")
     private List<Asset> asset;
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "assetType")
+    private List<AssetTypePriceHistory> assetTypePriceHistory;
     
     private String assetTypeName;
     private String assetIssuerName;
@@ -87,6 +90,16 @@ public class AssetType implements Serializable {
     public void setCurrentValue(double currentValue) {
         this.currentValue = currentValue;
     }
+
+    public List<AssetTypePriceHistory> getAssetTypePriceHistory() {
+        return assetTypePriceHistory;
+    }
+
+    public void setAssetTypePriceHistory(List<AssetTypePriceHistory> assetTypePriceHistory) {
+        this.assetTypePriceHistory = assetTypePriceHistory;
+    }
+
+    
     
     
 

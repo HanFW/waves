@@ -44,8 +44,11 @@ public class RMAddPorfolioManagedBean implements Serializable {
     private Long assetTypeId;
     private double unitPurchased;
     private double totalPurchase = 0.0;
+    private String totalPurchaseStr;
     private double availableBalance;
+    private String availableBalanceStr;
     private double startingBalance;
+    private String startingBalanceStr;
     private String[] purchase = new String[5];
     private ArrayList<String[]> purchaseList = new ArrayList<String[]>();
 
@@ -223,13 +226,14 @@ public class RMAddPorfolioManagedBean implements Serializable {
         assetTypeId = selectedId;
     }
 
-    public void createStockPurchaseList() {
+    public void createStockPurchaseList() { 
+        DecimalFormat df = new DecimalFormat("0.00");
         double currentValue = assetSessionBeanLocal.getStockById(assetTypeId).getCurrentValue();
         purchase[0] = assetTypeId.toString();
         purchase[1] = assetSessionBeanLocal.getStockById(assetTypeId).getAssetIssuerName();
-        purchase[2] = String.valueOf(currentValue);
-        purchase[3] = String.valueOf(unitPurchased);
-        purchase[4] = String.valueOf(currentValue * unitPurchased);
+        purchase[2] = df.format(currentValue);
+        purchase[3] = df.format(unitPurchased);
+        purchase[4] = df.format(currentValue * unitPurchased);
 
         purchaseList.add(purchase);
         totalPurchase += currentValue * unitPurchased;
@@ -240,12 +244,13 @@ public class RMAddPorfolioManagedBean implements Serializable {
     }
 
     public void createFundPurchaseList() {
+        DecimalFormat df = new DecimalFormat("0.00");
         double currentValue = assetSessionBeanLocal.getFundById(assetTypeId).getCurrentValue();
         purchase[0] = assetTypeId.toString();
         purchase[1] = assetSessionBeanLocal.getFundById(assetTypeId).getAssetIssuerName();
-        purchase[2] = String.valueOf(currentValue);
-        purchase[3] = String.valueOf(unitPurchased);
-        purchase[4] = String.valueOf(currentValue * unitPurchased);
+        purchase[2] = df.format(currentValue);
+        purchase[3] = df.format(unitPurchased);
+        purchase[4] = df.format(currentValue * unitPurchased);
 
         purchaseList.add(purchase);
         totalPurchase += (currentValue * unitPurchased);
@@ -295,6 +300,7 @@ public class RMAddPorfolioManagedBean implements Serializable {
 
             message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Purchase Successful!", null);
             context.addMessage(null, message);
+            purchase = null;
         }
 
     }
@@ -405,5 +411,34 @@ public class RMAddPorfolioManagedBean implements Serializable {
     public void setStartingBalance(double startingBalance) {
         this.startingBalance = startingBalance;
     }
+
+    public String getTotalPurchaseStr() {
+        DecimalFormat df = new DecimalFormat("0.00");
+        return df.format(totalPurchase);
+    }
+
+    public void setTotalPurchaseStr(String totalPurchaseStr) {
+        this.totalPurchaseStr = totalPurchaseStr;
+    }
+
+    public String getAvailableBalanceStr() {
+        DecimalFormat df = new DecimalFormat("0.00");
+        return df.format(availableBalance);
+    }
+
+    public void setAvailableBalanceStr(String availableBalanceStr) {
+        this.availableBalanceStr = availableBalanceStr;
+    }
+
+    public String getStartingBalanceStr() {
+        DecimalFormat df = new DecimalFormat("0.00");
+        return df.format(startingBalance - totalPurchase);
+    }
+
+    public void setStartingBalanceStr(String startingBalanceStr) {
+        this.startingBalanceStr = startingBalanceStr;
+    }
+    
+    
 
 }
