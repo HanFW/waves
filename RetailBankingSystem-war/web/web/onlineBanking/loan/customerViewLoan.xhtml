@@ -111,12 +111,6 @@
                         </p:row>
                         <p:row>
                             <p:column>
-                                <p:outputLabel style="font-weight: bold;" value="Total Repayment Amount:  "/>
-                            </p:column>
-                            <p:column>
-                                <h:outputText value="#{customerViewLoanManagedBean.totalPayment}"/>
-                            </p:column>
-                            <p:column>
                                 <p:outputLabel style="font-weight: bold;" value="Account Balance: "/>
                             </p:column>
                             <p:column>
@@ -131,11 +125,39 @@
                         </p:row>
                         <p:row>
                             <p:column>
-                                <p:outputLabel style="font-weight: bold;" value="Instalment "/>
+                                <p:outputLabel style="font-weight: bold;" value="Total interest: "/>
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{customerViewLoanManagedBean.totalInterest}"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel style="font-weight: bold;" value="Total Principal: "/>
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{customerViewLoanManagedBean.totalPrincipal}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel style="font-weight: bold;" value="Current Month Instalment: "/>
                             </p:column>
                             <p:column>
                                 <h:outputText value="#{customerViewLoanManagedBean.instalment}"/>
                             </p:column>
+                            <p:column>
+                                <p:outputLabel style="font-weight: bold;" value="Current Month Principal: "/>
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{customerViewLoanManagedBean.currentPrincipal}"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel style="font-weight: bold;" value="Current Month Interest: "/>
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{customerViewLoanManagedBean.currentInterest}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
                             <p:column>
                                 <p:outputLabel style="font-weight: bold;" value="Fees: "/>
                             </p:column>
