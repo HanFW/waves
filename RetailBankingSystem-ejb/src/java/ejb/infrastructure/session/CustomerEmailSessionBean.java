@@ -179,6 +179,18 @@ public class CustomerEmailSessionBean implements CustomerEmailSessionBeanLocal {
             case "recurringStopReminder":
                 emailText += "Please be noted that your recurring loan repayment has been terminated due to insufficient balance in your account. Please make repayment manually or declare recurring account again after deposit.";
                 break;
+            case "approveCreditCard":
+                emailText += "You have an online banking account opened. ";
+                if (actions.get("onlineBanking").equals("yes")) {
+                    emailText += "Your online banking account has been successfully created.\n";
+                    emailText += "Initial User ID: " + customer.getCustomerOnlineBankingAccountNum() + "\n";
+                    emailText += "Initial PIN: " + actions.get("onlineBankingPassword") + "\n";
+                    emailText += "Please login with your initial User ID and PIN. \n\n";
+                    
+                    emailText += "Once your credit card has been approved, we will contact you immediately.\n";
+                    emailText += "Thank you for your support with Merlion Bank.\n";
+                }
+                break;
         }
 
         try {

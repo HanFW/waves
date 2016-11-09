@@ -3,9 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ejb.deposit.entity;
+package ejb.card.entity;
 
-import ejb.card.entity.CreditCard;
 import ejb.card.entity.PrincipalCard;
 import java.io.Serializable;
 import javax.persistence.CascadeType;

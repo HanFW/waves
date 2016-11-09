@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ejb.deposit.session;
+package ejb.card.session;
 
 import ejb.card.entity.CreditCard;
 import ejb.card.entity.PrincipalCard;
 import ejb.card.entity.SupplementaryCard;
 import ejb.card.session.CreditCardSessionBeanLocal;
-import ejb.deposit.entity.CreditCardTransaction;
+import ejb.card.entity.CreditCardTransaction;
 import java.util.Calendar;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;

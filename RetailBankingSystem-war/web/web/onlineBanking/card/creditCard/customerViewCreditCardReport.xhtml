@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/onlineBankingTemplate.xhtml"
+                xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
+
+    <ui:define name="content">
+        <h:form>             
+            <p:panel>
+                <p:outputLabel value="Welcome "/>
+                <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
+            </p:panel>
+
+            <div align="center">
+                <h1>View My Credit Card Report</h1>
+            </div>
+            <p:dataTable var="creditCardReport" value="#{viewCreditCardReportManagedBean.creditCardReport}" 
+                         reflow="true" paginator="true" rows="10" emptyMessage="No Credit Card Report">
+
+                <p:column headerText="Statement Date"> 
+                    <h:outputText value="#{creditCardReport.statementDate}" />
+                </p:column>
+
+                <p:column headerText="Card Type"> 
+                    <h:outputText value="#{creditCardReport.cardType}" />
+                </p:column>
+                
+                <p:column headerText="View"> 
+                    <center>
+                        <p:commandButton ajax="false" process="@this" 
+                                         action="#{viewCreditCardReportManagedBean.viewCreditCardReport()}" 
+                                         icon="ui-icon-document">
+                            <f:setPropertyActionListener value="#{creditCardReport.creditCardReportId}" 
+                                                         target="#{viewCreditCardReportManagedBean.creditCardReportId}" />
+                        </p:commandButton>
+                    </center>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+        <ezcomp:CCTimeout/>
+    </ui:define>
+</ui:composition>
