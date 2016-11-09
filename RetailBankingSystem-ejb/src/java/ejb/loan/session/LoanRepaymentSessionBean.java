@@ -58,11 +58,18 @@ public class LoanRepaymentSessionBean implements LoanRepaymentSessionBeanLocal {
         if(amount < previousRepaymentBalance){
             if(amount <= previousOverdue){
                 repaymentAccount.setOverdueBalance(previousOverdue - amount);
+                payableAccount.setOverdueBalance(previousOverdue - amount);
             } else if(amount <= (previousOverdue + previousFee)){
                 repaymentAccount.setOverdueBalance(0);
+                payableAccount.setOverdueBalance(0);
+                payableAccount.setAccountStatus("started");
+                repaymentAccount.setDefaultMonths(0);
                 repaymentAccount.setFees(previousFee - (amount - previousOverdue));
             } else{
                 repaymentAccount.setOverdueBalance(0);
+                payableAccount.setOverdueBalance(0);
+                payableAccount.setAccountStatus("started");
+                repaymentAccount.setDefaultMonths(0);
                 repaymentAccount.setFees(0);
             }
             repaymentAccount.setPaymentStatus("partially paid");
@@ -89,10 +96,11 @@ public class LoanRepaymentSessionBean implements LoanRepaymentSessionBeanLocal {
     }
     
     private void addLoanRepaymentTransaction(LoanRepaymentAccount repaymentAccount, double amount){
+        LoanPayableAccount payableAccount = repaymentAccount.getLoanPayableAccount();
         Calendar cal = Calendar.getInstance();
         Long transactionDateMilis = cal.getTimeInMillis();
         LoanRepaymentTransaction transaction = new LoanRepaymentTransaction();
-        transaction.setAccountBalance(repaymentAccount.getAccountBalance() - amount);
+        transaction.setAccountBalance(payableAccount.getAccountBalance());
         transaction.setAccountCredit(amount);
         transaction.setAccountDebit(0);
         transaction.setDescription("Monthly Repayment");
