@@ -22,12 +22,6 @@
 <message name="SACHNonStandingGIROTransferMTDResponse">
 <part name="parameters" element="tns:SACHNonStandingGIROTransferMTDResponse"/>
 </message>
-<message name="SACHRegularGIROTransferMTD">
-<part name="parameters" element="tns:SACHRegularGIROTransferMTD"/>
-</message>
-<message name="SACHRegularGIROTransferMTDResponse">
-<part name="parameters" element="tns:SACHRegularGIROTransferMTDResponse"/>
-</message>
 <portType name="SACHWebService">
 <operation name="SACHTransferMTD">
 <input wsam:Action="http://session.ws.ejb/SACHWebService/SACHTransferMTDRequest" message="tns:SACHTransferMTD"/>
@@ -40,10 +34,6 @@
 <operation name="SACHNonStandingGIROTransferMTD">
 <input wsam:Action="http://session.ws.ejb/SACHWebService/SACHNonStandingGIROTransferMTDRequest" message="tns:SACHNonStandingGIROTransferMTD"/>
 <output wsam:Action="http://session.ws.ejb/SACHWebService/SACHNonStandingGIROTransferMTDResponse" message="tns:SACHNonStandingGIROTransferMTDResponse"/>
-</operation>
-<operation name="SACHRegularGIROTransferMTD">
-<input wsam:Action="http://session.ws.ejb/SACHWebService/SACHRegularGIROTransferMTDRequest" message="tns:SACHRegularGIROTransferMTD"/>
-<output wsam:Action="http://session.ws.ejb/SACHWebService/SACHRegularGIROTransferMTDResponse" message="tns:SACHRegularGIROTransferMTDResponse"/>
 </operation>
 </portType>
 <binding name="SACHWebServicePortBinding" type="tns:SACHWebService">
@@ -67,15 +57,6 @@
 </output>
 </operation>
 <operation name="SACHNonStandingGIROTransferMTD">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="SACHRegularGIROTransferMTD">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>

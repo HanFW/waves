@@ -15,6 +15,7 @@ import ejb.payment.entity.Cheque;
 import ejb.payment.entity.OtherBankPayee;
 import ejb.payment.entity.GIRO;
 import ejb.payment.entity.SWIFTPayee;
+import ejb.wealth.entity.Portfolio;
 import ejb.wealth.entity.RiskProfile;
 import java.io.Serializable;
 import javax.persistence.Entity;
@@ -112,6 +113,9 @@ public class CustomerBasic implements Serializable {
     
     @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
     private RefinancingApplication refinancingApplication;
+    
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
+    private List<Portfolio> portfolio;
     
     public void addLoanApplication(LoanApplication newApplication){
         loanApplication.add(newApplication);
@@ -478,6 +482,14 @@ public class CustomerBasic implements Serializable {
 
     public void setRefinancingApplication(RefinancingApplication refinancingApplication) {
         this.refinancingApplication = refinancingApplication;
+    }
+
+    public List<Portfolio> getPortfolio() {
+        return portfolio;
+    }
+
+    public void setPortfolio(List<Portfolio> portfolio) {
+        this.portfolio = portfolio;
     }
     
     

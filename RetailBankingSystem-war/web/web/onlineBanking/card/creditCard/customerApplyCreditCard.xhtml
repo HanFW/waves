@@ -320,8 +320,7 @@
                                 <p:selectBooleanCheckbox id = "agreement" value="#{customerCreditCardApplicationManagedBean.agreement}" 
                                                          style="margin-top:5px"/>
                                 <h:outputText value="I have read and agree to the terms of Customer Declaration and Confirmation." />
-                                <p:message for="captcha"/>
-                                <p:captcha id="captcha"/>
+
                                 <p:outputLabel value="Please provide your signature" />
                                 <br/>
                                 <p:messages id="signatureMessages" for="input"/>
@@ -334,6 +333,8 @@
                                     <p:signature style="width:300px;height:200px;" value="#{signatureViewManagedBean.customerSignature}" readonly="true"
                                                  rendered="#{not empty signatureViewManagedBean.customerSignature}" backgroundColor="#eaeaea" color="#03a9f4"/>
                                 </p:outputPanel>
+                                <p:message for="captcha"/>
+                                <p:captcha id="captcha"/>
                             </h:panelGrid>
 
                             <h:panelGrid columns="2" class="ui-lg-4"> 
