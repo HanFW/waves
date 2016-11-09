@@ -8,38 +8,40 @@
                 template="/WEB-INF/internalSystemTemplate.xhtml">
 
     <ui:define name="content">
-        <h:form id="searchCustomerForm">
-            <p:messages autoUpdate="true" showDetail="false"/>
-            <p:outputLabel value="Customer Identification Number" for="customerId"/>
-            <br/>
-            <p:inputText value="#{employeeUnlockIBAccountManagedBean.customerIdentificationNum}" id="customerId" />
-            <br/>
-            <p:commandButton value="Search Customer" actionListener="#{employeeUnlockIBAccountManagedBean.showCustomer}" update="customerInfoForm"/>
-        </h:form>
-        <h:form id="customerInfoForm">
-            <p:panelGrid columns="2" rendered="#{employeeUnlockIBAccountManagedBean.displayCustomer}">
-                <p:outputLabel value="Salutation: " for="customerSalutation"/>
-                <h:outputText value="#{employeeUnlockIBAccountManagedBean.customer.customerSalutation}" id="customerSalutation"/>
+        <div align="center">
+            <h:form id="searchCustomerForm">
+                <p:panelGrid columns="1" class="ui-lg-3">
+                    <p:messages autoUpdate="true" showDetail="false"/>
+                    <p:outputLabel style="font-weight: bold" value="Customer NRIC/Passport:" for="customerId"/>   
+                    <p:inputText value="#{employeeUnlockIBAccountManagedBean.customerIdentificationNum}" id="customerId" required="true"/>
+                    <p:commandButton value="Search Customer" actionListener="#{employeeUnlockIBAccountManagedBean.showCustomer}" update="customerInfoForm"/>
+                </p:panelGrid>
+            </h:form>
+            <h:form id="customerInfoForm">
+                <p:panelGrid columns="2" rendered="#{employeeUnlockIBAccountManagedBean.displayCustomer}">
+                    <p:outputLabel value="Salutation: " for="customerSalutation"/>
+                    <h:outputText value="#{employeeUnlockIBAccountManagedBean.customer.customerSalutation}" id="customerSalutation"/>
 
-                <p:outputLabel value="Name: " for="customerName"/>
-                <h:outputText value="#{employeeUnlockIBAccountManagedBean.customer.customerName}" id="customerName"/>
+                    <p:outputLabel value="Name: " for="customerName"/>
+                    <h:outputText value="#{employeeUnlockIBAccountManagedBean.customer.customerName}" id="customerName"/>
 
-                <p:outputLabel value="Mobile: " for="customerMobile"/>
-                <h:outputText value="#{employeeUnlockIBAccountManagedBean.customer.customerMobile}" id="customerMobile"/>
+                    <p:outputLabel value="Mobile: " for="customerMobile"/>
+                    <h:outputText value="#{employeeUnlockIBAccountManagedBean.customer.customerMobile}" id="customerMobile"/>
 
-                <p:outputLabel value="Online banking account: " for="customerAccount"/>
-                <h:outputText value="#{employeeUnlockIBAccountManagedBean.customer.customerOnlineBankingAccountNum}" id="customerAccount"/>
+                    <p:outputLabel value="Online banking account: " for="customerAccount"/>
+                    <h:outputText value="#{employeeUnlockIBAccountManagedBean.customer.customerOnlineBankingAccountNum}" id="customerAccount"/>
 
-                <p:outputLabel value="Online Banking Account Status: " for="customerIBAccountStatus"/>
-                <h:outputText value="#{employeeUnlockIBAccountManagedBean.customer.customerStatus}" id="customerIBAccountStatus"/>
+                    <p:outputLabel value="Online Banking Account Status: " for="customerIBAccountStatus"/>
+                    <h:outputText value="#{employeeUnlockIBAccountManagedBean.customer.customerStatus}" id="customerIBAccountStatus"/>
 
-                <p:outputLabel value="Online Banking Account Lock Status: " for="customerIBAccountLockStatus"/>
-                <p:column>
-                    <h:outputText value="#{employeeUnlockIBAccountManagedBean.customer.customerOnlineBankingAccountLocked}" id="customerIBAccountLockStatus"/>
-                    <p:commandButton value="Unlock" type="submit" actionListener="#{employeeUnlockIBAccountManagedBean.unlockAccount}" rendered="#{employeeUnlockIBAccountManagedBean.customer.customerOnlineBankingAccountLocked=='yes'}" update="customerInfoForm"/>
-                </p:column>
-            </p:panelGrid>            
-        </h:form>
+                    <p:outputLabel value="Online Banking Account Lock Status: " for="customerIBAccountLockStatus"/>
+                    <p:column>
+                        <h:outputText value="#{employeeUnlockIBAccountManagedBean.customer.customerOnlineBankingAccountLocked}" id="customerIBAccountLockStatus"/>
+                        <p:commandButton value="Unlock" type="submit" actionListener="#{employeeUnlockIBAccountManagedBean.unlockAccount}" rendered="#{employeeUnlockIBAccountManagedBean.customer.customerOnlineBankingAccountLocked=='yes'}" update="customerInfoForm"/>
+                    </p:column>
+                </p:panelGrid>            
+            </h:form>
+        </div>
     </ui:define>
 </ui:composition>
 

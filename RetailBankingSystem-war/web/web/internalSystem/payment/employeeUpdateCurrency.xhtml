@@ -9,109 +9,98 @@
 
     <ui:define name="content">
         <h:body>
-            <h:form>
-                <p:menubar>
-                    <p:submenu label="Home">
-                        <p:menuitem value="Home" url="/web/internalSystem/infrastructure/employeeCounterTellerMainPage.xhtml"/>
-                    </p:submenu>
-
-                    <p:submenu label="Log Out">
-                        <p:menuitem value="Logout" actionListener="#{employeeLoginManagedBean.doLogOut}" />
-                    </p:submenu>
-                </p:menubar>
-            </h:form>
-
             <h:form id="formMain">
+                <div align="center">
+                    <p:panel id="panel"> 
+                        <p:messages globalOnly="true" closable="true"/>
+                        <p:panelGrid columns="4" styleClass="ui-panelgrid-blank form-group">
+                            <p:outputLabel style="font-weight: bold" value="Currency Type" />
+                            <p:outputLabel style="font-weight: bold" value="Unit" />
+                            <p:outputLabel style="font-weight: bold" value="Buying Rate" />
+                            <p:outputLabel style="font-weight: bold" value="Selling Rate" />
 
-                <p:panel id="panel"> 
-                    <p:messages globalOnly="true" closable="true"/>
-                    <p:panelGrid columns="4" styleClass="ui-panelgrid-blank form-group">
-                        <p:outputLabel style="font-weight: bold" value="Currency Type" />
-                        <p:outputLabel style="font-weight: bold" value="Unit" />
-                        <p:outputLabel style="font-weight: bold" value="Buying Rate" />
-                        <p:outputLabel style="font-weight: bold" value="Selling Rate" />
+                            <p:outputLabel style="font-weight: bold" value="United States Dollar (USD)" />
+                            <p:outputLabel style="font-weight: bold" value="#{employeeUpdateCurrencyManagedBean.usdUnit}" />
+                            <p:inputText required="true" label="USD Buying Rate" 
+                                         requiredMessage="Required Field" id="usdBuyingRate"
+                                         value="#{employeeUpdateCurrencyManagedBean.usdBuyingRate}">
+                            </p:inputText>
 
-                        <p:outputLabel style="font-weight: bold" value="United States Dollar (USD)" />
-                        <p:outputLabel style="font-weight: bold" value="#{employeeUpdateCurrencyManagedBean.usdUnit}" />
-                        <p:inputText required="true" label="USD Buying Rate" 
-                                     requiredMessage="Required Field" id="usdBuyingRate"
-                                     value="#{employeeUpdateCurrencyManagedBean.usdBuyingRate}">
-                        </p:inputText>
+                            <p:inputText required="true" label="USD Selling Rate" 
+                                         requiredMessage="Required Field" id="usdSellingRate"
+                                         value="#{employeeUpdateCurrencyManagedBean.usdSellingRate}">
+                            </p:inputText>
 
-                        <p:inputText required="true" label="USD Selling Rate" 
-                                     requiredMessage="Required Field" id="usdSellingRate"
-                                     value="#{employeeUpdateCurrencyManagedBean.usdSellingRate}">
-                        </p:inputText>
+                            <p:outputLabel style="font-weight: bold" value="Japanese Yen (JPY)" />
+                            <p:outputLabel style="font-weight: bold" value="#{employeeUpdateCurrencyManagedBean.jpyUnit}" />
+                            <p:inputText required="true" label="JPY Buying Rate" 
+                                         requiredMessage="Required Field" id="jpyBuyingRate"
+                                         value="#{employeeUpdateCurrencyManagedBean.jpyBuyingRate}">
+                            </p:inputText>
 
-                        <p:outputLabel style="font-weight: bold" value="Japanese Yen (JPY)" />
-                        <p:outputLabel style="font-weight: bold" value="#{employeeUpdateCurrencyManagedBean.jpyUnit}" />
-                        <p:inputText required="true" label="JPY Buying Rate" 
-                                     requiredMessage="Required Field" id="jpyBuyingRate"
-                                     value="#{employeeUpdateCurrencyManagedBean.jpyBuyingRate}">
-                        </p:inputText>
+                            <p:inputText required="true" label="JPY Selling Rate" 
+                                         requiredMessage="Required Field" id="jpySellingRate"
+                                         value="#{employeeUpdateCurrencyManagedBean.jpySellingRate}">
+                            </p:inputText>
 
-                        <p:inputText required="true" label="JPY Selling Rate" 
-                                     requiredMessage="Required Field" id="jpySellingRate"
-                                     value="#{employeeUpdateCurrencyManagedBean.jpySellingRate}">
-                        </p:inputText>
+                            <p:outputLabel style="font-weight: bold" value="Euro (EUR)" />
+                            <p:outputLabel style="font-weight: bold" value="#{employeeUpdateCurrencyManagedBean.euroUnit}" />
+                            <p:inputText required="true" label="EUR Buying Rate" 
+                                         requiredMessage="Required Field" id="euroBuyingRate"
+                                         value="#{employeeUpdateCurrencyManagedBean.euroBuyingRate}">
+                            </p:inputText>
 
-                        <p:outputLabel style="font-weight: bold" value="Euro (EUR)" />
-                        <p:outputLabel style="font-weight: bold" value="#{employeeUpdateCurrencyManagedBean.euroUnit}" />
-                        <p:inputText required="true" label="EUR Buying Rate" 
-                                     requiredMessage="Required Field" id="euroBuyingRate"
-                                     value="#{employeeUpdateCurrencyManagedBean.euroBuyingRate}">
-                        </p:inputText>
+                            <p:inputText required="true" label="EUR Selling Rate" 
+                                         requiredMessage="Required Field" id="euroSellingRate"
+                                         value="#{employeeUpdateCurrencyManagedBean.euroSellingRate}">
+                            </p:inputText>
 
-                        <p:inputText required="true" label="EUR Selling Rate" 
-                                     requiredMessage="Required Field" id="euroSellingRate"
-                                     value="#{employeeUpdateCurrencyManagedBean.euroSellingRate}">
-                        </p:inputText>
+                            <p:outputLabel style="font-weight: bold" value="South Korean Won (KRW)" />
+                            <p:outputLabel style="font-weight: bold" value="#{employeeUpdateCurrencyManagedBean.krwUnit}" />
+                            <p:inputText required="true" label="KRW Buying Rate" 
+                                         requiredMessage="Required Field" id="krwBuyingRate"
+                                         value="#{employeeUpdateCurrencyManagedBean.krwBuyingRate}">
+                            </p:inputText>
 
-                        <p:outputLabel style="font-weight: bold" value="South Korean Won (KRW)" />
-                        <p:outputLabel style="font-weight: bold" value="#{employeeUpdateCurrencyManagedBean.krwUnit}" />
-                        <p:inputText required="true" label="KRW Buying Rate" 
-                                     requiredMessage="Required Field" id="krwBuyingRate"
-                                     value="#{employeeUpdateCurrencyManagedBean.krwBuyingRate}">
-                        </p:inputText>
+                            <p:inputText required="true" label="KRW Selling Rate" 
+                                         requiredMessage="Required Field" id="krwSellingRate"
+                                         value="#{employeeUpdateCurrencyManagedBean.krwSellingRate}">
+                            </p:inputText>
 
-                        <p:inputText required="true" label="KRW Selling Rate" 
-                                     requiredMessage="Required Field" id="krwSellingRate"
-                                     value="#{employeeUpdateCurrencyManagedBean.krwSellingRate}">
-                        </p:inputText>
+                            <p:outputLabel style="font-weight: bold" value="Chinese Yuan (CNY)" />
+                            <p:outputLabel style="font-weight: bold" value="#{employeeUpdateCurrencyManagedBean.cnyUnit}" />
+                            <p:inputText required="true" label="CNY Buying Rate" 
+                                         requiredMessage="Required Field" id="cnyBuyingRate"
+                                         value="#{employeeUpdateCurrencyManagedBean.cnyBuyingRate}">
+                            </p:inputText>
 
-                        <p:outputLabel style="font-weight: bold" value="Chinese Yuan (CNY)" />
-                        <p:outputLabel style="font-weight: bold" value="#{employeeUpdateCurrencyManagedBean.cnyUnit}" />
-                        <p:inputText required="true" label="CNY Buying Rate" 
-                                     requiredMessage="Required Field" id="cnyBuyingRate"
-                                     value="#{employeeUpdateCurrencyManagedBean.cnyBuyingRate}">
-                        </p:inputText>
+                            <p:inputText required="true" label="CNY Selling Rate" 
+                                         requiredMessage="Required Field" id="cnySellingRate"
+                                         value="#{employeeUpdateCurrencyManagedBean.cnySellingRate}">
+                            </p:inputText>
 
-                        <p:inputText required="true" label="CNY Selling Rate" 
-                                     requiredMessage="Required Field" id="cnySellingRate"
-                                     value="#{employeeUpdateCurrencyManagedBean.cnySellingRate}">
-                        </p:inputText>
+                            <p:outputLabel style="font-weight: bold" value="Australian Dollar (AUD)" />
+                            <p:outputLabel style="font-weight: bold" value="#{employeeUpdateCurrencyManagedBean.audUnit}" />
+                            <p:inputText required="true" label="AUD Buying Rate" 
+                                         requiredMessage="Required Field" id="audBuyingRate"
+                                         value="#{employeeUpdateCurrencyManagedBean.audBuyingRate}">
+                            </p:inputText>
 
-                        <p:outputLabel style="font-weight: bold" value="Australian Dollar (AUD)" />
-                        <p:outputLabel style="font-weight: bold" value="#{employeeUpdateCurrencyManagedBean.audUnit}" />
-                        <p:inputText required="true" label="AUD Buying Rate" 
-                                     requiredMessage="Required Field" id="audBuyingRate"
-                                     value="#{employeeUpdateCurrencyManagedBean.audBuyingRate}">
-                        </p:inputText>
+                            <p:inputText required="true" label="AUD Selling Rate" 
+                                         requiredMessage="Required Field" id="audSellingRate"
+                                         value="#{employeeUpdateCurrencyManagedBean.audSellingRate}">
+                            </p:inputText>
 
-                        <p:inputText required="true" label="AUD Selling Rate" 
-                                     requiredMessage="Required Field" id="audSellingRate"
-                                     value="#{employeeUpdateCurrencyManagedBean.audSellingRate}">
-                        </p:inputText>
+                        </p:panelGrid>
 
-                    </p:panelGrid>
+                        <p:panelGrid columns="1" styleClass="ui-panelgrid-blank form-group">
+                            <p:commandButton id="submitBtn" style="width:150px" value="Update" update="panel" 
+                                             actionListener="#{employeeUpdateCurrencyManagedBean.submit()}" 
+                                             ajax="true"/>
+                        </p:panelGrid>
 
-                    <p:panelGrid columns="1" styleClass="ui-panelgrid-blank form-group">
-                        <p:commandButton id="submitBtn" value="Update" update="panel" 
-                                         actionListener="#{employeeUpdateCurrencyManagedBean.submit()}" 
-                                         ajax="true"/>
-                    </p:panelGrid>
-
-                </p:panel>
+                    </p:panel>
+                </div>
             </h:form>
         </h:body>
     </ui:define>

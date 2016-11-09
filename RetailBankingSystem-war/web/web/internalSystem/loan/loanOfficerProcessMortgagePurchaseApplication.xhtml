@@ -345,18 +345,27 @@
                                     </p:panelGrid>
                                 </p:tab>
                                 <p:tab title="Financial Commitments">
-                                    <p:dataTable value="#{loanOfficerProcessMortgagePurchaseApplicationManagedBean.debts}" var="debt">
+                                    <p:dataTable value="#{loanOfficerProcessMortgagePurchaseApplicationManagedBean.jointDebts}" var="jointDebt">
                                         <p:column headerText="Facility Type">
-                                            <h:outputText value="#{debt.facilityType}"/>
+                                            <h:outputText value="#{jointDebt.facilityType}"/>
                                         </p:column>
                                         <p:column headerText="Financial Institution">
-                                            <h:outputText value="#{debt.financialInstitution}"/>
+                                            <h:outputText value="#{jointDebt.financialInstitution}"/>
+                                        </p:column>
+                                        <p:column headerText="Collateral Details">
+                                            <h:outputText value="#{jointDebt.collateralDetails}"/>
                                         </p:column>
                                         <p:column headerText="Loan Amount/Credit Limit">
-                                            <h:outputText value="#{debt.totalAmount}"/>
+                                            <h:outputText value="#{jointDebt.totalAmount}"/>
+                                        </p:column>
+                                        <p:column headerText="Remaining Tenure">
+                                            <h:outputText value="#{jointDebt.remainingTenure}"/>
+                                        </p:column>
+                                        <p:column headerText="Current Interest">
+                                            <h:outputText value="#{jointDebt.currentInterest}"/>
                                         </p:column>
                                         <p:column headerText="Monthly Instalment">
-                                            <h:outputText value="#{debt.monthlyInstalment}"/>
+                                            <h:outputText value="#{jointDebt.monthlyInstalment}"/>
                                         </p:column>
                                     </p:dataTable>
                                 </p:tab>

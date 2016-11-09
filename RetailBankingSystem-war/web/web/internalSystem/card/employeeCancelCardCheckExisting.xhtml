@@ -73,17 +73,17 @@
 
                     </h:panelGrid>
                     
-                    <h:panelGrid columns="2" cellpadding="5" styleClass="ui-panelgrid-blank form-group">  
+                    <h:panelGrid columns="2" styleClass="ui-panelgrid-blank form-group">  
 
-                        <p:commandButton id="cancelBtn" action="/web/index.xhtml" value="Cancel" immediate = "true">
+                        <p:commandButton id="cancelBtn" value="Cancel" immediate = "true">
                             <p:confirm header="Cancel" message="Are you sure?" />
                         </p:commandButton>
                        
                         <p:commandButton id="submitBtn" value="Submit" actionListener="#{employeeCancelCardManagedBean.submit}" ajax="true"/>
 
                     </h:panelGrid>
-                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                        <p:commandButton value="Yes" styleClass="ui-confirmdialog-yes" action="/web/index.xhtml"/>
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true">
+                        <p:commandButton value="Yes" styleClass="ui-confirmdialog-yes" action="/RetailBankingSystem-war/web/internalSystem/infrastructure/employeeMainPage.xhtml?faces-redirect=true"/>
                         <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" />
                     </p:confirmDialog>
                 </p:panel>

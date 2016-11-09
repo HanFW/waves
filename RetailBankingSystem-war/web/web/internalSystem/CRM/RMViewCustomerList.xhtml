@@ -10,11 +10,10 @@
     <ui:define name="content">
         <h:form>
             <div align="center">
-               
-<!--                <h:outputText value="You have logged in as: Relationship Manager"/>-->
                 <br/>
-                <p:panel header="My Current Customers">
-                    <p:dataTable var="customerAdvanced" value="#{rMUpdateCustomerAdvancedManagedBean.customerListFromEmployeeId}" 
+                <p:panel>
+                    <h1>My Current Customers</h1>
+                    <p:dataTable var="customerAdvanced" reflow="true" value="#{rMUpdateCustomerAdvancedManagedBean.customerListFromEmployeeId}" 
                                  paginator="true" rows="10" emptyMessage="No Customer Assigned">
                         <p:column headerText="Customer Name" >
                             <h:outputText value="#{customerAdvanced.customerBasic.customerName}" /> 

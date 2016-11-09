@@ -6,6 +6,7 @@
 package managedbean.loan.customer;
 
 import ejb.customer.session.CRMCustomerSessionBean;
+import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import ejb.infrastructure.session.CustomerEmailSessionBeanLocal;
 import ejb.loan.entity.CustomerDebt;
 import ejb.loan.entity.CustomerProperty;
@@ -45,7 +46,7 @@ public class PublicMortgageLoanApplicationManagedBean implements Serializable {
     private CustomerEmailSessionBeanLocal customerEmailSessionBeanLocal;
 
     @EJB
-    private CRMCustomerSessionBean cRMCustomerSessionBeanLocal;
+    private CRMCustomerSessionBeanLocal cRMCustomerSessionBeanLocal;
 
     @EJB
     private LoanApplicationSessionBeanLocal loanApplicationSessionBeanLocal;
@@ -2416,14 +2417,6 @@ public class PublicMortgageLoanApplicationManagedBean implements Serializable {
 
     public void setEmploymentPanelVisible(boolean employmentPanelVisible) {
         this.employmentPanelVisible = employmentPanelVisible;
-    }
-
-    public CRMCustomerSessionBean getcRMCustomerSessionBeanLocal() {
-        return cRMCustomerSessionBeanLocal;
-    }
-
-    public void setcRMCustomerSessionBeanLocal(CRMCustomerSessionBean cRMCustomerSessionBeanLocal) {
-        this.cRMCustomerSessionBeanLocal = cRMCustomerSessionBeanLocal;
     }
 
     public LoanApplicationSessionBeanLocal getLoanApplicationSessionBeanLocal() {

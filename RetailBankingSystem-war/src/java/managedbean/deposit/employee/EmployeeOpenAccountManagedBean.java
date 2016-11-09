@@ -1,5 +1,6 @@
 package managedbean.deposit.employee;
 
+import ejb.bi.session.DepositAccountOpenSessionBeanLocal;
 import ejb.customer.entity.CustomerBasic;
 import javax.ejb.EJB;
 import ejb.customer.session.CRMCustomerSessionBean;
@@ -28,6 +29,9 @@ import org.apache.commons.io.IOUtils;
 @ViewScoped
 
 public class EmployeeOpenAccountManagedBean implements Serializable {
+
+    @EJB
+    private DepositAccountOpenSessionBeanLocal depositAccountOpenSessionBeanLocal;
 
     @EJB
     private InterestSessionBeanLocal interestSessionLocal;
@@ -808,17 +812,28 @@ public class EmployeeOpenAccountManagedBean implements Serializable {
             isWithdraw = "0";
             newInterestId = interestSessionLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw);
 
+            if (bankAccountType.equals("Monthly Savings Account")) {
+                bankAccountStatus = "Active";
+                bankAccountMinSaving = "Insufficient";
+            } else {
+                bankAccountStatus = "Inactive";
+            }
+
             if (bankAccountDepositPeriod == null) {
                 bankAccountDepositPeriod = "None";
             }
 
             Calendar cal = Calendar.getInstance();
             Long currentTimeMilis = cal.getTimeInMillis();
-            
+
             newAccountId = bankAccountSessionLocal.addNewAccount(bankAccountNum, bankAccountType,
                     totalBankAccountBalance, availableBankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
                     bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
                     statementDateDouble, currentTimeMilis, customerBasicId, newInterestId);
+
+            if (bankAccountType.equals("Monthly Savings Account")) {
+                depositAccountOpenSessionBeanLocal.addNewDepositAccountOpen(currentTimeMilis, cal.getTime().toString());
+            }
 
             bankAccount = bankAccountSessionLocal.retrieveBankAccountById(newAccountId);
             bankAccountSessionLocal.retrieveBankAccountByCusIC(customerIdentificationNum).add(bankAccount);
@@ -867,19 +882,30 @@ public class EmployeeOpenAccountManagedBean implements Serializable {
             isWithdraw = "0";
             newInterestId = interestSessionLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw);
 
+            if (bankAccountType.equals("Monthly Savings Account")) {
+                bankAccountStatus = "Active";
+                bankAccountMinSaving = "Insufficient";
+            } else {
+                bankAccountStatus = "Inactive";
+            }
+
             if (bankAccountDepositPeriod == null) {
                 bankAccountDepositPeriod = "None";
             }
 
             Calendar cal = Calendar.getInstance();
             Long currentTimeMilis = cal.getTimeInMillis();
-            
+
             newAccountId = bankAccountSessionLocal.addNewAccount(bankAccountNum, bankAccountType,
                     totalBankAccountBalance, availableBankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
                     bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
                     statementDateDouble, currentTimeMilis, newCustomerBasicId, newInterestId);
 
             bankAccount = bankAccountSessionLocal.retrieveBankAccountById(newAccountId);
+
+            if (bankAccountType.equals("Monthly Savings Account")) {
+                depositAccountOpenSessionBeanLocal.addNewDepositAccountOpen(currentTimeMilis, cal.getTime().toString());
+            }
 
             bankAccountSessionLocal.updateDepositPeriod(bankAccountNum, bankAccountDepositPeriod);
 

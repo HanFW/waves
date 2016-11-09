@@ -107,6 +107,78 @@ public class CustomerEmailSessionBean implements CustomerEmailSessionBeanLocal {
                 emailText += "Renovation Loan application usually takes a few weeks to process. We will contact you via email once we have finished processing your request.\n";
                 emailText += "Thank you for your cooperation. \n";
                 break;
+            case "approveContractLoanRequest":
+                emailText += "Your loan request has been approved. We would like to arrange a meeting with you soon to sign the contracts.\n\n";
+                break;
+            case "approveRenovationLoanRequest":
+                emailText += "Your Renovation Loan request has been approved. \n\n";
+                if (actions.get("onlineBanking").equals("yes")) {
+                    emailText += "Here are your online banking details: \n";
+                    emailText += "Initial User ID: " + customer.getCustomerOnlineBankingAccountNum() + "\n";
+                    emailText += "Initial PIN: " + actions.get("onlineBankingPassword") + "\n";
+                    emailText += "Please login with your initial User ID and PIN. \n\n";
+                }
+                emailText += "We will inform you again once the loan has been disbursed. ";
+                break;
+            case "approveEducationLoanRequest":
+                emailText += "Your Education Loan request has been approved. \n\n";
+                if (actions.get("onlineBanking").equals("yes")) {
+                    emailText += "Here are your online banking details: \n";
+                    emailText += "Initial User ID: " + customer.getCustomerOnlineBankingAccountNum() + "\n";
+                    emailText += "Initial PIN: " + actions.get("onlineBankingPassword") + "\n";
+                    emailText += "Please login with your initial User ID and PIN. \n\n";
+                }
+                emailText += "Please log in to online banking to submit your loan disbursement forms. ";
+                break;
+            case "startMortgageLoan":
+                emailText += "Your Mortgage Loan has commenced. \n";
+                emailText += "Please log in to your online banking to view your loan details and make repayments. \n";
+                emailText += "The repayment due day is on 1st every month and your first repayment will due on the second month after commencement. \n";
+                if (actions.get("onlineBanking").equals("yes")) {
+                    emailText += "Here are your online banking details: \n";
+                    emailText += "Initial User ID: " + customer.getCustomerOnlineBankingAccountNum() + "\n";
+                    emailText += "Initial PIN: " + actions.get("onlineBankingPassword") + "\n";
+                    emailText += "Please login with your initial User ID and PIN. \n\n";
+                }
+                break;
+            case "startCarLoan":
+                emailText += "Your Car Loan has commenced. \n";
+                emailText += "Please log in to your online banking to view your loan details and make repayments. \n";
+                emailText += "The repayment due day is on 1st every month and your first repayment will due on the second month after commencement. \n";
+                if (actions.get("onlineBanking").equals("yes")) {
+                    emailText += "Here are your online banking details: \n";
+                    emailText += "Initial User ID: " + customer.getCustomerOnlineBankingAccountNum() + "\n";
+                    emailText += "Initial PIN: " + actions.get("onlineBankingPassword") + "\n";
+                    emailText += "Please login with your initial User ID and PIN. \n\n";
+                }
+                break;
+            case "startRenovationLoan":
+                emailText += "Your Renovation Loan has commenced. \n";
+                emailText += "Please log in to your online banking to view your loan details and make repayments. \n";
+                emailText += "The repayment due day is on 1st every month and your first repayment will due on the second month after commencement. \n";
+                if (actions.get("onlineBanking").equals("yes")) {
+                    emailText += "Here are your online banking details: \n";
+                    emailText += "Initial User ID: " + customer.getCustomerOnlineBankingAccountNum() + "\n";
+                    emailText += "Initial PIN: " + actions.get("onlineBankingPassword") + "\n";
+                    emailText += "Please login with your initial User ID and PIN. \n\n";
+                }
+                break;
+            case "startEducationLoan":
+                emailText += "Your Education Loan Repayment has commenced. \n";
+                emailText += "Please log in to your online banking to view your loan details and make repayments. \n";
+                break;
+            case "gentelDefaultReminder":
+                emailText += "Please be reminded to repay your loan. Default on loans will badly affect your credit scores. ";
+                break;
+            case "seriousDefaultReminder":
+                emailText += "Please be reminded to repay your loan. Merlion Bank will take actions on your assets if you are not able to repay the loan in the required period.";
+                break;
+            case "bankruptReminder":
+                emailText += "Please be reminded that Merlion Bank has sued your for bankrupt and will take actions on your assets to recover your default payments";
+                break;
+            case "recurringStopReminder":
+                emailText += "Please be noted that your recurring loan repayment has been terminated due to insufficient balance in your account. Please make repayment manually or declare recurring account again after deposit.";
+                break;
         }
 
         try {

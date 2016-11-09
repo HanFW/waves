@@ -15,7 +15,7 @@
         <f:view>
             <h:form>
                 <p:poll widgetVar="timeoutPoll" interval="5" listener="#{customerLoginManagedBean.timeoutLogout}" autoStart="false"/>
-                <p:confirmDialog widgetVar="timeoutDialog" header="Session Timeout" message="Your session will be terminated soon. Do you still want to continue?">
+                <p:confirmDialog widgetVar="timeoutDialog" header="Session Timeout" message="Your session will be terminated soon. Do you still want to continue?" responsive="true">
                     <p:commandButton value="Logout" actionListener="#{customerLoginManagedBean.doLogout}"/>
                     <p:commandButton value="Continue" onclick="PF('timeoutDialog').hide();"/>
                 </p:confirmDialog>

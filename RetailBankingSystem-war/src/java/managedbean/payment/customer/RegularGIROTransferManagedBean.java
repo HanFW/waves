@@ -223,14 +223,16 @@ public class RegularGIROTransferManagedBean {
         if (transferMethod.equals("One Time")) {
             transferFrequency = "One Time";
         }
-        
+
         Long regularGIROId = regularGIROSessionBeanLocal.addNewRegularGRIO(fromBankAccountNum,
                 fromBankAccountNumWithType, "Regular GIRO", transferAmt.toString(), transferFrequency,
                 toBankName, toOtherBankAccountNum, fromBankAccount.getBankAccountId());
 
         if (toBankName.equals("DBS") && transferMethod.equals("One Time")) {
-            
+
             sachRegularGIROTransferMTD(fromBankAccountNum, toOtherBankAccountNum, transferAmt);
+
+            otherBankPayeeSessionBeanLocal.updateLastTransactionDate(toOtherBankAccountNum);
 
             statusMessage = "Your transaction has been completed.";
             fromBankAccountAvailableBalance = currentAvailableBankAccountBalance.toString();
@@ -246,10 +248,11 @@ public class RegularGIROTransferManagedBean {
             ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/payment/customerRegularGIROTransferDone.xhtml?faces-redirect=true");
 
         } else if (toBankName.equals("DBS") && !transferMethod.equals("One Time")) {
-            
+
             sachRegularGIROTransferMTD(fromBankAccountNum, toOtherBankAccountNum, transferAmt);
 
             regularGIROSessionBeanLocal.updatePaymentAmt(regularGIROId, transferAmt.toString());
+            otherBankPayeeSessionBeanLocal.updateLastTransactionDate(toOtherBankAccountNum);
 
             statusMessage = "Your transaction has been completed.";
             fromBankAccountAvailableBalance = currentAvailableBankAccountBalance.toString();

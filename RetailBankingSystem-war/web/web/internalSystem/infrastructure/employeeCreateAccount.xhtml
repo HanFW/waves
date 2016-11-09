@@ -10,7 +10,6 @@
     <ui:define name="content">
         <h:form>
             <div align="center">
-<!--                <h:outputText value="You have logged in as: System Admin"/>-->
                 <br/>
                 <h1>Add a New User Account</h1>
                 <p:messages globalOnly="true"/>
@@ -132,7 +131,7 @@
                             <p:selectCheckboxMenu required="true" requiredMessage="Please select roles" id="role" value="#{employeeCreateUserAccountManagedBean.selectedRoles}" label="Please select roles" panelStyle="width:250px">
                                 <f:selectItems value="#{employeeCreateUserAccountManagedBean.roles}" />
                             </p:selectCheckboxMenu>
-                            <p:commandLink value="Confirm" style="margin-left: 20px" update="display"/>
+                            <p:commandLink value="Confirm" style="margin-left: 10px" update="display"/>
                         </p:column>
                         <p:column>
                             <p:message for="role" />
@@ -150,16 +149,11 @@
                         </p:column>
                     </p:row>
                 </h:panelGrid>
-
-
-                <br/>
-                <p:commandButton type="submit" value="Submit" style="width:40%" actionListener="#{employeeCreateUserAccountManagedBean.createAccount}" update="@form"/>
-
-                <br/>
-                <br/>
-
-                <p:commandButton value="Quit" type="submit" style="width:40%" action="/web/internalSystem/infrastructure/employeeUserAccountManagement.xhtml?faces-redirect=true" immediate="true"/>
-
+                
+                <h:panelGrid columns="2" class="ui-lg-4">         
+                    <p:commandButton value="Quit" type="submit" action="/web/internalSystem/infrastructure/employeeUserAccountManagement.xhtml?faces-redirect=true" immediate="true"/>
+                    <p:commandButton type="submit" value="Submit" actionListener="#{employeeCreateUserAccountManagedBean.createAccount}" update="@form"/>
+                </h:panelGrid>
             </div>
         </h:form>
     </ui:define>

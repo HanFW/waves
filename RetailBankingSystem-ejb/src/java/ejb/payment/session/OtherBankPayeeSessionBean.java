@@ -4,6 +4,7 @@ import ejb.customer.entity.CustomerBasic;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import ejb.payment.entity.OtherBankPayee;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -111,5 +112,20 @@ public class OtherBankPayeeSessionBean implements OtherBankPayeeSessionBeanLocal
         }
 
         return otherBankPayee;
+    }
+    
+    @Override
+    public void updateLastTransactionDate(String payeeAccountNum) {
+
+        OtherBankPayee otherBankPayee = retrieveOtherBankPayeeByNum(payeeAccountNum);
+
+        Calendar cal = Calendar.getInstance();
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH);
+        int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH);
+
+        String lastTransactionDate = dayOfMonth + "-" + (month + 1) + "-" + year;
+
+        otherBankPayee.setLastTransactionDate(lastTransactionDate);
     }
 }

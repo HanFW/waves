@@ -115,8 +115,8 @@ public class LoanManagerViewAllLoanApplicationsManagedBean implements Serializab
         approvedCashlineApplications = loanApplicationSessionBeanLocal.getCashlineApplications(status);
     }
     
-    public void startNewMortgageLoan(Long applicationId){
-        loanApplicationSessionBeanLocal.startNewMortgageLoan(applicationId);
+    public void startNewLoan(Long applicationId, String loanType){
+        loanApplicationSessionBeanLocal.startNewLoan(applicationId, loanType);
         FacesContext context = FacesContext.getCurrentInstance();
         String msg = "Loan - " + applicationId + " start successfully";
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, null);
@@ -133,6 +133,27 @@ public class LoanManagerViewAllLoanApplicationsManagedBean implements Serializab
         status = new ArrayList<String>();
         status.add("approved");
         approvedMortgageApplications = loanApplicationSessionBeanLocal.getLoanApplications(status, "mortgage");
+   
+        status = new ArrayList<String>();
+        status.add("pending");
+        pendingCarApplications = loanApplicationSessionBeanLocal.getLoanApplications(status, "Car Loan");
+        status = new ArrayList<String>();
+        status.add("in progress");
+        inprogressCarApplications = loanApplicationSessionBeanLocal.getLoanApplications(status, "Car Loan");
+        status = new ArrayList<String>();
+        status.add("approved");
+        approvedCarApplications = loanApplicationSessionBeanLocal.getLoanApplications(status, "Car Loan");
+        
+        //get all renovation loan applications
+        status = new ArrayList<String>();
+        status.add("pending");
+        pendingRenovationApplications = loanApplicationSessionBeanLocal.getLoanApplications(status, "Renovation Loan");
+        status = new ArrayList<String>();
+        status.add("in progress");
+        inprogressRenovationApplications = loanApplicationSessionBeanLocal.getLoanApplications(status, "Renovation Loan");
+        status = new ArrayList<String>();
+        status.add("approved");
+        approvedRenovationApplications = loanApplicationSessionBeanLocal.getLoanApplications(status, "Renovation Loan");
     }
 
     public List<LoanApplication> getAppraisalApplications() {

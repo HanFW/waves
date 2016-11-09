@@ -62,7 +62,7 @@
                         </p:selectOneMenu>
                         <p:message for="transferFromCurrency" />
 
-                        <p:outputLabel for="transferAmt" style="font-weight: bold" value="Amount: " />
+                        <p:outputLabel for="transferAmt" style="font-weight: bold" value="Amount(S$): " />
                         <p:inputText required="true" label="Amount" requiredMessage="Amount is required." id="transferAmt"
                                      value="#{fastTransferManagedBean.transferAmt}" converterMessage="Invalid input">
                             <f:validateDoubleRange minimum="0.0" maximum="99999999.0" />

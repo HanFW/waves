@@ -5,6 +5,8 @@
  */
 package ejb.loan.session;
 
+import ejb.deposit.entity.BankAccount;
+import ejb.loan.entity.LoanRepaymentAccount;
 import javax.ejb.Local;
 
 /**
@@ -13,5 +15,6 @@ import javax.ejb.Local;
  */
 @Local
 public interface LoanRepaymentSessionBeanLocal {
-    public void makeMonthlyRepayment(String depositAccount, String repaymentAccount, double amount);
+    public Long makeMonthlyRepayment(BankAccount depositAccount, LoanRepaymentAccount repaymentAccount, double amount);
+    public LoanRepaymentAccount getRepaymentAccountByAccountNum(String accountNum);
 }
