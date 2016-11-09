@@ -154,6 +154,16 @@ public class LoanManagerViewAllLoanApplicationsManagedBean implements Serializab
         status = new ArrayList<String>();
         status.add("approved");
         approvedRenovationApplications = loanApplicationSessionBeanLocal.getLoanApplications(status, "Renovation Loan");
+        
+        status = new ArrayList<String>();
+        status.add("pending");
+        pendingEducationApplications = loanApplicationSessionBeanLocal.getLoanApplications(status, "Education Loan");
+        status = new ArrayList<String>();
+        status.add("in progress");
+        inprogressEducationApplications = loanApplicationSessionBeanLocal.getLoanApplications(status, "Education Loan");
+        status = new ArrayList<String>();
+        status.add("approved");
+        approvedEducationApplications = loanApplicationSessionBeanLocal.getLoanApplications(status, "Education Loan");
     }
 
     public List<LoanApplication> getAppraisalApplications() {

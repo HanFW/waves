@@ -121,7 +121,7 @@ public class CustomerViewLoanManagedBean implements Serializable {
         }
 
         interestRate = Math.round(interestRate * 100.0) / 100.0;
-        instalment = ra.getInstalment();
+        instalment = ra.getCurrentInstalment();
         fees = ra.getFees();
         overdueBalance = ra.getOverdueBalance();
         totalPayment = instalment + fees + overdueBalance;
