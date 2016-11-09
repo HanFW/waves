@@ -48,8 +48,8 @@ public class StandingGIROSessionBean implements StandingGIROSessionBeanLocal {
         standingGiro.setGiroType(giroType);
         standingGiro.setCustomerBasic(bankAccountSessionBeanLocal.retrieveCustomerBasicById(customerBasicId));
 
-        addNewBill(customerName, customerMobile, billReference, billingOrganizationName,
-                "Merlion", bankAccountNum, paymemtLimit);
+//        addNewBill(customerName, customerMobile, billReference, billingOrganizationName,
+//                "Merlion", bankAccountNum, paymemtLimit);
 
         entityManager.persist(standingGiro);
         entityManager.flush();
@@ -90,12 +90,5 @@ public class StandingGIROSessionBean implements StandingGIROSessionBeanLocal {
             System.out.println("Entity not found error: " + enfe.getMessage());
             return new ArrayList<StandingGIRO>();
         }
-    }
-
-    private Long addNewBill(java.lang.String customerName, java.lang.String customerMobile, java.lang.String billReference, java.lang.String billingOrganizationName, java.lang.String debitBank, java.lang.String debitBankAccountNum, java.lang.String paymentLimit) {
-        // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
-        // If the calling of port operations may lead to race condition some synchronization is required.
-        ws.client.bill.BillWebService port = service_bill.getBillWebServicePort();
-        return port.addNewBill(customerName, customerMobile, billReference, billingOrganizationName, debitBank, debitBankAccountNum, paymentLimit);
     }
 }
