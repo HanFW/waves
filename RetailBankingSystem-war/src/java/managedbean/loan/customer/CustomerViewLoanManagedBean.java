@@ -5,27 +5,34 @@
  */
 package managedbean.loan.customer;
 
+import ejb.customer.entity.CustomerBasic;
+import ejb.deposit.entity.BankAccount;
 import ejb.loan.entity.LoanInterestPackage;
 import ejb.loan.entity.LoanPayableAccount;
 import ejb.loan.entity.LoanRepaymentAccount;
+import ejb.loan.entity.LoanRepaymentTransaction;
 import ejb.loan.session.LoanManagementSessionBeanLocal;
 import java.io.IOException;
+import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.Date;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
-import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
+import org.primefaces.context.RequestContext;
 
 /**
  *
  * @author hanfengwei
  */
 @Named(value = "customerViewLoanManagedBean")
-@RequestScoped
-public class CustomerViewLoanManagedBean {
+@ViewScoped
+public class CustomerViewLoanManagedBean implements Serializable {
 
     @EJB
     private LoanManagementSessionBeanLocal loanManagementSessionBeanLocal;
@@ -51,6 +58,17 @@ public class CustomerViewLoanManagedBean {
     private LoanPayableAccount pa;
     private LoanRepaymentAccount ra;
 
+    private boolean noDepositAccount;
+    private boolean hasRecurringRepayment;
+    private String recurringAccountNum;
+
+    private List<LoanRepaymentTransaction> repaymentHistory;
+
+    private List<String> depositAccounts;
+    private String loanServingAccount;
+
+    private CustomerBasic customer;
+
     /**
      * Creates a new instance of CustomerViewLoanManagedBean
      */
@@ -59,9 +77,11 @@ public class CustomerViewLoanManagedBean {
 
     @PostConstruct
     public void init() {
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        customer = (CustomerBasic) ec.getSessionMap().get("customer");
+        noDepositAccount = false;
         DecimalFormat df = new DecimalFormat("0.00");
 
-        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         loanId = (Long) ec.getFlash().get("loanId");
         pa = loanManagementSessionBeanLocal.getLoanPayableAccountById(loanId);
         ra = pa.getLoanRepaymentAccount();
@@ -85,25 +105,103 @@ public class CustomerViewLoanManagedBean {
         } else if (interestPackage.equals("Private Property-Fixed")) {
             if (finishedMonths <= 36) {
                 interestRate = 1.8;
-            } else{
+            } else {
                 interestRate = pkg.getInterestRate() * 100 + 1.2;
             }
-        } else if(interestPackage.equals("Private Property-Floating")){
+        } else if (interestPackage.equals("Private Property-Floating")) {
             interestRate = pkg.getInterestRate() * 100 + 1.25;
-        } else{
+        } else {
             interestRate = pkg.getInterestRate() * 100;
         }
-        
+
+        interestRate = Math.round(interestRate * 100.0) / 100.0;
         instalment = ra.getInstalment();
         fees = ra.getFees();
         overdueBalance = ra.getOverdueBalance();
         totalPayment = instalment + fees + overdueBalance;
+        totalPayment = Math.round(totalPayment * 100.0) / 100.0;
+        totalAmount = ra.getAccountBalance();
+        totalAmount = Math.round(totalAmount * 100.0) / 100.0;
+
+        recurringAccountNum = ra.getDepositAccountNumber();
+        if (recurringAccountNum != null) {
+            hasRecurringRepayment = true;
+        } else {
+            hasRecurringRepayment = false;
+        }
     }
 
     public void makeRepaymentByMerlionBankAccount() throws IOException {
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-        ec.getFlash().put("loanAccountNumber", ra.getAccountNumber());
-        ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/loan/customerMakeLoanRepayment.xhtml?faces-redirect=true");
+        List<BankAccount> accounts = loanManagementSessionBeanLocal.getCustomerDepositAccounts(customer.getCustomerBasicId());
+        if (accounts.isEmpty()) {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN, "No existing deposit account found.", null);
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, message);
+            noDepositAccount = true;
+        } else {
+            noDepositAccount = false;
+            ec.getFlash().put("loanAccountNumber", ra.getAccountNumber());
+            ec.getFlash().put("amount", totalAmount);
+            ec.getFlash().put("loanType", pa.getLoanApplication().getLoanType());
+            ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/loan/customerMakeLoanRepayment.xhtml?faces-redirect=true");
+        }
+    }
+
+    public void applyDepositAccount() throws IOException {
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerOpenAccount.xhtml?faces-redirect=true");
+    }
+
+    public void makeRecurringRepayment() {
+        List<BankAccount> accounts = loanManagementSessionBeanLocal.getCustomerDepositAccounts(customer.getCustomerBasicId());
+        if (accounts.isEmpty()) {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN, "No existing deposit account found.", null);
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, message);
+            noDepositAccount = true;
+        } else {
+            noDepositAccount = false;
+            for (BankAccount account : accounts) {
+                depositAccounts.add(account.getBankAccountNum());
+            }
+            RequestContext rc = RequestContext.getCurrentInstance();
+            rc.execute("PF('recurringDialog').show();");
+        }
+    }
+
+    public void confirmRecurringPayment() {
+        loanManagementSessionBeanLocal.setRecurringLoanServingAccount(loanServingAccount, ra.getId());
+        RequestContext rc = RequestContext.getCurrentInstance();
+        rc.execute("PF('recurringDialog').hide();");
+    }
+
+    public void deleteRecurringPayment() {
+        loanManagementSessionBeanLocal.deleteRecurringLoanServingAccount(ra.getId());
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Repayment plan updated successfully.", null);
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage(null, message);
+    }
+
+    public List<String> getDepositAccounts() {
+        return depositAccounts;
+    }
+
+    public void setDepositAccounts(List<String> depositAccounts) {
+        this.depositAccounts = depositAccounts;
+    }
+
+    public String getLoanServingAccount() {
+        return loanServingAccount;
+    }
+
+    public void setLoanServingAccount(String loanServingAccount) {
+        this.loanServingAccount = loanServingAccount;
+    }
+
+    public List<LoanRepaymentTransaction> getRepaymentHistory() {
+        repaymentHistory = loanManagementSessionBeanLocal.getRepaymentHistory(ra.getId());
+        return repaymentHistory;
     }
 
     public LoanManagementSessionBeanLocal getLoanManagementSessionBeanLocal() {
@@ -248,6 +346,38 @@ public class CustomerViewLoanManagedBean {
 
     public void setRa(LoanRepaymentAccount ra) {
         this.ra = ra;
+    }
+
+    public boolean isNoDepositAccount() {
+        return noDepositAccount;
+    }
+
+    public void setNoDepositAccount(boolean noDepositAccount) {
+        this.noDepositAccount = noDepositAccount;
+    }
+
+    public boolean isHasRecurringRepayment() {
+        return hasRecurringRepayment;
+    }
+
+    public void setHasRecurringRepayment(boolean hasRecurringRepayment) {
+        this.hasRecurringRepayment = hasRecurringRepayment;
+    }
+
+    public String getRecurringAccountNum() {
+        return recurringAccountNum;
+    }
+
+    public void setRecurringAccountNum(String recurringAccountNum) {
+        this.recurringAccountNum = recurringAccountNum;
+    }
+
+    public CustomerBasic getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(CustomerBasic customer) {
+        this.customer = customer;
     }
 
 }

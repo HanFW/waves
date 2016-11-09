@@ -505,6 +505,10 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
             customerAdminSessionBeanLocal.createOnlineBankingAccount(application.getCustomerBasic().getCustomerBasicId(), "startMortgageLoan");
         } else if(loanType.equals("Car Loan")){
             customerAdminSessionBeanLocal.createOnlineBankingAccount(application.getCustomerBasic().getCustomerBasicId(), "startCarLoan");
+        } else if(loanType.equals("Renovation Loan")){
+            customerAdminSessionBeanLocal.createOnlineBankingAccount(application.getCustomerBasic().getCustomerBasicId(), "startRenovationLoan");
+        } else if(loanType.equals("Education Loan")){
+            customerAdminSessionBeanLocal.createOnlineBankingAccount(application.getCustomerBasic().getCustomerBasicId(), "startEducationLoan");
         }
 
         em.flush();

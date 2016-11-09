@@ -19,12 +19,22 @@
             </p:panel>
 
             <div align="center">
-                <h1>#{customerViewLoanManagedBean.pa.loanApplication.loanType} - #{customerViewLoanManagedBean.loanAccountNumber}</h1>
+                <h1>#{customerViewLoanManagedBean.pa.loanApplication.loanType} - #{customerViewLoanManagedBean.pa.accountNumber}</h1>
             </div>
 
             <div align="center">
                 <p:panel header="Loan Summary - Account #{customerViewLoanManagedBean.pa.accountNumber}">
                     <p:panelGrid>
+                        <p:row>
+                            <p:column colspan="6">
+                                <div align="center">
+                                    <p:menuButton value="Make Payment">
+                                        <p:menuitem value="Full Payment (Cancel Loan)"/>
+                                        <p:menuitem value="Partial Payment"/>
+                                    </p:menuButton>
+                                </div>
+                            </p:column>
+                        </p:row>
                         <p:row>
                             <p:column>
                                 <p:outputLabel style="font-weight: bold;" value="Total Amount: "/>
@@ -79,10 +89,29 @@
 
             <div align="center">
                 <p:panel header="Repayment Summary - Account #{customerViewLoanManagedBean.ra.accountNumber}">
+                    <p:messages autoUpdate="true"/>
                     <p:panelGrid>
                         <p:row>
+                            <p:column colspan="6" id="applyLink">
+                                <p:commandLink rendered="#{customerViewLoanManagedBean.noDepositAccount}" value="Apply for Deposit Account" action="#{customerViewLoanManagedBean.applyDepositAccount}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="6">
+                                <div align="center">
+                                    <p:menuButton value="Make Repayment" disabled="#{customerViewLoanManagedBean.hasRecurringRepayment}">
+                                        <p:menuitem value="Pay Via My Deposit Account" action="#{customerViewLoanManagedBean.makeRepaymentByMerlionBankAccount}" update="applyLink"/>
+                                        <p:menuitem value="Recurring Repayment" action="#{customerViewLoanManagedBean.makeRecurringRepayment}"/>
+                                    </p:menuButton>
+                                    <p:menuButton value="Change Repayment Plan" disabled="#{!customerViewLoanManagedBean.hasRecurringRepayment}">
+                                        <p:menuitem value="Terminate Recurring Repayment" action="#{customerViewLoanManagedBean.deleteRecurringPayment}" update="@form"/>
+                                    </p:menuButton>
+                                </div>
+                            </p:column>
+                        </p:row>
+                        <p:row>
                             <p:column>
-                                <p:outputLabel style="font-weight: bold;" value="Total Repayment Acount:  "/>
+                                <p:outputLabel style="font-weight: bold;" value="Total Repayment Amount:  "/>
                             </p:column>
                             <p:column>
                                 <h:outputText value="#{customerViewLoanManagedBean.totalPayment}"/>
@@ -91,13 +120,13 @@
                                 <p:outputLabel style="font-weight: bold;" value="Account Balance: "/>
                             </p:column>
                             <p:column>
-                                <h:outputText value="#{customerViewLoanManagedBean.ra.accountBalance} to be paid"/>
+                                <h:outputText value="#{customerViewLoanManagedBean.totalAmount} to be paid"/>
                             </p:column>
                             <p:column>
-                                <p:menuButton value="Make Payment">
-                                    <p:menuitem value="Pay Via My Deposit Account" action="#{customerViewLoanManagedBean.makeRepaymentByMerlionBankAccount}"/>
-                                    <p:menuitem value="Recurring Repayment"/>
-                                </p:menuButton>
+                                <p:outputLabel style="font-weight: bold;" value="Repayment Status "/>
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{customerViewLoanManagedBean.ra.paymentStatus}"/>
                             </p:column>
                         </p:row>
                         <p:row>
@@ -126,9 +155,30 @@
 
             <div align="center">
                 <p:panel header="Repayment History">
-
+                    <p:dataTable value="#{customerViewLoanManagedBean.repaymentHistory}" var="history">
+                        <p:column headerText="Date">
+                            <p:outputLabel value="#{history.transactionDate}"/>
+                        </p:column>
+                        <p:column headerText="Amount">
+                            <p:outputLabel value="#{history.accountCredit}"/>
+                        </p:column>
+                        <p:column headerText="Description">
+                            <p:outputLabel value="#{history.description}"/>
+                        </p:column>
+                        <p:column headerText="Account Balance">
+                            <p:outputLabel value="#{history.accountBalance}"/>
+                        </p:column>
+                    </p:dataTable>
                 </p:panel>
             </div>
+        </h:form>
+        <h:form>
+            <p:dialog widgetVar="recurringDialog" closable="true" header="Choose your loan serving account">
+                <p:selectOneMenu value="#{customerViewLoanManagedBean.depositAccounts}" >
+                    <f:selectItem itemValue="#{customerViewLoanManagedBean.loanServingAccount}"/>
+                </p:selectOneMenu>
+                <p:commandButton value="Confirm" action="#{customerViewLoanManagedBean.confirmRecurringPayment}"/>
+            </p:dialog>
         </h:form>
         <ezcomp:CCTimeout/>
     </ui:define>
