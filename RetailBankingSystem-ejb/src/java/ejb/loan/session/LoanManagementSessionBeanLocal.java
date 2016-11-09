@@ -24,7 +24,6 @@ public interface LoanManagementSessionBeanLocal {
     public List<LoanApplication> getLoanApplicationsByIdentification(String identification);
     public LoanPayableAccount getLoanPayableAccountById(Long loanId);
     public List<CashlineApplication> getCashlineApplicationsByIdentification(String identification);
-    public List<BankAccount> getCustomerDepositAccounts(Long customerId);
     public List<LoanRepaymentTransaction> getRepaymentHistory(Long accountId);
     public void setRecurringLoanServingAccount(String accountNum, Long repaymentAccountId);
     public void deleteRecurringLoanServingAccount(Long repaymentAccountId);

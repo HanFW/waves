@@ -7,6 +7,7 @@ package managedbean.portfolio.employee;
 
 import ejb.wealth.entity.Bond;
 import ejb.wealth.entity.Fund;
+import ejb.wealth.entity.Portfolio;
 import ejb.wealth.entity.Stock;
 import ejb.wealth.session.AssetSessionBeanLocal;
 import java.io.Serializable;
@@ -65,10 +66,10 @@ public class RMAddPorfolioManagedBean implements Serializable {
 
     @PostConstruct
     public void init() {
-//        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-//        Long portfolioId = (Long) ec.getSessionMap().get("portfolioId");
-//        Portfolio portfolio = assetSessionBeanLocal.getPortfolioById(portfolioId);
-//        startingBalance = portfolio.getStartingBalance();
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        Long portfolioId = (Long) ec.getSessionMap().get("portfolioId");
+        Portfolio portfolio = assetSessionBeanLocal.getPortfolioById(portfolioId);
+        startingBalance = portfolio.getStartingBalance();
         
         stockLineModel = new LineChartModel();
         fundLineModel = new LineChartModel();

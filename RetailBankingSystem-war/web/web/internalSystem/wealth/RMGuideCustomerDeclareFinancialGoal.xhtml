@@ -19,7 +19,7 @@
                     </p:panel>
 
                     <p:outputLabel value="Investment calculator"/>
-                    <p:messages id="msg"/>
+
                     <p:wizard widgetVar ="calculatorWizard" flowListener="#{employeeDeclareFinancialGoalDoneManagedBean.onFlowProcess}" class="ui-lg-12" showNavBar="false">                  
 
                         <p:tab id="t1">
@@ -55,6 +55,9 @@
                             </h:panelGrid>
 
                             <p:outputLabel value="*Assumes yearly compounding"/>
+                            <br/>
+                            <br/>
+                            <br/>
 
                             <p:commandButton value="Show Results" type="submit" actionListener="#{employeeDeclareFinancialGoalDoneManagedBean.viewResult}" update="@form" style="width:150px"/>
 
@@ -112,7 +115,7 @@
                                     <p:menuitem value="Declare Financial Goal"/>
                                 </p:steps>
                             </h:panelGrid>
-
+                            <p:messages id="msg" autoUpdate="true"/>
 
                             <p:outputLabel value="Add a new financial goal"/>
 

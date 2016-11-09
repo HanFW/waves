@@ -216,6 +216,9 @@ public class RegularGIROTransferManagedBean {
         String fromBankAccountNum = handleAccountString(fromBankAccountNumWithType);
         String toOtherBankAccountNum = handleAccountString(toBankAccountNumWithType);
 
+        OtherBankPayee otherBankPayee = otherBankPayeeSessionBeanLocal.retrieveOtherBankPayeeByNum(toOtherBankAccountNum);
+        String payeeName = otherBankPayee.getOtherBankPayeeName();
+
         BankAccount fromBankAccount = bankAccountSessionBeanLocal.retrieveBankAccountByNum(fromBankAccountNum);
         Double currentAvailableBankAccountBalance = Double.valueOf(fromBankAccount.getAvailableBankAccountBalance()) - transferAmt;
         bankAccountSessionBeanLocal.updateBankAccountAvailableBalance(fromBankAccountNum, currentAvailableBankAccountBalance.toString());
@@ -226,7 +229,7 @@ public class RegularGIROTransferManagedBean {
 
         Long regularGIROId = regularGIROSessionBeanLocal.addNewRegularGRIO(fromBankAccountNum,
                 fromBankAccountNumWithType, "Regular GIRO", transferAmt.toString(), transferFrequency,
-                toBankName, toOtherBankAccountNum, fromBankAccount.getBankAccountId());
+                toBankName, toOtherBankAccountNum, "Active", payeeName, fromBankAccount.getBankAccountId());
 
         if (toBankName.equals("DBS") && transferMethod.equals("One Time")) {
 

@@ -100,23 +100,6 @@
         <delete dir="${build.generated.dir}/jax-wsCache/CHIPSWebService"/>
         <delete dir="${build.generated.sources.dir}/jax-ws/ws/client/chips"/>
     </target>
-    <target name="wsimport-client-BillWebService" depends="wsimport-init">
-        <mkdir dir="${build.generated.dir}/jax-wsCache/BillWebService"/>
-        <property name="wsdl-BillWebService" location="${meta.inf}/xml-resources/web-service-references/BillWebService/wsdl/localhost_8080/BillWebService/BillWebService.wsdl"/>
-        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/BillWebService" destdir="${build.generated.dir}/jax-wsCache/BillWebService" wsdl="${wsdl-BillWebService}" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" fork="false" wsdlLocation="http://localhost:8080/BillWebService/BillWebService?wsdl" xnocompile="true" xendorsed="true" package="ws.client.bill">
-            <depends file="${wsdl-BillWebService}"/>
-            <produces dir="${build.generated.dir}/jax-wsCache/BillWebService"/>
-        </wsimport>
-        <copy todir="${build.generated.sources.dir}/jax-ws">
-            <fileset dir="${build.generated.dir}/jax-wsCache/BillWebService">
-                <include name="**/*.java"/>
-            </fileset>
-        </copy>
-    </target>
-    <target name="wsimport-client-clean-BillWebService" depends="-init-project">
-        <delete dir="${build.generated.dir}/jax-wsCache/BillWebService"/>
-        <delete dir="${build.generated.sources.dir}/jax-ws/ws/client/bill"/>
-    </target>
     <target name="wsimport-client-OtherBanksWebService" depends="wsimport-init">
         <mkdir dir="${build.generated.dir}/jax-wsCache/OtherBanksWebService"/>
         <property name="wsdl-OtherBanksWebService" location="${meta.inf}/xml-resources/web-service-references/OtherBanksWebService/wsdl/localhost_8080/OtherBanksWebService/OtherBanksWebService.wsdl"/>
@@ -133,23 +116,6 @@
     <target name="wsimport-client-clean-OtherBanksWebService" depends="-init-project">
         <delete dir="${build.generated.dir}/jax-wsCache/OtherBanksWebService"/>
         <delete dir="${build.generated.sources.dir}/jax-ws/ws/client/otherbanks"/>
-    </target>
-    <target name="wsimport-client-TransactionAuthorizationWebService" depends="wsimport-init">
-        <mkdir dir="${build.generated.dir}/jax-wsCache/TransactionAuthorizationWebService"/>
-        <property name="wsdl-TransactionAuthorizationWebService" location="${meta.inf}/xml-resources/web-service-references/TransactionAuthorizationWebService/wsdl/localhost_8080/TransactionAuthorizationWebService/TransactionAuthorizationWebService.wsdl"/>
-        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/TransactionAuthorizationWebService" destdir="${build.generated.dir}/jax-wsCache/TransactionAuthorizationWebService" wsdl="${wsdl-TransactionAuthorizationWebService}" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" fork="false" wsdlLocation="http://localhost:8080/TransactionAuthorizationWebService/TransactionAuthorizationWebService?wsdl" xnocompile="true" xendorsed="true" package="ws.client.merlionTransactionAuthorization">
-            <depends file="${wsdl-TransactionAuthorizationWebService}"/>
-            <produces dir="${build.generated.dir}/jax-wsCache/TransactionAuthorizationWebService"/>
-        </wsimport>
-        <copy todir="${build.generated.sources.dir}/jax-ws">
-            <fileset dir="${build.generated.dir}/jax-wsCache/TransactionAuthorizationWebService">
-                <include name="**/*.java"/>
-            </fileset>
-        </copy>
-    </target>
-    <target name="wsimport-client-clean-TransactionAuthorizationWebService" depends="-init-project">
-        <delete dir="${build.generated.dir}/jax-wsCache/TransactionAuthorizationWebService"/>
-        <delete dir="${build.generated.sources.dir}/jax-ws/ws/client/merlionTransactionAuthorization"/>
     </target>
     <target name="wsimport-client-SACHWebService" depends="wsimport-init">
         <mkdir dir="${build.generated.dir}/jax-wsCache/SACHWebService"/>
@@ -168,5 +134,21 @@
         <delete dir="${build.generated.dir}/jax-wsCache/SACHWebService"/>
         <delete dir="${build.generated.sources.dir}/jax-ws/ws/client/sach"/>
     </target>
-    <target name="wsimport-client-generate" depends="wsimport-client-MEPSWebService, wsimport-client-SWIFTWebService, wsimport-client-CHIPSWebService, wsimport-client-BillWebService, wsimport-client-OtherBanksWebService, wsimport-client-TransactionAuthorizationWebService, wsimport-client-SACHWebService"/>
+    <target name="wsimport-client-TransactionAuthorizationWebService" depends="wsimport-init">
+        <mkdir dir="${build.generated.dir}/jax-wsCache/TransactionAuthorizationWebService"/>
+        <property name="wsdl-TransactionAuthorizationWebService" location="${meta.inf}/xml-resources/web-service-references/TransactionAuthorizationWebService/wsdl/localhost_8080/TransactionAuthorizationWebService/TransactionAuthorizationWebService.wsdl"/>
+        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/TransactionAuthorizationWebService" destdir="${build.generated.dir}/jax-wsCache/TransactionAuthorizationWebService" wsdl="${wsdl-TransactionAuthorizationWebService}" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" fork="false" wsdlLocation="http://localhost:8080/TransactionAuthorizationWebService/TransactionAuthorizationWebService?wsdl" xnocompile="true" xendorsed="true" package="ws.client.merlionTransactionAuthorization">
+            <depends file="${wsdl-TransactionAuthorizationWebService}"/>
+            <produces dir="${build.generated.dir}/jax-wsCache/TransactionAuthorizationWebService"/>
+        </wsimport>
+        <copy todir="${build.generated.sources.dir}/jax-ws">
+            <fileset dir="${build.generated.dir}/jax-wsCache/TransactionAuthorizationWebService">
+                <include name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="wsimport-client-clean-TransactionAuthorizationWebService" depends="-init-project">
+        <delete dir="${build.generated.dir}/jax-wsCache/TransactionAuthorizationWebService"/>
+        <delete dir="${build.generated.sources.dir}/jax-ws/ws/client/merlionTransactionAuthorization"/>
+    </target>
 </project>

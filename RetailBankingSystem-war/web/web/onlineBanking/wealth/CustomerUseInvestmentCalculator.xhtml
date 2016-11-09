@@ -2,11 +2,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
-                template="/WEB-INF/onlineBankingTemplate.xhtml"
-                xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
+                template="/WEB-INF/onlineBankingTemplate.xhtml">
     <ui:define name="content">
 
         <h:body>
@@ -21,7 +19,6 @@
                     <p:outputLabel value="Investment calculator"/>
 
                     <p:wizard widgetVar ="calculatorWizard" flowListener="#{customerUseInvestmentCalculatorManagedBean.onFlowProcess}" class="ui-lg-12" showNavBar="false">
-                        <p:growl id="msg" showDetail="true" autoUpdate="true"/>
 
                         <p:tab id="t1">
                             <h:panelGrid columns="1">
@@ -57,6 +54,9 @@
                             </h:panelGrid>
 
                             <p:outputLabel value="*Assumes yearly compounding"/>
+                            <br/>
+                            <br/>
+                            <br/>
 
                             <p:commandButton value="Show Results" type="submit" actionListener="#{customerUseInvestmentCalculatorManagedBean.viewResult}" update="@form" style="width:150px"/>
 
@@ -114,7 +114,7 @@
                                     <p:menuitem value="Declare Financial Goal"/>
                                 </p:steps>
                             </h:panelGrid>
-
+                            <p:messages id="msg" showDetail="false" autoUpdate="true"/>
 
                             <p:outputLabel value="Add a new financial goal"/>
 

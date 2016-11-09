@@ -11,6 +11,7 @@ public class ReceivedCheque extends Cheque implements Serializable {
     private String receivedCustomerName;
     private String receivedCustomerMobile;
     private String receivedChequeStatus;
+    private String otherBankAccountNum;
 
     public String getReceivedBankAccountNum() {
         return receivedBankAccountNum;
@@ -42,5 +43,13 @@ public class ReceivedCheque extends Cheque implements Serializable {
 
     public void setReceivedChequeStatus(String receivedChequeStatus) {
         this.receivedChequeStatus = receivedChequeStatus;
+    }
+
+    public String getOtherBankAccountNum() {
+        return otherBankAccountNum;
+    }
+
+    public void setOtherBankAccountNum(String otherBankAccountNum) {
+        this.otherBankAccountNum = otherBankAccountNum;
     }
 }

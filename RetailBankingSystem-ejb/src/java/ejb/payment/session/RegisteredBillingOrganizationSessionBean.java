@@ -60,5 +60,28 @@ public class RegisteredBillingOrganizationSessionBean implements RegisteredBilli
 
         return billingOrganization;
     }
+    
+    @Override
+    public RegisteredBillingOrganization retrieveRegisteredBillingOrganizationByNum(String bankAccountNum) {
+        RegisteredBillingOrganization billingOrganization = new RegisteredBillingOrganization();
+
+        try {
+            Query query = entityManager.createQuery("Select r From RegisteredBillingOrganization r Where r.bankAccountNum=:bankAccountNum");
+            query.setParameter("bankAccountNum", bankAccountNum);
+
+            if (query.getResultList().isEmpty()) {
+                return new RegisteredBillingOrganization();
+            } else {
+                billingOrganization = (RegisteredBillingOrganization) query.getSingleResult();
+            }
+        } catch (EntityNotFoundException enfe) {
+            System.out.println("Entity not found error: " + enfe.getMessage());
+            return new RegisteredBillingOrganization();
+        } catch (NonUniqueResultException nure) {
+            System.out.println("Non unique result error: " + nure.getMessage());
+        }
+
+        return billingOrganization;
+    }
 
 }

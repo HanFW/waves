@@ -10,8 +10,6 @@
 
     <ui:define name="content">
         <h:form>
-
-
             <p:panel>
                 <p:outputLabel value="Welcome "/>
                 <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
@@ -60,6 +58,10 @@
 
                         <p:outputLabel style="font-weight: bold" value="Amount (Singapore Dollar): " />
                         <h:outputText id="output" value="#{sWIFTTransferManagedBean.receivedCountryTransferAmtSGD}" />
+                        <br/>
+                        <br/>
+                        <br/>
+                        <p:outputLabel style="font-weight: bold" value="Service Charge: S$10" />
 
                         <br/>
                         <h:outputText value="&lt;br /&gt;" escape="false" />
@@ -84,20 +86,20 @@
                         <p:message for="transferFromCurrency" />
                     </p:panel>
                 </p:panelGrid>
+
                 <h:panelGrid columns="2" class="ui-lg-4">
                     <p:commandButton id="cancelBtn" action="/web/onlineBanking/deposit/customerDepositIndex.xhtml?faces-redirect=true" value="Cancel" update="panel" immediate = "true">
                         <p:confirm header="Cancel" message="Are you sure?" />
                     </p:commandButton>
-
-
                     <p:commandButton id="nextBtn" value="Next" update="panel" 
-                                     actionListener="#{sWIFTTransferManagedBean.swiftTransfer}" ajax="true"/>
+                                     actionListener="#{sWIFTTransferManagedBean.swiftTransfer}" 
+                                     ajax="true"/>
                 </h:panelGrid>
+                
                 <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
                     <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" action="/web/onlineBanking/deposit/customerDepositIndex.xhtml"/>
                     <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" />
                 </p:confirmDialog>
-
             </div>
         </h:form>
         <ezcomp:CCTimeout/>

@@ -9,17 +9,23 @@
 
     <ui:define name="content">
         <h:form>
-            
             <p:messages globalOnly="true"/>
             <br/>
-            <p:dataTable var="standingGIRO" value="#{employeeDeleteStandingGIROManagedBean.standingGIROs}" 
+            <p:outputLabel value="If customer GIRO arrangement status is rejected, please check customer bill reference number"
+                           style="font-weight: bold"/>
+            <br/>
+            <br/>
+            <div align="center">
+                <h1>View GRIO Arrangement</h1>  
+            </div>
+            <p:dataTable var="standingGIRO" value="#{employeeDeleteStandingGIRODoneManagedBean.standingGIROs}" 
                          reflow="true" paginator="true" rows="10" 
                          emptyMessage="No GIRO Arrangement">
-                <p:column headerText="Billing Organization" >
+                <p:column headerText="Billing Organization" style="width: 18%">
                     <h:outputText value="#{standingGIRO.billingOrganizationName}" /> 
                 </p:column>
 
-                <p:column headerText="Bill Reference No" >
+                <p:column headerText="Bill Reference No" style="width: 16%">
                     <h:outputText value="#{standingGIRO.billReference}" /> 
                 </p:column>
 
@@ -33,20 +39,19 @@
                     </center>
                 </p:column>
 
-                <p:column headerText="Account" >
+                <p:column headerText="Account" style="width: 22%">
                     <h:outputText value="#{standingGIRO.bankAccountNumWithType}" /> 
                 </p:column>
 
                 <p:column headerText="Action" style="width: 10%"> 
                     <center>
-                        <p:commandButton process="@this" action="#{employeeDeleteStandingGIROManagedBean.deleteStandingGIRO()}"
+                        <p:commandButton process="@this" action="#{employeeDeleteStandingGIRODoneManagedBean.deleteStandingGIRO()}"
                                          icon="ui-icon-trash" ajax="false">
-                            <f:setPropertyActionListener target="#{employeeDeleteStandingGIROManagedBean.giroId}" value="#{standingGIRO.giroId}" />
+                            <f:setPropertyActionListener target="#{employeeDeleteStandingGIRODoneManagedBean.giroId}" value="#{standingGIRO.giroId}" />
                         </p:commandButton>
                     </center>
                 </p:column>
             </p:dataTable>
-
         </h:form>
     </ui:define>
 </ui:composition>

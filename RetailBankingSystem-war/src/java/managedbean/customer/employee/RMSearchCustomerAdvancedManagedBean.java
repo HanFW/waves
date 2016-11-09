@@ -9,20 +9,21 @@ import ejb.customer.entity.CustomerAdvanced;
 import ejb.customer.entity.CustomerBasic;
 import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import ejb.infrastructure.entity.Employee;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
-import javax.faces.view.ViewScoped;
 
 /**
  *
  * @author aaa
  */
 @Named(value = "rMSearchCustomerAdvancedManagedBean")
-@ViewScoped
+@RequestScoped
 public class RMSearchCustomerAdvancedManagedBean implements Serializable {
 
     @EJB
@@ -62,6 +63,11 @@ public class RMSearchCustomerAdvancedManagedBean implements Serializable {
     }
 
     public List<CustomerAdvanced> getCustomerAdvanceds() {
+        System.out.println("getcustomerlistfromemployeeid");
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        em = (Employee) ec.getSessionMap().get("employee");
+        customerAdvanceds = em.getCustomerAdvanced();
+        System.out.println("DEBUG" + customerAdvanceds);
         return customerAdvanceds;
     }
 
@@ -133,11 +139,19 @@ public class RMSearchCustomerAdvancedManagedBean implements Serializable {
         this.customerFinanacialAssets = customerFinanacialAssets;
     }
 
-    public List<CustomerAdvanced> getCustomerListFromEmployeeId() {
-        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-        em = (Employee) ec.getSessionMap().get("employee");
-        customerAdvanceds = em.getCustomerAdvanced();
-        return customerAdvanceds;
+    public void updateCustomerAdvancedProfile(Long id) throws IOException {
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.getExternalContext().getSessionMap().put("customerAdvancedId", id);
+
+        context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/web/internalSystem/CRM/RMUpdateCustomerAdvanced.xhtml?faces-redirect=true");
+
+    }
+
+    public void redirectToPortfolio(Long customerBasicId) throws IOException {
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.getExternalContext().getSessionMap().put("customerBasicId", customerBasicId);
+
+        context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/web/internalSystem/wealth/RMViewCustomerPortfolio.xhtml?faces-redirect=true");
     }
 
 }

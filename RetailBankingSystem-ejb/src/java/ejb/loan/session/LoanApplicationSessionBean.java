@@ -7,14 +7,12 @@ package ejb.loan.session;
 
 import ejb.customer.entity.CustomerAdvanced;
 import ejb.customer.entity.CustomerBasic;
-import ejb.deposit.entity.BankAccount;
 import ejb.infrastructure.session.CustomerAdminSessionBeanLocal;
 import ejb.infrastructure.session.CustomerEmailSessionBeanLocal;
 import ejb.loan.entity.CarLoanApplication;
 import ejb.loan.entity.CashlineApplication;
 import ejb.loan.entity.CreditReportAccountStatus;
 import ejb.loan.entity.CreditReportBureauScore;
-import ejb.loan.entity.CreditReportDefaultRecords;
 import ejb.loan.entity.CustomerDebt;
 import ejb.loan.entity.CustomerProperty;
 import ejb.loan.entity.EducationLoanApplication;
@@ -48,7 +46,14 @@ import javax.persistence.Query;
 public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLocal {
 
     @EJB
+    private LoanPayableAccountSessionBeanLocal loanPayableAccountSessionBeanLocal;
+
+    @EJB
+    private LoanStatementSessionBeanLocal loanStatementSessionBeanLocal;
+
+    @EJB
     private CustomerEmailSessionBeanLocal customerEmailSessionBeanLocal;
+
     @EJB
     private CustomerAdminSessionBeanLocal customerAdminSessionBeanLocal;
 
@@ -503,13 +508,18 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
 
         if (loanType.equals("Mortgage Loan")) {
             customerAdminSessionBeanLocal.createOnlineBankingAccount(application.getCustomerBasic().getCustomerBasicId(), "startMortgageLoan");
-        } else if(loanType.equals("Car Loan")){
+        } else if (loanType.equals("Car Loan")) {
             customerAdminSessionBeanLocal.createOnlineBankingAccount(application.getCustomerBasic().getCustomerBasicId(), "startCarLoan");
-        } else if(loanType.equals("Renovation Loan")){
+        } else if (loanType.equals("Renovation Loan")) {
             customerAdminSessionBeanLocal.createOnlineBankingAccount(application.getCustomerBasic().getCustomerBasicId(), "startRenovationLoan");
-        } else if(loanType.equals("Education Loan")){
+        } else if (loanType.equals("Education Loan")) {
             customerAdminSessionBeanLocal.createOnlineBankingAccount(application.getCustomerBasic().getCustomerBasicId(), "startEducationLoan");
         }
+
+        String statementType = "Loan Statement";
+        String accountDetails = loanType;
+        LoanPayableAccount account = loanPayableAccountSessionBeanLocal.retrieveLoanPayableAccountByNum(payableAccountNumber);
+        loanStatementSessionBeanLocal.addNewLoanStatement(statementType, accountDetails, account.getId());
 
         em.flush();
     }
