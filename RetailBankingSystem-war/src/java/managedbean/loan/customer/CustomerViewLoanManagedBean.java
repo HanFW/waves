@@ -16,7 +16,6 @@ import ejb.loan.session.LoanManagementSessionBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -197,8 +196,12 @@ public class CustomerViewLoanManagedBean implements Serializable {
 
     public void confirmRecurringPayment() {
         loanManagementSessionBeanLocal.setRecurringLoanServingAccount(loanServingAccount, ra.getId());
+        hasRecurringRepayment = true;
         RequestContext rc = RequestContext.getCurrentInstance();
         rc.execute("PF('recurringDialog').hide();");
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Repayment plan updated successfully.", null);
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage(null, message);
     }
 
     public void deleteRecurringPayment() {
@@ -206,6 +209,7 @@ public class CustomerViewLoanManagedBean implements Serializable {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Repayment plan updated successfully.", null);
         FacesContext context = FacesContext.getCurrentInstance();
         context.addMessage(null, message);
+        hasRecurringRepayment = false;
     }
 
     public BankAccountSessionBeanLocal getBankAccountSessionBeanLocal() {
@@ -234,6 +238,7 @@ public class CustomerViewLoanManagedBean implements Serializable {
 
     public List<LoanRepaymentTransaction> getRepaymentHistory() {
         repaymentHistory = loanManagementSessionBeanLocal.getRepaymentHistory(ra.getId());
+        System.out.println(repaymentHistory);
         return repaymentHistory;
     }
 
