@@ -7,11 +7,12 @@ package managedbean.portfolio.employee;
 
 import ejb.wealth.entity.Bond;
 import ejb.wealth.entity.Fund;
-import ejb.wealth.entity.Portfolio;
 import ejb.wealth.entity.Stock;
 import ejb.wealth.session.AssetSessionBeanLocal;
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import javax.annotation.PostConstruct;
@@ -24,6 +25,7 @@ import javax.faces.view.ViewScoped;
 import org.primefaces.context.RequestContext;
 import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
+import org.primefaces.model.chart.CategoryAxis;
 import org.primefaces.model.chart.ChartSeries;
 import org.primefaces.model.chart.LineChartModel;
 
@@ -57,23 +59,27 @@ public class RMAddPorfolioManagedBean implements Serializable {
 
     public RMAddPorfolioManagedBean() {
     }
-    
+
     @PostConstruct
     public void init() {
-        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-        Long portfolioId = (Long) ec.getSessionMap().get("portfolioId");
-        Portfolio portfolio = assetSessionBeanLocal.getPortfolioById(portfolioId);
-        startingBalance = portfolio.getStartingBalance();
+//        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+//        Long portfolioId = (Long) ec.getSessionMap().get("portfolioId");
+//        Portfolio portfolio = assetSessionBeanLocal.getPortfolioById(portfolioId);
+//        startingBalance = portfolio.getStartingBalance();
+        
+        stockLineModel = new LineChartModel();
+        fundLineModel = new LineChartModel();
+        bondLineModel = new LineChartModel();
     }
-
     private void createStockLineModels(Long selectedId) {
 
         stockLineModel = initStockModel(selectedId);
         stockLineModel.setTitle("Stock Trend");
         stockLineModel.setShowPointLabels(true);
+        stockLineModel.getAxes().put(AxisType.X, new CategoryAxis("Date"));
         Axis yAxis = stockLineModel.getAxis(AxisType.Y);
         yAxis.setMin(0);
-        yAxis.setMax(150);
+        yAxis.setMax(50);
     }
 
     private void createFundLineModels(Long selectedId) {
@@ -81,9 +87,10 @@ public class RMAddPorfolioManagedBean implements Serializable {
         fundLineModel = initFundModel(selectedId);
         fundLineModel.setTitle("Fund Trend");
         fundLineModel.setShowPointLabels(true);
+        fundLineModel.getAxes().put(AxisType.X, new CategoryAxis("Date"));
         Axis yAxis = fundLineModel.getAxis(AxisType.Y);
         yAxis.setMin(0);
-        yAxis.setMax(150);
+        yAxis.setMax(50);
     }
 
     private void createBondLineModels(Long selectedId) {
@@ -91,22 +98,22 @@ public class RMAddPorfolioManagedBean implements Serializable {
         bondLineModel = initBondModel(selectedId);
         bondLineModel.setTitle("Bond Value");
         bondLineModel.setShowPointLabels(true);
+        bondLineModel.getAxes().put(AxisType.X, new CategoryAxis("Year"));
         Axis yAxis = bondLineModel.getAxis(AxisType.Y);
         yAxis.setMin(0);
-        yAxis.setMax(1500);
+//        yAxis.setMax(1500);
     }
 
     private LineChartModel initStockModel(Long selectedId) {
         LineChartModel model = new LineChartModel();
-
+        DecimalFormat df = new DecimalFormat("0.00");
         Stock stock = assetSessionBeanLocal.getStockById(selectedId);
 
         double[] price = new double[7];
         price[0] = stock.getCurrentValue();
         for (int i = 1; i < 7; i++) {
-            price[i] = generateNextTrend(stock.getRisk(), price[i - 1]);
+            price[i] = Double.valueOf(df.format(generateNextTrend(stock.getRisk(), price[i - 1])));
         }
-
         ChartSeries stockChart = new ChartSeries();
         stockChart.set("2016-11-06", price[6]);
         stockChart.set("2016-11-07", price[5]);
@@ -123,13 +130,13 @@ public class RMAddPorfolioManagedBean implements Serializable {
 
     private LineChartModel initFundModel(Long selectedId) {
         LineChartModel model = new LineChartModel();
-
+        DecimalFormat df = new DecimalFormat("0.00");
         Fund fund = assetSessionBeanLocal.getFundById(selectedId);
 
         double[] price = new double[7];
         price[0] = fund.getCurrentValue();
         for (int i = 1; i < 7; i++) {
-            price[i] = generateNextTrend(fund.getRisk(), price[i - 1]);
+            price[i] = Double.valueOf(df.format(generateNextTrend(fund.getRisk(), price[i - 1])));
         }
 
         ChartSeries fundChart = new ChartSeries();
@@ -148,13 +155,13 @@ public class RMAddPorfolioManagedBean implements Serializable {
 
     private LineChartModel initBondModel(Long selectedId) {
         Bond bond = assetSessionBeanLocal.getBondById(selectedId);
-
+        DecimalFormat df = new DecimalFormat("0.00");
         LineChartModel model = new LineChartModel();
 
         double[] price = new double[5];
         price[0] = bond.getCurrentValue();
         for (int i = 1; i < 5; i++) {
-            price[i] = price[i - 1] * (1 + bond.getCouponRate());
+            price[i] = Double.valueOf(df.format(price[i - 1] * (1 + bond.getCouponRate()/100)));
         }
         ChartSeries bondChart = new ChartSeries();
         bondChart.set("2016", price[0]);
