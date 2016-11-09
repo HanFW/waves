@@ -101,10 +101,10 @@
                                 <div align="center">
                                     <p:menuButton value="Make Repayment" disabled="#{customerViewLoanManagedBean.hasRecurringRepayment}">
                                         <p:menuitem value="Pay Via My Deposit Account" action="#{customerViewLoanManagedBean.makeRepaymentByMerlionBankAccount}" update="applyLink"/>
-                                        <p:menuitem value="Recurring Repayment"/>
+                                        <p:menuitem value="Recurring Repayment" action="#{customerViewLoanManagedBean.makeRecurringRepayment}"/>
                                     </p:menuButton>
                                     <p:menuButton value="Change Repayment Plan" disabled="#{!customerViewLoanManagedBean.hasRecurringRepayment}">
-                                        <p:menuitem value="Terminate Recurring Repayment"/>
+                                        <p:menuitem value="Terminate Recurring Repayment" action="#{customerViewLoanManagedBean.deleteRecurringPayment}" update="@form"/>
                                     </p:menuButton>
                                 </div>
                             </p:column>
@@ -155,9 +155,30 @@
 
             <div align="center">
                 <p:panel header="Repayment History">
-
+                    <p:dataTable value="#{customerViewLoanManagedBean.repaymentHistory}" var="history">
+                        <p:column headerText="Date">
+                            <p:outputLabel value="#{history.transactionDate}"/>
+                        </p:column>
+                        <p:column headerText="Amount">
+                            <p:outputLabel value="#{history.accountCredit}"/>
+                        </p:column>
+                        <p:column headerText="Description">
+                            <p:outputLabel value="#{history.description}"/>
+                        </p:column>
+                        <p:column headerText="Account Balance">
+                            <p:outputLabel value="#{history.accountBalance}"/>
+                        </p:column>
+                    </p:dataTable>
                 </p:panel>
             </div>
+        </h:form>
+        <h:form>
+            <p:dialog widgetVar="recurringDialog" closable="true" header="Choose your loan serving account">
+                <p:selectOneMenu value="#{customerViewLoanManagedBean.depositAccounts}" >
+                    <f:selectItem itemValue="#{customerViewLoanManagedBean.loanServingAccount}"/>
+                </p:selectOneMenu>
+                <p:commandButton value="Confirm" action="#{customerViewLoanManagedBean.confirmRecurringPayment}"/>
+            </p:dialog>
         </h:form>
         <ezcomp:CCTimeout/>
     </ui:define>

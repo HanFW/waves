@@ -5,6 +5,8 @@
  */
 package ejb.loan.session;
 
+import ejb.deposit.entity.BankAccount;
+import ejb.deposit.session.BankAccountSessionBeanLocal;
 import ejb.infrastructure.session.CustomerEmailSessionBeanLocal;
 import ejb.loan.entity.LoanApplication;
 import ejb.loan.entity.LoanPayableAccount;
@@ -24,6 +26,13 @@ import javax.persistence.Query;
  */
 @Stateless
 public class LoanInterestSessionBean implements LoanInterestSessionBeanLocal {
+
+    @EJB
+    private LoanManagementSessionBeanLocal loanManagementSessionBeanLocal;
+    @EJB
+    private BankAccountSessionBeanLocal bankAccountSessionBeanLocal;
+    @EJB
+    private LoanRepaymentSessionBeanLocal loanRepaymentSessionBeanLocal;
     @EJB
     private CustomerEmailSessionBeanLocal customerEmailSessionBeanLocal;
 
@@ -46,6 +55,16 @@ public class LoanInterestSessionBean implements LoanInterestSessionBeanLocal {
             calculateNewRepayment(account);
             account.setRepaymentMonths(account.getRepaymentMonths() + 1);
             checkAccountStatus(account);
+            if (account.getDepositAccountNumber() != null) {
+                BankAccount deposit = bankAccountSessionBeanLocal.retrieveBankAccountByNum(account.getDepositAccountNumber());
+                Double availableBalance = Double.valueOf(deposit.getAvailableBankAccountBalance());
+                if (availableBalance < account.getAccountBalance()) {
+                    loanManagementSessionBeanLocal.deleteRecurringLoanServingAccount(account.getId());
+                    customerEmailSessionBeanLocal.sendEmail(account.getLoanPayableAccount().getLoanApplication().getCustomerBasic(), "recurringStopReminder", null);
+                } else {
+                    loanRepaymentSessionBeanLocal.makeMonthlyRepayment(deposit, account, account.getAccountBalance());
+                }
+            }
         }
 
         Query query2 = em.createQuery("SELECT a FROM LoanRepaymentAccount a WHERE a.loanPayableAccount.accountStatus = :accountStatus");
@@ -75,7 +94,7 @@ public class LoanInterestSessionBean implements LoanInterestSessionBeanLocal {
             double extraFee = newFee - account.getFees();
             addLoanAccountTransaction(account, extraFee, "Late Charge", "debit");
             payableAccount.setAccountBalance(payableAccount.getAccountBalance() + extraFee);
-            
+
             newOverdue = Math.round(newOverdue * 100.0) / 100.0;
             account.setOverdueBalance(newOverdue);
             payableAccount.setOverdueBalance(newOverdue);
@@ -161,9 +180,9 @@ public class LoanInterestSessionBean implements LoanInterestSessionBeanLocal {
             account.setPrincipal(instalment - interest);
             account.setInstalment(instalment);
             double previousAccountBalance = account.getAccountBalance();
-            if(oldTotalRemaining < instalment){
+            if (oldTotalRemaining < instalment) {
                 account.setAccountBalance(previousAccountBalance + oldTotalRemaining);
-            }else{
+            } else {
                 account.setAccountBalance(previousAccountBalance + instalment);
             }
         }
@@ -173,24 +192,24 @@ public class LoanInterestSessionBean implements LoanInterestSessionBeanLocal {
 
     public void checkAccountStatus(LoanRepaymentAccount account) {
         LoanPayableAccount payableAccount = account.getLoanPayableAccount();
-        
-        if (payableAccount.getAccountBalance() - account.getInstalment()<= 0) {
+
+        if (payableAccount.getAccountBalance() - account.getInstalment() <= 0) {
             payableAccount.setAccountStatus("ended");
-        } else if(account.getRepaymentMonths() >= payableAccount.getLoanApplication().getPeriodSuggested()){
+        } else if (account.getRepaymentMonths() >= payableAccount.getLoanApplication().getPeriodSuggested()) {
             payableAccount.setAccountStatus("ended");
         }
     }
-    
-    private void addLoanAccountTransaction(LoanRepaymentAccount repaymentAccount, double amount, String description, String action){
+
+    private void addLoanAccountTransaction(LoanRepaymentAccount repaymentAccount, double amount, String description, String action) {
         Calendar cal = Calendar.getInstance();
         Long transactionDateMilis = cal.getTimeInMillis();
         LoanRepaymentTransaction transaction = new LoanRepaymentTransaction();
         transaction.setAccountBalance(repaymentAccount.getAccountBalance() - amount);
         transaction.setAccountCredit(amount);
-        if(action.equals("credit")){
+        if (action.equals("credit")) {
             transaction.setAccountCredit(amount);
             transaction.setAccountDebit(0);
-        }else{
+        } else {
             transaction.setAccountCredit(0);
             transaction.setAccountDebit(amount);
         }
@@ -198,7 +217,7 @@ public class LoanInterestSessionBean implements LoanInterestSessionBeanLocal {
         transaction.setTransactionDate(cal.getTime());
         transaction.setTransactionMillis(transactionDateMilis);
         transaction.setLoanRepaymentAccount(repaymentAccount);
-        
+
         em.persist(transaction);
         em.flush();
     }

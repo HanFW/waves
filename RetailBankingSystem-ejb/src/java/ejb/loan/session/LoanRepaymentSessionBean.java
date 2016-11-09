@@ -132,12 +132,7 @@ public class LoanRepaymentSessionBean implements LoanRepaymentSessionBeanLocal {
         
         depositAccount.setAvailableBankAccountBalance(newAvailableBalance.toString());
         depositAccount.setTotalBankAccountBalance(newTotalBalanace.toString());
-        
-        depositAccount.getInterest().setIsTransfer("1");
-
-        Double currentDailyTransferLimit = Double.valueOf(depositAccount.getTransferBalance()) - amount;
-        depositAccount.setTransferBalance(currentDailyTransferLimit.toString());
-        
+                
         em.flush();
         return fromTransactionId;
     }

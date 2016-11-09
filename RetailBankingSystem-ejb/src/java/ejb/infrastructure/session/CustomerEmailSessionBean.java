@@ -176,6 +176,9 @@ public class CustomerEmailSessionBean implements CustomerEmailSessionBeanLocal {
             case "bankruptReminder":
                 emailText += "Please be reminded that Merlion Bank has sued your for bankrupt and will take actions on your assets to recover your default payments";
                 break;
+            case "recurringStopReminder":
+                emailText += "Please be noted that your recurring loan repayment has been terminated due to insufficient balance in your account. Please make repayment manually or declare recurring account again after deposit.";
+                break;
         }
 
         try {

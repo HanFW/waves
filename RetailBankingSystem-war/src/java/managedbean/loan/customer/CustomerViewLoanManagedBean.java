@@ -10,6 +10,7 @@ import ejb.deposit.entity.BankAccount;
 import ejb.loan.entity.LoanInterestPackage;
 import ejb.loan.entity.LoanPayableAccount;
 import ejb.loan.entity.LoanRepaymentAccount;
+import ejb.loan.entity.LoanRepaymentTransaction;
 import ejb.loan.session.LoanManagementSessionBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
@@ -23,6 +24,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
+import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -30,7 +32,7 @@ import javax.faces.view.ViewScoped;
  */
 @Named(value = "customerViewLoanManagedBean")
 @ViewScoped
-public class CustomerViewLoanManagedBean implements Serializable{
+public class CustomerViewLoanManagedBean implements Serializable {
 
     @EJB
     private LoanManagementSessionBeanLocal loanManagementSessionBeanLocal;
@@ -60,6 +62,13 @@ public class CustomerViewLoanManagedBean implements Serializable{
     private boolean hasRecurringRepayment;
     private String recurringAccountNum;
 
+    private List<LoanRepaymentTransaction> repaymentHistory;
+
+    private List<String> depositAccounts;
+    private String loanServingAccount;
+
+    private CustomerBasic customer;
+
     /**
      * Creates a new instance of CustomerViewLoanManagedBean
      */
@@ -68,10 +77,11 @@ public class CustomerViewLoanManagedBean implements Serializable{
 
     @PostConstruct
     public void init() {
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        customer = (CustomerBasic) ec.getSessionMap().get("customer");
         noDepositAccount = false;
         DecimalFormat df = new DecimalFormat("0.00");
 
-        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         loanId = (Long) ec.getFlash().get("loanId");
         pa = loanManagementSessionBeanLocal.getLoanPayableAccountById(loanId);
         ra = pa.getLoanRepaymentAccount();
@@ -112,20 +122,19 @@ public class CustomerViewLoanManagedBean implements Serializable{
         totalPayment = Math.round(totalPayment * 100.0) / 100.0;
         totalAmount = ra.getAccountBalance();
         totalAmount = Math.round(totalAmount * 100.0) / 100.0;
-        
+
         recurringAccountNum = ra.getDepositAccountNumber();
-        if(recurringAccountNum != null){
+        if (recurringAccountNum != null) {
             hasRecurringRepayment = true;
-        }else{
+        } else {
             hasRecurringRepayment = false;
         }
     }
 
     public void makeRepaymentByMerlionBankAccount() throws IOException {
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-        CustomerBasic customer = (CustomerBasic) ec.getSessionMap().get("customer");
-        List<BankAccount> depositAccounts = loanManagementSessionBeanLocal.getCustomerDepositAccounts(customer.getCustomerBasicId());
-        if (depositAccounts.isEmpty()) {
+        List<BankAccount> accounts = loanManagementSessionBeanLocal.getCustomerDepositAccounts(customer.getCustomerBasicId());
+        if (accounts.isEmpty()) {
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN, "No existing deposit account found.", null);
             FacesContext context = FacesContext.getCurrentInstance();
             context.addMessage(null, message);
@@ -138,10 +147,61 @@ public class CustomerViewLoanManagedBean implements Serializable{
             ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/loan/customerMakeLoanRepayment.xhtml?faces-redirect=true");
         }
     }
-    
-    public void applyDepositAccount() throws IOException{
+
+    public void applyDepositAccount() throws IOException {
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/deposit/customerOpenAccount.xhtml?faces-redirect=true");
+    }
+
+    public void makeRecurringRepayment() {
+        List<BankAccount> accounts = loanManagementSessionBeanLocal.getCustomerDepositAccounts(customer.getCustomerBasicId());
+        if (accounts.isEmpty()) {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN, "No existing deposit account found.", null);
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, message);
+            noDepositAccount = true;
+        } else {
+            noDepositAccount = false;
+            for (BankAccount account : accounts) {
+                depositAccounts.add(account.getBankAccountNum());
+            }
+            RequestContext rc = RequestContext.getCurrentInstance();
+            rc.execute("PF('recurringDialog').show();");
+        }
+    }
+
+    public void confirmRecurringPayment() {
+        loanManagementSessionBeanLocal.setRecurringLoanServingAccount(loanServingAccount, ra.getId());
+        RequestContext rc = RequestContext.getCurrentInstance();
+        rc.execute("PF('recurringDialog').hide();");
+    }
+
+    public void deleteRecurringPayment() {
+        loanManagementSessionBeanLocal.deleteRecurringLoanServingAccount(ra.getId());
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Repayment plan updated successfully.", null);
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage(null, message);
+    }
+
+    public List<String> getDepositAccounts() {
+        return depositAccounts;
+    }
+
+    public void setDepositAccounts(List<String> depositAccounts) {
+        this.depositAccounts = depositAccounts;
+    }
+
+    public String getLoanServingAccount() {
+        return loanServingAccount;
+    }
+
+    public void setLoanServingAccount(String loanServingAccount) {
+        this.loanServingAccount = loanServingAccount;
+    }
+
+    public List<LoanRepaymentTransaction> getRepaymentHistory() {
+        repaymentHistory = loanManagementSessionBeanLocal.getRepaymentHistory(ra.getId());
+        return repaymentHistory;
     }
 
     public LoanManagementSessionBeanLocal getLoanManagementSessionBeanLocal() {
@@ -310,6 +370,14 @@ public class CustomerViewLoanManagedBean implements Serializable{
 
     public void setRecurringAccountNum(String recurringAccountNum) {
         this.recurringAccountNum = recurringAccountNum;
+    }
+
+    public CustomerBasic getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(CustomerBasic customer) {
+        this.customer = customer;
     }
 
 }

@@ -10,6 +10,8 @@ import ejb.deposit.entity.BankAccount;
 import ejb.loan.entity.CashlineApplication;
 import ejb.loan.entity.LoanApplication;
 import ejb.loan.entity.LoanPayableAccount;
+import ejb.loan.entity.LoanRepaymentAccount;
+import ejb.loan.entity.LoanRepaymentTransaction;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -29,12 +31,12 @@ public class LoanManagementSessionBean implements LoanManagementSessionBeanLocal
     @Override
     public List<LoanPayableAccount> getLoanPayableAccountByIdentification(String identification) {
         List<LoanPayableAccount> accounts;
-        
+
         Query query = em.createQuery("SELECT a FROM LoanPayableAccount a WHERE a.loanApplication.customerBasic.customerIdentificationNum = :identification AND a.accountStatus = :status");
         query.setParameter("identification", identification);
         query.setParameter("status", "started");
         accounts = query.getResultList();
-        
+
         Query query2 = em.createQuery("SELECT a FROM LoanPayableAccount a WHERE a.loanApplication.customerBasic.customerIdentificationNum = :identification AND a.accountStatus = :status");
         query2.setParameter("identification", identification);
         query2.setParameter("status", "default");
@@ -44,12 +46,12 @@ public class LoanManagementSessionBean implements LoanManagementSessionBeanLocal
         query3.setParameter("identification", identification);
         query3.setParameter("status", "ended");
         accounts.addAll(query3.getResultList());
-        
+
         Query query4 = em.createQuery("SELECT a FROM LoanPayableAccount a WHERE a.loanApplication.customerBasic.customerIdentificationNum = :identification AND a.accountStatus = :status");
         query4.setParameter("identification", identification);
         query4.setParameter("status", "completed");
         accounts.addAll(query4.getResultList());
-        
+
         Query query5 = em.createQuery("SELECT a FROM LoanPayableAccount a WHERE a.loanApplication.customerBasic.customerIdentificationNum = :identification AND a.accountStatus = :status");
         query5.setParameter("identification", identification);
         query5.setParameter("status", "bankrupt");
@@ -75,21 +77,42 @@ public class LoanManagementSessionBean implements LoanManagementSessionBeanLocal
         return account;
     }
 
-    
     @Override
-    public List<CashlineApplication> getCashlineApplicationsByIdentification(String identification){
+    public List<CashlineApplication> getCashlineApplicationsByIdentification(String identification) {
         System.out.println("get identification: " + identification);
         Query query = em.createQuery("SELECT a FROM CashlineApplication a WHERE a.customerBasic.customerIdentificationNum = :identification");
         query.setParameter("identification", identification);
-        
+
         List<CashlineApplication> resultList = query.getResultList();
-        
+
         return resultList;
+    }
+
+    @Override
+    public List<BankAccount> getCustomerDepositAccounts(Long customerId) {
+        CustomerBasic customer = em.find(CustomerBasic.class, customerId);
+        return customer.getBankAccount();
+    }
+
+    @Override
+    public List<LoanRepaymentTransaction> getRepaymentHistory(Long accountId) {
+        Query query = em.createQuery("SELECT a FROM LoanRepaymentTransaction a WHERE a.description = :description AND a.id =: accountId");
+        query.setParameter("description", "Monthly Repayment");
+        query.setParameter("accountId", accountId);
+        return query.getResultList();
+    }
+
+    @Override
+    public void setRecurringLoanServingAccount(String accountNum, Long repaymentAccountId) {
+        LoanRepaymentAccount account = em.find(LoanRepaymentAccount.class, repaymentAccountId);
+        account.setDepositAccountNumber(accountNum);
+        em.flush();
     }
     
     @Override
-    public List<BankAccount> getCustomerDepositAccounts(Long customerId){
-        CustomerBasic customer = em.find(CustomerBasic.class, customerId);
-        return customer.getBankAccount();
+    public void deleteRecurringLoanServingAccount(Long repaymentAccountId){
+        LoanRepaymentAccount account = em.find(LoanRepaymentAccount.class, repaymentAccountId);
+        account.setDepositAccountNumber(null);
+        em.flush();
     }
 }
