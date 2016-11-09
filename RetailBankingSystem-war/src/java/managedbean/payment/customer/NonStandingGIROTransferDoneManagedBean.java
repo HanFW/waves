@@ -175,7 +175,7 @@ public class NonStandingGIROTransferDoneManagedBean implements Serializable {
         NonStandingGIRO nonStandingGiro = nonStandingGIROSessionBeanLocal.retrieveNonStandingGIROById(giroId);
 
         if (nonStandingGiro.getNonStandingStatus().equals("Incompleted")) {
-            
+
             String billingOrganizationName = nonStandingGiro.getBillingOrganizationName();
             String bankAccountNum = nonStandingGiro.getBankAccountNum();
 
@@ -189,7 +189,7 @@ public class NonStandingGIROTransferDoneManagedBean implements Serializable {
             String billOrgBankAccountNum = billOrg.getBankAccountNum();
 
             if (bankName.equals("DBS") && nonStandingGiro.getPaymentFrequency().equals("One Time")) {
-                
+
                 sachNonStandingGIROTransferMTD(bankAccount.getBankAccountNum(), billOrgBankAccountNum, paymentAmt);
 
                 OtherBankAccount dbsBankAccount = retrieveBankAccountByNum(billOrg.getBankAccountNum());
@@ -212,7 +212,7 @@ public class NonStandingGIROTransferDoneManagedBean implements Serializable {
                 ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/payment/customerNonStandingGIROTransferFinished.xhtml?faces-redirect=true");
 
             } else if (bankName.equals("DBS") && !nonStandingGiro.getPaymentFrequency().equals("One Time")) {
-                
+
                 sachNonStandingGIROTransferMTD(bankAccount.getBankAccountNum(), billOrgBankAccountNum, paymentAmt);
 
                 nonStandingGIROSessionBeanLocal.updatePaymentAmt(giroId, paymentAmt.toString());
@@ -237,7 +237,7 @@ public class NonStandingGIROTransferDoneManagedBean implements Serializable {
                 ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/payment/customerNonStandingGIROTransferFinished.xhtml?faces-redirect=true");
             }
         } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("You have already set your recurrent bill payment", ""));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "You have already set your recurrent bill payment", ""));
         }
     }
 
@@ -248,11 +248,11 @@ public class NonStandingGIROTransferDoneManagedBean implements Serializable {
         GIRO giro = gIROSessionBeanLocal.retrieveGIROById(giroId);
 
         if (giro.getGiroId() == null) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! GIRO does not exist.", "Failed!"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! GIRO does not exist.", "Failed!"));
         } else {
             gIROSessionBeanLocal.deleteGIRO(giroId);
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Successfully! GIRO deleted Successfully.", "Successfuly!"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Successfully! GIRO deleted Successfully.", "Successfuly!"));
         }
     }
 
