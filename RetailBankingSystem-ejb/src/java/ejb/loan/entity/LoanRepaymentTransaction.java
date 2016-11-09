@@ -8,11 +8,9 @@ package ejb.loan.entity;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 
 /**
@@ -34,9 +32,6 @@ public class LoanRepaymentTransaction implements Serializable {
     private double accountDebit;
     private double accountCredit;
     
-    
-    @ManyToOne (fetch = FetchType.EAGER)
-    private LoanRepaymentAccount loanRepaymentAccount;
 
     public Long getId() {
         return id;
@@ -44,14 +39,6 @@ public class LoanRepaymentTransaction implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public LoanRepaymentAccount getLoanRepaymentAccount() {
-        return loanRepaymentAccount;
-    }
-
-    public void setLoanRepaymentAccount(LoanRepaymentAccount loanRepaymentAccount) {
-        this.loanRepaymentAccount = loanRepaymentAccount;
     }
 
     public Date getTransactionDate() {

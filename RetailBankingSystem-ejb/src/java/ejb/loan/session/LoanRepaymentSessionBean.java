@@ -38,7 +38,7 @@ public class LoanRepaymentSessionBean implements LoanRepaymentSessionBeanLocal {
             
         Long fromTransactionId = addDepositTransction(deposit, ra, amount); 
         updateLoanAccounts(ra, amount);
-        addLoanRepaymentTransaction(ra, amount);
+        addLoanTransactions(ra, amount);
         
         em.flush();
         return fromTransactionId;
@@ -95,18 +95,38 @@ public class LoanRepaymentSessionBean implements LoanRepaymentSessionBeanLocal {
         em.flush();
     }
     
-    private void addLoanRepaymentTransaction(LoanRepaymentAccount repaymentAccount, double amount){
-        LoanPayableAccount payableAccount = repaymentAccount.getLoanPayableAccount();
+    private void addLoanTransactions(LoanRepaymentAccount repaymentAccount, double amount){
+        double accountInterest = repaymentAccount.getInterest();
+        
+    }
+    
+    @Override
+    public void addLoanRepaymentTransaction(LoanRepaymentAccount repaymentAccount, double amount, String description){
         Calendar cal = Calendar.getInstance();
         Long transactionDateMilis = cal.getTimeInMillis();
         LoanRepaymentTransaction transaction = new LoanRepaymentTransaction();
-        transaction.setAccountBalance(payableAccount.getAccountBalance());
+        transaction.setAccountBalance(repaymentAccount.getAccountBalance() - amount);
+        transaction.setAccountCredit(amount);
+        transaction.setAccountDebit(0);
+        transaction.setDescription(description);
+        transaction.setTransactionDate(cal.getTime());
+        transaction.setTransactionMillis(transactionDateMilis);
+        
+        em.persist(transaction);
+        em.flush();
+    }
+    
+    @Override
+    public void addLoanPayableTransaction(LoanPayableAccount payableAccount, double amount){
+        Calendar cal = Calendar.getInstance();
+        Long transactionDateMilis = cal.getTimeInMillis();
+        LoanRepaymentTransaction transaction = new LoanRepaymentTransaction();
+        transaction.setAccountBalance(payableAccount.getAccountBalance() - amount);
         transaction.setAccountCredit(amount);
         transaction.setAccountDebit(0);
         transaction.setDescription("Monthly Repayment");
         transaction.setTransactionDate(cal.getTime());
         transaction.setTransactionMillis(transactionDateMilis);
-        transaction.setLoanRepaymentAccount(repaymentAccount);
         
         em.persist(transaction);
         em.flush();

@@ -21,7 +21,6 @@ public class LoanStatementSessionBean implements LoanStatementSessionBeanLocal {
         
         loanStatement.setAccountDetails(accountDetails);
         loanStatement.setStatementType(statementType);
-        loanStatement.setLoanPayableAccount(loanPayableAccountSessionBeanLocal.retrieveLoanPayableAccountById(loanPayableAccountId));
         
         entityManager.persist(loanStatement);
         entityManager.flush();

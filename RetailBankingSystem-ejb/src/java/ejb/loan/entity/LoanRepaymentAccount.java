@@ -28,9 +28,11 @@ public class LoanRepaymentAccount implements Serializable {
     private Long id;
     
     private String accountNumber;
-    private double principal;
-    private double interest;
-    private double instalment;
+    private double currentPrincipal;
+    private double currentInterest;
+    private double currentInstalment;
+    private double totalPrincipal;
+    private double totalInterest;
     private double overdueBalance;
     private double fees;
     private String paymentStatus;
@@ -44,7 +46,18 @@ public class LoanRepaymentAccount implements Serializable {
     
     @OneToMany (cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "loanRepaymentAccount")
     private List<LoanRepaymentTransaction> loanRepaymentTransactions;
+    
+    @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
+    private LoanStatement loanStatement;
 
+    public LoanStatement getLoanStatement() {
+        return loanStatement;
+    }
+
+    public void setLoanStatement(LoanStatement loanStatement) {
+        this.loanStatement = loanStatement;
+    }    
+    
     public Long getId() {
         return id;
     }
@@ -117,14 +130,6 @@ public class LoanRepaymentAccount implements Serializable {
         this.depositAccountNumber = depositAccountNumber;
     }
 
-    public double getInstalment() {
-        return instalment;
-    }
-
-    public void setInstalment(double instalment) {
-        this.instalment = instalment;
-    }
-
     public double getAccountBalance() {
         return accountBalance;
     }
@@ -133,20 +138,44 @@ public class LoanRepaymentAccount implements Serializable {
         this.accountBalance = accountBalance;
     }
 
-    public double getPrincipal() {
-        return principal;
+    public double getCurrentPrincipal() {
+        return currentPrincipal;
     }
 
-    public void setPrincipal(double principal) {
-        this.principal = principal;
+    public void setCurrentPrincipal(double currentPrincipal) {
+        this.currentPrincipal = currentPrincipal;
     }
 
-    public double getInterest() {
-        return interest;
+    public double getCurrentInterest() {
+        return currentInterest;
     }
 
-    public void setInterest(double interest) {
-        this.interest = interest;
+    public void setCurrentInterest(double currentInterest) {
+        this.currentInterest = currentInterest;
+    }
+
+    public double getCurrentInstalment() {
+        return currentInstalment;
+    }
+
+    public void setCurrentInstalment(double currentInstalment) {
+        this.currentInstalment = currentInstalment;
+    }
+
+    public double getTotalPrincipal() {
+        return totalPrincipal;
+    }
+
+    public void setTotalPrincipal(double totalPrincipal) {
+        this.totalPrincipal = totalPrincipal;
+    }
+
+    public double getTotalInterest() {
+        return totalInterest;
+    }
+
+    public void setTotalInterest(double totalInterest) {
+        this.totalInterest = totalInterest;
     }
 
     public int getDefaultMonths() {
