@@ -219,6 +219,8 @@ public class RegularGIROTransferManagedBean {
 
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
+        CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
+
         String fromBankAccountNum = handleAccountString(fromBankAccountNumWithType);
         String toOtherBankAccountNum = handleAccountString(toBankAccountNumWithType);
 
@@ -235,7 +237,7 @@ public class RegularGIROTransferManagedBean {
 
         Long regularGIROId = regularGIROSessionBeanLocal.addNewRegularGRIO(fromBankAccountNum,
                 fromBankAccountNumWithType, "Regular GIRO", transferAmt.toString(), transferFrequency,
-                toBankName, toOtherBankAccountNum, "Active", payeeName, fromBankAccount.getBankAccountId());
+                toBankName, toOtherBankAccountNum, "Active", payeeName, customerBasic.getCustomerBasicId());
 
         if (toBankName.equals("DBS") && transferMethod.equals("One Time")) {
 
