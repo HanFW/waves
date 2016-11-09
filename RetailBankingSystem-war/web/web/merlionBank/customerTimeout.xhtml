@@ -4,46 +4,28 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
                 template="/WEB-INF/merlionBankTemplate.xhtml">
-                
-    
-                
+
     <ui:define name="content">
+        <h:body>
+            <h:form>
+                <div class="ui-g ui-fluid">
+                    <div class="ui-g-12 ui-lg-12">
+                        <!-- Left Side -->
+                        <div class="card card-w-title">
+                            <div align="center">
+                                <h3> Your session has expired. Please log in again if you want to continue online banking services. </h3>
+                                <br/>
+                                <br/>
+                                <h:panelGrid columns="2" cellpadding="5" styleClass="ui-panelgrid-blank form-group">  
+                                    <p:button outcome="/web/index" value="Main Page" />
 
-    
-    <h:body>
-        <h:form>
-            
-        <div class="ui-g ui-fluid">
-            <div class="ui-g-12 ui-lg-12">
-                <!-- Left Side -->
-                <div class="card card-w-title">
-  
-       
-        <div align="center">
-            <h3> Your session has expired. Please log in again if you want to continue online banking services. </h3>
-        <br/>
-        <br/>
-
-        
-        <h:panelGrid columns="2" cellpadding="5" styleClass="ui-panelgrid-blank form-group">  
-        <p:button outcome="/web/index" value="Main Page" />
-        
-        <p:button outcome="/web/onlineBanking/infrastructure/customerLogin" value="Online Banking" />
-        </h:panelGrid>
-                 
-                   
-                   
-
+                                    <p:button outcome="/web/onlineBanking/infrastructure/customerLogin" value="Online Banking" />
+                                </h:panelGrid>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-     </div>
-           </h:form>
-
-    
-    </h:body>
-
- 
+            </h:form>
+        </h:body>
     </ui:define>
-
 </ui:composition>

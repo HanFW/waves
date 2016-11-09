@@ -305,9 +305,10 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
 //        statementSessionBeanLocal.generateStatement();
 //        maintainDailyBalance();
 //        nonStandingGIROSessionBeanLocal.monthlyRecurrentPayment();
-//        rateSessionBeanLocal.monthlyDashboardRate();
-//        rateSessionBeanLocal.generateMonthlyAccountClosureReason();
+        rateSessionBeanLocal.monthlyDashboardRate();
+        rateSessionBeanLocal.generateMonthlyAccountClosureReason();
 //        customerRFMSessionBeanLocal.generateMonthlyCustomerRFM();
+        customerRFMSessionBeanLocal.generateLoanMonthlyRFM();
         creditCardReportSessionBeanLocal.generateMonthlyCreditCardReport();
     }
 

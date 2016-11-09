@@ -66,8 +66,8 @@ public interface BankAccountSessionBeanLocal {
 
     public void updateBankAccountBalance(String bankAccountNum, String availableBankAccountBalance,
             String totalBankAccountBalance);
-    
+
     public void updateDepositAccountAvailableBalance(String cardNum, double transactionAmt);
-    
+
     public void updateDepositAccountTotalBalance(String cardNum, double transactionAmt, String merchantName);
 }

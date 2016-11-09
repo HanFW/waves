@@ -16,6 +16,7 @@ public class DepositAccountClosure implements Serializable {
     private String accountClosureReason;
     private Long currentTimeMilis;
     private String currentTime;
+    private String accountStatus;
 
     public Long getDepositAccountClosureId() {
         return depositAccountClosureId;
@@ -47,6 +48,14 @@ public class DepositAccountClosure implements Serializable {
 
     public void setCurrentTime(String currentTime) {
         this.currentTime = currentTime;
+    }
+
+    public String getAccountStatus() {
+        return accountStatus;
+    }
+
+    public void setAccountStatus(String accountStatus) {
+        this.accountStatus = accountStatus;
     }
 
     @Override

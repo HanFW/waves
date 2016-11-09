@@ -179,6 +179,8 @@ public class EmployeeTransferDoneManagedBean {
 
     public void transfer() throws IOException {
 
+        fromAccount = handleAccountString(fromBankAccountNumWithType);
+
         BankAccount bankAccountFrom = bankAccountSessionBeanLocal.retrieveBankAccountByNum(fromAccount);
         BankAccount bankAccountTo = bankAccountSessionBeanLocal.retrieveBankAccountByNum(toAccount);
 
@@ -294,5 +296,13 @@ public class EmployeeTransferDoneManagedBean {
                 }
             }
         }
+    }
+
+    private String handleAccountString(String bankAccountNumWithType) {
+
+        String[] bankAccountNums = bankAccountNumWithType.split("-");
+        String bankAccountNum = bankAccountNums[1];
+
+        return bankAccountNum;
     }
 }

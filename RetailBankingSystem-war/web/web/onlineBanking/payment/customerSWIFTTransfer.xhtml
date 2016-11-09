@@ -34,6 +34,7 @@
                         <p:outputLabel for="transferToCurrency" style="font-weight: bold" value="Currency: " />
                         <p:selectOneMenu id="transferToCurrency" value="#{sWIFTTransferManagedBean.toCurrencyWithDollar}" 
                                          required="true">
+                            <f:selectItem itemLabel="Please Select One" itemValue="" />
                             <f:selectItem itemLabel="United States Dollar" itemValue="United States Dollar" />
                             <f:selectItem itemLabel="Australian Dollar" itemValue="Australian Dollar" />
                             <f:selectItem itemLabel="Japanese Yen" itemValue="Japanese Yen" />
@@ -95,7 +96,7 @@
                                      actionListener="#{sWIFTTransferManagedBean.swiftTransfer}" 
                                      ajax="true"/>
                 </h:panelGrid>
-                
+
                 <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
                     <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" action="/web/onlineBanking/deposit/customerDepositIndex.xhtml"/>
                     <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" />
