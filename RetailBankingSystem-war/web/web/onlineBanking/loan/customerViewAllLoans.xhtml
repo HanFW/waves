@@ -44,10 +44,6 @@
                     <h:outputText value="#{loan.accountBalance}" />
                 </p:column>
 
-                <p:column headerText="Outstanding Balance"> 
-                    <h:outputText value="#{loan.overdueBalance}" />
-                </p:column>
-
                 <p:column headerText="View">
                     <p:commandButton value="View" action="#{customerViewAllLoansManagedBean.viewLoan(loan.id)}"/>
                 </p:column>

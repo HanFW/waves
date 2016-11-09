@@ -100,7 +100,9 @@ public class CustomerViewLoanManagedBean implements Serializable {
         int allMonths = pa.getLoanApplication().getPeriodSuggested();
         int finishedMonths = ra.getRepaymentMonths();
         remainingyears = (allMonths - finishedMonths) / 12;
+        remainingyears = (int) (Math.round(remainingyears * 100.0) / 100.0);
         remainingmonths = (allMonths - finishedMonths) % 12;
+        remainingyears = (int) (Math.round(remainingyears * 100.0) / 100.0);
 
         LoanInterestPackage pkg = pa.getLoanApplication().getLoanInterestPackage();
         interestPackage = pkg.getPackageName();
