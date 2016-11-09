@@ -248,11 +248,11 @@ public class NonStandingGIROTransferDoneManagedBean implements Serializable {
         GIRO giro = gIROSessionBeanLocal.retrieveGIROById(giroId);
 
         if (giro.getGiroId() == null) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! GIRO does not exist.", "Failed!"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! GIRO does not exist.", "Failed!"));
         } else {
             gIROSessionBeanLocal.deleteGIRO(giroId);
 
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Successfully! GIRO deleted Successfully.", "Successfuly!"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Successfully! GIRO deleted Successfully.", "Successfuly!"));
         }
     }
 

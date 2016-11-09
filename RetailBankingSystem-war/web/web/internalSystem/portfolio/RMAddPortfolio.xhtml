@@ -1,0 +1,174 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/internalSystemTemplate.xhtml">
+
+    <!--    <ui:define name="merlionBankMenu">
+    
+            <ui:include src="/WEB-INF/merlionBankMenuApplyDebitCard.xhtml" />
+    
+        </ui:define>-->
+
+    <ui:define name="content">
+        <h:form id="mainForm">
+            <div align="center">
+                <h1>Stocks</h1>
+                <p:panel>
+                    <p:dataTable var="stock" value="#{rMAddPorfolioManagedBean.allStocks}">
+                        <p:column headerText="Stock Issuer Name">
+                            <h:outputText value="#{stock.assetIssuerName}" />
+                        </p:column>
+                        <p:column headerText="Unit Price">
+                            <h:outputText value="#{stock.currentValue}" />
+                        </p:column>
+                        <p:column headerText="Risk">
+                            <h:outputText value="#{rMAddPorfolioManagedBean.showRiskLevel(stock.risk)}" />
+                        </p:column>
+                        <p:column>
+                            <p:commandButton  value="View Details" action="#{rMAddPorfolioManagedBean.viewStockDetails(stock.assetTypeId)}" update="@form stockForm"/>
+                        </p:column>
+                    </p:dataTable>
+                </p:panel>
+
+                <h1>Funds</h1>
+                <p:panel>
+                    <p:dataTable var="fund" value="#{rMAddPorfolioManagedBean.allFunds}">
+                        <p:column headerText="Fund Issuer Name">
+                            <h:outputText value="#{fund.assetIssuerName}" />
+                        </p:column>
+                        <p:column headerText="Unit Price">
+                            <h:outputText value="#{fund.currentValue}" />
+                        </p:column>
+                        <p:column headerText="Risk">
+                            <h:outputText value="#{rMAddPorfolioManagedBean.showRiskLevel(fund.risk)}" />
+                        </p:column>
+                        <p:column>
+                            <p:commandButton  value="View Details" action="#{rMAddPorfolioManagedBean.viewFundDetails(fund.assetTypeId)}" update="@form fundForm"/>
+                        </p:column>
+                    </p:dataTable>
+                </p:panel>
+
+                <h1>Bonds</h1>
+                <p:panel>
+                    <p:dataTable var="bond" value="#{rMAddPorfolioManagedBean.allBonds}">
+                        <p:column headerText="Bond Issuer Name">
+                            <h:outputText value="#{bond.assetIssuerName}" />
+                        </p:column>
+                        <p:column headerText="Current Price">
+                            <h:outputText value="#{bond.currentValue}" />
+                        </p:column>
+                        <p:column headerText="Face Value">
+                            <h:outputText value="#{bond.faceValue}" />
+                        </p:column>
+                        <p:column headerText="Coupon Rate">
+                            <h:outputText value="#{bond.couponRate}" />
+                        </p:column>
+                        <p:column headerText="Maturity Date">
+                            <h:outputText value="#{bond.maturityDate}" />
+                        </p:column>
+                        <p:column headerText="Risk">
+                            <h:outputText value="#{rMAddPorfolioManagedBean.showRiskLevel(bond.risk)}" />
+                        </p:column>
+                        <p:column>
+                            <p:commandButton  value="View Details" action="#{rMAddPorfolioManagedBean.viewBondDetails(bond.assetTypeId)}" update="@form bondForm"/>
+                        </p:column>
+                    </p:dataTable>
+                </p:panel>
+                <p:panel>
+                    <h1>Confirm Purchase</h1>
+                    <p:separator/>
+                    <div align="left">
+                        <p:dataList id="purchaseTable" var="purchase" value="#{rMAddPorfolioManagedBean.purchaseList}"
+                                    emptyMessage="You have not made any purchase yet">
+                            #{purchase[1]},  #{purchase[2]}(unit price) * #{purchase[3]}(units) = $#{purchase[4]}           
+                            <p:commandLink value="Cancel" process="@this" update="@form mainForm" action="#{rMAddPorfolioManagedBean.removePurchase(purchase)}"/>                        
+                        </p:dataList>
+                    </div>
+                    <p:separator/>
+                    
+                    <h:outputText value="Starting Banlance:"/> 
+                    <h:outputText value="$#{rMAddPorfolioManagedBean.startingBalance}"/>
+                    <br/>
+                    <h:outputText value="Total:   "/> 
+                    <h:outputText value="$#{rMAddPorfolioManagedBean.totalPurchase}"/>
+                    <br/>
+                    <h:outputText value="Available Balance: "/> 
+                    <h:outputText value="$#{rMAddPorfolioManagedBean.availableBalance}"/>
+                    
+                </p:panel>
+                <p:commandButton value="Confirm Purchase" actionListener="#{rMAddPorfolioManagedBean.confirmPurchase}" update="@form"/>
+
+            </div>
+        </h:form>
+
+        <h:form id="stockForm">
+            <p:dialog header="Stock Detail" widgetVar="stockDetailDialog" responsive="true" closable="true">
+                <h:panelGrid id="stockPanel">
+                    <!--<p:chart type="line" model="#{rMAddPorfolioManagedBean.stockLineModel}" style="height:300px;"/>-->
+
+                    <p:row>
+                        <p:outputLabel for="purchaseUnit" style="font-weight: bold" value="Number of Unit: " />
+                        <p:inputText label="Number of Unit" id="purchaseUnit" value="#{rMAddPorfolioManagedBean.unitPurchased}"
+                                     required="true" requiredMessage="Please input number of unit you wish to purchase">
+                        </p:inputText>
+                        <p:message for="purchaseUnit" />
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:commandButton value="Submit" actionListener="#{rMAddPorfolioManagedBean.createStockPurchaseList}" update="@form"/>
+                        </p:column>
+                    </p:row>
+                </h:panelGrid>
+            </p:dialog>
+        </h:form>
+        <h:form id="fundForm">
+            <p:dialog header="Fund Detail" widgetVar="fundDetailDialog" responsive="true" closable="true">
+                <h:panelGrid id="fundPanel">
+                    <!--<p:chart type="line" model="#{rMAddPorfolioManagedBean.fundLineModel}" style="height:300px;"/>-->
+
+                    <p:row>
+                        <p:outputLabel for="purchaseUnit" style="font-weight: bold" value="Number of Unit: " />
+                        <p:inputText label="Number of Unit" id="purchaseUnit" value="#{rMAddPorfolioManagedBean.unitPurchased}"
+                                     required="true" requiredMessage="Please input number of unit you wish to purchase">
+                        </p:inputText>
+                        <p:message for="purchaseUnit" />
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:commandButton value="Submit" actionListener="#{rMAddPorfolioManagedBean.createFundPurchaseList}" update="@form"/>
+                        </p:column>
+                    </p:row>
+                </h:panelGrid>
+            </p:dialog>
+        </h:form>
+        <h:form id="bondForm">
+            <p:dialog header="Bond Detail" widgetVar="bondDetailDialog" responsive="true" closable="true">
+                <h:panelGrid id="bondPanel">
+                    <!--<p:chart type="line" model="#{rMAddPorfolioManagedBean.bondLineModel}" style="height:300px;"/>-->
+
+                    <p:row>
+                        <p:outputLabel for="purchaseUnit" style="font-weight: bold" value="Number of Unit: " />
+                        <p:inputText label="Number of Unit" id="purchaseUnit" value="#{rMAddPorfolioManagedBean.unitPurchased}"
+                                     required="true" requiredMessage="Please input number of unit you wish to purchase">
+                        </p:inputText>
+                        <p:message for="purchaseUnit" />
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:commandButton value="Submit" actionListener="#{rMAddPorfolioManagedBean.createBondPurchaseList}" update="@form mainForm"/>
+                        </p:column>
+                    </p:row>
+                </h:panelGrid>
+            </p:dialog>
+        </h:form>
+    </ui:define>
+</ui:composition>
+
+

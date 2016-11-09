@@ -7,6 +7,7 @@ package managedbean.loan.customer;
 
 import ejb.customer.entity.CustomerBasic;
 import ejb.deposit.entity.BankAccount;
+import ejb.deposit.session.BankAccountSessionBeanLocal;
 import ejb.loan.entity.LoanInterestPackage;
 import ejb.loan.entity.LoanPayableAccount;
 import ejb.loan.entity.LoanRepaymentAccount;
@@ -15,8 +16,11 @@ import ejb.loan.session.LoanManagementSessionBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
@@ -33,6 +37,8 @@ import org.primefaces.context.RequestContext;
 @Named(value = "customerViewLoanManagedBean")
 @ViewScoped
 public class CustomerViewLoanManagedBean implements Serializable {
+    @EJB
+    private BankAccountSessionBeanLocal bankAccountSessionBeanLocal;
 
     @EJB
     private LoanManagementSessionBeanLocal loanManagementSessionBeanLocal;
@@ -64,7 +70,7 @@ public class CustomerViewLoanManagedBean implements Serializable {
 
     private List<LoanRepaymentTransaction> repaymentHistory;
 
-    private List<String> depositAccounts;
+    private Map<String, String> depositAccounts = new HashMap<String, String>();
     private String loanServingAccount;
 
     private CustomerBasic customer;
@@ -133,7 +139,7 @@ public class CustomerViewLoanManagedBean implements Serializable {
 
     public void makeRepaymentByMerlionBankAccount() throws IOException {
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-        List<BankAccount> accounts = loanManagementSessionBeanLocal.getCustomerDepositAccounts(customer.getCustomerBasicId());
+        List<BankAccount> accounts = bankAccountSessionBeanLocal.retrieveBankAccountByCusIC(customer.getCustomerIdentificationNum());
         if (accounts.isEmpty()) {
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN, "No existing deposit account found.", null);
             FacesContext context = FacesContext.getCurrentInstance();
@@ -154,7 +160,10 @@ public class CustomerViewLoanManagedBean implements Serializable {
     }
 
     public void makeRecurringRepayment() {
-        List<BankAccount> accounts = loanManagementSessionBeanLocal.getCustomerDepositAccounts(customer.getCustomerBasicId());
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        customer = (CustomerBasic) ec.getSessionMap().get("customer");
+        
+        List<BankAccount> accounts = bankAccountSessionBeanLocal.retrieveBankAccountByCusIC(customer.getCustomerIdentificationNum());
         if (accounts.isEmpty()) {
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN, "No existing deposit account found.", null);
             FacesContext context = FacesContext.getCurrentInstance();
@@ -163,7 +172,8 @@ public class CustomerViewLoanManagedBean implements Serializable {
         } else {
             noDepositAccount = false;
             for (BankAccount account : accounts) {
-                depositAccounts.add(account.getBankAccountNum());
+                depositAccounts.put(account.getBankAccountNum(), account.getBankAccountNum());
+                System.out.println("****** " + depositAccounts);
             }
             RequestContext rc = RequestContext.getCurrentInstance();
             rc.execute("PF('recurringDialog').show();");
@@ -183,11 +193,19 @@ public class CustomerViewLoanManagedBean implements Serializable {
         context.addMessage(null, message);
     }
 
-    public List<String> getDepositAccounts() {
+    public BankAccountSessionBeanLocal getBankAccountSessionBeanLocal() {
+        return bankAccountSessionBeanLocal;
+    }
+
+    public void setBankAccountSessionBeanLocal(BankAccountSessionBeanLocal bankAccountSessionBeanLocal) {
+        this.bankAccountSessionBeanLocal = bankAccountSessionBeanLocal;
+    }
+
+    public Map<String, String> getDepositAccounts() {
         return depositAccounts;
     }
 
-    public void setDepositAccounts(List<String> depositAccounts) {
+    public void setDepositAccounts(Map<String, String> depositAccounts) {
         this.depositAccounts = depositAccounts;
     }
 

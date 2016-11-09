@@ -4,6 +4,7 @@ import ejb.customer.entity.CustomerBasic;
 import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import ejb.infrastructure.entity.MessageBox;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -47,19 +48,18 @@ public class MessageSessionBean implements MessageSessionBeanLocal {
     public List<MessageBox> retrieveMessageBoxByCusIC(String customerIdentificationNum) {
         CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum);
 
-        return customerBasic.getMessageBox();
-//        if (customerBasic.getCustomerBasicId() == null) {
-//            return new ArrayList<MessageBox>();
-//        }
-//        try {
-//            Query query = entityManager.createQuery("Select m From MessageBox m Where m.customerBasic =:customerBasic");
-//            query.setParameter("customerBasic", customerBasic);
-//            System.out.println("////////////list size = " + query.getResultList().size());
-//            return query.getResultList();
-//        } catch (EntityNotFoundException enfe) {
-//            System.out.println("\nEntity not found error: " + enfe.getMessage());
-//            return new ArrayList<MessageBox>();
-//        }
+        if (customerBasic.getCustomerBasicId() == null) {
+            return new ArrayList<MessageBox>();
+        }
+        try {
+            Query query = entityManager.createQuery("Select m From MessageBox m Where m.customerBasic =:customerBasic");
+            query.setParameter("customerBasic", customerBasic);
+            System.out.println("////////////list size = " + query.getResultList().size());
+            return query.getResultList();
+        } catch (EntityNotFoundException enfe) {
+            System.out.println("\nEntity not found error: " + enfe.getMessage());
+            return new ArrayList<MessageBox>();
+        }
     }
 
     @Override

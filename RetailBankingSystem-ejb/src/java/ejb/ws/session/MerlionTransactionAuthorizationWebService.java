@@ -12,6 +12,7 @@ import ejb.card.entity.SupplementaryCard;
 import ejb.card.session.DebitCardSessionBeanLocal;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
+import ejb.deposit.session.CreditCardTransactionSessionBeanLocal;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
@@ -47,6 +48,9 @@ public class MerlionTransactionAuthorizationWebService {
 
     @EJB
     private DebitCardSessionBeanLocal debitCardSessionBeanLocal;
+    
+    @EJB
+    private CreditCardTransactionSessionBeanLocal creditCardTransactionSessionBeanLocal;
 
     @WebMethod(operationName = "checkTransactionAuthorizationById")
     public String checkTransactionAuthorizationById(@WebParam(name = "id") Long id) {
@@ -215,6 +219,13 @@ public class MerlionTransactionAuthorizationWebService {
                 String merchantName = transactions.get(i).getMerchantName();
                 bankAccountSessionBeanLocal.updateDepositAccountTotalBalance(cardNum, transactionAmt, merchantName);
             }//debit card authorized transactions
+            else if (transactions.get(i).getCardType().equals("credit") && transactions.get(i).getDebitBankAccount().equals("no")) {
+                String cardNum = transactions.get(i).getCardNum();
+                System.out.println("debug!!! cardNum" + cardNum);
+                double transactionAmt = transactions.get(i).getTransactionAmt();
+                String merchantName = transactions.get(i).getMerchantName();
+                creditCardTransactionSessionBeanLocal.addCreditCardTransaction(cardNum, transactionAmt, merchantName);
+            }//credit card authorized transactions
         }
         debitCardSessionBeanLocal.updateAllDebitCardsAvailableDailyTransactionBalance();
         return "success";

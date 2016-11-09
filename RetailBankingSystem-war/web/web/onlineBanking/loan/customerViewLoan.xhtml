@@ -101,7 +101,7 @@
                                 <div align="center">
                                     <p:menuButton value="Make Repayment" disabled="#{customerViewLoanManagedBean.hasRecurringRepayment}">
                                         <p:menuitem value="Pay Via My Deposit Account" action="#{customerViewLoanManagedBean.makeRepaymentByMerlionBankAccount}" update="applyLink"/>
-                                        <p:menuitem value="Recurring Repayment" action="#{customerViewLoanManagedBean.makeRecurringRepayment}"/>
+                                        <p:menuitem value="Recurring Repayment" action="#{customerViewLoanManagedBean.makeRecurringRepayment}" update="@form"/>
                                     </p:menuButton>
                                     <p:menuButton value="Change Repayment Plan" disabled="#{!customerViewLoanManagedBean.hasRecurringRepayment}">
                                         <p:menuitem value="Terminate Recurring Repayment" action="#{customerViewLoanManagedBean.deleteRecurringPayment}" update="@form"/>
@@ -174,8 +174,8 @@
         </h:form>
         <h:form>
             <p:dialog widgetVar="recurringDialog" closable="true" header="Choose your loan serving account">
-                <p:selectOneMenu value="#{customerViewLoanManagedBean.depositAccounts}" >
-                    <f:selectItem itemValue="#{customerViewLoanManagedBean.loanServingAccount}"/>
+                <p:selectOneMenu value="#{customerViewLoanManagedBean.loanServingAccount}" effect="fold" editable="false">
+                    <f:selectItems value="#{customerViewLoanManagedBean.depositAccounts}"/>
                 </p:selectOneMenu>
                 <p:commandButton value="Confirm" action="#{customerViewLoanManagedBean.confirmRecurringPayment}"/>
             </p:dialog>

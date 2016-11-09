@@ -194,7 +194,7 @@ public class FastTransferManagedBean {
         OtherBankAccount otherBankAccountTo = retrieveBankAccountByNum(toBankAccount);
 
         if (transferAmt >= 50000) {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Upper limit for FAST transfer is S$50000 per transaction", "Failed!"));
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Upper limit for FAST transfer is S$50000 per transaction", "Failed!"));
         } else {
             Double diffAmt = Double.valueOf(merlionBankAccountFrom.getAvailableBankAccountBalance()) - transferAmt;
             if (diffAmt >= 0) {
