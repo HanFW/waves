@@ -193,39 +193,44 @@ public class FastTransferManagedBean {
         BankAccount merlionBankAccountFrom = bankAccountSessionBeanLocal.retrieveBankAccountByNum(fromBankAccount);
         OtherBankAccount otherBankAccountTo = retrieveBankAccountByNum(toBankAccount);
 
-        Double diffAmt = Double.valueOf(merlionBankAccountFrom.getAvailableBankAccountBalance()) - transferAmt;
-        if (diffAmt >= 0) {
-
-            Double currentAvailableBalance = Double.valueOf(merlionBankAccountFrom.getAvailableBankAccountBalance()) - transferAmt;
-            Double currentTotalBalance = Double.valueOf(merlionBankAccountFrom.getTotalBankAccountBalance()) - transferAmt;
-            bankAccountSessionBeanLocal.updateBankAccountBalance(fromBankAccount, currentAvailableBalance.toString(), currentTotalBalance.toString());
-
-            Calendar cal = Calendar.getInstance();
-            String transactionCode = "ICT";
-            String transactionRef = "Transfer to " + otherBankAccountTo.getOtherBankAccountType() + "-" + otherBankAccountTo.getOtherBankAccountNum();
-            Long transactionDateMilis = cal.getTimeInMillis();
-
-            Long transactionId = transactionSessionBeanLocal.addNewTransaction(cal.getTime().toString(), transactionCode, transactionRef,
-                    transferAmt.toString(), " ", transactionDateMilis, merlionBankAccountFrom.getBankAccountId());
-
-            sachTransferMTD(fromBankAccount, toBankAccount, transferAmt);
-
-            statusMessage = "Your transaction has been completed.";
-            fromAccountAvailableBalance = currentAvailableBalance.toString();
-            fromAccountTotalBalance = currentTotalBalance.toString();
-
-            ec.getFlash().put("statusMessage", statusMessage);
-            ec.getFlash().put("toBankAccountNumWithType", toBankAccountNumWithType);
-            ec.getFlash().put("fromBankAccountNumWithType", fromBankAccountNumWithType);
-            ec.getFlash().put("transferAmt", transferAmt);
-            ec.getFlash().put("fromAccount", fromBankAccount);
-            ec.getFlash().put("toAccount", toBankAccount);
-            ec.getFlash().put("fromAccountAvailableBalance", fromAccountAvailableBalance);
-            ec.getFlash().put("fromAccountTotalBalance", fromAccountTotalBalance);
-
-            ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/payment/customerTransferFastDone.xhtml?faces-redirect=true");
+        if (transferAmt >= 50000) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Upper limit for FAST transfer is S$50000 per transaction", "Failed!"));
         } else {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Your account balance is insufficient.", "Failed!"));
+            Double diffAmt = Double.valueOf(merlionBankAccountFrom.getAvailableBankAccountBalance()) - transferAmt;
+            if (diffAmt >= 0) {
+
+                Double currentAvailableBalance = Double.valueOf(merlionBankAccountFrom.getAvailableBankAccountBalance()) - transferAmt;
+                Double currentTotalBalance = Double.valueOf(merlionBankAccountFrom.getTotalBankAccountBalance()) - transferAmt;
+                bankAccountSessionBeanLocal.updateBankAccountBalance(fromBankAccount, currentAvailableBalance.toString(), currentTotalBalance.toString());
+
+                Calendar cal = Calendar.getInstance();
+                String transactionCode = "ICT";
+                String transactionRef = "Transfer to " + otherBankAccountTo.getOtherBankAccountType() + "-" + otherBankAccountTo.getOtherBankAccountNum();
+                Long transactionDateMilis = cal.getTimeInMillis();
+
+                Long transactionId = transactionSessionBeanLocal.addNewTransaction(cal.getTime().toString(), transactionCode, transactionRef,
+                        transferAmt.toString(), " ", transactionDateMilis, merlionBankAccountFrom.getBankAccountId());
+
+                sachTransferMTD(fromBankAccount, toBankAccount, transferAmt);
+
+                statusMessage = "Your transaction has been completed.";
+                fromAccountAvailableBalance = currentAvailableBalance.toString();
+                fromAccountTotalBalance = currentTotalBalance.toString();
+
+                ec.getFlash().put("transactionId", transactionId);
+                ec.getFlash().put("statusMessage", statusMessage);
+                ec.getFlash().put("toBankAccountNumWithType", toBankAccountNumWithType);
+                ec.getFlash().put("fromBankAccountNumWithType", fromBankAccountNumWithType);
+                ec.getFlash().put("transferAmt", transferAmt);
+                ec.getFlash().put("fromAccount", fromBankAccount);
+                ec.getFlash().put("toAccount", toBankAccount);
+                ec.getFlash().put("fromAccountAvailableBalance", fromAccountAvailableBalance);
+                ec.getFlash().put("fromAccountTotalBalance", fromAccountTotalBalance);
+
+                ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/payment/customerTransferFastDone.xhtml?faces-redirect=true");
+            } else {
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Failed! Your account balance is insufficient.", "Failed!"));
+            }
         }
     }
 

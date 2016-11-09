@@ -1,0 +1,105 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/internalSystemTemplate.xhtml">
+
+    <ui:define name="content">
+        <h:form>
+            <div align="center">
+                <h1>GIRO Transfer</h1>
+                <p:panelGrid columns="1" styleClass="ui-panelgrid-blank form-group" class="ui-lg-4">
+                    <p:panel id="panel" styleClass="ui-panelgrid-blank form-group">
+
+                        <p:outputLabel value="To:" style="font-weight: bold;font-size: 26px"/>
+                        <br/>
+                        <br/>
+                        <p:outputLabel for="transferToAccount" style="font-weight: bold" value="Account: " />
+                        <p:inputText required="true" label="Amount" requiredMessage="Required Field." id="transferToAccount"
+                                     value="#{employeeRegularGIROTransferDoneManagedBean.toOtherBankAccountNum}" 
+                                     converterMessage="Invalid input">
+                        </p:inputText>
+                        <p:message for="transferToAccount" />
+
+                        <p:outputLabel for="transferToBank" style="font-weight: bold" value="Bank " />
+                        <p:selectOneMenu id="transferToBank" value="#{employeeRegularGIROTransferDoneManagedBean.toBankName}" 
+                                         required="true" effect="fold" editable="false">
+                            <f:selectItem itemLabel="Please Select One" itemValue=""/> 
+                            <f:selectItem itemLabel="DBS" itemValue="DBS" />
+                            <f:selectItem itemLabel="POSB" itemValue="POSB" />
+                            <f:selectItem itemLabel="OCBC" itemValue="OCBC" />
+                            <f:selectItem itemLabel="UOB" itemValue="UOB" />
+                        </p:selectOneMenu>
+                        <p:message for="transferToBank" />
+
+                        <p:outputLabel for="transferToCurrency" style="font-weight: bold" value="Currency: " />
+                        <p:selectOneMenu id="transferToCurrency" value="#{employeeRegularGIROTransferDoneManagedBean.toCurrency}" 
+                                         required="true">
+                            <f:selectItem itemLabel="Singapore Dollar" itemValue="SGD - Singapore Dollar" />
+                        </p:selectOneMenu>
+                        <p:message for="transferToCurrency" />
+
+                        <br/>
+                        <p:outputLabel value="From:" style="font-weight: bold;font-size: 26px"/>
+                        <br/>
+                        <br/>
+                        <p:outputLabel for="transferFromAccount" style="font-weight: bold" value="Account: " />
+                        <p:selectOneMenu id="transferFromAccount" value="#{employeeRegularGIROTransferDoneManagedBean.fromBankAccountNumWithType}" 
+                                         effect="fold" editable="false">
+                            <f:selectItem itemLabel="Please Select One" itemValue=""/> 
+                            <f:selectItems value="#{employeeRegularGIROTransferDoneManagedBean.fromAccounts}" />
+                        </p:selectOneMenu>
+                        <p:message for="transferFromAccount" />
+
+                        <p:outputLabel for="transferFromCurrency" style="font-weight: bold" value="Currency: " />
+                        <p:selectOneMenu id="transferFromCurrency" value="#{employeeRegularGIROTransferDoneManagedBean.fromCurrency}" 
+                                         required="true">
+                            <f:selectItem itemLabel="Singapore Dollar" itemValue="SGD - Singapore Dollar" />
+                        </p:selectOneMenu>
+                        <p:message for="transferFromCurrency" />
+
+                        <p:outputLabel for="transferAmt" style="font-weight: bold" value="Amount(S$): " />
+                        <p:inputText required="true" label="Amount" requiredMessage="Required Field." id="transferAmt"
+                                     value="#{employeeRegularGIROTransferDoneManagedBean.transferAmt}" converterMessage="Invalid input">
+                            <f:validateDoubleRange minimum="0.0" maximum="99999999.0" />
+                        </p:inputText>
+                        <p:message for="transferAmt" />
+
+                        <p:outputLabel value="Transfer Method" style="font-weight: bold"/>
+                        <p:selectOneRadio id="transferMethod" value="#{employeeRegularGIROTransferDoneManagedBean.transferMethod}"
+                                          required="true" requiredMessage="Required Field">
+                            <f:selectItem itemLabel="One Time" itemValue="One Time"/>
+                            <f:selectItem itemLabel="Recurrent" itemValue="Recurrent" />
+                            <p:ajax event="change" update="transferFrequencyPanel" listener="#{employeeRegularGIROTransferDoneManagedBean.show()}"/>
+                        </p:selectOneRadio>
+                        <p:message for="transferMethod" />
+
+                        <p:panel id="transferFrequencyPanel" visible="#{employeeRegularGIROTransferDoneManagedBean.visible}">
+                            <p:outputLabel value="Frequency" style="font-weight: bold"/>
+                            <p:selectOneMenu id="transferFrequency" value="#{employeeRegularGIROTransferDoneManagedBean.transferFrequency}" 
+                                             effect="fold" editable="false" required="#{employeeRegularGIROTransferDoneManagedBean.transferMethodRender}"
+                                             requiredMessage="Required Field">
+                                <f:selectItem itemLabel="Please Select One" itemValue="" />
+                                <f:selectItem itemLabel="Monthly" itemValue="Monthly" />
+                                <f:selectItem itemLabel="Weekly" itemValue="Weekly" />
+                                <f:selectItem itemLabel="Daily" itemValue="Daily" />
+                            </p:selectOneMenu>
+                            <p:message for="transferFrequency" />
+                        </p:panel>
+
+                        <div align="center">
+                            <p:commandButton id="submitBtn" value="Submit" update="panel" 
+                                             actionListener="#{employeeRegularGIROTransferDoneManagedBean.regularGIROTransfer}" 
+                                             ajax="true" style="width:150px"/>
+                        </div>
+                    </p:panel>
+
+                </p:panelGrid>
+            </div>
+
+        </h:form>
+    </ui:define>
+</ui:composition>

@@ -5,10 +5,16 @@
  */
 package ejb.loan.session;
 
+import ejb.deposit.entity.BankAccount;
+import ejb.deposit.session.BankAccountSessionBeanLocal;
+import ejb.infrastructure.session.CustomerEmailSessionBeanLocal;
 import ejb.loan.entity.LoanApplication;
 import ejb.loan.entity.LoanPayableAccount;
 import ejb.loan.entity.LoanRepaymentAccount;
+import ejb.loan.entity.LoanRepaymentTransaction;
+import java.util.Calendar;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -21,65 +27,204 @@ import javax.persistence.Query;
 @Stateless
 public class LoanInterestSessionBean implements LoanInterestSessionBeanLocal {
 
+    @EJB
+    private LoanManagementSessionBeanLocal loanManagementSessionBeanLocal;
+    @EJB
+    private BankAccountSessionBeanLocal bankAccountSessionBeanLocal;
+    @EJB
+    private LoanRepaymentSessionBeanLocal loanRepaymentSessionBeanLocal;
+    @EJB
+    private CustomerEmailSessionBeanLocal customerEmailSessionBeanLocal;
+
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager em;
 
     @Override
     public void calculateInstalment() {
         System.out.println("****** loan/LoanInterestSessionBean: calculateInstalment() ******");
-        Query query = em.createQuery("SELECT a FROM LoanRepaymentAccount a WHERE a.loanPayableAccount.accountStatus = :accountStatus");
-        query.setParameter("accountStatus", "started");
 
-        List<LoanRepaymentAccount> accounts = query.getResultList();
+        List<LoanRepaymentAccount> accounts;
+        Query query = em.createQuery("SELECT a FROM LoanRepaymentAccount a WHERE a.loanPayableAccount.accountStatus = :accountStatus OR a.loanPayableAccount.accountStatus = :accountStatus2 OR a.loanPayableAccount.accountStatus = :accountStatus3");
+        query.setParameter("accountStatus", "started");
+        query.setParameter("accountStatus2", "default");
+        query.setParameter("accountStatus3", "bankrupt");
+        accounts = query.getResultList();
 
         for (LoanRepaymentAccount account : accounts) {
-            LoanPayableAccount payableAccount = account.getLoanPayableAccount();
-            LoanApplication loanApplicaiton = payableAccount.getLoanApplication();
-            String interestPackage = loanApplicaiton.getLoanInterestPackage().getPackageName();
-            double fees = account.getFees();
-            double overdueBalance = account.getOverdueBalance();
-            double instalment;
-
-            if (account.getAccountBalance() > 0) {
-                double newOverdue = account.getAccountBalance();
-                double totalOverdue = (newOverdue + overdueBalance) * 1.05;
-                account.setOverdueBalance(totalOverdue);
-            }
-
-            if (interestPackage.equals("HDB-Fixed")) {
-                if (account.getRepaymentMonths() == 0) {
-                    double rate = 1.8;
-                    double principle = payableAccount.getInitialAmount();
-                    double period = loanApplicaiton.getPeriodSuggested();
-                    instalment = (rate / 12 * principle) / (1 - Math.pow((1 + rate / 12), -period));
-                    account.setInstalment(instalment);
-                    account.setAccountBalance(instalment + fees + overdueBalance);
-                } else if (account.getRepaymentMonths() < 36) {
-                    double rate = 1.8;
-                    double principle = payableAccount.getInitialAmount();
-                    double period = loanApplicaiton.getPeriodSuggested();
-                    instalment = (rate / 12 * principle) / (1 - Math.pow((1 + rate / 12), -period));
-                    account.setInstalment(instalment);
-                    account.setAccountBalance(instalment + fees + overdueBalance);
-                } else {
-                    double rate = loanApplicaiton.getLoanInterestPackage().getInterestRate() + 1.2;
-                    double principle = payableAccount.getInitialAmount();
-                    double period = loanApplicaiton.getPeriodSuggested();
-                    instalment = (rate / 12 * principle) / (1 - Math.pow((1 + rate / 12), -period));
-                    account.setInstalment(instalment);
-                    account.setAccountBalance(instalment + fees + overdueBalance);
-                }
-            } else if (interestPackage.equals("HDB-Floating")) {
-                double rate = loanApplicaiton.getLoanInterestPackage().getInterestRate() + 1.3;
-                double principle = payableAccount.getInitialAmount();
-                double period = loanApplicaiton.getPeriodSuggested();
-                instalment = (rate / 12 * principle) / (1 - Math.pow((1 + rate / 12), -period));
-                account.setInstalment(instalment);
-                account.setAccountBalance(instalment + fees + overdueBalance);
-            }
+            checkLastRepayment(account);
+            calculateNewRepayment(account);
             account.setRepaymentMonths(account.getRepaymentMonths() + 1);
+            checkAccountStatus(account);
+            if (account.getDepositAccountNumber() != null) {
+                BankAccount deposit = bankAccountSessionBeanLocal.retrieveBankAccountByNum(account.getDepositAccountNumber());
+                Double availableBalance = Double.valueOf(deposit.getAvailableBankAccountBalance());
+                if (availableBalance < account.getAccountBalance()) {
+                    loanManagementSessionBeanLocal.deleteRecurringLoanServingAccount(account.getId());
+                    customerEmailSessionBeanLocal.sendEmail(account.getLoanPayableAccount().getLoanApplication().getCustomerBasic(), "recurringStopReminder", null);
+                } else {
+                    loanRepaymentSessionBeanLocal.makeMonthlyRepayment(deposit, account, account.getAccountBalance());
+                }
+            }
         }
 
+        Query query2 = em.createQuery("SELECT a FROM LoanRepaymentAccount a WHERE a.loanPayableAccount.accountStatus = :accountStatus");
+        query2.setParameter("accountStatus", "ended");
+        accounts = query2.getResultList();
+        for (LoanRepaymentAccount account : accounts) {
+            checkLastRepayment(account);
+        }
+
+        em.flush();
+    }
+
+    private void checkLastRepayment(LoanRepaymentAccount account) {
+        LoanPayableAccount payableAccount = account.getLoanPayableAccount();
+        if (account.getRepaymentMonths() > 0 && account.getAccountBalance() > 0) {
+            int defaultMonths = account.getDefaultMonths() + 1;
+            account.setDefaultMonths(defaultMonths);
+            System.out.println("******* default for " + defaultMonths + " months");
+
+            //change balance
+            double newOverdue = account.getAccountBalance() - account.getFees();
+            double newFee = newOverdue * 0.003;
+            newFee = Math.round(newFee * 100.0) / 100.0;
+            if (newFee < 30) {
+                newFee = 30;
+            }
+            double extraFee = newFee - account.getFees();
+            addLoanAccountTransaction(account, extraFee, "Late Charge", "debit");
+            payableAccount.setAccountBalance(payableAccount.getAccountBalance() + extraFee);
+
+            newOverdue = Math.round(newOverdue * 100.0) / 100.0;
+            account.setOverdueBalance(newOverdue);
+            payableAccount.setOverdueBalance(newOverdue);
+            account.setAccountBalance(newOverdue + newFee);
+            account.setFees(newFee);
+            System.out.println("******* new overdue: " + newOverdue);
+            System.out.println("******* new fee: " + newFee);
+
+            if (defaultMonths > 0 && defaultMonths < 3) {
+                //send gentle email
+                payableAccount.setAccountStatus("default");
+                customerEmailSessionBeanLocal.sendEmail(account.getLoanPayableAccount().getLoanApplication().getCustomerBasic(), "gentelDefaultReminder", null);
+            } else if (defaultMonths < 6) {
+                //send warning email, credit report record
+                payableAccount.setAccountStatus("default");
+                customerEmailSessionBeanLocal.sendEmail(account.getLoanPayableAccount().getLoanApplication().getCustomerBasic(), "seriousDefaultReminder", null);
+            } else {
+                //take actions
+                payableAccount.setAccountStatus("bankrupt");
+                customerEmailSessionBeanLocal.sendEmail(account.getLoanPayableAccount().getLoanApplication().getCustomerBasic(), "bankruptReminder", null);
+            }
+            account.setPaymentStatus("default");
+        } else {
+            //should be done when customer make payment
+            System.out.println("******* no overdue balance this month");
+            account.setDefaultMonths(0);
+            account.setPaymentStatus("pending");
+        }
+
+        em.flush();
+    }
+
+    private void calculateNewRepayment(LoanRepaymentAccount account) {
+        LoanPayableAccount payableAccount = account.getLoanPayableAccount();
+        LoanApplication loanApplicaiton = payableAccount.getLoanApplication();
+        String interestPackage = loanApplicaiton.getLoanInterestPackage().getPackageName();
+        double rate = 0;
+        double instalment = 0;
+        double principal = payableAccount.getInitialAmount();
+        double period = loanApplicaiton.getPeriodSuggested();
+        double interest = 0;
+        double oldTotalRemaining = payableAccount.getAccountBalance();
+        double newTotalRemaining;
+        double previousAccountBalance = account.getAccountBalance();
+
+        if (oldTotalRemaining - previousAccountBalance > 0) {
+            if (interestPackage.equals("HDB-Fixed")) {
+                if (account.getRepaymentMonths() == 0) {
+                    rate = 0.018;
+                } else if (account.getRepaymentMonths() < 36) {
+                    rate = 0.018;
+                } else {
+                    rate = loanApplicaiton.getLoanInterestPackage().getInterestRate() + 0.012;
+                }
+            } else if (interestPackage.equals("HDB-Floating")) {
+                rate = loanApplicaiton.getLoanInterestPackage().getInterestRate() + 0.013;
+            } else if (interestPackage.equals("Private Property-Fixed")) {
+                if (account.getRepaymentMonths() == 0) {
+                    rate = 0.018;
+                } else if (account.getRepaymentMonths() < 36) {
+                    rate = 0.018;
+                } else {
+                    rate = loanApplicaiton.getLoanInterestPackage().getInterestRate() + 0.012;
+                }
+            } else if (interestPackage.equals("Private Property-Floating")) {
+                rate = loanApplicaiton.getLoanInterestPackage().getInterestRate() + 0.0125;
+            } else {
+                rate = loanApplicaiton.getLoanInterestPackage().getInterestRate();
+            }
+
+            instalment = (rate / 12 * principal) / (1 - Math.pow((1 + rate / 12), -period));
+            System.out.println("*** new month instalment: " + instalment);
+            interest = oldTotalRemaining * rate / 12;
+            interest = Math.round(interest * 100.0) / 100.0;
+            System.out.println("*** new month interest: " + interest);
+            newTotalRemaining = oldTotalRemaining + interest;
+            System.out.println("*** old account balance: " + oldTotalRemaining);
+            System.out.println("*** new account balance: " + newTotalRemaining);
+            instalment = Math.round(instalment * 100.0) / 100.0;
+            payableAccount.setAccountBalance(newTotalRemaining);
+            addLoanAccountTransaction(account, interest, "Interet", "debit");
+
+            account.setInterest(interest);
+            account.setPrincipal(instalment - interest);
+            account.setInstalment(instalment);
+            
+            if (oldTotalRemaining < instalment) {
+                account.setAccountBalance(previousAccountBalance + oldTotalRemaining);
+            } else {
+                account.setAccountBalance(previousAccountBalance + instalment);
+            }
+            
+        }
+
+        em.flush();
+    }
+
+    public void checkAccountStatus(LoanRepaymentAccount account) {
+        System.out.println("****** checkLoanAccountStatus");
+        LoanPayableAccount payableAccount = account.getLoanPayableAccount();
+
+        if (payableAccount.getAccountBalance() - account.getAccountBalance() <= 0) {
+            System.out.println("****** checkLoanAccountStatus: all balance counted");
+            payableAccount.setAccountStatus("ended");
+        } else if (account.getRepaymentMonths() >= payableAccount.getLoanApplication().getPeriodSuggested()) {
+            payableAccount.setAccountStatus("ended");
+            System.out.println("****** checkLoanAccountStatus: loan tenure finished");
+        }
+        em.flush();
+    }
+
+    private void addLoanAccountTransaction(LoanRepaymentAccount repaymentAccount, double amount, String description, String action) {
+        Calendar cal = Calendar.getInstance();
+        Long transactionDateMilis = cal.getTimeInMillis();
+        LoanRepaymentTransaction transaction = new LoanRepaymentTransaction();
+        transaction.setAccountBalance(repaymentAccount.getAccountBalance() - amount);
+        transaction.setAccountCredit(amount);
+        if (action.equals("credit")) {
+            transaction.setAccountCredit(amount);
+            transaction.setAccountDebit(0);
+        } else {
+            transaction.setAccountCredit(0);
+            transaction.setAccountDebit(amount);
+        }
+        transaction.setDescription(description);
+        transaction.setTransactionDate(cal.getTime());
+        transaction.setTransactionMillis(transactionDateMilis);
+        transaction.setLoanRepaymentAccount(repaymentAccount);
+
+        em.persist(transaction);
         em.flush();
     }
 }

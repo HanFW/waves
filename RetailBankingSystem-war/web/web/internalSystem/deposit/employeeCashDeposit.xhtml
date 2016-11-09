@@ -36,9 +36,11 @@
                                 <p:outputLabel for="depositAccountNum" style="font-weight: bold" value="Account Number: " />
                             </p:column>
                             <p:column>
-                                <p:inputText required="true" label="Deposit Account Number" requiredMessage="Account number is required." id="depositAccountNum"
-                                             value="#{employeeCashManagedBean.depositAccountNum}">
-                                </p:inputText>
+                                <p:selectOneMenu id="depositAccountNum" value="#{employeeCashManagedBean.depositAccountNumWithType}" 
+                                                 effect="fold" editable="false">
+                                    <f:selectItem itemLabel="Please Select One" itemValue=""/> 
+                                    <f:selectItems value="#{employeeCashManagedBean.fromAccounts}" />
+                                </p:selectOneMenu>
                             </p:column>
                             <p:column>
                                 <p:message for="depositAccountNum" />

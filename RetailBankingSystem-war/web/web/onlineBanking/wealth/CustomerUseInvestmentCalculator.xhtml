@@ -2,11 +2,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
-                template="/WEB-INF/onlineBankingTemplate.xhtml"
-                xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp">
+                template="/WEB-INF/onlineBankingTemplate.xhtml">
     <ui:define name="content">
 
         <h:body>
@@ -20,87 +18,129 @@
 
                     <p:outputLabel value="Investment calculator"/>
 
-                    <p:wizard widgetVar ="calculatorWizard" flowListener="#{}" class="ui-lg-12" showNavBar="false">
+                    <p:wizard widgetVar ="calculatorWizard" flowListener="#{customerUseInvestmentCalculatorManagedBean.onFlowProcess}" class="ui-lg-12" showNavBar="false">
 
                         <p:tab id="t1">
                             <h:panelGrid columns="1">
                                 <p:steps activeIndex="0">
-                                    <p:menuitem value="Input your plan" />
-                                    <p:menuitem value="View Result" />
+                                    <p:menuitem value="Input your plan"/>
+                                    <p:menuitem value="View Result"/>
+                                    <p:menuitem value="Declare Financial Goal"/>
                                 </p:steps>
                             </h:panelGrid>
 
                             <h:panelGrid columns="3" class="ui-lg-6"> 
-                                <p:outputLabel value="Your starting balance"/>
+                                <p:outputLabel value="Your starting balance($)"/>
                                 <p:outputLabel value="$"/>
-                                <p:inputTextarea value="#{customerUseInvestmentCalculatorManagedBean.startingBalance}"/>
+                                <p:inputText value="#{customerUseInvestmentCalculatorManagedBean.startingBalance}"/>
 
-                                <p:outputLabel value="Annual rate of reture"/>
-                                <p:inputTextarea value="#{customerUseInvestmentCalculatorManagedBean.rate}"/>
+                                <p:outputLabel value="Annual rate of return
+                                               "/>
+                                <p:inputText value="#{customerUseInvestmentCalculatorManagedBean.rate}"/>
                                 <p:outputLabel value="%"/>
 
                                 <p:outputLabel value="Monthly contribution"/>
                                 <p:outputLabel value="$"/>
-                                <p:inputTextarea value="#{customerUseInvestmentCalculatorManagedBean.monthlyContribution}"/>
+                                <p:inputText value="#{customerUseInvestmentCalculatorManagedBean.monthlyContribution}"/>
 
                                 <p:outputLabel value="Contribute duration"/>
-                                <p:inputTextarea value="#{customerUseInvestmentCalculatorManagedBean.contributeDuration}"/>
+                                <p:inputText value="#{customerUseInvestmentCalculatorManagedBean.contributeDuration}"/>
                                 <p:outputLabel value="years"/>
 
                                 <p:outputLabel value="Investment will worth in"/>
-                                <p:inputTextarea value="#{customerUseInvestmentCalculatorManagedBean.worthYear}"/>
+                                <p:inputText value="#{customerUseInvestmentCalculatorManagedBean.worthYear}"/>
                                 <p:outputLabel value="years"/>
 
                             </h:panelGrid>
 
                             <p:outputLabel value="*Assumes yearly compounding"/>
+                            <br/>
+                            <br/>
+                            <br/>
 
-                            <p:commandButton value="Show Results" type="submit" actionListener="#{}" update="@form" style="width:150px"/>
+                            <p:commandButton value="Show Results" type="submit" actionListener="#{customerUseInvestmentCalculatorManagedBean.viewResult}" update="@form" style="width:150px"/>
 
                         </p:tab>
 
-                        <p:tab id="t1">
+                        <p:tab id="t2">
                             <h:panelGrid columns="1">
                                 <p:steps activeIndex="1">
                                     <p:menuitem value="Input your plan" />
                                     <p:menuitem value="View Result" />
+                                    <p:menuitem value="Declare Financial Goal"/>
                                 </p:steps>
                             </h:panelGrid>
 
                             <h:panelGrid columns="2" class="ui-lg-6"> 
                                 <p:outputLabel value="#{customerUseInvestmentCalculatorManagedBean.worthYear}-YEAR VALUE:"/>
-                                <p:outputLabel value="#{}"/>
+                                <p:outputLabel value="#{customerUseInvestmentCalculatorManagedBean.getnYearValue()}"/>
 
                                 <p:outputLabel value="TOTAL INTEREST"/>
-                                <p:outputLabel value="#{}"/>
+                                <p:outputLabel value="#{customerUseInvestmentCalculatorManagedBean.totalInterest}"/>
 
                                 <p:outputLabel value="CONTRIBUTIONS"/>
-                                <p:outputLabel value="#{}"/>
+                                <p:outputLabel value="#{customerUseInvestmentCalculatorManagedBean.totalContributions}"/>
 
-                                <p:panel>
-                                    <h:outputText style="font-weight: bold; font-size: 30px"  value="Pie Chart:"/>
-                                    <br/>
-                                    <br/>
-                                    <br/>
-                                    <br/>
-                                    <br/>
-                                </p:panel>
-                                <br/>
-                                <br/>
-                                <p:chart type="pie" model="#{}" style="width:400px;height:300px"/>
+                                <p:tabView id='tabview' cache="false" dynamic='true' >
+                                    <p:tab title="Pie Chart" id='pieChartTab'>
+                                        <br/>
+                                        <br/>
 
-                                <p:panel>
-                                    <h:outputText style="font-weight: bold; font-size: 30px"  value="Tabular Data:"/>
-                                    <br/>
-                                    <br/>
-                                    <br/>
-                                    <br/>
-                                    <br/>
-                                </p:panel>
-                                <br/>
-                                <br/>
-                             
+                                        <p:chart type="pie" model="#{customerUseInvestmentCalculatorManagedBean.pieModel1}" style="width:400px;height:300px"/>
+                                    </p:tab>
+
+                                    <p:tab title="Bar Chart" id='barChartTab'>
+                                        <br/>
+                                        <br/>
+
+                                        <p:chart type="bar" model="#{customerUseInvestmentCalculatorManagedBean.barModel}" style="width:400px;height:300px"/>
+                                    </p:tab>
+                                </p:tabView>
+
                             </h:panelGrid>
+
+                            <h:panelGrid columns="2" class="ui-lg-6"> 
+                                <p:commandButton  value="Redo the Calculation" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('calculatorWizard').back();" />
+                                <p:commandButton  value="Declare My Financial Goal" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('calculatorWizard').next()"/>
+                            </h:panelGrid>
+
+                        </p:tab>
+
+                        <p:tab id="t3">
+                            <h:panelGrid columns="1">
+                                <p:steps activeIndex="2">
+                                    <p:menuitem value="Input your plan" />
+                                    <p:menuitem value="View Result" />
+                                    <p:menuitem value="Declare Financial Goal"/>
+                                </p:steps>
+                            </h:panelGrid>
+                            <p:messages id="msg" showDetail="false" autoUpdate="true"/>
+
+                            <p:outputLabel value="Add a new financial goal"/>
+
+                            <h:panelGrid columns="3" class="ui-lg-6"> 
+                                <p:outputLabel value="Your starting balance($)"/>
+                                <p:outputLabel value="$"/>
+                                <p:inputText value="#{customerUseInvestmentCalculatorManagedBean.startingBalance}"/>
+
+                                <p:outputLabel value="Monthly contribution"/>
+                                <p:outputLabel value="$"/>
+                                <p:inputText value="#{customerUseInvestmentCalculatorManagedBean.monthlyContribution}"/>
+
+                                <p:outputLabel value="Contribute duration"/>
+                                <p:inputText value="#{customerUseInvestmentCalculatorManagedBean.contributeDuration}"/>
+                                <p:outputLabel value="years"/>
+
+                                <p:outputLabel value="Investment period"/>
+                                <p:inputText value="#{customerUseInvestmentCalculatorManagedBean.worthYear}"/>
+                                <p:outputLabel value="years"/>
+
+                                <p:outputLabel value="Target Value"/>
+                                <p:outputLabel value="$"/>
+                                <p:inputText value="#{customerUseInvestmentCalculatorManagedBean.amountExpected}"/>
+                            </h:panelGrid>
+
+                            <p:commandButton value="Submit" type="submit" actionListener="#{customerUseInvestmentCalculatorManagedBean.declareFinancialGoal}" style="width:150px" update="msg"/>
 
                         </p:tab>
 

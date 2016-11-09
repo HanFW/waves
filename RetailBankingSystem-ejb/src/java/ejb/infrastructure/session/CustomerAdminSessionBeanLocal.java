@@ -15,7 +15,7 @@ import javax.ejb.Local;
  */
 @Local
 public interface CustomerAdminSessionBeanLocal {
-    public String createOnlineBankingAccount(Long customerId);
+    public String createOnlineBankingAccount(Long customerId, String action);
 
     public String login(String customerAccount, String password);
     

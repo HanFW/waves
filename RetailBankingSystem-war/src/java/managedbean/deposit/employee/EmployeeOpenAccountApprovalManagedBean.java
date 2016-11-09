@@ -1,5 +1,6 @@
 package managedbean.deposit.employee;
 
+import ejb.bi.session.DepositAccountOpenSessionBeanLocal;
 import ejb.customer.entity.CustomerBasic;
 import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import ejb.deposit.entity.BankAccount;
@@ -9,6 +10,7 @@ import ejb.deposit.session.InterestSessionBeanLocal;
 import ejb.payment.session.MerlionBankSessionBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
@@ -21,6 +23,7 @@ import javax.faces.context.FacesContext;
 @RequestScoped
 
 public class EmployeeOpenAccountApprovalManagedBean implements Serializable {
+
     @EJB
     private MerlionBankSessionBeanLocal merlionBankSessionBeanLocal;
 
@@ -59,7 +62,7 @@ public class EmployeeOpenAccountApprovalManagedBean implements Serializable {
     public void approveOpenAccount() throws IOException {
 
         ec = FacesContext.getCurrentInstance().getExternalContext();
-        
+
         merlionBankSessionBeanLocal.approveAccount(customerIdentificationNum);
         CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum);
 
@@ -67,18 +70,18 @@ public class EmployeeOpenAccountApprovalManagedBean implements Serializable {
     }
 
     public void rejectOpenAccount() {
-        
+
         CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum);
-        
+
         BankAccount bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountByCusIC(customerIdentificationNum).get(0);
         Interest interest = bankAccount.getInterest();
         Long interestId = interest.getInterestId();
-        
+
         merlionBankSessionBeanLocal.sendEmailToRejectCustomer(customerIdentificationNum);
-        
+
         customerSessionBeanLocal.deleteCustomerBasic(customerIdentificationNum);
         interestSessionBeanLocal.deleteInterest(interestId);
-        
+
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Successfully Reject Customer " + customerBasic.getCustomerName(), "Successfully!"));
     }
 }

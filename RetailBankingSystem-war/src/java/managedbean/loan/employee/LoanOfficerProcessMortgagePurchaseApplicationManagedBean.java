@@ -224,12 +224,13 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
         debts = customer.getCustomerDebt();
         property = customer.getCustomerProperty();
         cr = customer.getBureauScore();
-        accountStatus = loanApplicationSessionBeanLocal.getAccountStatusByBureauScoreId(cr.getId());
-        defaultRecords = cr.getDefaultRecords();
-
-        bureauScore = cr.getBureauScore();
-        riskGrade = cr.getRiskGrade();
-        probabilityOfDefault = cr.getProbabilityOfDefault();
+        if (cr != null) {
+            accountStatus = loanApplicationSessionBeanLocal.getAccountStatusByBureauScoreId(cr.getId());
+            defaultRecords = cr.getDefaultRecords();
+            bureauScore = cr.getBureauScore();
+            riskGrade = cr.getRiskGrade();
+            probabilityOfDefault = cr.getProbabilityOfDefault();
+        }
 
         customerSalutation = customer.getCustomerSalutation();
         customerName = customer.getCustomerName();
@@ -310,12 +311,14 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
             jointCA = joint.getCustomerAdvanced();
             jointDebts = joint.getCustomerDebt();
             jointCR = joint.getBureauScore();
-            jointAccountStatus = loanApplicationSessionBeanLocal.getAccountStatusByBureauScoreId(jointCR.getId());
-            jointDefaultRecords = jointCR.getDefaultRecords();
+            if (jointCR != null) {
+                jointAccountStatus = loanApplicationSessionBeanLocal.getAccountStatusByBureauScoreId(jointCR.getId());
+                jointDefaultRecords = jointCR.getDefaultRecords();
 
-            jointBureauScore = jointCR.getBureauScore();
-            jointRiskGrade = jointCR.getRiskGrade();
-            jointProbabilityOfDefault = jointCR.getProbabilityOfDefault();
+                jointBureauScore = jointCR.getBureauScore();
+                jointRiskGrade = jointCR.getRiskGrade();
+                jointProbabilityOfDefault = jointCR.getProbabilityOfDefault();
+            }
 
             jointSalutation = joint.getCustomerSalutation();
             jointName = joint.getCustomerName();
@@ -353,8 +356,10 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
             //Decison support
             jointAge = Integer.valueOf(joint.getCustomerAge());
             averageAge = loanApplicationSessionBeanLocal.getApplicantsAverageAge(customer, joint);
-            for (CreditReportAccountStatus account : jointAccountStatus) {
-                jointAmountOverdue += account.getOverdueBalance();
+            if (jointCR != null) {
+                for (CreditReportAccountStatus account : jointAccountStatus) {
+                    jointAmountOverdue += account.getOverdueBalance();
+                }
             }
         }
 
@@ -373,10 +378,12 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
         if (loanType.contains("HDB")) {
             maxMSRInstalment = loanApplicationSessionBeanLocal.getMSRRemaining(customer, joint) + tenancy;
         }
-
-        for (CreditReportAccountStatus account : accountStatus) {
-            totalAmountOverdue += account.getOverdueBalance();
+        if (cr != null) {
+            for (CreditReportAccountStatus account : accountStatus) {
+                totalAmountOverdue += account.getOverdueBalance();
+            }
         }
+
         if (riskRatio > 0.35) {
             suggestedAction = "Reject";
             maxAmountGranted = 0;
@@ -386,8 +393,8 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
             suggestedAction = "Approve";
             maxAmountGranted = ltvPrice * (1 - riskRatio);
             double grossIncome = loanApplicationSessionBeanLocal.getGrossIncome(customer, joint);
-            if (grossIncome * 60 < maxAmountGranted) {
-                maxAmountGranted = grossIncome * 60;
+            if (grossIncome * 60 * (1 - riskRatio) < maxAmountGranted) {
+                maxAmountGranted = grossIncome * 60 * (1 - riskRatio);
             }
             if (customerLoanAmountRequired < maxAmountGranted) {
                 maxAmountGranted = customerLoanAmountRequired;
@@ -397,9 +404,10 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
             } else {
                 maxInstalment = maxTDSRInstalment;
             }
-            minTenure = loanApplicationSessionBeanLocal.calculateMortgageTenure(maxAmountGranted, maxInstalment);
+            minTenure = loanApplicationSessionBeanLocal.calculateMortgageTenure(maxAmountGranted, maxInstalment, 0.035);
             if (minTenure > 30) {
                 calculateMaxAmount();
+                minTenure = 25;
             }
             if (minTenure < customerLoanTenure) {
                 minTenure = customerLoanTenure;
@@ -408,17 +416,17 @@ public class LoanOfficerProcessMortgagePurchaseApplicationManagedBean implements
     }
 
     private void calculateMaxAmount() {
-        maxAmountGranted = (0.035 / 12 * maxInstalment) / (1 - Math.pow((1 + 0.035 / 12), -minTenure * 12));
+        maxAmountGranted = (0.035 / 12 * maxInstalment) / (1 - Math.pow((1 + 0.035 / 12), -25 * 12));
     }
 
     public void approveLoanRequest() throws IOException {
-        loanApplicationSessionBeanLocal.approveMortgageLoanRequest(ma.getLoanApplicationId(), amountGranted, periodSuggested, instalmentSuggested);
+        loanApplicationSessionBeanLocal.approveLoanRequest(ma.getLoanApplicationId(), amountGranted, periodSuggested, instalmentSuggested, "Mortgage Loan");
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/loan/loanOfficerViewApplications.xhtml?faces-redirect=true");
     }
 
     public void rejectLoanRequest() throws IOException {
-        loanApplicationSessionBeanLocal.rejectMortgageLoanRequest(ma.getLoanApplicationId());
+        loanApplicationSessionBeanLocal.rejectLoanRequest(ma.getLoanApplicationId());
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/loan/loanOfficerViewApplications.xhtml?faces-redirect=true");
     }

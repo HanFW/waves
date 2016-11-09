@@ -1,4 +1,4 @@
-package managedbean.payment.employee;
+package managedbean.deposit.employee;
 
 import ejb.customer.entity.CustomerBasic;
 import ejb.customer.session.CRMCustomerSessionBeanLocal;
@@ -13,10 +13,10 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
-@Named(value = "employeeDeleteStandingGIRO")
+@Named(value = "employeeBeforeCashWithdrawManagedBean")
 @RequestScoped
 
-public class EmployeeDeleteStandingGIRO {
+public class EmployeeBeforeCashWithdrawManagedBean {
 
     @EJB
     private CRMCustomerSessionBeanLocal customerSessionBeanLocal;
@@ -27,10 +27,10 @@ public class EmployeeDeleteStandingGIRO {
     private String customerName;
     private String customerIdentificationNum;
     private Date customerDateOfBirth;
-    
+
     private ExternalContext ec;
     
-    public EmployeeDeleteStandingGIRO() {
+    public EmployeeBeforeCashWithdrawManagedBean() {
     }
     
     public String getCustomerName() {
@@ -59,7 +59,7 @@ public class EmployeeDeleteStandingGIRO {
 
     public void submit() throws IOException {
         System.out.println("=");
-        System.out.println("====== deposit/EmployeeChangeDailyTransferLimit: submit() ======");
+        System.out.println("====== deposit/EmployeeActivateFixedDepositManagedBean: submit() ======");
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
         CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum.toUpperCase());
@@ -81,7 +81,7 @@ public class EmployeeDeleteStandingGIRO {
                 Map<String, Object> sessionMap = externalContext.getSessionMap();
                 sessionMap.put("customerIdentificationNum", customerIdentificationNum);
 
-                ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/payment/employeeDeleteStandingGIRODone.xhtml?faces-redirect=true");
+                ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/deposit/employeeCashWithdraw.xhtml?faces-redirect=true");
             }
         }
     }

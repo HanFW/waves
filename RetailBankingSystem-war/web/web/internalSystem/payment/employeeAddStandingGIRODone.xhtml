@@ -35,10 +35,8 @@
                             <p:outputLabel value="Billing Organization" style="font-weight: bold"/>
                             <p:selectOneMenu id="billingOrganization" value="#{employeeAddStandingGIRODoneManagedBean.billingOrganization}" 
                                              effect="fold" editable="false">
-                                <p:inputText label="Billing Organization" id="billReference" 
-                                             value="#{employeeAddStandingGIRODoneManagedBean.billingOrganizations}"
-                                             required="true" requiredMessage="Required Field">
-                                </p:inputText>
+                                <f:selectItem itemLabel="Please Select One" itemValue="" />
+                                <f:selectItems value="#{employeeAddStandingGIRODoneManagedBean.billingOrganizations}" />
                             </p:selectOneMenu>
                             <p:message for="billingOrganization" />
 
@@ -49,8 +47,8 @@
                             </p:inputText>
                             <p:message for="billReference" />
 
-                            <p:outputLabel value="Payement Limit(S$) (Please enter '0' for no payment limit)" style="font-weight: bold"/>
-                            <p:inputText label="Payement Limit" id="paymentLimit" 
+                            <p:outputLabel value="Payment Limit(S$) (Please enter '0' for no payment limit)" style="font-weight: bold"/>
+                            <p:inputText label="Payment Limit" id="paymentLimit" 
                                          value="#{employeeAddStandingGIRODoneManagedBean.paymentLimit}"
                                          required="true" requiredMessage="Required Field"
                                          converterMessage="Invalid input"

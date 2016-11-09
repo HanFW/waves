@@ -3,7 +3,6 @@ package ejb.infrastructure.session;
 import ejb.customer.entity.CustomerBasic;
 import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import ejb.infrastructure.entity.MessageBox;
-import ejb.deposit.entity.Payee;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,30 +18,31 @@ import javax.persistence.Query;
 public class MessageSessionBean implements MessageSessionBeanLocal, MessageSessionBeanRemote {
     @EJB
     private BankAccountSessionBeanLocal bankAccountSessionBeanLocal;
-    
+
     @EJB
     private CRMCustomerSessionBeanLocal customerSessionBeanLocal;
-    
+
     @PersistenceContext
     private EntityManager entityManager;
-    
+
     @Override
-    public MessageBox addNewMessage(String fromWhere,String messageType,String subject,String receivedDate,String messageContent,Long customerBasicId) {
-        
+    public MessageBox addNewMessage(String fromWhere, String messageType, String subject, String receivedDate, String messageContent, Long customerBasicId) {
+
         MessageBox messageBox = new MessageBox();
-        
+
         messageBox.setFromWhere(fromWhere);
         messageBox.setMessageType(messageType);
         messageBox.setSubject(subject);
         messageBox.setMessageContent(messageContent);
         messageBox.setReceivedDate(receivedDate);
         messageBox.setCustomerBasic(bankAccountSessionBeanLocal.retrieveCustomerBasicById(customerBasicId));
-        
+
         entityManager.persist(messageBox);
         entityManager.flush();
-        
+
         return messageBox;
     }
+
     @Override
     public List<MessageBox> retrieveMessageBoxByCusIC(String customerIdentificationNum) {
         CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum);
@@ -59,7 +59,7 @@ public class MessageSessionBean implements MessageSessionBeanLocal, MessageSessi
             return new ArrayList<MessageBox>();
         }
     }
-    
+
     @Override
     public MessageBox retrieveMessageBoxById(Long messageId) {
         MessageBox messageBox = new MessageBox();
@@ -67,7 +67,7 @@ public class MessageSessionBean implements MessageSessionBeanLocal, MessageSessi
         try {
             Query query = entityManager.createQuery("Select m From MessageBox m Where m.messageId=:messageId");
             query.setParameter("messageId", messageId);
-            
+
             if (query.getResultList().isEmpty()) {
                 return new MessageBox();
             } else {
@@ -82,7 +82,7 @@ public class MessageSessionBean implements MessageSessionBeanLocal, MessageSessi
 
         return messageBox;
     }
-    
+
     @Override
     public String deleteMessage(Long messageId) {
         MessageBox message = retrieveMessageBoxById(messageId);
@@ -92,11 +92,11 @@ public class MessageSessionBean implements MessageSessionBeanLocal, MessageSessi
 
         return "Successfully deleted!";
     }
-    
+
     @Override
     public void sendMessage(String fromWhere, String messageType, String subject, String receivedDate, String messageContent, Long customerBasicId) {
         CustomerBasic customerBasic = bankAccountSessionBeanLocal.retrieveCustomerBasicById(customerBasicId);
-        
+
         MessageBox messageBox = addNewMessage(fromWhere, messageType, subject, receivedDate, messageContent, customerBasicId);
         customerBasic.getMessageBox().add(messageBox);
     }

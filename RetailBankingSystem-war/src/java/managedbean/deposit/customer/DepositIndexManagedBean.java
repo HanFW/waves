@@ -50,7 +50,7 @@ public class DepositIndexManagedBean {
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
         CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
-        List<BankAccount> bankAccounts = customerBasic.getBankAccount();
+        List<BankAccount> bankAccounts = bankAccountSessionLocal.retrieveBankAccountByCusIC(customerBasic.getCustomerIdentificationNum());
         Double totalBalance = 0.0;
 
         for (int i = 0; i < bankAccounts.size(); i++) {

@@ -1,5 +1,6 @@
 package managedbean.deposit.customer;
 
+import ejb.bi.session.DepositAccountOpenSessionBeanLocal;
 import ejb.customer.entity.CustomerBasic;
 import javax.ejb.EJB;
 import ejb.customer.session.CRMCustomerSessionBeanLocal;
@@ -26,12 +27,14 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.Calendar;
 import javax.faces.view.ViewScoped;
-import org.apache.commons.io.IOUtils;
 
 @Named(value = "accountManagedBean")
 @ViewScoped
 
 public class AccountManagedBean implements Serializable {
+
+    @EJB
+    private DepositAccountOpenSessionBeanLocal depositAccountOpenSessionBeanLocal;
 
     @EJB
     private CRMCustomerSessionBeanLocal customerSessionBeanLocal;
@@ -924,7 +927,7 @@ public class AccountManagedBean implements Serializable {
                             isWithdraw = "0";
                             newInterestId = interestSessionBeanLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw);
 
-                            if (bankAccount.getBankAccountType().equals("Monthly Savings Account")) {
+                            if (bankAccountType.equals("Monthly Savings Account")) {
                                 bankAccountStatus = "Active";
                                 bankAccountMinSaving = "Insufficient";
                             } else {
@@ -943,6 +946,10 @@ public class AccountManagedBean implements Serializable {
                                     transferBalance, bankAccountStatus, bankAccountMinSaving,
                                     bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
                                     statementDateDouble, currentTimeMilis, customerBasicId, newInterestId);
+
+                            if (bankAccountType.equals("Monthly Savings Account")) {
+                                depositAccountOpenSessionBeanLocal.addNewDepositAccountOpen(currentTimeMilis, cal.getTime().toString());
+                            }
 
                             bankAccount = bankAccountSessionLocal.retrieveBankAccountById(newAccountId);
                             bankAccountSessionLocal.retrieveBankAccountByCusIC(customerIdentificationNum).add(bankAccount);
@@ -1013,6 +1020,13 @@ public class AccountManagedBean implements Serializable {
                             isWithdraw = "0";
                             newInterestId = interestSessionBeanLocal.addNewInterest(dailyInterest, monthlyInterest, isTransfer, isWithdraw);
 
+                            if (bankAccountType.equals("Monthly Savings Account")) {
+                                bankAccountStatus = "Active";
+                                bankAccountMinSaving = "Insufficient";
+                            } else {
+                                bankAccountStatus = "Inactive";
+                            }
+
                             if (bankAccountDepositPeriod == null) {
                                 bankAccountDepositPeriod = "None";
                             }
@@ -1026,6 +1040,10 @@ public class AccountManagedBean implements Serializable {
                                     statementDateDouble, currentTimeMilis, newCustomerBasicId, newInterestId);
 
                             bankAccount = bankAccountSessionLocal.retrieveBankAccountById(newAccountId);
+
+                            if (bankAccountType.equals("Monthly Savings Account")) {
+                                depositAccountOpenSessionBeanLocal.addNewDepositAccountOpen(currentTimeMilis, cal.getTime().toString());
+                            }
 
                             if (!bankAccountDepositPeriod.equals("None")) {
                                 bankAccountSessionLocal.updateDepositPeriod(bankAccountNum, bankAccountDepositPeriod);
@@ -1089,15 +1107,28 @@ public class AccountManagedBean implements Serializable {
 
         if (file != null) {
             String filename = customerIdentificationNum + ".png";
-            InputStream input = file.getInputstream();
-            OutputStream output = new FileOutputStream(new File("/Users/Yongxue/Desktop/JavaBean/waves/RetailBankingSystem-war/web/resources/customerIdentification", filename));
 
-            try {
-                IOUtils.copy(input, output);
-            } finally {
-                IOUtils.closeQuietly(input);
-                IOUtils.closeQuietly(output);
+            String newFilePath = System.getProperty("user.dir").replace("config", "docroot") + System.getProperty("file.separator");
+            OutputStream output = new FileOutputStream(new File(newFilePath, filename));
+
+            int a;
+            int BUFFER_SIZE = 8192;
+            byte[] buffer = new byte[BUFFER_SIZE];
+
+            InputStream inputStream = file.getInputstream();
+
+            while (true) {
+                a = inputStream.read(buffer);
+                if (a < 0) {
+                    break;
+                }
+                output.write(buffer, 0, a);
+                output.flush();
             }
+
+            output.close();
+            inputStream.close();
+
             loggingSessionBeanLocal.createNewLogging("customer", null, "upload softcopy of passport or IC", "successful", null);
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Succesful " + file.getFileName() + " is uploaded.", "");
             FacesContext.getCurrentInstance().addMessage(null, message);
@@ -1171,12 +1202,6 @@ public class AccountManagedBean implements Serializable {
         fixedDepositStatus = "";
         statementDateDouble = 0.0;
         bankAccountStatus = "Active";
-//        if (bankAccountType.equals("Monthly Savings Account")) {
-//            bankAccountStatus = "Active";
-//            bankAccountMinSaving = "Insufficient";
-//        } else {
-//            bankAccountStatus = "Inactive";
-//        }
 
         Calendar cal = Calendar.getInstance();
         Long currentTimeMilis = cal.getTimeInMillis();
@@ -1190,6 +1215,9 @@ public class AccountManagedBean implements Serializable {
                 "Basic Savings Account", totalBankAccountBalance, availableBankAccountBalance, transferDailyLimit, transferBalance, bankAccountStatus, bankAccountMinSaving,
                 bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
                 statementDateDouble, currentTimeMilis, customerBasicId, interestId);
+
+        Long newDepositAccountOpenId = depositAccountOpenSessionBeanLocal.addNewDepositAccountOpen(currentTimeMilis, cal.getTime().toString());
+        Long depositAccountOpenId = depositAccountOpenSessionBeanLocal.addNewDepositAccountOpen(currentTimeMilis, cal.getTime().toString());
 
         statusMessage = "New Account Saved Successfully.";
 

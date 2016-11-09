@@ -589,4 +589,19 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal, CRMC
             
         }
     }
+    
+    @Override
+        public void RMUpdateCustomerAdvancedInfo(Long id, String jobStatus, String occupation,String jobIndustry,double fixedMonthlyIncome,
+            double otherMonthlyIncome, int numOfDependents){
+            CustomerAdvanced customer= retrieveCustomerAdvancedByAdId(id);
+            
+            customer.setCurrentPosition(occupation);
+            customer.setEmploymentStatus(jobStatus);
+            customer.setIndustryType(jobIndustry);
+            customer.setMonthlyFixedIncome(fixedMonthlyIncome);
+            customer.setOtherMonthlyIncome(otherMonthlyIncome);
+            customer.setNumOfDependent(numOfDependents);
+            entityManager.flush();
+            
+        }
 }

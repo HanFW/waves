@@ -34,7 +34,7 @@ public class CustomerAdminSessionBean implements CustomerAdminSessionBeanLocal, 
     private EntityManager em;
 
     @Override
-    public String createOnlineBankingAccount(Long customerId) {
+    public String createOnlineBankingAccount(Long customerId, String email) {
         System.out.println("*");
         System.out.println("****** infrastructure/CustomerAdminSessionBean: createOnlineBankingAccount() ******");
         CustomerBasic customer = em.find(CustomerBasic.class, customerId);
@@ -71,12 +71,14 @@ public class CustomerAdminSessionBean implements CustomerAdminSessionBeanLocal, 
             Map emailActions = new HashMap();
             emailActions.put("onlineBanking", "yes");
             emailActions.put("onlineBankingPassword", password);
-            customerEmailSessionBeanLocal.sendEmail(customer, "openAccount", emailActions);
+
+            customerEmailSessionBeanLocal.sendEmail(customer, email, emailActions);
             return account + "," + password;
         } else {
             Map emailActions = new HashMap();
             emailActions.put("onlineBanking", "no");
-            customerEmailSessionBeanLocal.sendEmail(customer, "openAccount", emailActions);
+
+            customerEmailSessionBeanLocal.sendEmail(customer, email, emailActions);
             return "not a new customer";
         }
     }

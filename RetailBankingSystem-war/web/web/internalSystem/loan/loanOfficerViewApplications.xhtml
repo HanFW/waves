@@ -61,16 +61,101 @@
                     </p:dataTable>
                 </p:tab>
                 <p:tab title="Renovation Loan">
-
-                </p:tab>
-                <p:tab title="Cashline">
-
+                    <p:dataTable var="renovationApplication" value="#{loanOfficerViewLoanApplicationsManagedBean.renovationLoanApplications}">
+                        <p:column headerText="Applicant">
+                            <h:outputText value="#{renovationApplication.customerBasic.customerName}" />
+                        </p:column>
+                        <p:column headerText="Type">
+                            <h:outputText value="#{renovationApplication.loanType}" />
+                        </p:column>
+                        <p:column headerText="Application Time">
+                            <h:outputText value="#{renovationApplication.applicationDate}" />
+                        </p:column>
+                        <p:column headerText="Amount">
+                            <h:outputText value="#{renovationApplication.amountRequired}" />
+                        </p:column>
+                        <p:column headerText="Period">
+                            <h:outputText value="#{renovationApplication.periodRequired}" />
+                        </p:column>
+                        <p:column headerText="Status">
+                            <h:outputText value="#{renovationApplication.applicationStatus}" />
+                        </p:column>
+                        <p:column>
+                            <p:commandButton value="View" action="#{loanOfficerViewLoanApplicationsManagedBean.viewApplication(renovationApplication.loanApplicationId, renovationApplication.loanType)}"/>
+                        </p:column>
+                    </p:dataTable>
                 </p:tab>
                 <p:tab title="Car Loan">
-
+                    <p:dataTable var="carApplication" value="#{loanOfficerViewLoanApplicationsManagedBean.carLoanApplications}">
+                        <p:column headerText="Applicant">
+                            <h:outputText value="#{carApplication.customerBasic.customerName}" />
+                        </p:column>
+                        <p:column headerText="Type">
+                            <h:outputText value="#{carApplication.loanType}" />
+                        </p:column>
+                        <p:column headerText="Application Time">
+                            <h:outputText value="#{carApplication.applicationDate}" />
+                        </p:column>
+                        <p:column headerText="Amount">
+                            <h:outputText value="#{carApplication.amountRequired}" />
+                        </p:column>
+                        <p:column headerText="Period">
+                            <h:outputText value="#{carApplication.periodRequired}" />
+                        </p:column>
+                        <p:column headerText="Status">
+                            <h:outputText value="#{carApplication.applicationStatus}" />
+                        </p:column>
+                        <p:column>
+                            <p:commandButton value="View" action="#{loanOfficerViewLoanApplicationsManagedBean.viewApplication(carApplication.loanApplicationId, carApplication.loanType)}"/>
+                        </p:column>
+                    </p:dataTable>
                 </p:tab>
-                <p:tab title="Study Loan">
-
+                <p:tab title="Education Loan">
+                    <p:dataTable var="educationApplication" value="#{loanOfficerViewLoanApplicationsManagedBean.studyLoanApplications}">
+                        <p:column headerText="Applicant">
+                            <h:outputText value="#{educationApplication.customerBasic.customerName}" />
+                        </p:column>
+                        <p:column headerText="Type">
+                            <h:outputText value="#{educationApplication.loanType}" />
+                        </p:column>
+                        <p:column headerText="Application Time">
+                            <h:outputText value="#{educationApplication.applicationDate}" />
+                        </p:column>
+                        <p:column headerText="Amount">
+                            <h:outputText value="#{educationApplication.amountRequired}" />
+                        </p:column>
+                        <p:column headerText="Period">
+                            <h:outputText value="#{educationApplication.periodRequired}" />
+                        </p:column>
+                        <p:column headerText="Status">
+                            <h:outputText value="#{educationApplication.applicationStatus}" />
+                        </p:column>
+                        <p:column>
+                            <p:commandButton value="View" action="#{loanOfficerViewLoanApplicationsManagedBean.viewApplication(educationApplication.loanApplicationId, educationApplication.loanType)}"/>
+                        </p:column>
+                    </p:dataTable>
+                </p:tab>
+                <p:tab title="Cashline">
+                    <p:dataTable var="cashlineApplication" value="#{loanOfficerViewLoanApplicationsManagedBean.cashlineApplications}">
+                        <p:column headerText="Applicant">
+                            <h:outputText value="#{cashlineApplication.customerBasic.customerName}" />
+                        </p:column>
+                        <p:column headerText="Type">
+                            <h:outputText value="#{cashlineApplication.loanType}" />
+                        </p:column>
+                        <p:column headerText="Application Time">
+                            <h:outputText value="#{cashlineApplication.applicationDate}" />
+                        </p:column>
+                        <p:column headerText="Amount">
+                            <h:outputText value="#{cashlineApplication.amountRequired}" />
+                        </p:column>
+                        <p:column headerText="Status">
+                            <h:outputText value="#{cashlineApplication.applicationStatus}" />
+                        </p:column>
+                        <p:column>
+                            <p:commandButton value="View" action="#{loanOfficerViewLoanApplicationsManagedBean.viewCashlineApplication(cashlineApplication.id)}"/>
+                        </p:column>
+                    </p:dataTable>
                 </p:tab>
             </p:tabView>
         </h:form>        

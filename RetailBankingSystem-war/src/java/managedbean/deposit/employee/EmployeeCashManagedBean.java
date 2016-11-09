@@ -1,5 +1,8 @@
 package managedbean.deposit.employee;
 
+import ejb.bi.session.DepositAccountOpenSessionBeanLocal;
+import ejb.customer.entity.CustomerBasic;
+import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import ejb.deposit.entity.BankAccount;
 import java.io.IOException;
 import javax.ejb.EJB;
@@ -11,6 +14,11 @@ import javax.inject.Named;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import ejb.deposit.session.TransactionSessionBeanLocal;
 import ejb.infrastructure.session.LoggingSessionBeanLocal;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.annotation.PostConstruct;
 
 @Named(value = "employeeCashManagedBean")
 @RequestScoped
@@ -18,15 +26,20 @@ import ejb.infrastructure.session.LoggingSessionBeanLocal;
 public class EmployeeCashManagedBean {
 
     @EJB
+    private DepositAccountOpenSessionBeanLocal depositAccountOpenSessionBeanLocal;
+
+    @EJB
+    private CRMCustomerSessionBeanLocal customerSessionBeanLocal;
+
+    @EJB
     private LoggingSessionBeanLocal loggingSessionBeanLocal;
 
     @EJB
-    private BankAccountSessionBeanLocal bankAccountSessionLocal;
+    private BankAccountSessionBeanLocal bankAccountSessionBeanLocal;
 
     @EJB
     private TransactionSessionBeanLocal transactionSessionLocal;
 
-    private String depositModel;
     private Double depositAmt;
     private String depositAccountNum;
     private String depositAccountPwd;
@@ -40,20 +53,32 @@ public class EmployeeCashManagedBean {
     private String statusMessage;
     private Long transactionId;
 
+    private String customerIdentificationNum;
+    private Map<String, String> fromAccounts = new HashMap<String, String>();
+    private String depositAccountNumWithType;
+    private String withdrawAccountNumWithType;
+
     private ExternalContext ec;
-    //ec = FacesContext.getCurrentInstance().getExternalContext();
 
     private BankAccount bankAccount;
 
     public EmployeeCashManagedBean() {
     }
 
-    public String getDepositModel() {
-        return depositModel;
-    }
+    @PostConstruct
+    public void init() {
 
-    public void setDepositModel(String depositModel) {
-        this.depositModel = depositModel;
+        ec = FacesContext.getCurrentInstance().getExternalContext();
+
+        customerIdentificationNum = ec.getSessionMap().get("customerIdentificationNum").toString();
+        CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum);
+
+        List<BankAccount> bankAccounts = bankAccountSessionBeanLocal.retrieveBankAccountByCusIC(customerBasic.getCustomerIdentificationNum());
+        fromAccounts = new HashMap<String, String>();
+
+        for (int i = 0; i < bankAccounts.size(); i++) {
+            fromAccounts.put(bankAccounts.get(i).getBankAccountType() + "-" + bankAccounts.get(i).getBankAccountNum(), bankAccounts.get(i).getBankAccountType() + "-" + bankAccounts.get(i).getBankAccountNum());
+        }
     }
 
     public Double getDepositAmt() {
@@ -136,11 +161,45 @@ public class EmployeeCashManagedBean {
         this.transactionId = transactionId;
     }
 
+    public String getCustomerIdentificationNum() {
+        return customerIdentificationNum;
+    }
+
+    public void setCustomerIdentificationNum(String customerIdentificationNum) {
+        this.customerIdentificationNum = customerIdentificationNum;
+    }
+
+    public Map<String, String> getFromAccounts() {
+        return fromAccounts;
+    }
+
+    public void setFromAccounts(Map<String, String> fromAccounts) {
+        this.fromAccounts = fromAccounts;
+    }
+
+    public String getDepositAccountNumWithType() {
+        return depositAccountNumWithType;
+    }
+
+    public void setDepositAccountNumWithType(String depositAccountNumWithType) {
+        this.depositAccountNumWithType = depositAccountNumWithType;
+    }
+
+    public String getWithdrawAccountNumWithType() {
+        return withdrawAccountNumWithType;
+    }
+
+    public void setWithdrawAccountNumWithType(String withdrawAccountNumWithType) {
+        this.withdrawAccountNumWithType = withdrawAccountNumWithType;
+    }
+
     public void cashDeposit() throws IOException {
         System.out.println("=");
         System.out.println("====== deposit/EmployeeCashManagedBean: cashDeposit() ======");
         ec = FacesContext.getCurrentInstance().getExternalContext();
-        BankAccount bankAccount = bankAccountSessionLocal.retrieveBankAccountByNum(depositAccountNum);
+
+        depositAccountNum = handleAccountString(depositAccountNumWithType);
+        BankAccount bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountByNum(depositAccountNum);
         String activationCheck;
 
         if (bankAccount.getBankAccountId() == null) {
@@ -163,7 +222,7 @@ public class EmployeeCashManagedBean {
 
                 activationCheck = transactionSessionLocal.checkAccountActivation(depositAccountNum, depositAmt.toString());
 
-                if (activationCheck.equals("Initial deposit amount is insufficient.")) {
+                if (activationCheck.equals("Insufficient")) {
                     if (bankAccount.getBankAccountType().equals("Bonus Savings Account")) {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Minimum initial deposit amount is S$3000", "Failed"));
                     } else if (bankAccount.getBankAccountType().equals("Basic Savings Account")) {
@@ -171,11 +230,14 @@ public class EmployeeCashManagedBean {
                     } else if (bankAccount.getBankAccountType().equals("Fixed Deposit Account")) {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Minimum initial deposit amount is S$1000", "Failed"));
                     }
-                } else if (activationCheck.equals("Please declare your deposit period")) {
+                } else if (activationCheck.equals("Declare")) {
                     FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Please declare your fixed deposit period first.", "Failed"));
-                } else if (activationCheck.equals("Activated successfully.")) {
+                } else if (activationCheck.equals("Activated")) {
 
                     transactionId = transactionSessionLocal.cashDeposit(depositAccountNum, depositAmt.toString());
+
+                    Calendar cal = Calendar.getInstance();
+                    depositAccountOpenSessionBeanLocal.addNewDepositAccountOpen(cal.getTimeInMillis(), cal.getTime().toString());
 
                     statusMessage = "Cash deposit Successfully!";
                     loggingSessionBeanLocal.createNewLogging("employee", null, "cash deposit", "successful", null);
@@ -196,7 +258,8 @@ public class EmployeeCashManagedBean {
         System.out.println("====== deposit/CashManagedBean: cashWithdraw() ======");
         ec = FacesContext.getCurrentInstance().getExternalContext();
 
-        BankAccount bankAccount = bankAccountSessionLocal.retrieveBankAccountByNum(withdrawAccountNum);
+        withdrawAccountNum = handleAccountString(withdrawAccountNumWithType);
+        BankAccount bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountByNum(withdrawAccountNum);
 
         if (bankAccount.getBankAccountId() == null) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Bank account does not exist.", "Failed"));
@@ -222,5 +285,13 @@ public class EmployeeCashManagedBean {
                 }
             }
         }
+    }
+
+    private String handleAccountString(String bankAccountNumWithType) {
+
+        String[] bankAccountNums = bankAccountNumWithType.split("-");
+        String bankAccountNum = bankAccountNums[1];
+
+        return bankAccountNum;
     }
 }

@@ -13,9 +13,11 @@ public class Rate implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long rateId;
     private Double rateValue;
-    private Integer updateDate;
     private String rateType;
     private String rateStatus;
+    private Integer updateYear;
+    private Integer updateMonth;
+    private String currentYear;
 
     public Long getRateId() {
         return rateId;
@@ -33,14 +35,6 @@ public class Rate implements Serializable {
         this.rateValue = rateValue;
     }
 
-    public Integer getUpdateDate() {
-        return updateDate;
-    }
-
-    public void setUpdateDate(Integer updateDate) {
-        this.updateDate = updateDate;
-    }
-
     public String getRateType() {
         return rateType;
     }
@@ -55,6 +49,30 @@ public class Rate implements Serializable {
 
     public void setRateStatus(String rateStatus) {
         this.rateStatus = rateStatus;
+    }
+
+    public Integer getUpdateYear() {
+        return updateYear;
+    }
+
+    public void setUpdateYear(Integer updateYear) {
+        this.updateYear = updateYear;
+    }
+
+    public Integer getUpdateMonth() {
+        return updateMonth;
+    }
+
+    public void setUpdateMonth(Integer updateMonth) {
+        this.updateMonth = updateMonth;
+    }
+
+    public String getCurrentYear() {
+        return currentYear;
+    }
+
+    public void setCurrentYear(String currentYear) {
+        this.currentYear = currentYear;
     }
 
     @Override

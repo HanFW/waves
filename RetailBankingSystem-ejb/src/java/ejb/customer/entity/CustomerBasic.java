@@ -1,5 +1,6 @@
 package ejb.customer.entity;
 
+import ejb.bi.entity.CustomerRFM;
 import ejb.card.entity.CreditCard;
 import ejb.deposit.entity.BankAccount;
 import ejb.infrastructure.entity.MessageBox;
@@ -15,6 +16,7 @@ import ejb.payment.entity.Cheque;
 import ejb.payment.entity.OtherBankPayee;
 import ejb.payment.entity.GIRO;
 import ejb.payment.entity.SWIFTPayee;
+import ejb.wealth.entity.Portfolio;
 import ejb.wealth.entity.RiskProfile;
 import java.io.Serializable;
 import javax.persistence.Entity;
@@ -101,6 +103,9 @@ public class CustomerBasic implements Serializable {
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
     private List<CashlineApplication> cashlineApplication;
     
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
+    private List<Portfolio> portfolios;
+    
     @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     private CreditReportBureauScore bureauScore;
     
@@ -112,6 +117,9 @@ public class CustomerBasic implements Serializable {
     
     @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
     private RefinancingApplication refinancingApplication;
+    
+    @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
+    private CustomerRFM customerRFM;
     
     public void addLoanApplication(LoanApplication newApplication){
         loanApplication.add(newApplication);
@@ -479,7 +487,30 @@ public class CustomerBasic implements Serializable {
     public void setRefinancingApplication(RefinancingApplication refinancingApplication) {
         this.refinancingApplication = refinancingApplication;
     }
+
+    public CustomerRFM getCustomerRFM() {
+        return customerRFM;
+    }
+
+    public void setCustomerRFM(CustomerRFM customerRFM) {
+        this.customerRFM = customerRFM;
+    }
+
+    public List<Portfolio> getPortfolios() {
+        return portfolios;
+    }
+
+    public void setPotrfolios(List<Portfolio> potfolios) {
+        this.portfolios = potfolios;
+    }
     
+    public void addPortfolio(Portfolio portfolio){
+        this.portfolios.add(portfolio);
+    }
+    
+    public void removePortfolio(Portfolio portfolio){
+        this.portfolios.remove(portfolio);
+    }
     
     @Override
     public int hashCode() {

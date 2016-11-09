@@ -23,26 +23,80 @@ public class EmployeeNonStandingGIROTransferDoneManagedBean {
     @EJB
     private CRMCustomerSessionBeanLocal customerSessionBeanLocal;
 
-    private ExternalContext ec;
-
-    private String paymentAmt;
+    private String billingOrganizationName;
+    private String billReference;
+    private String transferFrequency;
+    private String bankAccountNumWithType;
+    private Double paymentAmt;
 
     private String statusMessage;
     private String toBankAccountNumWithType;
     private String fromBankAccountNumWithType;
-    private String fromBankAccount;
-    private String toBankAccount;
-    private String fromAccountBalance;
+    private Double fromBankAccountAvailableBalance;
+    private Double fromBankAccountTotalBalance;
+    private Long giroId;
+    private String transactionFrequencyForOneTime;
+
     private String customerIdentificationNum;
+
+    private ExternalContext ec;
 
     public EmployeeNonStandingGIROTransferDoneManagedBean() {
     }
 
-    public String getPaymentAmt() {
+    public NonStandingGIROSessionBeanLocal getNonStandingGIROSessionBeanLocal() {
+        return nonStandingGIROSessionBeanLocal;
+    }
+
+    public void setNonStandingGIROSessionBeanLocal(NonStandingGIROSessionBeanLocal nonStandingGIROSessionBeanLocal) {
+        this.nonStandingGIROSessionBeanLocal = nonStandingGIROSessionBeanLocal;
+    }
+
+    public CRMCustomerSessionBeanLocal getCustomerSessionBeanLocal() {
+        return customerSessionBeanLocal;
+    }
+
+    public void setCustomerSessionBeanLocal(CRMCustomerSessionBeanLocal customerSessionBeanLocal) {
+        this.customerSessionBeanLocal = customerSessionBeanLocal;
+    }
+
+    public String getBillingOrganizationName() {
+        return billingOrganizationName;
+    }
+
+    public void setBillingOrganizationName(String billingOrganizationName) {
+        this.billingOrganizationName = billingOrganizationName;
+    }
+
+    public String getBillReference() {
+        return billReference;
+    }
+
+    public void setBillReference(String billReference) {
+        this.billReference = billReference;
+    }
+
+    public String getTransferFrequency() {
+        return transferFrequency;
+    }
+
+    public void setTransferFrequency(String transferFrequency) {
+        this.transferFrequency = transferFrequency;
+    }
+
+    public String getBankAccountNumWithType() {
+        return bankAccountNumWithType;
+    }
+
+    public void setBankAccountNumWithType(String bankAccountNumWithType) {
+        this.bankAccountNumWithType = bankAccountNumWithType;
+    }
+
+    public Double getPaymentAmt() {
         return paymentAmt;
     }
 
-    public void setPaymentAmt(String paymentAmt) {
+    public void setPaymentAmt(Double paymentAmt) {
         this.paymentAmt = paymentAmt;
     }
 
@@ -70,28 +124,44 @@ public class EmployeeNonStandingGIROTransferDoneManagedBean {
         this.fromBankAccountNumWithType = fromBankAccountNumWithType;
     }
 
-    public String getFromBankAccount() {
-        return fromBankAccount;
+    public Double getFromBankAccountAvailableBalance() {
+        return fromBankAccountAvailableBalance;
     }
 
-    public void setFromBankAccount(String fromBankAccount) {
-        this.fromBankAccount = fromBankAccount;
+    public void setFromBankAccountAvailableBalance(Double fromBankAccountAvailableBalance) {
+        this.fromBankAccountAvailableBalance = fromBankAccountAvailableBalance;
     }
 
-    public String getToBankAccount() {
-        return toBankAccount;
+    public Double getFromBankAccountTotalBalance() {
+        return fromBankAccountTotalBalance;
     }
 
-    public void setToBankAccount(String toBankAccount) {
-        this.toBankAccount = toBankAccount;
+    public void setFromBankAccountTotalBalance(Double fromBankAccountTotalBalance) {
+        this.fromBankAccountTotalBalance = fromBankAccountTotalBalance;
     }
 
-    public String getFromAccountBalance() {
-        return fromAccountBalance;
+    public Long getGiroId() {
+        return giroId;
     }
 
-    public void setFromAccountBalance(String fromAccountBalance) {
-        this.fromAccountBalance = fromAccountBalance;
+    public void setGiroId(Long giroId) {
+        this.giroId = giroId;
+    }
+
+    public String getTransactionFrequencyForOneTime() {
+        return transactionFrequencyForOneTime;
+    }
+
+    public void setTransactionFrequencyForOneTime(String transactionFrequencyForOneTime) {
+        this.transactionFrequencyForOneTime = transactionFrequencyForOneTime;
+    }
+
+    public String getCustomerIdentificationNum() {
+        return customerIdentificationNum;
+    }
+
+    public void setCustomerIdentificationNum(String customerIdentificationNum) {
+        this.customerIdentificationNum = customerIdentificationNum;
     }
 
     public List<NonStandingGIRO> getOneTimeGIROs() throws IOException {

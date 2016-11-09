@@ -79,4 +79,6 @@ public interface CRMCustomerSessionBeanLocal {
             String customerPreviousCompany, int customerLengthOfPreviousJob, double customerOtherMonthlyIncome,
             String customerOtherMonthlyIncomeSource);
     public boolean hasOnlineBankingAcc(Long customerBasicId);
+    public void RMUpdateCustomerAdvancedInfo(Long id, String jobStatus, String occupation,String jobIndustry,double fixedMonthlyIncome,
+            double otherMonthlyIncome, int numOfDependents);
 }
