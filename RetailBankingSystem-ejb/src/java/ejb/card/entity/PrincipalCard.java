@@ -5,6 +5,7 @@
  */
 package ejb.card.entity;
 
+import ejb.deposit.entity.CreditCardTransaction;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -26,6 +27,9 @@ public class PrincipalCard extends CreditCard implements Serializable {
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "principalCard")
     private List<SupplementaryCard> supplementaryCards;
 
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "principalCard")
+    private List<CreditCardTransaction> creditCardTransactions;
+    
     public List<SupplementaryCard> getSupplementaryCards() {
         return supplementaryCards;
     }
@@ -54,5 +58,20 @@ public class PrincipalCard extends CreditCard implements Serializable {
         this.outstandingBalance = outstandingBalance;
     }
 
+    public List<CreditCardTransaction> getCreditCardTransactions() {
+        return creditCardTransactions;
+    }
+
+    public void setCreditCardTransactions(List<CreditCardTransaction> creditCardTransactions) {
+        this.creditCardTransactions = creditCardTransactions;
+    }
+    
+    public void addTransaction(CreditCardTransaction transaction){
+        this.creditCardTransactions.add(transaction);
+    }
+    
+    public void removeTransaction(CreditCardTransaction transaction){
+        this.creditCardTransactions.remove(transaction);
+    }
     
 }

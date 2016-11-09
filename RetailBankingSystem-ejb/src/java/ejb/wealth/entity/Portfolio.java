@@ -33,6 +33,8 @@ public class Portfolio implements Serializable {
     private int investmentPeriod;
     private double amountExpected;
     private String status;
+    private String startingDate;
+    private String endDate;
     
     @ManyToOne(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER)
     private CustomerBasic customerBasic;
@@ -100,8 +102,22 @@ public class Portfolio implements Serializable {
     public void setCustomerBasic(CustomerBasic customerBasic) {
         this.customerBasic = customerBasic;
     }
-   
-    
+
+    public String getStartingDate() {
+        return startingDate;
+    }
+
+    public void setStartingDate(String startingDate) {
+        this.startingDate = startingDate;
+    }
+
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }   
 
     @Override
     public int hashCode() {
