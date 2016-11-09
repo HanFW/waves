@@ -68,7 +68,7 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
     private final String TIMER_NAME_15000MS = "EJB-TIMER-15000MS";
     private final int TIMER_DURATION_15000MS = 15000;
     private final String TIMER_NAME_300000MS = "EJB-TIMER-300000MS";
-    private final int TIMER_DURATION_300000MS = 3000;
+    private final int TIMER_DURATION_300000MS = 60000;
     private final String TIMER_NAME_70000MS = "EJB-TIMER-70000MS";
     private final int TIMER_DURATION_70000MS = 70000;
     private final String TIMER_NAME_5000MS = "EJB-TIMER-5000MS";

@@ -16,12 +16,11 @@ public class LoanStatementSessionBean implements LoanStatementSessionBeanLocal {
     private EntityManager entityManager;
     
     @Override
-    public Long addNewLoanStatement(String statementType, String accountDetails, Long loanPayableAccountId) {
+    public Long addNewLoanStatement(String statementType, String accountDetails) {
         LoanStatement loanStatement = new LoanStatement();
         
         loanStatement.setAccountDetails(accountDetails);
         loanStatement.setStatementType(statementType);
-        loanStatement.setLoanPayableAccount(loanPayableAccountSessionBeanLocal.retrieveLoanPayableAccountById(loanPayableAccountId));
         
         entityManager.persist(loanStatement);
         entityManager.flush();

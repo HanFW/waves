@@ -519,7 +519,7 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
         String statementType = "Loan Statement";
         String accountDetails = loanType;
         LoanPayableAccount account = loanPayableAccountSessionBeanLocal.retrieveLoanPayableAccountByNum(payableAccountNumber);
-        loanStatementSessionBeanLocal.addNewLoanStatement(statementType, accountDetails, account.getId());
+        loanStatementSessionBeanLocal.addNewLoanStatement(statementType, accountDetails);
 
         em.flush();
     }
