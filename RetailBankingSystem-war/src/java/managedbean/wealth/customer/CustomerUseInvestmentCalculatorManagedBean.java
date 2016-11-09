@@ -279,7 +279,7 @@ public class CustomerUseInvestmentCalculatorManagedBean implements Serializable 
         
         Long id= getCustomerViaSessionMap().getCustomerBasicId();
 
-        createFinancialGoalSessionBeanLocal.createPortfolio(id,startingBalance, monthlyContribution, contributeDuration, worthYear, amountExpected);
+//        createFinancialGoalSessionBeanLocal.createPortfolio(id,startingBalance, monthlyContribution, contributeDuration, worthYear, amountExpected);
 
         message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Your financial goal has been successfully saved!", null);
         context.addMessage(null, message);
