@@ -97,8 +97,7 @@ public class LoanManagementSessionBean implements LoanManagementSessionBeanLocal
     @Override
     public List<LoanRepaymentTransaction> getRepaymentHistory(Long accountId) {
         LoanRepaymentAccount repaymentAccount = em.find(LoanRepaymentAccount.class, accountId);
-        Query query = em.createQuery("SELECT a FROM LoanRepaymentTransaction a WHERE a.description = :description AND a.loanRepaymentAccount=:repaymentAccount");
-        query.setParameter("description", "Monthly Repayment");
+        Query query = em.createQuery("SELECT a FROM LoanRepaymentTransaction a WHERE a.loanRepaymentAccount=:repaymentAccount");
         query.setParameter("repaymentAccount", repaymentAccount);
         return query.getResultList();
     }

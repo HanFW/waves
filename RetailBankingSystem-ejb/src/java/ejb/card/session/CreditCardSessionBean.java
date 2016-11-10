@@ -126,7 +126,8 @@ public class CreditCardSessionBean implements CreditCardSessionBeanLocal {
     }
 
     @Override
-    public void createNewCardAfterLost(Long cbId, Long caId, Long creditCardTypeId, String cardHolderName, double creditLimit, String expDate, int remainingMonths, List<SupplementaryCard> supplCards) {
+    public void createNewCardAfterLost(Long cbId, Long caId, Long creditCardTypeId, String cardHolderName,
+            double creditLimit, String expDate, int remainingMonths, List<SupplementaryCard> supplCards, double outstandingBalance) {
         PrincipalCard creditCard = new PrincipalCard();
 
         String cardNum = generateCardNum();
@@ -142,6 +143,7 @@ public class CreditCardSessionBean implements CreditCardSessionBeanLocal {
         creditCard.setCardHolderName(cardHolderName);
         creditCard.setCardType("CreditCard");
         creditCard.setSupplementaryCards(supplCards);
+        creditCard.setOutstandingBalance(outstandingBalance);
 
         String creditCardSecurityCode = generateCardSecurityCode();
         try {
@@ -341,7 +343,7 @@ public class CreditCardSessionBean implements CreditCardSessionBeanLocal {
             if (getCardByCardNum(creditCardNum) == null) {
                 return "credit card not exist";
             } else {
-                CreditCard findCreditCard = getCardByCardNum(creditCardNum);
+                PrincipalCard findCreditCard = getPrincipalCardByCardNum(creditCardNum);
                 if (!findCreditCard.getCardHolderName().equals(cardHolderName)) {
                     return "cardHolderName not match";
                 } else {
@@ -353,6 +355,9 @@ public class CreditCardSessionBean implements CreditCardSessionBeanLocal {
                         findCreditCard.setStatus("Activated");
                         if (findCreditCard.getPredecessor() != null) {
                             Long predecessorId = findCreditCard.getPredecessor();
+                            PrincipalCard predecessorCard = em.find(PrincipalCard.class, predecessorId);
+                            double outstandingBalance = predecessorCard.getOutstandingBalance();
+                            findCreditCard.setOutstandingBalance(outstandingBalance);
                             creditCardManagementSessionBeanLocal.cancelCreditCardAfterReplacement(predecessorId);
                             findCreditCard.setPredecessor(null);
                         }//if the card has a predecessor, then delete the predecessor from database
@@ -491,7 +496,7 @@ public class CreditCardSessionBean implements CreditCardSessionBeanLocal {
 
     @Override
     public void rejectRequest(Long creditCardId) {
-        System.out.println("****** loan/LoanApplicationSessionBean: rejectMortgageLoanRequest() ******");
+        System.out.println("****** creditCard/CreditCardSessionBean: rejectMortgageLoanRequest() ******");
         CreditCard cc = em.find(CreditCard.class, creditCardId);
         CustomerBasic customer = cc.getCustomerBasic();
         CustomerAdvanced ca = customer.getCustomerAdvanced();
@@ -499,8 +504,7 @@ public class CreditCardSessionBean implements CreditCardSessionBeanLocal {
 //        CreditReportBureauScore report = customer.getBureauScore();
 //        
 //        em.remove(report);
-        em.remove(ca);
-        em.remove(customer);
+        em.remove(cc);
         em.flush();
 
     }
@@ -546,6 +550,24 @@ public class CreditCardSessionBean implements CreditCardSessionBeanLocal {
         card.setOutstandingBalance(newOutstandingBalance);
         em.flush();
 
+    }
+
+    @Override
+    public List<String> getAllPrincipalCardInfoByCustomer(CustomerBasic customer) {
+        List<PrincipalCard> cards;
+        List<String> cardsInfo = new ArrayList<>();
+        Query query = em.createQuery("SELECT p FROM PrincipalCard p WHERE p.customerBasic=:customer");
+        query.setParameter("customer", customer);
+
+        if (!query.getResultList().isEmpty()) {
+            cards = query.getResultList();
+            for (int i = 0; i < cards.size(); i++) {
+                String info = cards.get(i).getCreditCardType().getCreditCardTypeName() + "-" + cards.get(i).getCardNum();
+                cardsInfo.add(info);
+            }
+        }
+
+        return cardsInfo;
     }
 
     @Override

@@ -17,9 +17,7 @@ public interface CreditCardSessionBeanLocal {
     public void addSupplementaryCard(Long principalCardId, String cardHolderName, String dateOfBirth, String relationship, String identificationNum);
 
     public void createNewCardAfterDamage(Long cbId, Long caId, Long creditCardTypeId, String cardHolderName, double creditLimit, String expDate, int remainingMonths, List<SupplementaryCard> supplCards, Long predecessorId);
-
-    public void createNewCardAfterLost(Long cbId, Long caId, Long creditCardTypeId, String cardHolderName, double creditLimit, String expDate, int remainingMonths, List<SupplementaryCard> supplCards);
-
+    public void createNewCardAfterLost(Long cbId, Long caId, Long creditCardTypeId, String cardHolderName, double creditLimit, String expDate, int remainingMonths,List<SupplementaryCard> supplCards, double outStandingBalance);
     public String findTypeNameById(Long cardTypeId);
 
     public List<String> getAllDebitCards(Long customerId);
@@ -63,6 +61,7 @@ public interface CreditCardSessionBeanLocal {
     public PrincipalCard getPrincipalCardByCardNum(String cardNum);
 
     public List<PrincipalCard> getAllPrincipalCardByCustomer(CustomerBasic customer);
+    public List<String> getAllPrincipalCardInfoByCustomer(CustomerBasic customer);
 
     public List<PrincipalCard> getAllActivatedCreditCards();
 }

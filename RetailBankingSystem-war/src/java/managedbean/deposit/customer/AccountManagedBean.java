@@ -50,6 +50,8 @@ public class AccountManagedBean implements Serializable {
 
     @EJB
     private BankAccountSessionBeanLocal bankAccountSessionLocal;
+    
+    
 
     private BankAccount bankAccount;
 

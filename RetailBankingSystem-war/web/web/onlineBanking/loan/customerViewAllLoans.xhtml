@@ -53,7 +53,7 @@
                         <p:commandButton ajax="false" process="@this" 
                                          action="#{customerViewAllLoansManagedBean.viewLoanStatement()}" 
                                          icon="ui-icon-document">
-                            <f:setPropertyActionListener value="#{loan.id}" target="#{customerViewAllLoansManagedBean.loanPayableAccountId}" />
+                            <f:setPropertyActionListener value="#{loan.id}" target="#{customerViewAllLoansManagedBean.loanRepaymentId}" />
                         </p:commandButton>
                     </center>
                 </p:column>
