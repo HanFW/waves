@@ -20,8 +20,8 @@ public class InitSessionBean {
 //        ejbTimerSessionLocal.createTimer300000MS();
 //        ejbTimerSessionLocal.createTimer15000MS();
 //        ejbTimerSessionLocal.createTimer70000MS();
-        ejbTimerSessionLocal.createTimer2000MS();
+//        ejbTimerSessionLocal.createTimer2000MS();
 //        ejbTimerSessionLocal.createTimer5000MS();
-//        ejbTimerSessionLocal.createTimer30000MS();
+        ejbTimerSessionLocal.createTimer30000MS();
     }
 }

@@ -149,7 +149,7 @@ public class CustomerViewAllLoansManagedBean {
                 .getExternalContext().getResponse();
 
         InputStream reportStream = ctx.getExternalContext()
-                .getResourceAsStream("/E-Statements/loanStatement.jasper");
+                .getResourceAsStream("/E-Statements/repaymentLoanStatement.jasper");
 
         ServletOutputStream servletOutputStream = response.getOutputStream();
         Class.forName("com.mysql.jdbc.Driver");
@@ -159,7 +159,7 @@ public class CustomerViewAllLoansManagedBean {
         response.setContentType("application/pdf");
 
         Map parameters = new HashMap();
-        parameters.put("loanPayableAccountId", loanRepaymentId);
+        parameters.put("repaymentAccountId", loanRepaymentId);
 
         JasperRunManager.runReportToPdfStream(reportStream, servletOutputStream,
                 parameters, connection);
