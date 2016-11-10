@@ -139,7 +139,7 @@ public class CustomerViewAllLoansManagedBean {
         servletOutputStream.flush();
         servletOutputStream.close();
     }
-    
+
     public void viewRepaymentStatement() throws ClassNotFoundException, IOException, JRException, SQLException {
         Connection connection;
 
@@ -149,7 +149,7 @@ public class CustomerViewAllLoansManagedBean {
                 .getExternalContext().getResponse();
 
         InputStream reportStream = ctx.getExternalContext()
-                .getResourceAsStream("/E-Statements/loanStatement.jasper");
+                .getResourceAsStream("/E-Statements/repaymentLoanStatement.jasper");
 
         ServletOutputStream servletOutputStream = response.getOutputStream();
         Class.forName("com.mysql.jdbc.Driver");
@@ -158,8 +158,9 @@ public class CustomerViewAllLoansManagedBean {
         ctx.responseComplete();
         response.setContentType("application/pdf");
 
+        System.out.println("************" + loanRepaymentId);
         Map parameters = new HashMap();
-        parameters.put("loanPayableAccountId", loanRepaymentId);
+        parameters.put("loadRepaymentAccountId", loanRepaymentId);
 
         JasperRunManager.runReportToPdfStream(reportStream, servletOutputStream,
                 parameters, connection);

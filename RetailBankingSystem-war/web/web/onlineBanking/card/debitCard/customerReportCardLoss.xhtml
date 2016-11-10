@@ -18,7 +18,7 @@
 
             <h:form>
                 <div align="center">
-                    <p:growl id="growl" showDetail="true" globalOnly="true"/>
+                    <p:messages id="msg" showDetail="false" autoUpdate="true"/>
                     
                     <h1>Report Loss</h1>
                     <h:panelGrid columns="1" class="ui-lg-5">
@@ -75,7 +75,7 @@
 
                             </p:inputText>
                         </h:panelGrid>
-                        <p:commandButton value="Confirm" actionListener="#{customerReportLossManagedBean.reportCardLoss}" style="width:150px"/>
+                        <p:commandButton value="Confirm" actionListener="#{customerReportLossManagedBean.reportCardLoss}" style="width:150px" update="msg"/>
                     </p:panel>
 
 

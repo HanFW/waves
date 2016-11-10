@@ -11,6 +11,8 @@ import ejb.card.session.DebitCardManagementSessionBeanLocal;
 import ejb.card.session.DebitCardSessionBeanLocal;
 import ejb.customer.entity.CustomerBasic;
 import ejb.customer.session.CRMCustomerSessionBeanLocal;
+import ejb.infrastructure.entity.Employee;
+import ejb.infrastructure.session.LoggingSessionBeanLocal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -46,6 +48,9 @@ public class EmployeeRenewCardDoneManagedBean {
 
     @EJB
     private CRMCustomerSessionBeanLocal customerSessionBeanLocal;
+    
+    @EJB
+    private LoggingSessionBeanLocal loggingSessionBeanLocal;
 
     private String cardType;
     private String debitCardPwd;
@@ -110,6 +115,7 @@ public class EmployeeRenewCardDoneManagedBean {
                 message = new FacesMessage(FacesMessage.SEVERITY_INFO, "We will send a new card to your mailing address in 2-3 working days", null);
                 context.addMessage(null, message);
                 System.out.println("debit card request card replacement");
+                loggingSessionBeanLocal.createNewLogging("employee",getEmployeeViaSessionMap(), "renew debit card", "successful",getCustomerViaSessionMap().getCustomerName());
                 break;
             case "debit card not exist":
                 message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Card not exist! Please check the card number input", null);
@@ -217,6 +223,15 @@ public class EmployeeRenewCardDoneManagedBean {
         customer = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum);
 
         return customer;
+    }
+
+    private Long getEmployeeViaSessionMap() {
+        Long employeeId;
+        FacesContext context = FacesContext.getCurrentInstance();
+        Employee employee = (Employee) context.getExternalContext().getSessionMap().get("employee");
+        employeeId = employee.getEmployeeId();
+
+        return employeeId;
     }
 
 }

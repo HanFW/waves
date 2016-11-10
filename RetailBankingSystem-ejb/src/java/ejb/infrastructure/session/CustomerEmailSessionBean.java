@@ -191,6 +191,13 @@ public class CustomerEmailSessionBean implements CustomerEmailSessionBeanLocal {
                     emailText += "Thank you for your support with Merlion Bank.\n";
                 }
                 break;
+            case "creditCardDefualt":
+                emailText += "Please be reminded to make repayments for your credit card. ";
+                break;
+            case "creditCardDefualtAction":
+                emailText += "Please be reminded that your Merlion Bank credit card limit has been set to 0. \n";
+                emailText += "Please repay your credit card to continue your services";
+                break;
         }
 
         try {

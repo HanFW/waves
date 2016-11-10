@@ -5,7 +5,7 @@
                 xmlns:f="http://java.sun.com/jsf/core"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
-                 template="/WEB-INF/internalSystemTemplate.xhtml">
+                template="/WEB-INF/internalSystemTemplate.xhtml">
 
     <ui:define name="content">
         <h:form>
@@ -34,8 +34,8 @@
                             <br/>
                             <p:outputLabel value="Billing Organization" style="font-weight: bold"/>
                             <p:selectOneMenu id="billingOrganization" value="#{employeeAddStandingGIRODoneManagedBean.billingOrganization}" 
-                                             effect="fold" editable="false">
-                                <f:selectItem itemLabel="Please Select One" itemValue="" />
+                                             effect="fold" editable="false" required="true" requiredMessage="Required Field">
+                                <f:selectItem itemLabel="Please Select One" itemValue="" noSelectionOption="true"/>
                                 <f:selectItems value="#{employeeAddStandingGIRODoneManagedBean.billingOrganizations}" />
                             </p:selectOneMenu>
                             <p:message for="billingOrganization" />
@@ -76,8 +76,8 @@
 
                             <p:outputLabel value="My Account" style="font-weight: bold"/>
                             <p:selectOneMenu id="bankAccountNum" value="#{employeeAddStandingGIRODoneManagedBean.bankAccountNumWithType}" 
-                                             effect="fold" editable="false">
-                                <f:selectItem itemLabel="Please Select One" itemValue="" />
+                                             effect="fold" editable="false" required="true" requiredMessage="Required Field">
+                                <f:selectItem itemLabel="Please Select One" itemValue="" noSelectionOption="true"/>
                                 <f:selectItems value="#{employeeAddStandingGIRODoneManagedBean.myAccounts}" />
                             </p:selectOneMenu>
                             <p:message for="bankAccountNum" />

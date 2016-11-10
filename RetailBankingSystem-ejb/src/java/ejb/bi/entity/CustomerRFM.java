@@ -17,9 +17,9 @@ public class CustomerRFM implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long customerRFMId;
-    private String rValue;
-    private String fValue;
-    private String mValue;
+    private String recency;
+    private String frequency;
+    private String monetary;
     private String customerName;
     private Integer updateMonth;
     private Integer updateYear;
@@ -49,28 +49,28 @@ public class CustomerRFM implements Serializable {
         this.customerRFMId = customerRFMId;
     }
 
-    public String getrValue() {
-        return rValue;
+    public String getRecency() {
+        return recency;
     }
 
-    public void setrValue(String rValue) {
-        this.rValue = rValue;
+    public void setRecency(String recency) {
+        this.recency = recency;
     }
 
-    public String getfValue() {
-        return fValue;
+    public String getFrequency() {
+        return frequency;
     }
 
-    public void setfValue(String fValue) {
-        this.fValue = fValue;
+    public void setFrequency(String frequency) {
+        this.frequency = frequency;
     }
 
-    public String getmValue() {
-        return mValue;
+    public String getMonetary() {
+        return monetary;
     }
 
-    public void setmValue(String mValue) {
-        this.mValue = mValue;
+    public void setMonetary(String monetary) {
+        this.monetary = monetary;
     }
 
     public Integer getUpdateMonth() {
@@ -87,14 +87,6 @@ public class CustomerRFM implements Serializable {
 
     public void setUpdateYear(Integer updateYear) {
         this.updateYear = updateYear;
-    }
-
-    public CustomerBasic getCustomerBasic() {
-        return customerBasic;
-    }
-
-    public void setCustomerBasic(CustomerBasic customerBasic) {
-        this.customerBasic = customerBasic;
     }
 
     public Long getStartTimeMilis() {
@@ -143,6 +135,14 @@ public class CustomerRFM implements Serializable {
 
     public void setRFMType(String RFMType) {
         this.RFMType = RFMType;
+    }
+
+    public CustomerBasic getCustomerBasic() {
+        return customerBasic;
+    }
+
+    public void setCustomerBasic(CustomerBasic customerBasic) {
+        this.customerBasic = customerBasic;
     }
 
     @Override

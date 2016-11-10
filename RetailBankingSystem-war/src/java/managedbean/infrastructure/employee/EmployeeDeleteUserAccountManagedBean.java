@@ -8,6 +8,7 @@ package managedbean.infrastructure.employee;
 import ejb.infrastructure.entity.Employee;
 import ejb.infrastructure.session.EmployeeAdminSessionBeanLocal;
 import ejb.infrastructure.session.EmployeeEmailSessionBeanLocal;
+import ejb.infrastructure.session.LoggingSessionBeanLocal;
 import java.io.IOException;
 import java.util.List;
 import javax.ejb.EJB;
@@ -32,6 +33,8 @@ public class EmployeeDeleteUserAccountManagedBean {
     private EmployeeAdminSessionBeanLocal adminSessionBeanLocal;
     @EJB
     private EmployeeEmailSessionBeanLocal sendEmailSessionBeanLocal;
+    @EJB
+    private LoggingSessionBeanLocal loggingSessionBeanLocal;
 
     private List<Employee> employees;
 
@@ -55,11 +58,21 @@ public class EmployeeDeleteUserAccountManagedBean {
 
             context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/web/internalSystem/infrastructure/employeeUserAccountManagement.xhtml?faces-redirect=true");
             message = new FacesMessage(FacesMessage.SEVERITY_INFO, "User Account Archived!", "User account has been successfully archived");
+            loggingSessionBeanLocal.createNewLogging("employee", getEmployeeViaSessionMap(),"employee archives user account", "success", employee.getEmployeeName());
             context.addMessage(null, message);
             System.out.println("*** AccountManagedBean: account deleted");
 
         }
 
+    }
+
+    private Long getEmployeeViaSessionMap() {
+        Long employeeId;
+        FacesContext context = FacesContext.getCurrentInstance();
+        Employee employee = (Employee) context.getExternalContext().getSessionMap().get("employee");
+        employeeId = employee.getEmployeeId();
+
+        return employeeId;
     }
 
 }

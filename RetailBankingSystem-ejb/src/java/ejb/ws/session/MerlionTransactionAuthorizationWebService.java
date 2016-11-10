@@ -35,7 +35,7 @@ import ws.client.merlionTransactionAuthorization.TransactionToBeAuthorized;
  */
 @WebService(serviceName = "MerlionTransactionAuthorizationWebService")
 @Stateless()
-public class MerlionTransactionAuthorizationWebService {
+public class MerlionTransactionAuthorizationWebService{
 
     @WebServiceRef(wsdlLocation = "META-INF/wsdl/localhost_8080/TransactionAuthorizationWebService/TransactionAuthorizationWebService.wsdl")
     private TransactionAuthorizationWebService_Service service;
@@ -143,6 +143,7 @@ public class MerlionTransactionAuthorizationWebService {
 
                         if (transactionAmt <= creditLimit || transactionAmt <= (creditLimit - outstandingBalance)) {
                             card.getPrincipalCard().setOutstandingBalance(newOutstandingBalance);
+                            card.getPrincipalCard().setCurrentExpense(card.getPrincipalCard().getCurrentExpense()+transactionAmt);
                             em.flush();
                         }
 
@@ -157,6 +158,7 @@ public class MerlionTransactionAuthorizationWebService {
 
                         if (transactionAmt <= creditLimit && transactionAmt <= (creditLimit - outstandingBalance)) {
                             card2.setOutstandingBalance(newOutstandingBalance);
+                            card2.setCurrentExpense(card2.getCurrentExpense()+transactionAmt);
                             em.flush();
                         }
 

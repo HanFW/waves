@@ -8,6 +8,7 @@ package managedbean.card.customer;
 import ejb.card.session.DebitCardSessionBeanLocal;
 import ejb.card.session.DebitCardTransactionSessionBeanLocal;
 import ejb.customer.entity.CustomerBasic;
+import ejb.infrastructure.session.LoggingSessionBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -38,6 +39,9 @@ public class CustomerSetTransactionLimitForDebitCardManagedBean implements Seria
     @EJB
     private DebitCardSessionBeanLocal debitCardSessionBeanLocal;
 
+    @EJB
+    private LoggingSessionBeanLocal loggingSessionBeanLocal;
+
     private CustomerBasic customer;
 
     private List<String> debitCards = new ArrayList<String>();
@@ -55,6 +59,7 @@ public class CustomerSetTransactionLimitForDebitCardManagedBean implements Seria
         System.out.println("debug - updatetransactionlimit newTransactionLimit " + newTransactionLimit);
 
         debitCardTransactionSessionBeanLocal.setTransactionLimit(selectedDebitCard, newTransactionLimit);
+        loggingSessionBeanLocal.createNewLogging("customer", customer.getCustomerBasicId(), "customer sets debit card daily transaction limit", "successful", String.valueOf(newTransactionLimit));
 
         RequestContext rc = RequestContext.getCurrentInstance();
         rc.execute("PF('changeTransactionLimitWizard').next();");

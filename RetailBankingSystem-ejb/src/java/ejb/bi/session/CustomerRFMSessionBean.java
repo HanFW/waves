@@ -3,6 +3,7 @@ package ejb.bi.session;
 import ejb.bi.entity.CustomerRFM;
 import ejb.bi.entity.Rate;
 import ejb.customer.entity.CustomerBasic;
+import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import ejb.deposit.entity.AccTransaction;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
@@ -15,11 +16,15 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 @Stateless
 public class CustomerRFMSessionBean implements CustomerRFMSessionBeanLocal {
+
+    @EJB
+    private CRMCustomerSessionBeanLocal customerSessionBeanLocal;
 
     @EJB
     private RateSessionBeanLocal rateSessionBeanLocal;
@@ -31,7 +36,7 @@ public class CustomerRFMSessionBean implements CustomerRFMSessionBeanLocal {
     private EntityManager entityManager;
 
     @Override
-    public Long addNewCustomerRFM(String customerName, String rValue, String fValue, String mValue,
+    public Long addNewCustomerRFM(String customerName, String recency, String frequency, String monetary,
             Integer updateMonth, Integer updateYear, Long startTimeMilis, Long transactionDays,
             Integer numOfTransactions, Double totalSpends, String totalRFMValue,
             String RFMType, Long customerBasicId) {
@@ -41,9 +46,9 @@ public class CustomerRFMSessionBean implements CustomerRFMSessionBeanLocal {
         customerRFM.setCustomerName(customerName);
         customerRFM.setUpdateMonth(updateMonth);
         customerRFM.setUpdateYear(updateYear);
-        customerRFM.setfValue(fValue);
-        customerRFM.setmValue(mValue);
-        customerRFM.setrValue(rValue);
+        customerRFM.setMonetary(monetary);
+        customerRFM.setRecency(recency);
+        customerRFM.setFrequency(frequency);
         customerRFM.setStartTimeMilis(startTimeMilis);
         customerRFM.setNumOfTransactions(numOfTransactions);
         customerRFM.setTransactionDays(transactionDays);
@@ -132,6 +137,7 @@ public class CustomerRFMSessionBean implements CustomerRFMSessionBeanLocal {
         Long startTime = cal.getTimeInMillis() - 300000;
 
         for (CustomerBasic customerBasic : allCustomerBasic) {
+            
             List<LoanApplication> loanApplication = customerBasic.getLoanApplication();
             Long maxTransactionDateMilis = Long.valueOf(0);
             Double totalSpends = Double.valueOf(0);
@@ -198,9 +204,26 @@ public class CustomerRFMSessionBean implements CustomerRFMSessionBeanLocal {
         }
     }
 
+    @Override
+    public List<CustomerRFM> retrieveCustomerRFMByCusIC(String customerIdentificationNum) {
+        CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum.toUpperCase());
+
+        if (customerBasic.getCustomerBasicId() == null) {
+            return new ArrayList<CustomerRFM>();
+        }
+        try {
+            Query query = entityManager.createQuery("Select a From CustomerRFM a Where a.customerBasic=:customerBasic");
+            query.setParameter("customerBasic", customerBasic);
+            return query.getResultList();
+        } catch (EntityNotFoundException enfe) {
+            System.out.println("Entity not found error: " + enfe.getMessage());
+            return new ArrayList<CustomerRFM>();
+        }
+    }
+
     private Integer checkRecencyLevel(Long transactionDays) {
 
-        if (transactionDays >= 0 && transactionDays <= 5) {
+        if (transactionDays >0 && transactionDays <= 5) {
             return 1;
         } else if (transactionDays >= 6 && transactionDays <= 10) {
             return 2;
@@ -217,7 +240,7 @@ public class CustomerRFMSessionBean implements CustomerRFMSessionBeanLocal {
 
     private Integer checkFrequencyLevel(Integer numOfTransactions) {
 
-        if (numOfTransactions >= 0 && numOfTransactions <= 15) {
+        if (numOfTransactions >0 && numOfTransactions <= 15) {
             return 1;
         } else if (numOfTransactions >= 16 && numOfTransactions <= 30) {
             return 2;
@@ -234,7 +257,7 @@ public class CustomerRFMSessionBean implements CustomerRFMSessionBeanLocal {
 
     private Integer checkMonetaryLevel(Double totalSpends) {
 
-        if (totalSpends >= 0 && totalSpends <= 500) {
+        if (totalSpends >0 && totalSpends <= 500) {
             return 1;
         } else if (totalSpends >= 501 && totalSpends <= 1500) {
             return 2;

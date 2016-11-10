@@ -47,7 +47,7 @@
                 <p:column headerText="View">
                     <p:commandButton value="View" action="#{customerViewAllLoansManagedBean.viewLoan(loan.id)}"/>
                 </p:column>
-
+<!--
                 <p:column headerText="Statement"> 
                     <center>
                         <p:commandButton ajax="false" process="@this" 
@@ -56,7 +56,7 @@
                             <f:setPropertyActionListener value="#{loan.id}" target="#{customerViewAllLoansManagedBean.loanRepaymentId}" />
                         </p:commandButton>
                     </center>
-                </p:column>
+                </p:column>-->
             </p:dataTable>
         </h:form>
         <ezcomp:CCTimeout/>

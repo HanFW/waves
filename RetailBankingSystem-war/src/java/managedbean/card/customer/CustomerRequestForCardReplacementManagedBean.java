@@ -10,6 +10,7 @@ import ejb.card.session.CreditCardSessionBeanLocal;
 import ejb.card.session.DebitCardManagementSessionBeanLocal;
 import ejb.card.session.DebitCardSessionBeanLocal;
 import ejb.customer.entity.CustomerBasic;
+import ejb.infrastructure.session.LoggingSessionBeanLocal;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -46,6 +47,9 @@ public class CustomerRequestForCardReplacementManagedBean implements Serializabl
 
     @EJB
     private CreditCardSessionBeanLocal creditCardSessionBeanLocal;
+
+    @EJB
+    private LoggingSessionBeanLocal loggingSessionBeanLocal;
 
     private String cardType;
     private String debitCardPwd;
@@ -98,9 +102,9 @@ public class CustomerRequestForCardReplacementManagedBean implements Serializabl
         String[] debitCardInfo = selectedDebitCard.split("-");
         String debitCardNum = debitCardInfo[1];
 
-        System.out.println("debug: ReportDebitCardLoss- debit card num " + debitCardNum);
-        System.out.println("debug: ReportDebitCardLoss- debit card Pwd " + debitCardPwd);
-        System.out.println("debug: ReportDebitCardLoss- request card replacement date " + requestCardReplacementDate);
+        System.out.println("debug: debit card replacement- debit card num " + debitCardNum);
+        System.out.println("debug: debit card replacement- debit card Pwd " + debitCardPwd);
+        System.out.println("debug: debit card replacement- request card replacement date " + requestCardReplacementDate);
         String result = debitCardManagementSessionBeanLocal.requestForDebitCardReplacement(debitCardNum, debitCardPwd, requestCardReplacementDate);
 
         switch (result) {
@@ -108,6 +112,7 @@ public class CustomerRequestForCardReplacementManagedBean implements Serializabl
                 message = new FacesMessage(FacesMessage.SEVERITY_INFO, "We will send a new card to your mailing address in 2-3 working days", null);
                 context.addMessage(null, message);
                 System.out.println("debit card request card replacement");
+                loggingSessionBeanLocal.createNewLogging("customer", customer.getCustomerBasicId(), "renew debit card", "successful", null);
                 break;
             case "debit card not exist":
                 message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Card not exist! Please check the card number input", null);
@@ -120,38 +125,6 @@ public class CustomerRequestForCardReplacementManagedBean implements Serializabl
         }
     }
 
-//    public void requestForCreditCardReplacement() {
-//        FacesContext context = FacesContext.getCurrentInstance();
-//        ExternalContext ec = context.getExternalContext();
-//        FacesMessage message = null;
-//
-//        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-//        Date requestCardReplacementDate1 = new Date();
-//        String requestCardReplacementDate = df.format(requestCardReplacementDate1);
-//
-//        String[] creditCardInfo = selectedCreditCard.split("-");
-//        String creditCardNum = creditCardInfo[2];
-//
-//        System.out.println("debug: ReportcreditCardLoss- credit card num " + creditCardNum);
-//        System.out.println("debug: ReportcreditCardLoss- request card replacement date " + requestCardReplacementDate);
-//        String result = creditCardManagementSessionBeanLocal.requestForCreditCardReplacement(creditCardNum, securityCode, requestCardReplacementDate);
-//
-//        switch (result) {
-//            case "success":
-//                message = new FacesMessage(FacesMessage.SEVERITY_INFO, "We will send a new card to your mailing address in 2-3 working days", null);
-//                context.addMessage(null, message);
-//                System.out.println("debit card request card replacement");
-//                break;
-//            case "debit card not exist":
-//                message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Card not exist! Please check the card number input", null);
-//                context.addMessage(null, message);
-//                break;
-//            case "wrong pwd":
-//                message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Password is wrong! Please check the card password input", null);
-//                context.addMessage(null, message);
-//                break;
-//        }
-//    }
     public String getCardType() {
         return cardType;
     }

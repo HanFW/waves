@@ -40,8 +40,8 @@
                             <br/>
                             <p:outputLabel value="Billing Organization" style="font-weight: bold"/>
                             <p:selectOneMenu id="billingOrganization" value="#{addNewStandingGIROManagedBean.billingOrganization}" 
-                                             effect="fold" editable="false">
-                                <f:selectItem itemLabel="Please Select One" itemValue="" />
+                                             effect="fold" editable="false" required="true" requiredMessage="Required Field">
+                                <f:selectItem itemLabel="Please Select One" itemValue="" noSelectionOption="true"/>
                                 <f:selectItems value="#{addNewStandingGIROManagedBean.billingOrganizations}" />
                             </p:selectOneMenu>
                             <p:message for="billingOrganization" />
@@ -82,8 +82,8 @@
 
                             <p:outputLabel value="My Account" style="font-weight: bold"/>
                             <p:selectOneMenu id="bankAccountNum" value="#{addNewStandingGIROManagedBean.bankAccountNumWithType}" 
-                                             effect="fold" editable="false">
-                                <f:selectItem itemLabel="Please Select One" itemValue="" />
+                                             effect="fold" editable="false" required="true" requiredMessage="Required Field">
+                                <f:selectItem itemLabel="Please Select One" itemValue="" noSelectionOption="true"/>
                                 <f:selectItems value="#{addNewStandingGIROManagedBean.myAccounts}" />
                             </p:selectOneMenu>
                             <p:message for="bankAccountNum" />
