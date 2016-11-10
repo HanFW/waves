@@ -1470,15 +1470,12 @@
                                         <p:inputText id="jointMobile" value="#{publicMortgageLoanApplicationManagedBean.jointMobile}"
                                                      required="#{publicMortgageLoanApplicationManagedBean.hasJointApplicant}" requiredMessage="Required Field" validatorMessage="Invalid Moblie Number"
                                                      converterMessage="Invalid Input">
-                                            <f:validateDoubleRange minimum="10000000" maximum="99999999" />
                                         </p:inputText>
                                         <p:message for="jointMobile"/>
 
                                         <p:outputLabel for="jointEmail" style="font-weight: bold" value="Email: " />
                                         <p:inputText label="Email" id="jointEmail" validatorMessage="Invalid email format"
                                                      value="#{publicMortgageLoanApplicationManagedBean.jointEmail}" required="#{publicMortgageLoanApplicationManagedBean.hasJointApplicant}" requiredMessage="Required Field">
-                                            <f:validateRegex
-                                                pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
                                         </p:inputText>
                                         <p:message for="jointEmail" />
                                     </p:panelGrid>
@@ -1592,8 +1589,6 @@
                                     <p:outputLabel for="jointLengthOfResidence" style="font-weight: bold" value="Years of Stay in Residence: "/>
                                     <p:inputText id="jointLengthOfResidence" value="#{publicMortgageLoanApplicationManagedBean.jointLengthOfResidence}"
                                                  required="#{publicMortgageLoanApplicationManagedBean.hasJointApplicant}" requiredMessage="Required Field" validatorMessage="Please enter a valid number between 0-100" converterMessage="Please enter a valid number">
-                                        <f:validateLongRange minimum="0" maximum="100"/>
-                                        <f:convertNumber integerOnly="true"/>
                                     </p:inputText>
                                     <p:message for="jointLengthOfResidence"/>
                                 </p:panelGrid>
@@ -1732,8 +1727,6 @@
                                         <p:outputLabel for="jointLengthOfCurrentJob" style="font-weight: bold" value="Years of Current Employment/Business: "/>
                                         <p:inputText id="jointLengthOfCurrentJob" value="#{publicMortgageLoanApplicationManagedBean.jointLengthOfCurrentJob}"
                                                      required="#{publicMortgageLoanApplicationManagedBean.jointEmploymentPanelVisible}" requiredMessage="Required Field" validatorMessage="Please enter a valid number between 0-100" converterMessage="Please enter a valid number">
-                                            <f:validateLongRange minimum="0" maximum="100"/>
-                                            <f:convertNumber integerOnly="true"/>
                                         </p:inputText>
                                         <p:message for="jointLengthOfCurrentJob"/>
 
@@ -1746,8 +1739,6 @@
                                         <p:outputLabel for="jointLengthOfPreviousJob" style="font-weight: bold" value="Years of Previous Employment/Business: "/>
                                         <p:inputText id="jointLengthOfPreviousJob" value="#{publicMortgageLoanApplicationManagedBean.jointLengthOfPreviousJob}"
                                                      required="#{publicMortgageLoanApplicationManagedBean.jointEmploymentPanelVisible}" requiredMessage="Required Field" validatorMessage="Please enter a valid number between 0-100" converterMessage="Please enter a valid number">
-                                            <f:validateLongRange minimum="0" maximum="100"/>
-                                            <f:convertNumber integerOnly="true"/>
                                         </p:inputText>
                                         <p:message for="jointLengthOfPreviousJob"/>
                                     </p:panel>
