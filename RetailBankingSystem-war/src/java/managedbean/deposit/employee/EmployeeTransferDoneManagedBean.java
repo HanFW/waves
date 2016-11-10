@@ -316,7 +316,7 @@ public class EmployeeTransferDoneManagedBean {
 
         return employeeId;
     }
-    
+
     private String handleAccountString(String bankAccountNumWithType) {
 
         String[] bankAccountNums = bankAccountNumWithType.split("-");
