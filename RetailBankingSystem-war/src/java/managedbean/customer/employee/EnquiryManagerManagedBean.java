@@ -348,9 +348,9 @@ public class EnquiryManagerManagedBean implements Serializable {
         ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/enquiry/enquiryProcessorReplyFollowUp.xhtml?faces-redirect=true");
     }
 
-//    public String caseIssueCreated(Long caseId) {
-//        return enquirySessionBeanLocal.caseIssueIsCreated(caseId);
-//    }
+    public String caseIssueCreated(Long caseId) {
+        return enquirySessionBeanLocal.caseIssueIsCreated(caseId);
+    }
 
     public String caseIssueReplied(Long caseId) {
         return enquirySessionBeanLocal.caseIssueAllReplied(caseId);

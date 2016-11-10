@@ -49,9 +49,9 @@ public interface BankAccountSessionBeanLocal {
 
     public CustomerBasic retrieveCustomerBasicByAccNum(String bankAccountNum);
 
-    public void resetDailyTransferLimit();
+    public String resetDailyTransferLimit();
 
-    public void updateDailyTransferLimit(String bankAccountNum, String dailyTransferLimit);
+    public String updateDailyTransferLimit(String bankAccountNum, String dailyTransferLimit);
 
     public void autoCloseAccount();
 
@@ -62,12 +62,12 @@ public interface BankAccountSessionBeanLocal {
             String fixedDepositStatus, Double statementDateDouble, Long currentTimeMilis,
             Long customerBasicId, Long interestId);
 
-    public void updateBankAccountAvailableBalance(String bankAccountNum, String availableBankAccountBalance);
+    public String updateBankAccountAvailableBalance(String bankAccountNum, String availableBankAccountBalance);
 
-    public void updateBankAccountBalance(String bankAccountNum, String availableBankAccountBalance,
+    public String updateBankAccountBalance(String bankAccountNum, String availableBankAccountBalance,
             String totalBankAccountBalance);
-
-    public void updateDepositAccountAvailableBalance(String cardNum, double transactionAmt);
-
-    public void updateDepositAccountTotalBalance(String cardNum, double transactionAmt, String merchantName);
+    
+    public String updateDepositAccountAvailableBalance(String cardNum, double transactionAmt);
+    
+    public String updateDepositAccountTotalBalance(String cardNum, double transactionAmt, String merchantName);
 }

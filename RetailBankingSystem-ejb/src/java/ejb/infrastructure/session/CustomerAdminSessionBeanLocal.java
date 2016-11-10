@@ -15,7 +15,7 @@ import javax.ejb.Local;
  */
 @Local
 public interface CustomerAdminSessionBeanLocal {
-    public String createOnlineBankingAccount(Long customerId, String action);
+    public String createOnlineBankingAccount(Long customerId, String email);
 
     public String login(String customerAccount, String password);
     
@@ -35,7 +35,7 @@ public interface CustomerAdminSessionBeanLocal {
     
     public void recreateOnlineBankingAccount(Long customerId);
     
-    public void lockCustomerOnlineBankingAccount(Long customerId);
+    public String lockCustomerOnlineBankingAccount(Long customerId);
     
-    public void unlockCustomerOnlineBankingAccount(Long customerId);
+    public String unlockCustomerOnlineBankingAccount(Long customerId);
 }

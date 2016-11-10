@@ -60,9 +60,9 @@ public class StandingGIROSessionBean implements StandingGIROSessionBeanLocal {
         String debitBank = "Merlion";
         String billStatus = "Pending";
 
-        passStandingGIROToSACH(customerName, customerMobile, billReference, billingOrganizationName,
-                creditBank, creditBankAccountNum, debitBank, bankAccountNum, paymemtLimit,
-                billStatus, false);
+//        passStandingGIROToSACH(customerName, customerMobile, billReference, billingOrganizationName,
+//                creditBank, creditBankAccountNum, debitBank, bankAccountNum, paymemtLimit,
+//                billStatus, false);
 
         entityManager.persist(standingGiro);
         entityManager.flush();
@@ -129,10 +129,10 @@ public class StandingGIROSessionBean implements StandingGIROSessionBeanLocal {
         return standingGIRO;
     }
 
-    private void passStandingGIROToSACH(java.lang.String customerName, java.lang.String customerMobile, java.lang.String billReference, java.lang.String billingOrganizationName, java.lang.String creditBank, java.lang.String creditBankAccountNum, java.lang.String debitBank, java.lang.String debitBankAccountNum, java.lang.String paymemtLimit, java.lang.String billStatus, boolean buttonRender) {
-        // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
-        // If the calling of port operations may lead to race condition some synchronization is required.
-        ws.client.sach.SACHWebService port = service_sach.getSACHWebServicePort();
-        port.passStandingGIROToSACH(customerName, customerMobile, billReference, billingOrganizationName, creditBank, creditBankAccountNum, debitBank, debitBankAccountNum, paymemtLimit, billStatus, buttonRender);
-    }
+//    private void passStandingGIROToSACH(java.lang.String customerName, java.lang.String customerMobile, java.lang.String billReference, java.lang.String billingOrganizationName, java.lang.String creditBank, java.lang.String creditBankAccountNum, java.lang.String debitBank, java.lang.String debitBankAccountNum, java.lang.String paymemtLimit, java.lang.String billStatus, boolean buttonRender) {
+//        // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
+//        // If the calling of port operations may lead to race condition some synchronization is required.
+//        ws.client.sach.SACHWebService port = service_sach.getSACHWebServicePort();
+//        port.passStandingGIROToSACH(customerName, customerMobile, billReference, billingOrganizationName, creditBank, creditBankAccountNum, debitBank, debitBankAccountNum, paymemtLimit, billStatus, buttonRender);
+//    }
 }

@@ -22,8 +22,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.persistence.NonUniqueResultException;
 
 @Stateless
-
-public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
+public class BankAccountSessionBean implements BankAccountSessionBeanLocal, BankAccountSessionBeanRemote {
 
     @EJB
     private TransactionSessionBeanLocal transactionSessionBeanLocal;
@@ -635,7 +634,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
     }
 
     @Override
-    public void resetDailyTransferLimit() {
+    public String resetDailyTransferLimit() {
 
         Query query = entityManager.createQuery("SELECT a FROM BankAccount a WHERE a.bankAccountStatus = :bankAccountStatus");
         query.setParameter("bankAccountStatus", "Active");
@@ -644,14 +643,17 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
         for (BankAccount activatedBankAccount : activatedBankAccounts) {
             activatedBankAccount.setTransferBalance(activatedBankAccount.getTransferDailyLimit());
         }
+
+        return "Daily Transfer Limit Reset Successfully!";
     }
 
     @Override
-    public void updateDailyTransferLimit(String bankAccountNum, String dailyTransferLimit) {
+    public String updateDailyTransferLimit(String bankAccountNum, String dailyTransferLimit) {
         System.out.println("*");
         System.out.println("****** deposit/BankAccountSessionBean: updateDailyTransferLimit() ******");
         BankAccount bankAccount = retrieveBankAccountByNum(bankAccountNum);
         bankAccount.setTransferDailyLimit(dailyTransferLimit);
+        return "Daily Transfer Limit Update Successfully!";
     }
 
     @Override
@@ -712,7 +714,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
     }
 
     @Override
-    public void updateBankAccountAvailableBalance(String bankAccountNum, String availableBankAccountBalance) {
+    public String updateBankAccountAvailableBalance(String bankAccountNum, String availableBankAccountBalance) {
 
         System.out.println("updateBankAccountAvailableBalance");
         DecimalFormat df = new DecimalFormat("#.00");
@@ -720,10 +722,12 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
         BankAccount bankAccount = retrieveBankAccountByNum(bankAccountNum);
         System.out.println("update" + availableBankAccountBalance);
         bankAccount.setAvailableBankAccountBalance(availableBankAccountBalance);
+
+        return "Successfully Updated!";
     }
 
     @Override
-    public void updateBankAccountBalance(String bankAccountNum, String availableBankAccountBalance,
+    public String updateBankAccountBalance(String bankAccountNum, String availableBankAccountBalance,
             String totalBankAccountBalance) {
 
         DecimalFormat df = new DecimalFormat("#.00");
@@ -732,10 +736,12 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
 
         bankAccount.setAvailableBankAccountBalance(availableBankAccountBalance);
         bankAccount.setTotalBankAccountBalance(totalBankAccountBalance);
+
+        return "Successfully Updated!";
     }
 
     @Override
-    public void updateDepositAccountAvailableBalance(String cardNum, double transactionAmt) {
+    public String updateDepositAccountAvailableBalance(String cardNum, double transactionAmt) {
 
         BankAccount account = debitCardSessionBeanLocal.getBankAccountByCardNum(cardNum);
         Double availableBalance;
@@ -743,10 +749,12 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
         String newAvailableBalance = String.valueOf(availableBalance - transactionAmt);
         account.setAvailableBankAccountBalance(newAvailableBalance);
         entityManager.flush();
+
+        return "Successfully Updated!";
     }
 
     @Override
-    public void updateDepositAccountTotalBalance(String cardNum, double transactionAmt, String merchantName) {
+    public String updateDepositAccountTotalBalance(String cardNum, double transactionAmt, String merchantName) {
 
         BankAccount account = debitCardSessionBeanLocal.getBankAccountByCardNum(cardNum);
 
@@ -764,5 +772,6 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
         account.setTotalBankAccountBalance(newTotalBalance);
         entityManager.flush();
 
+        return "Successfully Updated!";
     }
 }

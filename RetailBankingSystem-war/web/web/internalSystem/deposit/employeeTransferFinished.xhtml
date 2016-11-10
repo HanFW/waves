@@ -9,59 +9,53 @@
 
     <ui:define name="content">
         <h:form id="formMain">
-            <div align="center">                              
-                <br/>
-                <p:panel header="Fund Transfer">
-                    <panelGrid>
-                        <h:form id="formMain">
-                            <h:outputText value="#{employeeTransferFinishedManagedBean.statusMessage}" style="font-size: 24px"/>
+            <div align="center">
+                <h:panelGrid columns="1" class="ui-lg-5">
+                    <p:panel>                           
+                        <h:outputText value="#{employeeTransferFinishedManagedBean.statusMessage}" style="font-size: 24px"/>
+                        <br/>
+                        <br/>
+                        <h:outputText style="font-weight: bold" value="Please note this transaction reference number
+                                      for your records: " />
+                        <h:outputText value="#{employeeTransferFinishedManagedBean.transactionId}" />
+                        <br/>
+                        <h:outputText style="font-weight: bold" value="To Account Number: "/>
+                        <h:outputText value="#{employeeTransferFinishedManagedBean.toBankAccountNumWithType}"/>
+                        <br/>
+                        <h:outputText style="font-weight: bold" value="Transfer Amount: "/>
+                        <h:outputText value="#{employeeTransferFinishedManagedBean.transferAmt}"/>
+                        <br/>
+                    </p:panel>
+                    <p:accordionPanel activeIndex="-1" style="">
+                        <p:tab title="View Transaction Details">
+                            <h:outputText value="From" style="font-size: 24px" />
+                            <p:separator />
                             <br/>
                             <br/>
+                            <h:outputText style="font-weight: bold" value="Account Number: "/>
+                            <h:outputText value="#{employeeTransferFinishedManagedBean.fromBankAccountNumWithType}"/>
                             <br/>
-                            <h:outputText style="font-weight: bold" value="Please note this transaction reference number
-                                          for your records: " />
-                            <h:outputText value="#{employeeTransferFinishedManagedBean.transactionId}" />
+                            <h:outputText style="font-weight: bold" value="Lastest Available Account Balance: "/>
+                            <h:outputText value="#{employeeTransferFinishedManagedBean.fromAccountAvailableBalance}"/>
                             <br/>
-                            <h:outputText style="font-weight: bold" value="To Account Number: "/>
+                            <h:outputText style="font-weight: bold" value="Lastest Total Account Balance: "/>
+                            <h:outputText value="#{employeeTransferFinishedManagedBean.fromAccountTotalBalance}"/>
+                            <br/>
+                            <br/>
+                            <h:outputText value="To" style="font-size: 24px" />
+                            <p:separator />
+                            <br/>
+                            <br/>
+                            <h:outputText style="font-weight: bold" value="Account Number: "/>
                             <h:outputText value="#{employeeTransferFinishedManagedBean.toBankAccountNumWithType}"/>
                             <br/>
                             <h:outputText style="font-weight: bold" value="Transfer Amount: "/>
                             <h:outputText value="#{employeeTransferFinishedManagedBean.transferAmt}"/>
                             <br/>
-                            <br/>
-                            <p:accordionPanel activeIndex="-1" style="">
-                                <p:tab title="View Transaction Details">
-                                    <h:outputText value="From" style="font-size: 24px" />
-                                    <p:separator />
-                                    <br/>
-                                    <br/>
-                                    <h:outputText style="font-weight: bold" value="Account Number: "/>
-                                    <h:outputText value="#{employeeTransferFinishedManagedBean.fromBankAccountNumWithType}"/>
-                                    <br/>
-                                    <h:outputText style="font-weight: bold" value="Lastest Available Account Balance: "/>
-                                    <h:outputText value="#{employeeTransferFinishedManagedBean.fromAccountAvailableBalance}"/>
-                                    <br/>
-                                    <h:outputText style="font-weight: bold" value="Lastest Account Balance: "/>
-                                    <h:outputText value="#{employeeTransferFinishedManagedBean.fromAccountTotalBalance}"/>
-                                    <br/>
-                                    <br/>
-                                    <h:outputText value="To" style="font-size: 24px" />
-                                    <p:separator />
-                                    <br/>
-                                    <br/>
-                                    <h:outputText style="font-weight: bold" value="Account Number: "/>
-                                    <h:outputText value="#{employeeTransferFinishedManagedBean.toBankAccountNumWithType}"/>
-                                    <br/>
-                                    <h:outputText style="font-weight: bold" value="Transfer Amount: "/>
-                                    <h:outputText value="#{employeeTransferFinishedManagedBean.transferAmt}"/>
-                                    <br/>
-                                    <h:outputText style="font-weight: bold" value="Transaction Reference Number: "/>
-                                    <h:outputText value="#{employeeTransferFinishedManagedBean.transactionId}" />
-                                </p:tab>
-                            </p:accordionPanel>
-                        </h:form>
-                    </panelGrid>
-                </p:panel>
+                            <h:outputText style="font-weight: bold" value="Transaction Reference Number: "/>
+                            <h:outputText value="#{employeeTransferFinishedManagedBean.transactionId}" />
+                        </p:tab>
+                    </p:accordionPanel>
             </div>
         </h:form>
     </ui:define>

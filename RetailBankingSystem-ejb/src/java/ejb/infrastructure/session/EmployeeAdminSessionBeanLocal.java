@@ -70,7 +70,7 @@ public interface EmployeeAdminSessionBeanLocal {
     
     public void deletePermission(String roleName,String permissionName);
     
-    public void addPermissionToRole(String roleName, String permissionName);
+    public String addPermissionToRole(String roleName, String permissionName);
     
     
 }

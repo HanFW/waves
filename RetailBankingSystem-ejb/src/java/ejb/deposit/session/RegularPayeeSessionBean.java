@@ -14,8 +14,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 @Stateless
-
-public class RegularPayeeSessionBean implements RegularPayeeSessionBeanLocal {
+public class RegularPayeeSessionBean implements RegularPayeeSessionBeanLocal, RegularPayeeSessionBeanRemote{
 
     @EJB
     private BankAccountSessionBeanLocal bankAccountSessionLocal;

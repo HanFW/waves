@@ -17,11 +17,11 @@ public class LoanStatement implements Serializable {
     private Long loanStatementId;
     private String statementType;
     private String accountDetails;
-    
-    @OneToOne(fetch = FetchType.EAGER, mappedBy="loanStatement")
+
+    @OneToOne(fetch = FetchType.EAGER, mappedBy = "loanStatement")
     private LoanRepaymentAccount loanRepaymentAccount;
-    
-    @OneToOne(fetch = FetchType.EAGER, mappedBy="loanStatement")
+
+    @OneToOne(fetch = FetchType.EAGER, mappedBy = "loanStatement")
     private LoanPayableAccount loanPayableAccount;
 
     public Long getLoanStatementId() {
@@ -63,7 +63,7 @@ public class LoanStatement implements Serializable {
     public void setLoanPayableAccount(LoanPayableAccount loanPayableAccount) {
         this.loanPayableAccount = loanPayableAccount;
     }
-    
+
     @Override
     public int hashCode() {
         int hash = 0;

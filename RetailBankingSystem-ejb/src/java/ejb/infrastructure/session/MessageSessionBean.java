@@ -15,8 +15,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 @Stateless
-public class MessageSessionBean implements MessageSessionBeanLocal {
-
+public class MessageSessionBean implements MessageSessionBeanLocal, MessageSessionBeanRemote {
     @EJB
     private BankAccountSessionBeanLocal bankAccountSessionBeanLocal;
 
@@ -47,7 +46,8 @@ public class MessageSessionBean implements MessageSessionBeanLocal {
     @Override
     public List<MessageBox> retrieveMessageBoxByCusIC(String customerIdentificationNum) {
         CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum);
-
+        
+        
         if (customerBasic.getCustomerBasicId() == null) {
             return new ArrayList<MessageBox>();
         }
@@ -56,7 +56,6 @@ public class MessageSessionBean implements MessageSessionBeanLocal {
             query.setParameter("customerBasic", customerBasic);
             return query.getResultList();
         } catch (EntityNotFoundException enfe) {
-            System.out.println("\nEntity not found error: " + enfe.getMessage());
             return new ArrayList<MessageBox>();
         }
     }

@@ -10,9 +10,11 @@
     <ui:define name="content">      
         <h:form id="formMain">              
             <div align="center">
-<!--                <h:outputText value="You have logged in as: Counter Teller"/>-->
                 <br/>
-                <p:panel id="panel" header="Cash Withdraw">
+                <p:panel id="panel">
+                    <h1>Cash Withdraw</h1>
+                    <br/>
+                    <br/>
                     <p:messages globalOnly="true"/>
 
                     <h:panelGrid columns="1" cellpadding="5" styleClass="ui-panelgrid-blank form-group">     
@@ -65,13 +67,13 @@
                         <p:commandButton id="cancelBtn" action="/web/index.xhtml" value="Cancel" update="panel" immediate = "true">
                             <p:confirm header="Cancel" message="Are you sure?" />
                         </p:commandButton>
-                         <p:commandButton id="submitBtn" value="Submit" update="panel"
+                        <p:commandButton id="submitBtn" value="Submit" update="panel"
                                          action="#{employeeBeforeCashWithdrawManagedBean.submit}" ajax="true"/>
                     </h:panelGrid>
                     <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                            <p:commandButton value="Yes" styleClass="ui-confirmdialog-yes" action="/web/index.xhtml"/>
-                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" />
-                        </p:confirmDialog>
+                        <p:commandButton value="Yes" styleClass="ui-confirmdialog-yes" action="/web/index.xhtml"/>
+                        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" />
+                    </p:confirmDialog>
 
                 </p:panel>
 

@@ -19,18 +19,17 @@
                 <div align="center">
 
                     <h1>Cancel My Card</h1>
-                    <p:messages id="msg" showDetail="false"/>
-                    
-                    <h:panelGrid columns="2" class="ui-lg-6"> 
-
+                    <p:messages id="msg" showDetail="false"/>    
                         <p:outputLabel value="Card Type:"/>
+                        <br/>
+                        <br/>
                         <p:selectOneRadio required="true" requiredMessage="Please select card type" id="cardType" value="#{customerCancelCardManagedBean.cardType}">
                             <f:selectItem itemLabel="Credit Card" itemValue="credit" />
                             <f:selectItem itemLabel="Debit Card" itemValue="debit" />
                             <p:ajax event="change" update="creditPanel debitPanel" listener="#{customerCancelCardManagedBean.showCards}"/>
                         </p:selectOneRadio>
-<!--                        <p:messages for="cardType"/>-->
-                    </h:panelGrid>
+                        <br/>
+                        <br/>
 
                     <p:panel id="debitPanel" visible="#{customerCancelCardManagedBean.debitPanelVisible}">
                         <h:panelGrid columns="2" class="ui-lg-4">

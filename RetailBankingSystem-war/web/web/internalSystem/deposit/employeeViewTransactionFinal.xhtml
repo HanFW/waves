@@ -10,9 +10,11 @@
     <ui:define name="content">
         <h:form id="formMain">          
             <div align="center">
-<!--                <h:outputText value="You have logged in as: Counter Teller"/>-->
                 <br/>
-                <p:panel header="View Transaction">
+                <p:panel>
+                    <h1>View Transaction</h1>
+                    <br/>
+                    <br/>
                     <p:dataTable var="accTransaction" value="#{employeeViewTransactionFinalManagedBean.accTransaction}" 
                                  paginator="true" rows="20" emptyMessage="No Transaction Record">
 

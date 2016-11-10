@@ -96,7 +96,7 @@
                             <div class="pricing-header MBcards4">
                             </div>
                             <div class="pricing-content">
-                                <p:commandButton onclick="PF('CardsIntro4').show();" value="Card Rewards" styleClass="theme-btn"/>
+                                <p:commandButton onclick="PF('CardsIntro4').show();" value="Rewards" styleClass="theme-btn"/>
                             </div>
 
                         </div>
@@ -120,22 +120,34 @@
                     <div class="ui-g-12 ui-lg-4">
                         <div class="card">
                             <h3>Monthly Savings Account</h3>
-                            <p>An automatic monthly savings account with special interest rates — giving you flexibility and control.</p>
-                        </div>
-
-                        <div class="card">
-                            <h3>Bonus Savings Account</h3>
-                            <p>Every relationship should be this rewarding.</p>
+                            <h:outputText value="Initial Deposit: S$0"/>
+                            <br/>
+                            <h:outputText value="Monthly Minimum Saving: S$50"/>
+                            <br/>
+                            <h:outputText value="Basic Interest Rate: 0.05%"/>
+                            <br/>
+                            <h:outputText value="Bonus Interest Rate: 0.35%"/>
                         </div>
 
                         <div class="card">
                             <h3>Basic Savings Account</h3>
-                            <p>An all-in-one account with 12 foreign currencies types and Singapore dollar that lets you save and transact.</p>
+                            <h:outputText value="Initial Deposit: S$1"/>
+                            <br/>
+                            <h:outputText value="Basic Interest Rate: 0.05%"/>                             
+                        </div>
+
+                        <div class="card">
+                            <h3>Bonus Savings Account</h3>
+                            <h:outputText value="Initial Deposit: S$3000"/>
+                            <br/>
+                            <h:outputText value="Basic Interest Rate: 0.05%"/>
+                            <br/>
+                            <h:outputText value="Bonus Interest Rate: 0.75%"/>
                         </div>
 
                         <div class="card">
                             <h3>Fixed Deposit Account</h3>
-                            <p>Save a fixed amount of money in Singapore Dollars at a fixed interest rate for a fixed period.</p>
+                            <h:outputText value="Initial Deposit: S$1000"/>   
                         </div>
                     </div>
                 </div>
@@ -242,6 +254,9 @@
 
                     </div>
                 </div>
+
+                <h3>Our Investment Professionals Are Here For You: 8008208820</h3>
+
             </div>
 
             <div id="video">
@@ -279,47 +294,24 @@
                                             <p:graphicImage name="watsons.png" library="cardCover" style="width:200px;height:110px"/>
                                         </p:column>         
                                     </p:row>
+
                                     <p:row>
-                                        <p:column colspan="2" style="font-weight: bold">Rebate </p:column>
+                                        <p:column colspan="2" style="font-weight: bold">Annual Fee</p:column>
                                         <p:column colspan="2">-</p:column>
-                                        <p:column colspan="2">-</p:column>
-                                        <p:column colspan="2">10% off at any Watsons branch</p:column>          
+                                        <p:column colspan="2">S$5</p:column>
+                                        <p:column colspan="2">S$5</p:column>          
                                     </p:row>
                                     <p:row>
-                                        <p:column colspan="2" style="font-weight: bold">Supplementary Card </p:column>
-                                        <p:column colspan="2">N.A.</p:column>
-                                        <p:column colspan="2">N.A.</p:column>
-                                        <p:column colspan="2">Max. 2 supplementary cards</p:column>          
-                                    </p:row>
-                                    <p:row>
-                                        <p:column colspan="2" style="font-weight: bold">Annual Fee </p:column>
-                                        <p:column colspan="2">$50</p:column>
-                                        <p:column colspan="2">$50</p:column>
-                                        <p:column colspan="2">Free for principle card. $80 for each supplementary card p.a. (1st year annual fee waived)</p:column>          
-                                    </p:row>
-                                    <p:row>
-                                        <p:column colspan="2" style="font-weight: bold">Late Payment Charge^ </p:column>
-                                        <p:column colspan="2">$80</p:column>
-                                        <p:column colspan="2">$80</p:column>
-                                        <p:column colspan="2">$80</p:column>          
-                                    </p:row>
-                                    <p:row>
-                                        <p:column colspan="2" style="font-weight: bold">Interest Charge </p:column>
-                                        <p:column colspan="2">25.5% p.a.</p:column>
-                                        <p:column colspan="2">25.5% p.a.</p:column>
-                                        <p:column colspan="2">25.5% p.a.</p:column>          
-                                    </p:row>
-                                    <p:row>
-                                        <p:column colspan="2" style="font-weight: bold">Minimum Sum </p:column>
-                                        <p:column colspan="2">3% of outstanding balance or $50, whichever is higher</p:column>
-                                        <p:column colspan="2">3% of outstanding balance or $50, whichever is higher</p:column>
-                                        <p:column colspan="2">5% of outstanding balance or $50, whichever is higher</p:column>          
+                                        <p:column colspan="2" style="font-weight: bold">Annual Fee Waver</p:column>
+                                        <p:column colspan="2">4 years</p:column>
+                                        <p:column colspan="2">3 years</p:column>
+                                        <p:column colspan="2">5 years</p:column>          
                                     </p:row>
                                     <p:row>
                                         <p:column colspan="2" style="font-weight: bold">Replacement Charge </p:column>
-                                        <p:column colspan="2">$20 per card</p:column>
-                                        <p:column colspan="2">$20 per card</p:column>
-                                        <p:column colspan="2">$20 per card</p:column>          
+                                        <p:column colspan="2">S$20 per card</p:column>
+                                        <p:column colspan="2">S$20 per card</p:column>
+                                        <p:column colspan="2">S$20 per card</p:column>          
                                     </p:row>
                                     <p:row>
                                         <p:column colspan="2" style="font-weight: bold"> </p:column>
@@ -389,15 +381,15 @@
                                     </p:row>
                                     <p:row>
                                         <p:column colspan="2" style="font-weight: bold">Annual Fee </p:column>
-                                        <p:column colspan="2">$50</p:column>
-                                        <p:column colspan="2">$50</p:column>
-                                        <p:column colspan="2">Free for principle card. $80 for each supplementary card p.a. (1st year annual fee waived)</p:column>          
+                                        <p:column colspan="2">S$50</p:column>
+                                        <p:column colspan="2">S$50</p:column>
+                                        <p:column colspan="2">Free for principle card. S$80 for <br/> each supplementary card p.a. (1st year <br/> annual fee waived)</p:column>          
                                     </p:row>
                                     <p:row>
                                         <p:column colspan="2" style="font-weight: bold">Late Payment Charge^ </p:column>
-                                        <p:column colspan="2">$80</p:column>
-                                        <p:column colspan="2">$80</p:column>
-                                        <p:column colspan="2">$80</p:column>          
+                                        <p:column colspan="2">S$80</p:column>
+                                        <p:column colspan="2">S$80</p:column>
+                                        <p:column colspan="2">S$80</p:column>          
                                     </p:row>
                                     <p:row>
                                         <p:column colspan="2" style="font-weight: bold">Interest Charge </p:column>
@@ -407,15 +399,15 @@
                                     </p:row>
                                     <p:row>
                                         <p:column colspan="2" style="font-weight: bold">Minimum Sum </p:column>
-                                        <p:column colspan="2">3% of outstanding balance or $50, whichever is higher</p:column>
-                                        <p:column colspan="2">3% of outstanding balance or $50, whichever is higher</p:column>
-                                        <p:column colspan="2">5% of outstanding balance or $50, whichever is higher</p:column>          
+                                        <p:column colspan="2">3% of outstanding balance or S$50, whichever is higher</p:column>
+                                        <p:column colspan="2">3% of outstanding balance or S$50, whichever is higher</p:column>
+                                        <p:column colspan="2">5% of outstanding balance or S$50, whichever is higher</p:column>          
                                     </p:row>
                                     <p:row>
                                         <p:column colspan="2" style="font-weight: bold">Replacement Charge </p:column>
-                                        <p:column colspan="2">$20 per card</p:column>
-                                        <p:column colspan="2">$20 per card</p:column>
-                                        <p:column colspan="2">$20 per card</p:column>          
+                                        <p:column colspan="2">S$20 per card</p:column>
+                                        <p:column colspan="2">S$20 per card</p:column>
+                                        <p:column colspan="2">S$20 per card</p:column>          
                                     </p:row>
                                     <p:row>
                                         <p:column colspan="2" style="font-weight: bold"> </p:column>
@@ -445,8 +437,27 @@
                             </div>
                         </p:dialog>   
 
-                        <p:dialog header="Card Rewards" widgetVar="CardsIntro4" modal="true" height="450" width="90%" responsive="true">
-                            <h:outputText value="Card Rewards and Services Info" />
+                        <p:dialog widgetVar="CardsIntro4" modal="true" height="450" width="80%" responsive="true">
+                            <p:graphicImage name="rewards.jpg" library="cardCover" style="width:420px;height:250px"/>
+                            <br/>
+                            <br/>
+                            <h:panelGrid columns="1"> 
+                                <p:panel>
+                                    <div align="left">
+                                        <h:outputText value="The more you save, invest, and finance with us, the more rewards you'll enjoy!" style="font-size: 28px; color: #EF6C00"/>
+                                        <br/>
+                                        <h:outputText value="Your Merlion Bank Preferred membership is now even more rewarding for you. That's because every time you save, "/>
+                                        <br/>
+                                        <h:outputText value="invest, protect and finance with us or spend using a Merlion Bank credit card/debit card, you will earn bonus points. "/>  
+                                        <br/>
+                                        <h:outputText value="It's simply easier and faster to accumulate more bonus points, which means you can redeem bigger, better rewards."/>
+                                        <br/>
+                                        <h:outputText value="Merlion Bank Preferred recognises your total banking relationship with us – and that's why you're getting more out of building your wealth with us." />
+                                        <br/>
+                                    </div>
+                                </p:panel>
+
+                            </h:panelGrid>
                         </p:dialog>   
 
 

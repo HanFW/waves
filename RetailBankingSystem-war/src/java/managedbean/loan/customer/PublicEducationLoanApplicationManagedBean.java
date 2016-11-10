@@ -435,7 +435,11 @@ public class PublicEducationLoanApplicationManagedBean implements Serializable {
             Long guarantorId = loanApplicationSessionBeanLocal.createLoanGuarantor(guarantorName, guarantorSalutation, guarantorIdentificationNum, guarantorGender, guarantorEmail, 
                     guarantorMobile, dateOfBirth, guarantorNationality, guarantorCountryOfResidence, guarantorRace, guarantorMaritalStatus, 
                     guarantorOccupation, guarantorCompanyName, guarantorAddress, guarantorPostal, guarantorSignature.getBytes(), guarantorNumOfDependents, 
-                    guarantorEducation, guarantorResidentialStatus, guarantorLengthOfResidence, guarantorIndustryType, guarantorLengthOfCurrentJob, 
+                    guarantorEducation, 
+                    guarantorResidentialStatus, 
+                    guarantorLengthOfResidence, 
+                    guarantorIndustryType, 
+                    guarantorLengthOfCurrentJob, 
                     guarantorEmploymentStatus, guarantorMonthlyFixedIncome.doubleValue(), guarantorResidentialType, guarantorCompanyAddress, guarantorCompanyPostal, 
                     guarantorCurrentPosition, guarantorCurrentJobTitle, guarantorPreviousCompany, guarantorLengthOfPreviousJob, 
                     guarantorOtherMonthlyIncome.doubleValue(), guarantorOtherMonthlyIncomeSource);
