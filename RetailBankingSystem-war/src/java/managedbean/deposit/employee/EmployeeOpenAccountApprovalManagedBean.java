@@ -11,14 +11,14 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 import javax.ejb.EJB;
-import javax.enterprise.context.SessionScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.inject.Named;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
 @Named(value = "employeeOpenAccountApprovalManagedBean")
-@SessionScoped
+@RequestScoped
 
 public class EmployeeOpenAccountApprovalManagedBean implements Serializable {
 
