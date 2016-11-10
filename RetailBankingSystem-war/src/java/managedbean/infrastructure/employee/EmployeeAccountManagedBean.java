@@ -36,8 +36,7 @@ public class EmployeeAccountManagedBean implements Serializable {
     private EmployeeAdminSessionBeanLocal adminSessionBeanLocal;
     @EJB
     private EmployeeEmailSessionBeanLocal sendEmailSessionBeanLocal;
-    @EJB
-    private LoggingSessionBeanLocal loggingSessionBeanLocal;
+
 
     private Long employeeId;
     private String employeeName;

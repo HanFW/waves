@@ -11,6 +11,8 @@ import ejb.card.session.DebitCardManagementSessionBeanLocal;
 import ejb.card.session.DebitCardSessionBeanLocal;
 import ejb.customer.entity.CustomerBasic;
 import ejb.customer.session.CRMCustomerSessionBeanLocal;
+import ejb.infrastructure.entity.Employee;
+import ejb.infrastructure.session.LoggingSessionBeanLocal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
@@ -46,6 +48,9 @@ public class EmployeeCancelCardDoneManagedBean {
 
     @EJB
     private CRMCustomerSessionBeanLocal customerSessionBeanLocal;
+
+    @EJB
+    private LoggingSessionBeanLocal loggingSessionBeanLocal;
 
     private String cardType;
     private String debitCardPwd;
@@ -105,6 +110,7 @@ public class EmployeeCancelCardDoneManagedBean {
                 message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Your debit card has been succesfully canceled!", null);
                 context.addMessage(null, message);
                 System.out.println("debit card deleted");
+                loggingSessionBeanLocal.createNewLogging("employee", getEmployeeViaSessionMap(), "cancel debit card", "successful", getCustomerViaSessionMap().getCustomerName());
                 break;
             case "debit card not exist":
                 message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Card not exist! Please check the card number input", null);
@@ -135,6 +141,7 @@ public class EmployeeCancelCardDoneManagedBean {
                 message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Your credit card has been succesfully canceled!", null);
                 context.addMessage(null, message);
                 System.out.println("credit card deleted");
+                loggingSessionBeanLocal.createNewLogging("employee", getEmployeeViaSessionMap(), "cancel credit card", "successful", getCustomerViaSessionMap().getCustomerName());
                 break;
             case "credit card not exist":
                 message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Card not exist! Please check the card number input", null);
@@ -228,7 +235,7 @@ public class EmployeeCancelCardDoneManagedBean {
 
     public void setSecurityCode(String securityCode) {
         this.securityCode = securityCode;
-        System.out.println("set SecurityCode: "+securityCode);
+        System.out.println("set SecurityCode: " + securityCode);
     }
 
     public boolean isCreditPanelVisible() {
@@ -253,6 +260,15 @@ public class EmployeeCancelCardDoneManagedBean {
         customer = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum);
 
         return customer;
+    }
+
+    private Long getEmployeeViaSessionMap() {
+        Long employeeId;
+        FacesContext context = FacesContext.getCurrentInstance();
+        Employee employee = (Employee) context.getExternalContext().getSessionMap().get("employee");
+        employeeId = employee.getEmployeeId();
+
+        return employeeId;
     }
 
 }

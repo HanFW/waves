@@ -6,7 +6,9 @@
 package managedbean.infrastructure.employee;
 
 import ejb.customer.entity.CustomerBasic;
+import ejb.infrastructure.entity.Employee;
 import ejb.infrastructure.session.CustomerAdminSessionBeanLocal;
+import ejb.infrastructure.session.LoggingSessionBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
 import javax.ejb.EJB;
@@ -28,10 +30,13 @@ public class EmployeeUnlockIBAccountManagedBean implements Serializable {
 
     @EJB
     private CustomerAdminSessionBeanLocal customerAdminSessionBeanLocal;
+    @EJB
+    private LoggingSessionBeanLocal loggingSessionBeanLocal;
 
     private String customerIdentificationNum;
     private CustomerBasic customer;
     private boolean displayCustomer;
+    private Employee employee;
 
     /**
      * Creates a new instance of EmployeeUnlockIBAccountManagedBean
@@ -58,9 +63,11 @@ public class EmployeeUnlockIBAccountManagedBean implements Serializable {
 
         customerAdminSessionBeanLocal.unlockCustomerOnlineBankingAccount(customer.getCustomerBasicId());
         customer = customerAdminSessionBeanLocal.getCustomerByIdentificationNum(customerIdentificationNum);
+        loggingSessionBeanLocal.createNewLogging("employee", getEmployeeViaSessionMap(), "employee unclock customer account", "success", customer.getCustomerName());
         context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Online banking account unlocked", null));
         customerIdentificationNum = null;
         customer = null;
+
     }
 
     public String getCustomerIdentificationNum() {
@@ -93,5 +100,14 @@ public class EmployeeUnlockIBAccountManagedBean implements Serializable {
 
     public void setDisplayCustomer(boolean displayCustomer) {
         this.displayCustomer = displayCustomer;
+    }
+
+    private Long getEmployeeViaSessionMap() {
+        Long employeeId;
+        FacesContext context = FacesContext.getCurrentInstance();
+        employee = (Employee) context.getExternalContext().getSessionMap().get("employee");
+        employeeId = employee.getEmployeeId();
+
+        return employeeId;
     }
 }

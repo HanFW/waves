@@ -130,7 +130,7 @@ public class DebitCardSessionBean implements DebitCardSessionBeanLocal {
     }
 
     @Override
-    public void lostDebitCardRecreate(String bankAccountNum, String cardHolderName, String expDate, int remainingMonths, int transactionLimit, String cardTypeName) {
+    public void lostDebitCardRecreate(String bankAccountNum, String cardHolderName, String expDate, int remainingMonths, int transactionLimit, String cardTypeName, double availableBalance) {
         DebitCard debitCard = new DebitCard();
         debitCard.setCardHolderName(cardHolderName);
 
@@ -164,6 +164,8 @@ public class DebitCardSessionBean implements DebitCardSessionBeanLocal {
         debitCard.setStatus("not activated");
 
         debitCard.setTransactionLimit(transactionLimit);
+        
+        debitCard.setAvailableTransactionBalance(availableBalance);
 
         em.persist(debitCard);
         depositAccount.addDebitCard(debitCard);
@@ -245,8 +247,11 @@ public class DebitCardSessionBean implements DebitCardSessionBeanLocal {
                         findDebitCard.setStatus("activated");
                         if (findDebitCard.getPredecessor() != null) {
                             Long predecessorId = findDebitCard.getPredecessor();
+                            DebitCard predecessorCard=em.find(DebitCard.class,predecessorId);
+                            double availableBalance=predecessorCard.getAvailableTransactionBalance();
                             debitCardManagementSessionBeanLocal.CancelDebitCardAfterReplacement(predecessorId);
                             findDebitCard.setPredecessor(null);
+                            findDebitCard.setAvailableTransactionBalance(availableBalance);
                         }//if the card has a predecessor, then delete the predecessor from database
                         return "valid";
                     }

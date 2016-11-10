@@ -35,7 +35,7 @@ import ws.client.merlionTransactionAuthorization.TransactionToBeAuthorized;
  */
 @WebService(serviceName = "MerlionTransactionAuthorizationWebService")
 @Stateless()
-public class MerlionTransactionAuthorizationWebService {
+public class MerlionTransactionAuthorizationWebService{
 
     @WebServiceRef(wsdlLocation = "META-INF/wsdl/localhost_8080/TransactionAuthorizationWebService/TransactionAuthorizationWebService.wsdl")
     private TransactionAuthorizationWebService_Service service;

@@ -30,12 +30,13 @@ public class MerlionBankTransactionAuthorizationManagedBean {
     private MerlionBankAuthorizeTransactionSessionBeanLocal merlionBankAuthorizeTransactionSessionBeanLocal;
 
     private List<TransactionToBeAuthorized> transactionList = new ArrayList<>();
-    
+
     private TransactionToBeAuthorized transaction;
 
     public List<TransactionToBeAuthorized> getTransactionList() {
-        transactionList = getAllPendingTransactionsToBeAuthorized();
-
+//        transactionList = getAllPendingTransactionsToBeAuthorized();
+        transactionList = getAllAuthorizedTransactions();
+        System.out.println("Test" + transactionList);
         return transactionList;
     }
 
@@ -44,6 +45,7 @@ public class MerlionBankTransactionAuthorizationManagedBean {
 
     public String checkTransactionAuthorization(Long id) {
         String result = merlionBankAuthorizeTransactionSessionBeanLocal.checkTransactionAuthorizationById(id);
+        System.out.println("status:" + result);
         return result;
     }
 
@@ -61,7 +63,12 @@ public class MerlionBankTransactionAuthorizationManagedBean {
     public void setTransaction(TransactionToBeAuthorized transaction) {
         this.transaction = transaction;
     }
-    
-    
+
+    private java.util.List<ws.client.merlionTransactionAuthorization.TransactionToBeAuthorized> getAllAuthorizedTransactions() {
+        // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
+        // If the calling of port operations may lead to race condition some synchronization is required.
+        ws.client.merlionTransactionAuthorization.TransactionAuthorizationWebService port = service_merlionTransactionAuthorization.getTransactionAuthorizationWebServicePort();
+        return port.getAllAuthorizedTransactions();
+    }
 
 }
