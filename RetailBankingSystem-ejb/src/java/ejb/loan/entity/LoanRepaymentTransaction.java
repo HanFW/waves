@@ -21,11 +21,12 @@ import javax.persistence.Temporal;
  */
 @Entity
 public class LoanRepaymentTransaction implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date transactionDate;
     private Long transactionMillis;
@@ -34,9 +35,11 @@ public class LoanRepaymentTransaction implements Serializable {
     private double accountDebit;
     private double accountCredit;
     
+    @ManyToOne(fetch = FetchType.EAGER)
+    LoanRepaymentAccount loanRepaymentAccount;
     
-    @ManyToOne (fetch = FetchType.EAGER)
-    private LoanRepaymentAccount loanRepaymentAccount;
+    @ManyToOne(fetch = FetchType.EAGER)
+    LoanPayableAccount loanPayableAccount;
 
     public Long getId() {
         return id;
@@ -44,14 +47,6 @@ public class LoanRepaymentTransaction implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public LoanRepaymentAccount getLoanRepaymentAccount() {
-        return loanRepaymentAccount;
-    }
-
-    public void setLoanRepaymentAccount(LoanRepaymentAccount loanRepaymentAccount) {
-        this.loanRepaymentAccount = loanRepaymentAccount;
     }
 
     public Date getTransactionDate() {
@@ -101,6 +96,22 @@ public class LoanRepaymentTransaction implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public LoanRepaymentAccount getLoanRepaymentAccount() {
+        return loanRepaymentAccount;
+    }
+
+    public void setLoanRepaymentAccount(LoanRepaymentAccount loanRepaymentAccount) {
+        this.loanRepaymentAccount = loanRepaymentAccount;
+    }
+
+    public LoanPayableAccount getLoanPayableAccount() {
+        return loanPayableAccount;
+    }
+
+    public void setLoanPayableAccount(LoanPayableAccount loanPayableAccount) {
+        this.loanPayableAccount = loanPayableAccount;
+    }
     
     
 
@@ -128,5 +139,5 @@ public class LoanRepaymentTransaction implements Serializable {
     public String toString() {
         return "ejb.loan.entity.LoanRepaymentTransaction[ id=" + id + " ]";
     }
-    
+
 }

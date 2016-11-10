@@ -10,7 +10,6 @@
     <ui:define name="content">
         <h:form id="formMain">
             <div align="center">                              
-<!--                <h:outputText value="You have logged in as: Counter Teller"/>-->
                 <br/>
                 <p:panel header="Fund Transfer">
                     <panelGrid>
@@ -39,8 +38,11 @@
                                     <h:outputText style="font-weight: bold" value="Account Number: "/>
                                     <h:outputText value="#{employeeTransferFinishedManagedBean.fromBankAccountNumWithType}"/>
                                     <br/>
+                                    <h:outputText style="font-weight: bold" value="Lastest Available Account Balance: "/>
+                                    <h:outputText value="#{employeeTransferFinishedManagedBean.fromAccountAvailableBalance}"/>
+                                    <br/>
                                     <h:outputText style="font-weight: bold" value="Lastest Account Balance: "/>
-                                    <h:outputText value="#{employeeTransferFinishedManagedBean.fromBankAccountBalance}"/>
+                                    <h:outputText value="#{employeeTransferFinishedManagedBean.fromAccountTotalBalance}"/>
                                     <br/>
                                     <br/>
                                     <h:outputText value="To" style="font-size: 24px" />
@@ -49,9 +51,6 @@
                                     <br/>
                                     <h:outputText style="font-weight: bold" value="Account Number: "/>
                                     <h:outputText value="#{employeeTransferFinishedManagedBean.toBankAccountNumWithType}"/>
-                                    <br/>
-                                    <h:outputText style="font-weight: bold" value="Lastest Account Balance: "/>
-                                    <h:outputText value="#{employeeTransferFinishedManagedBean.toBankAccountBalance}"/>
                                     <br/>
                                     <h:outputText style="font-weight: bold" value="Transfer Amount: "/>
                                     <h:outputText value="#{employeeTransferFinishedManagedBean.transferAmt}"/>

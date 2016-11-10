@@ -26,13 +26,22 @@
                 <p:panel header="Loan Summary - Account #{customerViewLoanManagedBean.pa.accountNumber}">
                     <p:panelGrid>
                         <p:row>
-                            <p:column colspan="6">
-                                <div align="center">
+                            <p:column colspan="3">
+                                <div align="right">
                                     <p:menuButton value="Make Payment">
                                         <p:menuitem value="Full Payment (Cancel Loan)"/>
                                         <p:menuitem value="Partial Payment"/>
                                     </p:menuButton>
                                 </div>
+                            </p:column>
+                            <p:column headerText="Statement"> 
+                                <center>
+                                    <p:commandButton ajax="false" process="@this" 
+                                                     action="#{customerViewAllLoansManagedBean.viewLoanStatement()}" 
+                                                     icon="ui-icon-document">
+                                        <f:setPropertyActionListener value="#{customerViewLoanManagedBean.pa.id}" target="#{customerViewAllLoansManagedBean.loanPayableAccountId}" />
+                                    </p:commandButton>
+                                </center>
                             </p:column>
                         </p:row>
                         <p:row>
@@ -97,25 +106,28 @@
                             </p:column>
                         </p:row>
                         <p:row>
-                            <p:column colspan="6">
-                                <div align="center">
+                            <p:column colspan="3">
+                                <div align="right">
                                     <p:menuButton value="Make Repayment" disabled="#{customerViewLoanManagedBean.hasRecurringRepayment}">
                                         <p:menuitem value="Pay Via My Deposit Account" action="#{customerViewLoanManagedBean.makeRepaymentByMerlionBankAccount}" update="applyLink"/>
-                                        <p:menuitem value="Recurring Repayment" action="#{customerViewLoanManagedBean.makeRecurringRepayment}" update="@form"/>
+                                        <p:menuitem value="Recurring Repayment" action="#{customerViewLoanManagedBean.makeRecurringRepayment}" update="recurringForm @form"/>
                                     </p:menuButton>
                                     <p:menuButton value="Change Repayment Plan" disabled="#{!customerViewLoanManagedBean.hasRecurringRepayment}">
                                         <p:menuitem value="Terminate Recurring Repayment" action="#{customerViewLoanManagedBean.deleteRecurringPayment}" update="@form"/>
                                     </p:menuButton>
                                 </div>
                             </p:column>
+                            <p:column headerText="Statement"> 
+                                <center>
+                                    <p:commandButton ajax="false" process="@this" 
+                                                     action="#{customerViewAllLoansManagedBean.viewRepaymentStatement()}" 
+                                                     icon="ui-icon-document">
+                                        <f:setPropertyActionListener value="#{customerViewLoanManagedBean.ra.id}" target="#{customerViewAllLoansManagedBean.loanPayableAccountId}" />
+                                    </p:commandButton>
+                                </center>
+                            </p:column>
                         </p:row>
                         <p:row>
-                            <p:column>
-                                <p:outputLabel style="font-weight: bold;" value="Total Repayment Amount:  "/>
-                            </p:column>
-                            <p:column>
-                                <h:outputText value="#{customerViewLoanManagedBean.totalPayment}"/>
-                            </p:column>
                             <p:column>
                                 <p:outputLabel style="font-weight: bold;" value="Account Balance: "/>
                             </p:column>
@@ -131,11 +143,39 @@
                         </p:row>
                         <p:row>
                             <p:column>
-                                <p:outputLabel style="font-weight: bold;" value="Instalment "/>
+                                <p:outputLabel style="font-weight: bold;" value="Total interest: "/>
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{customerViewLoanManagedBean.totalInterest}"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel style="font-weight: bold;" value="Total Principal: "/>
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{customerViewLoanManagedBean.totalPrincipal}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel style="font-weight: bold;" value="Current Month Instalment: "/>
                             </p:column>
                             <p:column>
                                 <h:outputText value="#{customerViewLoanManagedBean.instalment}"/>
                             </p:column>
+                            <p:column>
+                                <p:outputLabel style="font-weight: bold;" value="Current Month Principal: "/>
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{customerViewLoanManagedBean.currentPrincipal}"/>
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel style="font-weight: bold;" value="Current Month Interest: "/>
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{customerViewLoanManagedBean.currentInterest}"/>
+                            </p:column>
+                        </p:row>
+                        <p:row>
                             <p:column>
                                 <p:outputLabel style="font-weight: bold;" value="Fees: "/>
                             </p:column>
@@ -172,9 +212,10 @@
                 </p:panel>
             </div>
         </h:form>
-        <h:form>
+        <h:form id="recurringForm">
             <p:dialog widgetVar="recurringDialog" closable="true" header="Choose your loan serving account">
                 <p:selectOneMenu value="#{customerViewLoanManagedBean.loanServingAccount}" effect="fold" editable="false">
+                    <f:selectItem itemLabel="Please Select One" itemValue=""/> 
                     <f:selectItems value="#{customerViewLoanManagedBean.depositAccounts}"/>
                 </p:selectOneMenu>
                 <p:commandButton value="Confirm" action="#{customerViewLoanManagedBean.confirmRecurringPayment}"/>

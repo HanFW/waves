@@ -12,7 +12,7 @@ import ejb.card.entity.SupplementaryCard;
 import ejb.card.session.DebitCardSessionBeanLocal;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
-import ejb.deposit.session.CreditCardTransactionSessionBeanLocal;
+import ejb.card.session.CreditCardTransactionSessionBeanLocal;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;

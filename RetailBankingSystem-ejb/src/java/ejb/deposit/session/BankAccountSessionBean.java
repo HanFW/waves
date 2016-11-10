@@ -714,9 +714,11 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
     @Override
     public void updateBankAccountAvailableBalance(String bankAccountNum, String availableBankAccountBalance) {
 
+        System.out.println("updateBankAccountAvailableBalance");
         DecimalFormat df = new DecimalFormat("#.00");
 
         BankAccount bankAccount = retrieveBankAccountByNum(bankAccountNum);
+        System.out.println("update" + availableBankAccountBalance);
         bankAccount.setAvailableBankAccountBalance(availableBankAccountBalance);
     }
 
@@ -734,7 +736,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
 
     @Override
     public void updateDepositAccountAvailableBalance(String cardNum, double transactionAmt) {
-        System.out.println("!!!!!!!updateDepositAccountAvailableBalance");
+
         BankAccount account = debitCardSessionBeanLocal.getBankAccountByCardNum(cardNum);
         Double availableBalance;
         availableBalance = Double.valueOf(account.getAvailableBankAccountBalance());
@@ -744,8 +746,8 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
     }
 
     @Override
-    public void updateDepositAccountTotalBalance(String cardNum, double transactionAmt,String merchantName) {
-        System.out.println("~~~~~!!!!!!!updateDepositAccountTotalBalance");
+    public void updateDepositAccountTotalBalance(String cardNum, double transactionAmt, String merchantName) {
+
         BankAccount account = debitCardSessionBeanLocal.getBankAccountByCardNum(cardNum);
 
         //add new transaction
@@ -753,7 +755,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal {
         String transactionDate = cal.getTime().toString();
         Long transactionDateMilis = cal.getTimeInMillis();
         String transactionCode = merchantName;
-        String debitAmt=String.valueOf(transactionAmt);
+        String debitAmt = String.valueOf(transactionAmt);
         transactionSessionBeanLocal.addNewTransaction(transactionDate, transactionCode, "", debitAmt, "", transactionDateMilis, account.getBankAccountId());
 
         Double totalBalance;

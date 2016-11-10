@@ -310,6 +310,7 @@
                             </p:dataTable>
                         </p:tab>
                         <p:tab title="Approved">
+                            <p:messages autoUpdate="true"/>
                             <p:dataTable var="education3" value="#{loanManagerViewAllLoanApplicationsManagedBean.approvedEducationApplications}">
                                 <p:column headerText="Application ID">
                                     <h:outputText value="#{education3.loanApplicationId}" />
@@ -331,6 +332,9 @@
                                 </p:column>
                                 <p:column headerText="Status">
                                     <h:outputText value="#{education3.applicationStatus}" />
+                                </p:column>
+                                <p:column headerText="Start">
+                                    <p:commandButton value="Start" action="#{loanManagerViewAllLoanApplicationsManagedBean.startNewLoan(education3.loanApplicationId, 'Education Loan')}" update="@form"/>
                                 </p:column>
                             </p:dataTable>
                         </p:tab>

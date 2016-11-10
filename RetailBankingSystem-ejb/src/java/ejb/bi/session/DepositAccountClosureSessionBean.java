@@ -13,13 +13,14 @@ public class DepositAccountClosureSessionBean implements DepositAccountClosureSe
     
     @Override
     public Long addNewDepositAccountClosure(String accountClosureReason, Long currentTimeMilis,
-            String currentTime) {
+            String currentTime, String accountStatus) {
         
         DepositAccountClosure depositAccountClosure = new DepositAccountClosure();
         
         depositAccountClosure.setAccountClosureReason(accountClosureReason);
         depositAccountClosure.setCurrentTime(currentTime);
         depositAccountClosure.setCurrentTimeMilis(currentTimeMilis);
+        depositAccountClosure.setAccountStatus(accountStatus);
         
         entityManager.persist(depositAccountClosure);
         entityManager.flush();

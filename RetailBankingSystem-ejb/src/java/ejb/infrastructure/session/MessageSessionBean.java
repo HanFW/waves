@@ -54,7 +54,6 @@ public class MessageSessionBean implements MessageSessionBeanLocal {
         try {
             Query query = entityManager.createQuery("Select m From MessageBox m Where m.customerBasic =:customerBasic");
             query.setParameter("customerBasic", customerBasic);
-            System.out.println("////////////list size = " + query.getResultList().size());
             return query.getResultList();
         } catch (EntityNotFoundException enfe) {
             System.out.println("\nEntity not found error: " + enfe.getMessage());

@@ -241,9 +241,11 @@ public class CloseAccountManagedBean {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Please withdraw all your money.", "Failed!"));
                     } else {
 
+                        String accountStatus = bankAccount.getBankAccountStatus();
                         Calendar cal = Calendar.getInstance();
+
                         Long newDepositAccountClosureId = depositAccountClosureSessionBeanLocal.addNewDepositAccountClosure(reasonOfAccountClosure,
-                                cal.getTimeInMillis(), cal.getTime().toString());
+                                cal.getTimeInMillis(), cal.getTime().toString(), accountStatus);
 
                         interestId = bankAccount.getInterest().getInterestId();
                         bankAccountSessionBeanLocal.deleteAccount(bankAccountNum);
@@ -264,9 +266,11 @@ public class CloseAccountManagedBean {
                         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Please withdraw all your money.", "Failed!"));
                     } else {
 
+                        String accountStatus = bankAccount.getBankAccountStatus();
                         Calendar cal = Calendar.getInstance();
+                        
                         Long newDepositAccountClosureId = depositAccountClosureSessionBeanLocal.addNewDepositAccountClosure(reasonOfAccountClosure,
-                                cal.getTimeInMillis(), cal.getTime().toString());
+                                cal.getTimeInMillis(), cal.getTime().toString(), accountStatus);
 
                         interestId = bankAccount.getInterest().getInterestId();
                         customerSessionBeanLocal.deleteCustomerBasic(customerBasic.getCustomerIdentificationNum());

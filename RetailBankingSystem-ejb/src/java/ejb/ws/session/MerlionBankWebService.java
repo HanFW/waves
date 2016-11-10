@@ -85,6 +85,7 @@ public class MerlionBankWebService {
         }
 
         entityManager.detach(bankAccount);
+
         bankAccount.setAccTransaction(null);
         bankAccount.setCustomerBasic(null);
         bankAccount.setInterest(null);
@@ -156,20 +157,33 @@ public class MerlionBankWebService {
                     String transactionCode = "";
                     String transactionRef = "";
 
-                    if (paymentMethod.equals("Non Standing GIRO") || paymentMethod.equals("Standing GIRO")) {
+                    if (paymentMethod.equals("Non Standing GIRO")) {
+
+                        transactionCode = "BILL";
+                        transactionRef = "Pay bills to NTUC";
+                        Long transactionId = transactionSessionBeanLocal.addNewTransaction(transactionDate,
+                                transactionCode, transactionRef, paymentAmt, " ",
+                                cal.getTimeInMillis(), bankAccount.getBankAccountId());
+
+                    } else if (paymentMethod.equals("Standing GIRO")) {
                         transactionCode = "BILL";
                         transactionRef = "Pay bills to NTUC";
                     } else if (paymentMethod.equals("Cheque")) {
+
                         transactionCode = "CHQ";
                         transactionRef = dbsBankAccount.getOtherBankAccountType() + "-" + dbsBankAccount.getOtherBankAccountNum();
+                        Long transactionId = transactionSessionBeanLocal.addNewTransaction(transactionDate,
+                                transactionCode, transactionRef, paymentAmt, " ",
+                                cal.getTimeInMillis(), bankAccount.getBankAccountId());
+
                     } else if (paymentMethod.equals("Regular GIRO")) {
                         transactionCode = "GIRO";
                         transactionRef = dbsBankAccount.getOtherBankAccountType() + "-" + dbsBankAccount.getOtherBankAccountNum();
                     }
 
-                    Long transactionId = transactionSessionBeanLocal.addNewTransaction(transactionDate,
-                            transactionCode, transactionRef, paymentAmt, " ",
-                            cal.getTimeInMillis(), bankAccount.getBankAccountId());
+//                    Long transactionId = transactionSessionBeanLocal.addNewTransaction(transactionDate,
+//                            transactionCode, transactionRef, paymentAmt, " ",
+//                            cal.getTimeInMillis(), bankAccount.getBankAccountId());
                 }
 
             } else if (debitOrCredit.equals("Credit") && debitOrCreditBankName.equals("DBS")) {
@@ -222,10 +236,9 @@ public class MerlionBankWebService {
                 String transactionCode = "SWIFT";
                 String transactionRef = koreaBankAccount.getOtherBankAccountType() + "-" + koreaBankAccount.getOtherBankAccountNum();
 
-                Long transactionId = transactionSessionBeanLocal.addNewTransaction(transactionDate,
-                        transactionCode, transactionRef, paymentAmt, " ",
-                        cal.getTimeInMillis(), bankAccount.getBankAccountId());
-
+//                Long transactionId = transactionSessionBeanLocal.addNewTransaction(transactionDate,
+//                        transactionCode, transactionRef, paymentAmt, " ",
+//                        cal.getTimeInMillis(), bankAccount.getBankAccountId());
             }
         }
     }
@@ -412,8 +425,19 @@ public class MerlionBankWebService {
 
         BankAccount bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountByNum(bankAccountNum);
         String currentAvailableBalance = bankAccount.getAvailableBankAccountBalance();
+        System.out.println("current balance" + currentAvailableBalance);
         Double totalAvailableBalance = Double.valueOf(currentAvailableBalance) + transferAmt;
+        System.out.println("total balance" + totalAvailableBalance);
         bankAccountSessionBeanLocal.updateBankAccountAvailableBalance(bankAccountNum, totalAvailableBalance.toString());
+
+        Calendar cal = Calendar.getInstance();
+        String transactionDate = cal.getTime().toString();
+        String transactionCode = "GIRO";
+        String transactionRef = "Refund due to invalid bank account number";
+
+        Long transactionId = transactionSessionBeanLocal.addNewTransaction(transactionDate,
+                transactionCode, transactionRef, " ", transferAmt.toString(),
+                cal.getTimeInMillis(), bankAccount.getBankAccountId());
     }
 
     @WebMethod(operationName = "rejectStandingGIROTransaction")

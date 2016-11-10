@@ -4,10 +4,12 @@ import ejb.customer.entity.CustomerBasic;
 import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
+import ejb.deposit.session.TransactionSessionBeanLocal;
 import ejb.payment.entity.OtherBankPayee;
 import ejb.payment.session.OtherBankPayeeSessionBeanLocal;
 import ejb.payment.session.RegularGIROSessionBeanLocal;
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +26,9 @@ import ws.client.sach.SACHWebService_Service;
 @RequestScoped
 
 public class EmployeeRegularGIROTransferDoneManagedBean {
+
+    @EJB
+    private TransactionSessionBeanLocal transactionSessionBeanLocal;
 
     @EJB
     private CRMCustomerSessionBeanLocal customerSessionBeanLocal;
@@ -237,6 +242,15 @@ public class EmployeeRegularGIROTransferDoneManagedBean {
             fromBankAccountAvailableBalance = currentAvailableBankAccountBalance.toString();
             fromBankAccountTotalBalance = fromBankAccount.getTotalBankAccountBalance();
 
+            Calendar cal = Calendar.getInstance();
+            String transactionDate = cal.getTime().toString();
+            String transactionCode = "GIRO";
+            String transactionRef = toOtherBankAccountNum;
+
+            Long transactionId = transactionSessionBeanLocal.addNewTransaction(transactionDate,
+                    transactionCode, transactionRef, transferAmt.toString(), " ",
+                    cal.getTimeInMillis(), fromBankAccount.getBankAccountId());
+
             ec.getFlash().put("statusMessage", statusMessage);
             ec.getFlash().put("toBankAccountNumWithType", toOtherBankAccountNum);
             ec.getFlash().put("fromBankAccountNumWithType", fromBankAccountNumWithType);
@@ -256,6 +270,15 @@ public class EmployeeRegularGIROTransferDoneManagedBean {
             statusMessage = "Your transaction has been completed.";
             fromBankAccountAvailableBalance = currentAvailableBankAccountBalance.toString();
             fromBankAccountTotalBalance = fromBankAccount.getTotalBankAccountBalance();
+
+            Calendar cal = Calendar.getInstance();
+            String transactionDate = cal.getTime().toString();
+            String transactionCode = "GIRO";
+            String transactionRef = toOtherBankAccountNum;
+
+            Long transactionId = transactionSessionBeanLocal.addNewTransaction(transactionDate,
+                    transactionCode, transactionRef, transferAmt.toString(), " ",
+                    cal.getTimeInMillis(), fromBankAccount.getBankAccountId());
 
             ec.getFlash().put("statusMessage", statusMessage);
             ec.getFlash().put("toBankAccountNumWithType", toOtherBankAccountNum);

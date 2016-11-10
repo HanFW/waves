@@ -138,14 +138,20 @@ public class RMSearchCustomerAdvancedManagedBean implements Serializable {
     public void setCustomerFinanacialAssets(String customerFinanacialAssets) {
         this.customerFinanacialAssets = customerFinanacialAssets;
     }
-    
-    public void updateCustomerAdvancedProfile(Long id) throws IOException{
+
+    public void updateCustomerAdvancedProfile(Long id) throws IOException {
         FacesContext context = FacesContext.getCurrentInstance();
         context.getExternalContext().getSessionMap().put("customerAdvancedId", id);
-        
-        
+
         context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/web/internalSystem/CRM/RMUpdateCustomerAdvanced.xhtml?faces-redirect=true");
-        
+
+    }
+
+    public void redirectToPortfolio(Long customerBasicId) throws IOException {
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.getExternalContext().getSessionMap().put("customerBasicId", customerBasicId);
+
+        context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/web/internalSystem/wealth/RMViewCustomerPortfolio.xhtml?faces-redirect=true");
     }
 
 }

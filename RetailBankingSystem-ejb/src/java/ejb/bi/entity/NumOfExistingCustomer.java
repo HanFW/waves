@@ -17,6 +17,7 @@ public class NumOfExistingCustomer implements Serializable {
     private Integer updateMonth;
     private String numOfOpeningAccounts;
     private String numOfClosingAccounts;
+    private String numOfClosingInactiveAccounts;
     private Integer updateYear;
     private String status;
     private String currentYear;
@@ -83,6 +84,14 @@ public class NumOfExistingCustomer implements Serializable {
 
     public void setCurrentYear(String currentYear) {
         this.currentYear = currentYear;
+    }
+
+    public String getNumOfClosingInactiveAccounts() {
+        return numOfClosingInactiveAccounts;
+    }
+
+    public void setNumOfClosingInactiveAccounts(String numOfClosingInactiveAccounts) {
+        this.numOfClosingInactiveAccounts = numOfClosingInactiveAccounts;
     }
 
     @Override

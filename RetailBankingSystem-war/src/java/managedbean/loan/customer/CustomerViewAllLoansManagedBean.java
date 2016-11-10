@@ -39,6 +39,7 @@ public class CustomerViewAllLoansManagedBean {
     private List<LoanApplication> applications;
     private List<CashlineApplication> cashlines;
     private Long loanPayableAccountId;
+    private Long loanRepaymentId;
 
     public CustomerViewAllLoansManagedBean() {
     }
@@ -49,6 +50,38 @@ public class CustomerViewAllLoansManagedBean {
 
     public void setLoanPayableAccountId(Long loanPayableAccountId) {
         this.loanPayableAccountId = loanPayableAccountId;
+    }
+
+    public LoanManagementSessionBeanLocal getLoanManagementSessionBeanLocal() {
+        return loanManagementSessionBeanLocal;
+    }
+
+    public void setLoanManagementSessionBeanLocal(LoanManagementSessionBeanLocal loanManagementSessionBeanLocal) {
+        this.loanManagementSessionBeanLocal = loanManagementSessionBeanLocal;
+    }
+
+    public DataSource getRetailBankingSystemDataSource() {
+        return retailBankingSystemDataSource;
+    }
+
+    public void setRetailBankingSystemDataSource(DataSource retailBankingSystemDataSource) {
+        this.retailBankingSystemDataSource = retailBankingSystemDataSource;
+    }
+
+    public List<CashlineApplication> getCashlines() {
+        return cashlines;
+    }
+
+    public void setCashlines(List<CashlineApplication> cashlines) {
+        this.cashlines = cashlines;
+    }
+
+    public Long getLoanRepaymentId() {
+        return loanRepaymentId;
+    }
+
+    public void setLoanRepaymentId(Long loanRepaymentId) {
+        this.loanRepaymentId = loanRepaymentId;
     }
 
     public void viewLoan(Long loanId) throws IOException {
@@ -98,6 +131,35 @@ public class CustomerViewAllLoansManagedBean {
 
         Map parameters = new HashMap();
         parameters.put("loanPayableAccountId", loanPayableAccountId);
+
+        JasperRunManager.runReportToPdfStream(reportStream, servletOutputStream,
+                parameters, connection);
+
+        connection.close();
+        servletOutputStream.flush();
+        servletOutputStream.close();
+    }
+    
+    public void viewRepaymentStatement() throws ClassNotFoundException, IOException, JRException, SQLException {
+        Connection connection;
+
+        FacesContext ctx = FacesContext.getCurrentInstance();
+
+        HttpServletResponse response = (HttpServletResponse) ctx
+                .getExternalContext().getResponse();
+
+        InputStream reportStream = ctx.getExternalContext()
+                .getResourceAsStream("/E-Statements/loanStatement.jasper");
+
+        ServletOutputStream servletOutputStream = response.getOutputStream();
+        Class.forName("com.mysql.jdbc.Driver");
+        connection = retailBankingSystemDataSource.getConnection();
+
+        ctx.responseComplete();
+        response.setContentType("application/pdf");
+
+        Map parameters = new HashMap();
+        parameters.put("loanPayableAccountId", loanRepaymentId);
 
         JasperRunManager.runReportToPdfStream(reportStream, servletOutputStream,
                 parameters, connection);

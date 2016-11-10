@@ -141,7 +141,6 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal, CRMC
 //        query.setParameter("inCustomer", customer);
 //        return query.getResultList();
 //    }
-
     @Override
     public CustomerAdvanced getCustomerAdvancedByAccNum(String onlineBankingAccountNum) {
         Query query = entityManager.createQuery("SELECT ca FROM CustomerAdvanced ca WHERE ca.customerOnlineBankingAccountNum = :onlineBankingAccountNum");
@@ -167,7 +166,6 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal, CRMC
 //        Query query = entityManager.createQuery("SELECT cb FROM CustomerBasic cb");
 //        return query.getResultList();
 //    }
-
     @Override
     public String updateCustomerOnlineBankingAccountPIN(String customerOnlineBankingAccountNum, String hashedCurrentPassword, String hashedNewPassword) {
 
@@ -573,33 +571,37 @@ public class CRMCustomerSessionBean implements CRMCustomerSessionBeanLocal, CRMC
         entityManager.flush();
         return ca.getCustomerAdvancedId();
     }
-    
+
     @Override
-    public boolean hasOnlineBankingAcc(Long customerBasicId){
+    public boolean hasOnlineBankingAcc(Long customerBasicId) {
         CustomerBasic customer = entityManager.find(CustomerBasic.class, customerBasicId);
-        if (customer.getCustomerOnlineBankingAccountNum() == null){
-            System.out.println("!!!!!!!!!!has online banking FALSE");
+        if (customer.getCustomerOnlineBankingAccountNum() == null) {
             return false;
-            
-        }else{
-            System.out.println("!!!!!!!!!!has online banking TRUE");
+
+        } else {
             return true;
-            
+
         }
     }
-    
+
     @Override
-        public void RMUpdateCustomerAdvancedInfo(Long id, String jobStatus, String occupation,String jobIndustry,double fixedMonthlyIncome,
-            double otherMonthlyIncome, int numOfDependents){
-            CustomerAdvanced customer= retrieveCustomerAdvancedByAdId(id);
-            
-            customer.setCurrentPosition(occupation);
-            customer.setEmploymentStatus(jobStatus);
-            customer.setIndustryType(jobIndustry);
-            customer.setMonthlyFixedIncome(fixedMonthlyIncome);
-            customer.setOtherMonthlyIncome(otherMonthlyIncome);
-            customer.setNumOfDependent(numOfDependents);
-            entityManager.flush();
-            
-        }
+    public void RMUpdateCustomerAdvancedInfo(Long id, String jobStatus, String occupation, String jobIndustry, double fixedMonthlyIncome,
+            double otherMonthlyIncome, int numOfDependents) {
+        CustomerAdvanced customer = retrieveCustomerAdvancedByAdId(id);
+
+        customer.setCurrentPosition(occupation);
+        customer.setEmploymentStatus(jobStatus);
+        customer.setIndustryType(jobIndustry);
+        customer.setMonthlyFixedIncome(fixedMonthlyIncome);
+        customer.setOtherMonthlyIncome(otherMonthlyIncome);
+        customer.setNumOfDependent(numOfDependents);
+        entityManager.flush();
+
+    }
+
+    @Override
+    public List<CustomerBasic> retrieveAllCustomer() {
+        Query query = entityManager.createQuery("SELECT c FROM CustomerBasic c");
+        return query.getResultList();
+    }
 }

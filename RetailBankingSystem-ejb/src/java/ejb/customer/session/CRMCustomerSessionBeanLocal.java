@@ -12,11 +12,9 @@ public interface CRMCustomerSessionBeanLocal {
     public CustomerBasic getCustomer(String onlineBankingAccountNum);
 
 //    public List<CustomerBasic> getMyCustomerBasicProfile(String onlineBankingAccountNum);
-
     public CustomerAdvanced getCustomerAdvancedByAccNum(String onlineBankingAccountNum);
 
 //    public List<CustomerBasic> getAllCustomerBasicProfile();
-
     public String updateCustomerOnlineBankingAccountPIN(String customerOnlineBankingAccountNum, String inputPassowrd, String newPassword);
 
     public String updateCustomerBasicProfile(String customerOnlineBankingAccountNum, String customerNationality,
@@ -56,29 +54,36 @@ public interface CRMCustomerSessionBeanLocal {
     public List<CustomerBasic> getAllNewCustomer();
 
     public void updateCustomerMobile(Long customerId, String customerMobile);
-    
+
     public CustomerBasic getCustomerBasicById(Long customerId);
-    
-    public Long addNewCustomerAdvanced(int customerNumOfDependents, String customerEducation, String customerResidentialStatus, 
+
+    public Long addNewCustomerAdvanced(int customerNumOfDependents, String customerEducation, String customerResidentialStatus,
             int customerLengthOfResidence, String customerIndustryType, int customerLengthOfCurrentJob, String customerEmploymentStatus,
-            double customerMonthlyFixedIncome, String customerResidentialType, String customerCompanyAddress, 
-            String customerCompanyPostal, String customerCurrentPosition, String customerCurrentJobTitle, 
-            String customerPreviousCompany, int customerLengthOfPreviousJob, double customerOtherMonthlyIncome, 
+            double customerMonthlyFixedIncome, String customerResidentialType, String customerCompanyAddress,
+            String customerCompanyPostal, String customerCurrentPosition, String customerCurrentJobTitle,
+            String customerPreviousCompany, int customerLengthOfPreviousJob, double customerOtherMonthlyIncome,
             String customerOtherMonthlyIncomeSource);
-    
+
     public boolean checkExistingCustomerByIdentification(String identificationNum);
-    public Long updateCustomerBasic(String customerIdentificationNum, String customerEmail, String customerMobile, 
-            String customerNationality, String customerCountryOfResidence, 
+
+    public Long updateCustomerBasic(String customerIdentificationNum, String customerEmail, String customerMobile,
+            String customerNationality, String customerCountryOfResidence,
             String customerMaritalStatus, String customerOccupation, String customerCompany,
             String customerAddress, String customerPostal);
+
     public boolean checkExistingCustomerAdvanced(String customerIdentification);
+
     public Long updateCustomerAdvanced(String identification, int customerNumOfDependents, String customerEducation, String customerResidentialStatus,
             int customerLengthOfResidence, String customerIndustryType, int customerLengthOfCurrentJob, String customerEmploymentStatus,
             double customerMonthlyFixedIncome, String customerResidentialType, String customerCompanyAddress,
             String customerCompanyPostal, String customerCurrentPosition, String customerCurrentJobTitle,
             String customerPreviousCompany, int customerLengthOfPreviousJob, double customerOtherMonthlyIncome,
             String customerOtherMonthlyIncomeSource);
+
     public boolean hasOnlineBankingAcc(Long customerBasicId);
-    public void RMUpdateCustomerAdvancedInfo(Long id, String jobStatus, String occupation,String jobIndustry,double fixedMonthlyIncome,
+
+    public void RMUpdateCustomerAdvancedInfo(Long id, String jobStatus, String occupation, String jobIndustry, double fixedMonthlyIncome,
             double otherMonthlyIncome, int numOfDependents);
+
+    public List<CustomerBasic> retrieveAllCustomer();
 }

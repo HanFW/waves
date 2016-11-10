@@ -122,7 +122,7 @@
                             <p:menuitem value="View All My Customers" url="/web/internalSystem/CRM/RMSearchCustomer.xhtml" />
                             <p:menuitem value="Risk Tolerance Test" url="/web/internalSystem/wealth/RMHelpCustomerDoRiskTestCheckExistingCustomer.xhtml" />
                             <p:menuitem value="Declare Financial Goal" url="/web/internalSystem/wealth/RMGuideCustomerDeclareFinancialGoalCheckExisting.xhtml" />
-                            <p:menuitem value="Add Portfolio" url="/web/internalSystem/portfolio/RMAddPortfolio.xhtml"/>
+                            <p:menuitem value="View Wealth Management Plans" url="/web/internalSystem/wealth/RMChooseWealthPlanCheckExistingCustomer.xhtml" />
                         </p:submenu>
 
                         <p:submenu label="Wealth Management Specialist" rendered="#{employeeAccountManagedBean.hasRoleWealthManagementSpecialist()}">
@@ -135,6 +135,7 @@
 
                         <p:submenu label="Loan Department Manager" rendered="#{employeeAccountManagedBean.hasRoleLoanDepartmentManager()}">
                             <p:menuitem value="View Loan Applications" url="/web/internalSystem/loan/loanManagerViewAllLoanApplications.xhtml" />
+                            <p:menuitem value="View Customer Loan RFM Analysis" url="/web/internalSystem/BI/viewLoanRFMValue.xhtml" />
                         </p:submenu>
 
                         <p:submenu label="Loan Officer" rendered="#{employeeAccountManagedBean.hasRoleLoanOfficer()}">
