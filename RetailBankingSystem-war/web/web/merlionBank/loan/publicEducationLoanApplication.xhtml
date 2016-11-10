@@ -1716,10 +1716,7 @@
 
                             <p:outputLabel for="guarantorLengthOfCurrentJob" style="font-weight: bold" value="Years of Current Employment/Business: "/>
                             <p:inputText id="guarantorLengthOfCurrentJob" value="#{publicEducationLoanApplicationManagedBean.guarantorLengthOfCurrentJob}"
-                                         required="#{publicEducationLoanApplicationManagedBean.guarantorEmploymentPanelVisible}" requiredMessage="Required Field" validatorMessage="Please enter a valid number between 0-100" converterMessage="Please enter a valid number">
-                                <f:validateLongRange minimum="0" maximum="100"/>
-                                <f:convertNumber integerOnly="true"/>
-                            </p:inputText>
+                                         required="#{publicEducationLoanApplicationManagedBean.guarantorEmploymentPanelVisible}" requiredMessage="Required Field"/>
                             <p:message for="guarantorLengthOfCurrentJob"/>
                             
                             <p:outputLabel for="guarantorPreviousCompany" style="font-weight: bold" value="Name of Previous Company"/>
