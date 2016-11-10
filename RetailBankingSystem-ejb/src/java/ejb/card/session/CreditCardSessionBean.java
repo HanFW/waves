@@ -478,7 +478,7 @@ public class CreditCardSessionBean implements CreditCardSessionBeanLocal {
 
     @Override
     public double[] getCreditLimitMaxInterval() {
-        System.out.println("****** loan/LoanApplicationSessionBean: getCreditLimitMaxInterval() ******");
+        System.out.println("****** card/CreditCardSessionBean: getCreditLimitMaxInterval() ******");
         double[] maxInterval = new double[2];
         maxInterval[0] = 1000;
         maxInterval[1] = 20000;
@@ -487,14 +487,14 @@ public class CreditCardSessionBean implements CreditCardSessionBeanLocal {
 
     @Override
     public double getCreditLimitRiskRatio() {
-        System.out.println("****** loan/LoanApplicationSessionBean: getCreditLimitiskRatio() ******");
+        System.out.println("****** card/CreditCardSessionBean: getCreditLimitiskRatio() ******");
         double ratio = 0;
         return ratio;
     }
 
     @Override
     public double[] getCreditLimitSuggestedInterval() {
-        System.out.println("****** loan/LoanApplicationSessionBean: getCreditLimitSuggestedInterval() ******");
+        System.out.println("****** card/CreditCardSessionBean: getCreditLimitSuggestedInterval() ******");
         double[] interval = new double[2];
         interval[0] = 1000;
         interval[1] = 20000;
@@ -503,7 +503,7 @@ public class CreditCardSessionBean implements CreditCardSessionBeanLocal {
 
     @Override
     public void approveRequest(Long creditCardId, double creditLimit) {
-        System.out.println("****** loan/LoanApplicationSessionBean: approveMortgageLoanRequest() ******");
+        System.out.println("****** card/CreditCardSessionBean: approveCreditCardRequest() ******");
         PrincipalCard cc = em.find(PrincipalCard.class, creditCardId);
         cc.setCreditLimit(creditLimit);
         cc.setStatus("Approved");
@@ -512,16 +512,15 @@ public class CreditCardSessionBean implements CreditCardSessionBeanLocal {
 
     @Override
     public void rejectRequest(Long creditCardId) {
-        System.out.println("****** loan/LoanApplicationSessionBean: rejectMortgageLoanRequest() ******");
+        System.out.println("****** card/CreditCardSessionBean: rejectCreditCardRequest() ******");
         CreditCard cc = em.find(CreditCard.class, creditCardId);
-        CustomerBasic customer = cc.getCustomerBasic();
-        CustomerAdvanced ca = customer.getCustomerAdvanced();
+//        CustomerBasic customer = cc.getCustomerBasic();
+//        CustomerAdvanced ca = customer.getCustomerAdvanced();
 
 //        CreditReportBureauScore report = customer.getBureauScore();
 //        
 //        em.remove(report);
-        em.remove(ca);
-        em.remove(customer);
+        em.remove(cc);
         em.flush();
 
     }

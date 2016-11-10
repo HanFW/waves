@@ -111,6 +111,8 @@ public class CreditCardManagerProcessManagedBean implements Serializable {
     private double suggestedMin;
     private double suggestedMax;
     private double riskRatio;
+    
+    private Long creditCardID;
 
     public CreditCardManagerProcessManagedBean() {
     }
@@ -118,8 +120,8 @@ public class CreditCardManagerProcessManagedBean implements Serializable {
     @PostConstruct
     public void init() {
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-        Long creditCardId = (Long) ec.getFlash().get("creditCardId");
-        cc = creditCardSessionLocal.getCardByCardId(creditCardId);
+        creditCardID = (Long) ec.getSessionMap().get("creditCardId");
+        cc = creditCardSessionLocal.getCardByCardId(creditCardID);
         customer = cc.getCustomerBasic();
         ca = customer.getCustomerAdvanced();
         customerIdentificationNum = customer.getCustomerIdentificationNum();
@@ -167,7 +169,8 @@ public class CreditCardManagerProcessManagedBean implements Serializable {
     }
 
     public void rejectRequest() throws IOException {
-        creditCardSessionLocal.rejectRequest(cc.getCardId());
+        System.out.println("############credit card ID"+ creditCardID);
+        creditCardSessionLocal.rejectRequest(creditCardID);
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/card/creditCard/creditCardManagerViewApplication.xhtml?faces-redirect=true");
     }
@@ -579,6 +582,14 @@ public class CreditCardManagerProcessManagedBean implements Serializable {
 
     public void setCc(CreditCard cc) {
         this.cc = cc;
+    }
+
+    public Long getCreditCardID() {
+        return creditCardID;
+    }
+
+    public void setCreditCardID(Long creditCardID) {
+        this.creditCardID = creditCardID;
     }
 
 }

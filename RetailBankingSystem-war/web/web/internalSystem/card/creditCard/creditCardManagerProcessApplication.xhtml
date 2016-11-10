@@ -228,7 +228,8 @@
                 </p:panelGrid>
                 <p:panelGrid>
                     <p:commandButton value="Approve" actionListener="#{creditCardManagerProcessManagedBean.approveRequest}" />
-                    <p:commandButton value="Reject" actionListener="#{creditCardManagerProcessManagedBean.rejectRequest}"/>
+                    <p:commandButton value="Reject" actionListener="#{creditCardManagerProcessManagedBean.rejectRequest}"
+                                     ajax="true" process="@this"/>
                 </p:panelGrid>
             </div>
         </h:form>

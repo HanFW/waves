@@ -45,7 +45,7 @@ public class CreditCardManagerViewManagedBean {
     public void viewApplication(Long creditCardId) throws IOException {
         System.out.println("====== creditCard/CreditCardMangerViewManagedBean: viewApplication() ======");
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-        ec.getFlash().put("creditCardId", creditCardId);
+        ec.getSessionMap().put("creditCardId", creditCardId);
 
         ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/card/creditCard/creditCardManagerProcessApplication.xhtml?faces-redirect=true");
     }

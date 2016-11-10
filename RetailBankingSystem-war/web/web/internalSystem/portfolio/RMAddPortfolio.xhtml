@@ -107,7 +107,7 @@
         </h:form>
 
         <h:form id="stockForm">
-            <p:dialog header="Stock Detail" widgetVar="stockDetailDialog" responsive="true" closable="true">
+            <p:dialog  widgetVar="stockDetailDialog" responsive="true" closable="true">
                 <h:panelGrid id="stockPanel">
                     <p:chart type="line" model="#{rMAddPorfolioManagedBean.stockLineModel}" style="height:500px; width:800px; "/>
 
@@ -128,7 +128,7 @@
             </p:dialog>
         </h:form>
         <h:form id="fundForm">
-            <p:dialog header="Fund Detail" widgetVar="fundDetailDialog" responsive="true" closable="true">
+            <p:dialog  widgetVar="fundDetailDialog" responsive="true" closable="true">
                 <h:panelGrid id="fundPanel">
                     <p:chart type="line" model="#{rMAddPorfolioManagedBean.fundLineModel}" style="height:500px; width:800px;"/>
 
@@ -149,7 +149,7 @@
             </p:dialog>
         </h:form>
         <h:form id="bondForm">
-            <p:dialog header="Bond Detail" widgetVar="bondDetailDialog" responsive="true" closable="true">
+            <p:dialog  widgetVar="bondDetailDialog" responsive="true" closable="true">
                 <h:panelGrid id="bondPanel">
                     <p:chart type="line" model="#{rMAddPorfolioManagedBean.bondLineModel}" style="height:500px; width:800px;"/>
 

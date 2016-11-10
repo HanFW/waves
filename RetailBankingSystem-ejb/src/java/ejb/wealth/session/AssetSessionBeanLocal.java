@@ -5,6 +5,7 @@
  */
 package ejb.wealth.session;
 
+import ejb.wealth.entity.Asset;
 import ejb.wealth.entity.AssetType;
 import ejb.wealth.entity.Bond;
 import ejb.wealth.entity.Fund;
@@ -38,5 +39,12 @@ public interface AssetSessionBeanLocal {
     public Portfolio getPortfolioById (Long portfolioId);
     
     public void savePurchaseInfo(Long portfolioId, ArrayList<String[]> purchaseList);
+    
+    public List<Asset> getPortfolioStocks (Long portfolioId);
+    
+    public List<Asset> getPortfolioFunds (Long portfolioId);
+    
+    public List<Asset> getPortfolioBonds (Long portfolioId);
+            
 
 }

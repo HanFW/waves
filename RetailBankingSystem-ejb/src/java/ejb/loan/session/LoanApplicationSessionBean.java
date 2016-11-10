@@ -9,6 +9,7 @@ import ejb.customer.entity.CustomerAdvanced;
 import ejb.customer.entity.CustomerBasic;
 import ejb.infrastructure.session.CustomerAdminSessionBeanLocal;
 import ejb.infrastructure.session.CustomerEmailSessionBeanLocal;
+import ejb.infrastructure.session.MessageSessionBeanLocal;
 import ejb.loan.entity.CarLoanApplication;
 import ejb.loan.entity.CashlineApplication;
 import ejb.loan.entity.CreditReportAccountStatus;
@@ -30,6 +31,7 @@ import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
@@ -56,6 +58,9 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
 
     @EJB
     private CustomerAdminSessionBeanLocal customerAdminSessionBeanLocal;
+    
+    @EJB
+    private MessageSessionBeanLocal messageSessionBeanLocal;
 
     @PersistenceContext(unitName = "RetailBankingSystem-ejbPU")
     private EntityManager em;
@@ -505,7 +510,18 @@ public class LoanApplicationSessionBean implements LoanApplicationSessionBeanLoc
 
         loanRepaymentAccount.setAccountNumber(repaymentAccountNumber);
         loanRepaymentAccount.setDefaultMonths(0);
+        
+        Calendar cal = Calendar.getInstance();
+        Date receivedDate = cal.getTime();
+        
+        String subject = "Your "+loanType+" has started.";
+        String messageContent = "<br/><br/>Your "+loanType+ " has been started by one of our loan managers. <br/><br/>"
+                + "Gentle Reminder: Please do remember to make repayment on time. <br/>"
+                + "Thank you for subscribing to Merlion Loan Services. <br/>";
 
+        messageSessionBeanLocal.sendMessage("Merlion Bank", "Loan", subject, receivedDate.toString(),
+                messageContent, application.getCustomerBasic().getCustomerBasicId());
+        
         if (loanType.equals("Mortgage Loan")) {
             customerAdminSessionBeanLocal.createOnlineBankingAccount(application.getCustomerBasic().getCustomerBasicId(), "startMortgageLoan");
         } else if (loanType.equals("Car Loan")) {

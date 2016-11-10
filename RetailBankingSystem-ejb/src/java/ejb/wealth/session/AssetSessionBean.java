@@ -105,6 +105,30 @@ public class AssetSessionBean implements AssetSessionBeanLocal {
         }
     }
     
+    @Override
+    public List<Asset> getPortfolioStocks (Long portfolioId){
+        Query query = em.createQuery("SELECT a FROM Asset a WHERE a.portfolio.id = :portfolioId AND a.assetType.assetTypeName = :assetTypeName");
+        query.setParameter("portfolioId", portfolioId);
+        query.setParameter("assetTypeName", "Stock");
+        return query.getResultList();
+    }
+    
+    @Override
+    public List<Asset> getPortfolioFunds (Long portfolioId){
+        Query query = em.createQuery("SELECT a FROM Asset a WHERE a.portfolio.id = :portfolioId AND a.assetType.assetTypeName = :assetTypeName");
+        query.setParameter("portfolioId", portfolioId);
+        query.setParameter("assetTypeName", "Fund");
+        return query.getResultList();
+    }
+    
+    @Override
+    public List<Asset> getPortfolioBonds (Long portfolioId){
+        Query query = em.createQuery("SELECT a FROM Asset a WHERE a.portfolio.id = :portfolioId AND a.assetType.assetTypeName = :assetTypeName");
+        query.setParameter("portfolioId", portfolioId);
+        query.setParameter("assetTypeName", "Bond");
+        return query.getResultList();
+    }
+    
    
     
 }

@@ -20,6 +20,7 @@ import ejb.deposit.session.BankAccountSessionBeanLocal;
 import ejb.deposit.session.StatementSessionBeanLocal;
 import ejb.loan.session.LoanInterestSessionBeanLocal;
 import ejb.payment.session.NonStandingGIROSessionBeanLocal;
+import ejb.wealth.session.AssetTypePriceSessionBeanLocal;
 import javax.xml.ws.WebServiceRef;
 import ws.client.meps.MEPSWebService_Service;
 
@@ -56,6 +57,9 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
 
     @EJB
     CardActivationManagementSessionBeanLocal cardActivationManagementSessionBeanLocal;
+    
+    @EJB
+    AssetTypePriceSessionBeanLocal assetTypePriceSessionBeanLocal;
 
     @Resource
     private SessionContext ctx;
@@ -304,6 +308,7 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
         rateSessionBeanLocal.monthlyDashboardRate();
         rateSessionBeanLocal.generateMonthlyAccountClosureReason();
         customerRFMSessionBeanLocal.generateMonthlyCustomerRFM();
+        assetTypePriceSessionBeanLocal.equityMonthlyTrend();
     }
 
     private void handleTimeout_15000ms() {

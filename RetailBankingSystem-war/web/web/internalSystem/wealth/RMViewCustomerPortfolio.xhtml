@@ -45,9 +45,14 @@
                         <h:outputText value="#{portfolio.endDate}" /> 
                     </p:column>
 
-                    <p:column headerText="Action">
-                        <p:commandButton value="Asset Allocation" actionListener="#{rMViewCustomerPortfolioManagedBean.redirectToAddAssetPage(portfolio.id)}"/>
-                    </p:column> 
+                    <p:column headerText="Asset">
+                        <p:commandButton value="Add" actionListener="#{rMViewCustomerPortfolioManagedBean.redirectToAddAssetPage(portfolio.id)}"/>
+                    </p:column>
+                    
+                    <p:column headerText="Valuation">
+                        <p:commandButton value="View" actionListener="#{rMViewCustomerPortfolioManagedBean.redirectToValuation(portfolio.id)}"/>
+                    </p:column>
+                    
                 </p:dataTable>
 
             </h:form>

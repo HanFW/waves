@@ -226,7 +226,11 @@ public class CloseAccountManagedBean {
         customerSignature = ec.getSessionMap().get("customerSignature").toString();
         if (customerSignature.equals("")) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! Please provide your digital signature", "Failed!"));
-        } else {
+        } else if(!customerBasic.getLoanApplication().isEmpty()) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! You are an active customer subscribed to our loan services", "Failed!"));
+        } else if(!customerBasic.getPortfolios().isEmpty()){
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Failed! You are an active customer with our wealth management", "Failed!"));
+        }else {
 
             if (agreement) {
 

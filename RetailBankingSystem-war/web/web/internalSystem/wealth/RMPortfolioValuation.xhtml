@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/internalSystemTemplate.xhtml">
+
+    <!--    <ui:define name="merlionBankMenu">
+    
+            <ui:include src="/WEB-INF/merlionBankMenuApplyDebitCard.xhtml" />
+    
+        </ui:define>-->
+
+    <ui:define name="content">
+        <h:form id="mainForm">
+            <div align="center">
+                <p:messages/>
+                <h1>Stocks</h1>
+                <p:panel>
+                    <p:dataTable var="asset" value="#{rMPortfolioValuationManagedBean.allMyStocks}">
+                        <p:column headerText="Stock Issuer Name">
+                            <h:outputText value="#{asset.assetType.assetIssuerName}" />
+                        </p:column>
+                        <p:column headerText="Buy-in Price">
+                            <h:outputText value="#{asset.unitPrice}" />
+                        </p:column>
+                        <p:column headerText="Units Purchased">
+                            <h:outputText value="#{asset.unitsPurchased}" />
+                        </p:column>
+                        <p:column headerText="Risk">
+                            <h:outputText value="#{rMPortfolioValuationManagedBean.showRiskLevel(asset.assetType.risk)}" />
+                        </p:column>
+                        <p:column>
+                            <p:commandButton  value="View Details" action="#{rMPortfolioValuationManagedBean.viewStockDetails(asset.assetType.assetTypeId)}" update="@form stockForm"/>
+                        </p:column>
+                    </p:dataTable>
+                </p:panel>
+
+                <h1>Funds</h1>
+                <p:panel>
+                    <p:dataTable var="asset2" value="#{rMPortfolioValuationManagedBean.allMyFunds}">
+                        <p:column headerText="Fund Issuer Name">
+                            <h:outputText value="#{asset2.assetType.assetIssuerName}" />
+                        </p:column>
+                        <p:column headerText="Buy-in Price">
+                            <h:outputText value="#{asset2.unitPrice}" />
+                        </p:column>
+                        <p:column headerText="Units Purchased">
+                            <h:outputText value="#{asset2.unitsPurchased}" />
+                        </p:column>
+                        <p:column headerText="Risk">
+                            <h:outputText value="#{rMPortfolioValuationManagedBean.showRiskLevel(asset2.assetType.risk)}" />
+                        </p:column>
+                        <p:column>
+                            <p:commandButton  value="View Details" action="#{rMPortfolioValuationManagedBean.viewFundDetails(asset.assetType.assetTypeId)}" update="@form fundForm"/>
+                        </p:column>
+                    </p:dataTable>
+                </p:panel>
+            </div>
+        </h:form>
+
+        <h:form id="stockForm">
+            <p:dialog  widgetVar="stockDetailDialog" responsive="true" closable="true">
+                <h:panelGrid id="stockPanel">
+                    <p:chart type="line" model="#{rMPortfolioValuationManagedBean.stockLineModel}" style="height:500px; width:800px; "/>   
+                </h:panelGrid>
+            </p:dialog>
+        </h:form>
+        <h:form id="fundForm">
+            <p:dialog  widgetVar="fundDetailDialog" responsive="true" closable="true">
+                <h:panelGrid id="fundPanel">
+                    <p:chart type="line" model="#{rMPortfolioValuationManagedBean.fundLineModel}" style="height:500px; width:800px;"/>                  
+                </h:panelGrid>
+            </p:dialog>
+        </h:form>     
+    </ui:define>
+</ui:composition>
+
+

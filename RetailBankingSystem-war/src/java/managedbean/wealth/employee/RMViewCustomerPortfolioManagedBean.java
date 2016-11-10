@@ -51,5 +51,12 @@ public class RMViewCustomerPortfolioManagedBean {
         
         context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/web/internalSystem/portfolio/RMAddPortfolio.xhtml?faces-redirect=true");
     }
+    
+    public void redirectToValuation(Long portfolioId) throws IOException {
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.getExternalContext().getSessionMap().put("portfolioId", portfolioId);
+        
+        context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/web/internalSystem/wealth/RMPortfolioValuation.xhtml?faces-redirect=true");
+    }
 
 }

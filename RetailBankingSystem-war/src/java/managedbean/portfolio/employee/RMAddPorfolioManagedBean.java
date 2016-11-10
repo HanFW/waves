@@ -78,7 +78,7 @@ public class RMAddPorfolioManagedBean implements Serializable {
     private void createStockLineModels(Long selectedId) {
 
         stockLineModel = initStockModel(selectedId);
-        stockLineModel.setTitle("Stock Trend");
+        stockLineModel.setTitle("Stock Historical Trend");
         stockLineModel.setShowPointLabels(true);
         stockLineModel.getAxes().put(AxisType.X, new CategoryAxis("Date"));
         Axis yAxis = stockLineModel.getAxis(AxisType.Y);
@@ -89,7 +89,7 @@ public class RMAddPorfolioManagedBean implements Serializable {
     private void createFundLineModels(Long selectedId) {
 
         fundLineModel = initFundModel(selectedId);
-        fundLineModel.setTitle("Fund Trend");
+        fundLineModel.setTitle("Fund Historical Trend");
         fundLineModel.setShowPointLabels(true);
         fundLineModel.getAxes().put(AxisType.X, new CategoryAxis("Date"));
         Axis yAxis = fundLineModel.getAxis(AxisType.Y);
@@ -100,7 +100,7 @@ public class RMAddPorfolioManagedBean implements Serializable {
     private void createBondLineModels(Long selectedId) {
 
         bondLineModel = initBondModel(selectedId);
-        bondLineModel.setTitle("Bond Value");
+        bondLineModel.setTitle("Bond Projected Value");
         bondLineModel.setShowPointLabels(true);
         bondLineModel.getAxes().put(AxisType.X, new CategoryAxis("Year"));
         Axis yAxis = bondLineModel.getAxis(AxisType.Y);
@@ -424,7 +424,7 @@ public class RMAddPorfolioManagedBean implements Serializable {
 
     public String getAvailableBalanceStr() {
         DecimalFormat df = new DecimalFormat("0.00");
-        return df.format(availableBalance);
+        return df.format(startingBalance - totalPurchase);
     }
 
     public void setAvailableBalanceStr(String availableBalanceStr) {
@@ -433,7 +433,7 @@ public class RMAddPorfolioManagedBean implements Serializable {
 
     public String getStartingBalanceStr() {
         DecimalFormat df = new DecimalFormat("0.00");
-        return df.format(startingBalance - totalPurchase);
+        return df.format(startingBalance);
     }
 
     public void setStartingBalanceStr(String startingBalanceStr) {
