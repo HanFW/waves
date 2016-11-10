@@ -137,6 +137,7 @@ public class CustomerRFMSessionBean implements CustomerRFMSessionBeanLocal {
         Long startTime = cal.getTimeInMillis() - 300000;
 
         for (CustomerBasic customerBasic : allCustomerBasic) {
+            
             List<LoanApplication> loanApplication = customerBasic.getLoanApplication();
             Long maxTransactionDateMilis = Long.valueOf(0);
             Double totalSpends = Double.valueOf(0);
@@ -222,7 +223,7 @@ public class CustomerRFMSessionBean implements CustomerRFMSessionBeanLocal {
 
     private Integer checkRecencyLevel(Long transactionDays) {
 
-        if (transactionDays >= 0 && transactionDays <= 5) {
+        if (transactionDays >0 && transactionDays <= 5) {
             return 1;
         } else if (transactionDays >= 6 && transactionDays <= 10) {
             return 2;
@@ -239,7 +240,7 @@ public class CustomerRFMSessionBean implements CustomerRFMSessionBeanLocal {
 
     private Integer checkFrequencyLevel(Integer numOfTransactions) {
 
-        if (numOfTransactions >= 0 && numOfTransactions <= 15) {
+        if (numOfTransactions >0 && numOfTransactions <= 15) {
             return 1;
         } else if (numOfTransactions >= 16 && numOfTransactions <= 30) {
             return 2;
@@ -256,7 +257,7 @@ public class CustomerRFMSessionBean implements CustomerRFMSessionBeanLocal {
 
     private Integer checkMonetaryLevel(Double totalSpends) {
 
-        if (totalSpends >= 0 && totalSpends <= 500) {
+        if (totalSpends >0 && totalSpends <= 500) {
             return 1;
         } else if (totalSpends >= 501 && totalSpends <= 1500) {
             return 2;
