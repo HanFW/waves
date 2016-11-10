@@ -10,16 +10,16 @@
 
     <ui:define name="content">
         <h:form>
-            <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
 
-                <p:panel>
-                    <p:outputLabel value="Welcome "/>
-                    <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
-                </p:panel>
+
+            <p:panel>
+                <p:outputLabel value="Welcome "/>
+                <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
+            </p:panel>
+            <div align="center">
                 <p:messages globalOnly="true"/>
-
-                <p:panel header="FAST Transfer">
-
+                <h1>FAST Transfer</h1>
+                <h:panelGrid columns="1" class="ui-lg-5">
                     <h:outputText value="#{fastTransferDoneManagedBean.statusMessage}" style="font-size: 24px"/>
                     <br/>
                     <br/>
@@ -65,10 +65,8 @@
                             <h:outputText value="#{fastTransferDoneManagedBean.transactionId}" />
                         </p:tab>
                     </p:accordionPanel>
-                </p:panel>
-
-            </p:panelGrid>
-
+                </h:panelGrid>
+            </div>
         </h:form>
         <ezcomp:CCTimeout/>
     </ui:define>

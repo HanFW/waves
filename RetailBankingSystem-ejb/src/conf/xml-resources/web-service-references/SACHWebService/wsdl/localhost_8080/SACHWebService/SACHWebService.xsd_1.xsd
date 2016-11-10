@@ -12,10 +12,6 @@
 
 <xs:element name="SACHTransferMTDResponse" type="tns:SACHTransferMTDResponse"/>
 
-<xs:element name="addNewSACH" type="tns:addNewSACH"/>
-
-<xs:element name="addNewSACHResponse" type="tns:addNewSACHResponse"/>
-
 <xs:element name="clearMerlionReceivedCheque" type="tns:clearMerlionReceivedCheque"/>
 
 <xs:element name="clearMerlionReceivedChequeResponse" type="tns:clearMerlionReceivedChequeResponse"/>
@@ -27,10 +23,6 @@
 <xs:element name="passStandingGIROToSACH" type="tns:passStandingGIROToSACH"/>
 
 <xs:element name="passStandingGIROToSACHResponse" type="tns:passStandingGIROToSACHResponse"/>
-
-<xs:element name="retrieveSACHById" type="tns:retrieveSACHById"/>
-
-<xs:element name="retrieveSACHByIdResponse" type="tns:retrieveSACHByIdResponse"/>
 
 <xs:complexType name="SACHRegularGIROTransferMTD">
 <xs:sequence>
@@ -64,29 +56,6 @@
 <xs:sequence/>
 </xs:complexType>
 
-<xs:complexType name="addNewSACH">
-<xs:sequence>
-<xs:element name="otherTotalCredit" type="xs:double" minOccurs="0"/>
-<xs:element name="merlionTotalCredit" type="xs:double" minOccurs="0"/>
-<xs:element name="currentTime" type="xs:string" minOccurs="0"/>
-<xs:element name="bankNames" type="xs:string" minOccurs="0"/>
-<xs:element name="paymentMethod" type="xs:string" minOccurs="0"/>
-<xs:element name="creditAccountNum" type="xs:string" minOccurs="0"/>
-<xs:element name="creditBank" type="xs:string" minOccurs="0"/>
-<xs:element name="debitAccountNum" type="xs:string" minOccurs="0"/>
-<xs:element name="debitBank" type="xs:string" minOccurs="0"/>
-<xs:element name="currentTimeMilis" type="xs:long" minOccurs="0"/>
-<xs:element name="creditAmt" type="xs:double" minOccurs="0"/>
-<xs:element name="sachStatus" type="xs:string" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="addNewSACHResponse">
-<xs:sequence>
-<xs:element name="return" type="xs:long" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
 <xs:complexType name="SACHNonStandingGIROTransferMTD">
 <xs:sequence>
 <xs:element name="fromBankAccountNum" type="xs:string" minOccurs="0"/>
@@ -97,37 +66,6 @@
 
 <xs:complexType name="SACHNonStandingGIROTransferMTDResponse">
 <xs:sequence/>
-</xs:complexType>
-
-<xs:complexType name="retrieveSACHById">
-<xs:sequence>
-<xs:element name="sachId" type="xs:long" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="retrieveSACHByIdResponse">
-<xs:sequence>
-<xs:element name="return" type="tns:sach" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="sach">
-<xs:sequence>
-<xs:element name="bankATotalCredit" type="xs:double" minOccurs="0"/>
-<xs:element name="bankBTotalCredit" type="xs:double" minOccurs="0"/>
-<xs:element name="bankNames" type="xs:string" minOccurs="0"/>
-<xs:element name="creditAccountNum" type="xs:string" minOccurs="0"/>
-<xs:element name="creditAmt" type="xs:double" minOccurs="0"/>
-<xs:element name="creditBank" type="xs:string" minOccurs="0"/>
-<xs:element name="currentTime" type="xs:string" minOccurs="0"/>
-<xs:element name="currentTimeMilis" type="xs:long" minOccurs="0"/>
-<xs:element name="debitAccountNum" type="xs:string" minOccurs="0"/>
-<xs:element name="debitBank" type="xs:string" minOccurs="0"/>
-<xs:element name="failedReason" type="xs:string" minOccurs="0"/>
-<xs:element name="paymentMethod" type="xs:string" minOccurs="0"/>
-<xs:element name="sachId" type="xs:long" minOccurs="0"/>
-<xs:element name="sachStatus" type="xs:string" minOccurs="0"/>
-</xs:sequence>
 </xs:complexType>
 
 <xs:complexType name="SACHTransferMTD">
