@@ -11,7 +11,9 @@ import ejb.card.session.CreditCardSessionBeanLocal;
 import ejb.customer.entity.CustomerAdvanced;
 import ejb.customer.entity.CustomerBasic;
 import ejb.customer.session.CRMCustomerSessionBeanLocal;
+import ejb.infrastructure.entity.Employee;
 import ejb.infrastructure.session.CustomerAdminSessionBeanLocal;
+import ejb.infrastructure.session.LoggingSessionBeanLocal;
 import ejb.infrastructure.session.MessageSessionBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
@@ -31,7 +33,7 @@ import javax.faces.view.ViewScoped;
  */
 @Named(value = "creditCardManagerSupplementaryManagedBean")
 @ViewScoped
-public class CreditCardManagerSupplementaryManagedBean implements Serializable{
+public class CreditCardManagerSupplementaryManagedBean implements Serializable {
 
     @EJB
     private CreditCardSessionBeanLocal creditCardSessionLocal;
@@ -41,9 +43,12 @@ public class CreditCardManagerSupplementaryManagedBean implements Serializable{
 
     @EJB
     private CRMCustomerSessionBeanLocal cRMCustomerSessionBeanLocal;
-    
+
     @EJB
     private MessageSessionBeanLocal messageSessionBeanLocal;
+
+    @EJB
+    private LoggingSessionBeanLocal loggingSessionBeanLocal;
 
     private CustomerBasic customer;
     private CustomerAdvanced ca;
@@ -55,21 +60,20 @@ public class CreditCardManagerSupplementaryManagedBean implements Serializable{
     private String customerDateOfBirth;
     private String customerNationality;
     private String customerIdentificationNum;
-    
+
     //supplementary card holder info
     private String cardHolderName;
     private String cardHolderIdentificationNum;
     private String cardHolderDateOfBirth;
     private String relationship;
-   
 
     //credit card details
     private Double creditLimit;
     private String creditCardTypeName;
-    
+
     public CreditCardManagerSupplementaryManagedBean() {
     }
-    
+
     @PostConstruct
     public void init() {
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
@@ -79,29 +83,30 @@ public class CreditCardManagerSupplementaryManagedBean implements Serializable{
         customer = pc.getCustomerBasic();
         ca = customer.getCustomerAdvanced();
         System.out.println("@@@@@@@@@@@@IC num " + customer.getCustomerIdentificationNum());
-        
+
         customerName = customer.getCustomerName();
         customerDateOfBirth = customer.getCustomerDateOfBirth();
         customerNationality = customer.getCustomerNationality();
         customerIdentificationNum = customer.getCustomerIdentificationNum();
-        
+
         cardHolderName = sc.getCardHolderName();
         cardHolderIdentificationNum = sc.getIdentificationNum();
         cardHolderDateOfBirth = sc.getDateOfBirth();
         relationship = sc.getRelationship();
-        
+
         creditLimit = pc.getCreditLimit();
-        creditCardTypeName = pc.getCreditCardType().getCreditCardTypeName();                      
+        creditCardTypeName = pc.getCreditCardType().getCreditCardTypeName();
     }
-    
+
     public void approveRequest() throws IOException {
         creditCardSessionLocal.approveSupplementary(sc.getCardId());
+        loggingSessionBeanLocal.createNewLogging("employee", getEmployeeViaSessionMap(), "employee approves supplementary card", "successful", null);
 
         Calendar cal = Calendar.getInstance();
         Date receivedDate = cal.getTime();
-        
-        String subject = "Your Supplementary card for "+sc.getCreditCardType().getCreditCardTypeName()+" has been approved.";
-        String messageContent = "<br/><br/>Your Supplementary card for "+sc.getCreditCardType().getCreditCardTypeName()+ " has been approved by one of our card managers. <br/><br/>"
+
+        String subject = "Your Supplementary card for " + sc.getCreditCardType().getCreditCardTypeName() + " has been approved.";
+        String messageContent = "<br/><br/>Your Supplementary card for " + sc.getCreditCardType().getCreditCardTypeName() + " has been approved by one of our card managers. <br/><br/>"
                 + "Please activate your credit card in 15 days. <br/><br/>"
                 + "<a href=\"https://localhost:8181/RetailBankingSystem-war/web/onlineBanking/card/creditCard/customerActivateCreditCard.xhtml\">ACTIVATE HERE</a> <br/><br/>"
                 + "Thank you. <br/>";
@@ -115,6 +120,7 @@ public class CreditCardManagerSupplementaryManagedBean implements Serializable{
 
     public void rejectRequest() throws IOException {
         creditCardSessionLocal.rejectSupplementary(sc.getCardId());
+        loggingSessionBeanLocal.createNewLogging("employee", getEmployeeViaSessionMap(), "employee rejects supplementary card", "successful", null);
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/card/creditCard/creditCardManagerViewApplication.xhtml?faces-redirect=true");
     }
@@ -255,8 +261,6 @@ public class CreditCardManagerSupplementaryManagedBean implements Serializable{
         this.creditLimit = creditLimit;
     }
 
-    
-
     public String getCreditCardTypeName() {
         return creditCardTypeName;
     }
@@ -265,7 +269,13 @@ public class CreditCardManagerSupplementaryManagedBean implements Serializable{
         this.creditCardTypeName = creditCardTypeName;
     }
 
-    
-    
-    
+    private Long getEmployeeViaSessionMap() {
+        Long employeeId;
+        FacesContext context = FacesContext.getCurrentInstance();
+        Employee employee = (Employee) context.getExternalContext().getSessionMap().get("employee");
+        employeeId = employee.getEmployeeId();
+
+        return employeeId;
+    }
+
 }

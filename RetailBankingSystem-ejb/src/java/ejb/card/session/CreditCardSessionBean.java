@@ -517,7 +517,7 @@ public class CreditCardSessionBean implements CreditCardSessionBeanLocal {
 
     @Override
     public void rejectRequest(Long creditCardId) {
-        System.out.println("****** loan/LoanApplicationSessionBean: rejectMortgageLoanRequest() ******");
+        System.out.println("****** creditCard/CreditCardSessionBean: rejectMortgageLoanRequest() ******");
         CreditCard cc = em.find(CreditCard.class, creditCardId);
         CustomerBasic customer = cc.getCustomerBasic();
         CustomerAdvanced ca = customer.getCustomerAdvanced();
@@ -525,8 +525,7 @@ public class CreditCardSessionBean implements CreditCardSessionBeanLocal {
 //        CreditReportBureauScore report = customer.getBureauScore();
 //        
 //        em.remove(report);
-        em.remove(ca);
-        em.remove(customer);
+        em.remove(cc);
         em.flush();
 
     }
