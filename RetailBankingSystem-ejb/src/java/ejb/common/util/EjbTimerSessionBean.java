@@ -79,7 +79,7 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
     private final String TIMER_NAME_15000MS = "EJB-TIMER-15000MS";
     private final int TIMER_DURATION_15000MS = 15000;
     private final String TIMER_NAME_300000MS = "EJB-TIMER-300000MS";
-    private final int TIMER_DURATION_300000MS = 3010;
+    private final int TIMER_DURATION_300000MS = 300010;
     private final String TIMER_NAME_70000MS = "EJB-TIMER-70000MS";
     private final int TIMER_DURATION_70000MS = 70000;
     private final String TIMER_NAME_5000MS = "EJB-TIMER-5000MS";
@@ -312,12 +312,12 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
 //        statementSessionBeanLocal.generateStatement();
 //        maintainDailyBalance();
 //        nonStandingGIROSessionBeanLocal.monthlyRecurrentPayment();
-        rateSessionBeanLocal.monthlyDashboardRate();
-        rateSessionBeanLocal.generateMonthlyAccountClosureReason();
+//        rateSessionBeanLocal.monthlyDashboardRate();
+//        rateSessionBeanLocal.generateMonthlyAccountClosureReason();
 //        customerRFMSessionBeanLocal.generateMonthlyCustomerRFM();
         customerRFMSessionBeanLocal.generateLoanMonthlyRFM();
-        creditCardReportSessionBeanLocal.generateMonthlyCreditCardReport();
-        customerCLVSessionBeanLocal.generateMonthlyCustomerCLV();
+//        creditCardReportSessionBeanLocal.generateMonthlyCreditCardReport();
+//        customerCLVSessionBeanLocal.generateMonthlyCustomerCLV();
     }
 
     private void handleTimeout_15000ms() {
