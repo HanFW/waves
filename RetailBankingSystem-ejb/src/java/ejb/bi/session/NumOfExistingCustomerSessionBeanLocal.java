@@ -8,8 +8,8 @@ import javax.ejb.Local;
 public interface NumOfExistingCustomerSessionBeanLocal {
 
     public Long addNewNumOfExistingCustomer(String numOfExistingCustomer, String numOfOpeningAccounts,
-            String numOfClosingAccounts, Integer updateMonth, Integer updateYear, String status,
-            String currentYeaar);
+            String numOfClosingAccounts, String numOfClosingInactiveAccounts, Integer updateMonth,
+            Integer updateYear, String status, String currentYeaar);
 
     public NumOfExistingCustomer retrieveNumOfExistingCustomerByMonth(Integer updateMonth);
 

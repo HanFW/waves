@@ -29,6 +29,6 @@ public interface RateSessionBeanLocal {
     public List<Rate> getCurrentYearAcqRate();
 
     public List<Rate> getCurrentYearAttRate();
-    
+
     public void generateMonthlyAccountClosureReason();
 }

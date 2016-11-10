@@ -17,8 +17,8 @@ public class NumOfExistingCustomerSessionBean implements NumOfExistingCustomerSe
 
     @Override
     public Long addNewNumOfExistingCustomer(String numOfExistingCustomer, String numOfOpeningAccounts,
-            String numOfClosingAccounts, Integer updateMonth, Integer updateYear, String status,
-            String currentYeaar) {
+            String numOfClosingAccounts, String numOfClosingInactiveAccounts, Integer updateMonth,
+            Integer updateYear, String status, String currentYeaar) {
 
         NumOfExistingCustomer numOfCustomer = new NumOfExistingCustomer();
 
@@ -29,6 +29,7 @@ public class NumOfExistingCustomerSessionBean implements NumOfExistingCustomerSe
         numOfCustomer.setUpdateMonth(updateMonth);
         numOfCustomer.setUpdateYear(updateYear);
         numOfCustomer.setCurrentYear(currentYeaar);
+        numOfCustomer.setNumOfClosingInactiveAccounts(numOfClosingInactiveAccounts);
 
         entityManager.persist(numOfCustomer);
         entityManager.flush();

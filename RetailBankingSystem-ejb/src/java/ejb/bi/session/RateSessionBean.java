@@ -266,41 +266,49 @@ public class RateSessionBean implements RateSessionBeanLocal {
         Query queryOpenAccount = entityManager.createQuery("SELECT d FROM DepositAccountOpen d WHERE d.currentTimeMilis >= :startTime And d.currentTimeMilis<=:endTime");
         queryOpenAccount.setParameter("startTime", startTime);
         queryOpenAccount.setParameter("endTime", endTime);
+        List<DepositAccountOpen> depositAccountOpens = queryOpenAccount.getResultList();
 
-        List<DepositAccountOpen> DepositAccountOpens = queryOpenAccount.getResultList();
+        Query queryCloseActiveAccount = entityManager.createQuery("SELECT d FROM DepositAccountClosure d WHERE d.currentTimeMilis >= :startTime And d.currentTimeMilis<=:endTime And d.accountStatus=:accountStatus");
+        queryCloseActiveAccount.setParameter("startTime", startTime);
+        queryCloseActiveAccount.setParameter("endTime", endTime);
+        queryCloseActiveAccount.setParameter("accountStatus", "Active");
+        List<DepositAccountClosure> depositActiveAccountClosures = queryCloseActiveAccount.getResultList();
 
-        Query queryCloseAccount = entityManager.createQuery("SELECT d FROM DepositAccountClosure d WHERE d.currentTimeMilis >= :startTime And d.currentTimeMilis<=:endTime");
-        queryCloseAccount.setParameter("startTime", startTime);
-        queryCloseAccount.setParameter("endTime", endTime);
-        List<DepositAccountClosure> depositAccountClosures = queryCloseAccount.getResultList();
+        Query queryCloseInactiveAccount = entityManager.createQuery("SELECT d FROM DepositAccountClosure d WHERE d.currentTimeMilis >= :startTime And d.currentTimeMilis<=:endTime And d.accountStatus=:accountStatus");
+        queryCloseInactiveAccount.setParameter("startTime", startTime);
+        queryCloseInactiveAccount.setParameter("endTime", endTime);
+        queryCloseInactiveAccount.setParameter("accountStatus", "Inactive");
+        List<DepositAccountClosure> depositInactiveAccountClosures = queryCloseInactiveAccount.getResultList();
 
-        Integer numberOfOpenAccounts = DepositAccountOpens.size();
-        Integer numberOfCloseAccounts = depositAccountClosures.size();
+        Integer numberOfOpenAccounts = depositAccountOpens.size();
+        Integer numberOfCloseActiveAccounts = depositActiveAccountClosures.size();
+        Integer numberOfCloseInactiveAccounts = depositInactiveAccountClosures.size();
 
-        if (DepositAccountOpens.isEmpty()) {
+        if (depositAccountOpens.isEmpty()) {
             numberOfOpenAccounts = 0;
         }
 
-        if (depositAccountClosures.isEmpty()) {
-            numberOfCloseAccounts = 0;
+        if (depositActiveAccountClosures.isEmpty()) {
+            numberOfCloseActiveAccounts = 0;
         }
 
-        Integer newNumOfExistingCustomer = Integer.valueOf(numberOfCustomer) + numberOfOpenAccounts - numberOfCloseAccounts;
+        Integer newNumOfExistingCustomer = Integer.valueOf(numberOfCustomer) + numberOfOpenAccounts - numberOfCloseActiveAccounts;
 
-        String acqRateValue = df.format(DepositAccountOpens.size() / Double.valueOf(numberOfCustomer));
-        String attRateValue = df.format(depositAccountClosures.size() / Double.valueOf(numberOfCustomer));
+        String acqRateValue = df.format(depositAccountOpens.size() / Double.valueOf(numberOfCustomer));
+        String attRateValue = df.format(depositActiveAccountClosures.size() / Double.valueOf(numberOfCustomer));
 
         Long newAcqRateId = addNewRate(Double.valueOf(acqRateValue), "Acquisition",
                 "New", acqUpdateYear, currentAcqUpdateMonth, "Yes");
         Long newAttRateId = addNewRate(Double.valueOf(attRateValue), "Attrition",
                 "New", attUpdateYear, currentAttUpdateMonth, "Yes");
 
-        Integer numOfOpeningAccounts = DepositAccountOpens.size();
-        Integer numOfClosingAccounts = depositAccountClosures.size();
+        Integer numOfOpeningAccounts = depositAccountOpens.size();
+        Integer numOfClosingAccounts = depositActiveAccountClosures.size();
 
         Long newNumOfExistingCustomerId = numOfExistingCustomerSessionBeanLocal.addNewNumOfExistingCustomer(
                 newNumOfExistingCustomer.toString(), numOfOpeningAccounts.toString(),
-                numOfClosingAccounts.toString(), currentAcqUpdateMonth, attUpdateYear, "New", "Yes");
+                numOfClosingAccounts.toString(), numberOfCloseInactiveAccounts.toString(),
+                currentAcqUpdateMonth, attUpdateYear, "New", "Yes");
     }
 
     @Override
