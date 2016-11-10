@@ -741,7 +741,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal, Bank
     }
 
     @Override
-    public void updateDepositAccountAvailableBalance(String cardNum, double transactionAmt) {
+    public String updateDepositAccountAvailableBalance(String cardNum, double transactionAmt) {
 
         BankAccount account = debitCardSessionBeanLocal.getBankAccountByCardNum(cardNum);
         Double availableBalance;
@@ -754,7 +754,7 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal, Bank
     }
 
     @Override
-    public void updateDepositAccountTotalBalance(String cardNum, double transactionAmt, String merchantName) {
+    public String updateDepositAccountTotalBalance(String cardNum, double transactionAmt, String merchantName) {
 
         BankAccount account = debitCardSessionBeanLocal.getBankAccountByCardNum(cardNum);
 
@@ -773,6 +773,5 @@ public class BankAccountSessionBean implements BankAccountSessionBeanLocal, Bank
         entityManager.flush();
 
         return "Successfully Updated!";
-
     }
 }
