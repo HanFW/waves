@@ -1,5 +1,7 @@
 package ejb.bi.session;
 
+import ejb.bi.entity.CustomerRFM;
+import java.util.List;
 import javax.ejb.Local;
 
 @Local
@@ -13,4 +15,6 @@ public interface CustomerRFMSessionBeanLocal {
     public void generateMonthlyCustomerRFM();
 
     public void generateLoanMonthlyRFM();
+
+    public List<CustomerRFM> retrieveCustomerRFMByCusIC(String customerIdentificationNum);
 }

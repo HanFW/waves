@@ -6,10 +6,6 @@
 package managedbean.customer.employee;
 
 import ejb.customer.entity.CustomerAdvanced;
-import static ejb.customer.entity.CustomerAdvanced_.customerAdvancedId;
-import static ejb.customer.entity.CustomerAdvanced_.education;
-import static ejb.customer.entity.CustomerAdvanced_.residentialStatus;
-import static ejb.customer.entity.CustomerAdvanced_.yearInResidence;
 import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import java.io.IOException;
 import javax.inject.Named;

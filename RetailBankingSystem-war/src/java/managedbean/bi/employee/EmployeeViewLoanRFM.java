@@ -13,17 +13,27 @@ import javax.faces.context.ExternalContext;
 @RequestScoped
 
 public class EmployeeViewLoanRFM {
+
     @EJB
     private CRMCustomerSessionBeanLocal customerSessionBeanLocal;
 
     private ExternalContext ec;
-    
+    private Long customerBasicId;
+
     public EmployeeViewLoanRFM() {
     }
-    
+
+    public Long getCustomerBasicId() {
+        return customerBasicId;
+    }
+
+    public void setCustomerBasicId(Long customerBasicId) {
+        this.customerBasicId = customerBasicId;
+    }
+
     public List<CustomerBasic> getCustomerBasic() throws IOException {
-        
-        List<CustomerBasic> customerBasic =customerSessionBeanLocal.retrieveAllCustomer();
+
+        List<CustomerBasic> customerBasic = customerSessionBeanLocal.retrieveAllCustomer();
         return customerBasic;
     }
 }
