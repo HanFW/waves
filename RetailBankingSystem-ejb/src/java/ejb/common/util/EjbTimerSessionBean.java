@@ -82,9 +82,9 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
     private final String TIMER_NAME_10000MS = "EJB-TIMER-10000MS";
     private final int TIMER_DURATION_10000MS = 10000;
     private final String TIMER_NAME_15000MS = "EJB-TIMER-15000MS";
-    private final int TIMER_DURATION_15000MS = 15000;
+    private final int TIMER_DURATION_15000MS = 25000;
     private final String TIMER_NAME_300000MS = "EJB-TIMER-300000MS";
-    private final int TIMER_DURATION_300000MS = 300010;
+    private final int TIMER_DURATION_300000MS = 300000;
     private final String TIMER_NAME_70000MS = "EJB-TIMER-70000MS";
     private final int TIMER_DURATION_70000MS = 70000;
     private final String TIMER_NAME_5000MS = "EJB-TIMER-5000MS";
@@ -93,6 +93,9 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
     private final int TIMER_DURATION_2000MS = 2000;
     private final String TIMER_NAME_30000MS = "EJB-TIMER-30000MS";
     private final int TIMER_DURATION_30000MS = 30000;
+
+    private final String TIMER_NAME_Dashboard = "EJB-TIMER-Dashboard";
+    private final int TIMER_DURATION_Dashboard = 300000;
 
     public EjbTimerSessionBean() {
 
@@ -160,6 +163,32 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
                 TIMER_DURATION_30000MS, new String(TIMER_NAME_30000MS));
         System.out.println("{***30000MS Timer created" + String.valueOf(timer30000ms.getTimeRemaining()) + ","
                 + timer30000ms.getInfo().toString());
+    }
+
+    @Override
+    public void createTimer300000MSDashboard() {
+        TimerService timerService = ctx.getTimerService();
+
+        Timer timer30000ms = timerService.createTimer(TIMER_DURATION_Dashboard,
+                TIMER_DURATION_Dashboard, new String(TIMER_NAME_Dashboard));
+        System.out.println("{***30000MS Dashboard Timer created" + String.valueOf(timer30000ms.getTimeRemaining()) + ","
+                + timer30000ms.getInfo().toString());
+    }
+
+    @Override
+    public void cancelTimer300000MSDashboard() {
+        TimerService timerService = ctx.getTimerService();
+        Collection timers = timerService.getTimers();
+
+        for (Object obj : timers) {
+            Timer timer = (Timer) obj;
+
+            if (timer.getInfo().toString().equals(TIMER_NAME_Dashboard));
+            {
+                timer.cancel();
+                System.out.println("*** 300000MS Dashboard Timer cancelled");
+            }
+        }
     }
 
     @Override
@@ -298,6 +327,8 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
             handleTimeout_2000ms();
         } else if (timer.getInfo().toString().equals(TIMER_NAME_30000MS)) {
             handleTimeout_30000ms();
+        } else if (timer.getInfo().toString().equals(TIMER_NAME_Dashboard)) {
+            handleTimeout_300000msDashboard();
         } else {
             System.out.println("*** Unknown timer timeout: " + timer.getInfo().toString());
         }
@@ -313,18 +344,10 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
     private void handleTimeout_300000ms() {
         System.out.println("*** 300000MS Timer timeout");
 
-//        bankAccountSessionLocal.interestCrediting();
-//        statementSessionBeanLocal.generateStatement();
-//        maintainDailyBalance();
-//        nonStandingGIROSessionBeanLocal.monthlyRecurrentPayment();
-//        rateSessionBeanLocal.monthlyDashboardRate();
-//        rateSessionBeanLocal.generateMonthlyAccountClosureReason();
-//        customerRFMSessionBeanLocal.generateMonthlyCustomerRFM();
-        customerRFMSessionBeanLocal.generateLoanMonthlyRFM();
-//        creditCardReportSessionBeanLocal.generateMonthlyCreditCardReport();
-//        customerCLVSessionBeanLocal.generateMonthlyCustomerCLV();
-        assetTypePriceSessionBeanLocal.equityMonthlyTrend();
-
+        bankAccountSessionLocal.interestCrediting();
+        statementSessionBeanLocal.generateStatement();
+        maintainDailyBalance();
+        nonStandingGIROSessionBeanLocal.monthlyRecurrentPayment();
     }
 
     private void handleTimeout_15000ms() {
@@ -358,6 +381,17 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
         System.out.println("*** 30000MS Timer timeout");
 
         loanInterestSessionBeanLocal.calculateInstalment();
+    }
+
+    private void handleTimeout_300000msDashboard() {
+        System.out.println("*** 30000MS Dashboard Timer timeout");
+
+        rateSessionBeanLocal.monthlyDashboardRate();
+        rateSessionBeanLocal.generateMonthlyAccountClosureReason();
+        customerRFMSessionBeanLocal.generateMonthlyCustomerRFM();
+        customerRFMSessionBeanLocal.generateLoanMonthlyRFM();
+        creditCardReportSessionBeanLocal.generateMonthlyCreditCardReport();
+        customerCLVSessionBeanLocal.generateMonthlyCustomerCLV();
     }
 
     private void maintainDailyBalance() {

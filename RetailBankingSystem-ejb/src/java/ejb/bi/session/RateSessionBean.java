@@ -249,7 +249,7 @@ public class RateSessionBean implements RateSessionBeanLocal {
 
         Calendar cal = Calendar.getInstance();
         Long endTime = cal.getTimeInMillis();
-        Long startTime = endTime - 100010;
+        Long startTime = endTime - 300000;
 
         Integer currentAcqUpdateMonth = acqUpdateMonth + 1;
         Integer currentAttUpdateMonth = attUpdateMonth + 1;
@@ -344,7 +344,7 @@ public class RateSessionBean implements RateSessionBeanLocal {
 
         Calendar cal = Calendar.getInstance();
         Long endTime = cal.getTimeInMillis();
-        Long startTime = endTime - 100010;
+        Long startTime = endTime - 300000;
 
         Query queryCloseAccount = entityManager.createQuery("SELECT d FROM DepositAccountClosure d WHERE d.currentTimeMilis >= :startTime And d.currentTimeMilis<=:endTime");
         queryCloseAccount.setParameter("startTime", startTime);
