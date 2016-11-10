@@ -1,6 +1,5 @@
 package managedbean.deposit.employee;
 
-import ejb.bi.session.DepositAccountOpenSessionBeanLocal;
 import ejb.customer.entity.CustomerBasic;
 import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import ejb.deposit.entity.BankAccount;
@@ -10,17 +9,16 @@ import ejb.deposit.session.InterestSessionBeanLocal;
 import ejb.payment.session.MerlionBankSessionBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.Calendar;
 import java.util.List;
 import javax.ejb.EJB;
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.inject.Named;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 
 @Named(value = "employeeOpenAccountApprovalManagedBean")
-@RequestScoped
+@SessionScoped
 
 public class EmployeeOpenAccountApprovalManagedBean implements Serializable {
 
