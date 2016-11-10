@@ -139,7 +139,7 @@ public class CustomerViewAllLoansManagedBean {
         servletOutputStream.flush();
         servletOutputStream.close();
     }
-    
+
     public void viewRepaymentStatement() throws ClassNotFoundException, IOException, JRException, SQLException {
         Connection connection;
 
@@ -158,8 +158,9 @@ public class CustomerViewAllLoansManagedBean {
         ctx.responseComplete();
         response.setContentType("application/pdf");
 
+        System.out.println("************" + loanRepaymentId);
         Map parameters = new HashMap();
-        parameters.put("repaymentAccountId", loanRepaymentId);
+        parameters.put("loadRepaymentAccountId", loanRepaymentId);
 
         JasperRunManager.runReportToPdfStream(reportStream, servletOutputStream,
                 parameters, connection);
