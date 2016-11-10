@@ -3,6 +3,7 @@ package ejb.bi.session;
 import ejb.bi.entity.CustomerRFM;
 import ejb.bi.entity.Rate;
 import ejb.customer.entity.CustomerBasic;
+import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import ejb.deposit.entity.AccTransaction;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
@@ -15,11 +16,15 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityNotFoundException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 @Stateless
 public class CustomerRFMSessionBean implements CustomerRFMSessionBeanLocal {
+
+    @EJB
+    private CRMCustomerSessionBeanLocal customerSessionBeanLocal;
 
     @EJB
     private RateSessionBeanLocal rateSessionBeanLocal;
@@ -31,7 +36,7 @@ public class CustomerRFMSessionBean implements CustomerRFMSessionBeanLocal {
     private EntityManager entityManager;
 
     @Override
-    public Long addNewCustomerRFM(String customerName, String rValue, String fValue, String mValue,
+    public Long addNewCustomerRFM(String customerName, String recency, String frequency, String monetary,
             Integer updateMonth, Integer updateYear, Long startTimeMilis, Long transactionDays,
             Integer numOfTransactions, Double totalSpends, String totalRFMValue,
             String RFMType, Long customerBasicId) {
@@ -41,9 +46,9 @@ public class CustomerRFMSessionBean implements CustomerRFMSessionBeanLocal {
         customerRFM.setCustomerName(customerName);
         customerRFM.setUpdateMonth(updateMonth);
         customerRFM.setUpdateYear(updateYear);
-        customerRFM.setfValue(fValue);
-        customerRFM.setmValue(mValue);
-        customerRFM.setrValue(rValue);
+        customerRFM.setMonetary(monetary);
+        customerRFM.setRecency(recency);
+        customerRFM.setFrequency(frequency);
         customerRFM.setStartTimeMilis(startTimeMilis);
         customerRFM.setNumOfTransactions(numOfTransactions);
         customerRFM.setTransactionDays(transactionDays);
@@ -195,6 +200,23 @@ public class CustomerRFMSessionBean implements CustomerRFMSessionBeanLocal {
                         startTime, Long.valueOf(0), Integer.valueOf(0), Double.valueOf(0),
                         totalRFMValue.toString(), RFMType, customerBasic.getCustomerBasicId());
             }
+        }
+    }
+
+    @Override
+    public List<CustomerRFM> retrieveCustomerRFMByCusIC(String customerIdentificationNum) {
+        CustomerBasic customerBasic = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum.toUpperCase());
+
+        if (customerBasic.getCustomerBasicId() == null) {
+            return new ArrayList<CustomerRFM>();
+        }
+        try {
+            Query query = entityManager.createQuery("Select a From CustomerRFM a Where a.customerBasic=:customerBasic");
+            query.setParameter("customerBasic", customerBasic);
+            return query.getResultList();
+        } catch (EntityNotFoundException enfe) {
+            System.out.println("Entity not found error: " + enfe.getMessage());
+            return new ArrayList<CustomerRFM>();
         }
     }
 

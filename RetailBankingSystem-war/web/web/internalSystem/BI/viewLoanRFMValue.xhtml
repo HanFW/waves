@@ -15,37 +15,30 @@
                     <p:dataTable var="customerBasic" value="#{employeeViewLoanRFM.customerBasic}" 
                                  paginator="true" reflow="true" rows="20" emptyMessage="No Record">
 
-                        <p:column headerText="Customer Name" style="width: 16%"> 
-                            <h:outputText value="#{customerBasic.customerName}" />
+                        <p:column headerText="Customer Name" > 
+                            <p:commandLink process="@this" action="/web/internalSystem/BI/viewLoanRFMDone.xhtml?faces-redirect=true">
+                                <h:outputText value="#{customerBasic.customerName}" />
+                                <f:setPropertyActionListener value="#{customerBasic.customerIdentificationNum}" 
+                                                             target="#{employeeViewLoanDoneManagedBean.customerIdentificationNum}" />
+                            </p:commandLink>
                         </p:column>
 
-                        <p:column headerText="Customer Mobile" style="width: 10%"> 
-                            <h:outputText value="#{customerBasic.customerMobile}" />
+                        <p:column headerText="Customer Mobile" > 
+                            <p:commandLink process="@this" action="/web/internalSystem/BI/viewLoanRFMDone.xhtml?faces-redirect=true">
+                                <h:outputText value="#{customerBasic.customerMobile}" />
+                                <f:setPropertyActionListener value="#{customerBasic.customerIdentificationNum}" 
+                                                             target="#{employeeViewLoanDoneManagedBean.customerIdentificationNum}" />
+                            </p:commandLink>
                         </p:column>
 
                         <p:column headerText="Customer Email"> 
-                            <h:outputText value="#{customerBasic.customerEmail}" />
+                            <p:commandLink process="@this" action="/web/internalSystem/BI/viewLoanRFMDone.xhtml?faces-redirect=true">
+                                <h:outputText value="#{customerBasic.customerEmail}" />
+                                <f:setPropertyActionListener value="#{customerBasic.customerIdentificationNum}" 
+                                                             target="#{employeeViewLoanDoneManagedBean.customerIdentificationNum}" />
+                            </p:commandLink>
                         </p:column>
 
-                        <p:column headerText="RFM Type" style="width: 11%"> 
-                            <h:outputText value="#{customerBasic.customerRFM.RFMType}" />
-                        </p:column>
-
-                        <p:column headerText="Recency" style="width: 9%"> 
-                            <h:outputText value="#{customerBasic.customerRFM.getrValue}" />
-                        </p:column>
-
-                        <p:column headerText="Frequency" style="width: 9%"> 
-                            <h:outputText value="#{customerBasic.customerRFM.getfValue}" />
-                        </p:column>
-
-                        <p:column headerText="Monetary" style="width: 9%"> 
-                            <h:outputText value="#{customerBasic.customerRFM.getmValue}" />
-                        </p:column>
-
-                        <p:column headerText="Total RFM Value" style="width: 15%"> 
-                            <h:outputText value="#{customerBasic.customerRFM.totalRFMValue}" />
-                        </p:column>
                     </p:dataTable>
                 </p:panel>
             </div>

@@ -1,0 +1,113 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/internalSystemTemplate.xhtml">
+
+    <ui:define name="content">
+        <h:form id="formMain">
+            <div align="center">
+                <br/>
+                <p:panel>
+                    <br/>
+                    <p:outputLabel value="View High Level Customer" />
+                    <br/>
+                    <br/>
+                    <p:dataTable var="highCustomerCLV" value="#{employeeViewCustomerSegmentManagedBean.highCustomerCLV}" 
+                                 paginator="true" reflow="true" rows="20" emptyMessage="No Record">
+                        <p:column headerText="Customer Name"> 
+                            <h:outputText value="#{highCustomerCLV.customerBasic.customerName}" />
+                        </p:column>
+
+                        <p:column headerText="Customer Mobile"> 
+                            <h:outputText value="#{highCustomerCLV.customerBasic.customerMobile}" />
+                        </p:column>
+
+                        <p:column headerText="Customer Email"> 
+                            <h:outputText value="#{highCustomerCLV.customerBasic.customerEmail}" />
+                        </p:column>
+
+                        <p:column headerText="Deposit Interest"> 
+                            <h:outputText value="#{highCustomerCLV.depositInterest}" />
+                        </p:column>
+
+                        <p:column headerText="Loan Interest"> 
+                            <h:outputText value="#{highCustomerCLV.loanInterest}" />
+                        </p:column>
+
+                        <p:column headerText="CLV Value"> 
+                            <h:outputText value="#{highCustomerCLV.clvValue}" />
+                        </p:column>
+                    </p:dataTable>
+                    <br/>
+                    <br/>
+                    <p:outputLabel value="View Medium Level Customer" />
+                    <br/>
+                    <br/>
+                    <p:dataTable var="mediumCustomerCLV" value="#{employeeViewCustomerSegmentManagedBean.mediumCustomerCLV}" 
+                                 paginator="true" reflow="true" rows="20" emptyMessage="No Record">
+                        <p:column headerText="Customer Name"> 
+                            <h:outputText value="#{mediumCustomerCLV.customerBasic.customerName}" />
+                        </p:column>
+
+                        <p:column headerText="Customer Mobile"> 
+                            <h:outputText value="#{mediumCustomerCLV.customerBasic.customerMobile}" />
+                        </p:column>
+
+                        <p:column headerText="Customer Email"> 
+                            <h:outputText value="#{mediumCustomerCLV.customerBasic.customerEmail}" />
+                        </p:column>
+
+                        <p:column headerText="Deposit Interest"> 
+                            <h:outputText value="#{mediumCustomerCLV.depositInterest}" />
+                        </p:column>
+
+                        <p:column headerText="Loan Interest"> 
+                            <h:outputText value="#{mediumCustomerCLV.loanInterest}" />
+                        </p:column>
+
+                        <p:column headerText="CLV Value"> 
+                            <h:outputText value="#{mediumCustomerCLV.clvValue}" />
+                        </p:column>
+                    </p:dataTable>
+                    <br/>
+                    <br/>
+                    <p:outputLabel value="View Low Level Customer" />
+                    <br/>
+                    <br/>
+                    <p:dataTable var="lowCustomerCLV" value="#{employeeViewCustomerSegmentManagedBean.lowCustomerCLV}" 
+                                 paginator="true" reflow="true" rows="20" emptyMessage="No Record">
+                        <p:column headerText="Customer Name"> 
+                            <h:outputText value="#{lowCustomerCLV.customerBasic.customerName}" />
+                        </p:column>
+
+                        <p:column headerText="Customer Mobile"> 
+                            <h:outputText value="#{lowCustomerCLV.customerBasic.customerMobile}" />
+                        </p:column>
+
+                        <p:column headerText="Customer Email"> 
+                            <h:outputText value="#{lowCustomerCLV.customerBasic.customerEmail}" />
+                        </p:column>
+
+                        <p:column headerText="Deposit Interest"> 
+                            <h:outputText value="#{lowCustomerCLV.depositInterest}" />
+                        </p:column>
+
+                        <p:column headerText="Loan Interest"> 
+                            <h:outputText value="#{lowCustomerCLV.loanInterest}" />
+                        </p:column>
+
+                        <p:column headerText="CLV Value"> 
+                            <h:outputText value="#{lowCustomerCLV.clvValue}" />
+                        </p:column>
+                    </p:dataTable>
+                    <br/>
+                </p:panel>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>
+
