@@ -36,31 +36,27 @@
                     <h:outputText value="#{loan.accountStatus}" />
                 </p:column>
 
-                <p:column headerText="Total Amount"> 
+                <p:column headerText="Total Principal"> 
                     <h:outputText value="#{loan.initialAmount}" />
                 </p:column>
 
-                <p:column headerText="Remaining Amount"> 
+                <p:column headerText="Remaining Principal"> 
                     <h:outputText value="#{loan.accountBalance}" />
-                </p:column>
-
-                <p:column headerText="Outstanding Balance"> 
-                    <h:outputText value="#{loan.overdueBalance}" />
                 </p:column>
 
                 <p:column headerText="View">
                     <p:commandButton value="View" action="#{customerViewAllLoansManagedBean.viewLoan(loan.id)}"/>
                 </p:column>
-
+<!--
                 <p:column headerText="Statement"> 
                     <center>
                         <p:commandButton ajax="false" process="@this" 
                                          action="#{customerViewAllLoansManagedBean.viewLoanStatement()}" 
                                          icon="ui-icon-document">
-                            <f:setPropertyActionListener value="#{loan.id}" target="#{customerViewAllLoansManagedBean.loanPayableAccountId}" />
+                            <f:setPropertyActionListener value="#{loan.id}" target="#{customerViewAllLoansManagedBean.loanRepaymentId}" />
                         </p:commandButton>
                     </center>
-                </p:column>
+                </p:column>-->
             </p:dataTable>
         </h:form>
         <ezcomp:CCTimeout/>

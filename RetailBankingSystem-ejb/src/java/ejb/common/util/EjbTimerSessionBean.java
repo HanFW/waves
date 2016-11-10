@@ -1,9 +1,12 @@
 package ejb.common.util;
 
+import ejb.bi.session.CustomerCLVSessionBeanLocal;
 import ejb.bi.session.CustomerRFMSessionBeanLocal;
 import ejb.bi.session.RateSessionBeanLocal;
 import ejb.card.session.CardActivationManagementSessionBeanLocal;
 import ejb.card.session.CreditCardExpirationManagementSessionBeanLocal;
+import ejb.card.session.CreditCardRepaymentSessionBeanLocal;
+import ejb.card.session.CreditCardReportSessionBeanLocal;
 import ejb.card.session.DebitCardExpirationManagementSessionBeanLocal;
 import java.util.Collection;
 import javax.annotation.Resource;
@@ -27,6 +30,15 @@ import ws.client.meps.MEPSWebService_Service;
 @Stateless
 @LocalBean
 public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
+
+    @EJB
+    private CreditCardRepaymentSessionBeanLocal creditCardRepaymentSessionBeanLocal;
+
+    @EJB
+    private CustomerCLVSessionBeanLocal customerCLVSessionBeanLocal;
+
+    @EJB
+    private CreditCardReportSessionBeanLocal creditCardReportSessionBeanLocal;
 
     @EJB
     private CustomerRFMSessionBeanLocal customerRFMSessionBeanLocal;
@@ -57,7 +69,7 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
 
     @EJB
     CardActivationManagementSessionBeanLocal cardActivationManagementSessionBeanLocal;
-    
+
     @EJB
     AssetTypePriceSessionBeanLocal assetTypePriceSessionBeanLocal;
 
@@ -78,7 +90,7 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
     private final String TIMER_NAME_5000MS = "EJB-TIMER-5000MS";
     private final int TIMER_DURATION_5000MS = 5000;
     private final String TIMER_NAME_2000MS = "EJB-TIMER-2000MS";
-    private final int TIMER_DURATION_2000MS = 20000;
+    private final int TIMER_DURATION_2000MS = 2000;
     private final String TIMER_NAME_30000MS = "EJB-TIMER-30000MS";
     private final int TIMER_DURATION_30000MS = 30000;
 
@@ -305,10 +317,14 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
 //        statementSessionBeanLocal.generateStatement();
 //        maintainDailyBalance();
 //        nonStandingGIROSessionBeanLocal.monthlyRecurrentPayment();
-        rateSessionBeanLocal.monthlyDashboardRate();
-        rateSessionBeanLocal.generateMonthlyAccountClosureReason();
-        customerRFMSessionBeanLocal.generateMonthlyCustomerRFM();
+//        rateSessionBeanLocal.monthlyDashboardRate();
+//        rateSessionBeanLocal.generateMonthlyAccountClosureReason();
+//        customerRFMSessionBeanLocal.generateMonthlyCustomerRFM();
+        customerRFMSessionBeanLocal.generateLoanMonthlyRFM();
+//        creditCardReportSessionBeanLocal.generateMonthlyCreditCardReport();
+//        customerCLVSessionBeanLocal.generateMonthlyCustomerCLV();
         assetTypePriceSessionBeanLocal.equityMonthlyTrend();
+
     }
 
     private void handleTimeout_15000ms() {
@@ -326,17 +342,16 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
 
     private void handleTimeout_5000ms() {
         System.out.println("*** 5000MS Timer timeout");
+        cardActivationManagementSessionBeanLocal.handleCardActivation();
+        cardActivationManagementSessionBeanLocal.handleCreditCardActivation();
+
         creditCardExpirationManagementSessionBeanLocal.handleCreditCardExpiration();
         debitCardExpirationManagementSessionBeanLocal.handleDebitCardExpiration();
-
     }
 
     private void handleTimeout_2000ms() {
         System.out.println("*** 2000MS Timer timeout");
-
-        cardActivationManagementSessionBeanLocal.handleCardActivation();
-        cardActivationManagementSessionBeanLocal.handleCreditCardActivation();
-
+        creditCardRepaymentSessionBeanLocal.calculateCreditCardInterest();
     }
 
     private void handleTimeout_30000ms() {

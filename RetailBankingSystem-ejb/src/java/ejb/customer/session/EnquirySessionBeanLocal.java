@@ -67,7 +67,7 @@ public interface EnquirySessionBeanLocal {
 
     public String replyIssue(Long issueId, String issueSolution);
 
-//    public String caseIssueIsCreated(Long caseId);
+    public String caseIssueIsCreated(Long caseId);
 
     public String caseIssueAllReplied(Long caseId);
 

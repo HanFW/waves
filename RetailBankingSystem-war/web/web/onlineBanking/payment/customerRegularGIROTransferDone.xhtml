@@ -10,29 +10,25 @@
 
     <ui:define name="content">
         <h:form>
-            <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank form-group">
-
-                <p:panel>
-                    <p:outputLabel value="Welcome "/>
-                    <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
-                </p:panel>
+            <p:panel>
+                <p:outputLabel value="Welcome "/>
+                <p:outputLabel value="#{customerLoginManagedBean.customer.customerName}"/>
+            </p:panel>
+            <div align="center">
                 <p:messages globalOnly="true"/>
-
-                <p:panel header="Bill Payment Summary">
-
+                <h1>Bill Payment Summary</h1>
+                <h:panelGrid columns="1" class="ui-lg-5">
+                    
                     <h:outputText value="#{regularGIROTransferDoneManagedBean.statusMessage}" style="font-size: 24px"/>
                     <br/>
                     <br/>
-                    <br/>
                     <h:outputText style="font-weight: bold" value="Please take note the following transaction information: "/>
-                    <br/>
                     <br/>
                     <h:outputText style="font-weight: bold" value="To Account Number: "/>
                     <h:outputText value="#{regularGIROTransferDoneManagedBean.toBankAccountNumWithType}"/>
                     <br/>
                     <h:outputText style="font-weight: bold" value="Transfer Amount: "/>
                     <h:outputText value="#{regularGIROTransferDoneManagedBean.transferAmt}"/>
-                    <br/>
                     <br/>
                     <p:accordionPanel activeIndex="-1" style="">
                         <p:tab title="View Transaction Details">
@@ -61,10 +57,8 @@
                             <h:outputText value="#{regularGIROTransferDoneManagedBean.transferAmt}"/>
                         </p:tab>
                     </p:accordionPanel>
-                </p:panel>
-
-            </p:panelGrid>
-
+                </h:panelGrid>
+            </div>
         </h:form>
         <ezcomp:CCTimeout/>
     </ui:define>

@@ -1,5 +1,6 @@
 package ejb.customer.entity;
 
+import ejb.bi.entity.CustomerCLV;
 import ejb.bi.entity.CustomerRFM;
 import ejb.card.entity.CreditCard;
 import ejb.deposit.entity.BankAccount;
@@ -90,42 +91,45 @@ public class CustomerBasic implements Serializable {
 
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
     private List<Cheque> cheque;
-    
+
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     private List<CustomerDebt> customerDebt;
-    
+
     @ManyToOne(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER)
     private CustomerProperty customerProperty;
-    
+
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
     private List<LoanApplication> loanApplication;
-    
+
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
     private List<CashlineApplication> cashlineApplication;
-    
+
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
     private List<Portfolio> portfolios;
-    
+
     @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER)
     private CreditReportBureauScore bureauScore;
-    
+
     @OneToOne(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
     private RiskProfile riskProfile;
-    
+
     @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
     private MortgageLoanApplication mortgageLoanApplication;
-    
+
     @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
     private RefinancingApplication refinancingApplication;
+
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
+    private List<CustomerRFM> customerRFM;
     
-    @OneToOne(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
-    private CustomerRFM customerRFM;
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "customerBasic")
+    private List<CustomerCLV> customerCLV;
     
-    public void addLoanApplication(LoanApplication newApplication){
+    public void addLoanApplication(LoanApplication newApplication) {
         loanApplication.add(newApplication);
     }
-    
-    public void addCashlineApplication(CashlineApplication newApplication){
+
+    public void addCashlineApplication(CashlineApplication newApplication) {
         cashlineApplication.add(newApplication);
     }
 
@@ -371,7 +375,7 @@ public class CustomerBasic implements Serializable {
     public void addNewCreditCard(CreditCard cc) {
         creditCard.add(cc);
     }
-    
+
     public void removeCreditCard(CreditCard cc) {
         creditCard.remove(cc);
     }
@@ -488,14 +492,6 @@ public class CustomerBasic implements Serializable {
         this.refinancingApplication = refinancingApplication;
     }
 
-    public CustomerRFM getCustomerRFM() {
-        return customerRFM;
-    }
-
-    public void setCustomerRFM(CustomerRFM customerRFM) {
-        this.customerRFM = customerRFM;
-    }
-
     public List<Portfolio> getPortfolios() {
         return portfolios;
     }
@@ -503,15 +499,31 @@ public class CustomerBasic implements Serializable {
     public void setPotrfolios(List<Portfolio> potfolios) {
         this.portfolios = potfolios;
     }
-    
-    public void addPortfolio(Portfolio portfolio){
+
+    public void addPortfolio(Portfolio portfolio) {
         this.portfolios.add(portfolio);
     }
-    
-    public void removePortfolio(Portfolio portfolio){
+
+    public void removePortfolio(Portfolio portfolio) {
         this.portfolios.remove(portfolio);
     }
-    
+
+    public List<CustomerRFM> getCustomerRFM() {
+        return customerRFM;
+    }
+
+    public void setCustomerRFM(List<CustomerRFM> customerRFM) {
+        this.customerRFM = customerRFM;
+    }
+
+    public List<CustomerCLV> getCustomerCLV() {
+        return customerCLV;
+    }
+
+    public void setCustomerCLV(List<CustomerCLV> customerCLV) {
+        this.customerCLV = customerCLV;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;

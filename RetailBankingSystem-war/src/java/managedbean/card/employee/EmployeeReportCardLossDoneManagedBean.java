@@ -11,6 +11,8 @@ import ejb.card.session.DebitCardManagementSessionBeanLocal;
 import ejb.card.session.DebitCardSessionBeanLocal;
 import ejb.customer.entity.CustomerBasic;
 import ejb.customer.session.CRMCustomerSessionBeanLocal;
+import ejb.infrastructure.entity.Employee;
+import ejb.infrastructure.session.LoggingSessionBeanLocal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -46,6 +48,9 @@ public class EmployeeReportCardLossDoneManagedBean {
 
     @EJB
     private CRMCustomerSessionBeanLocal customerSessionBeanLocal;
+
+    @EJB
+    private LoggingSessionBeanLocal loggingSessionBeanLocal;
 
     private String cardType;
     private String debitCardPwd;
@@ -110,6 +115,7 @@ public class EmployeeReportCardLossDoneManagedBean {
                 message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Your card has been suceesfully reported as loss, we will send a new card to your mailing address in 2-3 working days", null);
                 context.addMessage(null, message);
                 System.out.println("debit card report loss");
+                loggingSessionBeanLocal.createNewLogging("employee", getEmployeeViaSessionMap(), "report debit card loss", "successful", getCustomerViaSessionMap().getCustomerName());
                 break;
             case "debit card not exist":
                 message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Card not exist! Please check the card number input", null);
@@ -139,6 +145,7 @@ public class EmployeeReportCardLossDoneManagedBean {
                 message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Your card has been suceesfully reported as loss, we will send a new card to your mailing address in 2-3 working days", null);
                 context.addMessage(null, message);
                 System.out.println("credit card report loss");
+                loggingSessionBeanLocal.createNewLogging("employee", getEmployeeViaSessionMap(), "report credit card loss", "successful", getCustomerViaSessionMap().getCustomerName());
                 break;
             case "credit card not exist":
                 message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Card not exist! Please check the card number input", null);
@@ -249,6 +256,15 @@ public class EmployeeReportCardLossDoneManagedBean {
         customer = customerSessionBeanLocal.retrieveCustomerBasicByIC(customerIdentificationNum);
 
         return customer;
+    }
+
+    private Long getEmployeeViaSessionMap() {
+        Long employeeId;
+        FacesContext context = FacesContext.getCurrentInstance();
+        Employee employee = (Employee) context.getExternalContext().getSessionMap().get("employee");
+        employeeId = employee.getEmployeeId();
+
+        return employeeId;
     }
 
 }

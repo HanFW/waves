@@ -17,7 +17,7 @@
         </h:form>
         <h:form>
             <p:wizard widgetVar ="hdbLoanWizard" flowListener="#{publicMortgageLoanApplicationManagedBean.onFlowProcess}" showNavBar="false">
-<!--                <p:tab id="basic">
+                <p:tab id="basic">
                     <h:panelGrid columns="1">
                         <p:steps activeIndex="0">
                             <p:menuitem value="Basic Information" />
@@ -851,7 +851,7 @@
                         <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('hdbLoanWizard').back()"/>
                         <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" onclick="PF('hdbLoanWizard').next();"/>
                     </h:panelGrid>
-                </p:tab>-->
+                </p:tab>
 
                 <p:tab id="commitments">
                     <h:panelGrid columns="1">
@@ -965,12 +965,12 @@
                                         <p:messages globalOnly="true"/>
 
                                         <p:outputLabel for="jointRelationship" style="font-weight: bold" value="Relationship with main applicant: "/>
-                                        <p:inputText id="jointRelationship" value="#{publicMortgageLoanApplicationManagedBean.jointRelationship}" required="true" requiredMessage="Required Field"/>
+                                        <p:inputText id="jointRelationship" value="#{publicMortgageLoanApplicationManagedBean.jointRelationship}" required="#{publicMortgageLoanApplicationManagedBean.hasJointApplicant}" requiredMessage="Required Field"/>
                                         <p:message for="jointRelationship"/>
 
                                         <p:outputLabel style="font-weight: bold" for="jointSalutation" value="Salutation: " />
                                         <p:selectOneMenu id="jointSalutation" value="#{publicMortgageLoanApplicationManagedBean.jointSalutation}" 
-                                                         required="true" requiredMessage="Required Field">
+                                                         required="#{publicMortgageLoanApplicationManagedBean.hasJointApplicant}" requiredMessage="Required Field">
                                             <f:selectItem itemLabel="Please Select" itemValue="" noSelectionOption="true"/>
                                             <f:selectItem itemLabel="Dr" itemValue="Dr" />
                                             <f:selectItem itemLabel="Mr" itemValue="Mr" />
@@ -988,18 +988,18 @@
                                         <p:message for="jointSalutationOthers" />
 
                                         <p:outputLabel for="jointName" style="font-weight: bold" value="Name(As per NRIC/Passport): "/>
-                                        <p:inputText id="jointName" value="#{publicMortgageLoanApplicationManagedBean.jointName}" required="true" requiredMessage="Required Field"/>
+                                        <p:inputText id="jointName" value="#{publicMortgageLoanApplicationManagedBean.jointName}" required="#{publicMortgageLoanApplicationManagedBean.hasJointApplicant}" requiredMessage="Required Field"/>
                                         <p:message for="jointName"/>
 
                                         <p:outputLabel for="jointDateOfBirth" style="font-weight: bold" value="Date of Birth: "/>
                                         <p:calendar id="jointDateOfBirth" value="#{publicMortgageLoanApplicationManagedBean.jointDateOfBirth}" 
                                                     showOn="button" locale="de" navigator="true" pattern="dd/MM/yyyy" 
-                                                    yearRange="c-200:c+0" required="true" requiredMessage="Required Field"/>
+                                                    yearRange="c-200:c+0" required="#{publicMortgageLoanApplicationManagedBean.hasJointApplicant}" requiredMessage="Required Field"/>
                                         <p:message for="jointDateOfBirth"/>
 
                                         <p:outputLabel for="jointGender" style="font-weight: bold" value="Gender: "/>
                                         <p:selectOneRadio id="jointGender" value="#{publicMortgageLoanApplicationManagedBean.jointGender}"
-                                                          required="true" requiredMessage="Required Field">
+                                                          required="#{publicMortgageLoanApplicationManagedBean.hasJointApplicant}" requiredMessage="Required Field">
                                             <f:selectItem itemLabel="Male" itemValue="Male" />
                                             <f:selectItem itemLabel="Female" itemValue="Female" />
                                         </p:selectOneRadio>
@@ -1007,7 +1007,7 @@
 
                                         <p:outputLabel for="jointNationality" style="font-weight: bold" value="Nationality: "/>
                                         <p:selectOneMenu id="jointNationality" value="#{publicMortgageLoanApplicationManagedBean.jointNationality}" 
-                                                         required="true" requiredMessage="Required Field">
+                                                         required="#{publicMortgageLoanApplicationManagedBean.hasJointApplicant}" requiredMessage="Required Field">
                                             <f:selectItem itemLabel="Please Select" itemValue="" noSelectionOption="true"/>
                                             <f:selectItem itemLabel="Afghanistan" itemValue="Afghanistan" />
                                             <f:selectItem itemLabel="Albania" itemValue="Albania" />
@@ -1248,7 +1248,7 @@
 
                                         <p:outputLabel for="jointCountryOfResidence" style="font-weight: bold" value="Country of Residence: " />
                                         <p:selectOneMenu id="jointCountryOfResidence" value="#{publicMortgageLoanApplicationManagedBean.jointCountryOfResidence}" 
-                                                         required="true" requiredMessage="Required Field">
+                                                         required="#{publicMortgageLoanApplicationManagedBean.hasJointApplicant}" requiredMessage="Required Field">
                                             <f:selectItem itemLabel="Please Select" itemValue="" />
                                             <f:selectItem itemLabel="Afghanistan" itemValue="Afghanistan" />
                                             <f:selectItem itemLabel="Albania" itemValue="Albania" />
@@ -1457,7 +1457,7 @@
 
                                         <p:outputLabel for="jointRace" style="font-weight: bold" value="Race: " />
                                         <p:selectOneMenu id="jointRace" value="#{publicMortgageLoanApplicationManagedBean.jointRace}" 
-                                                         required="true" requiredMessage="Required Field">
+                                                         required="#{publicMortgageLoanApplicationManagedBean.hasJointApplicant}" requiredMessage="Required Field">
                                             <f:selectItem itemLabel="Please Select" itemValue="" />
                                             <f:selectItem itemLabel="Chinese" itemValue="Chinese" />
                                             <f:selectItem itemLabel="Malay" itemValue="Malay" />
@@ -1468,17 +1468,14 @@
 
                                         <p:outputLabel for="jointMobile" style="font-weight: bold" value="Mobile Number: " />
                                         <p:inputText id="jointMobile" value="#{publicMortgageLoanApplicationManagedBean.jointMobile}"
-                                                     required="true" requiredMessage="Required Field" validatorMessage="Invalid Moblie Number"
+                                                     required="#{publicMortgageLoanApplicationManagedBean.hasJointApplicant}" requiredMessage="Required Field" validatorMessage="Invalid Moblie Number"
                                                      converterMessage="Invalid Input">
-                                            <f:validateDoubleRange minimum="10000000" maximum="99999999" />
                                         </p:inputText>
                                         <p:message for="jointMobile"/>
 
                                         <p:outputLabel for="jointEmail" style="font-weight: bold" value="Email: " />
                                         <p:inputText label="Email" id="jointEmail" validatorMessage="Invalid email format"
-                                                     value="#{publicMortgageLoanApplicationManagedBean.jointEmail}" required="true" requiredMessage="Required Field">
-                                            <f:validateRegex
-                                                pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                                                     value="#{publicMortgageLoanApplicationManagedBean.jointEmail}" required="#{publicMortgageLoanApplicationManagedBean.hasJointApplicant}" requiredMessage="Required Field">
                                         </p:inputText>
                                         <p:message for="jointEmail" />
                                     </p:panelGrid>
@@ -1503,7 +1500,7 @@
                                 <p:panelGrid>
                                     <p:outputLabel for="jointEducation" style="font-weight: bold" value="Highest Education: "/>
                                     <p:selectOneMenu id="jointEducation" value="#{publicMortgageLoanApplicationManagedBean.jointEducation}"
-                                                     required="true" requiredMessage="Required Field">
+                                                     required="#{publicMortgageLoanApplicationManagedBean.hasJointApplicant}" requiredMessage="Required Field">
                                         <f:selectItem itemLabel="Please Select" itemValue="" />
                                         <f:selectItem itemLabel="Primary" itemValue="Primary" />
                                         <f:selectItem itemLabel="Secondary" itemValue="Secondary" />
@@ -1515,7 +1512,7 @@
 
                                     <p:outputLabel for="jointMaritalStatus" style="font-weight: bold" value="Marital Status: " />
                                     <p:selectOneMenu id="jointMaritalStatus" value="#{publicMortgageLoanApplicationManagedBean.jointMaritalStatus}" 
-                                                     required="true" requiredMessage="Required Field">
+                                                     required="#{publicMortgageLoanApplicationManagedBean.hasJointApplicant}" requiredMessage="Required Field">
                                         <f:selectItem itemLabel="Please Select" itemValue="" />
                                         <f:selectItem itemLabel="Single" itemValue="Single" />
                                         <f:selectItem itemLabel="Married" itemValue="Married" />
@@ -1526,7 +1523,7 @@
 
                                     <p:outputLabel for="jointNumOfDepedents" style="font-weight: bold" value="Number of Dependents: "/>
                                     <p:selectOneMenu id="jointNumOfDepedents" value="#{publicMortgageLoanApplicationManagedBean.jointNumOfDependents}"
-                                                     required="true" requiredMessage="Required Field">
+                                                     required="#{publicMortgageLoanApplicationManagedBean.hasJointApplicant}" requiredMessage="Required Field">
                                         <f:selectItem itemLabel="Please Select" itemValue="" />
                                         <f:selectItem itemLabel="0" itemValue="0" />
                                         <f:selectItem itemLabel="1" itemValue="1" />
@@ -1544,32 +1541,32 @@
 
                                     <p:outputLabel for="jointStreetName" style="font-weight: bold" value="Residential Street Name: " />
                                     <p:inputText label="Residential Address" id="jointStreetName" value="#{publicMortgageLoanApplicationManagedBean.jointStreetName}"
-                                                 required="true" requiredMessage="Required Field">
+                                                 required="#{publicMortgageLoanApplicationManagedBean.hasJointApplicant}" requiredMessage="Required Field">
                                     </p:inputText>
                                     <p:message for="jointStreetName" />
 
                                     <p:outputLabel for="jointBlockNum" style="font-weight: bold" value="Residential Block/House No.: " />
                                     <p:inputText label="Residential Address" id="jointBlockNum" value="#{publicMortgageLoanApplicationManagedBean.jointBlockNum}" 
-                                                 required="true" requiredMessage="Required Field">
+                                                 required="#{publicMortgageLoanApplicationManagedBean.hasJointApplicant}" requiredMessage="Required Field">
                                     </p:inputText>
                                     <p:message for="jointBlockNum" />
 
                                     <p:outputLabel for="jointUnitNum" style="font-weight: bold" value="Residential Unit No.: " />
                                     <p:inputText id="jointUnitNum" value="#{publicMortgageLoanApplicationManagedBean.jointUnitNum}"
-                                                 required="true" requiredMessage="Required Field">
+                                                 required="#{publicMortgageLoanApplicationManagedBean.hasJointApplicant}" requiredMessage="Required Field">
                                     </p:inputText>
                                     <p:message for="jointUnitNum" />
 
                                     <p:outputLabel for="jointPostal" style="font-weight: bold" value="Postal Code" />
                                     <p:inputText label="Postal Code" id="jointPostal" value="#{publicMortgageLoanApplicationManagedBean.jointPostal}" validatorMessage="Invalid Postal Code"
-                                                 required="true" requiredMessage="Required Field" converterMessage="Invalid Input">
+                                                 required="#{publicMortgageLoanApplicationManagedBean.hasJointApplicant}" requiredMessage="Required Field" converterMessage="Invalid Input">
                                         <f:validateDoubleRange minimum="100000" maximum="999999" />
                                     </p:inputText>
                                     <p:message for="jointPostal" />
 
                                     <p:outputLabel for="jointResidentialStatus" style="font-weight: bold" value="Residential Ownership: "/>
                                     <p:selectOneMenu id="jointResidentialStatus" value="#{publicMortgageLoanApplicationManagedBean.jointResidentialStatus}"
-                                                     required="true" requiredMessage="Required Field">
+                                                     required="#{publicMortgageLoanApplicationManagedBean.hasJointApplicant}" requiredMessage="Required Field">
                                         <f:selectItem itemLabel="Please Select" itemValue="" />
                                         <f:selectItem itemLabel="Fully owned" itemValue="Owned" />
                                         <f:selectItem itemLabel="Mortgaged" itemValue="Mortgaged" />
@@ -1581,7 +1578,7 @@
 
                                     <p:outputLabel for="jointResidentialType" style="font-weight: bold" value="Residential Type: "/>
                                     <p:selectOneMenu id="jointResidentialType" value="#{publicMortgageLoanApplicationManagedBean.jointResidentialType}"
-                                                     required="true" requiredMessage="Required Field">
+                                                     required="#{publicMortgageLoanApplicationManagedBean.hasJointApplicant}" requiredMessage="Required Field">
                                         <f:selectItem itemLabel="Please Select" itemValue="" />
                                         <f:selectItem itemLabel="HDB" itemValue="HDB" />
                                         <f:selectItem itemLabel="Condominium/Apartment" itemValue="Condominium/Apartment" />
@@ -1591,9 +1588,7 @@
 
                                     <p:outputLabel for="jointLengthOfResidence" style="font-weight: bold" value="Years of Stay in Residence: "/>
                                     <p:inputText id="jointLengthOfResidence" value="#{publicMortgageLoanApplicationManagedBean.jointLengthOfResidence}"
-                                                 required="true" requiredMessage="Required Field" validatorMessage="Please enter a valid number between 0-100" converterMessage="Please enter a valid number">
-                                        <f:validateLongRange minimum="0" maximum="100"/>
-                                        <f:convertNumber integerOnly="true"/>
+                                                 required="#{publicMortgageLoanApplicationManagedBean.hasJointApplicant}" requiredMessage="Required Field" validatorMessage="Please enter a valid number between 0-100" converterMessage="Please enter a valid number">
                                     </p:inputText>
                                     <p:message for="jointLengthOfResidence"/>
                                 </p:panelGrid>
@@ -1619,7 +1614,7 @@
 
                                     <p:outputLabel for="jointEmploymentStatus" style="font-weight: bold" value="Employment Status: "/>
                                     <p:selectOneMenu id="jointEmploymentStatus" value="#{publicMortgageLoanApplicationManagedBean.jointEmploymentStatus}"
-                                                     required="true" requiredMessage="Required Field">
+                                                     required="#{publicMortgageLoanApplicationManagedBean.hasJointApplicant}" requiredMessage="Required Field">
                                         <f:selectItem itemLabel="Please Select" itemValue="" />
                                         <f:selectItem itemLabel="Employee" itemValue="Employee" />
                                         <f:selectItem itemLabel="Self-Employed" itemValue="Self-Employed" />
@@ -1732,8 +1727,6 @@
                                         <p:outputLabel for="jointLengthOfCurrentJob" style="font-weight: bold" value="Years of Current Employment/Business: "/>
                                         <p:inputText id="jointLengthOfCurrentJob" value="#{publicMortgageLoanApplicationManagedBean.jointLengthOfCurrentJob}"
                                                      required="#{publicMortgageLoanApplicationManagedBean.jointEmploymentPanelVisible}" requiredMessage="Required Field" validatorMessage="Please enter a valid number between 0-100" converterMessage="Please enter a valid number">
-                                            <f:validateLongRange minimum="0" maximum="100"/>
-                                            <f:convertNumber integerOnly="true"/>
                                         </p:inputText>
                                         <p:message for="jointLengthOfCurrentJob"/>
 
@@ -1746,27 +1739,25 @@
                                         <p:outputLabel for="jointLengthOfPreviousJob" style="font-weight: bold" value="Years of Previous Employment/Business: "/>
                                         <p:inputText id="jointLengthOfPreviousJob" value="#{publicMortgageLoanApplicationManagedBean.jointLengthOfPreviousJob}"
                                                      required="#{publicMortgageLoanApplicationManagedBean.jointEmploymentPanelVisible}" requiredMessage="Required Field" validatorMessage="Please enter a valid number between 0-100" converterMessage="Please enter a valid number">
-                                            <f:validateLongRange minimum="0" maximum="100"/>
-                                            <f:convertNumber integerOnly="true"/>
                                         </p:inputText>
                                         <p:message for="jointLengthOfPreviousJob"/>
                                     </p:panel>
 
                                     <p:outputLabel for="jointMonthlyFixedIncome" style="font-weight: bold" value="Monthly Fixed Income(SGD): "/>
                                     <p:inputText id="jointMonthlyFixedIncome" value="#{publicMortgageLoanApplicationManagedBean.jointMonthlyFixedIncome}"
-                                                 required="true" requiredMessage="Required Field" converterMessage="Please enter a valid number">
+                                                 required="#{publicMortgageLoanApplicationManagedBean.hasJointApplicant}" requiredMessage="Required Field" converterMessage="Please enter a valid number">
                                     </p:inputText>
                                     <p:message for="jointMonthlyFixedIncome"/>
 
                                     <p:outputLabel for="jointOtherMonthlyIncome" style="font-weight: bold" value="Other Monthly Income(SGD): "/>
                                     <p:inputText id="jointOtherMonthlyIncome" value="#{publicMortgageLoanApplicationManagedBean.jointOtherMonthlyIncome}"
-                                                 required="true" requiredMessage="Required Field" converterMessage="Please enter a valid number">
+                                                 required="#{publicMortgageLoanApplicationManagedBean.hasJointApplicant}" requiredMessage="Required Field" converterMessage="Please enter a valid number">
                                     </p:inputText>
                                     <p:message for="jointOtherMonthlyIncome"/>
 
                                     <p:outputLabel for="jointOtherMonthlyIncomeSource" style="font-weight: bold" value="Source of Other Income: "/>
                                     <p:inputText id="jointOtherMonthlyIncomeSource" value="#{publicMortgageLoanApplicationManagedBean.jointOtherMonthlyIncomeSource}"
-                                                 required="true" requiredMessage="Required Field"/>
+                                                 required="#{publicMortgageLoanApplicationManagedBean.hasJointApplicant}" requiredMessage="Required Field"/>
                                     <p:message for="jointOtherMonthlyIncomeSource"/>
                                 </p:panelGrid>
 

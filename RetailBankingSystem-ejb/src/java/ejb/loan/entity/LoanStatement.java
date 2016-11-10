@@ -1,13 +1,12 @@
 package ejb.loan.entity;
 
 import java.io.Serializable;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 @Entity
 public class LoanStatement implements Serializable {
@@ -19,7 +18,10 @@ public class LoanStatement implements Serializable {
     private String statementType;
     private String accountDetails;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST}, fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, mappedBy = "loanStatement")
+    private LoanRepaymentAccount loanRepaymentAccount;
+
+    @OneToOne(fetch = FetchType.EAGER, mappedBy = "loanStatement")
     private LoanPayableAccount loanPayableAccount;
 
     public Long getLoanStatementId() {
@@ -44,6 +46,14 @@ public class LoanStatement implements Serializable {
 
     public void setAccountDetails(String accountDetails) {
         this.accountDetails = accountDetails;
+    }
+
+    public LoanRepaymentAccount getLoanRepaymentAccount() {
+        return loanRepaymentAccount;
+    }
+
+    public void setLoanRepaymentAccount(LoanRepaymentAccount loanRepaymentAccount) {
+        this.loanRepaymentAccount = loanRepaymentAccount;
     }
 
     public LoanPayableAccount getLoanPayableAccount() {

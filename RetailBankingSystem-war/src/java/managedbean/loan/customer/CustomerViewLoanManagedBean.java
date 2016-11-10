@@ -16,7 +16,6 @@ import ejb.loan.session.LoanManagementSessionBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -74,7 +73,11 @@ public class CustomerViewLoanManagedBean implements Serializable {
     private String loanServingAccount;
 
     private CustomerBasic customer;
+    private double totalInterest;
+    private double totalPrincipal;
 
+    private double currentPrincipal;
+    private double currentInterest;
     /**
      * Creates a new instance of CustomerViewLoanManagedBean
      */
@@ -96,7 +99,9 @@ public class CustomerViewLoanManagedBean implements Serializable {
         int allMonths = pa.getLoanApplication().getPeriodSuggested();
         int finishedMonths = ra.getRepaymentMonths();
         remainingyears = (allMonths - finishedMonths) / 12;
+        remainingyears = (int) (Math.round(remainingyears * 100.0) / 100.0);
         remainingmonths = (allMonths - finishedMonths) % 12;
+        remainingyears = (int) (Math.round(remainingyears * 100.0) / 100.0);
 
         LoanInterestPackage pkg = pa.getLoanApplication().getLoanInterestPackage();
         interestPackage = pkg.getPackageName();
@@ -121,11 +126,11 @@ public class CustomerViewLoanManagedBean implements Serializable {
         }
 
         interestRate = Math.round(interestRate * 100.0) / 100.0;
-        instalment = ra.getInstalment();
+        instalment = ra.getCurrentInstalment();
         fees = ra.getFees();
+        fees = Math.round(fees * 100.0) / 100.0;
         overdueBalance = ra.getOverdueBalance();
-        totalPayment = instalment + fees + overdueBalance;
-        totalPayment = Math.round(totalPayment * 100.0) / 100.0;
+        overdueBalance = Math.round(overdueBalance * 100.0) / 100.0;
         totalAmount = ra.getAccountBalance();
         totalAmount = Math.round(totalAmount * 100.0) / 100.0;
 
@@ -135,6 +140,15 @@ public class CustomerViewLoanManagedBean implements Serializable {
         } else {
             hasRecurringRepayment = false;
         }
+        
+        totalInterest = ra.getTotalInterest();
+        totalInterest = Math.round(totalInterest * 100.0) / 100.0;
+        totalPrincipal = ra.getTotalPrincipal();
+        totalPrincipal = Math.round(totalPrincipal * 100.0) / 100.0;
+        currentInterest = ra.getCurrentInterest();
+        currentInterest = Math.round(currentInterest * 100.0) / 100.0;
+        currentPrincipal = ra.getCurrentPrincipal();
+        currentPrincipal = Math.round(currentPrincipal * 100.0) / 100.0;
     }
 
     public void makeRepaymentByMerlionBankAccount() throws IOException {
@@ -182,8 +196,12 @@ public class CustomerViewLoanManagedBean implements Serializable {
 
     public void confirmRecurringPayment() {
         loanManagementSessionBeanLocal.setRecurringLoanServingAccount(loanServingAccount, ra.getId());
+        hasRecurringRepayment = true;
         RequestContext rc = RequestContext.getCurrentInstance();
         rc.execute("PF('recurringDialog').hide();");
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Repayment plan updated successfully.", null);
+        FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage(null, message);
     }
 
     public void deleteRecurringPayment() {
@@ -191,6 +209,7 @@ public class CustomerViewLoanManagedBean implements Serializable {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Repayment plan updated successfully.", null);
         FacesContext context = FacesContext.getCurrentInstance();
         context.addMessage(null, message);
+        hasRecurringRepayment = false;
     }
 
     public BankAccountSessionBeanLocal getBankAccountSessionBeanLocal() {
@@ -219,6 +238,7 @@ public class CustomerViewLoanManagedBean implements Serializable {
 
     public List<LoanRepaymentTransaction> getRepaymentHistory() {
         repaymentHistory = loanManagementSessionBeanLocal.getRepaymentHistory(ra.getId());
+        System.out.println(repaymentHistory);
         return repaymentHistory;
     }
 
@@ -396,6 +416,38 @@ public class CustomerViewLoanManagedBean implements Serializable {
 
     public void setCustomer(CustomerBasic customer) {
         this.customer = customer;
+    }
+
+    public double getTotalInterest() {
+        return totalInterest;
+    }
+
+    public void setTotalInterest(double totalInterest) {
+        this.totalInterest = totalInterest;
+    }
+
+    public double getTotalPrincipal() {
+        return totalPrincipal;
+    }
+
+    public void setTotalPrincipal(double totalPrincipal) {
+        this.totalPrincipal = totalPrincipal;
+    }
+
+    public double getCurrentPrincipal() {
+        return currentPrincipal;
+    }
+
+    public void setCurrentPrincipal(double currentPrincipal) {
+        this.currentPrincipal = currentPrincipal;
+    }
+
+    public double getCurrentInterest() {
+        return currentInterest;
+    }
+
+    public void setCurrentInterest(double currentInterest) {
+        this.currentInterest = currentInterest;
     }
 
 }

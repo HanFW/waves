@@ -5,6 +5,7 @@ import ejb.customer.entity.CustomerBasic;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.session.BankAccountSessionBeanLocal;
 import ejb.deposit.session.InterestSessionBeanLocal;
+import ejb.infrastructure.session.LoggingSessionBeanLocal;
 import ejb.infrastructure.session.MessageSessionBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
@@ -35,6 +36,9 @@ public class InternalOpenAccountManagedBean implements Serializable {
 
     @EJB
     private InterestSessionBeanLocal interestSessionBeanLocal;
+
+    @EJB
+    private LoggingSessionBeanLocal loggingSessionBeanLocal;
 
     private String bankAccountType;
     private String confirmBankAccountPwd;
@@ -377,7 +381,7 @@ public class InternalOpenAccountManagedBean implements Serializable {
         CustomerBasic customerBasic = (CustomerBasic) ec.getSessionMap().get("customer");
 
         bankAccountNum = bankAccountSessionBeanLocal.generateBankAccount();
-        
+
         if (agreement) {
 
             totalBankAccountBalance = "0.0";
@@ -416,6 +420,8 @@ public class InternalOpenAccountManagedBean implements Serializable {
                     bankAccountDepositPeriod, currentFixedDepositPeriod, fixedDepositStatus,
                     statementDateDouble, currentTimeMilis, customerBasicId, newInterestId);
 
+            loggingSessionBeanLocal.createNewLogging("customer", customerBasic.getCustomerBasicId(), "customer opens a new deposit account on iBanking website", "success", null);
+            
             bankAccount = bankAccountSessionBeanLocal.retrieveBankAccountById(newAccountId);
 
             if (bankAccountType.equals("Monthly Savings Account")) {

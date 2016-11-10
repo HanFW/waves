@@ -10,7 +10,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 @Stateless
-public class IssueSessionBean implements IssueSessionBeanLocal {
+public class IssueSessionBean implements IssueSessionBeanLocal, IssueSessionBeanRemote {
 
     @EJB
     private EnquirySessionBeanLocal enquirySessionBeanLocal;
@@ -48,7 +48,7 @@ public class IssueSessionBean implements IssueSessionBeanLocal {
         Issue issue = new Issue();
 
         try {
-            Query query = entityManager.createQuery("Select i From Issue i Where i.issueId:issueId");
+            Query query = entityManager.createQuery("Select i From Issue i Where i.issueId =:issueId");
             query.setParameter("issueId", issueId);
 
             if (query.getResultList().isEmpty()) {

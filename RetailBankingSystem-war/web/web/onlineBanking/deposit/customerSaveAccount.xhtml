@@ -18,7 +18,7 @@
         <h:form>
             <div align="center"> 
 
-                <h:panelGrid columns="1" class="ui-lg-7"> 
+                <h:panelGrid columns="1" class="ui-lg-4"> 
 
                     <h:outputLabel value="Bank Account Successfully Created." 
                                    style="font-weight:bold;font-size: 18px"/>
@@ -33,7 +33,7 @@
                     <br/>
                 </h:panelGrid>
                 
-                <h:panelGrid columns="2" class="ui-lg-7"> 
+                <h:panelGrid columns="2" class="ui-lg-4"> 
 
                     <h:outputText style="font-weight: bold" value="Bank Account Num: "/>
                     <h:outputText value="#{saveAccountManagedBean.bankAccountNum}"/>
@@ -46,8 +46,8 @@
 
                 </h:panelGrid>    
 
-                <h:panelGrid columns="1" class="ui-lg-7"> 
-                    <p:button outcome="/web/onlineBanking/deposit/customerDepositIndex.xhtml" value="Back to Homepage"/>
+                <h:panelGrid columns="1"> 
+                    <p:button outcome="/web/onlineBanking/deposit/customerDepositIndex.xhtml" value="Back to Homepage" style="width:auto"/>
                 </h:panelGrid>
             </div>
         </h:form>

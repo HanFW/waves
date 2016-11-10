@@ -31,7 +31,7 @@ import javax.persistence.Query;
  * @author Jingyuan
  */
 @Stateless
-public class EmployeeAdminSessionBean implements EmployeeAdminSessionBeanLocal {
+public class EmployeeAdminSessionBean implements EmployeeAdminSessionBeanLocal, EmployeeAdminSessionBeanRemote {
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")
@@ -628,13 +628,15 @@ public class EmployeeAdminSessionBean implements EmployeeAdminSessionBeanLocal {
     }
 
     @Override
-    public void addPermissionToRole(String roleName, String permissionName) {
+    public String addPermissionToRole(String roleName, String permissionName) {
         Role role = getRoleByName(roleName);
         Permission permission = getPermissionByName(permissionName);
 
         role.addPermissionToRole(permission);
         permission.addRoleToPermission(role);
         em.flush();
+        
+        return "Successfully Added!";
     }
 
 }

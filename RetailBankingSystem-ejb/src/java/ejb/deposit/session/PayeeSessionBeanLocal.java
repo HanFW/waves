@@ -16,4 +16,5 @@ public interface PayeeSessionBeanLocal {
     public Payee retrievePayeeByNum(String payeeAccountNum);
 
     public void updateLastTransactionDate(String bankAccountNum);
+    
 }

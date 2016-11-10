@@ -113,6 +113,7 @@ public class DebitCardManagementSessionBean implements DebitCardManagementSessio
                     String expDate = findDebitCard.getCardExpiryDate();
                     int remainingMonths = findDebitCard.getRemainingExpirationMonths();
                     int transactionLimit = findDebitCard.getTransactionLimit();
+                    double availableBalance=findDebitCard.getAvailableTransactionBalance();
 
                     depositAccount.removeDebitCard(findDebitCard);
                     debitCardType.removeDebitCard(findDebitCard);
@@ -120,7 +121,7 @@ public class DebitCardManagementSessionBean implements DebitCardManagementSessio
                     em.remove(findDebitCard);
 
                     //issue a new debit card
-                    debitCardSessionBeanLocal.lostDebitCardRecreate(bankAccountNum, cardHolderName, expDate, remainingMonths, transactionLimit, cardTypeName);
+                    debitCardSessionBeanLocal.lostDebitCardRecreate(bankAccountNum, cardHolderName, expDate, remainingMonths, transactionLimit, cardTypeName,availableBalance);
                     System.out.println("Debit Card management session bean: issue a new card after reporting debit card loss");
 
                     return "success";
@@ -183,6 +184,8 @@ public class DebitCardManagementSessionBean implements DebitCardManagementSessio
                     String cardHolderName = findDebitCard.getCardHolderName();
                     String cardTypeName = debitCardType.getDebitCardTypeName();
                     String applicationDate = requestForReplacementTime;
+                    int transactionLimit=findDebitCard.getTransactionLimit();
+                    
 
                     //get the id of the current card and save it as the predecessor of the new debit card issued
                     Long predecessorId = findDebitCard.getCardId();

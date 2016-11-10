@@ -14,7 +14,7 @@ import javax.persistence.PersistenceContext;
  * @author Jingyuan
  */
 @Stateless
-public class EmployeeRolePermissionManagementSessionBean implements EmployeeRolePermissionManagementSessionBeanLocal {
+public class EmployeeRolePermissionManagementSessionBean implements EmployeeRolePermissionManagementSessionBeanLocal, EmployeeRolePermissionManagementSessionBeanRemote {
 
     // Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Business Method")

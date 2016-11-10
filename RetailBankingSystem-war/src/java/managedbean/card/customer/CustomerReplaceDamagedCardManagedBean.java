@@ -10,6 +10,7 @@ import ejb.card.session.CreditCardSessionBeanLocal;
 import ejb.card.session.DebitCardManagementSessionBeanLocal;
 import ejb.card.session.DebitCardSessionBeanLocal;
 import ejb.customer.entity.CustomerBasic;
+import ejb.infrastructure.session.LoggingSessionBeanLocal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
@@ -42,6 +43,9 @@ public class CustomerReplaceDamagedCardManagedBean {
 
     @EJB
     private CreditCardSessionBeanLocal creditCardSessionBeanLocal;
+
+    @EJB
+    private LoggingSessionBeanLocal loggingSessionBeanLocal;
 
     private String cardType;
     private String debitCardPwd;
@@ -92,6 +96,7 @@ public class CustomerReplaceDamagedCardManagedBean {
 
         debitCardManagementSessionBeanLocal.replaceDamagedDebitCard(debitCardNum);
         message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Replacement successful! Please wait for 2-3 days and your new card will be mailed to your preferred address.", null);
+        loggingSessionBeanLocal.createNewLogging("customer", customer.getCustomerBasicId(), "customer replaces damaged debit card", "successful", null);
         context.addMessage(null, message);
     }
 
@@ -105,6 +110,7 @@ public class CustomerReplaceDamagedCardManagedBean {
 
         creditCardManagementSessionBeanLocal.replaceDamagedCreditCard(creditCardNum);
         message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Replacement successful! Please wait for 2-3 days and your new card will be mailed to your preferred address.", null);
+        loggingSessionBeanLocal.createNewLogging("customer", customer.getCustomerBasicId(), "customer replaces damaged credit card", "successful", null);
         context.addMessage(null, message);
     }
 
@@ -157,8 +163,7 @@ public class CustomerReplaceDamagedCardManagedBean {
 
     public List<String> getCreditCards() {
         customer = getCustomerViaSessionMap();
-        Long id = customer.getCustomerBasicId();
-        creditCards = creditCardSessionBeanLocal.getAllActivatedCreditCards(id);
+        creditCards = creditCardSessionBeanLocal.getAllPrincipalCardInfoByCustomer(customer);
         return creditCards;
     }
 

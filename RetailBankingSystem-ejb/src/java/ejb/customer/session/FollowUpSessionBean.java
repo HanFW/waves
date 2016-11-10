@@ -9,7 +9,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 @Stateless
-public class FollowUpSessionBean implements FollowUpSessionBeanLocal {
+public class FollowUpSessionBean implements FollowUpSessionBeanLocal, FollowUpSessionBeanRemote {
 
     @PersistenceContext
     private EntityManager entityManager;

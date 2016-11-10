@@ -9,5 +9,5 @@ public interface InterestSessionBeanLocal {
             String isWithdraw);
     public Interest retrieveInterestById(Long interestId);
     public Interest retrieveInterestByAccountNum(String bankAccountNum);
-    public void deleteInterest(Long interestId);
+    public String deleteInterest(Long interestId);
 }

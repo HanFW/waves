@@ -11,6 +11,10 @@
         <h:form id="formMain">
             <div align="center">
                 <br/>
+                <br/>
+                <p:outputLabel value ="Cash Withdraw" />
+                <br/>
+                <br/>
                 <p:panel id="panel">
                     <p:messages globalOnly="true"/>
 
@@ -35,9 +39,11 @@
                                 <p:outputLabel for="withdrawAccountNum" style="font-weight: bold" value="Account Number: " />
                             </p:column>
                             <p:column>
-                                <p:inputText required="true" label="Withdraw Account Number" requiredMessage="Account number is required." id="withdrawAccountNum"
-                                             value="#{employeeCashManagedBean.withdrawAccountNum}">
-                                </p:inputText>
+                                <p:selectOneMenu id="withdrawAccountNum" value="#{employeeCashManagedBean.withdrawAccountNumWithType}" 
+                                                 effect="fold" editable="false">
+                                    <f:selectItem itemLabel="Please Select One" itemValue=""/> 
+                                    <f:selectItems value="#{employeeCashManagedBean.fromAccounts}" />
+                                </p:selectOneMenu>
                             </p:column>
                             <p:column>
                                 <p:message for="withdrawAccountNum" />
@@ -50,14 +56,14 @@
                         <p:commandButton id="cancelBtn" value="Cancel" update="panel" immediate = "true"> 
                             <p:confirm header="Cancel" message="Are you sure?" />
                         </p:commandButton>
-                        
-                         <p:commandButton id="withdrawBtn" value="Withdraw" update="panel" 
+
+                        <p:commandButton id="withdrawBtn" value="Withdraw" update="panel" 
                                          actionListener="#{employeeCashManagedBean.cashWithdraw}" ajax="true" />
 
-                         <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true">
-                             <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" action="/RetailBankingSystem-war/web/internalSystem/infrastructure/employeeMainPage.xhtml?faces-redirect=true"/>
-                             <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" />
-                         </p:confirmDialog>
+                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true">
+                            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" action="/RetailBankingSystem-war/web/internalSystem/infrastructure/employeeMainPage.xhtml?faces-redirect=true"/>
+                            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" />
+                        </p:confirmDialog>
 
                     </h:panelGrid>
 

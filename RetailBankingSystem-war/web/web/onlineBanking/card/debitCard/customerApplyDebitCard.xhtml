@@ -63,7 +63,7 @@
                                 <h:panelGrid columns="1" style="border: none">
                                     <p:selectOneRadio id="selectDebitCard" layout="pageDirection" required="true" requiredMessage="Please select a debit card type" style="text-align:left" value="#{customerApplyDebitCardManagedBean.cardType}">
                                         <f:selectItem itemLabel="Merlion Bank Visa PayWave Debit Card" itemValue="Visa PayWave" />
-                                        <f:selectItem itemLabel="Watsons Merlion Bank Mastercard Debit Card" itemValue="Watsons Mastercard" />
+                                        <f:selectItem itemLabel="Merlion Bank Watsons Mastercard Debit Card" itemValue="Watsons Mastercard" />
                                         <f:selectItem itemLabel="Merlion Bank NUS Visa Debit Card" itemValue="NUS Visa" />  
                                     </p:selectOneRadio>
                                     <p:messages for="selectDebitCard"/>
@@ -87,36 +87,61 @@
                             </h:panelGrid>
                             <p:messages for="depositAccount"/>
 
-                            <p:dialog  header="Merlion Bank Visa PayWave Debit Card" widgetVar="debitCard1" width="80%" height="400" responsive="true">
-                                <h:outputText value="Annual Fee(Inclusive of GST)"/>
-                                <br/>
-                                <h:outputText value="Principal: S$5.00"/>
-                                <br/>
-                                <h:outputText value="Annual Fee Waiver: 3 year"/>  
-                                <br/>
-                                <h:outputText value="5% cashback for contactless transactions"/>
-                                <br/>
-                                <h:outputText value="Conditions: not withdraw more than 3 times at Merlion Bank ATMs across all your Merlion Bank Cards as well as local Merlion Bank branches in the same month." />                              
+                            <p:dialog  header="Visa PayWave Debit Card" widgetVar="debitCard1" width="60%" height="400" responsive="true">
+                                <div align="center">
+                                    <p:graphicImage name="payWave.png" library="cardCover" style="width:200px;height:110px"/>
+                                    <h:panelGrid columns="1">  
+                                        <p:panel>
+                                            <h:outputText value="Annual Fee(Inclusive of GST)"/>
+                                            <br/>
+                                            <h:outputText value="Principal: S$5.00"/>
+                                            <br/>
+                                            <h:outputText value="Annual Fee Waiver: 3 year"/>  
+                                            <br/>
+                                            <h:outputText value="5% cashback for contactless transactions"/>
+                                            <br/>
+                                            <h:outputText value="Conditions: not withdraw more than 3 times" />
+                                            <br/>
+                                            <h:outputText value="at Merlion Bank ATMs across all your Merlion Bank Cards" />
+                                            <br/>
+                                            <h:outputText value="as well as local Merlion Bank branches in the same month." />
+                                        </p:panel>
+                                    </h:panelGrid>
+                                </div>
                             </p:dialog>
 
-                            <p:dialog header="Watsons Merlion Bank Mastercard Debit Card" widgetVar="debitCard2" width="80%" height="400" responsive="true">
-                                <h:outputText value="Annual Fee(Inclusive of GST)"/>
-                                <br/>
-                                <h:outputText value="Principal: S$5.00"/>
-                                <br/>
-                                <h:outputText value="Annual Fee Waiver: 5 year"/>  
-                                <br/>
-                                <h:outputText value="3% cashback for contactless transactions"/>                                                  
+                            <p:dialog header="Watsons Mastercard Debit Card" widgetVar="debitCard2" width="60%" height="400" responsive="true">
+                                <div align="center">
+                                    <p:graphicImage name="watsons.png" library="cardCover" style="width:200px;height:110px"/>
+                                    <h:panelGrid columns="1"> 
+                                        <p:panel>
+                                            <h:outputText value="Annual Fee(Inclusive of GST)"/>
+                                            <br/>
+                                            <h:outputText value="Principal: S$5.00"/>
+                                            <br/>
+                                            <h:outputText value="Annual Fee Waiver: 5 year"/>  
+                                            <br/>
+                                            <h:outputText value="3% cashback for contactless transactions"/>
+                                        </p:panel>
+                                    </h:panelGrid>
+                                </div>
                             </p:dialog>
 
-                            <p:dialog header="Watsons Merlion Bank Mastercard Debit Card" widgetVar="debitCard3" width="80%" height="400" responsive="true">
-                                <h:outputText value="Annual Fee(Inclusive of GST)"/>
-                                <br/>
-                                <h:outputText value="Principal: S$0.00"/>
-                                <br/>
-                                <h:outputText value="Annual Fee Waiver: 4 year"/>  
-                                <br/>
-                                <h:outputText value="3% cashback for contactless transactions"/>                                                  
+                            <p:dialog header="NUS Visa Debit Card" widgetVar="debitCard3" width="60%" height="400" responsive="true">
+                                <div align="center">
+                                    <p:graphicImage name="nus.png" library="cardCover" style="width:200px;height:110px"/>             
+                                    <h:panelGrid columns="1">
+                                        <p:panel>
+                                            <h:outputText value="Annual Fee(Inclusive of GST)"/>
+                                            <br/>
+                                            <h:outputText value="Principal: S$0.00"/>
+                                            <br/>
+                                            <h:outputText value="Annual Fee Waiver: 4 year"/>  
+                                            <br/>
+                                            <h:outputText value="3% cashback for contactless transactions"/> 
+                                        </p:panel>
+                                    </h:panelGrid>
+                                </div>
                             </p:dialog>
 
                             <p:commandButton  value="Next" icon="ui-icon-arrow-1-e" iconPos="right" actionListener="#{customerApplyDebitCardManagedBean.checkExistingDebitCard}" style="width:200px" />
@@ -212,7 +237,7 @@
                             <p:outputLabel value="I have read and agree to be bound by "/>
                             <p:commandLink value="the terms of this application and the Merlion Bank Debit Card Agreement Declaration" onclick="PF('dlg1').show();"/>
 
-                            <p:dialog widgetVar="dlg1" width="80%" height="100%">
+                            <p:dialog widgetVar="dlg1" width="90%" height="500" responsive="true">
                                 <p:media value="/resources/cardDocument/MerlionBankDebitCardDeclarationForm.pdf" width="80%" height="100%"/> 
                             </p:dialog>
 
@@ -234,7 +259,6 @@
                                 </p:steps>
                             </h:panelGrid>
 
-                            <h:outputText style="font-size: 40px" value="Apply for New Debit Cards"/>
                             <h:panelGrid columns="1" class="ui-lg-6">  
                                 <h1>Personal Details</h1>
                                 <p:row>
@@ -291,7 +315,7 @@
                                 </p:row>
                             </h:panelGrid>
 
-                            <h:panelGrid columns="2" class="ui-lg-6"> 
+                            <h:panelGrid columns="2" class="ui-lg-4"> 
                                 <p:commandButton  value="Back" icon="ui-icon-arrow-1-w" iconPos="left" onclick="PF('applyDebitCardWizard').back();" />
                                 <p:commandButton  value="Confirm" icon="ui-icon-arrow-1-e" iconPos="right" actionListener="#{customerApplyDebitCardManagedBean.createDebitCard}"/>
                             </h:panelGrid>
@@ -313,8 +337,6 @@
                             <br/>
                             <h:outputText style="font-size: 32px" value="Application Successful!"/>
                             <br/>
-                            <br/>
-                            <h:outputText value="Your application is successful"/>
                             <br/>
                             <h:outputText value="Your debit card will be mailed to you in 2-3 working days."/>
                             <br/>

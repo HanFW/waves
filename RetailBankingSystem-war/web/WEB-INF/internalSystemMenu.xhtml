@@ -77,7 +77,6 @@
                             <p:menuitem value="Input Cheque Information" url="/web/internalSystem/payment/employeeEnterReceivedChequeInformation.xhtml" />
                             <p:menuitem value="Apply Debit Card" url="/web/internalSystem/card/debitCard/employeeDebitCardCheckExisting.xhtml"/>
                             <p:menuitem value="Apply Credit Card" url="/web/internalSystem/card/creditCard/employeeCreditCardCheckExisting.xhtml"/>
-                            <p:menuitem value="View Dashboard" url="/web/internalSystem/BI/employeeViewDashboard.xhtml" />
                             <p:menuitem value="Apply for HDB Loan" action="#{employeeChooseLoanManagedBean.chooseMortgageLoan('HDB')}"/>
                             <p:menuitem value="Apply for Private Property Loan" action="#{employeeChooseLoanManagedBean.chooseMortgageLoan('Private Property')}"/>
                             <p:menuitem value="Apply for Renovation Loan" url="/web/internalSystem/loan/employeeRenovationLoanApplication.xhtml"/>
@@ -136,6 +135,7 @@
 
                         <p:submenu label="Loan Department Manager" rendered="#{employeeAccountManagedBean.hasRoleLoanDepartmentManager()}">
                             <p:menuitem value="View Loan Applications" url="/web/internalSystem/loan/loanManagerViewAllLoanApplications.xhtml" />
+                            <p:menuitem value="View Customer Loan RFM Analysis" url="/web/internalSystem/BI/viewLoanRFMValue.xhtml" />
                         </p:submenu>
 
                         <p:submenu label="Loan Officer" rendered="#{employeeAccountManagedBean.hasRoleLoanOfficer()}">
@@ -151,7 +151,8 @@
                         </p:submenu>
 
                         <p:submenu label="Director" rendered="#{employeeAccountManagedBean.hasRoleDirector()}">
-                            <p:menuitem value="XXXXXX" url="" />
+                            <p:menuitem value="View Dashboard" url="/web/internalSystem/BI/employeeViewDashboard.xhtml" />
+                            <p:menuitem value="View Customer Segment" url="/web/internalSystem/BI/viewCustomerSegment.xhtml" />
                         </p:submenu>
 
                         <p:submenu label="Card Department Manager" rendered="#{employeeAccountManagedBean.hasRoleCardDepartmentManager()}">

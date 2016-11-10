@@ -5,7 +5,7 @@
  */
 package ejb.card.entity;
 
-import ejb.deposit.entity.CreditCardTransaction;
+import ejb.loan.entity.LoanRepaymentTransaction;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -23,6 +23,11 @@ public class PrincipalCard extends CreditCard implements Serializable {
     
     private double creditLimit;
     private double outstandingBalance; 
+    private double currentExpense;
+    private double overduePrincipal;
+    private double overdueInterest;
+    private int defaultMonths;
+    private int dayInMonth;
        
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "principalCard")
     private List<SupplementaryCard> supplementaryCards;
@@ -30,8 +35,18 @@ public class PrincipalCard extends CreditCard implements Serializable {
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "principalCard")
     private List<CreditCardTransaction> creditCardTransactions;
     
+    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "principalCard")
+    private List<CreditCardReport> creditCardReport;
+    
+    @OneToMany (cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy ="principalCard")
+    private List<LoanRepaymentTransaction> loanRepaymentTransactions;
+    
     public List<SupplementaryCard> getSupplementaryCards() {
         return supplementaryCards;
+    }
+    
+    public void addRepaymentTransactions(LoanRepaymentTransaction transaction){
+        loanRepaymentTransactions.add(transaction);
     }
 
     public void setSupplementaryCards(List<SupplementaryCard> supplementaryCards) {
@@ -72,6 +87,62 @@ public class PrincipalCard extends CreditCard implements Serializable {
     
     public void removeTransaction(CreditCardTransaction transaction){
         this.creditCardTransactions.remove(transaction);
+    }
+
+    public List<CreditCardReport> getCreditCardReport() {
+        return creditCardReport;
+    }
+
+    public void setCreditCardReport(List<CreditCardReport> creditCardReport) {
+        this.creditCardReport = creditCardReport;
+    }
+
+    public double getCurrentExpense() {
+        return currentExpense;
+    }
+
+    public void setCurrentExpense(double currentExpense) {
+        this.currentExpense = currentExpense;
+    }
+
+    public double getOverduePrincipal() {
+        return overduePrincipal;
+    }
+
+    public void setOverduePrincipal(double overduePrincipal) {
+        this.overduePrincipal = overduePrincipal;
+    }
+
+    public double getOverdueInterest() {
+        return overdueInterest;
+    }
+
+    public void setOverdueInterest(double overdueInterest) {
+        this.overdueInterest = overdueInterest;
+    }
+
+    public int getDefaultMonths() {
+        return defaultMonths;
+    }
+
+    public void setDefaultMonths(int defaultMonths) {
+        this.defaultMonths = defaultMonths;
+    }
+
+    public List<LoanRepaymentTransaction> getLoanRepaymentTransactions() {
+        return loanRepaymentTransactions;
+    }
+
+    public void setLoanRepaymentTransactions(List<LoanRepaymentTransaction> loanRepaymentTransactions) {
+        this.loanRepaymentTransactions = loanRepaymentTransactions;
+    }
+
+    public int getDayInMonth() {
+        return dayInMonth;
+    }
+
+    public void setDayInMonth(int dayInMonth) {
+        this.dayInMonth = dayInMonth;
     }
     
 }

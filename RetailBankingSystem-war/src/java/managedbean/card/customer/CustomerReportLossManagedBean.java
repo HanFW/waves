@@ -11,6 +11,7 @@ import ejb.card.session.DebitCardManagementSessionBeanLocal;
 import ejb.card.session.DebitCardSessionBeanLocal;
 import ejb.customer.entity.CustomerBasic;
 import ejb.customer.session.CRMCustomerSessionBeanLocal;
+import ejb.infrastructure.session.LoggingSessionBeanLocal;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -50,6 +51,9 @@ public class CustomerReportLossManagedBean implements Serializable {
 
     @EJB
     private CRMCustomerSessionBeanLocal cRMCustomerSession;
+
+    @EJB
+    private LoggingSessionBeanLocal loggingSessionBeanLocal;
 
     private String cardType;
     private String debitCardPwd;
@@ -112,6 +116,7 @@ public class CustomerReportLossManagedBean implements Serializable {
                 message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Your card has been suceesfully reported as loss, we will send a new card to your mailing address in 2-3 working days", null);
                 context.addMessage(null, message);
                 System.out.println("debit card report loss");
+                loggingSessionBeanLocal.createNewLogging("customer", customer.getCustomerBasicId(), "customer reports debit card loss", "successful", null);
                 break;
             case "debit card not exist":
                 message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Card not exist! Please check the card number input", null);
@@ -141,6 +146,7 @@ public class CustomerReportLossManagedBean implements Serializable {
             case "success":
                 message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Your card has been suceesfully reported as loss, we will send a new card to your mailing address in 2-3 working days", null);
                 context.addMessage(null, message);
+                loggingSessionBeanLocal.createNewLogging("customer", customer.getCustomerBasicId(), "customer reports credit card loss", "successful", null);
 //                CustomerBasic newCustomer = cRMCustomerSession.getCustomerBasicById(newCustomerId);
 //                System.out.println("!!!!!!!!!!!!!!!!!customer  "+ newCustomer);
 //                ec.getSessionMap().replace("customer", newCustomer);

@@ -10,7 +10,9 @@ import ejb.card.session.CreditCardSessionBeanLocal;
 import ejb.customer.entity.CustomerAdvanced;
 import ejb.customer.entity.CustomerBasic;
 import ejb.customer.session.CRMCustomerSessionBeanLocal;
+import ejb.infrastructure.entity.Employee;
 import ejb.infrastructure.session.CustomerAdminSessionBeanLocal;
+import ejb.infrastructure.session.LoggingSessionBeanLocal;
 import ejb.infrastructure.session.MessageSessionBeanLocal;
 import ejb.loan.entity.CreditReportAccountStatus;
 import ejb.loan.entity.CreditReportBureauScore;
@@ -44,9 +46,12 @@ public class CreditCardManagerProcessManagedBean implements Serializable {
 
     @EJB
     private CRMCustomerSessionBeanLocal cRMCustomerSessionBeanLocal;
-    
+
     @EJB
     private MessageSessionBeanLocal messageSessionBeanLocal;
+
+    @EJB
+    private LoggingSessionBeanLocal loggingSessionBeanLocal;
 
     private CustomerBasic customer;
     private CustomerAdvanced ca;
@@ -145,18 +150,19 @@ public class CreditCardManagerProcessManagedBean implements Serializable {
 
     public void approveRequest() throws IOException {
         creditCardSessionLocal.approveRequest(cc.getCardId(), creditLimit);
-        
-        System.out.println("!!!!!!!!customer id "+ customer.getCustomerBasicId());
-        System.out.println("!!!!!!!!!csutomer has online banking acc or not "+ cRMCustomerSessionBeanLocal.hasOnlineBankingAcc(customer.getCustomerBasicId()));
+        loggingSessionBeanLocal.createNewLogging("employee", getEmployeeViaSessionMap(), "employee approves credit card", "successful", null);
+
+        System.out.println("!!!!!!!!customer id " + customer.getCustomerBasicId());
+        System.out.println("!!!!!!!!!csutomer has online banking acc or not " + cRMCustomerSessionBeanLocal.hasOnlineBankingAcc(customer.getCustomerBasicId()));
         if (!cRMCustomerSessionBeanLocal.hasOnlineBankingAcc(customer.getCustomerBasicId())) {
             customerAdminSessionBeanLocal.createOnlineBankingAccount(cc.getCustomerBasic().getCustomerBasicId(), "approveCreditCard");
         }
 
         Calendar cal = Calendar.getInstance();
         Date receivedDate = cal.getTime();
-        
-        String subject = "Your "+cc.getCreditCardType().getCreditCardTypeName()+" has been approved.";
-        String messageContent = "<br/><br/>Your "+cc.getCreditCardType().getCreditCardTypeName()+ " has been approved by one of our card managers. <br/><br/>"
+
+        String subject = "Your " + cc.getCreditCardType().getCreditCardTypeName() + " has been approved.";
+        String messageContent = "<br/><br/>Your " + cc.getCreditCardType().getCreditCardTypeName() + " has been approved by one of our card managers. <br/><br/>"
                 + "Please activate your credit card in 15 days. <br/><br/>"
                 + "<a href=\"https://localhost:8181/RetailBankingSystem-war/web/onlineBanking/card/creditCard/customerActivateCreditCard.xhtml\">ACTIVATE HERE</a> <br/><br/>"
                 + "Thank you. <br/>";
@@ -169,8 +175,8 @@ public class CreditCardManagerProcessManagedBean implements Serializable {
     }
 
     public void rejectRequest() throws IOException {
-        System.out.println("############credit card ID"+ creditCardID);
-        creditCardSessionLocal.rejectRequest(creditCardID);
+        creditCardSessionLocal.rejectRequest(cc.getCardId());
+        loggingSessionBeanLocal.createNewLogging("employee", getEmployeeViaSessionMap(), "employee rejects credit card", "successful", null);
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         ec.redirect(ec.getRequestContextPath() + "/web/internalSystem/card/creditCard/creditCardManagerViewApplication.xhtml?faces-redirect=true");
     }
@@ -232,7 +238,7 @@ public class CreditCardManagerProcessManagedBean implements Serializable {
     }
 
     public String getCustomerIdentificationNum() {
-        
+
         return customer.getCustomerIdentificationNum();
     }
 
@@ -584,12 +590,13 @@ public class CreditCardManagerProcessManagedBean implements Serializable {
         this.cc = cc;
     }
 
-    public Long getCreditCardID() {
-        return creditCardID;
-    }
+    private Long getEmployeeViaSessionMap() {
+        Long employeeId;
+        FacesContext context = FacesContext.getCurrentInstance();
+        Employee employee = (Employee) context.getExternalContext().getSessionMap().get("employee");
+        employeeId = employee.getEmployeeId();
 
-    public void setCreditCardID(Long creditCardID) {
-        this.creditCardID = creditCardID;
+        return employeeId;
     }
 
 }

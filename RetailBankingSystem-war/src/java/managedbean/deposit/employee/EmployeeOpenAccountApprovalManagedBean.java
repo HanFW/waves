@@ -1,6 +1,5 @@
 package managedbean.deposit.employee;
 
-import ejb.bi.session.DepositAccountOpenSessionBeanLocal;
 import ejb.customer.entity.CustomerBasic;
 import ejb.customer.session.CRMCustomerSessionBeanLocal;
 import ejb.deposit.entity.BankAccount;
@@ -10,7 +9,6 @@ import ejb.deposit.session.InterestSessionBeanLocal;
 import ejb.payment.session.MerlionBankSessionBeanLocal;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.Calendar;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;

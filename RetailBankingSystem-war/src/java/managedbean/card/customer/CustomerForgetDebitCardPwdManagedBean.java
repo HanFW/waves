@@ -8,6 +8,7 @@ package managedbean.card.customer;
 import ejb.card.session.DebitCardPasswordSessionBeanLocal;
 import ejb.card.session.DebitCardSessionBeanLocal;
 import ejb.customer.entity.CustomerBasic;
+import ejb.infrastructure.session.LoggingSessionBeanLocal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
@@ -34,6 +35,9 @@ public class CustomerForgetDebitCardPwdManagedBean {
 
     @EJB
     DebitCardSessionBeanLocal debitCardSessionBeanLocal;
+        
+    @EJB
+    private LoggingSessionBeanLocal loggingSessionBeanLocal;
 
     private CustomerBasic customer;
 
@@ -69,6 +73,7 @@ public class CustomerForgetDebitCardPwdManagedBean {
             System.out.println("====== card/debitCard/CustomerForgetDebitCardPwdManagedBean: set password for debit Card");
             message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Password has been successfully reset for your debit card!", null);
             context.addMessage(null, message);
+            loggingSessionBeanLocal.createNewLogging("customer", customer.getCustomerBasicId(),"customer forgets debit card pwd", "successful", null);
         }
 
     }

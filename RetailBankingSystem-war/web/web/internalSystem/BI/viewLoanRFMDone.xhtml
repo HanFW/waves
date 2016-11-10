@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/internalSystemTemplate.xhtml">
+
+    <ui:define name="content">
+        <h:form id="formMain">
+            <div align="center">
+                <br/>
+                <p:panel>
+                    <p:dataTable var="customerRFM" value="#{employeeViewLoanDoneManagedBean.customerRFM}" 
+                                 paginator="true" reflow="true" rows="20" emptyMessage="No Record">
+                        <p:column headerText="Date" style="width: 11%"> 
+                            <h:outputText value="#{customerRFM.updateMonth}/#{customerRFM.updateYear}" />
+                        </p:column>
+
+                        <p:column headerText="RFM Type"> 
+                            <h:outputText value="#{customerRFM.RFMType}" />
+                        </p:column>
+
+                        <p:column headerText="Recency"> 
+                            <h:outputText value="#{customerRFM.recency}" />
+                        </p:column>
+
+                        <p:column headerText="Frequency"> 
+                            <h:outputText value="#{customerRFM.frequency}" />
+                        </p:column>
+
+                        <p:column headerText="Monetary"> 
+                            <h:outputText value="#{customerRFM.monetary}" />
+                        </p:column>
+
+                        <p:column headerText="Total RFM Value"> 
+                            <h:outputText value="#{customerRFM.totalRFMValue}" />
+                        </p:column>
+                    </p:dataTable>
+                </p:panel>
+            </div>
+        </h:form>
+    </ui:define>
+</ui:composition>
