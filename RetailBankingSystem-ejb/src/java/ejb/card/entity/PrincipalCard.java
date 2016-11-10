@@ -27,6 +27,7 @@ public class PrincipalCard extends CreditCard implements Serializable {
     private double overduePrincipal;
     private double overdueInterest;
     private int defaultMonths;
+    private int dayInMonth;
        
     @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.EAGER, mappedBy = "principalCard")
     private List<SupplementaryCard> supplementaryCards;
@@ -134,6 +135,14 @@ public class PrincipalCard extends CreditCard implements Serializable {
 
     public void setLoanRepaymentTransactions(List<LoanRepaymentTransaction> loanRepaymentTransactions) {
         this.loanRepaymentTransactions = loanRepaymentTransactions;
+    }
+
+    public int getDayInMonth() {
+        return dayInMonth;
+    }
+
+    public void setDayInMonth(int dayInMonth) {
+        this.dayInMonth = dayInMonth;
     }
     
 }

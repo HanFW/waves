@@ -8,12 +8,15 @@ package ejb.card.session;
 import ejb.card.entity.PrincipalCard;
 import ejb.deposit.entity.BankAccount;
 import ejb.deposit.session.TransactionSessionBean;
+import ejb.infrastructure.session.CustomerEmailSessionBeanLocal;
 import ejb.loan.entity.LoanRepaymentTransaction;
 import java.util.Calendar;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -21,6 +24,8 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 public class CreditCardRepaymentSessionBean implements CreditCardRepaymentSessionBeanLocal {
+    @EJB
+    private CustomerEmailSessionBeanLocal customerEmailSessionBeanLocal;
     @EJB
     private TransactionSessionBean transactionSessionBeanLocal;
     
@@ -106,5 +111,38 @@ public class CreditCardRepaymentSessionBean implements CreditCardRepaymentSessio
 
         em.persist(transaction);
         em.flush();
+    }
+    
+    @Override
+    public void calculateCreditCardInterest(){
+        Query query = em.createQuery("SELECT c FROM PrincipalCard c");
+        List<PrincipalCard> cards = query.getResultList();
+        
+        for(PrincipalCard card: cards){
+            double newOutstanding = (card.getOverdueInterest()+card.getOverduePrincipal())*(1+0.0255/365);
+            card.setOverdueInterest(newOutstanding - card.getOverduePrincipal());
+            card.setDayInMonth(card.getDayInMonth()+1);
+            System.out.println("day in months: " +  card.getDayInMonth()+1);
+            if(card.getDayInMonth() == 30){
+                double newOverdue = card.getCurrentExpense();
+                if(newOverdue>0){
+                    System.out.println("new default on credit card");
+                    if(card.getDefaultMonths()<3){
+                        customerEmailSessionBeanLocal.sendEmail(card.getCustomerBasic(), "creditCardDefualt", null);
+                    }else if(card.getDefaultMonths()==4){
+                        card.setCreditLimit(0);
+                        customerEmailSessionBeanLocal.sendEmail(card.getCustomerBasic(), "creditCardDefualtAction", null);
+                    }
+                    card.setDefaultMonths(card.getDefaultMonths()+1);
+                }else{
+                    card.setDefaultMonths(0);
+                }
+                card.setOutstandingBalance(0);
+                card.setOverduePrincipal(card.getOverduePrincipal()+newOverdue);
+                card.setCurrentExpense(0);
+                card.setDayInMonth(0);
+            }
+            em.flush();
+        }
     }
 }

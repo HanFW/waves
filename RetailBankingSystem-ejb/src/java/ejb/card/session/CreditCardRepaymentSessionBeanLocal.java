@@ -16,4 +16,5 @@ import javax.ejb.Local;
 @Local
 public interface CreditCardRepaymentSessionBeanLocal {
      public Long makeCreditCardRepayment(BankAccount depositAccount, PrincipalCard card, double amount);
+     public void calculateCreditCardInterest();
 }
