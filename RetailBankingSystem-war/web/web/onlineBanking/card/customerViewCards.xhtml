@@ -57,6 +57,7 @@
                     </p:tab>
 
                     <p:tab title="Credit Cards" id="creditCards">
+                        <p:messages autoUpdate="true"/>
                         <p:dataTable var="creditCard" id="creditCardsTable" value="#{customerViewCardsManagedBean.creditCards}">
                             <p:column headerText="Credit Card Type Name">
                                 <h:outputText value="#{creditCard.creditCardType.creditCardTypeName}" />
@@ -86,7 +87,10 @@
                                 <p:commandButton rendered="#{customerViewCardsManagedBean.activateCardAction(creditCard.status)}" id="activate" value="Activate" action="/web/onlineBanking/card/creditCard/customerActivateCreditCard.xhtml?faces-redirect=true">
                                 </p:commandButton>
                             </p:column>
-
+                            
+                            <p:column>
+                                <p:commandButton value="Repayment" action="#{customerViewCardsManagedBean.makeCreditCardRepayment(creditCard.cardId)}"/>
+                            </p:column>
                         </p:dataTable>
                     </p:tab>
 
