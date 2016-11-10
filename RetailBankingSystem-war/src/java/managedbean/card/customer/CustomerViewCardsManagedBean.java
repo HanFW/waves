@@ -5,18 +5,25 @@
  */
 package managedbean.card.customer;
 
+import ejb.card.entity.CreditCard;
 import ejb.card.entity.DebitCard;
 import ejb.card.entity.PrincipalCard;
 import ejb.card.entity.SupplementaryCard;
 import ejb.card.session.CreditCardSessionBeanLocal;
 import ejb.card.session.DebitCardSessionBeanLocal;
 import ejb.customer.entity.CustomerBasic;
+import ejb.deposit.entity.BankAccount;
+import ejb.deposit.session.BankAccountSessionBeanLocal;
+import static ejb.loan.entity.CustomerDebt_.totalAmount;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 
@@ -27,6 +34,8 @@ import javax.faces.event.ActionEvent;
 @Named(value = "customerViewCardsManagedBean")
 @RequestScoped
 public class CustomerViewCardsManagedBean implements Serializable{
+    @EJB
+    private BankAccountSessionBeanLocal bankAccountSessionBeanLocal;
 
     /**
      * Creates a new instance of CustomerViewCardsManagedBean
@@ -50,6 +59,20 @@ public class CustomerViewCardsManagedBean implements Serializable{
 
 
     public CustomerViewCardsManagedBean() {
+    }
+    
+    public void makeCreditCardRepayment(Long cardId) throws IOException{
+        ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+        List<BankAccount> accounts = bankAccountSessionBeanLocal.retrieveBankAccountByCusIC(customer.getCustomerIdentificationNum());
+        if (accounts.isEmpty()) {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN, "No existing deposit account found.", null);
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, message);
+        } else {
+            CreditCard card = creditCardSessionBeanLocal.getCardByCardId(cardId);
+            ec.getFlash().put("creditCardNum", card.getCardNum());
+            ec.redirect(ec.getRequestContextPath() + "/web/onlineBanking/card/creditCard/customerMakeCreditCardRepayment.xhtml?faces-redirect=true");
+        }
     }
 
     public List<DebitCard> getDebitCards() {

@@ -5,6 +5,7 @@
  */
 package ejb.loan.entity;
 
+import ejb.card.entity.PrincipalCard;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Entity;
@@ -40,6 +41,9 @@ public class LoanRepaymentTransaction implements Serializable {
     
     @ManyToOne(fetch = FetchType.EAGER)
     LoanPayableAccount loanPayableAccount;
+    
+    @ManyToOne(fetch = FetchType.EAGER)
+    PrincipalCard principalCard;
 
     public Long getId() {
         return id;
@@ -111,6 +115,14 @@ public class LoanRepaymentTransaction implements Serializable {
 
     public void setLoanPayableAccount(LoanPayableAccount loanPayableAccount) {
         this.loanPayableAccount = loanPayableAccount;
+    }
+
+    public PrincipalCard getPrincipalCard() {
+        return principalCard;
+    }
+
+    public void setPrincipalCard(PrincipalCard principalCard) {
+        this.principalCard = principalCard;
     }
     
     
