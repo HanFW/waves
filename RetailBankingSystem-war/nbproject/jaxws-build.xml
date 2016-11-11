@@ -58,22 +58,6 @@
         <delete dir="${build.generated.sources.dir}/jax-ws/ws/client/otherbanks"/>
         <delete dir="${build.generated.dir}/jax-wsCache/OtherBanksWebService"/>
     </target>
-    <target name="wsimport-client-SACHWebService" depends="wsimport-init">
-        <mkdir dir="${build.generated.dir}/jax-wsCache/SACHWebService"/>
-        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/SACHWebService" destdir="${build.generated.dir}/jax-wsCache/SACHWebService" wsdl="${basedir}/${conf-dir}xml-resources/web-service-references/SACHWebService/wsdl/localhost_8080/SACHWebService/SACHWebService.wsdl" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" fork="false" wsdlLocation="http://localhost:8080/SACHWebService/SACHWebService?wsdl" xnocompile="true" xendorsed="true" package="ws.client.sach">
-            <depends file="${basedir}/${conf-dir}xml-resources/web-service-references/SACHWebService/wsdl/localhost_8080/SACHWebService/SACHWebService.wsdl"/>
-            <produces dir="${build.generated.dir}/jax-wsCache/SACHWebService"/>
-        </wsimport>
-        <copy todir="${build.generated.sources.dir}/jax-ws">
-            <fileset dir="${build.generated.dir}/jax-wsCache/SACHWebService">
-                <include name="**/*.java"/>
-            </fileset>
-        </copy>
-    </target>
-    <target name="wsimport-client-clean-SACHWebService" depends="-init-project">
-        <delete dir="${build.generated.sources.dir}/jax-ws/ws/client/sach"/>
-        <delete dir="${build.generated.dir}/jax-wsCache/SACHWebService"/>
-    </target>
     <target name="wsimport-client-TransactionAuthorizationWebService" depends="wsimport-init">
         <mkdir dir="${build.generated.dir}/jax-wsCache/TransactionAuthorizationWebService"/>
         <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/TransactionAuthorizationWebService" destdir="${build.generated.dir}/jax-wsCache/TransactionAuthorizationWebService" wsdl="${basedir}/${conf-dir}xml-resources/web-service-references/TransactionAuthorizationWebService/wsdl/localhost_8080/TransactionAuthorizationWebService/TransactionAuthorizationWebService.wsdl" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" fork="false" wsdlLocation="http://localhost:8080/TransactionAuthorizationWebService/TransactionAuthorizationWebService?wsdl" xnocompile="true" xendorsed="true" package="ws.client.merlionTransactionAuthorization">
@@ -106,5 +90,21 @@
         <delete dir="${build.generated.sources.dir}/jax-ws/ws/client/chips"/>
         <delete dir="${build.generated.dir}/jax-wsCache/CHIPSWebService"/>
     </target>
-    <target name="wsimport-client-generate" depends="wsimport-client-SWIFTWebService, wsimport-client-OtherBanksWebService, wsimport-client-SACHWebService, wsimport-client-TransactionAuthorizationWebService, wsimport-client-CHIPSWebService"/>
+    <target name="wsimport-client-SACHWebService" depends="wsimport-init">
+        <mkdir dir="${build.generated.dir}/jax-wsCache/SACHWebService"/>
+        <wsimport sourcedestdir="${build.generated.dir}/jax-wsCache/SACHWebService" destdir="${build.generated.dir}/jax-wsCache/SACHWebService" wsdl="${basedir}/${conf-dir}xml-resources/web-service-references/SACHWebService/wsdl/localhost_8080/SACHWebService/SACHWebService.wsdl" catalog="catalog.xml" encoding="${source.encoding}" extension="true" verbose="true" fork="false" wsdlLocation="http://localhost:8080/SACHWebService/SACHWebService?wsdl" xnocompile="true" xendorsed="true" package="ws.client.sach">
+            <depends file="${basedir}/${conf-dir}xml-resources/web-service-references/SACHWebService/wsdl/localhost_8080/SACHWebService/SACHWebService.wsdl"/>
+            <produces dir="${build.generated.dir}/jax-wsCache/SACHWebService"/>
+        </wsimport>
+        <copy todir="${build.generated.sources.dir}/jax-ws">
+            <fileset dir="${build.generated.dir}/jax-wsCache/SACHWebService">
+                <include name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    <target name="wsimport-client-clean-SACHWebService" depends="-init-project">
+        <delete dir="${build.generated.sources.dir}/jax-ws/ws/client/sach"/>
+        <delete dir="${build.generated.dir}/jax-wsCache/SACHWebService"/>
+    </target>
+    <target name="wsimport-client-generate" depends="wsimport-client-SWIFTWebService, wsimport-client-OtherBanksWebService, wsimport-client-TransactionAuthorizationWebService, wsimport-client-CHIPSWebService, wsimport-client-SACHWebService"/>
 </project>

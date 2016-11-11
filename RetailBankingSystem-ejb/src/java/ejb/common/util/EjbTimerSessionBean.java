@@ -348,6 +348,7 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
         statementSessionBeanLocal.generateStatement();
         maintainDailyBalance();
         nonStandingGIROSessionBeanLocal.monthlyRecurrentPayment();
+        creditCardReportSessionBeanLocal.generateMonthlyCreditCardReport();
     }
 
     private void handleTimeout_15000ms() {
@@ -390,8 +391,8 @@ public class EjbTimerSessionBean implements EjbTimerSessionBeanLocal {
         rateSessionBeanLocal.generateMonthlyAccountClosureReason();
         customerRFMSessionBeanLocal.generateMonthlyCustomerRFM();
         customerRFMSessionBeanLocal.generateLoanMonthlyRFM();
-        creditCardReportSessionBeanLocal.generateMonthlyCreditCardReport();
         customerCLVSessionBeanLocal.generateMonthlyCustomerCLV();
+        assetTypePriceSessionBeanLocal.equityMonthlyTrend();
     }
 
     private void maintainDailyBalance() {
